@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.heroInner {
+  @apply relative max-w-7xl mx-auto px-4 sm:px-6;
+}
+
+.heroBody {
+  @apply text-center pb-10 md:pb-16 max-w-5xl mx-auto;
+}
+
+.heroHeading {
+  @apply text-5xl md:text-6xl font-bold mb-4 dark:text-gray-200;
+}
+
+.heroSubtitle {
+  @apply text-xl mb-6 dark:text-slate-300;
+}

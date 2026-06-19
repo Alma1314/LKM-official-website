@@ -173,20 +173,13 @@ const cdnSrcSet =
     />
   ) : (
     /* The native <Image /> typing is overly strict for our forwarding wrapper;
-       we cast through `unknown` once so each call site keeps clean types. */
+       we spread through unknown once so each call site keeps clean types. */
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     resolved && (
       <AstroImage
-        {...({
-          ...rest,
-          src: resolved,
-          width: w,
-          height: h,
-          alt,
-          widths,
-          format,
-          style: finalStyle,
-        } as unknown as Parameters<typeof AstroImage>[0])}
+        {...({ ...rest, src: resolved, width: w, height: h, alt, widths, format, style: finalStyle } as any)}
       />
     )
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   )
 }

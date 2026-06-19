@@ -324,40 +324,40 @@ const metadata = {
   <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Frequently Asked Questions"
-    subtitle="Dive into the following questions to gain insights into the powerful features that AstroWind offers and how it can elevate your web development journey."
+    title="常见问题"
+    subtitle="以下整理了用户关于 LKM 官方网站的常见疑问，帮助您快速了解项目特性和使用方式。"
     tagline="FAQs"
     classes={{ container: 'max-w-6xl' }}
     items={[
       {
-        title: 'Why AstroWind?',
+        title: 'LKM 网站采用什么技术栈？',
         description:
-          "Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels.",
+          '基于 Astro v6 + Tailwind CSS v4 + CSS Modules 构建，同时内置了 Vue、React、Svelte 三种 UI 框架支持。所有页面为纯静态生成，具备优秀的性能和 SEO 表现。',
       },
       {
-        title: 'What do I need to start?',
+        title: '如何开始使用？',
         description:
-          'Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds. Many say exploration is part of our destiny, but it’s actually our duty to future generations.',
+          '确保 Node.js >= 22.12.0，克隆项目后执行 npm install 安装依赖，然后运行 npm run dev 启动开发服务器，访问 localhost:4321 即可预览。',
       },
       {
-        title: 'How to install the Astro + Tailwind CSS template?',
+        title: '如何自定义样式？',
         description:
-          "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows.",
+          '项目提供两种样式方式：通过 Tailwind CSS v4 的 @theme 变量和 @utility 工具类进行全局样式管理；或使用 CSS Modules（.module.css 文件）实现局部作用域样式。',
       },
       {
-        title: "What's something that you don't understand?",
+        title: '支持哪些内容格式的博客？',
         description:
-          "A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear. I didn't even know we were calling him Big Bear.",
+          '支持 Markdown 和 MDX 格式的博客文章，自动生成 RSS 订阅、站点地图，支持分类和标签系统，内置阅读时间计算和社交分享功能。',
       },
       {
-        title: 'What is something that you would like to try again?',
+        title: '如何部署到生产环境？',
         description:
-          "A business big enough that it could be listed on the NASDAQ goes belly up. Disappears! It ceases to exist without me. No, you clearly don't know who you're talking to, so let me clue you in.",
+          '运行 npm run build 生成静态产物到 dist/ 目录，可直接部署到 Vercel、Netlify、GitHub Pages 等任意静态托管服务。',
       },
       {
-        title: 'If you could only ask one question to each person you meet, what would that question be?',
+        title: '支持哪些 UI 框架？',
         description:
-          "This is not about revenge. This is about justice. A lot of things can change in twelve years, Admiral. Well, that's certainly good to know. About four years. I got tired of hearing how young I looked.",
+          '项目已内置 @astrojs/vue、@astrojs/react、@astrojs/svelte 集成，可以直接在 src/components/ 下创建 .vue、.jsx/.tsx、.svelte 组件并在 .astro 文件中使用。',
       },
     ]}
   />

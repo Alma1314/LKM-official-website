@@ -11,6 +11,9 @@ import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
+import vue from '@astrojs/vue';
+import react from '@astrojs/react';
+import svelte from '@astrojs/svelte';
 import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
@@ -29,6 +32,9 @@ export default defineConfig({
   integrations: [
     sitemap(),
     mdx(),
+    vue(),
+    react(),
+    svelte(),
     icon({
       include: {
         tabler: ['*'],
