@@ -4,6 +4,9 @@ set -euo pipefail
 # ============================================================
 #  LKM Official Website — Linux 一键部署脚本
 #  需要: Node.js >= 22.12.0, pnpm, Python >= 3.11, PostgreSQL
+#  可通过环境变量覆盖:
+#    PG_HOST, PG_PORT, PG_DATABASE, PG_USER, PG_PASSWORD
+#    FRONTEND_PORT, BACKEND_PORT
 # ============================================================
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -24,12 +27,13 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 cleanup() {
+    local ret=$?
     echo ""
     echo -e "${YELLOW}正在停止服务...${NC}"
     [ -n "${BACKEND_PID:-}" ] && kill "$BACKEND_PID" 2>/dev/null
     [ -n "${FRONTEND_PID:-}" ] && kill "$FRONTEND_PID" 2>/dev/null
     echo -e "${GREEN}服务已停止。${NC}"
-    exit 0
+    exit "$ret"
 }
 trap cleanup SIGINT SIGTERM
 
@@ -47,19 +51,34 @@ fi
 
 if ! command -v pnpm &>/dev/null; then
     echo -e "${YELLOW}[INFO] 安装 pnpm...${NC}"
-    npm install -g pnpm
+    if command -v npm &>/dev/null; then
+        npm install -g pnpm
+    elif command -v corepack &>/dev/null; then
+        corepack enable && corepack prepare pnpm@latest --activate
+    else
+        echo -e "${RED}[ERROR] 无法安装 pnpm，请手动安装 Node.js >= 22.12.0${NC}"
+        exit 1
+    fi
+    hash -r 2>/dev/null || rehash 2>/dev/null || true
 fi
 
 if ! command -v uv &>/dev/null; then
     echo -e "${YELLOW}[INFO] 安装 uv...${NC}"
     curl -LsSf https://astral.sh/uv/install.sh | bash
     export PATH="$HOME/.local/bin:$PATH"
+    hash -r 2>/dev/null || rehash 2>/dev/null || true
 fi
 
-if ! command -v psql &>/dev/null; then
-    echo -e "${YELLOW}[WARN] 未找到 psql, 请确保 PostgreSQL 已安装${NC}"
+PG_CLI=""
+if command -v psql &>/dev/null; then
+    PG_CLI="psql"
+elif command -v createdb &>/dev/null; then
+    PG_CLI="createdb"
+else
+    echo -e "${YELLOW}[WARN] 未找到 psql/createdb, 请确保 PostgreSQL 客户端已安装${NC}"
 fi
 
+# 刷新 PATH 后重新确认
 echo "        Node.js: $(node -v)"
 echo "        pnpm:    $(pnpm -v 2>/dev/null || echo 'N/A')"
 echo "        uv:      $(uv --version 2>/dev/null || echo 'N/A')"
@@ -84,13 +103,17 @@ uv pip install -r requirements.txt
 echo ""
 echo -e "${GREEN}[4/5] 检查数据库连接...${NC}"
 
-# 尝试创建数据库（若不存在则忽略错误）
-if command -v createdb &>/dev/null; then
-    PGPASSWORD="$PG_PASSWORD" createdb -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" "$PG_DATABASE" 2>/dev/null || true
-elif command -v psql &>/dev/null; then
-    PGPASSWORD="$PG_PASSWORD" psql -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" -d postgres -c "CREATE DATABASE $PG_DATABASE;" 2>/dev/null || true
+if [ -n "$PG_CLI" ]; then
+    # 尝试创建数据库（若不存在则忽略错误）
+    if [ "$PG_CLI" = "createdb" ]; then
+        PGPASSWORD="$PG_PASSWORD" createdb -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" "$PG_DATABASE" 2>/dev/null || true
+    else
+        PGPASSWORD="$PG_PASSWORD" psql -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" -d postgres -c "CREATE DATABASE $PG_DATABASE;" 2>/dev/null || true
+    fi
+    echo "        数据库 $PG_DATABASE 已就绪"
+else
+    echo "        [SKIP] 未检测到 psql/createdb, 跳过数据库创建, 请手动确保数据库 $PG_DATABASE 存在"
 fi
-echo "        数据库 $PG_DATABASE 已就绪"
 
 # 测试数据库连接
 cd "$BACKEND_DIR"
@@ -112,7 +135,11 @@ sleep 2
 # 启动前端
 echo "        启动 Astro 前端 (port $FRONTEND_PORT)..."
 cd "$PROJECT_DIR"
-pnpm run dev &
+if [ -n "${FRONTEND_PORT:-}" ]; then
+    pnpm run dev -- --port "$FRONTEND_PORT" &
+else
+    pnpm run dev &
+fi
 FRONTEND_PID=$!
 
 echo ""

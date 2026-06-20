@@ -1,14 +1,15 @@
-FROM node:lts AS base
+FROM node:22-alpine AS base
 WORKDIR /app
+RUN npm install -g pnpm@11.8.0
 
 FROM base AS deps
-COPY package*.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 FROM nginx:stable-alpine AS deploy
 COPY --from=build /app/dist /usr/share/nginx/html
