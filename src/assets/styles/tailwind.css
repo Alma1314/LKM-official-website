@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
 /* @plugin "daisyui"; */
 @plugin "daisyui" {
   themes: false; /* 关键 1：彻底禁用 daisyUI 所有的自带主题颜色，防止改掉你本来的颜色系统 */
