@@ -47,8 +47,8 @@ const { links = [], currentPath = '' } = Astro.props;
     const sidebar = document.querySelector('[data-sidebar]');
     if (!sidebar) return;
 
-    sidebar.addEventListener('click', (e) => {
-      const link = (e.target as HTMLElement).closest('a[href]');
+    const handler = (e) => {
+      const link = (e.target).closest('a[href]');
       if (!link) return;
 
       const href = link.getAttribute('href');
@@ -68,7 +68,15 @@ const { links = [], currentPath = '' } = Astro.props;
           history.replaceState(null, '', hash);
         }
       }
-    });
+    };
+
+    // Remove previous handler before re-attaching (prevents duplicates on astro:after-swap)
+    const prevHandler = sidebar._sidebarHandler;
+    if (prevHandler) {
+      sidebar.removeEventListener('click', prevHandler);
+    }
+    sidebar.addEventListener('click', handler);
+    sidebar._sidebarHandler = handler;
   }
 
   initSidebarScroll();

@@ -17,17 +17,35 @@ import { UI } from 'astrowind:config';
     }
   }
 
-  const initTheme = function () {
-    if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-      applyTheme(defaultTheme.replace(':only', ''));
-    } else if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      applyTheme('dark');
-    } else {
-      applyTheme('light');
+  function updateToggleThemeIcon() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const toggle = document.querySelector('[data-aw-toggle-color-scheme]');
+    if (toggle) {
+      const useEl = toggle.querySelector('use');
+      if (useEl) {
+        const href = useEl.getAttribute('href') || '';
+        if (isDark) {
+          useEl.setAttribute('href', href.replace('#tabler:sun', '#tabler:moon'));
+        } else {
+          useEl.setAttribute('href', href.replace('#tabler:moon', '#tabler:sun'));
+        }
+      }
     }
+  }
+
+  // ApplyColorMode.astro already sets the initial theme before paint.
+  // Here we re-apply from localStorage to keep theme toggle state consistent
+  // after View Transitions (astro:after-swap).
+  const initTheme = function () {
+    const theme = localStorage.theme;
+    if (theme === 'dark') {
+      applyTheme('dark');
+    } else if (theme === 'light') {
+      applyTheme('light');
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      applyTheme('dark');
+    }
+    updateToggleThemeIcon();
   };
   initTheme();
 
@@ -40,19 +58,21 @@ import { UI } from 'astrowind:config';
     }
   }
 
+  function closeMobileMenu() {
+    document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
+    document.body.classList.remove('overflow-hidden');
+    document.getElementById('header')?.classList.remove('h-screen');
+    document.getElementById('header')?.classList.remove('expanded');
+    document.getElementById('header')?.classList.remove('bg-page');
+    document.querySelector('#header nav')?.classList.add('hidden');
+    document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
+  }
+
   const onLoad = function () {
     let lastKnownScrollPosition = window.scrollY;
     let ticking = true;
 
-    attachEvent('#header nav', 'click', function () {
-      document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
-      document.body.classList.remove('overflow-hidden');
-      document.getElementById('header')?.classList.remove('h-screen');
-      document.getElementById('header')?.classList.remove('expanded');
-      document.getElementById('header')?.classList.remove('bg-page');
-      document.querySelector('#header nav')?.classList.add('hidden');
-      document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
-    });
+    attachEvent('#header nav', 'click', closeMobileMenu);
 
     attachEvent('[data-aw-toggle-menu]', 'click', function (_, elem) {
       elem.classList.toggle('expanded');
@@ -71,8 +91,9 @@ import { UI } from 'astrowind:config';
 
       Observer.removeAnimationDelay();
 
-      document.documentElement.classList.toggle('dark');
-      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.theme = isDark ? 'dark' : 'light';
+      updateToggleThemeIcon();
     });
 
     attachEvent('[data-aw-social-share]', 'click', function (_, elem) {
@@ -109,15 +130,7 @@ import { UI } from 'astrowind:config';
     });
 
     const screenSize = window.matchMedia('(max-width: 767px)');
-    screenSize.addEventListener('change', function () {
-      document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
-      document.body.classList.remove('overflow-hidden');
-      document.getElementById('header')?.classList.remove('h-screen');
-      document.getElementById('header')?.classList.remove('expanded');
-      document.getElementById('header')?.classList.remove('bg-page');
-      document.querySelector('#header nav')?.classList.add('hidden');
-      document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
-    });
+    screenSize.addEventListener('change', closeMobileMenu);
 
     function applyHeaderStylesOnScroll() {
       const header = document.querySelector('#header[data-aw-sticky-header]');
@@ -141,17 +154,30 @@ import { UI } from 'astrowind:config';
         ticking = true;
       }
     });
+
+    // Handle anchor hash after View Transitions navigation
+    handleAnchorScroll();
   };
+
+  // Scroll to element matching the URL hash (for View Transitions SPA nav)
+  function handleAnchorScroll() {
+    const hash = location.hash;
+    if (hash) {
+      const target = document.querySelector(hash);
+      if (target) {
+        // Defer to ensure DOM is fully painted after View Transition
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+      }
+    }
+  }
+
   const onPageShow = function () {
     document.documentElement.classList.add('motion-safe:scroll-smooth');
-    const elem = document.querySelector('[data-aw-toggle-menu]');
-    if (elem) {
-      elem.classList.remove('expanded');
-    }
-    document.body.classList.remove('overflow-hidden');
-    document.getElementById('header')?.classList.remove('h-screen');
-    document.getElementById('header')?.classList.remove('expanded');
-    document.querySelector('#header nav')?.classList.add('hidden');
+    closeMobileMenu();
   };
 
   window.onload = onLoad;
