@@ -1,7 +1,7 @@
 site:
   name: 理科迷
-  site: 'https://lkm-official-website.vercel.app'
-  base: '/'
+  site: 'https://LKM-2014.github.io'
+  base: '/LKM-official-website'
   trailingSlash: false
 
   googleSiteVerificationId: null
