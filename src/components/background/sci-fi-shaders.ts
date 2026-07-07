@@ -46,8 +46,8 @@ void main() {
   }
 
   // 布朗噪声漂移
-  float noiseX = hash(gl_VertexID * 1.3 + u_time * 0.7) - 0.5;
-  float noiseY = hash(gl_VertexID * 2.1 + u_time * 0.6) - 0.5;
+  float noiseX = hash(float(gl_VertexID) * 1.3 + u_time * 0.7) - 0.5;
+  float noiseY = hash(float(gl_VertexID) * 2.1 + u_time * 0.6) - 0.5;
   vel += vec2(noiseX, noiseY) * 30.0 * u_dt;
 
   // 速度钳制
