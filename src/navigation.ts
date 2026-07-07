@@ -66,6 +66,10 @@ export const headerData = {
           href: getPermalink('/services'),
         },
         {
+          text: '文档库',
+          href: getPermalink('/docs'),
+        },
+        {
           text: '赞助与支持',
           href: getPermalink('/pricing'),
         },
