@@ -107,6 +107,8 @@ export default function SciFiBackground() {
       ref={canvasRef}
       style={{
         display: 'block',
+        position: 'absolute',
+        inset: 0,
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
