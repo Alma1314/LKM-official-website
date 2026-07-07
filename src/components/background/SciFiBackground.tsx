@@ -7,6 +7,7 @@ export default function SciFiBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<SciFiRenderer | null>(null);
   const darkRef = useRef(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     rendererRef.current?.setMouse(e.clientX, e.clientY);
@@ -61,7 +62,25 @@ export default function SciFiBackground() {
     document.body.addEventListener('touchmove', handleTouchMove, { passive: true });
     document.body.addEventListener('touchend', handleTouchEnd, { passive: true });
 
+    // IntersectionObserver：哨兵在视口中 → start，离开 → stop
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          renderer.start();
+        } else {
+          renderer.stop();
+        }
+      },
+      { threshold: 0 }
+    );
+
+    const sentinel = sentinelRef.current;
+    if (sentinel) {
+      observer.observe(sentinel);
+    }
+
     return () => {
+      observer.disconnect();
       renderer.destroy();
       rendererRef.current = null;
       document.body.removeEventListener('mousemove', handleMouseMove);
@@ -84,16 +103,31 @@ export default function SciFiBackground() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-        display: 'block',
-      }}
-      aria-hidden="true"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          display: 'block',
+        }}
+        aria-hidden="true"
+      />
+      <div
+        ref={sentinelRef}
+        style={{
+          position: 'fixed',
+          top: '100vh',
+          left: 0,
+          width: '100%',
+          height: 1,
+          zIndex: -1,
+          pointerEvents: 'none',
+        }}
+        aria-hidden="true"
+      />
+    </>
   );
 }
