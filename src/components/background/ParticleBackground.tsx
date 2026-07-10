@@ -1,4 +1,5 @@
 import { Particles } from "@tsparticles/react";
+import { loadStarsPreset } from "@tsparticles/preset-stars";
 import { useEffect, useState } from "react";
 
 const MOBILE_BREAKPOINT = 768;
@@ -37,6 +38,14 @@ export default function ParticleBackground() {
       window.removeEventListener("resize", onResize);
     };
   }, []);
+
+  // Load the stars preset into tsParticles engine before rendering.
+  // The @tsparticles/engine import is aliased in astro.config.ts to the
+  // .pnpm store because pnpm strict mode does not hoist it to node_modules/.
+  const particlesLoaded = async () => {
+    const engine = await import("@tsparticles/engine");
+    await loadStarsPreset(engine.tsParticles);
+  };
 
   const options = {
     preset: "stars",
@@ -82,6 +91,7 @@ export default function ParticleBackground() {
     <Particles
       id="tsparticles"
       options={options}
+      particlesLoaded={particlesLoaded}
       style={{
         position: "absolute",
         top: 0,
