@@ -1,6 +1,6 @@
-import { Particles } from "@tsparticles/react";
+import { Particles, ParticlesProvider } from "@tsparticles/react";
 import { loadStarsPreset } from "@tsparticles/preset-stars";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const MOBILE_BREAKPOINT = 768;
 
@@ -39,13 +39,13 @@ export default function ParticleBackground() {
     };
   }, []);
 
-  // Load the stars preset into tsParticles engine before rendering.
-  // The @tsparticles/engine import is aliased in astro.config.ts to the
-  // .pnpm store because pnpm strict mode does not hoist it to node_modules/.
-  const particlesLoaded = async () => {
+  // ParticlesProvider init: called once to set up the tsParticles engine
+  // with the stars preset. Without ParticlesProvider, the Particles
+  // component never fires its load() because loaded context stays false.
+  const engineInit = useCallback(async () => {
     const engine = await import("@tsparticles/engine");
     await loadStarsPreset(engine.tsParticles);
-  };
+  }, []);
 
   const options = {
     preset: "stars",
@@ -88,17 +88,18 @@ export default function ParticleBackground() {
   };
 
   return (
-    <Particles
-      id="tsparticles"
-      options={options}
-      particlesLoaded={particlesLoaded}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-      }}
-    />
+    <ParticlesProvider init={engineInit}>
+      <Particles
+        id="tsparticles"
+        options={options}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    </ParticlesProvider>
   );
 }
