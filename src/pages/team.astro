@@ -16,7 +16,6 @@ import {
   advisorMembers,
   techMembers,
   professionalSubGroups,
-  projectSubGroups,
   alumniMembers,
 } from '~/data/members';
 
@@ -272,38 +271,6 @@ const sidebarLinks = [
           dream={m.dream}
           quote={m.quote}
         />
-      ))
-    }
-  </DepartmentSection>
-
-  <!-- 项目团队 -->
-  <DepartmentSection
-    id="project"
-    title="项目团队"
-    borderColor="#14b8a6"
-    desc="项目团队负责理科迷的各项实际项目推进，从教材编写到科普传播，将想法落地为成果。"
-    noGrid
-  >
-    {
-      Object.entries(projectSubGroups).map(([, group]) => (
-        <div class="mb-8">
-          <h4 class="text-md font-bold mb-2 text-center text-neutral">{group.label}</h4>
-          {group.members.length > 0 ? (
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.members.map((m) => (
-                <MemberCard
-                  name={m.name ?? '匿名成员'}
-                  avatar={getAvatar(m.avatarKey)}
-                  desc={m.desc}
-                  dream={m.dream}
-                  quote={m.quote}
-                />
-              ))}
-            </div>
-          ) : (
-            <p class="text-center text-sm text-neutral/50 py-6">暂无成员，期待你的加入</p>
-          )}
-        </div>
       ))
     }
   </DepartmentSection>
