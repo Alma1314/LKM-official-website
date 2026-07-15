@@ -347,6 +347,7 @@ export const professionalSubGroups: Record<string, SubGroup> = {
 export const projectSubGroups: Record<string, SubGroup> = {
   textbooks: {
     label: '教材项目组',
+    desc: '致力于编写高质量的理科教材，整合知识体系，为学习者提供系统化的学习资源。',
     members: [
       { name: '七月大雄', avatarKey: '七月大雄.jpeg', desc: '什么都好奇一点', dream: '梦想：理想很多' },
       { name: '七月Joshua Xue', avatarKey: '七月Joshua Xue.png', desc: '一位数学爱好者，想让所有人都能轻松学上数学' },
@@ -355,11 +356,12 @@ export const projectSubGroups: Record<string, SubGroup> = {
   },
   science: {
     label: '科普项目组',
+    desc: '负责各平台的科普征集与传播，将专业知识转化为通俗易懂的科普内容，促进科学知识普及。',
     members: [],
   },
 };
 
-/** 已离开或失联成员（无 avatarKey） */
+/** 已离开或失联成员 */
 export const alumniMembers: Member[] = [
   { name: '七月逗', role: '组长' },
   { name: '七月喵', role: '组长' },
