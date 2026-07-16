@@ -56,7 +56,7 @@ export const BACKGROUNDS: BackgroundMeta[] = [
     icon: '🌈',
     theme: 'both',
     darkProps: { rippleColor: '#818cf8' },
-    lightProps: { rippleColor: '#f59e0b' },
+    lightProps: { rippleColor: '#c39ee9' },
   },
   {
     id: 'binary-matrix',
@@ -147,6 +147,6 @@ export const BACKGROUNDS: BackgroundMeta[] = [
     component: TextParticlesBackground,
     icon: '🔤',
     theme: 'light',
-    lightProps: { color: '#3b82f6', text: '理科迷', fontSize: 300 },
+    lightProps: { color: '#aadcf8', text: '理科迷', fontSize: 300 },
   },
 ];
