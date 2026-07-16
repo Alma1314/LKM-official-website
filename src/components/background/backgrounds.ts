@@ -147,6 +147,6 @@ export const BACKGROUNDS: BackgroundMeta[] = [
     component: TextParticlesBackground,
     icon: '🔤',
     theme: 'light',
-    lightProps: { color: '#3b82f6', text: '理科迷', fontSize: 300 },
+    lightProps: { color: '#aadcf8', text: '理科迷', fontSize: 300 },
   },
 ];
