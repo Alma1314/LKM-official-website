@@ -178,37 +178,39 @@ export const eventsMembers: Member[] = [
 ];
 
 /** 新闻办 */
-export const newsMembers: Member[] = [
-  {
-    name: '七月草薙铃',
-    avatarKey: '七月草薙铃.png',
-    desc: '一个不存在,但是希望祝福大家的人.',
-    dream: '梦想：让大家开心,到达知识的Sekai边缘.',
-    quote: '—— We must know,we will know.',
-  },
-  { name: '七月一前', avatarKey: '七月一前.png', desc: '我是新闻办的一前' },
-  {
-    name: '七月孙',
-    avatarKey: '七月孙.jpg',
-    desc: '用好手中的技术，服务更多有需要的人。制作组小朋友一枚。',
-    dream: '梦想：多提升学历，多认识点人。',
-    quote: '—— 无人扶我青云志，我自踏雪至山巅。',
-  },
-  {
-    name: '七月吴理',
-    avatarKey: '七月吴理.png',
-    desc: '计算机广告制作专业中技',
-    dream: '梦想：活着，同时干点事吧。',
-    quote: '—— 逆天不一定能改命，但是你所做的一切选择将会影响你的命，请慎重自己的选择。',
-  },
-];
+export const newsMembers: Member[] = [];
 
 /** 新闻办下属小组 */
 export const newsSubGroups: Record<string, SubGroup> = {
   production: {
     label: '制作组',
     desc: '负责各平台、各活动关于宣传相关的制作，如有UI设计，海报制作，可视化等等，对于美工会有一定的要求，适合有相应能力的人加入。',
-    members: [] as Member[],
+    members: [
+      {
+    name: '七月草薙铃',
+    avatarKey: '七月草薙铃.png',
+    desc: '一个不存在,但是希望祝福大家的人.',
+    dream: '梦想：让大家开心,到达知识的Sekai边缘.',
+    quote: '—— We must know,we will know.',
+      },
+      { name: '七月一前', avatarKey: '七月一前.png', desc: '我是新闻办的一前' },
+      {
+        name: '七月孙',
+        avatarKey: '七月孙.jpg',
+        desc: '用好手中的技术，服务更多有需要的人。制作组小朋友一枚。',
+        dream: '梦想：多提升学历，多认识点人。',
+        quote: '—— 无人扶我青云志，我自踏雪至山巅。',
+      },
+      {
+        name: '七月吴理',
+        avatarKey: '七月吴理.png',
+        desc: '计算机广告制作专业中技',
+        dream: '梦想：活着，同时干点事吧。',
+        quote: '—— 逆天不一定能改命，但是你所做的一切选择将会影响你的命，请慎重自己的选择。',
+  },
+
+
+    ],
   },
   promotion: {
     label: '宣传组',
@@ -225,13 +227,6 @@ export const newsSubGroups: Record<string, SubGroup> = {
         desc: '公益科普产业共同体成员，曙星科普社社长。从事公益科普事业三年余。曾领导主办龙年科幻大赛、第一届地月奖科幻征文，曾参与协办第二、三、四、五届寻翊奖科普征文，与up非村科普墙联创地质锤等优秀科普视频。',
         dream: '梦想：传播科学文化',
         quote: '—— 马克思说过，科学技术是生产力。',
-      },
-      {
-        name: '七月吴理',
-        avatarKey: '七月吴理.png',
-        desc: '计算机广告制作专业中技',
-        dream: '梦想：活着，同时干点事吧',
-        quote: '—— 逆天不一定能改命，但是你所做的一切选择将会影响你的命，请慎重自己的选择',
       },
     ],
   },
