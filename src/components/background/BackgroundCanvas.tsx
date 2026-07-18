@@ -17,7 +17,7 @@ export function BackgroundCanvas({ draw, init, interactions, className = '', chi
       <canvas
         ref={canvasRef}
         className={`fixed inset-0 pointer-events-auto ${className}`}
-        style={{ zIndex: 0, width: '100%', height: '100%' }}
+        style={{ zIndex: 0, width: '100vw', height: '100vh' }}
         aria-hidden="true"
       />
       {children}

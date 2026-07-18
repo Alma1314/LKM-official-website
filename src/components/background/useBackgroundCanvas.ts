@@ -38,7 +38,6 @@ export interface UseBackgroundCanvasOptions {
 }
 
 const DEFAULT_MAX_DPR = 1.5;
-const RESIZE_DEBOUNCE_MS = 200;
 
 export function useBackgroundCanvas({
   draw,
@@ -107,43 +106,23 @@ export function useBackgroundCanvas({
     let isInViewport = true;
 
     const resize = () => {
-      // 用 canvas 自身的 rect，确保 frame 空间与事件坐标空间完全一致
-      const rect = canvas.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) return;
-      canvas.width = Math.max(1, Math.round(rect.width * frame.dpr));
-      canvas.height = Math.max(1, Math.round(rect.height * frame.dpr));
-      frame.width = rect.width;
-      frame.height = rect.height;
+      // fixed 定位 + 100vw/100vh，直接取 window 尺寸
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.max(1, Math.round(w * frame.dpr));
+      canvas.height = Math.max(1, Math.round(h * frame.dpr));
+      frame.width = w;
+      frame.height = h;
       ctx.setTransform(frame.dpr, 0, 0, frame.dpr, 0, 0);
-      return true;
     };
+    resize();
 
-    // 首帧用 rAF 延迟 resize，确保 canvas 已布局
-    const initAfterLayout = () => {
-      if (resize()) {
-        initCleanupRef.current = initRef.current?.(canvas, frame);
-        return true;
-      }
-      return false;
-    };
-    if (!initAfterLayout()) {
-      requestAnimationFrame(() => {
-        if (initAfterLayout()) return;
-        requestAnimationFrame(() => {
-          initAfterLayout();
-        });
-      });
-    }
+    // Run init after resize so frame.width/height and canvas dimensions are correct.
+    initCleanupRef.current = initRef.current?.(canvas, frame);
 
-    // ResizeObserver（feedback：防抖 200ms）
-    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
-    const ro = new ResizeObserver(() => {
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        resize();
-      }, RESIZE_DEBOUNCE_MS);
-    });
-    if (canvas.parentElement) ro.observe(canvas.parentElement);
+    // window resize 监听
+    const onResize = () => resize();
+    window.addEventListener('resize', onResize);
 
     const updatePause = () => {
       pausedRef.current = !(isVisible && isInViewport);
@@ -170,10 +149,9 @@ export function useBackgroundCanvas({
     const useKeys = !!interactions.keys;
 
     const getCanvasPos = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
       return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: e.clientX,
+        y: e.clientY,
       };
     };
 
@@ -249,8 +227,7 @@ export function useBackgroundCanvas({
 
     return () => {
       if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
-      if (resizeTimer) clearTimeout(resizeTimer);
-      ro.disconnect();
+      window.removeEventListener('resize', onResize);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       if (useMouse) {

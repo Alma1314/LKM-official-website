@@ -54,6 +54,7 @@ export default function BackgroundSwitcher() {
   const [currentBg, setCurrentBg] = useState<BackgroundId>(getInitialBackground);
   const [isDark, setIsDark] = useState(getIsDark);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(true);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -126,6 +127,18 @@ export default function BackgroundSwitcher() {
     [activeEntry]
   );
   const colorProps = isDark ? activeEntry?.darkProps : activeEntry?.lightProps;
+
+  // 监听 Hero section 是否在视口内，滚出后卸载背景
+  useEffect(() => {
+    const hero = document.querySelector('[data-hero-section]');
+    if (!hero) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setHeroVisible(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(hero);
+    return () => io.disconnect();
+  }, []);
 
   // Preload default background and stored background on mount
   useEffect(() => {
@@ -218,7 +231,7 @@ export default function BackgroundSwitcher() {
     <div className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }}>
       {/* Background canvas layer */}
       <div style={{ pointerEvents: 'auto', position: 'absolute', inset: 0, overflow: 'hidden' }}>
-        {ActiveComponent && (
+        {heroVisible && ActiveComponent && (
           <BackgroundErrorBoundary fallback={<div className="absolute inset-0 bg-base-100" />}>
             <Suspense fallback={<div className="absolute inset-0 bg-base-100" />}>
               <ActiveComponent key={`${currentBg}-${isDark ? 'dark' : 'light'}`} className="" {...colorProps} />
