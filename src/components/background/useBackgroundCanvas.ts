@@ -107,19 +107,33 @@ export function useBackgroundCanvas({
     let isInViewport = true;
 
     const resize = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
-      const rect = parent.getBoundingClientRect();
-      frame.width = rect.width;
-      frame.height = rect.height;
+      // 用 canvas 自身的 rect，确保 frame 空间与事件坐标空间完全一致
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
       canvas.width = Math.max(1, Math.round(rect.width * frame.dpr));
       canvas.height = Math.max(1, Math.round(rect.height * frame.dpr));
+      frame.width = rect.width;
+      frame.height = rect.height;
       ctx.setTransform(frame.dpr, 0, 0, frame.dpr, 0, 0);
+      return true;
     };
-    resize();
 
-    // Run init after resize so frame.width/height and canvas dimensions are correct.
-    initCleanupRef.current = initRef.current?.(canvas, frame);
+    // 首帧用 rAF 延迟 resize，确保 canvas 已布局
+    const initAfterLayout = () => {
+      if (resize()) {
+        initCleanupRef.current = initRef.current?.(canvas, frame);
+        return true;
+      }
+      return false;
+    };
+    if (!initAfterLayout()) {
+      requestAnimationFrame(() => {
+        if (initAfterLayout()) return;
+        requestAnimationFrame(() => {
+          initAfterLayout();
+        });
+      });
+    }
 
     // ResizeObserver（feedback：防抖 200ms）
     let resizeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -157,10 +171,9 @@ export function useBackgroundCanvas({
 
     const getCanvasPos = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
-      // 归一化：CSS坐标映射到frame的width/height空间，处理canvas与frame尺寸不一致的情况
       return {
-        x: ((e.clientX - rect.left) / rect.width) * frame.width,
-        y: ((e.clientY - rect.top) / rect.height) * frame.height,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
       };
     };
 

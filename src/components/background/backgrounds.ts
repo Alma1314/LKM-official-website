@@ -136,7 +136,7 @@ export const BACKGROUNDS: BackgroundMeta[] = [
     id: 'text-particles',
     name: '文字粒子',
     icon: '🔤',
-    theme: 'light',
+    theme: 'both',
     load: () =>
       import('~/vendor/interactive-backgrounds/TextParticlesBackground').then((m) => ({ default: m.default })),
     lightProps: { color: '#aadcf8', text: '理科迷', fontSize: 300 },

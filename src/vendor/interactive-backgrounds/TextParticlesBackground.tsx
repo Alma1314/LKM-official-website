@@ -42,8 +42,9 @@ export default function TextParticlesBackground({
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return [];
 
-      offCtx.font = `${fontSize}px Space Grotesk`;
+      offCtx.font = `bold ${fontSize}px "Noto Sans SC", sans-serif`;
       offCtx.textAlign = 'center';
+      offCtx.textBaseline = 'middle';
       offCtx.fillStyle = '#ffffff';
       offCtx.fillText(text, width / 2, height / 2);
       const imageData = offCtx.getImageData(0, 0, width, height);

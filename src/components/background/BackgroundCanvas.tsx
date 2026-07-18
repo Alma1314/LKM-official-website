@@ -16,11 +16,12 @@ export function BackgroundCanvas({ draw, init, interactions, className = '', chi
     <>
       <canvas
         ref={canvasRef}
-        className={`absolute inset-0 pointer-events-auto ${className}`}
-        style={{ zIndex: 0 }}
+        className={`fixed inset-0 pointer-events-auto ${className}`}
+        style={{ zIndex: 0, width: '100%', height: '100%' }}
         aria-hidden="true"
       />
       {children}
     </>
+
   );
 }
