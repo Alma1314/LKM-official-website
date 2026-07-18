@@ -103,7 +103,6 @@ export function useBackgroundCanvas({
     };
     frameRef.current = frame;
 
-    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let isVisible = !document.hidden;
     let isInViewport = true;
 
@@ -151,24 +150,32 @@ export function useBackgroundCanvas({
     };
     document.addEventListener('visibilitychange', onVisibility);
 
-    // reduced-motion 切换需要重建 effect 才能更新 throttle 值；
-    // 已不再需要 change listener。
-
     // 鼠标/触摸事件（canvas 局部坐标）
     const useMouse = !!interactions.mouse;
     const useClick = !!interactions.click;
     const useKeys = !!interactions.keys;
 
+    const getCanvasPos = (e: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      // 归一化：CSS坐标映射到frame的width/height空间，处理canvas与frame尺寸不一致的情况
+      return {
+        x: ((e.clientX - rect.left) / rect.width) * frame.width,
+        y: ((e.clientY - rect.top) / rect.height) * frame.height,
+      };
+    };
+
     const onPointerMove = (e: PointerEvent) => {
-      frame.mouse.x = e.offsetX;
-      frame.mouse.y = e.offsetY;
+      const pos = getCanvasPos(e);
+      frame.mouse.x = pos.x;
+      frame.mouse.y = pos.y;
     };
     const onPointerDown = (e: PointerEvent) => {
-      frame.mouse.x = e.offsetX;
-      frame.mouse.y = e.offsetY;
+      const pos = getCanvasPos(e);
+      frame.mouse.x = pos.x;
+      frame.mouse.y = pos.y;
       frame.mouse.isDown = true;
       if (useClick) {
-        frame.ripples.push({ x: e.offsetX, y: e.offsetY, startTime: frame.time });
+        frame.ripples.push({ x: pos.x, y: pos.y, startTime: frame.time });
       }
     };
     const onPointerUp = () => {
@@ -199,9 +206,6 @@ export function useBackgroundCanvas({
       window.addEventListener('keyup', onKeyUp);
     }
 
-    // reduced-motion 时降为低帧率而非完全冻结，保持画面持续更新
-    const reducedMotionMinInterval = reducedMotionQuery.matches ? 100 : 0; // ~10 fps
-
     // rAF 循环
     startTimeRef.current = performance.now();
     lastFrameRef.current = startTimeRef.current;
@@ -210,7 +214,7 @@ export function useBackgroundCanvas({
 
     const loop = (now: number) => {
       rafIdRef.current = requestAnimationFrame(loop);
-      if (pausedRef.current && !reducedMotionQuery.matches) {
+      if (pausedRef.current) {
         if (pausedStart === null) pausedStart = now;
         lastFrameRef.current = now;
         return;
@@ -221,11 +225,6 @@ export function useBackgroundCanvas({
       }
       frame.time = (now - startTimeRef.current - pausedElapsedRef.current) / 1000;
       frame.delta = Math.min((now - lastFrameRef.current) / 1000, 0.1);
-
-      // reduced-motion：降低帧率
-      if (reducedMotionMinInterval > 0 && now - lastFrameRef.current < reducedMotionMinInterval) {
-        return;
-      }
       lastFrameRef.current = now;
 
       // Consume ripples produced since last frame; each frame's component sees one batch.
