@@ -42,3 +42,17 @@ export interface AutosaveResponse {
   code?: 'VERSION_CONFLICT';
   currentVersion?: number;
 }
+
+export interface DocumentVersion {
+  version: number;
+  contentMdx: string;
+  editorJson: Record<string, unknown>;
+  message: string;
+  createdAt: string;
+}
+
+export interface PublishPayload {
+  title: string;
+  slug: string;
+  contentMdx: string;
+}

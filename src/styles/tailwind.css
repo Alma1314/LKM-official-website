@@ -315,3 +315,23 @@
     animation: none;
   }
 }
+
+/* Mobile editor adaptations */
+@media (max-width: 768px) {
+  .editor-toolbar-mobile {
+    @apply flex-wrap gap-y-1;
+  }
+
+  .editor-toolbar-mobile .btn-sm {
+    @apply text-xs px-1.5;
+  }
+
+  .prose {
+    @apply px-4 py-4;
+  }
+
+  /* Property panel becomes bottom drawer on mobile */
+  .property-panel-mobile {
+    @apply fixed bottom-0 left-0 right-0 w-full max-h-[40vh] overflow-y-auto border-t border-base-300 rounded-t-xl z-40;
+  }
+}

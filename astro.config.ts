@@ -12,6 +12,7 @@ import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
+import node from '@astrojs/node';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
@@ -30,7 +31,10 @@ export default defineConfig({
   site: 'https://LKM-AHZ.github.io',
   base: '/LKM-official-website',
 
-  output: 'static',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
 
   integrations: [
     sitemap(),

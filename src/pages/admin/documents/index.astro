@@ -9,9 +9,24 @@ const metadata = {
 
 <PageLayout metadata={metadata}>
   <div class="section-container max-w-4xl mx-auto py-8 px-4">
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
       <h1 class="text-2xl font-bold">文档管理</h1>
-      <a href="/admin/documents/editor" class="btn btn-primary">新建文档</a>
+      <div class="flex gap-2 w-full sm:w-auto">
+        <input
+          type="text"
+          class="input input-bordered input-sm flex-1 sm:w-48"
+          placeholder="搜索文档..."
+          id="search-input"
+          oninput="renderList()"
+        />
+        <select class="select select-bordered select-sm" id="status-filter" onchange="renderList()">
+          <option value="all">全部</option>
+          <option value="draft">草稿</option>
+          <option value="published">已发布</option>
+          <option value="archived">已归档</option>
+        </select>
+        <a href="/admin/documents/editor" class="btn btn-primary btn-sm">新建文档</a>
+      </div>
     </div>
     <div id="doc-list" class="bg-base-100 border border-base-300 rounded-lg overflow-hidden">
       <div class="p-8 text-center text-base-content/50">
@@ -23,12 +38,24 @@ const metadata = {
 </PageLayout>
 
 <script>
-  import { listDocuments } from '~/lib/document-api';
+  import { listDocuments, deleteDocument } from '~/lib/document-api';
 
   function renderList() {
-    const docs = listDocuments();
+    let docs = listDocuments();
     const container = document.getElementById('doc-list');
     if (!container) return;
+
+    // Filter by status
+    const statusFilter = (document.getElementById('status-filter') as HTMLSelectElement)?.value ?? 'all';
+    if (statusFilter !== 'all') {
+      docs = docs.filter((d) => d.status === statusFilter);
+    }
+
+    // Search by title
+    const searchTerm = ((document.getElementById('search-input') as HTMLInputElement)?.value ?? '').toLowerCase();
+    if (searchTerm) {
+      docs = docs.filter((d) => d.title.toLowerCase().includes(searchTerm));
+    }
 
     if (docs.length === 0) {
       container.innerHTML = `
@@ -40,21 +67,38 @@ const metadata = {
       return;
     }
 
+    const statusLabels: Record<string, string> = {
+      published: '已发布',
+      archived: '已归档',
+      draft: '草稿',
+    };
+
     container.innerHTML = docs
       .map(
         (doc) => `
-      <a href="/admin/documents/editor?id=${doc.id}" class="flex items-center justify-between p-4 border-b border-base-300 last:border-b-0 hover:bg-base-200 transition-colors">
-        <div>
-          <h3 class="font-medium">${escapeHtml(doc.title)}</h3>
+      <div class="flex items-center justify-between p-4 border-b border-base-300 last:border-b-0 hover:bg-base-200 transition-colors group">
+        <a href="/admin/documents/editor?id=${doc.id}" class="flex-1 min-w-0">
+          <h3 class="font-medium truncate">${escapeHtml(doc.title)}</h3>
           <p class="text-xs text-base-content/50 mt-1">
             ${new Date(doc.lastModified).toLocaleString('zh-CN')} ·
-            <span class="badge badge-xs ${doc.status === 'published' ? 'badge-success' : 'badge-ghost'}">${doc.status === 'published' ? '已发布' : doc.status === 'archived' ? '已归档' : '草稿'}</span>
+            <span class="badge badge-xs ${doc.status === 'published' ? 'badge-success' : doc.status === 'archived' ? 'badge-error' : 'badge-ghost'}">${statusLabels[doc.status] ?? doc.status}</span>
           </p>
+        </a>
+        <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            class="btn btn-ghost btn-xs text-error"
+            onclick="handleDelete('${doc.id}', '${escapeHtml(doc.title)}')"
+            title="删除"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+            </svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/30">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/30">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      </a>
+      </div>
     `
       )
       .join('');
@@ -65,6 +109,16 @@ const metadata = {
     div.textContent = text;
     return div.innerHTML;
   }
+
+  (window as unknown as Record<string, (id: string, title: string) => void>).handleDelete = function (
+    id: string,
+    title: string
+  ) {
+    if (window.confirm(`确定删除文档"${title}"？此操作不可撤销。`)) {
+      deleteDocument(id);
+      renderList();
+    }
+  };
 
   renderList();
 </script>

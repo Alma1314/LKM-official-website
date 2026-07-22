@@ -44,6 +44,22 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
           setSaveStatus('saved');
           hasUnsavedRef.current = false;
           savedCallbackRef.current?.();
+
+          // Save version snapshot (throttled: only if version changed)
+          try {
+            const { saveVersion } = await import('~/lib/version-store');
+            const { getDocument } = await import('./document-api');
+            const doc = getDocument(documentId);
+            if (doc && mdxContent) {
+              saveVersion(
+                documentId,
+                { ...doc, contentMdx: mdxContent, editorJson: content, version: result.version },
+                ''
+              );
+            }
+          } catch {
+            // Version storage is best-effort
+          }
         } else {
           setSaveStatus('conflict');
         }

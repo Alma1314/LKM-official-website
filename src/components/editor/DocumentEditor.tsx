@@ -13,6 +13,12 @@ import BubbleMenuWrapper from './BubbleMenu';
 import SlashMenu from './SlashMenu';
 import PreviewPanel from './PreviewPanel';
 import PropertyPanel from './PropertyPanel';
+import PublishDialog from './PublishDialog';
+import PublishButton from './PublishButton';
+import VersionHistoryPanel from './VersionHistoryPanel';
+import { saveVersion } from '~/lib/version-store';
+import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
+import type { VersionEntry } from '~/lib/version-store';
 
 interface DocumentEditorProps {
   documentId: string;
@@ -48,6 +54,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   const [slashOpen, setSlashOpen] = useState(false);
   const [slashQuery, setSlashQuery] = useState('');
   const [slashPos, setSlashPos] = useState<{ top: number; left: number } | null>(null);
+
+  // Publish state
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Version history state
+  const [versionPanelOpen, setVersionPanelOpen] = useState(false);
 
   // Refs for MDX state
   const sourceMdxRef = useRef('');
@@ -246,6 +259,38 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     [docId, triggerSave]
   );
 
+  const handlePublish = useCallback(
+    (title: string, _slug: string) => {
+      if (!docId) return;
+      const doc = getDoc(docId);
+      if (doc) {
+        const updated = updateDocument(docId, { ...doc, title, status: 'published' });
+        if (updated) {
+          saveVersion(docId, updated, '\u53d1\u5e03');
+          setRefreshKey((k) => k + 1);
+        }
+      }
+      setPublishOpen(false);
+    },
+    [docId]
+  );
+
+  const handleRestoreVersion = useCallback(
+    (version: VersionEntry) => {
+      if (!editor) return;
+      if (version.editorJson && typeof version.editorJson === 'object') {
+        editor.commands.clearContent();
+        editor.commands.setContent(version.editorJson);
+        if (docId) {
+          triggerSave(version.editorJson);
+        }
+        setRefreshKey((k) => k + 1);
+        setVersionPanelOpen(false);
+      }
+    },
+    [editor, docId, triggerSave]
+  );
+
   const cc = getCharacterCount(editor);
   const charCount = cc?.characterCount.characters() ?? 0;
   const wordCount = cc?.characterCount.words() ?? 0;
@@ -258,7 +303,27 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           charCount={mode === 'richtext' ? charCount : undefined}
           wordCount={mode === 'richtext' ? wordCount : undefined}
         />
-        <ModeTabs mode={mode} onModeChange={handleModeChange} />
+        <div className="flex items-center gap-2">
+          {docId && mode === 'richtext' && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-xs"
+              onClick={() => setVersionPanelOpen(!versionPanelOpen)}
+            >
+              版本
+            </button>
+          )}
+          {docId && (
+            <div key={refreshKey}>
+              <PublishButton
+                documentId={docId}
+                onStatusChange={() => setRefreshKey((k) => k + 1)}
+                onOpenPublishDialog={() => setPublishOpen(true)}
+              />
+            </div>
+          )}
+          <ModeTabs mode={mode} onModeChange={handleModeChange} />
+        </div>
       </div>
 
       {mode === 'richtext' && editor ? (
@@ -277,7 +342,15 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             )}
             <EditorContent editor={editor} />
           </div>
-          <PropertyPanel editor={editor} />
+          {versionPanelOpen ? (
+            <VersionHistoryPanel
+              documentId={docId}
+              onRestore={handleRestoreVersion}
+              onClose={() => setVersionPanelOpen(false)}
+            />
+          ) : (
+            <PropertyPanel editor={editor} />
+          )}
         </div>
       ) : mode === 'source' ? (
         <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
@@ -288,6 +361,14 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           <span className="loading loading-spinner loading-md mr-2" />
           正在加载编辑器……
         </div>
+      )}
+
+      {publishOpen && (
+        <PublishDialog
+          currentTitle={getDoc(docId)?.title ?? ''}
+          onConfirm={handlePublish}
+          onCancel={() => setPublishOpen(false)}
+        />
       )}
     </div>
   );
