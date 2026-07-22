@@ -19,11 +19,22 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
   }, [documentId]);
 
   const doSave = useCallback(
-    (content: Record<string, unknown>) => {
+    async (content: Record<string, unknown>) => {
       setSaveStatus('saving');
       try {
+        let mdxContent = '';
+        try {
+          const { exportMdx } = await import('~/editor/mdx');
+          const json = content as { content?: Array<Record<string, unknown>> };
+          const nodes = json.content ?? [];
+          const result = exportMdx(nodes, {});
+          mdxContent = result.mdx;
+        } catch {
+          mdxContent = '';
+        }
+
         const result = apiAutosave(documentId, {
-          contentMdx: '',
+          contentMdx: mdxContent,
           editorJson: content,
           baseVersion: baseVersionRef.current,
         });

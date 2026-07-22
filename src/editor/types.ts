@@ -2,6 +2,8 @@ import type { Editor } from '@tiptap/core';
 import type { ReactNode } from 'react';
 
 export type SaveStatus = 'saved' | 'unsaved' | 'saving' | 'error' | 'conflict';
+export type EditorMode = 'richtext' | 'source' | 'preview';
+export type FrontmatterValues = Record<string, unknown>;
 
 export interface ToolbarItem {
   key: string;
