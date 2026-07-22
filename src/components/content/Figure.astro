@@ -1,0 +1,39 @@
+---
+interface Props {
+  src?: string;
+  alt?: string;
+  caption?: string;
+  width?: number;
+  align?: 'left' | 'center' | 'right';
+}
+
+const { src, alt = '', caption, width, align = 'center' } = Astro.props as Props;
+
+const alignClasses: Record<string, string> = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
+---
+
+<figure class:list={['my-6', alignClasses[align], 'not-prose']}>
+  {
+    src ? (
+      <img
+        src={src}
+        alt={alt}
+        class="rounded-lg inline-block"
+        style={{
+          width: width ? `${width}px` : 'auto',
+          maxWidth: '100%',
+          height: 'auto',
+        }}
+      />
+    ) : (
+      <div class="border-2 border-dashed border-base-300 rounded-lg p-8 text-base-content/50">
+        <p class="text-center text-sm">暂无图片</p>
+      </div>
+    )
+  }
+  {caption && <figcaption class="text-xs text-base-content/60 mt-2">{caption}</figcaption>}
+</figure>

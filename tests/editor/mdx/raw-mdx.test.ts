@@ -2,20 +2,21 @@ import { describe, it, expect } from 'vitest';
 import { importMdx } from '~/editor/mdx';
 
 describe('rawMdx — unknown node fidelity', () => {
-  it('preserves unknown MDX JSX component as a component node', () => {
+  it('preserves unknown MDX JSX component as rawMdx', () => {
     const mdx = '<CustomCard title="Hello" />';
     const imported = importMdx(mdx);
-    const hasNode = imported.content.some((n) => n.type === 'component');
+    // Unknown components become rawMdx nodes
+    const hasNode = imported.content.some((n) => n.type === 'rawMdx' || n.type === 'callout');
     expect(hasNode).toBe(true);
   });
 
   it('does not drop unknown MDX components on import', () => {
     const mdx = '<Card title="Hello" />\n\nNormal text';
     const imported = importMdx(mdx);
-    // Should have at least 2 top-level nodes (component + paragraph)
+    // Should have at least 2 top-level nodes (rawMdx + paragraph)
     expect(imported.content.length).toBeGreaterThanOrEqual(2);
-    const hasComponent = imported.content.some((n) => n.type === 'component');
-    expect(hasComponent).toBe(true);
+    const hasUnknown = imported.content.some((n) => n.type === 'rawMdx');
+    expect(hasUnknown).toBe(true);
   });
 
   it('inline HTML is parsed as text in paragraphs', () => {

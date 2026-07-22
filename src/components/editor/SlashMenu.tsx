@@ -103,6 +103,25 @@ const ITEMS: SlashItem[] = [
       e.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
     },
   },
+  {
+    label: 'Callout',
+    description: '提示框组件',
+    icon: '▸',
+    action: (e) => {
+      e.chain()
+        .focus()
+        .insertContent({ type: 'callout', attrs: { type: 'info' } })
+        .run();
+    },
+  },
+  {
+    label: 'Figure',
+    description: '图片组件',
+    icon: '🖼',
+    action: (e) => {
+      e.chain().focus().insertContent({ type: 'figure', attrs: {} }).run();
+    },
+  },
 ];
 
 interface SlashMenuProps {

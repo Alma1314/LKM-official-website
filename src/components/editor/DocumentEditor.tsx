@@ -11,6 +11,8 @@ import SourceEditor from './SourceEditor';
 import SaveStatusIndicator from './SaveStatusIndicator';
 import BubbleMenuWrapper from './BubbleMenu';
 import SlashMenu from './SlashMenu';
+import PreviewPanel from './PreviewPanel';
+import PropertyPanel from './PropertyPanel';
 
 interface DocumentEditorProps {
   documentId: string;
@@ -260,43 +262,27 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       </div>
 
       {mode === 'richtext' && editor ? (
-        <>
-          <EditorToolbar editor={editor} />
-          <BubbleMenuWrapper editor={editor} />
-          {slashOpen && (
-            <SlashMenu
-              editor={editor}
-              query={slashQuery}
-              position={slashPos}
-              onClose={() => setSlashOpen(false)}
-              onSelect={() => setSlashOpen(false)}
-            />
-          )}
-          <EditorContent editor={editor} />
-        </>
+        <div className="flex">
+          <div className="flex-1 min-w-0">
+            <EditorToolbar editor={editor} />
+            <BubbleMenuWrapper editor={editor} />
+            {slashOpen && (
+              <SlashMenu
+                editor={editor}
+                query={slashQuery}
+                position={slashPos}
+                onClose={() => setSlashOpen(false)}
+                onSelect={() => setSlashOpen(false)}
+              />
+            )}
+            <EditorContent editor={editor} />
+          </div>
+          <PropertyPanel editor={editor} />
+        </div>
       ) : mode === 'source' ? (
         <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
-      ) : mode === 'preview' ? (
-        <div className="flex items-center justify-center min-h-[60vh] text-base-content/50">
-          <div className="text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mx-auto mb-3 opacity-50"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            <p>预览模式将在后续版本中实现</p>
-          </div>
-        </div>
+      ) : mode === 'preview' && editor ? (
+        <PreviewPanel editor={editor} />
       ) : (
         <div className="flex items-center justify-center min-h-[60vh] text-base-content/40">
           <span className="loading loading-spinner loading-md mr-2" />

@@ -11,6 +11,8 @@ import { CustomImage } from './image';
 import { InlineMath } from './inline-math';
 import { BlockMath } from './block-math';
 import { RawMdx } from './raw-mdx';
+import { Callout } from './callout';
+import { Figure } from './figure';
 
 export function getEditorExtensions(placeholder?: string) {
   return [
@@ -43,5 +45,7 @@ export function getEditorExtensions(placeholder?: string) {
     InlineMath,
     BlockMath,
     RawMdx,
+    Callout,
+    Figure,
   ];
 }

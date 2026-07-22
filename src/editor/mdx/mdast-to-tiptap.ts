@@ -191,17 +191,50 @@ function convertBlockChildren(children: any[]): JSONContent[] {
         break;
       }
       case 'mdxJsxFlowElement': {
-        result.push({
-          type: 'component',
-          attrs: { name: 'MDXComponent', props: {}, source: mdastToString(child) },
-        });
+        const el = child as {
+          name?: string;
+          attributes?: Array<{ type: string; name: string; value: string | number | boolean }>;
+        };
+        const name = el.name ?? '';
+        if (name === 'Callout') {
+          const attrs: Record<string, unknown> = {};
+          for (const attr of el.attributes ?? []) {
+            if (attr.type === 'mdxJsxAttribute') {
+              attrs[attr.name] = attr.value;
+            }
+          }
+          result.push({ type: 'callout', attrs });
+        } else if (name === 'Figure') {
+          const attrs: Record<string, unknown> = {};
+          for (const attr of el.attributes ?? []) {
+            if (attr.type === 'mdxJsxAttribute') {
+              attrs[attr.name] = attr.value;
+            }
+          }
+          result.push({ type: 'figure', attrs });
+        } else {
+          result.push({
+            type: 'rawMdx',
+            attrs: { source: mdastToString(child), sourceKind: 'flow' },
+          });
+        }
         break;
       }
       case 'mdxJsxTextElement': {
-        result.push({
-          type: 'inlineComponent',
-          attrs: { name: 'MDXInlineComponent', props: {}, source: mdastToString(child) },
-        });
+        const el = child as { name?: string };
+        const name = el.name ?? '';
+        if (name === 'Callout' || name === 'Figure') {
+          // Inline Callout/Figure is not typical, treat as rawMdx
+          result.push({
+            type: 'rawMdx',
+            attrs: { source: mdastToString(child), sourceKind: 'text' },
+          });
+        } else {
+          result.push({
+            type: 'rawMdx',
+            attrs: { source: mdastToString(child), sourceKind: 'text' },
+          });
+        }
         break;
       }
       case 'yaml':

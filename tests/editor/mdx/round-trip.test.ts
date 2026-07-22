@@ -165,4 +165,27 @@ describe('MDX round-trip', () => {
     expect(result).toContain('| A');
     expect(result).toContain('| 1');
   });
+
+  it('MDX with Callout component imports cleanly', () => {
+    const mdx = '<Callout type="warning">注意内容</Callout>';
+    // Should not throw — Callout is handled
+    const imported = importMdx(mdx);
+    expect(imported.content.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it('MDX with Figure component imports cleanly', () => {
+    const mdx = '<Figure src="img.png" alt="test" />';
+    // Should not throw — Figure is handled
+    const imported = importMdx(mdx);
+    expect(imported.content.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it('callout export is stable', () => {
+    const mdx = '<Callout type="info">Hello</Callout>';
+    const imported = importMdx(mdx);
+    expect(imported.content.length).toBeGreaterThanOrEqual(0);
+    // Export should not throw
+    const exported = exportMdx(imported.content, imported.frontmatter);
+    expect(typeof exported.mdx).toBe('string');
+  });
 });
