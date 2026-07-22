@@ -3,6 +3,13 @@ import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
+import { Table } from '@tiptap/extension-table';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { CustomImage } from './image';
+import { InlineMath } from './inline-math';
+import { BlockMath } from './block-math';
 import { RawMdx } from './raw-mdx';
 
 export function getEditorExtensions(placeholder?: string) {
@@ -26,6 +33,15 @@ export function getEditorExtensions(placeholder?: string) {
       },
     }),
     Underline,
+    CustomImage,
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableCell,
+    TableHeader,
+    InlineMath,
+    BlockMath,
     RawMdx,
   ];
 }

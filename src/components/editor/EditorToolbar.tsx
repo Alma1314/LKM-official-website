@@ -468,6 +468,129 @@ function buildToolbarItems(): ToolbarItemDef[] {
       action: (e) => e.chain().focus().redo().run(),
       isActive: () => false,
     },
+    {
+      key: 'image',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+          <circle cx="9" cy="9" r="2" />
+          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+        </svg>
+      ),
+      label: '图片',
+      title: '插入图片',
+      group: 'insert',
+      action: (e) => {
+        const url = window.prompt('输入图片地址:');
+        if (url) e.chain().focus().setImage({ src: url }).run();
+      },
+      isActive: () => false,
+    },
+    {
+      key: 'inlineMath',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 19h16" />
+          <path d="M4 5h16" />
+          <path d="M8 12h8" />
+        </svg>
+      ),
+      label: '行内公式',
+      title: '插入行内公式',
+      group: 'insert',
+      action: (e) => {
+        const latex = window.prompt('输入 LaTeX:', 'x^2');
+        if (latex) {
+          e.chain()
+            .focus()
+            .insertContent({
+              type: 'text',
+              text: latex,
+              marks: [{ type: 'inlineMath', attrs: { latex } }],
+            })
+            .run();
+        }
+      },
+      isActive: () => false,
+    },
+    {
+      key: 'blockMath',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 19h16" />
+          <path d="M8 12h8" />
+          <path d="M20 5H4" />
+        </svg>
+      ),
+      label: '块级公式',
+      title: '插入块级公式',
+      group: 'insert',
+      action: (e) => {
+        const latex = window.prompt('输入 LaTeX:', '\\sum_{i=1}^{n} x_i');
+        if (latex) {
+          e.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
+        }
+      },
+      isActive: () => false,
+    },
+    {
+      key: 'table',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M3 15h18" />
+          <path d="M12 3v18" />
+        </svg>
+      ),
+      label: '表格',
+      title: '插入 3×3 表格',
+      group: 'insert',
+      action: (e) => {
+        e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+      },
+      isActive: () => false,
+    },
   ];
 }
 

@@ -134,11 +134,35 @@ describe('MDX round-trip', () => {
     const mdx = '## Test\n\n**Bold** and _italic_ text.\n\n- one\n- two\n';
     const first = roundTrip(mdx);
     const second = roundTrip(first);
-    // The second trip should produce the same as the first
-    // Compare word content since formatting may normalize whitespace
     expect(second).toContain('Bold');
     expect(second).toContain('italic');
     expect(second).toContain('one');
     expect(second).toContain('two');
+  });
+
+  it('image round-trip', () => {
+    const mdx = '![alt](https://example.com/img.png "title")';
+    const result = roundTrip(mdx);
+    expect(result).toContain('alt');
+    expect(result).toContain('https://example.com/img.png');
+  });
+
+  it('inline math round-trip', () => {
+    const mdx = '$x^2 + y^2 = 1$';
+    const result = roundTrip(mdx);
+    expect(result).toContain('$x^2');
+  });
+
+  it('block math round-trip', () => {
+    const mdx = ['', '$$', '\\sum x', '$$', ''].join('\n');
+    const result = roundTrip(mdx);
+    expect(result).toContain('$$');
+  });
+
+  it('table round-trip', () => {
+    const mdx = ['| A | B |', '| - | - |', '| 1 | 2 |'].join('\n');
+    const result = roundTrip(mdx);
+    expect(result).toContain('| A');
+    expect(result).toContain('| 1');
   });
 });

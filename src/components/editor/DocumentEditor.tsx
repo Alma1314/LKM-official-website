@@ -9,6 +9,8 @@ import EditorToolbar from './EditorToolbar';
 import ModeTabs from './ModeTabs';
 import SourceEditor from './SourceEditor';
 import SaveStatusIndicator from './SaveStatusIndicator';
+import BubbleMenuWrapper from './BubbleMenu';
+import SlashMenu from './SlashMenu';
 
 interface DocumentEditorProps {
   documentId: string;
@@ -26,10 +28,24 @@ function getCharacterCount(editor: any): CharacterCountStorage | undefined {
   return editor?.storage as CharacterCountStorage | undefined;
 }
 
+function readFileAsDataURL(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   const [docId, setDocId] = useState(documentId === 'new' ? '' : documentId);
   const { saveStatus, triggerSave, loadDraft } = useAutoSave(docId, 1000);
   const [mode, setMode] = useState<EditorMode>('richtext');
+
+  // Slash menu state
+  const [slashOpen, setSlashOpen] = useState(false);
+  const [slashQuery, setSlashQuery] = useState('');
+  const [slashPos, setSlashPos] = useState<{ top: number; left: number } | null>(null);
 
   // Refs for MDX state
   const sourceMdxRef = useRef('');
@@ -45,25 +61,117 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     }
   }, [documentId]);
 
-  const handleUpdate = useCallback(
-    ({ editor }: { editor: { getJSON: () => Record<string, unknown> } }) => {
-      if (!editor || !docId) return;
-      const json = editor.getJSON();
+  const editor = useEditor({
+    extensions: getEditorExtensions('开始编写内容……'),
+    onUpdate({ editor: ed }) {
+      if (!ed || !docId) return;
+      const json = ed.getJSON();
       lastValidEditorJsonRef.current = json;
       triggerSave(json);
     },
-    [triggerSave, docId]
-  );
-
-  const editor = useEditor({
-    extensions: getEditorExtensions('开始编写内容……'),
-    onUpdate: handleUpdate,
     editorProps: {
       attributes: {
         class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[60vh] px-8 py-6',
       },
+      handlePaste(view, event) {
+        const items = event.clipboardData?.items;
+        if (!items) return false;
+        for (const item of Array.from(items)) {
+          if (item.type.startsWith('image/')) {
+            const file = item.getAsFile();
+            if (file) {
+              readFileAsDataURL(file).then((dataUrl) => {
+                view.dispatch(
+                  view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: dataUrl }))
+                );
+              });
+              return true;
+            }
+          }
+        }
+        // TSV paste
+        const text = event.clipboardData?.getData('text/plain');
+        if (text && text.includes('\t')) {
+          const rows = text
+            .trim()
+            .split('\n')
+            .map((r) => r.split('\t'));
+          if (rows.length > 1 && rows[0].length > 1) {
+            const { insertTable } = view.state.schema.nodes;
+            if (insertTable) {
+              view.dispatch(
+                view.state.tr.replaceSelectionWith(
+                  insertTable.create(
+                    null,
+                    Array.from({ length: rows.length }, (_, r) =>
+                      view.state.schema.nodes.tableRow.create(
+                        null,
+                        rows[r].map((cell) =>
+                          view.state.schema.nodes.tableCell.create(null, view.state.schema.text(cell))
+                        )
+                      )
+                    )
+                  )
+                )
+              );
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+      handleDrop(view, event, _moved, _slice) {
+        const files = event.dataTransfer?.files;
+        if (!files || files.length === 0) return false;
+        let handled = false;
+        Array.from(files).forEach((file) => {
+          if (file.type.startsWith('image/')) {
+            handled = true;
+            readFileAsDataURL(file).then((dataUrl) => {
+              const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
+              const pos = coords?.pos ?? view.state.selection.from;
+              view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: dataUrl })));
+            });
+          }
+        });
+        return handled;
+      },
     },
   });
+
+  // Detect slash command trigger
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleTextInput = () => {
+      const { $from } = editor.state.selection;
+      const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
+      const slashMatch = parentText.match(/\/(\w*)$/);
+      if (slashMatch) {
+        setSlashQuery(slashMatch[1]);
+        const coords = editor.view.coordsAtPos($from.pos);
+        setSlashPos({ top: coords.bottom + 4, left: coords.left });
+        setSlashOpen(true);
+      } else if (slashOpen) {
+        setSlashOpen(false);
+      }
+    };
+
+    editor.on('selectionUpdate', handleTextInput);
+    editor.on('update', () => {
+      if (slashOpen) {
+        const { $from } = editor.state.selection;
+        const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
+        if (!parentText.includes('/')) {
+          setSlashOpen(false);
+        }
+      }
+    });
+
+    return () => {
+      editor.off('selectionUpdate', handleTextInput);
+    };
+  }, [editor, slashOpen]);
 
   // Load existing content when editor and docId are ready
   useEffect(() => {
@@ -71,7 +179,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     const doc = loadFromStorage(docId) ?? loadDraft();
     if (!doc) return;
 
-    // Prefer contentMdx (canonical source) over editorJson cache
     if (doc.contentMdx && doc.contentMdx.trim().length > 0) {
       try {
         const result = importMdx(doc.contentMdx);
@@ -80,7 +187,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         editor.commands.setContent({ type: 'doc', content: result.content });
         lastValidEditorJsonRef.current = editor.getJSON();
       } catch {
-        // Fallback to editorJson if MDX parsing fails
         if (doc.editorJson) {
           editor.commands.setContent(doc.editorJson);
         }
@@ -96,7 +202,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       if (newMode === mode) return;
 
       if (mode === 'richtext' && newMode === 'source') {
-        // Export current editor to MDX before switching
         if (editor) {
           const json = editor.getJSON();
           const doc =
@@ -110,7 +215,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       }
 
       if (mode === 'source' && newMode === 'richtext') {
-        // Parse source MDX before switching
         try {
           const result = importMdx(sourceMdxRef.current);
           if (editor) {
@@ -130,11 +234,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     [mode, editor]
   );
 
-  // Source editor change handler
   const handleSourceChange = useCallback(
     (mdx: string) => {
       sourceMdxRef.current = mdx;
-      // Trigger autosave from source mode
       if (docId) {
         triggerSave(lastValidEditorJsonRef.current ?? {});
       }
@@ -148,7 +250,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   return (
     <div className="flex flex-col border border-base-300 rounded-lg bg-base-100 shadow-sm">
-      {/* Header bar: save status + mode tabs */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-base-300 bg-base-200/50 rounded-t-lg">
         <SaveStatusIndicator
           status={saveStatus}
@@ -161,6 +262,16 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       {mode === 'richtext' && editor ? (
         <>
           <EditorToolbar editor={editor} />
+          <BubbleMenuWrapper editor={editor} />
+          {slashOpen && (
+            <SlashMenu
+              editor={editor}
+              query={slashQuery}
+              position={slashPos}
+              onClose={() => setSlashOpen(false)}
+              onSelect={() => setSlashOpen(false)}
+            />
+          )}
           <EditorContent editor={editor} />
         </>
       ) : mode === 'source' ? (
