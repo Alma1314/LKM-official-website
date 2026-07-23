@@ -14,8 +14,6 @@ import SaveStatusIndicator from './SaveStatusIndicator';
 import BubbleMenuWrapper from './BubbleMenu';
 import SlashMenu from './SlashMenu';
 import PreviewPanel from './PreviewPanel';
-import PropertyPanel from './PropertyPanel';
-import PublishDialog from './PublishDialog';
 import PublishButton from './PublishButton';
 import VersionHistoryPanel from './VersionHistoryPanel';
 import ExportMenu from './ExportMenu';
@@ -28,6 +26,9 @@ import type { VersionEntry } from '~/lib/version-store';
 const SourceEditor = lazy(() => import('./SourceEditor'));
 // Lazy-loaded: AI assistant (only when clicking AI button)
 const AiAssistant = lazy(() => import('./AiAssistant'));
+// Lazy-loaded: panels and dialogs (only shown on demand)
+const PropertyPanel = lazy(() => import('./PropertyPanel'));
+const PublishDialog = lazy(() => import('./PublishDialog'));
 
 interface DocumentEditorProps {
   documentId: string;
@@ -452,7 +453,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
               onClose={() => setVersionPanelOpen(false)}
             />
           ) : (
-            <PropertyPanel editor={editor} />
+            <Suspense fallback={null}>
+              <PropertyPanel editor={editor} />
+            </Suspense>
           )}
         </div>
       ) : mode === 'source' ? (
@@ -475,11 +478,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       )}
 
       {publishOpen && (
-        <PublishDialog
-          currentTitle={getDoc(docId)?.title ?? ''}
-          onConfirm={handlePublish}
-          onCancel={() => setPublishOpen(false)}
-        />
+        <Suspense fallback={null}>
+          <PublishDialog
+            currentTitle={getDoc(docId)?.title ?? ''}
+            onConfirm={handlePublish}
+            onCancel={() => setPublishOpen(false)}
+          />
+        </Suspense>
       )}
 
       {aiPanelOpen && (

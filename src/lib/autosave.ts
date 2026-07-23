@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SaveStatus } from '~/editor/types';
 import { autosave as apiAutosave, getDocument } from './document-api';
+import { exportMdx } from '~/editor/mdx';
 import { saveBackup } from './backup-store';
+import { saveVersion } from './version-store';
 
 export function useAutoSave(documentId: string, debounceMs = 1000) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
@@ -25,7 +27,6 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
       try {
         let mdxContent = '';
         try {
-          const { exportMdx } = await import('~/editor/mdx');
           const json = content as { content?: Array<Record<string, unknown>> };
           const nodes = json.content ?? [];
           const result = exportMdx(nodes, {});
@@ -63,8 +64,6 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
 
           // Save version snapshot (throttled: only if version changed)
           try {
-            const { saveVersion } = await import('~/lib/version-store');
-            const { getDocument } = await import('./document-api');
             const doc = getDocument(documentId);
             if (doc && mdxContent) {
               saveVersion(

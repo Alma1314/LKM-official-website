@@ -1,5 +1,4 @@
 import { Mark } from '@tiptap/core';
-import katex from 'katex';
 
 export const InlineMath = Mark.create({
   name: 'inlineMath',
@@ -16,12 +15,6 @@ export const InlineMath = Mark.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const latex = (HTMLAttributes.latex as string) || '';
-    try {
-      katex.renderToString(latex, { throwOnError: false });
-    } catch (err) {
-      console.warn('[inline-math] KaTeX 渲染失败:', err);
-    }
     return [
       'span',
       {

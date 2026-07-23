@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface SlashItem {
@@ -150,10 +150,15 @@ export default function SlashMenu({ editor, query, position, onClose, onSelect }
   const [selectedIdx, setSelectedIdx] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const filtered = ITEMS.filter(
-    (item) =>
-      item.label.toLowerCase().includes(query.toLowerCase()) ||
-      item.description.toLowerCase().includes(query.toLowerCase())
+  const q = query.toLowerCase();
+  const filtered = useMemo(
+    () =>
+      ITEMS.filter(
+        (item) =>
+          item.label.toLowerCase().includes(q) ||
+          item.description.toLowerCase().includes(q)
+      ),
+    [q]
   );
 
   const handleKeyDown = useCallback(
