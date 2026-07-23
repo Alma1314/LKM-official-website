@@ -6,7 +6,7 @@ interface PreviewPanelProps {
   editor: Editor;
 }
 
-function renderNode(node: JSONContent, key: number): React.ReactNode {
+export function renderNode(node: JSONContent, key: number): React.ReactNode {
   if (!node.type) return null;
 
   const children = node.content?.map((c, i) => renderNode(c, i)) ?? null;

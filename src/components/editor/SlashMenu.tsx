@@ -122,6 +122,20 @@ const ITEMS: SlashItem[] = [
       e.chain().focus().insertContent({ type: 'figure', attrs: {} }).run();
     },
   },
+  {
+    label: 'AI 续写',
+    description: 'AI 助手续写当前内容',
+    icon: '🤖',
+    action: () => {
+      // AI panel is opened via DocumentEditor state
+    },
+  },
+  {
+    label: 'AI 总结',
+    description: 'AI 助手总结当前内容',
+    icon: '📝',
+    action: () => {},
+  },
 ];
 
 interface SlashMenuProps {

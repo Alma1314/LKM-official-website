@@ -19,6 +19,9 @@ import VersionHistoryPanel from './VersionHistoryPanel';
 import { saveVersion } from '~/lib/version-store';
 import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
 import type { VersionEntry } from '~/lib/version-store';
+import ExportPdfButton from './ExportPdfButton';
+import ExportDocxButton from './ExportDocxButton';
+import AiAssistant from './AiAssistant';
 
 interface DocumentEditorProps {
   documentId: string;
@@ -61,6 +64,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   // Version history state
   const [versionPanelOpen, setVersionPanelOpen] = useState(false);
+
+  // AI assistant state
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
   // Refs for MDX state
   const sourceMdxRef = useRef('');
@@ -304,6 +310,15 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           wordCount={mode === 'richtext' ? wordCount : undefined}
         />
         <div className="flex items-center gap-2">
+          {mode === 'richtext' && editor && (
+            <>
+              <ExportPdfButton editor={editor} />
+              <ExportDocxButton editor={editor} />
+              <button type="button" className="btn btn-ghost btn-xs" onClick={() => setAiPanelOpen(!aiPanelOpen)}>
+                AI
+              </button>
+            </>
+          )}
           {docId && mode === 'richtext' && (
             <button
               type="button"
@@ -370,6 +385,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           onCancel={() => setPublishOpen(false)}
         />
       )}
+
+      {aiPanelOpen && editor && <AiAssistant editor={editor} onClose={() => setAiPanelOpen(false)} />}
     </div>
   );
 }
