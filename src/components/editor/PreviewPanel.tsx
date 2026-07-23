@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { JSONContent } from '@tiptap/core';
 import type { Editor } from '@tiptap/core';
 
@@ -160,11 +160,20 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
 }
 
 export default function PreviewPanel({ editor }: PreviewPanelProps) {
-  const content = useMemo(() => {
-    const json = editor.getJSON();
-    const nodes = (json?.content ?? []) as JSONContent[];
-    return nodes.map((node, i) => renderNode(node, i));
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const handler = () => setTick((t) => t + 1);
+    editor.on('update', handler);
+    editor.on('selectionUpdate', handler);
+    return () => {
+      editor.off('update', handler);
+      editor.off('selectionUpdate', handler);
+    };
   }, [editor]);
+
+  const json = editor.getJSON();
+  const nodes = (json?.content ?? []) as JSONContent[];
+  const content = nodes.map((node, i) => renderNode(node, i));
 
   return <div className="min-h-[60vh] px-8 py-6 bg-base-100">{content}</div>;
 }

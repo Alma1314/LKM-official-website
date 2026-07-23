@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Editor } from '@tiptap/core';
 import { aiRequest, saveAiConfig, PROMPT_TEMPLATES } from '~/lib/ai-client';
 
@@ -16,8 +16,25 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSettings, setShowSettings] = useState(false);
-  const [apiEndpoint, setApiEndpoint] = useState(localStorage.getItem('lkm-ai-endpoint') || '');
-  const [apiKey, setApiKey] = useState(localStorage.getItem('lkm-ai-key') || '');
+  const [apiEndpoint, setApiEndpoint] = useState('');
+  const [apiKey, setApiKey] = useState('');
+
+  // Initialize from URL params if available
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const ep = params.get('ai_endpoint');
+      const key = params.get('ai_key');
+      const model = params.get('ai_model');
+      if (ep) {
+        setApiEndpoint(ep);
+        setApiKey(key || '');
+        saveAiConfig(ep, key || '', model || 'gpt-3.5-turbo');
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const selectedText = editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ');
 
@@ -57,9 +74,7 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   };
 
   const handleSaveSettings = () => {
-    localStorage.setItem('lkm-ai-endpoint', apiEndpoint);
-    localStorage.setItem('lkm-ai-key', apiKey);
-    saveAiConfig({ endpoint: apiEndpoint, apiKey, model: 'gpt-3.5-turbo' });
+    saveAiConfig(apiEndpoint, apiKey, 'gpt-3.5-turbo');
     setShowSettings(false);
   };
 
@@ -95,7 +110,13 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-..."
           />
-          <p className="text-xs text-base-content/50">兼容 OpenAI / Ollama / LM Studio 等 API 格式</p>
+          <p className="text-xs text-base-content/50">
+            兼容 OpenAI / Ollama / LM Studio 等 API 格式
+            <br />
+            Key 仅保存在当前会话中，关闭浏览器后自动清除。
+            <br />
+            生产环境建议通过服务端代理调用。
+          </p>
           <button type="button" className="btn btn-primary btn-sm w-full" onClick={handleSaveSettings}>
             保存设置
           </button>

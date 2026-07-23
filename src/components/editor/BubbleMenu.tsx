@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface BubbleMenuWrapperProps {
@@ -9,6 +9,7 @@ interface BubbleMenuWrapperProps {
 export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapperProps) {
   const [show, setShow] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
+  const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const update = useCallback(() => {
     const { from, to, empty } = editor.state.selection;
@@ -19,17 +20,33 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
     const start = editor.view.coordsAtPos(from);
     const end = editor.view.coordsAtPos(to);
     setPos({
-      top: start.top - 44,
-      left: (start.left + end.right) / 2,
+      top: Math.max(8, start.top - 44),
+      left: Math.min(window.innerWidth - 80, Math.max(80, (start.left + end.right) / 2)),
     });
     setShow(true);
   }, [editor]);
 
   useEffect(() => {
     editor.on('selectionUpdate', update);
-    editor.on('blur', () => setTimeout(() => setShow(false), 200));
+    // Listen to scroll within the editor's parent for position updates
+    const scrollHandler = () => update();
+    const editorDom = editor.view.dom;
+    const scrollParent = editorDom.closest('[class*="overflow"]') || window;
+    scrollParent.addEventListener('scroll', scrollHandler, { passive: true });
+
+    const handleBlur = () => {
+      blurTimerRef.current = setTimeout(() => setShow(false), 200);
+    };
+    editor.on('blur', handleBlur);
+
     return () => {
       editor.off('selectionUpdate', update);
+      editor.off('blur', handleBlur);
+      scrollParent.removeEventListener('scroll', scrollHandler);
+      if (blurTimerRef.current) {
+        clearTimeout(blurTimerRef.current);
+        blurTimerRef.current = null;
+      }
     };
   }, [editor, update]);
 

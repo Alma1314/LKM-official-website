@@ -37,28 +37,42 @@ const metadata = {
 </PageLayout>
 
 <script>
-  import { createElement } from 'react';
-  import { createRoot } from 'react-dom/client';
-  import DocumentEditorReact from '~/components/editor/DocumentEditor';
-
-  function getDocumentId(): string {
+  function getDocumentId() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     if (id) return id;
-
     const hash = window.location.hash.slice(1);
     if (hash) return hash;
-
     return 'new';
   }
 
-  function mountEditor() {
-    const mount = document.getElementById('editor-mount');
-    if (!mount) return;
+  const mount = document.getElementById('editor-mount');
+  if (mount) {
+    // Show spinner with progress indicator while editor loads asynchronously
+    const spinner = document.createElement('div');
+    spinner.className =
+      'flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-3';
+    spinner.innerHTML = `<span class="loading loading-spinner loading-lg text-primary"></span>
+      <span class="text-base-content/50 text-sm" id="editor-loading-text">正在加载编辑器</span>`;
 
-    const root = createRoot(mount);
-    root.render(createElement(DocumentEditorReact, { documentId: getDocumentId() }));
+    // Animated progress dots
+    let dots = 0;
+    const progressTimer = setInterval(() => {
+      dots = (dots + 1) % 4;
+      const el = document.getElementById('editor-loading-text');
+      if (el) el.textContent = '\u6b63\u5728\u52a0\u8f7d\u7f16\u8f91\u5668' + '.'.repeat(dots);
+    }, 500);
+
+    Promise.all([import('react'), import('react-dom/client'), import('~/components/editor/DocumentEditor')])
+      .then(([React, ReactDOM, DocEditor]) => {
+        clearInterval(progressTimer);
+        const root = ReactDOM.createRoot(mount);
+        root.render(React.createElement(DocEditor.default, { documentId: getDocumentId() }));
+      })
+      .catch(() => {
+        clearInterval(progressTimer);
+        mount.innerHTML = `<div class="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
+          <span class="text-error">编辑器加载失败，请刷新页面重试</span></div>`;
+      });
   }
-
-  mountEditor();
 </script>

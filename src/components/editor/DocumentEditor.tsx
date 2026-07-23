@@ -111,11 +111,15 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           if (item.type.startsWith('image/')) {
             const file = item.getAsFile();
             if (file) {
-              readFileAsDataURL(file).then((dataUrl) => {
-                view.dispatch(
-                  view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: dataUrl }))
-                );
-              });
+              readFileAsDataURL(file)
+                .then((dataUrl) => {
+                  view.dispatch(
+                    view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: dataUrl }))
+                  );
+                })
+                .catch(() => {
+                  // Ignore file read errors (corrupted image, etc.)
+                });
               return true;
             }
           }
@@ -158,11 +162,15 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         Array.from(files).forEach((file) => {
           if (file.type.startsWith('image/')) {
             handled = true;
-            readFileAsDataURL(file).then((dataUrl) => {
-              const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
-              const pos = coords?.pos ?? view.state.selection.from;
-              view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: dataUrl })));
-            });
+            readFileAsDataURL(file)
+              .then((dataUrl) => {
+                const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
+                const pos = coords?.pos ?? view.state.selection.from;
+                view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: dataUrl })));
+              })
+              .catch(() => {
+                // Ignore file read errors
+              });
           }
         });
         return handled;
@@ -188,19 +196,23 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       }
     };
 
-    editor.on('selectionUpdate', handleTextInput);
-    editor.on('update', () => {
+    const handleUpdate = () => {
       if (slashOpen) {
-        const { $from } = editor.state.selection;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { $from } = (editor.state as any).selection;
         const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
         if (!parentText.includes('/')) {
           setSlashOpen(false);
         }
       }
-    });
+    };
+
+    editor.on('selectionUpdate', handleTextInput);
+    editor.on('update', handleUpdate);
 
     return () => {
       editor.off('selectionUpdate', handleTextInput);
+      editor.off('update', handleUpdate);
     };
   }, [editor, slashOpen]);
 

@@ -100,13 +100,12 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
       case 'callout': {
         const attrs = (node.attrs ?? {}) as Record<string, unknown>;
         const attrStr = Object.entries(attrs)
-          .filter(([k, v]) => k !== 'title' && v !== '' && v !== undefined && v !== null)
+          .filter(([, v]) => v !== '' && v !== undefined && v !== null)
           .map(([k, v]) => (typeof v === 'string' ? `${k}="${v}"` : `${k}={${v}}`))
           .join(' ');
-        const titleVal = (attrs.title as string) ?? '';
         result.push({
           type: 'html',
-          value: `<Callout${attrStr ? ' ' + attrStr : ''}>${titleVal}</Callout>`,
+          value: `<Callout${attrStr ? ' ' + attrStr : ''} />`,
         } as MdastContent);
         break;
       }
