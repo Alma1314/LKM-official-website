@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import type { Editor } from '@tiptap/core';
 import type { ReactNode } from 'react';
 import EditorToolbarButton from './EditorToolbarButton';
@@ -660,15 +660,18 @@ interface EditorToolbarProps {
 export default function EditorToolbar({ editor }: EditorToolbarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
 
-  const renderButton = (item: (typeof ITEMS)[number]) => (
-    <EditorToolbarButton
-      key={item.key}
-      icon={item.icon}
-      label={item.label}
-      title={item.title}
-      isActive={item.isActive(editor)}
-      onClick={() => item.action(editor)}
-    />
+  const renderButton = useCallback(
+    (item: (typeof ITEMS)[number]) => (
+      <EditorToolbarButton
+        key={item.key}
+        icon={item.icon}
+        label={item.label}
+        title={item.title}
+        isActive={item.isActive(editor)}
+        onClick={() => item.action(editor)}
+      />
+    ),
+    [editor]
   );
 
   return (

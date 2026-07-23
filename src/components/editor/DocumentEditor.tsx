@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, Suspense, lazy } from 'react';
 import FullscreenButton from './FullscreenButton';
 import CommentPanel from './CommentPanel';
 import { addThread } from '~/lib/comment-store';
@@ -33,17 +33,7 @@ interface DocumentEditorProps {
   documentId: string;
 }
 
-interface CharacterCountStorage {
-  characterCount: {
-    characters: () => number;
-    words: () => number;
-  };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getCharacterCount(editor: any): CharacterCountStorage | undefined {
-  return editor?.storage as CharacterCountStorage | undefined;
-}
+import { computeTextMetrics } from '~/lib/text-metrics';
 
 function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -358,9 +348,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     [editor, docId, triggerSave]
   );
 
-  const cc = getCharacterCount(editor);
-  const charCount = cc?.characterCount.characters() ?? 0;
-  const wordCount = cc?.characterCount.words() ?? 0;
+  // 用 pretext 纯 JS 计算字数/字符数，避免 DOM 遍历
+  const metrics = useMemo(() => {
+    if (!editor) return { characters: 0, words: 0 };
+    return computeTextMetrics(editor.getJSON() as Record<string, unknown>);
+  }, [editor?.state.doc]);
+  const charCount = metrics.characters;
+  const wordCount = metrics.words;
 
   return (
     <div className="flex flex-col border border-base-300 rounded-lg bg-base-100 shadow-sm">

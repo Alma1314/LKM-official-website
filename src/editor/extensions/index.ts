@@ -1,6 +1,5 @@
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
-import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TaskList from '@tiptap/extension-task-list';
@@ -30,7 +29,6 @@ export function getEditorExtensions(placeholder?: string) {
     Placeholder.configure({
       placeholder: placeholder ?? '开始编写内容……',
     }),
-    CharacterCount.configure({}),
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -9,7 +9,7 @@ interface FigureNodeViewProps {
   updateAttributes: (attrs: Record<string, unknown>) => void;
 }
 
-export default function FigureNodeView({ node, editor, getPos, updateAttributes }: FigureNodeViewProps) {
+const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, updateAttributes }: FigureNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const src = (node.attrs.src as string) ?? '';
   const alt = (node.attrs.alt as string) ?? '';
@@ -148,4 +148,6 @@ export default function FigureNodeView({ node, editor, getPos, updateAttributes 
       )}
     </figure>
   );
-}
+});
+
+export default FigureNodeView;

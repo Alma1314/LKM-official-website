@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { JSONContent } from '@tiptap/core';
 import type { Editor } from '@tiptap/core';
 
@@ -163,17 +163,20 @@ export default function PreviewPanel({ editor }: PreviewPanelProps) {
   const [, setTick] = useState(0);
   useEffect(() => {
     const handler = () => setTick((t) => t + 1);
+    // 仅监听 content update，不监听 selectionUpdate（光标移动不改变预览内容）
     editor.on('update', handler);
-    editor.on('selectionUpdate', handler);
     return () => {
       editor.off('update', handler);
-      editor.off('selectionUpdate', handler);
     };
   }, [editor]);
 
-  const json = editor.getJSON();
-  const nodes = (json?.content ?? []) as JSONContent[];
-  const content = nodes.map((node, i) => renderNode(node, i));
+  // useMemo 缓存递归渲染结果，避免 editor state 变化导致的无意义重算
+  const content = useMemo(() => {
+    const json = editor.getJSON();
+    const nodes = (json?.content ?? []) as JSONContent[];
+    return nodes.map((node, i) => renderNode(node, i));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor.state.doc]);
 
   return <div className="min-h-[60vh] px-8 py-6 bg-base-100">{content}</div>;
 }

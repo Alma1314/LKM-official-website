@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -8,7 +8,7 @@ interface RawMdxPlaceholderProps {
   getPos: () => number | undefined;
 }
 
-export default function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceholderProps) {
+const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceholderProps) {
   const [showSource, setShowSource] = useState(false);
   const source = (node.attrs.source as string) ?? '';
   const sourceKind = (node.attrs.sourceKind as string) ?? 'flow';
@@ -80,4 +80,6 @@ export default function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceh
       </div>
     </div>
   );
-}
+});
+
+export default RawMdxPlaceholder;

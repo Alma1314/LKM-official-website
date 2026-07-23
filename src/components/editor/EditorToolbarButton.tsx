@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { ReactNode } from 'react';
 
 interface EditorToolbarButtonProps {
@@ -8,7 +9,13 @@ interface EditorToolbarButtonProps {
   onClick: () => void;
 }
 
-export default function EditorToolbarButton({ icon, label, title, isActive, onClick }: EditorToolbarButtonProps) {
+const EditorToolbarButton = memo(function EditorToolbarButton({
+  icon,
+  label,
+  title,
+  isActive,
+  onClick,
+}: EditorToolbarButtonProps) {
   return (
     <button
       type="button"
@@ -22,4 +29,6 @@ export default function EditorToolbarButton({ icon, label, title, isActive, onCl
       <span className="hidden lg:inline text-xs">{label}</span>
     </button>
   );
-}
+});
+
+export default EditorToolbarButton;

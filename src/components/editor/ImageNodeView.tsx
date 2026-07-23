@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -9,7 +9,7 @@ interface ImageNodeViewProps {
   updateAttributes: (attrs: Record<string, unknown>) => void;
 }
 
-export default function ImageNodeView({ node, editor, getPos, updateAttributes }: ImageNodeViewProps) {
+const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, updateAttributes }: ImageNodeViewProps) {
   const [showToolbar, setShowToolbar] = useState(false);
   const src = (node.attrs.src as string) ?? '';
   const alt = (node.attrs.alt as string) ?? '';
@@ -124,4 +124,6 @@ export default function ImageNodeView({ node, editor, getPos, updateAttributes }
       {title && <p className="text-xs text-center text-base-content/60 mt-1">{title}</p>}
     </div>
   );
-}
+});
+
+export default ImageNodeView;

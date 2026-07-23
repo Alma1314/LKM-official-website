@@ -11,19 +11,25 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const rafRef = useRef<number | null>(null);
+
   const update = useCallback(() => {
-    const { from, to, empty } = editor.state.selection;
-    if (empty || from === to) {
-      setShow(false);
-      return;
-    }
-    const start = editor.view.coordsAtPos(from);
-    const end = editor.view.coordsAtPos(to);
-    setPos({
-      top: Math.max(8, start.top - 44),
-      left: Math.min(window.innerWidth - 80, Math.max(80, (start.left + end.right) / 2)),
+    // requestAnimationFrame 防抖：连续 selectionUpdate 合并为一次更新
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const { from, to, empty } = editor.state.selection;
+      if (empty || from === to) {
+        setShow(false);
+        return;
+      }
+      const start = editor.view.coordsAtPos(from);
+      const end = editor.view.coordsAtPos(to);
+      setPos({
+        top: Math.max(8, start.top - 44),
+        left: Math.min(window.innerWidth - 80, Math.max(80, (start.left + end.right) / 2)),
+      });
+      setShow(true);
     });
-    setShow(true);
   }, [editor]);
 
   useEffect(() => {
@@ -46,6 +52,9 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
       if (blurTimerRef.current) {
         clearTimeout(blurTimerRef.current);
         blurTimerRef.current = null;
+      }
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
       }
     };
   }, [editor, update]);

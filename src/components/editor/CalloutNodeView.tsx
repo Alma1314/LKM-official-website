@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -23,7 +23,7 @@ const TYPE_ICONS: Record<string, string> = {
   success: '✓',
 };
 
-export default function CalloutNodeView({ node, editor, getPos, updateAttributes }: CalloutNodeViewProps) {
+const CalloutNodeView = memo(function CalloutNodeView({ node, editor, getPos, updateAttributes }: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const ctype = ((node.attrs.type as string) || 'info') as keyof typeof TYPE_LABELS;
   const title = (node.attrs.title as string) || '';
@@ -100,4 +100,6 @@ export default function CalloutNodeView({ node, editor, getPos, updateAttributes
       )}
     </div>
   );
-}
+});
+
+export default CalloutNodeView;
