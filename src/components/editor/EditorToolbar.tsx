@@ -672,7 +672,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
   );
 
   return (
-    <div className="sticky top-0 z-20 bg-base-100/95 backdrop-blur-sm border-b border-base-300 rounded-t-lg">
+    <div className="bg-base-100/95 backdrop-blur-sm border-b border-base-300">
       {/* Desktop: full toolbar. Mobile: inline groups + "more" overflow */}
       <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">
         {GROUPS.map((group) => {

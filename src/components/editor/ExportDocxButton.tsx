@@ -1,16 +1,10 @@
-import { useCallback } from 'react';
 import type { Editor } from '@tiptap/core';
 
-interface ExportDocxButtonProps {
-  editor: Editor;
-}
-
-export default function ExportDocxButton({ editor }: ExportDocxButtonProps) {
-  const handleExport = useCallback(() => {
-    try {
-      const json = editor.getJSON();
-      const content = json?.content ?? [];
-      const html = buildHtml(content as Record<string, unknown>[]);
+export function handleExportDocx(editor: Editor): void {
+  try {
+    const json = editor.getJSON();
+    const content = json?.content ?? [];
+    const html = buildHtml(content as Record<string, unknown>[]);
 
       // Microsoft Word compatible HTML format
       const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -35,13 +29,18 @@ export default function ExportDocxButton({ editor }: ExportDocxButtonProps) {
       a.download = 'document.doc';
       a.click();
       URL.revokeObjectURL(url);
-    } catch (err) {
-      alert('导出失败: ' + (err as Error).message);
-    }
-  }, [editor]);
+  } catch (err) {
+    alert('导出失败: ' + (err as Error).message);
+  }
+}
 
+interface ExportDocxButtonProps {
+  editor: Editor;
+}
+
+export default function ExportDocxButton({ editor }: ExportDocxButtonProps) {
   return (
-    <button type="button" className="btn btn-ghost btn-xs" title="导出 Word 文档" onClick={handleExport}>
+    <button type="button" className="btn btn-ghost btn-xs" title="导出 Word 文档" onClick={() => handleExportDocx(editor)}>
       DOC
     </button>
   );

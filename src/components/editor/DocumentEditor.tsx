@@ -18,6 +18,7 @@ import PropertyPanel from './PropertyPanel';
 import PublishDialog from './PublishDialog';
 import PublishButton from './PublishButton';
 import VersionHistoryPanel from './VersionHistoryPanel';
+import ExportMenu from './ExportMenu';
 import { saveVersion } from '~/lib/version-store';
 import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
 import type { VersionEntry } from '~/lib/version-store';
@@ -26,9 +27,6 @@ import type { VersionEntry } from '~/lib/version-store';
 const SourceEditor = lazy(() => import('./SourceEditor'));
 // Lazy-loaded: AI assistant (only when clicking AI button)
 const AiAssistant = lazy(() => import('./AiAssistant'));
-// Lazy-loaded: Export buttons (only shown when editor is ready)
-const ExportPdfButton = lazy(() => import('./ExportPdfButton'));
-const ExportDocxButton = lazy(() => import('./ExportDocxButton'));
 
 interface DocumentEditorProps {
   documentId: string;
@@ -362,68 +360,76 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   return (
     <div className="flex flex-col border border-base-300 rounded-lg bg-base-100 shadow-sm">
-      <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-base-300 bg-base-200/50 rounded-t-lg">
-        <SaveStatusIndicator
-          status={saveStatus}
-          charCount={mode === 'richtext' ? charCount : undefined}
-          wordCount={mode === 'richtext' ? wordCount : undefined}
-        />
-        <div className="flex items-center gap-1 md:gap-2">
-          <FullscreenButton />
-          {mode === 'richtext' && editor && (
-            <>
-              <Suspense fallback={null}>
-                <ExportPdfButton editor={editor} />
-              </Suspense>
-              <Suspense fallback={null}>
-                <ExportDocxButton editor={editor} />
-              </Suspense>
-              <button type="button" className="btn btn-ghost btn-xs" onClick={() => setAiPanelOpen(!aiPanelOpen)}>
+      {/* Tier 1: sticky 顶栏容器（两行一起固定） */}
+      <div className="sticky top-0 z-30 rounded-t-lg overflow-hidden">
+        {/* 上行：状态 + 操作按钮 */}
+        <div className="flex items-center justify-between px-2 md:px-4 py-1.5 border-b border-base-300 bg-base-200/50">
+          <SaveStatusIndicator
+            status={saveStatus}
+            charCount={mode === 'richtext' ? charCount : undefined}
+            wordCount={mode === 'richtext' ? wordCount : undefined}
+          />
+          <div className="flex items-center gap-1 md:gap-2">
+            {editor && (
+              <ExportMenu editor={editor} />
+            )}
+            {editor && (
+              <button
+                type="button"
+                className={`btn btn-ghost btn-xs ${aiPanelOpen ? 'btn-active' : ''}`}
+                onClick={() => setAiPanelOpen(!aiPanelOpen)}
+              >
                 AI
               </button>
-            </>
-          )}
-          {docId && mode === 'richtext' && (
-            <>
-              <button
-                type="button"
-                className={`btn btn-ghost btn-xs ${commentPanelOpen ? 'btn-active' : ''}`}
-                onClick={() => {
-                  setCommentPanelOpen(!commentPanelOpen);
-                  setVersionPanelOpen(false);
-                }}
-              >
-                评论
-              </button>
-              <button
-                type="button"
-                className="btn btn-ghost btn-xs"
-                onClick={() => {
-                  setVersionPanelOpen(!versionPanelOpen);
-                  setCommentPanelOpen(false);
-                }}
-              >
-                版本
-              </button>
-            </>
-          )}
-          {docId && (
-            <div key={refreshKey}>
-              <PublishButton
-                documentId={docId}
-                onStatusChange={() => setRefreshKey((k) => k + 1)}
-                onOpenPublishDialog={() => setPublishOpen(true)}
-              />
-            </div>
-          )}
-          <ModeTabs mode={mode} onModeChange={handleModeChange} />
+            )}
+            {docId && mode === 'richtext' && (
+              <>
+                <button
+                  type="button"
+                  className={`btn btn-ghost btn-xs ${commentPanelOpen ? 'btn-active' : ''}`}
+                  onClick={() => {
+                    setCommentPanelOpen(!commentPanelOpen);
+                    setVersionPanelOpen(false);
+                  }}
+                >
+                  评论
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-xs"
+                  onClick={() => {
+                    setVersionPanelOpen(!versionPanelOpen);
+                    setCommentPanelOpen(false);
+                  }}
+                >
+                  版本
+                </button>
+              </>
+            )}
+            {docId && (
+              <div key={refreshKey}>
+                <PublishButton
+                  documentId={docId}
+                  onStatusChange={() => setRefreshKey((k) => k + 1)}
+                  onOpenPublishDialog={() => setPublishOpen(true)}
+                />
+              </div>
+            )}
+            <FullscreenButton />
+            <ModeTabs mode={mode} onModeChange={handleModeChange} />
+          </div>
         </div>
+
+        {/* 下行：格式化工具栏（仅 richtext 模式显示） */}
+        {mode === 'richtext' && editor && (
+          <EditorToolbar editor={editor} />
+        )}
       </div>
 
+      {/* 编辑器内容区域 */}
       {mode === 'richtext' && editor ? (
         <div className="flex">
           <div className="flex-1 min-w-0">
-            <EditorToolbar editor={editor} />
             <BubbleMenuWrapper editor={editor} onComment={handleComment} />
             {slashOpen && (
               <SlashMenu
