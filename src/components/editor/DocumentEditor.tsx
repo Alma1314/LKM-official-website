@@ -86,7 +86,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     if (documentId === 'new') {
       const doc = createDocument();
       setDocId(doc.id);
-      window.history.replaceState(null, '', `/admin/documents/editor?id=${doc.id}`);
+      const base = (window as any).__BASE_URL__ || '';
+      window.history.replaceState(null, '', `${base}/admin/documents/editor?id=${doc.id}`);
     }
   }, [documentId]);
 

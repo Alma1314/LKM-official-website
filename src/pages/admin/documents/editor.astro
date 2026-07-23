@@ -1,5 +1,6 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
+import EditorMount from '~/components/editor/EditorMount';
 
 const metadata = {
   title: '编辑文档 — LKM',
@@ -27,68 +28,11 @@ const metadata = {
         返回列表
       </a>
     </div>
-    <div id="editor-mount">
+    <EditorMount client:only="react">
       <div class="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
         <span class="loading loading-spinner loading-md mr-2"></span>
         <span class="text-base-content/50">正在加载编辑器……</span>
       </div>
-    </div>
+    </EditorMount>
   </div>
 </PageLayout>
-
-<script>
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  // HMR preamble stub — @vitejs/plugin-react 注入的 React Refresh 代码会检查
-  // window.$RefreshReg$ / window.$RefreshSig$ 是否存在。Astro SSR 页面的 <script>
-  // 缺少 Vite 自动注入的 preamble，这里提供 no-op stub 避免抛错。
-  window.$RefreshReg$ = () => {};
-  window.$RefreshSig$ = () => () => {};
-
-  function getDocumentId() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    if (id) return id;
-    const hash = window.location.hash.slice(1);
-    if (hash) return hash;
-    return 'new';
-  }
-
-  const mount = document.getElementById('editor-mount');
-  if (mount) {
-    // Show spinner with progress indicator while editor loads asynchronously
-    const spinner = document.createElement('div');
-    spinner.className =
-      'flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-3';
-    spinner.innerHTML = `<span class="loading loading-spinner loading-lg text-primary"></span>
-      <span class="text-base-content/50 text-sm" id="editor-loading-text">正在加载编辑器</span>`;
-
-    // Animated progress dots
-    let dots = 0;
-    const progressTimer = setInterval(() => {
-      dots = (dots + 1) % 4;
-      const el = document.getElementById('editor-loading-text');
-      if (el) el.textContent = '\u6b63\u5728\u52a0\u8f7d\u7f16\u8f91\u5668' + '.'.repeat(dots);
-    }, 500);
-
-    Promise.all([import('react'), import('react-dom/client'), import('~/components/editor/DocumentEditor')])
-      .then(([React, ReactDOM, DocEditor]) => {
-        clearInterval(progressTimer);
-        const root = ReactDOM.createRoot(mount);
-        root.render(React.createElement(DocEditor.default, { documentId: getDocumentId() }));
-      })
-      .catch((err) => {
-        clearInterval(progressTimer);
-        console.error('编辑器加载失败:', err);
-        const errorMessage = err instanceof Error ? err.message : String(err);
-        mount.innerHTML = `<div class="flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-3 px-4">
-          <span class="text-error text-lg font-medium">编辑器加载失败</span>
-          <pre class="text-error text-xs whitespace-pre-wrap break-all max-w-full bg-error/10 p-3 rounded text-left">${escapeHtml(errorMessage || '未知错误')}</pre>
-          <button class="btn btn-outline btn-sm" onclick="location.reload()">刷新页面</button></div>`;
-      });
-  }
-</script>
