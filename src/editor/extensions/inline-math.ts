@@ -15,6 +15,7 @@ export const InlineMath = Mark.create({
   },
 
   renderHTML({ HTMLAttributes }) {
+    const latex = (HTMLAttributes.latex as string) || '';
     return [
       'span',
       {

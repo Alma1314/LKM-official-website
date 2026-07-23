@@ -6,8 +6,8 @@ export function handleExportDocx(editor: Editor): void {
     const content = json?.content ?? [];
     const html = buildHtml(content as Record<string, unknown>[]);
 
-      // Microsoft Word compatible HTML format
-      const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+    // Microsoft Word compatible HTML format
+    const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><meta charset="utf-8"><title>Document</title><style>
   body { font-family: 'Noto Sans SC', sans-serif; font-size: 12pt; line-height: 1.8; }
   h1 { font-size: 20pt; } h2 { font-size: 16pt; } h3 { font-size: 14pt; }
@@ -20,15 +20,15 @@ export function handleExportDocx(editor: Editor): void {
 <body>${html}</body>
 </html>`;
 
-      const blob = new Blob(['\ufeff' + wordHtml], {
-        type: 'application/msword',
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'document.doc';
-      a.click();
-      URL.revokeObjectURL(url);
+    const blob = new Blob(['\ufeff' + wordHtml], {
+      type: 'application/msword',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.doc';
+    a.click();
+    URL.revokeObjectURL(url);
   } catch (err) {
     alert('导出失败: ' + (err as Error).message);
   }
@@ -40,7 +40,12 @@ interface ExportDocxButtonProps {
 
 export default function ExportDocxButton({ editor }: ExportDocxButtonProps) {
   return (
-    <button type="button" className="btn btn-ghost btn-xs" title="导出 Word 文档" onClick={() => handleExportDocx(editor)}>
+    <button
+      type="button"
+      className="btn btn-ghost btn-xs"
+      title="导出 Word 文档"
+      onClick={() => handleExportDocx(editor)}
+    >
       DOC
     </button>
   );

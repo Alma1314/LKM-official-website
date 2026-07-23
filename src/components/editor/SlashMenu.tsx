@@ -152,12 +152,7 @@ export default function SlashMenu({ editor, query, position, onClose, onSelect }
 
   const q = query.toLowerCase();
   const filtered = useMemo(
-    () =>
-      ITEMS.filter(
-        (item) =>
-          item.label.toLowerCase().includes(q) ||
-          item.description.toLowerCase().includes(q)
-      ),
+    () => ITEMS.filter((item) => item.label.toLowerCase().includes(q) || item.description.toLowerCase().includes(q)),
     [q]
   );
 

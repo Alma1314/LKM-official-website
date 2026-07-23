@@ -23,7 +23,12 @@ const TYPE_ICONS: Record<string, string> = {
   success: '✓',
 };
 
-const CalloutNodeView = memo(function CalloutNodeView({ node, editor, getPos, updateAttributes }: CalloutNodeViewProps) {
+const CalloutNodeView = memo(function CalloutNodeView({
+  node,
+  editor,
+  getPos,
+  updateAttributes,
+}: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const ctype = ((node.attrs.type as string) || 'info') as keyof typeof TYPE_LABELS;
   const title = (node.attrs.title as string) || '';

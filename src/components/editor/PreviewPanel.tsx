@@ -175,7 +175,6 @@ export default function PreviewPanel({ editor }: PreviewPanelProps) {
     const json = editor.getJSON();
     const nodes = (json?.content ?? []) as JSONContent[];
     return nodes.map((node, i) => renderNode(node, i));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor.state.doc]);
 
   return <div className="min-h-[60vh] px-8 py-6 bg-base-100">{content}</div>;

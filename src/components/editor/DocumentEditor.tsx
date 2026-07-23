@@ -78,7 +78,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     if (documentId === 'new') {
       const doc = createDocument();
       setDocId(doc.id);
-      const base = (window as any).__BASE_URL__ || '';
+      const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
       window.history.replaceState(null, '', `${base}/admin/documents/editor?id=${doc.id}`);
     }
   }, [documentId]);
@@ -419,9 +419,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         </div>
 
         {/* 下行：格式化工具栏（仅 richtext 模式显示） */}
-        {mode === 'richtext' && editor && (
-          <EditorToolbar editor={editor} />
-        )}
+        {mode === 'richtext' && editor && <EditorToolbar editor={editor} />}
       </div>
 
       {/* 编辑器内容区域 */}

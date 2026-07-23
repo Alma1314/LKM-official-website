@@ -60,12 +60,16 @@ export async function saveBackup(docId: string, data: BackupData): Promise<void>
     db.close();
   } catch (err) {
     console.warn('[backup-store] 备份写入失败:', err);
-    try { db.close(); } catch { /* ignore */ }
+    try {
+      db.close();
+    } catch {
+      /* ignore */
+    }
   }
 }
 
 async function cleanOldSnapshots(db?: IDBDatabase): Promise<void> {
-  const database = db || await openDB();
+  const database = db || (await openDB());
   if (!database) return;
   try {
     const tx = database.transaction(STORE_NAME, 'readwrite');
@@ -111,7 +115,11 @@ export async function getBackups(): Promise<BackupMeta[]> {
       .map((r) => ({ id: r.id!, docId: r.docId, title: r.title, timestamp: r.timestamp }));
   } catch (err) {
     console.warn('[backup-store] 读取备份列表失败:', err);
-    try { db.close(); } catch { /* ignore */ }
+    try {
+      db.close();
+    } catch {
+      /* ignore */
+    }
     return [];
   }
 }
@@ -134,7 +142,11 @@ export async function getLatestBackup(docId: string): Promise<BackupData | null>
     return results[0];
   } catch (err) {
     console.warn('[backup-store] 读取最新备份失败:', err);
-    try { db.close(); } catch { /* ignore */ }
+    try {
+      db.close();
+    } catch {
+      /* ignore */
+    }
     return null;
   }
 }
@@ -144,7 +156,11 @@ export async function restoreFromBackup(docId: string): Promise<BackupData | nul
 }
 
 export function exportAllToJson(docs: BackupData[]): string {
-  return JSON.stringify(docs.map(({ id, ...rest }) => rest), null, 2);
+  return JSON.stringify(
+    docs.map(({ id: _id, ...rest }) => rest),
+    null,
+    2
+  );
 }
 
 export function importFromJson(json: string): BackupData[] {
