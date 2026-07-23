@@ -104,8 +104,6 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedRef.current) {
         e.preventDefault();
-        // Modern browsers may ignore this string but it's part of the spec
-        e.returnValue = '';
       }
     };
     window.addEventListener('beforeunload', onBeforeUnload);

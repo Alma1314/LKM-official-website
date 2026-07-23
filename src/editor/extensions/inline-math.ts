@@ -1,10 +1,5 @@
 import { Mark } from '@tiptap/core';
-
-declare global {
-  interface Window {
-    renderMathInElement?: (el: HTMLElement) => void;
-  }
-}
+import katex from 'katex';
 
 export const InlineMath = Mark.create({
   name: 'inlineMath',
@@ -21,14 +16,20 @@ export const InlineMath = Mark.create({
   },
 
   renderHTML({ HTMLAttributes }) {
+    const latex = (HTMLAttributes.latex as string) || '';
+    try {
+      katex.renderToString(latex, { throwOnError: false });
+    } catch {
+      // let KaTeX handle errors silently
+    }
     return [
       'span',
       {
         'data-inline-math': '',
-        class: 'cursor-pointer text-primary hover:opacity-80 transition-opacity',
+        'data-latex': latex,
+        class: 'katex-inline cursor-pointer',
         ...HTMLAttributes,
       },
-      0,
     ];
   },
 });

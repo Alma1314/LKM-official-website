@@ -29,13 +29,7 @@ export default function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceh
     try {
       await navigator.clipboard.writeText(source);
     } catch {
-      // Fallback for non-HTTPS contexts
-      const textarea = document.createElement('textarea');
-      textarea.value = source;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
+      // clipboard API unavailable
     }
   };
 

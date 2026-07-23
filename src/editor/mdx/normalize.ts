@@ -1,17 +1,18 @@
-import type { Root, Content } from 'mdast';
+import type { Root } from 'mdast';
+
+type Node = { type?: string; children?: Node[]; value?: string; depth?: number };
 
 /**
  * Merge adjacent text nodes in paragraphs and headings.
  * remark-parse can produce multiple adjacent text nodes for the same inline content.
  */
-function mergeTextChildren(children: Content[]): Content[] {
-  if (!Array.isArray(children)) return children;
-  const result: Content[] = [];
+function mergeTextChildren(children: Node[]): Node[] {
+  const result: Node[] = [];
 
   for (const child of children) {
     const prev = result[result.length - 1];
     if (prev && prev.type === 'text' && child.type === 'text') {
-      (prev as { value: string }).value += (child as { value: string }).value;
+      prev.value = (prev.value ?? '') + (child.value ?? '');
     } else {
       result.push(child);
     }
@@ -20,13 +21,10 @@ function mergeTextChildren(children: Content[]): Content[] {
   return result;
 }
 
-function walkNode(node: unknown): void {
-  const n = node as { type?: string; children?: Content[] };
-  if (!n || typeof n !== 'object') return;
-
-  if (Array.isArray(n.children)) {
-    n.children = mergeTextChildren(n.children);
-    for (const child of n.children) {
+function walkNode(node: Node): void {
+  if (Array.isArray(node.children)) {
+    node.children = mergeTextChildren(node.children);
+    for (const child of node.children) {
       walkNode(child);
     }
   }
@@ -37,16 +35,13 @@ function clampHeadingDepth(depth: number): number {
   return Math.max(1, Math.min(6, depth));
 }
 
-function walkAndClamp(node: unknown): void {
-  const n = node as { type?: string; depth?: number; children?: Content[] };
-  if (!n || typeof n !== 'object') return;
-
-  if (n.type === 'heading' && typeof n.depth === 'number') {
-    n.depth = clampHeadingDepth(n.depth);
+function walkAndClamp(node: Node): void {
+  if (node.type === 'heading' && typeof node.depth === 'number') {
+    node.depth = clampHeadingDepth(node.depth);
   }
 
-  if (Array.isArray(n.children)) {
-    for (const child of n.children) {
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
       walkAndClamp(child);
     }
   }
@@ -54,7 +49,7 @@ function walkAndClamp(node: unknown): void {
 
 export function normalizeMDAST(root: Root): Root {
   const cloned = JSON.parse(JSON.stringify(root)) as Root;
-  walkNode(cloned);
-  walkAndClamp(cloned);
+  walkNode(cloned as unknown as Node);
+  walkAndClamp(cloned as unknown as Node);
   return cloned;
 }

@@ -1,4 +1,4 @@
-import type { Root, Content as MdastContent, PhrasingContent } from 'mdast';
+import type { Root, RootContent, PhrasingContent } from 'mdast';
 import type { JSONContent } from '@tiptap/core';
 
 /** Convert a Tiptap JSON content array back to an MDAST Root tree. */
@@ -10,8 +10,9 @@ export function tiptapToMdast(nodes: JSONContent[]): Root {
   return tree;
 }
 
-function convertBlocks(nodes: JSONContent[]): MdastContent[] {
-  const result: MdastContent[] = [];
+function convertBlocks(nodes: JSONContent[]): RootContent[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result: any[] = [];
 
   for (const node of nodes) {
     if (!node.type) continue;
@@ -29,13 +30,13 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
           depth: Math.max(1, Math.min(6, (node.attrs as Record<string, number> | undefined)?.level ?? 1)) as
             1 | 2 | 3 | 4 | 5 | 6,
           children: convertInline(node.content ?? []),
-        } as MdastContent);
+        } as RootContent);
         break;
       case 'blockquote':
         result.push({
           type: 'blockquote',
-          children: convertBlocks(node.content ?? []) as MdastContent[],
-        } as MdastContent);
+          children: convertBlocks(node.content ?? []) as RootContent[],
+        } as RootContent);
         break;
       case 'codeBlock': {
         const lang = (node.attrs as Record<string, string> | undefined)?.language ?? '';
@@ -59,7 +60,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
           start: (node.attrs as Record<string, number> | undefined)?.start ?? 1,
           spread: false,
           children: (node.content ?? []).map(convertListItem),
-        } as MdastContent);
+        } as RootContent);
         break;
       case 'taskList':
         result.push({
@@ -68,7 +69,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
           start: 1,
           spread: false,
           children: (node.content ?? []).map(convertListItem),
-        } as MdastContent);
+        } as RootContent);
         break;
       case 'table': {
         const rows = (node.content ?? []).map((row) => ({
@@ -78,14 +79,14 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
             children: convertBlocks(cell.content ?? []),
           })),
         }));
-        result.push({ type: 'table', children: rows } as MdastContent);
+        result.push({ type: 'table', children: rows } as RootContent);
         break;
       }
       case 'blockMath':
         result.push({
           type: 'math',
           value: (node.attrs as Record<string, string> | undefined)?.latex ?? '',
-        } as MdastContent);
+        } as RootContent);
         break;
       case 'image': {
         const attrs = (node.attrs ?? {}) as Record<string, string>;
@@ -94,7 +95,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
           url: attrs.src ?? '',
           alt: attrs.alt ?? '',
           title: attrs.title || null,
-        } as MdastContent);
+        } as RootContent);
         break;
       }
       case 'callout': {
@@ -106,7 +107,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
         result.push({
           type: 'html',
           value: `<Callout${attrStr ? ' ' + attrStr : ''} />`,
-        } as MdastContent);
+        } as RootContent);
         break;
       }
       case 'figure': {
@@ -118,7 +119,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
         result.push({
           type: 'html',
           value: `<Figure${attrStr ? ' ' + attrStr : ''} />`,
-        } as MdastContent);
+        } as RootContent);
         break;
       }
       case 'component':
@@ -129,7 +130,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
           result.push({
             type: 'html',
             value: source,
-          } as MdastContent);
+          } as RootContent);
         }
         break;
       }
@@ -138,7 +139,7 @@ function convertBlocks(nodes: JSONContent[]): MdastContent[] {
         result.push({
           type: 'html',
           value: attrs.source ?? '',
-        } as MdastContent);
+        } as RootContent);
         break;
       }
       default:
@@ -156,20 +157,20 @@ interface MdastTextNode {
   value: string;
 }
 
-function convertListItem(node: JSONContent): MdastContent {
+function convertListItem(node: JSONContent): RootContent {
   if (node.type === 'taskItem') {
     return {
       type: 'listItem',
       checked: (node.attrs as Record<string, boolean> | undefined)?.checked ?? false,
       spread: false,
       children: convertBlocks(node.content ?? []),
-    } as MdastContent;
+    } as RootContent;
   }
   return {
     type: 'listItem',
     spread: false,
     children: convertBlocks(node.content ?? []),
-  } as MdastContent;
+  } as RootContent;
 }
 
 /** Convert a Tiptap mark to an MDAST wrapper node */

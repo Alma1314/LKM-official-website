@@ -31,7 +31,7 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
     if (href) {
       editor.chain().focus().extendMarkRange('link').setLink({ href }).run();

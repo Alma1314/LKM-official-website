@@ -524,11 +524,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
         if (latex) {
           e.chain()
             .focus()
-            .insertContent({
-              type: 'text',
-              text: latex,
-              marks: [{ type: 'inlineMath', attrs: { latex } }],
-            })
+            .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
             .run();
         }
       },

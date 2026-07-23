@@ -19,7 +19,8 @@ export default function ExportPdfButton({ editor }: ExportPdfButtonProps) {
       return;
     }
 
-    printWindow.document.write(
+    printWindow.document.open();
+    printWindow.document.writeln(
       '<!DOCTYPE html><html><head><meta charset="utf-8"><title>导出 PDF</title></head><body><div id="pdf-root"></div></body></html>'
     );
     printWindow.document.close();
