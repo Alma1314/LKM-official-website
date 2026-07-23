@@ -106,6 +106,30 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // 预构建优化：将重依赖预列入 include，避免懒构建导致的并发竞态。
+    // Windows + pnpm 下 Vite 的 deps 原子重命名可能失败，预列关键依赖让
+    // 它们在首次启动时一次性构建完成。
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-dom/client',
+        '@tiptap/core',
+        '@tiptap/react',
+        '@tiptap/starter-kit',
+        '@tiptap/extension-placeholder',
+        '@tiptap/extension-character-count',
+        '@tiptap/extension-link',
+        '@tiptap/extension-underline',
+        '@tiptap/extension-task-list',
+        '@tiptap/extension-task-item',
+        '@tiptap/extension-table',
+        '@tiptap/extension-table-row',
+        '@tiptap/extension-table-cell',
+        '@tiptap/extension-table-header',
+        '@tiptap/extension-image',
+      ],
+    },
     resolve: {
       alias: {
         '~': path.resolve(__dirname, './src'),
