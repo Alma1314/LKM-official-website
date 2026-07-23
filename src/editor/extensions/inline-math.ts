@@ -19,8 +19,8 @@ export const InlineMath = Mark.create({
     const latex = (HTMLAttributes.latex as string) || '';
     try {
       katex.renderToString(latex, { throwOnError: false });
-    } catch {
-      // let KaTeX handle errors silently
+    } catch (err) {
+      console.warn('[inline-math] KaTeX 渲染失败:', err);
     }
     return [
       'span',

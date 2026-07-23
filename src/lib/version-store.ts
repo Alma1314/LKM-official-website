@@ -18,7 +18,8 @@ export function getVersions(docId: string): VersionEntry[] {
   try {
     const raw = localStorage.getItem(getKey(docId));
     return raw ? JSON.parse(raw) : [];
-  } catch {
+  } catch (err) {
+    console.warn('[version-store] 读取版本失败:', err);
     return [];
   }
 }

@@ -19,6 +19,7 @@ import PublishDialog from './PublishDialog';
 import PublishButton from './PublishButton';
 import VersionHistoryPanel from './VersionHistoryPanel';
 import ExportMenu from './ExportMenu';
+import BackupMenu from './BackupMenu';
 import { saveVersion } from '~/lib/version-store';
 import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
 import type { VersionEntry } from '~/lib/version-store';
@@ -239,7 +240,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             sourceMdxRef.current = doc.contentMdx;
             editor.commands.setContent({ type: 'doc', content: result.content });
             lastValidEditorJsonRef.current = editor.getJSON();
-          } catch {
+          } catch (err) {
+            console.warn('[DocumentEditor] MDX 加载回退到 editorJson:', err);
             if (doc.editorJson) {
               editor.commands.setContent(doc.editorJson);
             }
@@ -285,7 +287,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             frontmatterRef.current = result.frontmatter;
             lastValidEditorJsonRef.current = editor.getJSON();
           }
-        } catch {
+        } catch (err) {
+          console.warn('[DocumentEditor] MDX 手动解析失败:', err);
           alert('MDX 解析失败，请检查源码格式后重试');
           return;
         }
@@ -371,9 +374,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             wordCount={mode === 'richtext' ? wordCount : undefined}
           />
           <div className="flex items-center gap-1 md:gap-2">
-            {editor && (
-              <ExportMenu editor={editor} />
-            )}
+            {editor && <ExportMenu editor={editor} />}
+            {docId && <BackupMenu />}
             {editor && (
               <button
                 type="button"

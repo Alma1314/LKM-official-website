@@ -27,8 +27,8 @@ export function parseMdxString(mdx: string): ParsedMdx {
       if (parsed && typeof parsed === 'object') {
         frontmatter = parsed;
       }
-    } catch {
-      // Ignore invalid YAML, keep empty frontmatter
+    } catch (err) {
+      console.warn('[parse-mdx] YAML 解析失败:', err);
     }
     root.children = root.children.slice(1);
   }

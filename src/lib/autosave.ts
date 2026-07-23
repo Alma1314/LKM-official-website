@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SaveStatus } from '~/editor/types';
 import { autosave as apiAutosave, getDocument } from './document-api';
+import { saveBackup } from './backup-store';
 
 export function useAutoSave(documentId: string, debounceMs = 1000) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
@@ -29,7 +30,8 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
           const nodes = json.content ?? [];
           const result = exportMdx(nodes, {});
           mdxContent = result.mdx;
-        } catch {
+        } catch (err) {
+          console.warn('[autosave] MDX 导出失败:', err);
           mdxContent = '';
         }
 
@@ -45,6 +47,20 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
           hasUnsavedRef.current = false;
           savedCallbackRef.current?.();
 
+          // 写入 IndexedDB 备份（异步，不阻塞保存流程）
+          const doc = getDocument(documentId);
+          if (doc) {
+            saveBackup(documentId, {
+              docId: documentId,
+              title: doc.title,
+              contentMdx: mdxContent,
+              editorJson: content,
+              status: doc.status,
+              version: result.version,
+              timestamp: doc.lastModified,
+            });
+          }
+
           // Save version snapshot (throttled: only if version changed)
           try {
             const { saveVersion } = await import('~/lib/version-store');
@@ -57,13 +73,14 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
                 ''
               );
             }
-          } catch {
-            // Version storage is best-effort
+          } catch (err) {
+            console.warn('[autosave] 版本存储失败:', err);
           }
         } else {
           setSaveStatus('conflict');
         }
-      } catch {
+      } catch (err) {
+        console.warn('[autosave] 保存失败:', err);
         setSaveStatus('error');
       }
     },

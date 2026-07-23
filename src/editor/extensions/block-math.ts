@@ -47,7 +47,8 @@ export const BlockMath = Node.create({
               displayMode: true,
               throwOnError: false,
             });
-          } catch {
+          } catch (err) {
+            console.warn('[block-math] KaTeX 渲染失败:', err);
             dom.innerHTML = '<span class="text-error text-sm">LaTeX 语法错误</span>';
           }
         } else {

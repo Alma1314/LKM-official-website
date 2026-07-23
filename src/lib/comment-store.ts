@@ -22,7 +22,8 @@ function read(docId: string): CommentThread[] {
   try {
     const raw = localStorage.getItem(getKey(docId));
     return raw ? JSON.parse(raw) : [];
-  } catch {
+  } catch (err) {
+    console.warn('[comment-store] 读取评论失败:', err);
     return [];
   }
 }

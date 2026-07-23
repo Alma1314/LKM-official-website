@@ -31,8 +31,8 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
         setApiKey(key || '');
         saveAiConfig(ep, key || '', model || 'gpt-3.5-turbo');
       }
-    } catch {
-      // ignore
+    } catch (err) {
+      console.warn('[AiAssistant] 读取 AI 配置失败:', err);
     }
   }, []);
 

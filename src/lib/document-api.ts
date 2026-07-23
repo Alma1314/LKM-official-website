@@ -7,7 +7,8 @@ function readDrafts(): Record<string, DocumentData> {
   try {
     const raw = localStorage.getItem(DRAFTS_KEY);
     return raw ? JSON.parse(raw) : {};
-  } catch {
+  } catch (err) {
+    console.warn('[document-api] readDrafts 失败:', err);
     return {};
   }
 }
@@ -20,7 +21,8 @@ function readIndex(): DocumentMeta[] {
   try {
     const raw = localStorage.getItem(DRAFTS_INDEX_KEY);
     return raw ? JSON.parse(raw) : [];
-  } catch {
+  } catch (err) {
+    console.warn('[document-api] readIndex 失败:', err);
     return [];
   }
 }

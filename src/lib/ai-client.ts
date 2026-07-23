@@ -41,7 +41,8 @@ function getConfigFromQuery(): { endpoint: string; apiKey: string; model: string
 
     if (!endpoint) return null;
     return { endpoint, apiKey: apiKey || '', model: model || 'gpt-3.5-turbo' };
-  } catch {
+  } catch (err) {
+    console.warn('[ai-client] 读取 URL 配置失败:', err);
     return null;
   }
 }
@@ -55,7 +56,8 @@ function obfuscate(str: string): string {
   if (!str) return '';
   try {
     return btoa(str.split('').reverse().join(''));
-  } catch {
+  } catch (err) {
+    console.warn('[ai-client] 字符串混淆失败:', err);
     return '';
   }
 }
@@ -64,7 +66,8 @@ function deobfuscate(str: string): string {
   if (!str) return '';
   try {
     return atob(str).split('').reverse().join('');
-  } catch {
+  } catch (err) {
+    console.warn('[ai-client] 字符串反混淆失败:', err);
     return '';
   }
 }
@@ -83,8 +86,8 @@ export async function aiRequest(req: AiRequest): Promise<AiResponse> {
       const cfg = JSON.parse(raw);
       return doAiRequest(req, deobfuscate(cfg.e), deobfuscate(cfg.k), cfg.m || 'gpt-3.5-turbo');
     }
-  } catch {
-    // ignore
+  } catch (err) {
+    console.warn('[ai-client] sessionStorage 配置读取失败:', err);
   }
 
   return {
@@ -155,8 +158,8 @@ export function saveAiConfig(endpoint: string, apiKey: string, model: string): v
         m: model,
       })
     );
-  } catch {
-    // ignore storage errors
+  } catch (err) {
+    console.warn('[ai-client] 保存 AI 配置失败:', err);
   }
 }
 

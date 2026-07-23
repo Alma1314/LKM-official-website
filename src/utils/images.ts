@@ -14,7 +14,8 @@ const loadLocalImages = () => {
       '!~/assets/images/member/**',
       '!~/assets/images/member-optimized/**',
     ]);
-  } catch {
+  } catch (err) {
+    console.warn('[images] 图片 glob 加载失败:', err);
     _localImages = {};
   }
   return _localImages;

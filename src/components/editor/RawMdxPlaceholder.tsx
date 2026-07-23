@@ -28,8 +28,8 @@ export default function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceh
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(source);
-    } catch {
-      // clipboard API unavailable
+    } catch (err) {
+      console.warn('[RawMdxPlaceholder] 剪贴板操作失败:', err);
     }
   };
 
