@@ -318,6 +318,7 @@
 
 /* Mobile editor adaptations */
 @media (max-width: 768px) {
+  /* Toolbar scroll behavior */
   .editor-toolbar-mobile {
     @apply flex-wrap gap-y-1;
   }
@@ -326,12 +327,46 @@
     @apply text-xs px-1.5;
   }
 
+  /* Hide scrollbar on mobile toolbar but keep scrollability */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reduced editor padding for mobile */
   .prose {
-    @apply px-4 py-4;
+    @apply px-3 py-3 text-[15px];
   }
 
   /* Property panel becomes bottom drawer on mobile */
   .property-panel-mobile {
     @apply fixed bottom-0 left-0 right-0 w-full max-h-[40vh] overflow-y-auto border-t border-base-300 rounded-t-xl z-40;
+  }
+
+  /* Full-screen editor mode */
+  .editor-fullscreen {
+    @apply fixed inset-0 z-50 bg-base-100 overflow-y-auto;
+  }
+
+  .editor-fullscreen .ProseMirror {
+    min-height: 100vh !important;
+  }
+
+  /* Larger touch targets for mobile */
+  .btn-xs {
+    @apply min-h-[32px] min-w-[32px] px-1.5;
+  }
+
+  /* Mode tabs compact */
+  .tabs-boxed .tab-sm {
+    @apply text-xs px-2 py-1;
+  }
+
+  /* Table horizontal scroll for mobile */
+  .ProseMirror table {
+    @apply block overflow-x-auto whitespace-nowrap;
   }
 }

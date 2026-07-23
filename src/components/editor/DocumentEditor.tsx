@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
+import FullscreenButton from './FullscreenButton';
+import { setupKeyboardAutoScroll } from '~/lib/mobile-editor';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '~/editor/extensions';
-import { importMdx, exportMdx } from '~/editor/mdx';
 import { useAutoSave } from '~/lib/autosave';
 import { createDocument, getDocument as loadFromStorage } from '~/lib/document-api';
 import type { EditorMode } from '~/editor/types';
 import EditorToolbar from './EditorToolbar';
 import ModeTabs from './ModeTabs';
-import SourceEditor from './SourceEditor';
 import SaveStatusIndicator from './SaveStatusIndicator';
 import BubbleMenuWrapper from './BubbleMenu';
 import SlashMenu from './SlashMenu';
@@ -19,9 +19,14 @@ import VersionHistoryPanel from './VersionHistoryPanel';
 import { saveVersion } from '~/lib/version-store';
 import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
 import type { VersionEntry } from '~/lib/version-store';
-import ExportPdfButton from './ExportPdfButton';
-import ExportDocxButton from './ExportDocxButton';
-import AiAssistant from './AiAssistant';
+
+// Lazy-loaded: CodeMirror (only when switching to source mode)
+const SourceEditor = lazy(() => import('./SourceEditor'));
+// Lazy-loaded: AI assistant (only when clicking AI button)
+const AiAssistant = lazy(() => import('./AiAssistant'));
+// Lazy-loaded: Export buttons (only shown when editor is ready)
+const ExportPdfButton = lazy(() => import('./ExportPdfButton'));
+const ExportDocxButton = lazy(() => import('./ExportDocxButton'));
 
 interface DocumentEditorProps {
   documentId: string;
@@ -194,6 +199,14 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     };
   }, [editor, slashOpen]);
 
+  // Mobile keyboard auto-scroll
+  useEffect(() => {
+    if (editor) {
+      const el = (editor.view.dom as HTMLElement).closest('.ProseMirror') as HTMLElement;
+      return setupKeyboardAutoScroll(el);
+    }
+  }, [editor]);
+
   // Load existing content when editor and docId are ready
   useEffect(() => {
     if (!editor || !docId || documentId === 'new') return;
@@ -201,17 +214,26 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     if (!doc) return;
 
     if (doc.contentMdx && doc.contentMdx.trim().length > 0) {
-      try {
-        const result = importMdx(doc.contentMdx);
-        frontmatterRef.current = result.frontmatter;
-        sourceMdxRef.current = doc.contentMdx;
-        editor.commands.setContent({ type: 'doc', content: result.content });
-        lastValidEditorJsonRef.current = editor.getJSON();
-      } catch {
-        if (doc.editorJson) {
-          editor.commands.setContent(doc.editorJson);
-        }
-      }
+      // Dynamic import for MDX parsing — only when needed
+      import('~/editor/mdx')
+        .then(({ importMdx }) => {
+          try {
+            const result = importMdx(doc.contentMdx);
+            frontmatterRef.current = result.frontmatter;
+            sourceMdxRef.current = doc.contentMdx;
+            editor.commands.setContent({ type: 'doc', content: result.content });
+            lastValidEditorJsonRef.current = editor.getJSON();
+          } catch {
+            if (doc.editorJson) {
+              editor.commands.setContent(doc.editorJson);
+            }
+          }
+        })
+        .catch(() => {
+          if (doc.editorJson) {
+            editor.commands.setContent(doc.editorJson);
+          }
+        });
     } else if (doc.editorJson) {
       editor.commands.setContent(doc.editorJson);
     }
@@ -219,7 +241,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   // Mode switching
   const handleModeChange = useCallback(
-    (newMode: EditorMode) => {
+    async (newMode: EditorMode) => {
       if (newMode === mode) return;
 
       if (mode === 'richtext' && newMode === 'source') {
@@ -227,9 +249,11 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           const json = editor.getJSON();
           const doc =
             typeof json === 'object' && json !== null && 'content' in json
-              ? (json as { content: Parameters<typeof exportMdx>[0] }).content
-              : (json as unknown as Parameters<typeof exportMdx>[0]);
-          const result = exportMdx(doc, frontmatterRef.current);
+              ? (json as { content: unknown[] }).content
+              : (json as unknown[]);
+          const { exportMdx } = await import('~/editor/mdx');
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const result = exportMdx(doc as any, frontmatterRef.current);
           sourceMdxRef.current = result.mdx;
           lastValidEditorJsonRef.current = editor.getJSON();
         }
@@ -237,6 +261,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
       if (mode === 'source' && newMode === 'richtext') {
         try {
+          const { importMdx } = await import('~/editor/mdx');
           const result = importMdx(sourceMdxRef.current);
           if (editor) {
             editor.commands.clearContent();
@@ -272,7 +297,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       if (doc) {
         const updated = updateDocument(docId, { ...doc, title, status: 'published' });
         if (updated) {
-          saveVersion(docId, updated, '\u53d1\u5e03');
+          saveVersion(docId, updated, '发布');
           setRefreshKey((k) => k + 1);
         }
       }
@@ -303,17 +328,22 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   return (
     <div className="flex flex-col border border-base-300 rounded-lg bg-base-100 shadow-sm">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-base-300 bg-base-200/50 rounded-t-lg">
+      <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-base-300 bg-base-200/50 rounded-t-lg">
         <SaveStatusIndicator
           status={saveStatus}
           charCount={mode === 'richtext' ? charCount : undefined}
           wordCount={mode === 'richtext' ? wordCount : undefined}
         />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
+          <FullscreenButton />
           {mode === 'richtext' && editor && (
             <>
-              <ExportPdfButton editor={editor} />
-              <ExportDocxButton editor={editor} />
+              <Suspense fallback={null}>
+                <ExportPdfButton editor={editor} />
+              </Suspense>
+              <Suspense fallback={null}>
+                <ExportDocxButton editor={editor} />
+              </Suspense>
               <button type="button" className="btn btn-ghost btn-xs" onClick={() => setAiPanelOpen(!aiPanelOpen)}>
                 AI
               </button>
@@ -368,7 +398,15 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           )}
         </div>
       ) : mode === 'source' ? (
-        <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <span className="loading loading-spinner" />
+            </div>
+          }
+        >
+          <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
+        </Suspense>
       ) : mode === 'preview' && editor ? (
         <PreviewPanel editor={editor} />
       ) : (
@@ -386,7 +424,11 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         />
       )}
 
-      {aiPanelOpen && editor && <AiAssistant editor={editor} onClose={() => setAiPanelOpen(false)} />}
+      {aiPanelOpen && (
+        <Suspense fallback={null}>
+          <AiAssistant editor={editor!} onClose={() => setAiPanelOpen(false)} />
+        </Suspense>
+      )}
     </div>
   );
 }

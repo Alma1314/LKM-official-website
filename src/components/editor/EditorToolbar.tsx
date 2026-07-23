@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Editor } from '@tiptap/core';
 import type { ReactNode } from 'react';
 import EditorToolbarButton from './EditorToolbarButton';
@@ -653,35 +654,98 @@ function buildToolbarItems(): ToolbarItemDef[] {
 
 const ITEMS = buildToolbarItems();
 const GROUPS = ['heading', 'format', 'insert', 'block', 'list', 'component', 'history'] as const;
+// Groups that go into "more" menu on small screens
+const MORE_GROUPS = new Set(['component', 'history']);
 
 interface EditorToolbarProps {
   editor: Editor;
 }
 
 export default function EditorToolbar({ editor }: EditorToolbarProps) {
+  const [moreOpen, setMoreOpen] = useState(false);
+
+  const renderButton = (item: (typeof ITEMS)[number]) => (
+    <EditorToolbarButton
+      key={item.key}
+      icon={item.icon}
+      label={item.label}
+      title={item.title}
+      isActive={item.isActive(editor)}
+      onClick={() => item.action(editor)}
+    />
+  );
+
   return (
-    <div className="sticky top-0 z-20 flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2 bg-base-100/95 backdrop-blur-sm border-b border-base-300 rounded-t-lg">
-      {GROUPS.map((group) => {
-        const items = ITEMS.filter((i) => i.group === group);
-        if (items.length === 0) return null;
-        return (
-          <div
-            key={group}
-            className="flex items-center gap-0.5 border-r border-base-300 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
+    <div className="sticky top-0 z-20 bg-base-100/95 backdrop-blur-sm border-b border-base-300 rounded-t-lg">
+      {/* Desktop: full toolbar. Mobile: inline groups + "more" overflow */}
+      <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">
+        {GROUPS.map((group) => {
+          const items = ITEMS.filter((i) => i.group === group);
+          if (items.length === 0) return null;
+          return (
+            <div
+              key={group}
+              className="flex items-center gap-0.5 border-r border-base-300 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
+            >
+              {items.map(renderButton)}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile: condensed toolbar with "more" dropdown */}
+      <div className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
+        {GROUPS.filter((g) => !MORE_GROUPS.has(g)).map((group) => {
+          const items = ITEMS.filter((i) => i.group === group);
+          if (items.length === 0) return null;
+          return (
+            <div
+              key={group}
+              className="flex items-center gap-0.5 shrink-0 border-r border-base-300 pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
+            >
+              {items.map(renderButton)}
+            </div>
+          );
+        })}
+        {/* More button */}
+        <div className="relative shrink-0">
+          <button
+            type="button"
+            className={`btn btn-ghost btn-sm gap-1 ${moreOpen ? 'btn-active' : ''}`}
+            onClick={() => setMoreOpen(!moreOpen)}
           >
-            {items.map((item) => (
-              <EditorToolbarButton
-                key={item.key}
-                icon={item.icon}
-                label={item.label}
-                title={item.title}
-                isActive={item.isActive(editor)}
-                onClick={() => item.action(editor)}
-              />
-            ))}
-          </div>
-        );
-      })}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+              <circle cx="5" cy="12" r="1" />
+            </svg>
+          </button>
+          {moreOpen && (
+            <div className="absolute top-full right-0 mt-1 z-40 bg-base-200 border border-base-300 rounded-lg shadow-lg p-2 min-w-[200px]">
+              {GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
+                <div key={group} className="mb-1 last:mb-0">
+                  <div className="text-xs text-base-content/50 px-1 mb-0.5">
+                    {group === 'component' ? '组件' : '操作'}
+                  </div>
+                  <div className="flex flex-wrap gap-0.5">
+                    {ITEMS.filter((i) => i.group === group).map(renderButton)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -44,6 +44,13 @@ export default function ImageNodeView({ node, editor, getPos, updateAttributes }
         }}
         className="rounded-md cursor-pointer border-2 border-transparent hover:border-primary/50 transition-colors"
         onClick={() => setShowToolbar(!showToolbar)}
+        onTouchEnd={(e) => {
+          // Long-press on mobile to toggle toolbar
+          if (window.innerWidth < 768) {
+            e.preventDefault();
+            setShowToolbar(!showToolbar);
+          }
+        }}
         draggable={false}
       />
 
