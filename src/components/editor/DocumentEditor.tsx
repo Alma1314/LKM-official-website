@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
 import FullscreenButton from './FullscreenButton';
+import CommentPanel from './CommentPanel';
+import { addThread } from '~/lib/comment-store';
 import { setupKeyboardAutoScroll } from '~/lib/mobile-editor';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '~/editor/extensions';
@@ -72,6 +74,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   // AI assistant state
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
+
+  // Comment panel state
+  const [commentPanelOpen, setCommentPanelOpen] = useState(false);
 
   // Refs for MDX state
   const sourceMdxRef = useRef('');
@@ -306,6 +311,23 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     [docId]
   );
 
+  const handleComment = useCallback(
+    (from: number, to: number, text: string) => {
+      if (!editor || !docId) return;
+      // Add commentMark to the selected range
+      const threadId = crypto.randomUUID();
+      editor.chain().focus().setMark('commentMark', { threadId, resolved: 'false' }).run();
+      addThread(docId, { from, to }, text);
+      setCommentPanelOpen(true);
+    },
+    [editor, docId]
+  );
+
+  const handleCommentHighlightClick = useCallback((_range: { from: number; to: number }) => {
+    // Scroll editor to the comment position
+    // For now, just toggle the panel
+  }, []);
+
   const handleRestoreVersion = useCallback(
     (version: VersionEntry) => {
       if (!editor) return;
@@ -350,13 +372,28 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             </>
           )}
           {docId && mode === 'richtext' && (
-            <button
-              type="button"
-              className="btn btn-ghost btn-xs"
-              onClick={() => setVersionPanelOpen(!versionPanelOpen)}
-            >
-              版本
-            </button>
+            <>
+              <button
+                type="button"
+                className={`btn btn-ghost btn-xs ${commentPanelOpen ? 'btn-active' : ''}`}
+                onClick={() => {
+                  setCommentPanelOpen(!commentPanelOpen);
+                  setVersionPanelOpen(false);
+                }}
+              >
+                评论
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost btn-xs"
+                onClick={() => {
+                  setVersionPanelOpen(!versionPanelOpen);
+                  setCommentPanelOpen(false);
+                }}
+              >
+                版本
+              </button>
+            </>
           )}
           {docId && (
             <div key={refreshKey}>
@@ -375,7 +412,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         <div className="flex">
           <div className="flex-1 min-w-0">
             <EditorToolbar editor={editor} />
-            <BubbleMenuWrapper editor={editor} />
+            <BubbleMenuWrapper editor={editor} onComment={handleComment} />
             {slashOpen && (
               <SlashMenu
                 editor={editor}
@@ -387,7 +424,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
             )}
             <EditorContent editor={editor} />
           </div>
-          {versionPanelOpen ? (
+          {commentPanelOpen ? (
+            <CommentPanel
+              documentId={docId}
+              onClose={() => setCommentPanelOpen(false)}
+              onHighlightClick={handleCommentHighlightClick}
+            />
+          ) : versionPanelOpen ? (
             <VersionHistoryPanel
               documentId={docId}
               onRestore={handleRestoreVersion}

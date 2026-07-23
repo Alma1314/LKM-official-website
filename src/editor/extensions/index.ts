@@ -13,6 +13,7 @@ import { BlockMath } from './block-math';
 import { RawMdx } from './raw-mdx';
 import { Callout } from './callout';
 import { Figure } from './figure';
+import { CommentMark } from './comment-mark';
 
 export function getEditorExtensions(placeholder?: string) {
   return [
@@ -47,5 +48,6 @@ export function getEditorExtensions(placeholder?: string) {
     RawMdx,
     Callout,
     Figure,
+    CommentMark,
   ];
 }

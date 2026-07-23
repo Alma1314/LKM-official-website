@@ -316,6 +316,39 @@
   }
 }
 
+/* Comment highlight styles */
+.comment-highlight {
+  background-color: rgba(250, 204, 21, 0.35);
+  border-bottom: 2px solid rgba(250, 204, 21, 0.8);
+  border-radius: 2px;
+  padding: 0 1px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.comment-highlight:hover {
+  background-color: rgba(250, 204, 21, 0.55);
+}
+
+.comment-highlight-resolved {
+  background-color: rgba(156, 163, 175, 0.2);
+  border-bottom: 2px solid rgba(156, 163, 175, 0.4);
+  border-radius: 2px;
+  padding: 0 1px;
+  cursor: pointer;
+}
+
+/* Dark mode */
+:where([data-theme='lkm-dark']) .comment-highlight {
+  background-color: rgba(250, 204, 21, 0.25);
+  border-bottom-color: rgba(250, 204, 21, 0.6);
+}
+
+:where([data-theme='lkm-dark']) .comment-highlight-resolved {
+  background-color: rgba(156, 163, 175, 0.15);
+  border-bottom-color: rgba(156, 163, 175, 0.3);
+}
+
 /* Mobile editor adaptations */
 @media (max-width: 768px) {
   /* Toolbar scroll behavior */
