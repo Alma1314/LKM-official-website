@@ -12,11 +12,11 @@ const { name, qqGroup, desc, isQQChannel = false } = Astro.props;
 <div class="profile-card">
   <div class="profile-inner p-5 flex flex-col gap-3">
     <div class="flex items-center justify-between gap-2">
-      <h4 class="font-bold text-base text-[var(--deep-text)]">{name}</h4>
+      <h4 class="font-bold text-base text-deep-text">{name}</h4>
       {
         qqGroup && (
           <span
-            class="inline-flex items-center gap-1.5 shrink-0 text-xs font-mono bg-[var(--surface-3)] text-[var(--text-muted)] rounded-[6px] px-2.5 py-1 cursor-pointer select-none hover:bg-[var(--primary)] hover:text-[var(--on-primary)] transition-colors group/copy"
+            class="inline-flex items-center gap-1.5 shrink-0 text-xs font-mono bg-surface-3 text-text-muted rounded-[6px] px-2.5 py-1 cursor-pointer select-none hover:bg-primary hover:text-on-primary transition-colors group/copy"
             data-copy={qqGroup}
             title="点击复制"
           >
@@ -40,7 +40,7 @@ const { name, qqGroup, desc, isQQChannel = false } = Astro.props;
         )
       }
     </div>
-    {desc && <p class="text-xs text-[var(--text-muted)] leading-relaxed">{desc}</p>}
+    {desc && <p class="text-xs text-text-muted leading-relaxed">{desc}</p>}
   </div>
 </div>
 
@@ -52,10 +52,10 @@ const { name, qqGroup, desc, isQQChannel = false } = Astro.props;
       navigator.clipboard.writeText(text).then(() => {
         const orig = el.getAttribute('title');
         el.setAttribute('title', '已复制！');
-        el.classList.add('bg-success', 'text-[var(--on-success)]');
+        el.classList.add('bg-success', 'text-on-success');
         setTimeout(() => {
           el.setAttribute('title', orig || '点击复制');
-          el.classList.remove('bg-success', 'text-[var(--on-success)]');
+          el.classList.remove('bg-success', 'text-on-success');
         }, 1500);
       });
     });

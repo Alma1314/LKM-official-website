@@ -13,11 +13,11 @@ const { title, intro, id } = Astro.props;
 <Section id={id}>
   <div class="max-w-7xl mx-auto">
     <h3 class="text-xl font-bold mb-2 text-center">
-      <span class="border-b-2 border-[var(--primary)] pb-1">{title}</span>
+      <span class="border-b-2 border-primary pb-1">{title}</span>
     </h3>
     {
       intro && (
-        <p class="max-w-3xl mx-auto mb-6 px-6 py-4 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-[8px] text-center text-[14px] text-[var(--text-muted)] leading-relaxed card-hover ">
+        <p class="max-w-3xl mx-auto mb-6 px-6 py-4 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[14px] text-text-muted leading-relaxed card-hover ">
           {intro}
         </p>
       )

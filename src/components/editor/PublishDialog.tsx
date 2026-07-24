@@ -33,7 +33,7 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
       onClick={onCancel}
     >
       <div
-        className="bg-[var(--card-bg)] border border-[var(--surface-3)] rounded-xl shadow-2xl w-full max-w-md p-6"
+        className="bg-card-bg border border-surface-3 rounded-xl shadow-2xl w-full max-w-md p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold mb-4">发布文档</h3>
@@ -50,7 +50,7 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
 
         <label className="text-sm font-medium block mb-1">永久链接</label>
         <div className="flex items-center gap-0 mb-3">
-          <span className="text-sm text-[var(--deep-text)]/50 bg-[var(--page-bg)] px-2 py-1 rounded-l border border-[var(--surface-3)] border-r-0">
+          <span className="text-sm text-deep-text/50 bg-page-bg px-2 py-1 rounded-l border border-surface-3 border-r-0">
             /docs/
           </span>
           <input
@@ -69,7 +69,7 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
           />
         </div>
 
-        <p className="text-xs text-[var(--deep-text)]/50 mb-4">发布后文档将公开可见。</p>
+        <p className="text-xs text-deep-text/50 mb-4">发布后文档将公开可见。</p>
 
         <div className="flex justify-end gap-2">
           <button type="button" className="btn btn-ghost btn-sm" onClick={onCancel}>

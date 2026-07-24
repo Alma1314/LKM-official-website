@@ -124,7 +124,7 @@ const sidebarLinks = [
     {
       Object.entries(affairsSubGroups).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-[var(--text-muted)]">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
@@ -186,8 +186,8 @@ const sidebarLinks = [
     {
       Object.entries(newsSubGroups).map(([, group]) => (
         <div class="mt-8">
-          <h4 class="text-md font-bold mb-3 text-center text-[var(--text-muted)]">{group.label}</h4>
-          <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-[8px] text-center text-[13px] text-[var(--text-muted)] leading-relaxed">
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[13px] text-text-muted leading-relaxed">
             {group.desc}
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -238,7 +238,7 @@ const sidebarLinks = [
     {
       Object.entries(professionalSubGroups).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-[var(--text-muted)]">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
@@ -280,10 +280,10 @@ const sidebarLinks = [
   <Section id="alumni">
     <div class="max-w-7xl mx-auto">
       <h3 class="text-xl font-bold mb-9 text-center">
-        <span class="border-b-2 border-[var(--surface-3)] pb-1">已离开或失联成员</span>
+        <span class="border-b-2 border-surface-3 pb-1">已离开或失联成员</span>
       </h3>
       <p
-        class="max-w-3xl mx-auto mb-9 px-6 py-4 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-[8px] text-center text-[14px] text-[var(--text-muted)] leading-relaxed"
+        class="max-w-3xl mx-auto mb-9 px-6 py-4 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[14px] text-text-muted leading-relaxed"
       >
         以下成员曾为理科迷作出贡献，因各种原因现无法联系，不管如何理科迷的大门永远向你们打开。
       </p>

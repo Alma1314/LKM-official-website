@@ -34,7 +34,7 @@ export default function InlineInput({ placeholder, defaultValue = '', onConfirm,
   return (
     <div
       ref={containerRef}
-      className="flex items-center gap-1 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1"
+      className="flex items-center gap-1 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-1"
     >
       <input
         ref={inputRef}

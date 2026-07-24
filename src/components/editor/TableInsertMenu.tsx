@@ -13,8 +13,8 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
   const [hoverCol, setHoverCol] = useState(0);
 
   return (
-    <div className="absolute top-full left-0 mt-2 z-30 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-3">
-      <p className="text-xs text-[var(--deep-text)]/60 mb-2">
+    <div className="absolute top-full left-0 mt-2 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3">
+      <p className="text-xs text-deep-text/60 mb-2">
         {hoverRow > 0 && hoverCol > 0 ? `${hoverRow} × ${hoverCol} 表格` : '选择表格尺寸'}
       </p>
       <div
@@ -30,7 +30,7 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
             <div
               key={`${r}-${c}`}
               className={`w-6 h-6 rounded border cursor-pointer transition-colors ${
-                r < hoverRow && c < hoverCol ? 'bg-[var(--primary)]/40 border-[var(--primary)]' : 'bg-[var(--surface-3)]/50 border-base-content/20'
+                r < hoverRow && c < hoverCol ? 'bg-primary/40 border-primary' : 'bg-surface-3/50 border-base-content/20'
               }`}
               onMouseEnter={() => {
                 setHoverRow(r + 1);

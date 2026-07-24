@@ -72,7 +72,7 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
 
   return (
     <div
-      className="fixed z-50 flex gap-0.5 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1"
+      className="fixed z-50 flex gap-0.5 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-1"
       style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}
     >
       <button
@@ -127,7 +127,7 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
-        className={`btn btn-xs ${editor.isActive('link') ? 'btn-active text-[var(--primary)]' : 'btn-ghost'}`}
+        className={`btn btn-xs ${editor.isActive('link') ? 'btn-active text-primary' : 'btn-ghost'}`}
         onMouseDown={(e) => {
           e.preventDefault();
           if (editor.isActive('link')) {

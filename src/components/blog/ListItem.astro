@@ -30,7 +30,7 @@ const titleName = transitionName('post-title', post.permalink);
       (link ? (
         <a class="relative block group" href={link ?? 'javascript:void(0)'}>
           <div
-            class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-[var(--surface-3)] rounded-[16px]"
+            class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-surface-3 rounded-[16px]"
             transition:name={imageName}
           >
             {image && (
@@ -51,7 +51,7 @@ const titleName = transitionName('post-title', post.permalink);
         </a>
       ) : (
         <div
-          class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-[var(--surface-3)] rounded-[16px]"
+          class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-surface-3 rounded-[16px]"
           transition:name={imageName}
         >
           {image && (
@@ -75,13 +75,13 @@ const titleName = transitionName('post-title', post.permalink);
     <header>
       <div class="mb-1">
         <span class="text-sm">
-          <Icon name="tabler:clock" class="w-3.5 h-3.5 inline-block -mt-0.5 text-[var(--deep-text)]/60" />
+          <Icon name="tabler:clock" class="w-3.5 h-3.5 inline-block -mt-0.5 text-deep-text/60" />
           <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
           {
             post.author && (
               <>
                 {' '}
-                · <Icon name="tabler:user" class="w-3.5 h-3.5 inline-block -mt-0.5 text-[var(--deep-text)]/60" />
+                · <Icon name="tabler:user" class="w-3.5 h-3.5 inline-block -mt-0.5 text-deep-text/60" />
                 <span>{post.author.replaceAll('-', ' ')}</span>
               </>
             )
@@ -100,12 +100,12 @@ const titleName = transitionName('post-title', post.permalink);
         </span>
       </div>
       <h2
-        class="text-[17px] sm:text-[21px] font-semibold leading-snug mb-1 font-heading text-[var(--deep-text)]"
+        class="text-[17px] sm:text-[21px] font-semibold leading-snug mb-1 font-heading text-deep-text"
         transition:name={titleName}
       >
         {
           link ? (
-            <a class="inline-block hover:text-[var(--primary)] transition ease-in duration-200" href={link}>
+            <a class="inline-block hover:text-primary transition ease-in duration-200" href={link}>
               {post.title}
             </a>
           ) : (
@@ -115,7 +115,7 @@ const titleName = transitionName('post-title', post.permalink);
       </h2>
     </header>
 
-    {post.excerpt && <p class="flex-grow text-[14px] text-[var(--text-muted)] leading-relaxed">{post.excerpt}</p>}
+    {post.excerpt && <p class="flex-grow text-[14px] text-text-muted leading-relaxed">{post.excerpt}</p>}
     {
       post.tags && Array.isArray(post.tags) ? (
         <footer class="mt-5">

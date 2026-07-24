@@ -37,13 +37,13 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
             class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center"
           >
             <p>
-              <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-[var(--deep-text)]/60" />
+              <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-deep-text/60" />
               <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
               {
                 post.author && (
                   <>
                     {' '}
-                    · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-[var(--deep-text)]/60" />
+                    · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-deep-text/60" />
                     <span class="inline-block">{post.author}</span>
                   </>
                 )
@@ -70,12 +70,12 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
           </div>
 
           <h1
-            class="px-4 sm:px-6 max-w-3xl mx-auto text-[40px] md:text-[56px] font-semibold leading-[1.07] tracking-[-0.005em] font-heading text-[var(--deep-text)]"
+            class="px-4 sm:px-6 max-w-3xl mx-auto text-[40px] md:text-[56px] font-semibold leading-[1.07] tracking-[-0.005em] font-heading text-deep-text"
             transition:name={titleName}
           >
             {post.title}
           </h1>
-          <p class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-[17px] text-[var(--text-muted)] leading-relaxed">
+          <p class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-[17px] text-text-muted leading-relaxed">
             {post.excerpt}
           </p>
 
@@ -83,7 +83,7 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
             post.image ? (
               <Image
                 src={post.image}
-                class="max-w-full lg:max-w-225 mx-auto mb-6 sm:rounded-[16px] bg-[var(--surface-3)]"
+                class="max-w-full lg:max-w-225 mx-auto mb-6 sm:rounded-[16px] bg-surface-3"
                 widths={[400, 900]}
                 sizes="(max-width: 900px) 400px, 900px"
                 alt={post?.excerpt || ''}
@@ -96,7 +96,7 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
               />
             ) : (
               <div class="max-w-3xl mx-auto px-4 sm:px-6">
-                <div class="border-t border-[var(--surface-3)]" />
+                <div class="border-t border-surface-3" />
               </div>
             )
           }
@@ -104,7 +104,7 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
         <div
           class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md
                  lg:prose-lg prose-headings:font-heading prose-headings:leading-tighter
-                 prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-[var(--primary)]
+                 prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary
                  prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-20 prose-li:my-0"
         >
           <slot />
@@ -121,7 +121,7 @@ const fullUrl = new URL(post.permalink, siteUrl).href;
 
         <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
           <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-          <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-[var(--text-muted)]" />
+          <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-text-muted" />
         </div>
       </article>
 

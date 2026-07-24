@@ -3,7 +3,7 @@
   <slot v-else name="fallback">
     <div class="flex flex-col items-center justify-center min-h-[50vh] gap-4">
       <div class="text-6xl">🔒</div>
-      <p class="text-lg text-[var(--deep-text)]">请先登录后再访问此页面</p>
+      <p class="text-lg text-deep-text">请先登录后再访问此页面</p>
       <a :href="getAuthPath('login')" class="btn btn-primary">前往登录</a>
     </div>
   </slot>

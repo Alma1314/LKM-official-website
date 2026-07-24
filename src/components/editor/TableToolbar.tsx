@@ -51,12 +51,12 @@ export default function TableToolbar({ editor, onClose }: TableToolbarProps) {
   ];
 
   return (
-    <div className="absolute -top-12 left-0 z-30 flex gap-1 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1">
+    <div className="absolute -top-12 left-0 z-30 flex gap-1 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-1">
       {actions.map((a) => (
         <button
           key={a.label}
           type="button"
-          className={`btn btn-xs ${a.danger ? 'btn-ghost text-[var(--error)]' : 'btn-ghost'}`}
+          className={`btn btn-xs ${a.danger ? 'btn-ghost text-error' : 'btn-ghost'}`}
           title={a.title}
           onClick={a.action}
         >

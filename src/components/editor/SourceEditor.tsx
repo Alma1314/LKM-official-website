@@ -82,5 +82,5 @@ export default function SourceEditor({ value, onChange }: SourceEditorProps) {
     }
   }, [value]);
 
-  return <div ref={containerRef} className="border border-[var(--surface-3)] rounded-b-lg overflow-hidden bg-[var(--card-bg)]" />;
+  return <div ref={containerRef} className="border border-surface-3 rounded-b-lg overflow-hidden bg-card-bg" />;
 }

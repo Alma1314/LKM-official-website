@@ -19,7 +19,7 @@ const EditorToolbarButton = memo(function EditorToolbarButton({
   return (
     <button
       type="button"
-      className={`btn btn-ghost btn-sm gap-1 ${isActive ? 'btn-active text-[var(--primary)]' : ''}`}
+      className={`btn btn-ghost btn-sm gap-1 ${isActive ? 'btn-active text-primary' : ''}`}
       title={title}
       onClick={onClick}
       aria-label={label}

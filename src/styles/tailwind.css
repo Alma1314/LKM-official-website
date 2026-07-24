@@ -30,6 +30,25 @@
   --radius-lg: 12px; /* 卡片 */
   --radius-xl: 16px; /* 大面板/图片 */
   --radius-pill: 9999px;
+
+  /* ── 主题色 Token — 让 Tailwind 识别 bg-[var(--*)] 中的 CSS 变量 ── */
+  --color-card-bg: var(--card-bg);
+  --color-page-bg: var(--page-bg);
+  --color-surface-3: var(--surface-3);
+  --color-deep-text: var(--deep-text);
+  --color-text-muted: var(--text-muted);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-info: var(--info);
+  --color-on-info: var(--on-info);
+  --color-success: var(--success);
+  --color-on-success: var(--on-success);
+  --color-warning: var(--warning);
+  --color-on-warning: var(--on-warning);
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
 }
 
 /* ── Header 滚动样式 (实心 base) ── */

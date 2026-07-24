@@ -1,10 +1,10 @@
 <template>
   <div class="space-y-4 text-center">
-    <p class="text-sm text-[var(--text-muted)]">通行密钥登录（当前为模拟模式）</p>
-    <div class="rounded-xl border border-[var(--surface-3)] bg-[var(--page-bg)] p-6 space-y-4">
+    <p class="text-sm text-text-muted">通行密钥登录（当前为模拟模式）</p>
+    <div class="rounded-xl border border-surface-3 bg-page-bg p-6 space-y-4">
       <div class="text-5xl">🔑</div>
-      <p class="font-semibold text-[var(--deep-text)]">使用通行密钥登录</p>
-      <p class="text-xs text-[var(--text-muted)]">通过设备的指纹、面容或 PIN 码进行认证</p>
+      <p class="font-semibold text-deep-text">使用通行密钥登录</p>
+      <p class="text-xs text-text-muted">通过设备的指纹、面容或 PIN 码进行认证</p>
       <div v-if="errorMsg" class="alert alert-error text-sm">{{ errorMsg }}</div>
       <button type="button" class="btn btn-primary" @click="handleClick" :disabled="loading">
         <template v-if="loading"> <span class="loading loading-spinner loading-xs"></span> 正在验证... </template>

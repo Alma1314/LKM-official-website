@@ -1,13 +1,13 @@
 <template>
   <form @submit.prevent="handleSubmit" class="space-y-4">
-    <div class="flex items-center justify-between p-3 bg-[var(--page-bg)] rounded-lg">
-      <span class="text-sm text-[var(--text-muted)]">发送至：</span>
+    <div class="flex items-center justify-between p-3 bg-page-bg rounded-lg">
+      <span class="text-sm text-text-muted">发送至：</span>
       <span class="text-sm font-medium">{{ target }}</span>
     </div>
     <button type="button" class="btn btn-outline w-full" @click="handleSendCode" :disabled="countdown > 0">
       {{ countdown > 0 ? `${countdown}s 后重新获取` : codeSent ? '重新获取验证码' : '获取验证码' }}
     </button>
-    <p v-if="codeSent" class="text-xs text-[var(--success)] text-center">验证码已发送（模拟码：000000）</p>
+    <p v-if="codeSent" class="text-xs text-success text-center">验证码已发送（模拟码：000000）</p>
     <div>
       <label class="label pb-1" for="sms-code">
         <span class="label-text font-medium">验证码</span>
@@ -22,7 +22,7 @@
         maxlength="6"
         @input="codeError = ''"
       />
-      <span v-if="codeError" class="label-text-alt text-[var(--error)]">{{ codeError }}</span>
+      <span v-if="codeError" class="label-text-alt text-error">{{ codeError }}</span>
     </div>
     <button type="submit" class="btn btn-primary w-full" :disabled="loading || !codeSent">
       <span v-if="loading" class="loading loading-spinner loading-xs"></span>

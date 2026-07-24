@@ -98,7 +98,7 @@ const jsonLd = {
           class="transition w-full block font-bold mb-3
                     text-3xl md:text-[2.25rem]/[2.75rem]
                     text-black/90 dark:text-white/90
-                    md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
+                    md:before:w-1 before:h-5 before:rounded-md before:bg-primary
                     before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
         >
           {entry.data.title}
@@ -155,7 +155,7 @@ const jsonLd = {
       {
         entry.data.nextSlug && (
           <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center !justify-start gap-4">
-            <Icon name="material-symbols:chevron-left-rounded" class="text-[2rem] text-[var(--primary)]" />
+            <Icon name="material-symbols:chevron-left-rounded" class="text-[2rem] text-primary" />
             <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
               {entry.data.nextTitle}
             </div>
@@ -174,7 +174,7 @@ const jsonLd = {
             <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
               {entry.data.prevTitle}
             </div>
-            <Icon name="material-symbols:chevron-right-rounded" class="text-[2rem] text-[var(--primary)]" />
+            <Icon name="material-symbols:chevron-right-rounded" class="text-[2rem] text-primary" />
           </div>
         )
       }

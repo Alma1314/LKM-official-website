@@ -1,17 +1,17 @@
 <template>
-  <div class="blog-comments mt-12 pt-8 border-t border-[var(--surface-3)]">
-    <h3 class="text-lg font-semibold font-heading text-[var(--deep-text)] mb-6">读者评论</h3>
+  <div class="blog-comments mt-12 pt-8 border-t border-surface-3">
+    <h3 class="text-lg font-semibold font-heading text-deep-text mb-6">读者评论</h3>
 
     <div v-if="isReady" ref="giscusContainer" class="giscus" />
 
     <div v-else-if="loading" class="flex items-center justify-center py-12">
-      <span class="loading loading-spinner loading-md text-[var(--primary)]" />
-      <span class="ml-3 text-sm text-[var(--deep-text)]/50">评论加载中...</span>
+      <span class="loading loading-spinner loading-md text-primary" />
+      <span class="ml-3 text-sm text-deep-text/50">评论加载中...</span>
     </div>
 
-    <div v-else class="text-center py-8 bg-[var(--page-bg)] rounded-xl">
+    <div v-else class="text-center py-8 bg-page-bg rounded-xl">
       <svg
-        class="w-10 h-10 mx-auto mb-3 text-[var(--deep-text)]/30"
+        class="w-10 h-10 mx-auto mb-3 text-deep-text/30"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -21,13 +21,13 @@
       >
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
-      <p class="text-sm text-[var(--deep-text)]/50">
+      <p class="text-sm text-deep-text/50">
         评论功能需要配置 Giscus。
         <a
           href="https://giscus.app/zh-CN"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-[var(--primary)] hover:underline"
+          class="text-primary hover:underline"
         >
           前往配置
         </a>

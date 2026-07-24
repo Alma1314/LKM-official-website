@@ -690,7 +690,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
         return (
           <div
             key={group}
-            className="flex items-center gap-0.5 border-r border-[var(--surface-3)] pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
+            className="flex items-center gap-0.5 border-r border-surface-3 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
           >
             {items.map((item) => (
               <EditorToolbarButton
@@ -716,7 +716,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
         return (
           <div
             key={group}
-            className="flex items-center gap-0.5 shrink-0 border-r border-[var(--surface-3)] pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
+            className="flex items-center gap-0.5 shrink-0 border-r border-surface-3 pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
           >
             {items.map((item) => (
               <EditorToolbarButton
@@ -738,7 +738,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
     () =>
       GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
         <div key={group} className="mb-1 last:mb-0">
-          <div className="text-xs text-[var(--deep-text)]/50 px-1 mb-0.5">{group === 'component' ? '组件' : '操作'}</div>
+          <div className="text-xs text-deep-text/50 px-1 mb-0.5">{group === 'component' ? '组件' : '操作'}</div>
           <div className="flex flex-wrap gap-0.5">
             {ITEMS.filter((i) => i.group === group).map((item) => (
               <EditorToolbarButton
@@ -757,7 +757,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
   );
 
   return (
-    <div className="bg-[var(--card-bg)]/95 backdrop-blur-sm border-b border-[var(--surface-3)]">
+    <div className="bg-card-bg/95 backdrop-blur-sm border-b border-surface-3">
       <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">{desktopContent}</div>
 
       <div ref={mobileBarRef} className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
@@ -785,7 +785,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
             </svg>
           </button>
           {moreOpen && (
-            <div className="absolute top-full right-0 mt-1 z-40 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-2 min-w-[200px]">
+            <div className="absolute top-full right-0 mt-1 z-40 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-2 min-w-[200px]">
               {moreItems}
             </div>
           )}

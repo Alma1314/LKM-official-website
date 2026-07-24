@@ -11,7 +11,7 @@ interface Props {
   iconColor?: string;
 }
 
-const { year, title, description, index, iconName = 'tabler:circle-check', iconColor = 'text-[var(--primary)]' } = Astro.props;
+const { year, title, description, index, iconName = 'tabler:circle-check', iconColor = 'text-primary' } = Astro.props;
 
 const isEven = index % 2 === 0;
 // isEven: 圆点在 1/3、文字在右宽侧；否则圆点在 2/3、文字在左宽侧
@@ -25,9 +25,9 @@ const isEven = index % 2 === 0;
       <Icon name={iconName} class:list={['h-5 w-5', iconColor]} />
     </span>
     <div class="pl-12">
-      <time class="font-mono text-[12px] text-[var(--text-muted)]">{year}</time>
-      <div class="text-[17px] font-semibold text-[var(--deep-text)]">{title}</div>
-      <p class="text-[14px] text-[var(--text-muted)] leading-relaxed max-w-xl">{description}</p>
+      <time class="font-mono text-[12px] text-text-muted">{year}</time>
+      <div class="text-[17px] font-semibold text-deep-text">{title}</div>
+      <p class="text-[14px] text-text-muted leading-relaxed max-w-xl">{description}</p>
     </div>
   </div>
 
@@ -39,9 +39,9 @@ const isEven = index % 2 === 0;
     </span>
     {/* 文字：宽侧 */}
     <div class:list={['tl-content', isEven ? 'text-start' : 'text-end']}>
-      <time class="font-mono text-[12px] text-[var(--text-muted)]">{year}</time>
-      <div class="text-[17px] font-semibold text-[var(--deep-text)]">{title}</div>
-      <p class="text-[14px] text-[var(--text-muted)] leading-relaxed">{description}</p>
+      <time class="font-mono text-[12px] text-text-muted">{year}</time>
+      <div class="text-[17px] font-semibold text-deep-text">{title}</div>
+      <p class="text-[14px] text-text-muted leading-relaxed">{description}</p>
     </div>
   </div>
 </li>

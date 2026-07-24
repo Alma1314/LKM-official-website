@@ -163,10 +163,10 @@ export default function BackupMenu() {
       </button>
 
       {open && !showBackups && (
-        <div className="absolute top-full right-0 mt-1 z-50 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1 min-w-[160px]">
+        <div className="absolute top-full right-0 mt-1 z-50 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-1 min-w-[160px]">
           <button
             type="button"
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-[var(--surface-3)]/50 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-surface-3/50 transition-colors"
             onClick={handleExport}
           >
             <svg
@@ -188,7 +188,7 @@ export default function BackupMenu() {
           </button>
           <button
             type="button"
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-[var(--surface-3)]/50 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-surface-3/50 transition-colors"
             onClick={handleImport}
           >
             <svg
@@ -210,7 +210,7 @@ export default function BackupMenu() {
           </button>
           <button
             type="button"
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-[var(--surface-3)]/50 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-surface-3/50 transition-colors"
             onClick={handleShowBackups}
           >
             <svg
@@ -234,25 +234,25 @@ export default function BackupMenu() {
       )}
 
       {open && showBackups && (
-        <div className="absolute top-full right-0 mt-1 z-50 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-2 min-w-[260px] max-h-[300px] overflow-y-auto">
+        <div className="absolute top-full right-0 mt-1 z-50 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-2 min-w-[260px] max-h-[300px] overflow-y-auto">
           <div className="flex items-center justify-between mb-2 px-1">
-            <span className="text-xs text-[var(--deep-text)]/70">可用备份 ({backups.length})</span>
+            <span className="text-xs text-deep-text/70">可用备份 ({backups.length})</span>
             <button type="button" className="btn btn-ghost btn-xs" onClick={() => setShowBackups(false)}>
               返回
             </button>
           </div>
           {backups.length === 0 ? (
-            <p className="text-xs text-[var(--deep-text)]/50 px-1 py-4 text-center">暂无备份</p>
+            <p className="text-xs text-deep-text/50 px-1 py-4 text-center">暂无备份</p>
           ) : (
             backups.map((b) => (
               <button
                 key={b.id}
                 type="button"
-                className="flex items-center justify-between w-full px-2 py-1.5 text-xs rounded hover:bg-[var(--surface-3)]/50 transition-colors"
+                className="flex items-center justify-between w-full px-2 py-1.5 text-xs rounded hover:bg-surface-3/50 transition-colors"
                 onClick={() => handleRestore(b.docId, b.title)}
               >
                 <span className="truncate">{b.title}</span>
-                <span className="text-[var(--deep-text)]/50 shrink-0 ml-2">
+                <span className="text-deep-text/50 shrink-0 ml-2">
                   {new Date(b.timestamp).toLocaleString('zh-CN', {
                     month: 'short',
                     day: 'numeric',

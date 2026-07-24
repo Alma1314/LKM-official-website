@@ -1,6 +1,6 @@
 <template>
   <form v-if="!submitted" @submit.prevent="handleSubmit" class="space-y-4">
-    <p class="text-sm text-[var(--text-muted)] text-center">仅用户名 + 密码，无需绑定邮箱/手机</p>
+    <p class="text-sm text-text-muted text-center">仅用户名 + 密码，无需绑定邮箱/手机</p>
     <div>
       <label class="label pb-1" for="reg-local-username">
         <span class="label-text font-medium">用户名</span>
@@ -14,7 +14,7 @@
         placeholder="请输入用户名(至少3位)"
         @input="errors.username = ''"
       />
-      <span v-if="errors.username" class="label-text-alt text-[var(--error)]">{{ errors.username }}</span>
+      <span v-if="errors.username" class="label-text-alt text-error">{{ errors.username }}</span>
     </div>
     <div>
       <label class="label pb-1" for="reg-local-password">
@@ -29,7 +29,7 @@
         placeholder="请输入密码（至少6位）"
         @input="errors.password = ''"
       />
-      <span v-if="errors.password" class="label-text-alt text-[var(--error)]">{{ errors.password }}</span>
+      <span v-if="errors.password" class="label-text-alt text-error">{{ errors.password }}</span>
     </div>
     <div>
       <label class="label pb-1" for="reg-local-confirm">
@@ -44,7 +44,7 @@
         placeholder="再次输入密码（至少6位）"
         @input="errors.confirmPassword = ''"
       />
-      <span v-if="errors.confirmPassword" class="label-text-alt text-[var(--error)]">{{ errors.confirmPassword }}</span>
+      <span v-if="errors.confirmPassword" class="label-text-alt text-error">{{ errors.confirmPassword }}</span>
     </div>
     <div v-if="submitError" class="alert alert-error text-sm">{{ submitError }}</div>
     <button type="submit" class="btn btn-primary w-full">注册本地账户</button>
@@ -53,7 +53,7 @@
   <div v-else class="text-center space-y-4">
     <div class="flex justify-center">
       <svg
-        class="w-14 h-14 text-[var(--success)]"
+        class="w-14 h-14 text-success"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -66,7 +66,7 @@
       </svg>
     </div>
     <p class="font-semibold text-lg">本地账户注册成功</p>
-    <p class="text-sm text-[var(--text-muted)]">账户等级：<span class="badge badge-sm">本地账户</span></p>
+    <p class="text-sm text-text-muted">账户等级：<span class="badge badge-sm">本地账户</span></p>
     <div class="alert alert-info text-sm text-left">
       <span>本地账户功能受限：不可找回密码、不支持 2FA。绑定邮箱或手机号可自动升级为普通账户。</span>
     </div>

@@ -149,7 +149,7 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
   return (
     <>
       {/* Desktop: side panel */}
-      <div className="hidden md:block w-64 border-l border-[var(--surface-3)] bg-[var(--page-bg)]/50 p-4 overflow-y-auto">{content}</div>
+      <div className="hidden md:block w-64 border-l border-surface-3 bg-page-bg/50 p-4 overflow-y-auto">{content}</div>
       {/* Mobile: bottom drawer */}
       {mobileOpen && (
         <div className="md:hidden property-panel-mobile p-4">
