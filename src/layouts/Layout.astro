@@ -2,6 +2,8 @@
 import '~/styles/tailwind.css';
 
 import { I18N } from 'astrowind:config';
+import { siteConfig } from '~/config';
+
 import 'katex/dist/katex.min.css';
 import CommonMeta from '~/components/common/CommonMeta.astro';
 import Favicons from '~/components/Favicons.astro';
@@ -30,6 +32,13 @@ const baseUrl = import.meta.env.BASE_URL;
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <CommonMeta />
+    <script is:inline define:vars={{ configHue: siteConfig.themeColor.hue }}>
+      // 在首次渲染前设置主题色相，避免颜色闪烁
+      (function() {
+        var hue = localStorage.getItem('hue') || configHue;
+        document.documentElement.style.setProperty('--hue', hue);
+      })();
+    </script>
     <Favicons />
     <CustomStyles />
     <ApplyColorMode />

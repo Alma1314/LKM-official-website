@@ -54,6 +54,16 @@
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/* 主题色驱动：daisyui primary/accent 跟随 --hue */
+:root {
+  --color-primary: oklch(0.55 0.18 var(--hue));
+  --color-accent: oklch(0.55 0.18 var(--hue));
+}
+:root:where([data-theme='dark']) {
+  --color-primary: oklch(0.7 0.14 var(--hue));
+  --color-accent: oklch(0.7 0.14 var(--hue));
+}
+
 @theme {
   /* ── 字体系统 ──
      Apple 优先 SF Pro → 中文保留 Noto Sans SC */
@@ -264,8 +274,8 @@
   background: light-dark(rgba(255, 255, 255, 0.95), rgba(10, 10, 12, 0.92));
   border-radius: 16px;
   box-shadow:
-    0 8px 32px 0 rgba(31, 38, 135, 0.12),
-    0 0 0 0px rgba(99, 102, 241, 0);
+    0 8px 32px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
+    0 0 0 0px transparent;
   overflow: hidden;
 }
 
@@ -281,12 +291,12 @@
 
 .profile-card:hover {
   box-shadow:
-    0 16px 48px 0 rgba(31, 38, 135, 0.25),
-    0 0 0 2px rgba(99, 102, 241, 0.3);
+    0 16px 48px 0 color-mix(in srgb, var(--color-primary) 25%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
 .profile-card:hover img {
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
 @utility card-hover {
