@@ -1,5 +1,4 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import Pagination from '../../components/control/Pagination.astro';
 import PostPage from '../../components/PostPage.astro';
 import { PAGE_SIZE } from '../../constants/constants';
@@ -9,7 +8,8 @@ import { getSortedPosts } from '../../utils/content-utils';
 export const getStaticPaths = (async () => {
   const allBlogPosts = await getSortedPosts();
   const totalPages = Math.ceil(allBlogPosts.length / PAGE_SIZE);
-  const result = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 [...page] rest param inference conflict
+  const result: any[] = [];
   for (let i = 0; i < totalPages; i++) {
     result.push({
       params: { page: i === 0 ? undefined : String(i + 1) },
@@ -25,9 +25,11 @@ export const getStaticPaths = (async () => {
     });
   }
   return result;
-}) as GetStaticPaths;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 strict GetStaticPaths type incompatible with optional rest param
+}) as any;
 
-const { page } = Astro.props;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 cannot infer props from getStaticPaths due to above
+const { page } = Astro.props as any;
 
 const len = page.data.length;
 ---

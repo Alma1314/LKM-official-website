@@ -41,14 +41,16 @@ interface AnalyticsConfig {
   vendors: { googleAnalytics: { id?: string } };
 }
 
-const data = yaml.load(rawYaml) as Record<string, unknown>;
-const site = (data.site as Record<string, unknown>) ?? {};
-const i18n = (data.i18n as Record<string, unknown>) ?? {};
-const metadata = (data.metadata as Record<string, unknown>) ?? {};
-const apps = (data.apps as Record<string, unknown>) ?? {};
-const blog = (apps.blog as Record<string, unknown>) ?? {};
-const uiCfg = (data.ui as Record<string, unknown>) ?? {};
-const analyticsCfg = (data.analytics as Record<string, unknown>) ?? {};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const data: any = yaml.load(rawYaml);
+
+const site = data.site ?? {};
+const i18n = data.i18n ?? {};
+const metadata = data.metadata ?? {};
+const apps = data.apps ?? {};
+const blog = apps.blog ?? {};
+const uiCfg = data.ui ?? {};
+const analyticsCfg = data.analytics ?? {};
 
 export const SITE: SiteConfig = {
   name: site.name ?? 'Website',
@@ -77,9 +79,9 @@ export const METADATA: MetaDataConfig = {
     type: metadata.openGraph?.type ?? 'website',
     site_name: metadata.openGraph?.site_name,
     images: (metadata.openGraph?.images as Array<Record<string, unknown>> | undefined)?.map((img) => ({
-      url: img.url,
-      width: img.width,
-      height: img.height,
+      url: img.url as string,
+      width: img.width as number,
+      height: img.height as number,
     })),
   },
   twitter: {

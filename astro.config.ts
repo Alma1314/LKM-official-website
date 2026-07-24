@@ -10,6 +10,7 @@ import vue from '@astrojs/vue';
 import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import node from '@astrojs/node';
+import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
@@ -158,10 +159,8 @@ export default defineConfig({
   },
 
   vite: {
-    // tailwindcss() plugin temporarily disabled due to vite@8 compatibility
-    // Tailwind v4 works via CSS @import "tailwindcss" in stylesheets
-    // 插件：禁止 yaml 文件被当作模块导入
     plugins: [
+      tailwindcss(),
       {
         name: 'exclude-yaml',
         resolveId(id) {

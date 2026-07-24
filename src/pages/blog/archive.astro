@@ -9,5 +9,6 @@ const sortedPostsList = await getSortedPostsList();
 ---
 
 <MainGridLayout title={i18n(I18nKey.archive)}>
-  <ArchivePanel sortedPosts={sortedPostsList as unknown as Array<{ slug: string; data: { title: string; tags: string[]; category?: string; published: Date } }>} client:only="svelte" />
+  <!-- @ts-expect-error - client:only Svelte component infers props type from component file -->
+  <ArchivePanel tags={[]} categories={[]} sortedPosts={sortedPostsList} client:only="svelte" />
 </MainGridLayout>
