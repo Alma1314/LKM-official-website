@@ -69,3 +69,51 @@ analytics:
 
 ui:
   theme: 'system'
+
+# Fuwari blog theme configuration
+fuwari:
+  site:
+    title: 理科迷LKM
+    subtitle: 科技爱好者社区
+    lang: zh_CN
+    themeColor:
+      hue: 250
+      fixed: false
+    banner:
+      enable: false
+      src: assets/images/demo-banner.png
+      position: center
+      credit:
+        enable: false
+        text: ''
+        url: ''
+    toc:
+      enable: true
+      depth: 2
+    favicon: []
+
+  navbar:
+    links:
+      - preset: Home
+      - preset: Archive
+      - preset: About
+      - name: GitHub
+        url: https://github.com/LKM-AHZ
+        external: true
+
+  profile:
+    avatar: assets/images/demo-avatar.png
+    name: 理科迷LKM
+    bio: 创立于 2014 年的科技爱好者社区
+    links:
+      - name: GitHub
+        icon: fa6-brands:github
+        url: https://github.com/LKM-AHZ
+
+  license:
+    enable: true
+    name: CC BY-NC-SA 4.0
+    url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+  expressiveCode:
+    theme: github-dark
