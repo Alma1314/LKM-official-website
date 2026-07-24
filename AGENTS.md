@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Tailwind CSS v4** 构建。它以 SSR 模式运行（`@astrojs/node` standalone），针对性能、SEO 和无障碍访问进行了优化。
+AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Tailwind CSS v4** 构建。它以静态生成为主（`output: 'static'`），管理后台通过 `@astrojs/node` 保留服务器渲染能力，针对性能、SEO 和无障碍访问进行了优化。
 
 **技术栈：** Astro v6 | Tailwind CSS v4 | TypeScript 5.9 | MDX | Sharp
 
