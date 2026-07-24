@@ -25,7 +25,7 @@ export const getStaticPaths = (async () => {
     });
   }
   return result;
-}) satisfies GetStaticPaths;
+}) as GetStaticPaths;
 
 const { page } = Astro.props;
 

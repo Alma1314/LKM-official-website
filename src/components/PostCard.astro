@@ -30,7 +30,6 @@ const hasCover = image !== undefined && image !== null && image !== '';
 const coverWidth = '28%';
 
 const rendered = await render(entry);
-// @ts-expect-error - remark plugins inject frontmatter on the rendered result
 const remarkPluginFrontmatter = rendered.remarkPluginFrontmatter || { words: 0, minutes: 0, excerpt: '' };
 ---
 

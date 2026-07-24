@@ -31,7 +31,14 @@
   --radius-xl: 16px; /* 大面板/图片 */
   --radius-pill: 9999px;
 
-  /* ── 主题色 Token — 让 Tailwind 识别 bg-[var(--*)] 中的 CSS 变量 ── */
+  /* ── 主题色 Token — 让 Tailwind 识别语义化颜色工具类 ── */
+  --color-base-100: var(--base-100);
+  --color-base-200: var(--base-200);
+  --color-base-300: var(--base-300);
+  --color-base-content: var(--base-content);
+  --color-neutral: var(--neutral);
+  --color-neutral-content: var(--neutral-content);
+  --color-primary-content: var(--primary-content);
   --color-card-bg: var(--card-bg);
   --color-page-bg: var(--page-bg);
   --color-surface-3: var(--surface-3);

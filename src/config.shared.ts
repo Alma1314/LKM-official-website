@@ -42,13 +42,13 @@ interface AnalyticsConfig {
 }
 
 const data = yaml.load(rawYaml) as Record<string, unknown>;
-const site = data.site ?? {};
-const i18n = data.i18n ?? {};
-const metadata = data.metadata ?? {};
-const apps = data.apps ?? {};
-const blog = apps.blog ?? {};
-const uiCfg = data.ui ?? {};
-const analyticsCfg = data.analytics ?? {};
+const site = (data.site as Record<string, unknown>) ?? {};
+const i18n = (data.i18n as Record<string, unknown>) ?? {};
+const metadata = (data.metadata as Record<string, unknown>) ?? {};
+const apps = (data.apps as Record<string, unknown>) ?? {};
+const blog = (apps.blog as Record<string, unknown>) ?? {};
+const uiCfg = (data.ui as Record<string, unknown>) ?? {};
+const analyticsCfg = (data.analytics as Record<string, unknown>) ?? {};
 
 export const SITE: SiteConfig = {
   name: site.name ?? 'Website',

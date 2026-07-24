@@ -6,6 +6,15 @@
 
 /* ===== 浅色主题 ===== */
 :root {
+  /* 基础语义色 */
+  --base-100: #ffffff;
+  --base-200: #f5f5f7;
+  --base-300: #e0e0e0;
+  --base-content: #1d1d1f;
+  --neutral: #7a7a7a;
+  --neutral-content: #ffffff;
+  --primary-content: #ffffff;
+
   /* fuwari 原有变量 */
   --primary: oklch(0.7 0.14 var(--hue));
   --page-bg: oklch(0.95 0.01 var(--hue));
@@ -103,6 +112,15 @@
 
 /* ===== 深色主题 ===== */
 :root.dark {
+  /* 基础语义色（深色） */
+  --base-100: #010102;
+  --base-200: #0f1011;
+  --base-300: #141516;
+  --base-content: #f7f8f8;
+  --neutral: #8a8f98;
+  --neutral-content: #010102;
+  --primary-content: #ffffff;
+
   /* fuwari 原有变量（深色） */
   --primary: oklch(0.75 0.14 var(--hue));
   --page-bg: oklch(0.16 0.014 var(--hue));

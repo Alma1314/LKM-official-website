@@ -5,7 +5,9 @@
     "strictNullChecks": true,
     "allowJs": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "~/*": ["src/*"]
+    }
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist/", "reference/"]

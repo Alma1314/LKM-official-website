@@ -2,7 +2,7 @@
 import { ANALYTICS } from '../../config.shared';
 
 const id = ANALYTICS?.vendors?.googleAnalytics?.id ? String(ANALYTICS.vendors.googleAnalytics.id) : '';
-const partytown = !!ANALYTICS?.vendors?.googleAnalytics?.partytown;
+const partytown = !!(ANALYTICS?.vendors?.googleAnalytics as Record<string, unknown> | undefined)?.partytown;
 const scriptType = partytown ? 'text/partytown' : undefined;
 ---
 

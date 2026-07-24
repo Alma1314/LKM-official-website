@@ -13,6 +13,7 @@ import node from '@astrojs/node';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
+import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { remarkExcerpt } from './src/plugins/remark-excerpt.js';
@@ -106,7 +107,7 @@ export default defineConfig({
         remarkGithubAdmonitionsToDirectives,
         remarkDirective,
         remarkSectionize,
-        parseDirectiveNode,
+        parseDirectiveNode as unknown as RemarkPlugin,
       ],
       rehypePlugins: [
         rehypeKatex,

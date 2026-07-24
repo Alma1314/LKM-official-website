@@ -34,7 +34,6 @@ const rendered = await render(entry);
 const { Content } = rendered;
 const headings = rendered.headings || [];
 
-// @ts-expect-error - remark plugins inject frontmatter on the rendered result
 const remarkPluginFrontmatter = rendered.remarkPluginFrontmatter || { words: 0, minutes: 0, excerpt: '' };
 
 const slug = getEntrySlug(entry);
