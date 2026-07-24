@@ -13,11 +13,8 @@ export function handleExportPdf(editor: Editor): void {
     return;
   }
 
-  printWindow.document.open();
-  printWindow.document.writeln(
-    '<!DOCTYPE html><html><head><meta charset="utf-8"><title>导出 PDF</title></head><body><div id="pdf-root"></div></body></html>'
-  );
-  printWindow.document.close();
+  printWindow.document.documentElement.innerHTML =
+    '<head><meta charset="utf-8"><title>导出 PDF</title></head><body><div id="pdf-root"></div></body>';
 
   setTimeout(() => {
     const rootEl = printWindow.document.getElementById('pdf-root');
