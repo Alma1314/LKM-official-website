@@ -24,7 +24,7 @@ export function serializeMDAST(root: Root, frontmatter: Record<string, unknown>)
   const tree: Root = { ...root, children: [...root.children] };
 
   if (fmKeys.length > 0) {
-    const yamlStr = yaml.dump(frontmatter, { lineWidth: -1, quotingType: '"' });
+    const yamlStr = yaml.dump(frontmatter, { lineWidth: -1 });
     tree.children.unshift({
       type: 'yaml',
       value: yamlStr.replace(/\n$/, ''),
