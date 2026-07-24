@@ -6,7 +6,15 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@i18n/*": ["src/i18n/*"],
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@types/*": ["src/types/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

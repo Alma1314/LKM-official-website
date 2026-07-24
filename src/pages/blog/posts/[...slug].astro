@@ -1,4 +1,5 @@
 ---
+import { type CollectionEntry, render } from "astro:content";
 import path from "node:path";
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
@@ -14,18 +15,29 @@ import PostMetadata from "../../../components/PostMeta.astro";
 import { profileConfig, siteConfig } from "../../../config";
 import { formatDateToYYYYMMDD } from "../../../utils/date-utils";
 
+function getEntrySlug(entry: CollectionEntry<"posts">): string {
+	return entry.id.replace(/^posts\//, "").replace(/\.(md|mdx)$/, "");
+}
+
+// workaround: Astro v6 SSG hoists getStaticPaths out of the component scope,
+// so inline the slug logic to avoid reference errors
 export async function getStaticPaths() {
-	const blogEntries = await getSortedPosts();
-	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
+	const entries = await getSortedPosts();
+	return entries.map((entry: CollectionEntry<"posts">) => ({
+		params: { slug: entry.id.replace(/^posts\//, "").replace(/\.(md|mdx)$/, "") },
 		props: { entry },
 	}));
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
+const rendered = await render(entry);
+const { Content } = rendered;
+const headings = rendered.headings || [];
 
-const { remarkPluginFrontmatter } = await entry.render();
+// @ts-expect-error - remark plugins inject frontmatter on the rendered result
+const remarkPluginFrontmatter = rendered.remarkPluginFrontmatter || { words: 0, minutes: 0, excerpt: "" };
+
+const slug = getEntrySlug(entry);
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -42,7 +54,6 @@ const jsonLd = {
 	inLanguage: entry.data.lang
 		? entry.data.lang.replace("_", "-")
 		: siteConfig.lang.replace("_", "-"),
-	// TODO include cover image here
 };
 ---
 <MainGridLayout banner={entry.data.image} title={entry.data.title} description={entry.data.description} lang={entry.data.lang} setOGTypeArticle={true} headings={headings}>
@@ -106,7 +117,7 @@ const jsonLd = {
                 <Content />
             </Markdown>
 
-            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
+            {licenseConfig.enable && <License title={entry.data.title} slug={slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
         </div>
     </div>

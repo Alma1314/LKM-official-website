@@ -19,19 +19,22 @@ function stripInvalidXmlChars(str: string): string {
 export async function GET(context: APIContext) {
 	const blog = await getSortedPosts();
 
+	const getSlug = (entry: any): string =>
+		entry.id.replace(/^posts\//, "").replace(/\.(md|mdx)$/, "");
+
 	return rss({
 		title: siteConfig.title,
 		description: siteConfig.subtitle || "No description",
 		site: context.site ?? "https://fuwari.vercel.app",
-		items: blog.map((post) => {
-			const content =
-				typeof post.body === "string" ? post.body : String(post.body || "");
+		items: blog.map((post: any) => {
+			const data: Record<string, any> = post.data || {};
+			const content = post.body ? String(post.body) : "";
 			const cleanedContent = stripInvalidXmlChars(content);
 			return {
-				title: post.data.title,
-				pubDate: post.data.published,
-				description: post.data.description || "",
-				link: url(`/posts/${post.slug}/`),
+				title: data.title,
+				pubDate: data.published,
+				description: data.description || "",
+				link: url(`/blog/posts/${getSlug(post)}/`),
 				content: sanitizeHtml(parser.render(cleanedContent), {
 					allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 				}),
