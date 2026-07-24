@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import {
   getThreads,
   addReply,
@@ -14,7 +14,7 @@ interface CommentPanelProps {
   onHighlightClick: (range: { from: number; to: number }) => void;
 }
 
-export default function CommentPanel({ documentId, onClose, onHighlightClick }: CommentPanelProps) {
+const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlightClick }: CommentPanelProps) {
   const [threads, setThreads] = useState<CommentThread[]>([]);
   const [replyInput, setReplyInput] = useState<Record<string, string>>({});
 
@@ -140,4 +140,6 @@ export default function CommentPanel({ documentId, onClose, onHighlightClick }: 
       </div>
     </div>
   );
-}
+});
+
+export default CommentPanel;

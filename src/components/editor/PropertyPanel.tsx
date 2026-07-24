@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface PropertyPanelProps {
@@ -7,7 +7,7 @@ interface PropertyPanelProps {
 
 const EDITABLE_NODE_TYPES = ['callout', 'figure', 'image'];
 
-export default function PropertyPanel({ editor }: PropertyPanelProps) {
+const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps) {
   const [selectedNode, setSelectedNode] = useState<{
     type: string;
     attrs: Record<string, unknown>;
@@ -164,4 +164,6 @@ export default function PropertyPanel({ editor }: PropertyPanelProps) {
       )}
     </>
   );
-}
+});
+
+export default PropertyPanel;

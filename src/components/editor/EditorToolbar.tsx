@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, memo } from 'react';
 import type { ReactNode } from 'react';
 import type { Editor } from '@tiptap/core';
 import EditorToolbarButton from './EditorToolbarButton';
@@ -657,31 +657,29 @@ interface EditorToolbarProps {
   editor: Editor;
 }
 
-function renderToolbarButton(editor: Editor, item: ToolbarItemDef) {
-  return (
-    <EditorToolbarButton
-      key={item.key}
-      icon={item.icon}
-      label={item.label}
-      title={item.title}
-      isActive={item.isActive(editor)}
-      onClick={() => item.action(editor)}
-    />
-  );
-}
-
-export default function EditorToolbar({ editor }: EditorToolbarProps) {
+export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const mobileBarRef = useRef<HTMLDivElement>(null);
 
-  // 移动端：当前激活按钮变化时自动滚动到可视区域
+  // 移动端：当前激活按钮变化时自动滚动到可视区域（rAF 防抖）
   useEffect(() => {
     const bar = mobileBarRef.current;
     if (!bar || window.innerWidth >= 768) return;
-    const activeBtn = bar.querySelector('.btn-active') as HTMLElement | null;
-    if (activeBtn) {
-      activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-    }
+    let raf: number | null = null;
+    let pending = false;
+    const scrollActive = () => {
+      if (!pending) return;
+      pending = false;
+      const activeBtn = bar.querySelector('.btn-active') as HTMLElement | null;
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      }
+    };
+    pending = true;
+    raf = requestAnimationFrame(scrollActive);
+    return () => {
+      if (raf !== null) cancelAnimationFrame(raf);
+    };
   }, [editor.state.selection]);
 
   const desktopContent = useMemo(
@@ -694,7 +692,16 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
             key={group}
             className="flex items-center gap-0.5 border-r border-base-300 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
           >
-            {items.map((item) => renderToolbarButton(editor, item))}
+            {items.map((item) => (
+              <EditorToolbarButton
+                key={item.key}
+                icon={item.icon}
+                label={item.label}
+                title={item.title}
+                isActive={item.isActive(editor)}
+                onClick={() => item.action(editor)}
+              />
+            ))}
           </div>
         );
       }),
@@ -711,7 +718,16 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
             key={group}
             className="flex items-center gap-0.5 shrink-0 border-r border-base-300 pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
           >
-            {items.map((item) => renderToolbarButton(editor, item))}
+            {items.map((item) => (
+              <EditorToolbarButton
+                key={item.key}
+                icon={item.icon}
+                label={item.label}
+                title={item.title}
+                isActive={item.isActive(editor)}
+                onClick={() => item.action(editor)}
+              />
+            ))}
           </div>
         );
       }),
@@ -724,7 +740,16 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
         <div key={group} className="mb-1 last:mb-0">
           <div className="text-xs text-base-content/50 px-1 mb-0.5">{group === 'component' ? '组件' : '操作'}</div>
           <div className="flex flex-wrap gap-0.5">
-            {ITEMS.filter((i) => i.group === group).map((item) => renderToolbarButton(editor, item))}
+            {ITEMS.filter((i) => i.group === group).map((item) => (
+              <EditorToolbarButton
+                key={item.key}
+                icon={item.icon}
+                label={item.label}
+                title={item.title}
+                isActive={item.isActive(editor)}
+                onClick={() => item.action(editor)}
+              />
+            ))}
           </div>
         </div>
       )),
@@ -768,4 +793,4 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
       </div>
     </div>
   );
-}
+});

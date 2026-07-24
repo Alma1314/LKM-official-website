@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface SlashItem {
@@ -146,7 +146,7 @@ interface SlashMenuProps {
   onSelect: () => void;
 }
 
-export default function SlashMenu({ editor, query, position, onClose, onSelect }: SlashMenuProps) {
+const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, onSelect }: SlashMenuProps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -156,25 +156,29 @@ export default function SlashMenu({ editor, query, position, onClose, onSelect }
     [q]
   );
 
+  const filteredRef = useRef(filtered);
+  filteredRef.current = filtered;
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      const currentFiltered = filteredRef.current;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIdx((i) => Math.min(i + 1, filtered.length - 1));
+        setSelectedIdx((i) => Math.min(i + 1, currentFiltered.length - 1));
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         setSelectedIdx((i) => Math.max(i - 1, 0));
       } else if (e.key === 'Enter') {
         e.preventDefault();
-        if (filtered[selectedIdx]) {
-          filtered[selectedIdx].action(editor);
+        if (currentFiltered[selectedIdx]) {
+          currentFiltered[selectedIdx].action(editor);
           onSelect();
         }
       } else if (e.key === 'Escape') {
         onClose();
       }
     },
-    [editor, filtered, selectedIdx, onSelect, onClose]
+    [editor, selectedIdx, onSelect, onClose]
   );
 
   useEffect(() => {
@@ -218,6 +222,8 @@ export default function SlashMenu({ editor, query, position, onClose, onSelect }
       </div>
     </div>
   );
-}
+});
+
+export default SlashMenu;
 
 export { ITEMS as SLASH_ITEMS };

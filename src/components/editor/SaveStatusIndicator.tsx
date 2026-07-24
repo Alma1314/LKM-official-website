@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { SaveStatus } from '~/editor/types';
 
 const STATUS_CONFIG: Record<SaveStatus, { label: string; className: string; dot: string }> = {
@@ -14,7 +15,7 @@ interface SaveStatusIndicatorProps {
   wordCount?: number;
 }
 
-export default function SaveStatusIndicator({ status, charCount, wordCount }: SaveStatusIndicatorProps) {
+const SaveStatusIndicator = memo(function SaveStatusIndicator({ status, charCount, wordCount }: SaveStatusIndicatorProps) {
   const config = STATUS_CONFIG[status];
 
   return (
@@ -27,4 +28,5 @@ export default function SaveStatusIndicator({ status, charCount, wordCount }: Sa
       </span>
     </div>
   );
-}
+});
+export default SaveStatusIndicator;

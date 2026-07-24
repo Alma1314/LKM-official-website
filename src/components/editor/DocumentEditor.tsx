@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, Suspense, lazy } from 'react';
+import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
 import FullscreenButton from './FullscreenButton';
 import CommentPanel from './CommentPanel';
 import { addThread } from '~/lib/comment-store';
@@ -341,11 +341,21 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     [editor, docId, triggerSave]
   );
 
-  // 用 pretext 纯 JS 计算字数/字符数，避免 DOM 遍历
-  const metrics = useMemo(() => {
-    if (!editor) return { characters: 0, words: 0 };
-    return computeTextMetrics(editor.getJSON() as Record<string, unknown>);
+  // rAF 延迟计算 metrics，避免同步递归遍历阻塞输入
+  const [metrics, setMetrics] = useState({ characters: 0, words: 0 });
+  const metricsRafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!editor) return;
+    if (metricsRafRef.current) cancelAnimationFrame(metricsRafRef.current);
+    metricsRafRef.current = requestAnimationFrame(() => {
+      setMetrics(computeTextMetrics(editor.getJSON() as Record<string, unknown>));
+    });
+    return () => {
+      if (metricsRafRef.current) cancelAnimationFrame(metricsRafRef.current);
+    };
   }, [editor?.state.doc]);
+
   const charCount = metrics.characters;
   const wordCount = metrics.words;
 

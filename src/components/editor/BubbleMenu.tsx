@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, memo } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface BubbleMenuWrapperProps {
@@ -6,7 +6,7 @@ interface BubbleMenuWrapperProps {
   onComment?: (from: number, to: number, text: string) => void;
 }
 
-export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapperProps) {
+const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapperProps) {
   const [show, setShow] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -171,4 +171,6 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
       )}
     </div>
   );
-}
+});
+
+export default BubbleMenuWrapper;

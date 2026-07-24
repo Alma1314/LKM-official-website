@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { EditorMode } from '~/editor/types';
 
 interface ModeTabsProps {
@@ -11,7 +12,7 @@ const TABS: { mode: EditorMode; label: string }[] = [
   { mode: 'preview', label: '预览' },
 ];
 
-export default function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
+const ModeTabs = memo(function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
   return (
     <div className="flex items-center gap-0 border-l border-base-300 pl-3 ml-2">
       <div className="tabs tabs-boxed tabs-sm">
@@ -28,4 +29,6 @@ export default function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
       </div>
     </div>
   );
-}
+});
+
+export default ModeTabs;

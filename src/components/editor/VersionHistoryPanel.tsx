@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { getVersions, getVersion, type VersionEntry } from '~/lib/version-store';
 
 interface VersionHistoryPanelProps {
@@ -7,7 +7,7 @@ interface VersionHistoryPanelProps {
   onClose: () => void;
 }
 
-export default function VersionHistoryPanel({ documentId, onRestore, onClose }: VersionHistoryPanelProps) {
+const VersionHistoryPanel = memo(function VersionHistoryPanel({ documentId, onRestore, onClose }: VersionHistoryPanelProps) {
   const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<VersionEntry | null>(null);
 
@@ -72,4 +72,6 @@ export default function VersionHistoryPanel({ documentId, onRestore, onClose }: 
       )}
     </div>
   );
-}
+});
+
+export default VersionHistoryPanel;
