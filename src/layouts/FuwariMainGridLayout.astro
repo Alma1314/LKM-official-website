@@ -1,7 +1,7 @@
 ---
 import BackToTop from "@components/control/BackToTop.astro";
-import Footer from "@components/Footer.astro";
-import Navbar from "@components/Navbar.astro";
+import Footer from "../components/FuwariFooter.astro";
+import Navbar from "../components/FuwariNavbar.astro";
 import SideBar from "@components/widget/SideBar.astro";
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
@@ -13,7 +13,7 @@ import {
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
-import Layout from "./Layout.astro";
+import Layout from "./FuwariLayout.astro";
 
 interface Props {
 	title?: string;

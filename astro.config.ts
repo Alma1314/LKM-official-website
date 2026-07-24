@@ -133,6 +133,14 @@ export default defineConfig({
     resolve: {
       alias: {
         '~': path.resolve(__dirname, './src'),
+        '@components': path.resolve(__dirname, './src/components'),
+        '@layouts': path.resolve(__dirname, './src/layouts'),
+        '@i18n': path.resolve(__dirname, './src/i18n'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@constants': path.resolve(__dirname, './src/constants'),
+        '@plugins': path.resolve(__dirname, './src/plugins'),
+        '@types': path.resolve(__dirname, './src/types'),
+        '@/config': path.resolve(__dirname, './src/config.ts'),
       },
     },
   },

@@ -1,0 +1,38 @@
+---
+import type { GetStaticPaths } from "astro";
+import Pagination from "../../components/control/Pagination.astro";
+import PostPage from "../../components/PostPage.astro";
+import { PAGE_SIZE } from "../../constants/constants";
+import MainGridLayout from "../../layouts/FuwariMainGridLayout.astro";
+import { getSortedPosts } from "../../utils/content-utils";
+
+export const getStaticPaths = (async () => {
+	const allBlogPosts = await getSortedPosts();
+	const totalPages = Math.ceil(allBlogPosts.length / PAGE_SIZE);
+	const result = [];
+	for (let i = 0; i < totalPages; i++) {
+		result.push({
+			params: { page: i === 0 ? undefined : String(i + 1) },
+			props: {
+				page: {
+					data: allBlogPosts.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE),
+					currentPage: i + 1,
+					totalPages,
+					prev: i > 0 ? (i === 1 ? "/blog" : `/blog/page/${i}`) : undefined,
+					next: i < totalPages - 1 ? `/blog/page/${i + 2}` : undefined,
+				},
+			},
+		});
+	}
+	return result;
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+const len = page.data.length;
+---
+
+<MainGridLayout>
+    <PostPage page={page}></PostPage>
+    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+</MainGridLayout>
