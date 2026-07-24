@@ -19,7 +19,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   useEffect(() => {
     if (!showToolbar) return;
     const handler = (e: MouseEvent) => {
-      if (toolbarRef.current && !toolbarRef.current.contains(e.target as Node)) {
+      if (toolbarRef.current && !toolbarRef.current.contains(e.target as HTMLElement)) {
         setShowToolbar(false);
         setInlineMode(null);
       }
@@ -63,7 +63,10 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       />
 
       {showToolbar && (
-        <div ref={toolbarRef} className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1 max-w-[calc(100vw-2rem)]">
+        <div
+          ref={toolbarRef}
+          className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1 max-w-[calc(100vw-2rem)]"
+        >
           {/* Resize inputs */}
           <input
             type="number"

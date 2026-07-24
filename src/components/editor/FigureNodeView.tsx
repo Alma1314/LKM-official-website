@@ -17,7 +17,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
   useEffect(() => {
     if (!editing) return;
     const handler = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+      if (panelRef.current && !panelRef.current.contains(e.target as HTMLElement)) {
         setEditing(false);
       }
     };
@@ -78,7 +78,10 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
       {caption && <figcaption className="text-xs text-base-content/60 mt-1">{caption}</figcaption>}
 
       {editing && (
-        <div ref={panelRef} className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]">
+        <div
+          ref={panelRef}
+          className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]"
+        >
           <label className="text-xs font-medium block mb-1">图片地址</label>
           <input
             type="text"

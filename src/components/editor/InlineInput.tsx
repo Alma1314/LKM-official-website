@@ -32,7 +32,10 @@ export default function InlineInput({ placeholder, defaultValue = '', onConfirm,
   };
 
   return (
-    <div ref={containerRef} className="flex items-center gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1">
+    <div
+      ref={containerRef}
+      className="flex items-center gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1"
+    >
       <input
         ref={inputRef}
         type="text"

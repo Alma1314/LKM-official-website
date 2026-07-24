@@ -12,11 +12,11 @@ function readDrafts(): Record<string, DocumentData> {
   try {
     const raw = localStorage.getItem(DRAFTS_KEY);
     draftsCache = raw ? JSON.parse(raw) : {};
-    return draftsCache;
   } catch (err) {
     console.warn('[document-api] readDrafts 失败:', err);
-    return {};
+    draftsCache = {};
   }
+  return draftsCache ?? {};
 }
 
 function writeDrafts(drafts: Record<string, DocumentData>): void {
@@ -29,11 +29,11 @@ function readIndex(): DocumentMeta[] {
   try {
     const raw = localStorage.getItem(DRAFTS_INDEX_KEY);
     indexCache = raw ? JSON.parse(raw) : [];
-    return indexCache;
   } catch (err) {
     console.warn('[document-api] readIndex 失败:', err);
-    return [];
+    indexCache = [];
   }
+  return indexCache ?? [];
 }
 
 function writeIndex(index: DocumentMeta[]): void {

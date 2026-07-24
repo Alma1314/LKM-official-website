@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { Editor } from '@tiptap/core';
 import EditorToolbarButton from './EditorToolbarButton';
 
@@ -721,9 +722,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
     () =>
       GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
         <div key={group} className="mb-1 last:mb-0">
-          <div className="text-xs text-base-content/50 px-1 mb-0.5">
-            {group === 'component' ? '组件' : '操作'}
-          </div>
+          <div className="text-xs text-base-content/50 px-1 mb-0.5">{group === 'component' ? '组件' : '操作'}</div>
           <div className="flex flex-wrap gap-0.5">
             {ITEMS.filter((i) => i.group === group).map((item) => renderToolbarButton(editor, item))}
           </div>
@@ -734,9 +733,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
 
   return (
     <div className="bg-base-100/95 backdrop-blur-sm border-b border-base-300">
-      <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">
-        {desktopContent}
-      </div>
+      <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">{desktopContent}</div>
 
       <div ref={mobileBarRef} className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
         {mobileContent}

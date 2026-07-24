@@ -36,7 +36,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
   useEffect(() => {
     if (!editing) return;
     const handler = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+      if (panelRef.current && !panelRef.current.contains(e.target as HTMLElement)) {
         setEditing(false);
       }
     };
@@ -63,7 +63,10 @@ const CalloutNodeView = memo(function CalloutNodeView({
       </div>
 
       {editing && (
-        <div ref={panelRef} className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]">
+        <div
+          ref={panelRef}
+          className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
+        >
           <label className="text-xs font-medium block mb-1">类型</label>
           <select
             className="select select-bordered select-sm w-full mb-2"

@@ -43,7 +43,7 @@ class EditorErrorBoundary extends Component<Props, State> {
 
   render() {
     const { docId } = this.props;
-    const { error, retries } = this.state;
+    const { error, retries, errorVersion } = this.state;
 
     if (error) {
       if (retries < MAX_RETRIES) {
