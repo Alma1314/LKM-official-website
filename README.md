@@ -8,7 +8,7 @@
 [![Three.js](https://img.shields.io/badge/Three.js-0.178-000000?logo=threedotjs)](https://threejs.org)
 [![daisyUI](https://img.shields.io/badge/daisyUI-v5-5A0EF8?logo=daisyui)](https://daisyui.com)
 
-**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v6 + Tailwind CSS v4 构建的纯静态站点。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
+**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v6 + Tailwind CSS v4 构建，运行于 SSR 模式（`@astrojs/node` standalone）。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
 
 > 查看 [AGENTS.md](./AGENTS.md) 了解 AI Agent 工作指令。
 
@@ -49,12 +49,16 @@ pnpm run dev
 ├── public/                     # 静态资源
 ├── src/
 │   ├── assets/
-│   │   └── images/             # 本地图片、头像
+│   │   └── images/
+│   │       ├── member/         # 原始头像图片
+│   │       └── member-optimized/  # 优化后的 WebP 头像
 │   ├── styles/tailwind.css     # Tailwind v4 配置入口
 │   ├── components/
-│   │   ├── background/         # 可切换动态背景（13 种效果）
+│   │   ├── auth/               # 登录认证组件
+│   │   ├── background/         # 可切换动态背景（12 种效果）
 │   │   ├── blog/               # 博客组件
 │   │   ├── common/             # 通用组件（Image, Metadata, Analytics 等）
+│   │   ├── editor/             # 富文本编辑器组件（32 个 React 组件）
 │   │   ├── ui/                 # 基础 UI 组件
 │   │   └── widgets/            # 页面部件（Hero, Header, Footer 等）
 │   ├── content/
@@ -63,8 +67,13 @@ pnpm run dev
 │   ├── data/
 │   │   ├── members.ts          # 团队成员数据
 │   │   └── communities.ts      # 社群数据
+│   ├── db/                     # 数据库工具
+│   ├── editor/                 # 编辑器核心（扩展、MDX 转换、类型）
 │   ├── layouts/                # 页面布局
-│   ├── pages/                  # 文件路由
+│   ├── lib/                    # 工具库（自动保存、备份、版本、评论等 9 个模块）
+│   ├── pages/
+│   │   └── admin/documents/    # 文档管理后台（列表 + 富文本编辑器）
+│   ├── styles/                 # CSS 样式
 │   ├── utils/                  # 工具函数
 │   ├── config.yaml             # 站点主配置
 │   ├── content.config.ts       # 内容集合 Schema
@@ -92,6 +101,8 @@ pnpm run dev
 | 登录       | `/login`        | `pages/login.astro`          | PageLayout     |
 | 文档库     | `/docs`         | `pages/docs/`                | DocsLayout     |
 | 文档详情   | `/docs/<slug>`  | `pages/docs/[...slug].astro` | DocsLayout     |
+| 文档管理   | `/admin/documents`         | `pages/admin/documents/index.astro`  | PageLayout     |
+| 编辑器     | `/admin/documents/editor`  | `pages/admin/documents/editor.astro` | PageLayout     |
 | 隐私政策   | `/privacy`      | `pages/privacy.md`           | MarkdownLayout |
 | 使用条款   | `/terms`        | `pages/terms.md`             | MarkdownLayout |
 | 博客       | `/blog`         | `pages/[...blog]/`           | PageLayout     |
@@ -231,7 +242,7 @@ UI 层      src/components/ui/ (Button, Form, Headline, Timeline…)
   ↓
 Common 层  src/components/common/ (Image, Metadata, Analytics…)
   ↓
-背景层     src/components/background/ (13 种可切换动态背景，3D 核苷酸模型可拖拽)
+背景层     src/components/background/ (12 种可切换动态背景，3D 核苷酸模型可拖拽)
   ↓
 数据层     src/data/ + src/utils/
 ```
@@ -240,9 +251,10 @@ Common 层  src/components/common/ (Image, Metadata, Analytics…)
 
 ## 特性
 
-- **Astro v6** 静态站点生成，PageSpeed Insights 评分优秀
+- **Astro v6** SSR 模式 + 岛屿架构，PageSpeed Insights 评分优秀
 - **Tailwind CSS v4** 暗色模式 + 自定义主题
-- **13 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
+- **12 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
+- **富文本编辑器** — 基于 Tiptap 3 的 MDX 双向编辑器，支持 AI 助手、版本历史、评论、自动保存
 - **双 UI 框架** — Vue 3 + React 19
 - **View Transitions** SPA 风格页面切换
 - **博客系统** — MD/MDX、分类/标签、分页、KaTeX 公式

@@ -4,7 +4,7 @@
 @plugin 'daisyui';
 
 @plugin "daisyui/theme" {
-  name: 'lkm-light';
+  name: 'light';
   default: true;
   color-scheme: light;
   --color-base-100: #ffffff;
@@ -29,7 +29,7 @@
 }
 
 @plugin "daisyui/theme" {
-  name: 'lkm-dark';
+  name: 'dark';
   color-scheme: dark;
   --color-base-100: #010102;
   --color-base-200: #0f1011;
@@ -52,7 +52,7 @@
   --radius-selector: 6px;
 }
 
-@custom-variant dark (&:where([data-theme='lkm-dark'], [data-theme='lkm-dark'] *));
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 @theme {
   /* ── 字体系统 ──
@@ -339,12 +339,12 @@
 }
 
 /* Dark mode */
-:where([data-theme='lkm-dark']) .comment-highlight {
+:where([data-theme='dark']) .comment-highlight {
   background-color: rgba(250, 204, 21, 0.25);
   border-bottom-color: rgba(250, 204, 21, 0.6);
 }
 
-:where([data-theme='lkm-dark']) .comment-highlight-resolved {
+:where([data-theme='dark']) .comment-highlight-resolved {
   background-color: rgba(156, 163, 175, 0.15);
   border-bottom-color: rgba(156, 163, 175, 0.3);
 }

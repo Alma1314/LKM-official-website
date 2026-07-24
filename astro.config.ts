@@ -31,7 +31,7 @@ export default defineConfig({
   site: 'https://LKM-AHZ.github.io',
   base: '/LKM-official-website',
 
-  output: 'server',
+  output: 'static',
   adapter: node({
     mode: 'standalone',
   }),

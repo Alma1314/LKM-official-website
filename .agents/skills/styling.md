@@ -10,15 +10,15 @@
 
 | 主题        | 说明                |
 | ----------- | ------------------- |
-| `lkm-light` | 浅色主题（default） |
-| `lkm-dark`  | 深色主题            |
+| `light` | 浅色主题（default） |
+| `dark`  | 深色主题            |
 
 两个主题都在 `tailwind.css` 里用 `@plugin "daisyui/theme"` 块声明，通过 CSS
 变量（`--color-base-100`、`--color-primary` 等）定义配色。
 
 ### 主题切换机制
 
-主题靠 `<html data-theme="lkm-light|lkm-dark">` 属性驱动：
+主题靠 `<html data-theme="light|dark">` 属性驱动：
 
 - `ApplyColorMode.astro` 在页面加载时读取 `localStorage.theme` 并设置初始
   `data-theme`，避免 FOUC。
@@ -28,7 +28,7 @@
 `tailwind.css` 里注册了 `dark` 变体，映射到深色主题：
 
 ```css
-@custom-variant dark (&:where([data-theme='lkm-dark'], [data-theme='lkm-dark'] *));
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 ```
 
 日常样式优先用 daisyUI 语义色 class（见下），一般无需再手写 `dark:` 前缀。
@@ -76,12 +76,12 @@ header 背景、`WidgetWrapper.astro` 的 `isDark` 区块背景）。
 
 ## 修改配色
 
-编辑 `src/styles/tailwind.css` 中对应主题（`lkm-light` / `lkm-dark`）块里
+编辑 `src/styles/tailwind.css` 中对应主题（`light` / `dark`）块里
 的 CSS 变量：
 
 ```css
 @plugin "daisyui/theme" {
-  name: 'lkm-light';
+  name: 'light';
   --color-primary: #0066cc;
   --color-base-100: #ffffff;
   /* ... */
@@ -96,5 +96,5 @@ header 背景、`WidgetWrapper.astro` 的 `isDark` 区块背景）。
 
 ## 新增主题颜色
 
-1. 在两个主题块（`lkm-light` 与 `lkm-dark`）里都加对应 `--color-yourcolor`
+1. 在两个主题块（`light` 与 `dark`）里都加对应 `--color-yourcolor`
 2. 组件里以 `bg-yourcolor`、`text-yourcolor` 等语义 class 使用

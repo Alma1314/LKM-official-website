@@ -10,11 +10,11 @@ import { UI } from 'astrowind:config';
   window.basic_script = true;
 
   function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'lkm-dark' : 'lkm-light');
+    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
   }
 
   function updateToggleThemeIcon() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'lkm-dark';
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const toggle = document.querySelector('[data-aw-toggle-color-scheme]');
     if (toggle) {
       const useEl = toggle.querySelector('use');
@@ -103,10 +103,10 @@ import { UI } from 'astrowind:config';
           return;
         }
 
-        const isDark = document.documentElement.getAttribute('data-theme') === 'lkm-dark';
-        const next = isDark ? 'lkm-light' : 'lkm-dark';
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
-        localStorage.theme = next === 'lkm-dark' ? 'dark' : 'light';
+        localStorage.theme = next === 'dark' ? 'dark' : 'light';
         updateToggleThemeIcon();
       });
 

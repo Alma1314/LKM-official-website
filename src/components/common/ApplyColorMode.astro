@@ -6,7 +6,7 @@ import { UI } from 'astrowind:config';
 
 <script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
   function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'lkm-dark' : 'lkm-light');
+    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
     const matches = document.querySelectorAll('[data-aw-toggle-color-scheme] > input');
     if (matches && matches.length) {
       matches.forEach((elem) => {

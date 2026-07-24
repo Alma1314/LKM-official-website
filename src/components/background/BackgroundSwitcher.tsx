@@ -18,7 +18,7 @@ function getLazyComponent(id: string, load: () => Promise<{ default: ComponentTy
 
 function getIsDark(): boolean {
   if (typeof document === 'undefined') return true;
-  return document.documentElement.getAttribute('data-theme') === 'lkm-dark';
+  return document.documentElement.getAttribute('data-theme') === 'dark';
 }
 
 function getInitialBackground(): BackgroundId {

@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Tailwind CSS v4** 构建。它生成完全静态的站点，针对性能、SEO 和无障碍访问进行了优化。
+AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Tailwind CSS v4** 构建。它以 SSR 模式运行（`@astrojs/node` standalone），针对性能、SEO 和无障碍访问进行了优化。
 
 **技术栈：** Astro v6 | Tailwind CSS v4 | TypeScript 5.9 | MDX | Sharp
 
@@ -30,13 +30,18 @@ src/
     ui/            # 基础组件：Button, Headline, WidgetWrapper, ItemGrid
     widgets/       # 页面部件：Hero, Features, Pricing, Header, Footer
     blog/          # 博客组件：SinglePost, List, Pagination, Tags
-    background/    # 背景切换器、Canvas 和交互式背景组件
+    editor/        # 富文本编辑器组件（32 个 React 组件：EditorMount, DocumentEditor, EditorToolbar 等）
+    auth/          # 登录认证组件
+    background/    # 背景切换器、Canvas 和交互式背景组件（12 种效果）
     CustomStyles.astro  # 颜色和字体的 CSS 变量
+  editor/          # 编辑器核心层（Tiptap 扩展、MDX 双向转换、组件注册、类型定义）
+  lib/             # 工具库（autosave, backup-store, version-store, comment-store, document-api 等 9 个模块）
+  db/              # 数据库工具
   content.config.ts    # 内容集合 Schema（Astro v6 位置）
   content/             # 内容文件：post/、docs/（.md、.mdx）
   integrations/        # 自定义 Astro 集成（配置加载）
-  layouts/             # Layout.astro, PageLayout.astro, MarkdownLayout.astro
-  pages/               # 文件路由
+  layouts/             # Layout.astro, PageLayout.astro, SidebarLayout, MarkdownLayout, DocsLayout
+  pages/               # 文件路由（含 /admin/documents 管理后台）
   utils/               # blog.ts, images.ts, permalinks.ts, frontmatter.ts
   config.yaml          # 站点配置（作为虚拟模块加载）
   navigation.ts        # 导航结构

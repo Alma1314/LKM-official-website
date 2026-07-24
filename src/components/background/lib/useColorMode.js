@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const isDark = () =>
-  typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'lkm-dark';
+  typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
 
 export function useColorMode() {
   const [mode, setMode] = useState(() => (isDark() ? 'dark' : 'light'));

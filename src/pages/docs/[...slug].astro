@@ -7,8 +7,6 @@ import { Icon } from 'astro-icon/components';
 import { getPermalink } from '~/utils/permalinks';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 
-export const prerender = true;
-
 export const getStaticPaths = (async () => {
   const docs = await getCollection('docs', ({ data }) => {
     return import.meta.env.PROD ? data.draft !== true : true;

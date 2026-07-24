@@ -1,4 +1,4 @@
-/* CodeMirror 6 — Adapted for daisyUI lkm-light / lkm-dark themes */
+/* CodeMirror 6 — Adapted for daisyUI light / dark themes */
 
 /* Override the default CodeMirror scrollbar and gutter to match daisyUI */
 .cm-editor {
@@ -27,18 +27,18 @@
 }
 
 /* Dark mode overrides */
-:where([data-theme='lkm-dark']) .cm-editor {
+:where([data-theme='dark']) .cm-editor {
   @apply bg-base-300;
 }
 
-:where([data-theme='lkm-dark']) .cm-editor .cm-gutters {
+:where([data-theme='dark']) .cm-editor .cm-gutters {
   @apply bg-base-300/80 border-base-content/10 text-base-content/40;
 }
 
-:where([data-theme='lkm-dark']) .cm-editor .cm-activeLine {
+:where([data-theme='dark']) .cm-editor .cm-activeLine {
   @apply bg-base-200/20;
 }
 
-:where([data-theme='lkm-dark']) .cm-editor .cm-cursor {
+:where([data-theme='dark']) .cm-editor .cm-cursor {
   @apply border-base-content;
 }
