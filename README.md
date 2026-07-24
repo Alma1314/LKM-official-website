@@ -88,27 +88,27 @@ pnpm run dev
 
 ## 页面路由
 
-| 路由       | 路径            | 源文件                       | 布局           |
-| :--------- | :-------------- | :--------------------------- | :------------- |
-| 首页       | `/`             | `pages/index.astro`          | PageLayout     |
-| 管理团队   | `/team`         | `pages/team.astro`           | SidebarLayout  |
-| 项目团队   | `/project-team` | `pages/project-team.astro`   | SidebarLayout  |
-| 关于       | `/about`        | `pages/about.astro`          | SidebarLayout  |
-| 服务       | `/services`     | `pages/services.astro`       | SidebarLayout  |
-| 赞助与支持 | `/pricing`      | `pages/pricing.astro`        | SidebarLayout  |
-| 联系我们   | `/contact`      | `pages/contact.astro`        | SidebarLayout  |
-| QQ 社群    | `/communities`  | `pages/communities.astro`    | SidebarLayout  |
-| 登录       | `/login`        | `pages/login.astro`          | PageLayout     |
-| 文档库     | `/docs`         | `pages/docs/`                | DocsLayout     |
-| 文档详情   | `/docs/<slug>`  | `pages/docs/[...slug].astro` | DocsLayout     |
-| 文档管理   | `/admin/documents`         | `pages/admin/documents/index.astro`  | PageLayout     |
-| 编辑器     | `/admin/documents/editor`  | `pages/admin/documents/editor.astro` | PageLayout     |
-| 隐私政策   | `/privacy`      | `pages/privacy.md`           | MarkdownLayout |
-| 使用条款   | `/terms`        | `pages/terms.md`             | MarkdownLayout |
-| 博客       | `/blog`         | `pages/[...blog]/`           | PageLayout     |
-| 文章详情   | `/blog/<slug>`  | `pages/[...blog]/`           | PageLayout     |
-| 404        | `/404`          | `pages/404.astro`            | PageLayout     |
-| RSS        | `/rss.xml`      | `pages/rss.xml.ts`           | —              |
+| 路由       | 路径                      | 源文件                               | 布局           |
+| :--------- | :------------------------ | :----------------------------------- | :------------- |
+| 首页       | `/`                       | `pages/index.astro`                  | PageLayout     |
+| 管理团队   | `/team`                   | `pages/team.astro`                   | SidebarLayout  |
+| 项目团队   | `/project-team`           | `pages/project-team.astro`           | SidebarLayout  |
+| 关于       | `/about`                  | `pages/about.astro`                  | SidebarLayout  |
+| 服务       | `/services`               | `pages/services.astro`               | SidebarLayout  |
+| 赞助与支持 | `/pricing`                | `pages/pricing.astro`                | SidebarLayout  |
+| 联系我们   | `/contact`                | `pages/contact.astro`                | SidebarLayout  |
+| QQ 社群    | `/communities`            | `pages/communities.astro`            | SidebarLayout  |
+| 登录       | `/login`                  | `pages/login.astro`                  | PageLayout     |
+| 文档库     | `/docs`                   | `pages/docs/`                        | DocsLayout     |
+| 文档详情   | `/docs/<slug>`            | `pages/docs/[...slug].astro`         | DocsLayout     |
+| 文档管理   | `/admin/documents`        | `pages/admin/documents/index.astro`  | PageLayout     |
+| 编辑器     | `/admin/documents/editor` | `pages/admin/documents/editor.astro` | PageLayout     |
+| 隐私政策   | `/privacy`                | `pages/privacy.md`                   | MarkdownLayout |
+| 使用条款   | `/terms`                  | `pages/terms.md`                     | MarkdownLayout |
+| 博客       | `/blog`                   | `pages/[...blog]/`                   | PageLayout     |
+| 文章详情   | `/blog/<slug>`            | `pages/[...blog]/`                   | PageLayout     |
+| 404        | `/404`                    | `pages/404.astro`                    | PageLayout     |
+| RSS        | `/rss.xml`                | `pages/rss.xml.ts`                   | —              |
 
 ---
 
