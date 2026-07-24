@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 
+/* 确保 --hue 始终有初始值，防止 daisyui primary 色因 var(--hue) 未定义而失效 */
+@property --hue {
+  syntax: '<number>';
+  initial-value: 250;
+  inherits: true;
+}
+
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui';
 
@@ -13,11 +20,11 @@
   --color-base-content: #1d1d1f;
   --color-neutral: #7a7a7a;
   --color-neutral-content: #ffffff;
-  --color-primary: #0066cc;
+  --color-primary: oklch(0.55 0.18 var(--hue));
   --color-primary-content: #ffffff;
   --color-secondary: #1d1d1f;
   --color-secondary-content: #ffffff;
-  --color-accent: #0066cc;
+  --color-accent: oklch(0.55 0.18 var(--hue));
   --color-accent-content: #ffffff;
   --color-info: #38bdf8;
   --color-success: #22c55e;
@@ -37,11 +44,11 @@
   --color-base-content: #f7f8f8;
   --color-neutral: #8a8f98;
   --color-neutral-content: #010102;
-  --color-primary: #5e6ad2;
+  --color-primary: oklch(0.7 0.14 var(--hue));
   --color-primary-content: #ffffff;
   --color-secondary: #d0d6e0;
   --color-secondary-content: #010102;
-  --color-accent: #5e6ad2;
+  --color-accent: oklch(0.7 0.14 var(--hue));
   --color-accent-content: #ffffff;
   --color-info: #38bdf8;
   --color-success: #22c55e;
@@ -53,16 +60,6 @@
 }
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
-
-/* 主题色驱动：daisyui primary/accent 跟随 --hue */
-:root {
-  --color-primary: oklch(0.55 0.18 var(--hue));
-  --color-accent: oklch(0.55 0.18 var(--hue));
-}
-:root:where([data-theme='dark']) {
-  --color-primary: oklch(0.7 0.14 var(--hue));
-  --color-accent: oklch(0.7 0.14 var(--hue));
-}
 
 @theme {
   /* ── 字体系统 ──
