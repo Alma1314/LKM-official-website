@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -11,7 +11,19 @@ interface FigureNodeViewProps {
 
 const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, updateAttributes }: FigureNodeViewProps) {
   const [editing, setEditing] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
   const src = (node.attrs.src as string) ?? '';
+
+  useEffect(() => {
+    if (!editing) return;
+    const handler = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        setEditing(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [editing]);
   const alt = (node.attrs.alt as string) ?? '';
   const caption = (node.attrs.caption as string) ?? '';
   const width = (node.attrs.width as number) ?? undefined;
@@ -66,7 +78,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
       {caption && <figcaption className="text-xs text-base-content/60 mt-1">{caption}</figcaption>}
 
       {editing && (
-        <div className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-72">
+        <div ref={panelRef} className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]">
           <label className="text-xs font-medium block mb-1">图片地址</label>
           <input
             type="text"

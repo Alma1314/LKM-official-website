@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 
@@ -30,7 +30,19 @@ const CalloutNodeView = memo(function CalloutNodeView({
   updateAttributes,
 }: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
   const ctype = ((node.attrs.type as string) || 'info') as keyof typeof TYPE_LABELS;
+
+  useEffect(() => {
+    if (!editing) return;
+    const handler = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        setEditing(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [editing]);
   const title = (node.attrs.title as string) || '';
 
   const alertClass = {
@@ -51,7 +63,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
       </div>
 
       {editing && (
-        <div className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-64">
+        <div ref={panelRef} className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]">
           <label className="text-xs font-medium block mb-1">类型</label>
           <select
             className="select select-bordered select-sm w-full mb-2"

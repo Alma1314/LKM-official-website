@@ -3,10 +3,16 @@ import type { DocumentData, DocumentMeta, AutosavePayload, AutosaveResponse } fr
 const DRAFTS_KEY = 'lkm-editor-drafts';
 const DRAFTS_INDEX_KEY = 'lkm-editor-drafts-index';
 
+// 内存缓存：减少 autosave 高频触发的 JSON.parse 开销
+let draftsCache: Record<string, DocumentData> | null = null;
+let indexCache: DocumentMeta[] | null = null;
+
 function readDrafts(): Record<string, DocumentData> {
+  if (draftsCache) return draftsCache;
   try {
     const raw = localStorage.getItem(DRAFTS_KEY);
-    return raw ? JSON.parse(raw) : {};
+    draftsCache = raw ? JSON.parse(raw) : {};
+    return draftsCache;
   } catch (err) {
     console.warn('[document-api] readDrafts 失败:', err);
     return {};
@@ -14,13 +20,16 @@ function readDrafts(): Record<string, DocumentData> {
 }
 
 function writeDrafts(drafts: Record<string, DocumentData>): void {
+  draftsCache = drafts;
   localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
 }
 
 function readIndex(): DocumentMeta[] {
+  if (indexCache) return indexCache;
   try {
     const raw = localStorage.getItem(DRAFTS_INDEX_KEY);
-    return raw ? JSON.parse(raw) : [];
+    indexCache = raw ? JSON.parse(raw) : [];
+    return indexCache;
   } catch (err) {
     console.warn('[document-api] readIndex 失败:', err);
     return [];
@@ -28,6 +37,7 @@ function readIndex(): DocumentMeta[] {
 }
 
 function writeIndex(index: DocumentMeta[]): void {
+  indexCache = index;
   localStorage.setItem(DRAFTS_INDEX_KEY, JSON.stringify(index));
 }
 

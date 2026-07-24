@@ -1,6 +1,7 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import InlineInput from './InlineInput';
 
 interface ImageNodeViewProps {
   node: Node;
@@ -11,19 +12,26 @@ interface ImageNodeViewProps {
 
 const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, updateAttributes }: ImageNodeViewProps) {
   const [showToolbar, setShowToolbar] = useState(false);
+  const [inlineMode, setInlineMode] = useState<'url' | 'alt' | null>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const src = (node.attrs.src as string) ?? '';
+
+  useEffect(() => {
+    if (!showToolbar) return;
+    const handler = (e: MouseEvent) => {
+      if (toolbarRef.current && !toolbarRef.current.contains(e.target as Node)) {
+        setShowToolbar(false);
+        setInlineMode(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showToolbar]);
   const alt = (node.attrs.alt as string) ?? '';
   const title = (node.attrs.title as string) ?? '';
   const width = (node.attrs.width as number) ?? undefined;
   const height = (node.attrs.height as number) ?? undefined;
   const align = (node.attrs.align as string) ?? 'center';
-
-  const handleUrlInsert = () => {
-    const url = window.prompt('输入图片地址:');
-    if (url) {
-      updateAttributes({ src: url });
-    }
-  };
 
   const alignClasses: Record<string, string> = {
     left: 'mr-auto',
@@ -55,7 +63,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       />
 
       {showToolbar && (
-        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1">
+        <div ref={toolbarRef} className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1 max-w-[calc(100vw-2rem)]">
           {/* Resize inputs */}
           <input
             type="number"
@@ -86,17 +94,19 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           {/* Alt text */}
           <button
             type="button"
-            className="btn btn-xs btn-ghost"
+            className={`btn btn-xs ${inlineMode === 'alt' ? 'btn-active' : 'btn-ghost'}`}
             title="替代文本"
-            onClick={() => {
-              const a = window.prompt('替代文本 (alt):', alt);
-              if (a !== null) updateAttributes({ alt: a });
-            }}
+            onClick={() => setInlineMode(inlineMode === 'alt' ? null : 'alt')}
           >
             Alt
           </button>
           {/* URL insert */}
-          <button type="button" className="btn btn-xs btn-ghost" title="替换图片" onClick={handleUrlInsert}>
+          <button
+            type="button"
+            className={`btn btn-xs ${inlineMode === 'url' ? 'btn-active' : 'btn-ghost'}`}
+            title="替换图片"
+            onClick={() => setInlineMode(inlineMode === 'url' ? null : 'url')}
+          >
             替换
           </button>
           {/* Delete */}
@@ -117,6 +127,34 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           >
             ×
           </button>
+        </div>
+      )}
+
+      {/* Inline input for URL or Alt */}
+      {inlineMode === 'url' && (
+        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
+          <InlineInput
+            placeholder="输入图片地址"
+            defaultValue={src}
+            onConfirm={(val) => {
+              updateAttributes({ src: val });
+              setInlineMode(null);
+            }}
+            onCancel={() => setInlineMode(null)}
+          />
+        </div>
+      )}
+      {inlineMode === 'alt' && (
+        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
+          <InlineInput
+            placeholder="替代文本 (alt)"
+            defaultValue={alt}
+            onConfirm={(val) => {
+              updateAttributes({ alt: val });
+              setInlineMode(null);
+            }}
+            onCancel={() => setInlineMode(null)}
+          />
         </div>
       )}
 
