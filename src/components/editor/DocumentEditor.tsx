@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState, Suspense, lazy } from 'react';
+import { useCallback, useEffect, useMemo, useState, Suspense, lazy } from 'react';
 import FullscreenButton from './FullscreenButton';
 import CommentPanel from './CommentPanel';
 import { addThread } from '~/lib/comment-store';
 import { setupKeyboardAutoScroll } from '~/lib/mobile-editor';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '~/editor/extensions';
-import { useAutoSave } from '~/lib/autosave';
+import { useEditorPersistence } from '~/lib/use-editor-persistence';
+import { exportMdx } from '~/editor/mdx';
 import { createDocument, getDocument as loadFromStorage } from '~/lib/document-api';
 import type { EditorMode } from '~/editor/types';
 import EditorToolbar from './EditorToolbar';
@@ -47,7 +48,16 @@ function readFileAsDataURL(file: File): Promise<string> {
 
 export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   const [docId, setDocId] = useState(documentId === 'new' ? '' : documentId);
-  const { saveStatus, triggerSave, loadDraft } = useAutoSave(docId, 1000);
+  const {
+    saveStatus,
+    triggerSave,
+    loadDraft,
+    importMdxContent,
+    exportMdxContent,
+    sourceMdxRef,
+    frontmatterRef,
+    lastValidJsonRef: lastValidEditorJsonRef,
+  } = useEditorPersistence(docId);
   const [mode, setMode] = useState<EditorMode>('richtext');
 
   // Slash menu state
@@ -67,11 +77,6 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
   // Comment panel state
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
-
-  // Refs for MDX state
-  const sourceMdxRef = useRef('');
-  const frontmatterRef = useRef<Record<string, unknown>>({});
-  const lastValidEditorJsonRef = useRef<Record<string, unknown> | null>(null);
 
   // Resolve document: new → create, existing → load
   useEffect(() => {
@@ -222,23 +227,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     if (!doc) return;
 
     if (doc.contentMdx && doc.contentMdx.trim().length > 0) {
-      // Dynamic import for MDX parsing — only when needed
-      import('~/editor/mdx')
-        .then(({ importMdx }) => {
-          try {
-            const result = importMdx(doc.contentMdx);
-            frontmatterRef.current = result.frontmatter;
-            sourceMdxRef.current = doc.contentMdx;
-            editor.commands.setContent({ type: 'doc', content: result.content });
-            lastValidEditorJsonRef.current = editor.getJSON();
-          } catch (err) {
-            console.warn('[DocumentEditor] MDX 加载回退到 editorJson:', err);
-            if (doc.editorJson) {
-              editor.commands.setContent(doc.editorJson);
-            }
-          }
+      importMdxContent(doc.contentMdx)
+        .then((result) => {
+          editor.commands.setContent({ type: 'doc', content: result.content });
+          lastValidEditorJsonRef.current = editor.getJSON();
         })
-        .catch(() => {
+        .catch((err) => {
+          console.warn('[DocumentEditor] MDX 加载回退到 editorJson:', err);
           if (doc.editorJson) {
             editor.commands.setContent(doc.editorJson);
           }
@@ -246,7 +241,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     } else if (doc.editorJson) {
       editor.commands.setContent(doc.editorJson);
     }
-  }, [editor, docId, documentId, loadDraft]);
+  }, [editor, docId, documentId, loadDraft, importMdxContent, lastValidEditorJsonRef]);
 
   // Mode switching
   const handleModeChange = useCallback(
@@ -259,10 +254,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
           const doc =
             typeof json === 'object' && json !== null && 'content' in json
               ? (json as { content: unknown[] }).content
-              : (json as unknown[]);
-          const { exportMdx } = await import('~/editor/mdx');
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const result = exportMdx(doc as any, frontmatterRef.current);
+              : [];
+          // 同步调用 exportMdx — 内部全是纯计算无网络请求，避免无意义 await
+          const result = exportMdx(doc as unknown[] as Parameters<typeof exportMdx>[0], frontmatterRef.current);
           sourceMdxRef.current = result.mdx;
           lastValidEditorJsonRef.current = editor.getJSON();
         }
@@ -270,12 +264,10 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
       if (mode === 'source' && newMode === 'richtext') {
         try {
-          const { importMdx } = await import('~/editor/mdx');
-          const result = importMdx(sourceMdxRef.current);
+          const result = await importMdxContent(sourceMdxRef.current);
           if (editor) {
             editor.commands.clearContent();
             editor.commands.setContent({ type: 'doc', content: result.content });
-            frontmatterRef.current = result.frontmatter;
             lastValidEditorJsonRef.current = editor.getJSON();
           }
         } catch (err) {
@@ -287,7 +279,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
 
       setMode(newMode);
     },
-    [mode, editor]
+    [mode, editor, exportMdxContent, importMdxContent, sourceMdxRef, frontmatterRef, lastValidEditorJsonRef]
   );
 
   const handleSourceChange = useCallback(
@@ -297,7 +289,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
         triggerSave(lastValidEditorJsonRef.current ?? {});
       }
     },
-    [docId, triggerSave]
+    [docId, triggerSave, sourceMdxRef, lastValidEditorJsonRef]
   );
 
   const handlePublish = useCallback(
@@ -469,9 +461,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       ) : mode === 'preview' && editor ? (
         <PreviewPanel editor={editor} />
       ) : (
-        <div className="flex items-center justify-center min-h-[60vh] text-base-content/40">
+        <div className="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
           <span className="loading loading-spinner loading-md mr-2" />
-          正在加载编辑器……
+          <span className="text-base-content/50">正在加载编辑器……</span>
         </div>
       )}
 

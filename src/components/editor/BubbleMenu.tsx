@@ -12,12 +12,20 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const rafRef = useRef<number | null>(null);
+  const lastSelectionRef = useRef<{ from: number; to: number; empty: boolean } | null>(null);
 
   const update = useCallback(() => {
     // requestAnimationFrame 防抖：连续 selectionUpdate 合并为一次更新
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
       const { from, to, empty } = editor.state.selection;
+      // 去重：选区坐标未变化时跳过 layout 计算
+      const prev = lastSelectionRef.current;
+      if (prev && prev.from === from && prev.to === to && prev.empty === empty) {
+        return;
+      }
+      lastSelectionRef.current = { from, to, empty };
+
       if (empty || from === to) {
         setShow(false);
         return;
@@ -41,6 +49,7 @@ export default function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapp
     scrollParent.addEventListener('scroll', scrollHandler, { passive: true });
 
     const handleBlur = () => {
+      lastSelectionRef.current = null;
       blurTimerRef.current = setTimeout(() => setShow(false), 200);
     };
     editor.on('blur', handleBlur);

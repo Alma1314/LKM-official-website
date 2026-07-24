@@ -21,10 +21,11 @@ interface Props {
 interface State {
   retries: number;
   error: Error | null;
+  errorVersion: number;
 }
 
 class EditorErrorBoundary extends Component<Props, State> {
-  state: State = { retries: 0, error: null };
+  state: State = { retries: 0, error: null, errorVersion: 0 };
 
   static getDerivedStateFromError(error: Error): Partial<State> {
     return { error };
@@ -33,7 +34,7 @@ class EditorErrorBoundary extends Component<Props, State> {
   handleRetry = () => {
     const { retries } = this.state;
     if (retries >= MAX_RETRIES) return;
-    this.setState({ error: null, retries: retries + 1 });
+    this.setState({ error: null, retries: retries + 1, errorVersion: retries + 1 });
   };
 
   handleRefresh = () => {
@@ -106,7 +107,8 @@ class EditorErrorBoundary extends Component<Props, State> {
             <button
               className="btn btn-primary btn-sm"
               onClick={() => {
-                this.setState({ retries: 0, error: null });
+                const v = this.state.errorVersion;
+                this.setState({ retries: 0, error: null, errorVersion: v + 1 });
                 this.handleRetry();
               }}
             >
@@ -120,9 +122,10 @@ class EditorErrorBoundary extends Component<Props, State> {
       );
     }
 
-    // 每次重试后 remount 子组件（key=retries 强制重新挂载）
+    // 使用 errorVersion 作为 Suspense key，仅重新触发 lazy 加载，不重建编辑器实例
     return (
       <Suspense
+        key={errorVersion}
         fallback={
           <div className="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
             <span className="loading loading-spinner loading-md mr-2" />
@@ -130,7 +133,7 @@ class EditorErrorBoundary extends Component<Props, State> {
           </div>
         }
       >
-        <DocumentEditor key={retries} documentId={docId} />
+        <DocumentEditor documentId={docId} />
       </Suspense>
     );
   }

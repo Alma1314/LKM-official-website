@@ -7,6 +7,37 @@
 export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => void {
   if (!editorEl) return () => {};
 
+  const vv = window.visualViewport;
+  let rafId: number | null = null;
+
+  if (vv) {
+    const handleResize = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const heightDiff = window.innerHeight - vv.height;
+        if (heightDiff > 150) {
+          // 键盘弹出：增加底部 padding 并滚动到焦点元素
+          editorEl.style.paddingBottom = `${heightDiff}px`;
+          const activeEl = document.activeElement as HTMLElement;
+          if (activeEl && editorEl.contains(activeEl)) {
+            activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          }
+        } else {
+          // 键盘收起
+          editorEl.style.paddingBottom = '';
+        }
+      });
+    };
+
+    vv.addEventListener('resize', handleResize);
+    return () => {
+      vv.removeEventListener('resize', handleResize);
+      editorEl.style.paddingBottom = '';
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }
+
+  // Fallback: focus-based detection (old browsers without visualViewport)
   const handleFocusIn = (e: FocusEvent) => {
     const target = e.target as HTMLElement;
     if (!editorEl.contains(target)) return;

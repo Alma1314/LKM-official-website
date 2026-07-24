@@ -1,6 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Editor } from '@tiptap/core';
-import type { ReactNode } from 'react';
 import EditorToolbarButton from './EditorToolbarButton';
 
 interface ToolbarItemDef {
@@ -657,56 +656,90 @@ interface EditorToolbarProps {
   editor: Editor;
 }
 
+function renderToolbarButton(editor: Editor, item: ToolbarItemDef) {
+  return (
+    <EditorToolbarButton
+      key={item.key}
+      icon={item.icon}
+      label={item.label}
+      title={item.title}
+      isActive={item.isActive(editor)}
+      onClick={() => item.action(editor)}
+    />
+  );
+}
+
 export default function EditorToolbar({ editor }: EditorToolbarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
+  const mobileBarRef = useRef<HTMLDivElement>(null);
 
-  const renderButton = useCallback(
-    (item: (typeof ITEMS)[number]) => (
-      <EditorToolbarButton
-        key={item.key}
-        icon={item.icon}
-        label={item.label}
-        title={item.title}
-        isActive={item.isActive(editor)}
-        onClick={() => item.action(editor)}
-      />
-    ),
+  // 移动端：当前激活按钮变化时自动滚动到可视区域
+  useEffect(() => {
+    const bar = mobileBarRef.current;
+    if (!bar || window.innerWidth >= 768) return;
+    const activeBtn = bar.querySelector('.btn-active') as HTMLElement | null;
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [editor.state.selection]);
+
+  const desktopContent = useMemo(
+    () =>
+      GROUPS.map((group) => {
+        const items = ITEMS.filter((i) => i.group === group);
+        if (items.length === 0) return null;
+        return (
+          <div
+            key={group}
+            className="flex items-center gap-0.5 border-r border-base-300 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
+          >
+            {items.map((item) => renderToolbarButton(editor, item))}
+          </div>
+        );
+      }),
+    [editor]
+  );
+
+  const mobileContent = useMemo(
+    () =>
+      GROUPS.filter((g) => !MORE_GROUPS.has(g)).map((group) => {
+        const items = ITEMS.filter((i) => i.group === group);
+        if (items.length === 0) return null;
+        return (
+          <div
+            key={group}
+            className="flex items-center gap-0.5 shrink-0 border-r border-base-300 pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
+          >
+            {items.map((item) => renderToolbarButton(editor, item))}
+          </div>
+        );
+      }),
+    [editor]
+  );
+
+  const moreItems = useMemo(
+    () =>
+      GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
+        <div key={group} className="mb-1 last:mb-0">
+          <div className="text-xs text-base-content/50 px-1 mb-0.5">
+            {group === 'component' ? '组件' : '操作'}
+          </div>
+          <div className="flex flex-wrap gap-0.5">
+            {ITEMS.filter((i) => i.group === group).map((item) => renderToolbarButton(editor, item))}
+          </div>
+        </div>
+      )),
     [editor]
   );
 
   return (
     <div className="bg-base-100/95 backdrop-blur-sm border-b border-base-300">
-      {/* Desktop: full toolbar. Mobile: inline groups + "more" overflow */}
       <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">
-        {GROUPS.map((group) => {
-          const items = ITEMS.filter((i) => i.group === group);
-          if (items.length === 0) return null;
-          return (
-            <div
-              key={group}
-              className="flex items-center gap-0.5 border-r border-base-300 pr-1 mr-1 last:border-r-0 last:pr-0 last:mr-0"
-            >
-              {items.map(renderButton)}
-            </div>
-          );
-        })}
+        {desktopContent}
       </div>
 
-      {/* Mobile: condensed toolbar with "more" dropdown */}
-      <div className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
-        {GROUPS.filter((g) => !MORE_GROUPS.has(g)).map((group) => {
-          const items = ITEMS.filter((i) => i.group === group);
-          if (items.length === 0) return null;
-          return (
-            <div
-              key={group}
-              className="flex items-center gap-0.5 shrink-0 border-r border-base-300 pr-0.5 mr-0.5 last:border-r-0 last:pr-0 last:mr-0"
-            >
-              {items.map(renderButton)}
-            </div>
-          );
-        })}
-        {/* More button */}
+      <div ref={mobileBarRef} className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
+        {mobileContent}
         <div className="relative shrink-0">
           <button
             type="button"
@@ -731,16 +764,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
           </button>
           {moreOpen && (
             <div className="absolute top-full right-0 mt-1 z-40 bg-base-200 border border-base-300 rounded-lg shadow-lg p-2 min-w-[200px]">
-              {GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
-                <div key={group} className="mb-1 last:mb-0">
-                  <div className="text-xs text-base-content/50 px-1 mb-0.5">
-                    {group === 'component' ? '组件' : '操作'}
-                  </div>
-                  <div className="flex flex-wrap gap-0.5">
-                    {ITEMS.filter((i) => i.group === group).map(renderButton)}
-                  </div>
-                </div>
-              ))}
+              {moreItems}
             </div>
           )}
         </div>

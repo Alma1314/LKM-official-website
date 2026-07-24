@@ -13,6 +13,7 @@ export default function PropertyPanel({ editor }: PropertyPanelProps) {
     attrs: Record<string, unknown>;
     pos: number;
   } | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const handler = () => {
@@ -24,6 +25,7 @@ export default function PropertyPanel({ editor }: PropertyPanelProps) {
           attrs: { ...node.attrs },
           pos: $from.start($from.depth),
         });
+        setMobileOpen(true);
       } else {
         setSelectedNode(null);
       }
@@ -51,8 +53,8 @@ export default function PropertyPanel({ editor }: PropertyPanelProps) {
     handleUpdate(key, Number.isNaN(num) ? undefined : num);
   };
 
-  return (
-    <div className="w-64 border-l border-base-300 bg-base-200/50 p-4 overflow-y-auto">
+  const content = (
+    <>
       <h3 className="text-sm font-semibold mb-3">
         {selectedNode.type === 'callout' ? '提示框属性' : selectedNode.type === 'figure' ? '图片属性' : '属性'}
       </h3>
@@ -141,6 +143,27 @@ export default function PropertyPanel({ editor }: PropertyPanelProps) {
           />
         </>
       )}
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop: side panel */}
+      <div className="hidden md:block w-64 border-l border-base-300 bg-base-200/50 p-4 overflow-y-auto">
+        {content}
+      </div>
+      {/* Mobile: bottom drawer */}
+      {mobileOpen && (
+        <div className="md:hidden property-panel-mobile p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold">属性</span>
+            <button type="button" className="btn btn-ghost btn-xs" onClick={() => setMobileOpen(false)}>
+              ×
+            </button>
+          </div>
+          {content}
+        </div>
+      )}
+    </>
   );
 }

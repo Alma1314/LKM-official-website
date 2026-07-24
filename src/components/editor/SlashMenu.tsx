@@ -178,9 +178,10 @@ export default function SlashMenu({ editor, query, position, onClose, onSelect }
   );
 
   useEffect(() => {
+    if (!position) return;
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  }, [handleKeyDown, position]);
 
   useEffect(() => {
     setSelectedIdx(0);

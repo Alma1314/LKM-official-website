@@ -11,6 +11,8 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const baseVersionRef = useRef(1);
   const savedCallbackRef = useRef<(() => void) | null>(null);
+  const lastSavedJsonHashRef = useRef<string>('');
+  const lastVersionSaveRef = useRef<number>(0);
 
   const loadDraft = useCallback(() => {
     const doc = getDocument(documentId);
@@ -25,6 +27,14 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
     async (content: Record<string, unknown>) => {
       setSaveStatus('saving');
       try {
+        // 内容去重：与上次保存的 JSON 一致则跳过 MDX 序列化
+        const jsonStr = JSON.stringify(content);
+        if (jsonStr === lastSavedJsonHashRef.current) {
+          setSaveStatus('saved');
+          hasUnsavedRef.current = false;
+          return;
+        }
+
         let mdxContent = '';
         try {
           const json = content as { content?: Array<Record<string, unknown>> };
@@ -44,6 +54,7 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
 
         if (result.ok) {
           baseVersionRef.current = result.version;
+          lastSavedJsonHashRef.current = jsonStr;
           setSaveStatus('saved');
           hasUnsavedRef.current = false;
           savedCallbackRef.current?.();
@@ -62,18 +73,22 @@ export function useAutoSave(documentId: string, debounceMs = 1000) {
             });
           }
 
-          // Save version snapshot (throttled: only if version changed)
-          try {
-            const doc = getDocument(documentId);
-            if (doc && mdxContent) {
-              saveVersion(
-                documentId,
-                { ...doc, contentMdx: mdxContent, editorJson: content, version: result.version },
-                ''
-              );
+          // 版本快照节流：同一文档同一分钟内最多一次
+          const now = Date.now();
+          if (now - lastVersionSaveRef.current > 60_000) {
+            lastVersionSaveRef.current = now;
+            try {
+              const doc = getDocument(documentId);
+              if (doc && mdxContent) {
+                saveVersion(
+                  documentId,
+                  { ...doc, contentMdx: mdxContent, editorJson: content, version: result.version },
+                  ''
+                );
+              }
+            } catch (err) {
+              console.warn('[autosave] 版本存储失败:', err);
             }
-          } catch (err) {
-            console.warn('[autosave] 版本存储失败:', err);
           }
         } else {
           setSaveStatus('conflict');
