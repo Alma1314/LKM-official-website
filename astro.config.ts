@@ -79,12 +79,11 @@ export default defineConfig({
       })
     ),
 
-    // compress temporarily disabled - Stylus CSS causes clean-css crash
-    // compress({
-    //   CSS: true,
-    //   HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
-    //   Image: true, JavaScript: true, SVG: true, Logger: 1,
-    // }),
+    compress({
+      CSS: true,
+      HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
+      Image: false, JavaScript: false, SVG: false, Logger: 1,
+    }),
 
     astrowind({
       config: './src/config.yaml',
