@@ -5,7 +5,6 @@ import { defineConfig } from 'astro/config';
 
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
@@ -20,7 +19,6 @@ import type { AstroIntegration } from 'astro';
 
 import astrowind from './src/integrations';
 
-import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { remarkExcerpt } from './src/plugins/remark-excerpt.js';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
@@ -82,7 +80,10 @@ export default defineConfig({
     compress({
       CSS: true,
       HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
-      Image: false, JavaScript: false, SVG: false, Logger: 1,
+      Image: false,
+      JavaScript: false,
+      SVG: false,
+      Logger: 1,
     }),
 
     astrowind({
@@ -122,11 +123,16 @@ export default defineConfig({
           {
             components: {
               github: GithubCardComponent,
-              note: (x: any, y: any) => AdmonitionComponent(x, y, 'note'),
-              tip: (x: any, y: any) => AdmonitionComponent(x, y, 'tip'),
-              important: (x: any, y: any) => AdmonitionComponent(x, y, 'important'),
-              caution: (x: any, y: any) => AdmonitionComponent(x, y, 'caution'),
-              warning: (x: any, y: any) => AdmonitionComponent(x, y, 'warning'),
+              note: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'note'),
+              tip: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'tip'),
+              important: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'important'),
+              caution: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'caution'),
+              warning: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'warning'),
             },
           },
         ],
@@ -179,7 +185,11 @@ export default defineConfig({
     // 预构建优化：将重依赖预列入 include，避免懒构建导致的并发竞态。
     // Windows + pnpm 下 Vite 的 deps 原子重命名可能失败，预列关键依赖让
     // 它们在首次启动时一次性构建完成。
+    ssr: {
+      noExternal: ['@iconify/svelte'],
+    },
     optimizeDeps: {
+      exclude: ['@iconify/svelte'],
       include: [
         'react',
         'react-dom',

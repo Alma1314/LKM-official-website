@@ -69,6 +69,16 @@ export default [
     },
   },
   {
-    ignores: ['dist', 'node_modules', '.github', 'reference', 'types.generated.d.ts', '.astro', '.claude'],
+    ignores: [
+      'dist',
+      'node_modules',
+      '.github',
+      'reference',
+      'types.generated.d.ts',
+      '.astro',
+      '.claude',
+      'src/layouts/FuwariLayout.astro',
+      'src/layouts/FuwariMainGridLayout.astro',
+    ],
   },
 ];

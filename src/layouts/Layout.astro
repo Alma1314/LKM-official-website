@@ -34,8 +34,8 @@ const baseUrl = import.meta.env.BASE_URL;
     <CommonMeta />
     <script is:inline define:vars={{ configHue: siteConfig.themeColor.hue }}>
       // 在首次渲染前设置主题色相，避免颜色闪烁
-      (function() {
-        var hue = localStorage.getItem('hue') || configHue;
+      (function () {
+        const hue = localStorage.getItem('hue') || configHue;
         document.documentElement.style.setProperty('--hue', hue);
       })();
     </script>
