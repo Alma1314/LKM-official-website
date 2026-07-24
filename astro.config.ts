@@ -31,6 +31,10 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
+  devToolbar: {
+    enabled: false,
+  },
+
   site: 'https://LKM-AHZ.github.io',
   base: '/LKM-official-website',
 

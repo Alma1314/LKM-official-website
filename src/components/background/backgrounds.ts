@@ -61,8 +61,7 @@ export const BACKGROUNDS: BackgroundMeta[] = [
     name: '星座',
     icon: '✨',
     theme: 'both',
-    load: () =>
-      import('./lib/ConstellationFieldBackground').then((m) => ({ default: m.default })),
+    load: () => import('./lib/ConstellationFieldBackground').then((m) => ({ default: m.default })),
     darkProps: { particleColor: '#5e6ad2', connectionColor: '#818cf8' },
     lightProps: { particleColor: '#0bcaf5', connectionColor: '#20cdf4' },
   },
