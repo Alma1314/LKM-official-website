@@ -25,14 +25,14 @@ const metadata = {
 <Layout metadata={metadata}>
   <WidgetWrapper width="narrow" spacing="default">
     <div class="mb-12">
-      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-base-content mb-3">文档库</h1>
-      <p class="text-[17px] text-neutral">理科迷社区文档，帮助你快速了解和使用社区的各项功能</p>
+      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-[var(--deep-text)] mb-3">文档库</h1>
+      <p class="text-[17px] text-[var(--text-muted)]">理科迷社区文档，帮助你快速了解和使用社区的各项功能</p>
     </div>
 
     {
       Array.from(docsByCategory.entries()).map(([category, docs]) => (
         <section class="mb-10">
-          <h2 class="text-[13px] font-semibold uppercase tracking-wider text-primary mb-3 px-2">{category}</h2>
+          <h2 class="text-[13px] font-semibold uppercase tracking-wider text-[var(--primary)] mb-3 px-2">{category}</h2>
           <ul class="divide-y divide-base-300">
             {docs.map((doc) => (
               <DocListItem doc={doc} href={getPermalink(`/docs/${doc.id}`)} />

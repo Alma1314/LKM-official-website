@@ -1,21 +1,21 @@
 <template>
-  <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+  <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
     <!-- Setup flow: scan QR -->
     <template v-if="isSetupFlow && setupStep === 'scan'">
       <h2 class="text-2xl font-semibold text-center mb-4">绑定双因素认证</h2>
       <div class="space-y-4">
         <div class="alert alert-info text-sm">管理员账户必须绑定 2FA 才能登录</div>
         <div class="text-center space-y-3">
-          <div class="bg-base-200 rounded-xl p-6 mx-auto w-48 h-48 flex items-center justify-center">
+          <div class="bg-[var(--page-bg)] rounded-xl p-6 mx-auto w-48 h-48 flex items-center justify-center">
             <div class="text-center">
               <div class="text-4xl mb-2">📱</div>
-              <p class="text-xs text-neutral">模拟二维码</p>
+              <p class="text-xs text-[var(--text-muted)]">模拟二维码</p>
             </div>
           </div>
           <div>
             <p class="text-sm font-medium">手动输入密钥</p>
             <div class="flex items-center justify-center gap-2 mt-1">
-              <code class="bg-base-200 px-3 py-1 rounded text-sm select-all">{{
+              <code class="bg-[var(--page-bg)] px-3 py-1 rounded text-sm select-all">{{
                 showSecret ? DUMMY_TOTP_SECRET : '•••• •••• •••• ••••'
               }}</code>
               <button type="button" class="btn btn-ghost btn-xs" @click="showSecret = !showSecret">
@@ -39,7 +39,7 @@
               maxlength="6"
               @input="setupError = ''"
             />
-            <span v-if="setupError" class="label-text-alt text-error">{{ setupError }}</span>
+            <span v-if="setupError" class="label-text-alt text-[var(--error)]">{{ setupError }}</span>
           </div>
           <button type="submit" class="btn btn-primary w-full">验证并继续</button>
         </form>
@@ -50,7 +50,7 @@
     <template v-else-if="isSetupFlow && setupStep === 'recovery'">
       <div class="space-y-4">
         <div class="alert alert-warning text-sm">请安全保存以下备用恢复码，用于在丢失 2FA 设备时恢复账户访问</div>
-        <div class="bg-base-200 rounded-xl p-4 space-y-1 font-mono text-sm">
+        <div class="bg-[var(--page-bg)] rounded-xl p-4 space-y-1 font-mono text-sm">
           <div v-for="code in DUMMY_RECOVERY_CODES" :key="code" class="select-all">{{ code }}</div>
         </div>
         <label class="label cursor-pointer justify-start gap-2">
@@ -80,7 +80,7 @@
             placeholder="格式：AAAA-BBBB-CCCC"
             @input="recoveryError = ''"
           />
-          <span v-if="recoveryError" class="label-text-alt text-error">{{ recoveryError }}</span>
+          <span v-if="recoveryError" class="label-text-alt text-[var(--error)]">{{ recoveryError }}</span>
         </div>
         <button type="submit" class="btn btn-primary w-full">验证</button>
         <button type="button" class="btn btn-ghost w-full btn-sm" @click="showRecovery = false">返回 TOTP 验证</button>
@@ -90,7 +90,7 @@
     <!-- Normal TOTP verify -->
     <template v-else>
       <h2 class="text-xl font-semibold text-center mb-2">双因素认证</h2>
-      <p class="text-sm text-neutral text-center mb-4">请输入 Google Authenticator 中的 6 位验证码</p>
+      <p class="text-sm text-[var(--text-muted)] text-center mb-4">请输入 Google Authenticator 中的 6 位验证码</p>
       <div v-if="totpError" class="alert alert-error text-sm mb-4">{{ totpError }}</div>
       <form @submit.prevent="handleTOTPSubmit" class="space-y-4">
         <div>
@@ -104,13 +104,13 @@
             autocomplete="one-time-code"
             @input="totpError = ''"
           />
-          <p class="text-xs text-neutral text-center mt-1">模拟验证码：000000</p>
+          <p class="text-xs text-[var(--text-muted)] text-center mt-1">模拟验证码：000000</p>
         </div>
         <label v-if="user?.level !== 'admin'" class="label cursor-pointer justify-center gap-2">
           <input type="checkbox" class="checkbox checkbox-sm" v-model="trustDevice" />
           <span class="label-text text-sm">信任此设备 30 天</span>
         </label>
-        <p v-if="user?.level === 'admin'" class="text-xs text-neutral text-center">
+        <p v-if="user?.level === 'admin'" class="text-xs text-[var(--text-muted)] text-center">
           管理员账户每次登录必须进行 2FA 验证
         </p>
         <button type="submit" class="btn btn-primary w-full">验证</button>

@@ -79,8 +79,8 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   };
 
   return (
-    <div className="fixed right-0 top-0 h-full w-96 bg-base-100 border-l border-base-300 shadow-xl z-50 flex flex-col">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-base-300">
+    <div className="fixed right-0 top-0 h-full w-96 bg-[var(--card-bg)] border-l border-[var(--surface-3)] shadow-xl z-50 flex flex-col">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--surface-3)]">
         <h3 className="font-semibold text-sm">AI 写作助手</h3>
         <div className="flex gap-1">
           <button type="button" className="btn btn-ghost btn-xs" onClick={() => setShowSettings(!showSettings)}>
@@ -110,7 +110,7 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-..."
           />
-          <p className="text-xs text-base-content/50">
+          <p className="text-xs text-[var(--deep-text)]/50">
             兼容 OpenAI / Ollama / LM Studio 等 API 格式
             <br />
             Key 仅保存在当前会话中，关闭浏览器后自动清除。
@@ -137,7 +137,7 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
           </select>
 
           {selectedText && (
-            <div className="bg-base-200 rounded p-2 text-xs max-h-20 overflow-y-auto text-base-content/70">
+            <div className="bg-[var(--page-bg)] rounded p-2 text-xs max-h-20 overflow-y-auto text-[var(--deep-text)]/70">
               <p className="font-medium mb-1">已选中文本：</p>
               {selectedText.slice(0, 300)}
               {selectedText.length > 300 ? '…' : ''}
@@ -158,10 +158,10 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
             {loading ? '请求中…' : '发送请求'}
           </button>
 
-          {error && <div className="text-xs text-error bg-error/10 rounded p-2">{error}</div>}
+          {error && <div className="text-xs text-[var(--error)] bg-[var(--error)]/10 rounded p-2">{error}</div>}
 
           {result && (
-            <div className="bg-base-200 rounded-lg p-3">
+            <div className="bg-[var(--page-bg)] rounded-lg p-3">
               <div className="text-sm whitespace-pre-wrap mb-3 max-h-64 overflow-y-auto">{result}</div>
               <div className="flex gap-1">
                 <button type="button" className="btn btn-primary btn-xs flex-1" onClick={handleInsert}>

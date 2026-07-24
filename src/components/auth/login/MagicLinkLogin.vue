@@ -2,10 +2,10 @@
   <div class="space-y-4">
     <!-- Sent state -->
     <div v-if="stage === 'sent'" class="text-center space-y-4">
-      <div class="rounded-xl border border-base-300 bg-base-200 p-6 space-y-4">
+      <div class="rounded-xl border border-[var(--surface-3)] bg-[var(--page-bg)] p-6 space-y-4">
         <div class="text-4xl">📧</div>
-        <p class="font-semibold text-base-content">魔法链接已发送</p>
-        <p class="text-sm text-neutral">
+        <p class="font-semibold text-[var(--deep-text)]">魔法链接已发送</p>
+        <p class="text-sm text-[var(--text-muted)]">
           模拟已向 <span class="font-semibold">{{ email }}</span> 发送登录链接
         </p>
         <div class="flex flex-col gap-2">
@@ -35,7 +35,7 @@
 
     <!-- Input state (default) -->
     <form v-else @submit.prevent="handleSend" class="space-y-4">
-      <p class="text-sm text-neutral text-center">
+      <p class="text-sm text-[var(--text-muted)] text-center">
         我们将向 <span class="font-semibold">{{ email }}</span> 发送包含登录链接的邮件
       </p>
       <button type="submit" class="btn btn-primary w-full">发送魔法链接</button>

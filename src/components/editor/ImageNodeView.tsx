@@ -50,7 +50,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           height: height ? `${height}px` : 'auto',
           maxWidth: '100%',
         }}
-        className="rounded-md cursor-pointer border-2 border-transparent hover:border-primary/50 transition-colors"
+        className="rounded-md cursor-pointer border-2 border-transparent hover:border-[var(--primary)]/50 transition-colors"
         onClick={() => setShowToolbar(!showToolbar)}
         onTouchEnd={(e) => {
           // Long-press on mobile to toggle toolbar
@@ -65,7 +65,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       {showToolbar && (
         <div
           ref={toolbarRef}
-          className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1 max-w-[calc(100vw-2rem)]"
+          className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-1 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1 max-w-[calc(100vw-2rem)]"
         >
           {/* Resize inputs */}
           <input
@@ -115,7 +115,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           {/* Delete */}
           <button
             type="button"
-            className="btn btn-xs btn-ghost text-error"
+            className="btn btn-xs btn-ghost text-[var(--error)]"
             title="删除图片"
             onClick={() => {
               const pos = getPos();
@@ -162,7 +162,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       )}
 
       {/* Caption */}
-      {title && <p className="text-xs text-center text-base-content/60 mt-1">{title}</p>}
+      {title && <p className="text-xs text-center text-[var(--deep-text)]/60 mt-1">{title}</p>}
     </div>
   );
 });

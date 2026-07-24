@@ -6,14 +6,14 @@
 
   <div v-else class="space-y-4">
     <h3 class="text-lg font-semibold">双因素认证 (2FA)</h3>
-    <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
+    <div class="flex items-center justify-between p-3 bg-[var(--page-bg)] rounded-lg">
       <div>
         <span class="font-medium">TOTP 动态验证码</span>
         <span class="badge badge-xs ml-2" :class="user.has2FA ? 'badge-success' : 'badge-ghost'">
           {{ user.has2FA ? '已开启' : '未开启' }}
         </span>
       </div>
-      <button v-if="user.has2FA" type="button" class="btn btn-ghost btn-xs text-error" @click="handleDisable">
+      <button v-if="user.has2FA" type="button" class="btn btn-ghost btn-xs text-[var(--error)]" @click="handleDisable">
         {{ user.level === 'admin' ? '关闭（将降级）' : '关闭' }}
       </button>
       <button v-else type="button" class="btn btn-ghost btn-xs" @click="handleEnable">开启</button>
@@ -21,14 +21,14 @@
 
     <!-- Enable modal -->
     <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click="show = false">
-      <div class="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4" @click.stop>
+      <div class="bg-[var(--card-bg)] rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4" @click.stop>
         <!-- Scan step -->
         <div v-if="curStep === 'scan'" class="space-y-4">
           <h4 class="font-semibold">设置 TOTP 双因素认证</h4>
-          <div class="bg-base-200 rounded-xl p-6 mx-auto w-40 h-40 flex items-center justify-center">
+          <div class="bg-[var(--page-bg)] rounded-xl p-6 mx-auto w-40 h-40 flex items-center justify-center">
             <div class="text-center">
               <div class="text-4xl mb-2">📱</div>
-              <p class="text-xs text-neutral">模拟二维码</p>
+              <p class="text-xs text-[var(--text-muted)]">模拟二维码</p>
             </div>
           </div>
           <div>
@@ -41,15 +41,15 @@
               maxlength="6"
             />
           </div>
-          <div v-if="errorMsg" class="text-error text-xs">{{ errorMsg }}</div>
+          <div v-if="errorMsg" class="text-[var(--error)] text-xs">{{ errorMsg }}</div>
           <button type="button" class="btn btn-primary btn-sm w-full" @click="handleVerify">验证</button>
         </div>
 
         <!-- Codes step -->
         <div v-else class="space-y-4">
           <h4 class="font-semibold">备用恢复码</h4>
-          <p class="text-sm text-neutral">请安全保存以下恢复码（模拟）</p>
-          <div class="bg-base-200 rounded-xl p-3 font-mono text-xs space-y-1">
+          <p class="text-sm text-[var(--text-muted)]">请安全保存以下恢复码（模拟）</p>
+          <div class="bg-[var(--page-bg)] rounded-xl p-3 font-mono text-xs space-y-1">
             <div v-for="c in DUMMY_RECOVERY_CODES" :key="c" class="select-all">{{ c }}</div>
           </div>
           <label class="label cursor-pointer justify-start gap-2">

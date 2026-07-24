@@ -61,10 +61,10 @@ export default function ExportMenu({ editor }: ExportMenuProps) {
         </svg>
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 z-50 bg-base-200 border border-base-300 rounded-lg shadow-lg p-1 min-w-[140px]">
+        <div className="absolute top-full right-0 mt-1 z-50 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-1 min-w-[140px]">
           <button
             type="button"
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-base-300/50 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-[var(--surface-3)]/50 transition-colors"
             onClick={() => {
               handleExportPdf(editor);
               setOpen(false);
@@ -91,7 +91,7 @@ export default function ExportMenu({ editor }: ExportMenuProps) {
           </button>
           <button
             type="button"
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-base-300/50 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded hover:bg-[var(--surface-3)]/50 transition-colors"
             onClick={() => {
               handleExportDocx(editor);
               setOpen(false);

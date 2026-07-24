@@ -41,7 +41,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
         <img
           src={src}
           alt={alt}
-          className="cursor-pointer rounded-md border-2 border-dashed border-base-300 hover:border-primary/50 transition-colors inline-block"
+          className="cursor-pointer rounded-md border-2 border-dashed border-[var(--surface-3)] hover:border-[var(--primary)]/50 transition-colors inline-block"
           style={{
             width: width ? `${width}px` : 'auto',
             maxWidth: '100%',
@@ -51,7 +51,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
         />
       ) : (
         <div
-          className="cursor-pointer border-2 border-dashed border-base-300 rounded-lg p-8 text-base-content/50 hover:border-primary/50 transition-colors"
+          className="cursor-pointer border-2 border-dashed border-[var(--surface-3)] rounded-lg p-8 text-[var(--deep-text)]/50 hover:border-[var(--primary)]/50 transition-colors"
           onClick={() => setEditing(!editing)}
         >
           <div className="text-center">
@@ -75,12 +75,12 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
           </div>
         </div>
       )}
-      {caption && <figcaption className="text-xs text-base-content/60 mt-1">{caption}</figcaption>}
+      {caption && <figcaption className="text-xs text-[var(--deep-text)]/60 mt-1">{caption}</figcaption>}
 
       {editing && (
         <div
           ref={panelRef}
-          className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]"
+          className="absolute top-full left-0 mt-1 z-30 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]"
         >
           <label className="text-xs font-medium block mb-1">图片地址</label>
           <input
@@ -133,7 +133,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
           <div className="flex gap-1 justify-end">
             <button
               type="button"
-              className="btn btn-ghost btn-xs text-error"
+              className="btn btn-ghost btn-xs text-[var(--error)]"
               onMouseDown={(e) => {
                 e.preventDefault();
                 const pos = getPos();

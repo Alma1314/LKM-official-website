@@ -1,17 +1,17 @@
 <template>
-  <div class="blog-comments mt-12 pt-8 border-t border-base-300">
-    <h3 class="text-lg font-semibold font-heading text-base-content mb-6">读者评论</h3>
+  <div class="blog-comments mt-12 pt-8 border-t border-[var(--surface-3)]">
+    <h3 class="text-lg font-semibold font-heading text-[var(--deep-text)] mb-6">读者评论</h3>
 
     <div v-if="isReady" ref="giscusContainer" class="giscus" />
 
     <div v-else-if="loading" class="flex items-center justify-center py-12">
-      <span class="loading loading-spinner loading-md text-primary" />
-      <span class="ml-3 text-sm text-base-content/50">评论加载中...</span>
+      <span class="loading loading-spinner loading-md text-[var(--primary)]" />
+      <span class="ml-3 text-sm text-[var(--deep-text)]/50">评论加载中...</span>
     </div>
 
-    <div v-else class="text-center py-8 bg-base-200 rounded-xl">
+    <div v-else class="text-center py-8 bg-[var(--page-bg)] rounded-xl">
       <svg
-        class="w-10 h-10 mx-auto mb-3 text-base-content/30"
+        class="w-10 h-10 mx-auto mb-3 text-[var(--deep-text)]/30"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -21,13 +21,13 @@
       >
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
-      <p class="text-sm text-base-content/50">
+      <p class="text-sm text-[var(--deep-text)]/50">
         评论功能需要配置 Giscus。
         <a
           href="https://giscus.app/zh-CN"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-primary hover:underline"
+          class="text-[var(--primary)] hover:underline"
         >
           前往配置
         </a>
@@ -95,7 +95,7 @@ function loadGiscus() {
   script.setAttribute('data-reactions-enabled', props.reactionsEnabled ? '1' : '0');
   script.setAttribute('data-emit-metadata', '0');
   script.setAttribute('data-input-position', 'bottom');
-  script.setAttribute('data-theme', props.theme);
+  // data-theme removed — using .dark class instead
   script.setAttribute('data-lang', 'zh-CN');
   script.setAttribute('data-loading', 'lazy');
   script.setAttribute('crossorigin', 'anonymous');

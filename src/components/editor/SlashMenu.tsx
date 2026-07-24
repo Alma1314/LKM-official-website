@@ -196,7 +196,7 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
   return (
     <div
       ref={menuRef}
-      className="absolute z-50 w-64 bg-base-100 border border-base-300 rounded-lg shadow-xl overflow-hidden"
+      className="absolute z-50 w-64 bg-[var(--card-bg)] border border-[var(--surface-3)] rounded-lg shadow-xl overflow-hidden"
       style={{ top: position.top, left: position.left }}
     >
       <div className="p-1">
@@ -205,17 +205,17 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
             key={item.label}
             type="button"
             className={`flex items-center gap-3 w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-              idx === selectedIdx ? 'bg-primary/10 text-primary' : 'hover:bg-base-200'
+              idx === selectedIdx ? 'bg-[var(--primary)]/10 text-[var(--primary)]' : 'hover:bg-[var(--page-bg)]'
             }`}
             onClick={() => {
               item.action(editor);
               onSelect();
             }}
           >
-            <span className="w-6 text-center font-mono text-base-content/60">{item.icon}</span>
+            <span className="w-6 text-center font-mono text-[var(--deep-text)]/60">{item.icon}</span>
             <div>
               <div className="font-medium">{item.label}</div>
-              <div className="text-xs text-base-content/50">{item.description}</div>
+              <div className="text-xs text-[var(--deep-text)]/50">{item.description}</div>
             </div>
           </button>
         ))}

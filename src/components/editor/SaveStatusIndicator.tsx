@@ -23,7 +23,7 @@ const SaveStatusIndicator = memo(function SaveStatusIndicator({
   const config = STATUS_CONFIG[status];
 
   return (
-    <div className="flex items-center gap-2 text-xs text-base-content/60 px-1">
+    <div className="flex items-center gap-2 text-xs text-[var(--deep-text)]/60 px-1">
       {wordCount !== undefined && <span>{wordCount} 字</span>}
       {charCount !== undefined && <span>{charCount} 字符</span>}
       <span className={`badge badge-sm ${config.className} gap-1`}>

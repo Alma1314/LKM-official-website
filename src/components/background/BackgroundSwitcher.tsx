@@ -18,7 +18,7 @@ function getLazyComponent(id: string, load: () => Promise<{ default: ComponentTy
 
 function getIsDark(): boolean {
   if (typeof document === 'undefined') return true;
-  return document.documentElement.getAttribute('data-theme') === 'dark';
+  return document.documentElement.classList.contains('dark');
 }
 
 function getInitialBackground(): BackgroundId {
@@ -66,7 +66,7 @@ export default function BackgroundSwitcher() {
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme'],
+      attributeFilter: ['class'],
     });
     return () => observer.disconnect();
   }, []);
@@ -208,7 +208,7 @@ export default function BackgroundSwitcher() {
                              transition-all duration-150
                              ${
                                isActive
-                                 ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                                 ? 'bg-[var(--primary)]/15 text-[var(--primary)] ring-1 ring-[var(--primary)]/30'
                                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
                              }`}
                   title={bg.name}
@@ -229,8 +229,8 @@ export default function BackgroundSwitcher() {
       {/* 背景 Canvas 层 */}
       <div style={{ pointerEvents: 'auto', position: 'absolute', inset: 0, overflow: 'hidden' }}>
         {heroVisible && ActiveComponent && (
-          <BackgroundErrorBoundary fallback={<div className="absolute inset-0 bg-base-100" />}>
-            <Suspense fallback={<div className="absolute inset-0 bg-base-100" />}>
+          <BackgroundErrorBoundary fallback={<div className="absolute inset-0 bg-[var(--card-bg)]" />}>
+            <Suspense fallback={<div className="absolute inset-0 bg-[var(--card-bg)]" />}>
               <ActiveComponent key={`${currentBg}-${isDark ? 'dark' : 'light'}`} className="" {...colorProps} />
             </Suspense>
           </BackgroundErrorBoundary>

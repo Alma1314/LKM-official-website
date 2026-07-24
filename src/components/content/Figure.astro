@@ -30,10 +30,10 @@ const alignClasses: Record<string, string> = {
         }}
       />
     ) : (
-      <div class="border-2 border-dashed border-base-300 rounded-lg p-8 text-base-content/50">
+      <div class="border-2 border-dashed border-[var(--surface-3)] rounded-lg p-8 text-[var(--deep-text)]/50">
         <p class="text-center text-sm">暂无图片</p>
       </div>
     )
   }
-  {caption && <figcaption class="text-xs text-base-content/60 mt-2">{caption}</figcaption>}
+  {caption && <figcaption class="text-xs text-[var(--deep-text)]/60 mt-2">{caption}</figcaption>}
 </figure>

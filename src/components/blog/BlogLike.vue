@@ -1,14 +1,14 @@
 <template>
   <div class="flex items-center gap-2">
     <button
-      class="like-btn relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-base-200 group"
+      class="like-btn relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-[var(--page-bg)] group"
       :class="{ 'is-liked': liked }"
       @click="handleLike"
       :aria-label="liked ? '取消点赞' : '点赞'"
       :title="liked ? '取消点赞' : '点赞'"
     >
       <span
-        class="like-icon inline-flex items-center justify-center w-5 h-5 text-base-content/60 transition-all duration-300"
+        class="like-icon inline-flex items-center justify-center w-5 h-5 text-[var(--deep-text)]/60 transition-all duration-300"
         :class="{ 'text-red-500 scale-125': liked }"
       >
         <svg
@@ -28,7 +28,7 @@
 
       <span ref="particlesContainer" class="absolute inset-0 pointer-events-none" />
 
-      <span class="text-sm font-medium text-base-content/60 tabular-nums">
+      <span class="text-sm font-medium text-[var(--deep-text)]/60 tabular-nums">
         {{ displayCount }}
       </span>
     </button>

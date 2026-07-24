@@ -41,7 +41,7 @@ const posts = APP_BLOG.isEnabled ? await findPostsByIds(postIds) : [];
             <h2 class="text-[40px] font-semibold tracking-[-0.005em] group font-heading mb-2" set:html={title} />
             {APP_BLOG.list.isEnabled && linkText && linkUrl && (
               <a
-                class="text-primary hover:text-primary/80 transition ease-in duration-200 block mb-6 lg:mb-0"
+                class="text-[var(--primary)] hover:text-[var(--primary)]/80 transition ease-in duration-200 block mb-6 lg:mb-0"
                 href={linkUrl}
               >
                 {linkText} »
@@ -50,7 +50,7 @@ const posts = APP_BLOG.isEnabled ? await findPostsByIds(postIds) : [];
           </div>
         )}
 
-        {information && <p class="text-[17px] text-neutral lg:max-w-md leading-relaxed" set:html={information} />}
+        {information && <p class="text-[17px] text-[var(--text-muted)] lg:max-w-md leading-relaxed" set:html={information} />}
       </div>
 
       <Grid posts={posts} />

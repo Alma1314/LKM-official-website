@@ -37,7 +37,7 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
       if (linkMark) {
         const href = (linkMark.attrs as Record<string, string>)?.href ?? '#';
         return (
-          <a key={key} href={href} className="text-primary underline">
+          <a key={key} href={href} className="text-[var(--primary)] underline">
             {text}
           </a>
         );
@@ -46,7 +46,7 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
     }
     case 'blockquote':
       return (
-        <blockquote key={key} className="border-l-4 border-base-300 pl-4 italic">
+        <blockquote key={key} className="border-l-4 border-[var(--surface-3)] pl-4 italic">
           {children}
         </blockquote>
       );
@@ -67,12 +67,12 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
       return <li key={key}>{children}</li>;
     case 'codeBlock':
       return (
-        <pre key={key} className="bg-base-200 rounded-lg p-4 overflow-x-auto">
+        <pre key={key} className="bg-[var(--page-bg)] rounded-lg p-4 overflow-x-auto">
           <code>{children ?? node.text}</code>
         </pre>
       );
     case 'horizontalRule':
-      return <hr key={key} className="my-6 border-base-300" />;
+      return <hr key={key} className="my-6 border-[var(--surface-3)]" />;
     case 'image': {
       const attrs = (node.attrs ?? {}) as Record<string, string>;
       return (
@@ -111,10 +111,10 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
               style={{ width: attrs.width ? `${attrs.width}px` : 'auto' }}
             />
           ) : (
-            <div className="border-2 border-dashed border-base-300 rounded-lg p-8 text-base-content/50">暂无图片</div>
+            <div className="border-2 border-dashed border-[var(--surface-3)] rounded-lg p-8 text-[var(--deep-text)]/50">暂无图片</div>
           )}
           {attrs.caption && (
-            <figcaption className="text-xs text-base-content/60 mt-1">{attrs.caption as string}</figcaption>
+            <figcaption className="text-xs text-[var(--deep-text)]/60 mt-1">{attrs.caption as string}</figcaption>
           )}
         </figure>
       );
@@ -132,7 +132,7 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
     case 'tableCell':
     case 'tableHeader': {
       return (
-        <td key={key} className="border border-base-300 px-3 py-1">
+        <td key={key} className="border border-[var(--surface-3)] px-3 py-1">
           {children ?? node.text}
         </td>
       );
@@ -149,7 +149,7 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
     case 'rawMdx': {
       const source = ((node.attrs as Record<string, string>)?.source ?? '').slice(0, 60);
       return (
-        <div key={key} className="bg-warning/10 border border-warning/40 rounded p-3 text-sm text-warning my-2">
+        <div key={key} className="bg-[var(--warning)]/10 border border-[var(--warning)]/40 rounded p-3 text-sm text-[var(--warning)] my-2">
           [MDX: {source}...]
         </div>
       );
@@ -177,5 +177,5 @@ export default function PreviewPanel({ editor }: PreviewPanelProps) {
     return nodes.map((node, i) => renderNode(node, i));
   }, [editor.state.doc]);
 
-  return <div className="min-h-[60vh] px-8 py-6 bg-base-100">{content}</div>;
+  return <div className="min-h-[60vh] px-8 py-6 bg-[var(--card-bg)]">{content}</div>;
 }

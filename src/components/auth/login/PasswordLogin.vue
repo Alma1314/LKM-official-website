@@ -14,10 +14,10 @@
         autocomplete="current-password"
         @input="passwordError = ''"
       />
-      <span v-if="passwordError" class="label-text-alt text-error">{{ passwordError }}</span>
+      <span v-if="passwordError" class="label-text-alt text-[var(--error)]">{{ passwordError }}</span>
     </div>
     <div v-if="identifiedAccount.level !== 'local'" class="text-right">
-      <a :href="getAuthPath('account/recovery')" class="text-xs text-primary hover:underline">忘记密码？</a>
+      <a :href="getAuthPath('account/recovery')" class="text-xs text-[var(--primary)] hover:underline">忘记密码？</a>
     </div>
     <button type="submit" class="btn btn-primary w-full" :disabled="loading">
       <span v-if="loading" class="loading loading-spinner loading-xs"></span>

@@ -37,8 +37,8 @@ const isLg = size === 'lg';
             class={
               'avatar-fallback ' +
               (isLg
-                ? 'w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-base-300 text-neutral flex items-center justify-center text-lg font-semibold'
-                : 'w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-base-300 text-neutral flex items-center justify-center text-lg font-semibold')
+                ? 'w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[var(--surface-3)] text-[var(--text-muted)] flex items-center justify-center text-lg font-semibold'
+                : 'w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-[var(--surface-3)] text-[var(--text-muted)] flex items-center justify-center text-lg font-semibold')
             }
           >
             {name.replace('七月', '').charAt(0) || name.charAt(0)}
@@ -49,15 +49,15 @@ const isLg = size === 'lg';
     <div class="flex-1 min-w-0">
       {
         isLg ? (
-          <h2 class="text-[21px] font-semibold text-base-content">{name}</h2>
+          <h2 class="text-[21px] font-semibold text-[var(--deep-text)]">{name}</h2>
         ) : (
-          <h4 class="font-bold text-lg text-base-content">{name}</h4>
+          <h4 class="font-bold text-lg text-[var(--deep-text)]">{name}</h4>
         )
       }
-      {role && <span class={isLg ? 'text-primary font-semibold' : 'text-xs text-neutral'}>{role}</span>}
-      {desc && <p class="text-xs text-neutral mt-1">{desc}</p>}
-      {dream && <p class="text-xs text-secondary mt-1 italic">{dream}</p>}
-      {quote && <p class="profile-quote text-xs text-primary/70 mt-1">{quote}</p>}
+      {role && <span class={isLg ? 'text-[var(--primary)] font-semibold' : 'text-xs text-[var(--text-muted)]'}>{role}</span>}
+      {desc && <p class="text-xs text-[var(--text-muted)] mt-1">{desc}</p>}
+      {dream && <p class="text-xs text-[var(--secondary)] mt-1 italic">{dream}</p>}
+      {quote && <p class="profile-quote text-xs text-[var(--primary)]/70 mt-1">{quote}</p>}
     </div>
   </div>
 </div>

@@ -52,12 +52,12 @@ class EditorErrorBoundary extends Component<Props, State> {
         if (retries > 0) {
           setTimeout(() => this.handleRetry(), delay);
           return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-3 px-4">
-              <span className="loading loading-spinner loading-lg text-primary" />
-              <span className="text-base-content/70 text-sm">
+            <div className="flex flex-col items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)] gap-3 px-4">
+              <span className="loading loading-spinner loading-lg text-[var(--primary)]" />
+              <span className="text-[var(--deep-text)]/70 text-sm">
                 正在重试加载编辑器……({retries}/{MAX_RETRIES})
               </span>
-              <pre className="text-warning text-xs whitespace-pre-wrap break-all max-w-full bg-warning/10 p-3 rounded text-left">
+              <pre className="text-[var(--warning)] text-xs whitespace-pre-wrap break-all max-w-full bg-[var(--warning)]/10 p-3 rounded text-left">
                 {error.message || String(error)}
               </pre>
             </div>
@@ -65,16 +65,16 @@ class EditorErrorBoundary extends Component<Props, State> {
         }
         // 首次失败，显示首次自动重试中
         return (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-3 px-4">
-            <span className="loading loading-spinner loading-lg text-primary" />
-            <span className="text-base-content/70 text-sm">编辑器加载异常，正在重试……</span>
+          <div className="flex flex-col items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)] gap-3 px-4">
+            <span className="loading loading-spinner loading-lg text-[var(--primary)]" />
+            <span className="text-[var(--deep-text)]/70 text-sm">编辑器加载异常，正在重试……</span>
           </div>
         );
       }
 
       // 3 次重试全部失败，显示降级提示
       return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100 gap-4 px-6">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)] gap-4 px-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
@@ -85,17 +85,17 @@ class EditorErrorBoundary extends Component<Props, State> {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-error"
+            className="text-[var(--error)]"
           >
             <circle cx="12" cy="12" r="10" />
             <line x1="12" x2="12" y1="8" y2="12" />
             <line x1="12" x2="12.01" y1="16" y2="16" />
           </svg>
-          <h3 className="text-error text-lg font-medium">编辑器加载失败</h3>
-          <p className="text-base-content/60 text-sm text-center max-w-md">
+          <h3 className="text-[var(--error)] text-lg font-medium">编辑器加载失败</h3>
+          <p className="text-[var(--deep-text)]/60 text-sm text-center max-w-md">
             已尝试 {MAX_RETRIES} 次加载，仍无法启动编辑器。可能的原因：
           </p>
-          <ul className="text-base-content/50 text-xs list-disc list-inside text-left">
+          <ul className="text-[var(--deep-text)]/50 text-xs list-disc list-inside text-left">
             <li>开发服务器预构建缓存过期</li>
             <li>网络连接问题</li>
             <li>浏览器缓存冲突</li>
@@ -115,7 +115,7 @@ class EditorErrorBoundary extends Component<Props, State> {
               重新尝试
             </button>
           </div>
-          <pre className="text-error text-xs whitespace-pre-wrap break-all max-w-full bg-error/10 p-3 rounded text-left mt-2">
+          <pre className="text-[var(--error)] text-xs whitespace-pre-wrap break-all max-w-full bg-[var(--error)]/10 p-3 rounded text-left mt-2">
             {error.message || String(error)}
           </pre>
         </div>
@@ -127,9 +127,9 @@ class EditorErrorBoundary extends Component<Props, State> {
       <Suspense
         key={errorVersion}
         fallback={
-          <div className="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
+          <div className="flex items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)]">
             <span className="loading loading-spinner loading-md mr-2" />
-            <span className="text-base-content/50">正在加载编辑器……</span>
+            <span className="text-[var(--deep-text)]/50">正在加载编辑器……</span>
           </div>
         }
       >
@@ -148,9 +148,9 @@ export default function EditorMount() {
 
   if (!docId) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
+      <div className="flex items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)]">
         <span className="loading loading-spinner loading-md mr-2" />
-        <span className="text-base-content/50">正在加载编辑器……</span>
+        <span className="text-[var(--deep-text)]/50">正在加载编辑器……</span>
       </div>
     );
   }

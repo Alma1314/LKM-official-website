@@ -8,58 +8,9 @@
 }
 
 @plugin '@tailwindcss/typography';
-@plugin 'daisyui';
 
-@plugin "daisyui/theme" {
-  name: 'light';
-  default: true;
-  color-scheme: light;
-  --color-base-100: #ffffff;
-  --color-base-200: #f5f5f7;
-  --color-base-300: #e0e0e0;
-  --color-base-content: #1d1d1f;
-  --color-neutral: #7a7a7a;
-  --color-neutral-content: #ffffff;
-  --color-primary: oklch(0.55 0.18 var(--hue));
-  --color-primary-content: #ffffff;
-  --color-secondary: #1d1d1f;
-  --color-secondary-content: #ffffff;
-  --color-accent: oklch(0.55 0.18 var(--hue));
-  --color-accent-content: #ffffff;
-  --color-info: #38bdf8;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --radius-box: 12px;
-  --radius-field: 8px;
-  --radius-selector: 6px;
-}
-
-@plugin "daisyui/theme" {
-  name: 'dark';
-  color-scheme: dark;
-  --color-base-100: #010102;
-  --color-base-200: #0f1011;
-  --color-base-300: #141516;
-  --color-base-content: #f7f8f8;
-  --color-neutral: #8a8f98;
-  --color-neutral-content: #010102;
-  --color-primary: oklch(0.7 0.14 var(--hue));
-  --color-primary-content: #ffffff;
-  --color-secondary: #d0d6e0;
-  --color-secondary-content: #010102;
-  --color-accent: oklch(0.7 0.14 var(--hue));
-  --color-accent-content: #ffffff;
-  --color-info: #38bdf8;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --radius-box: 12px;
-  --radius-field: 8px;
-  --radius-selector: 6px;
-}
-
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+/* 暗色模式变体 — 使用 :root.dark / [data-theme='dark'] */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* ── 字体系统 ──
@@ -83,7 +34,7 @@
 
 /* ── Header 滚动样式 (实心 base) ── */
 #header.scroll > div:first-child {
-  @apply bg-base-100 border-b border-base-300;
+  @apply bg-[var(--card-bg)] border-b border-[var(--surface-3)];
 }
 
 #header.expanded nav {
@@ -383,12 +334,12 @@
 
   /* Property panel becomes bottom drawer on mobile */
   .property-panel-mobile {
-    @apply fixed bottom-0 left-0 right-0 w-full max-h-[40vh] overflow-y-auto border-t border-base-300 rounded-t-xl z-40;
+    @apply fixed bottom-0 left-0 right-0 w-full max-h-[40vh] overflow-y-auto border-t border-[var(--surface-3)] rounded-t-xl z-40;
   }
 
   /* Full-screen editor mode */
   .editor-fullscreen {
-    @apply fixed inset-0 z-50 bg-base-100 overflow-y-auto;
+    @apply fixed inset-0 z-50 bg-[var(--card-bg)] overflow-y-auto;
   }
 
   .editor-fullscreen .ProseMirror {
@@ -408,5 +359,59 @@
   /* Table horizontal scroll for mobile */
   .ProseMirror table {
     @apply block overflow-x-auto whitespace-nowrap;
+  }
+}
+
+/* ===== 按钮组件（替代 daisyui btn） ===== */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-[var(--radius-field)]
+           transition-all duration-200 no-underline select-none cursor-pointer
+           min-h-[2.5rem] px-4 text-sm leading-none
+           active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+  .btn-xs { @apply min-h-[1.5rem] px-2 text-xs; }
+  .btn-sm { @apply min-h-[2rem] px-3 text-sm; }
+  .btn-md { @apply min-h-[2.5rem] px-4 text-sm; }
+  .btn-lg { @apply min-h-[3rem] px-6 text-base; }
+  .btn-primary {
+    @apply bg-[var(--primary)] text-[var(--on-primary)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-secondary {
+    @apply bg-[var(--secondary)] text-[var(--on-secondary)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-accent {
+    @apply bg-[var(--primary)] text-[var(--on-primary)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-success {
+    @apply bg-[var(--success)] text-[var(--on-success)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-info {
+    @apply bg-[var(--info)] text-[var(--on-info)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-warning {
+    @apply bg-[var(--warning)] text-[var(--on-warning)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-error {
+    @apply bg-[var(--error)] text-[var(--on-error)]
+           hover:brightness-110 active:brightness-90;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-[var(--text-muted)]
+           hover:bg-[var(--page-bg)] active:bg-[var(--surface-3)];
+  }
+  .btn-outline {
+    @apply bg-transparent border border-[var(--text-muted)] text-[var(--text-muted)]
+           hover:bg-[var(--text-muted)] hover:text-[var(--deep-text)]
+           active:bg-[var(--text-muted)] active:text-[var(--deep-text)];
+  }
+  .btn-disabled {
+    @apply opacity-50 pointer-events-none;
   }
 }

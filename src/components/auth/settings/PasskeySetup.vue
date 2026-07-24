@@ -6,14 +6,14 @@
 
   <div v-else class="space-y-4">
     <h3 class="text-lg font-semibold">通行密钥 (Passkey)</h3>
-    <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
+    <div class="flex items-center justify-between p-3 bg-[var(--page-bg)] rounded-lg">
       <div>
         <span class="font-medium">生物识别 / PIN 码</span>
         <span class="badge badge-xs ml-2" :class="user.hasPasskey ? 'badge-success' : 'badge-ghost'">
           {{ user.hasPasskey ? '已创建' : '未创建' }}
         </span>
       </div>
-      <button v-if="user.hasPasskey" type="button" class="btn btn-ghost btn-xs text-error" @click="handleDelete">
+      <button v-if="user.hasPasskey" type="button" class="btn btn-ghost btn-xs text-[var(--error)]" @click="handleDelete">
         删除
       </button>
       <button v-else type="button" class="btn btn-ghost btn-xs" @click="showCreate = true">创建</button>
@@ -24,10 +24,10 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       @click="showCreate = false"
     >
-      <div class="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 text-center space-y-4" @click.stop>
+      <div class="bg-[var(--card-bg)] rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 text-center space-y-4" @click.stop>
         <div class="text-5xl">🔑</div>
         <h4 class="font-semibold">创建通行密钥</h4>
-        <p class="text-sm text-neutral">系统将调用你设备的指纹、面容或 PIN 码进行验证（模拟）</p>
+        <p class="text-sm text-[var(--text-muted)]">系统将调用你设备的指纹、面容或 PIN 码进行验证（模拟）</p>
         <button type="button" class="btn btn-primary btn-sm" @click="handleCreate">模拟创建</button>
         <button type="button" class="btn btn-ghost btn-xs w-full" @click="showCreate = false">取消</button>
       </div>

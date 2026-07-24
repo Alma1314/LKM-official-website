@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const isDark = () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+const isDark = () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
 
 export function useColorMode() {
   const [mode, setMode] = useState(() => (isDark() ? 'dark' : 'light'));
@@ -11,7 +11,7 @@ export function useColorMode() {
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme'],
+      attributeFilter: ['class'],
     });
     return () => observer.disconnect();
   }, []);

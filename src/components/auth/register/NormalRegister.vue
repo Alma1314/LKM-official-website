@@ -1,7 +1,7 @@
 <template>
   <!-- Verify step -->
   <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
-    <p class="text-sm text-neutral text-center">验证码已发送至 {{ useEmail ? email : phone }}（模拟码：000000）</p>
+    <p class="text-sm text-[var(--text-muted)] text-center">验证码已发送至 {{ useEmail ? email : phone }}（模拟码：000000）</p>
     <input
       id="reg-verify"
       type="text"
@@ -19,7 +19,7 @@
   <div v-else-if="step === 'done'" class="text-center space-y-4">
     <div class="flex justify-center">
       <svg
-        class="w-14 h-14 text-success"
+        class="w-14 h-14 text-[var(--success)]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -32,7 +32,7 @@
       </svg>
     </div>
     <p class="font-semibold text-lg">普通账户注册成功</p>
-    <p class="text-sm text-neutral">现在可以设置 2FA 和通行密钥增强安全性</p>
+    <p class="text-sm text-[var(--text-muted)]">现在可以设置 2FA 和通行密钥增强安全性</p>
     <div class="flex gap-3 justify-center">
       <button type="button" class="btn btn-ghost btn-sm" @click="props.onComplete(false)">跳过</button>
       <button type="button" class="btn btn-primary btn-sm" @click="props.onComplete(true)">去设置 2FA</button>
@@ -41,7 +41,7 @@
 
   <!-- Form step (default) -->
   <form v-else @submit.prevent="handleSubmit" class="space-y-4">
-    <p class="text-sm text-neutral text-center">仅需用户名 + {{ useEmail ? '邮箱' : '手机号' }}，验证后即可注册</p>
+    <p class="text-sm text-[var(--text-muted)] text-center">仅需用户名 + {{ useEmail ? '邮箱' : '手机号' }}，验证后即可注册</p>
     <div>
       <label class="label pb-1" for="reg-normal-user">
         <span class="label-text font-medium">用户名</span>
@@ -55,7 +55,7 @@
         placeholder="请输入用户名（至少3位）"
         @input="errors.username = ''"
       />
-      <span v-if="errors.username" class="label-text-alt text-error">{{ errors.username }}</span>
+      <span v-if="errors.username" class="label-text-alt text-[var(--error)]">{{ errors.username }}</span>
     </div>
     <div class="flex gap-2">
       <button type="button" class="btn btn-xs" :class="useEmail ? 'btn-primary' : 'btn-ghost'" @click="useEmail = true">
@@ -83,7 +83,7 @@
         placeholder="请输入邮箱地址"
         @input="errors.email = ''"
       />
-      <span v-if="errors.email" class="label-text-alt text-error">{{ errors.email }}</span>
+      <span v-if="errors.email" class="label-text-alt text-[var(--error)]">{{ errors.email }}</span>
     </div>
     <div v-else>
       <label class="label pb-1" for="reg-normal-phone">
@@ -98,7 +98,7 @@
         placeholder="请输入手机号"
         @input="errors.phone = ''"
       />
-      <span v-if="errors.phone" class="label-text-alt text-error">{{ errors.phone }}</span>
+      <span v-if="errors.phone" class="label-text-alt text-[var(--error)]">{{ errors.phone }}</span>
     </div>
     <div v-if="submitError" class="alert alert-error text-sm">{{ submitError }}</div>
     <button type="submit" class="btn btn-primary w-full">发送验证码</button>

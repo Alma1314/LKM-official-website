@@ -1,10 +1,10 @@
 <template>
-  <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+  <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
     <h2 class="text-xl font-semibold text-center mb-4">2FA 恢复</h2>
 
     <!-- Verify email -->
     <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
-      <p class="text-sm text-neutral text-center">请通过邮箱验证身份</p>
+      <p class="text-sm text-[var(--text-muted)] text-center">请通过邮箱验证身份</p>
       <div>
         <label class="label pb-1"><span class="label-text font-medium">邮箱</span></label>
         <input type="email" class="input input-bordered w-full" v-model="email" placeholder="请输入绑定邮箱" />
@@ -19,7 +19,7 @@
           maxlength="6"
         />
       </div>
-      <p class="text-xs text-success text-center">模拟验证码：000000</p>
+      <p class="text-xs text-[var(--success)] text-center">模拟验证码：000000</p>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
       <button type="submit" class="btn btn-primary w-full">验证</button>
       <button type="button" class="btn btn-ghost w-full btn-sm" @click="props.onBack()">返回</button>
@@ -27,7 +27,7 @@
 
     <!-- Recovery code -->
     <form v-else-if="step === 'recovery'" @submit.prevent="handleRecovery" class="space-y-4">
-      <p class="text-sm text-neutral text-center">请输入备用恢复码</p>
+      <p class="text-sm text-[var(--text-muted)] text-center">请输入备用恢复码</p>
       <div>
         <label class="label pb-1"><span class="label-text font-medium">恢复码</span></label>
         <input
@@ -53,7 +53,7 @@
     <div v-else-if="step === 'done'" class="text-center space-y-4">
       <div class="flex justify-center">
         <svg
-          class="w-14 h-14 text-success"
+          class="w-14 h-14 text-[var(--success)]"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -66,7 +66,7 @@
         </svg>
       </div>
       <p class="font-semibold">恢复成功</p>
-      <p class="text-sm text-neutral">请重新设置 2FA</p>
+      <p class="text-sm text-[var(--text-muted)]">请重新设置 2FA</p>
       <button type="button" class="btn btn-primary btn-sm" @click="props.onSuccess()">完成</button>
     </div>
   </div>

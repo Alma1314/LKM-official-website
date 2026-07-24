@@ -50,33 +50,33 @@ const metadata = {
     <Fragment slot="title">
       <div class="flex flex-col gap-4">
         <div
-          class="text-[#6C2AD8] dark:text-primary text-[40px] md:text-[56px] font-semibold leading-[1.07] tracking-[-0.005em] [text-shadow:0_0_1px_var(--color-primary-content)]"
+          class="text-[#6C2AD8] dark:text-[var(--primary)] text-[40px] md:text-[56px] font-semibold leading-[1.07] tracking-[-0.005em] [text-shadow:0_0_1px_var(--color-primary-content)]"
         >
           理科迷！
         </div>
 
         <div
-          class="block mb-1 font-semibold tracking-[-0.005em] text-base-content [text-shadow:0_0_1px_var(--color-base-content)]"
+          class="block mb-1 font-semibold tracking-[-0.005em] text-[var(--deep-text)] [text-shadow:0_0_1px_var(--color-base-content)]"
         >
           科技爱好者社区
         </div>
       </div>
     </Fragment>
     <Fragment slot="subtitle">
-      <div class="inline-block bg-base-100/30 backdrop-blur-md rounded-lg px-3 py-1 mb-2">
-        <span class="text-[17px] font-normal text-neutral leading-relaxed"> 是由广大科技爱好者组成的社区 </span>
+      <div class="inline-block bg-[var(--card-bg)]/30 backdrop-blur-md rounded-lg px-3 py-1 mb-2">
+        <span class="text-[17px] font-normal text-[var(--text-muted)] leading-relaxed"> 是由广大科技爱好者组成的社区 </span>
       </div>
 
-      <div class="hidden sm:inline-block bg-base-100/30 backdrop-blur-md rounded-lg px-3 py-1.5">
-        <span class="text-[14px] text-neutral leading-relaxed">
-          <strong class="font-semibold text-primary mr-1">Here!</strong>
+      <div class="hidden sm:inline-block bg-[var(--card-bg)]/30 backdrop-blur-md rounded-lg px-3 py-1.5">
+        <span class="text-[14px] text-[var(--text-muted)] leading-relaxed">
+          <strong class="font-semibold text-[var(--primary)] mr-1">Here!</strong>
           在这里，科学与技术都脱离了学术象牙塔的刻板与遥远，变成了每一位都能够去迸发，对于世界发问的好奇心。触手可及，摆脱功利视视角，让更多人迸发对于知识的渴望，感受到理工科的美。我们打破专业门槛，让每一位热爱理性，崇尚科技的“爱好者”，也都能在这里找到同频的伙伴，共探万物运转的奥秘。
         </span>
       </div>
     </Fragment>
   </Hero>
 
-  <Section title="团队成员" subtitle="理科迷因为有你，所以更加精彩" id="team" classes={{ container: 'bg-base-100' }}>
+  <Section title="团队成员" subtitle="理科迷因为有你，所以更加精彩" id="team" classes={{ container: 'bg-[var(--card-bg)]' }}>
     <div class="grid gap-5 md:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         [
@@ -94,8 +94,8 @@ const metadata = {
                 class="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 sm:mb-3"
               />
               <div class="flex-1 min-w-0">
-                <h4 class="font-bold text-lg text-base-content">{m.name}</h4>
-                <p class="text-xs text-neutral mt-1">{m.desc}</p>
+                <h4 class="font-bold text-lg text-[var(--deep-text)]">{m.name}</h4>
+                <p class="text-xs text-[var(--text-muted)] mt-1">{m.desc}</p>
               </div>
             </div>
           </a>
@@ -105,10 +105,10 @@ const metadata = {
         <div
           class="profile-inner p-4 sm:p-5 flex flex-col items-center justify-center text-center gap-3 min-h-full rounded-lg"
         >
-          <span class="text-lg font-bold text-base-content">更多成员</span>
-          <span class="text-xs text-neutral">点击查看完整管理团队</span>
+          <span class="text-lg font-bold text-[var(--deep-text)]">更多成员</span>
+          <span class="text-xs text-[var(--text-muted)]">点击查看完整管理团队</span>
           <span
-            class="not-hover-color inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-semibold leading-6 text-primary-content bg-primary"
+            class="not-hover-color inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-semibold leading-6 text-[var(--on-primary)] bg-[var(--primary)]"
             >查看全部 →</span
           >
         </div>

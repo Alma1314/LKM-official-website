@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-base-100/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 bg-[var(--card-bg)]/70 backdrop-blur-sm"></div>
 
     <!-- 2FA flow -->
     <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full max-w-md">
@@ -9,10 +9,10 @@
 
     <!-- Logged in -->
     <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8 text-center">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8 text-center">
         <div class="mb-4 flex justify-center">
           <svg
-            class="w-14 h-14 text-success"
+            class="w-14 h-14 text-[var(--success)]"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -25,10 +25,10 @@
           </svg>
         </div>
         <h2 class="text-2xl font-semibold mb-2">登录成功</h2>
-        <p class="text-neutral mb-1">
-          欢迎回来，<span class="font-semibold text-base-content">{{ state.user.username }}</span>
+        <p class="text-[var(--text-muted)] mb-1">
+          欢迎回来，<span class="font-semibold text-[var(--deep-text)]">{{ state.user.username }}</span>
         </p>
-        <p class="text-xs text-neutral mb-4">
+        <p class="text-xs text-[var(--text-muted)] mb-4">
           账户等级：
           <span class="badge badge-sm ml-1" :class="levelBadgeClass">{{ levelLabel }}</span>
         </p>
@@ -60,10 +60,10 @@
 
     <!-- Login form -->
     <div v-else class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <div class="text-center mb-6">
-          <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-base-content">登录</h1>
-          <p class="text-sm text-neutral">登录理科迷账号，访问社区资源与文档</p>
+          <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-[var(--deep-text)]">登录</h1>
+          <p class="text-sm text-[var(--text-muted)]">登录理科迷账号，访问社区资源与文档</p>
         </div>
 
         <div v-if="error" class="alert alert-error mb-4 text-sm">{{ error }}</div>
@@ -88,12 +88,12 @@
               autocomplete="username"
               @input="identifierError = ''"
             />
-            <span v-if="identifierError" class="label-text-alt text-error">{{ identifierError }}</span>
+            <span v-if="identifierError" class="label-text-alt text-[var(--error)]">{{ identifierError }}</span>
           </div>
           <button type="submit" class="btn btn-primary w-full">继续</button>
-          <p class="text-center text-[13px] text-neutral">
+          <p class="text-center text-[13px] text-[var(--text-muted)]">
             没有账号？
-            <a :href="getAuthPath('register')" class="text-primary font-semibold hover:underline">立即注册</a>
+            <a :href="getAuthPath('register')" class="text-[var(--primary)] font-semibold hover:underline">立即注册</a>
           </p>
         </form>
 
@@ -101,7 +101,7 @@
         <template v-if="identifiedAccount">
           <div class="flex items-center justify-between mb-4">
             <div class="text-sm">
-              <span class="text-neutral">登录为 </span>
+              <span class="text-[var(--text-muted)]">登录为 </span>
               <span class="font-semibold">{{ identifiedAccount.username }}</span>
               <span class="badge badge-xs ml-1.5" :class="identifiedBadgeClass">{{ identifiedLevelLabel }}</span>
             </div>

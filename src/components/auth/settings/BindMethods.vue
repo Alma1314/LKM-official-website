@@ -6,11 +6,11 @@
     <div
       v-for="method in methods"
       :key="method.key"
-      class="flex items-center justify-between p-3 bg-base-200 rounded-lg"
+      class="flex items-center justify-between p-3 bg-[var(--page-bg)] rounded-lg"
     >
       <div>
         <span class="font-medium">{{ method.label }}</span>
-        <span class="text-xs text-neutral ml-2">{{ method.detail }}</span>
+        <span class="text-xs text-[var(--text-muted)] ml-2">{{ method.detail }}</span>
         <span class="badge badge-xs ml-2" :class="user.bindings.includes(method.key) ? 'badge-success' : 'badge-ghost'">
           {{ user.bindings.includes(method.key) ? '已绑定' : '未绑定' }}
         </span>
@@ -19,7 +19,7 @@
         <button
           v-if="user.bindings.includes(method.key)"
           type="button"
-          class="btn btn-ghost btn-xs text-error"
+          class="btn btn-ghost btn-xs text-[var(--error)]"
           @click="handleUnbind(method.key)"
         >
           解绑
@@ -42,16 +42,16 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       @click="showBind = null"
     >
-      <div class="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4" @click.stop>
+      <div class="bg-[var(--card-bg)] rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4" @click.stop>
         <h4 class="font-semibold mb-4">绑定 {{ bindLabel }}</h4>
 
         <div v-if="showBind === 'github'" class="space-y-4 text-center">
-          <p class="text-sm text-neutral">模拟 Github OAuth 授权绑定</p>
+          <p class="text-sm text-[var(--text-muted)]">模拟 Github OAuth 授权绑定</p>
           <button type="button" class="btn btn-primary btn-sm" @click="handleVerify">模拟授权并绑定</button>
         </div>
 
         <div v-else-if="showBind === 'passkey'" class="space-y-4 text-center">
-          <p class="text-sm text-neutral">模拟 Passkey 创建</p>
+          <p class="text-sm text-[var(--text-muted)]">模拟 Passkey 创建</p>
           <button type="button" class="btn btn-primary btn-sm" @click="handleVerify">模拟创建通行密钥</button>
         </div>
 
@@ -72,7 +72,7 @@
               maxlength="6"
             />
           </div>
-          <div v-if="error" class="text-error text-xs">{{ error }}</div>
+          <div v-if="error" class="text-[var(--error)] text-xs">{{ error }}</div>
           <button type="button" class="btn btn-primary btn-sm w-full" @click="handleVerify">验证并绑定</button>
         </div>
 

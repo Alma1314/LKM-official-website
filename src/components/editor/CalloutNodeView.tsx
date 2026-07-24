@@ -65,7 +65,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
       {editing && (
         <div
           ref={panelRef}
-          className="absolute top-full left-0 mt-1 z-30 bg-base-200 border border-base-300 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
+          className="absolute top-full left-0 mt-1 z-30 bg-[var(--page-bg)] border border-[var(--surface-3)] rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
         >
           <label className="text-xs font-medium block mb-1">类型</label>
           <select
@@ -90,7 +90,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
           <div className="flex gap-1 justify-end">
             <button
               type="button"
-              className="btn btn-ghost btn-xs text-error"
+              className="btn btn-ghost btn-xs text-[var(--error)]"
               onMouseDown={(e) => {
                 e.preventDefault();
                 const pos = getPos();

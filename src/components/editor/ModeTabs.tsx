@@ -14,7 +14,7 @@ const TABS: { mode: EditorMode; label: string }[] = [
 
 const ModeTabs = memo(function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
   return (
-    <div className="flex items-center gap-0 border-l border-base-300 pl-3 ml-2">
+    <div className="flex items-center gap-0 border-l border-[var(--surface-3)] pl-3 ml-2">
       <div className="tabs tabs-boxed tabs-sm">
         {TABS.map((tab) => (
           <button

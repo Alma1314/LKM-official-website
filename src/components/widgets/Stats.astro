@@ -23,18 +23,18 @@ const {
     {
       stats &&
         stats.map(({ amount, title, icon }) => (
-          <div class="p-4 md:w-1/4 sm:w-1/2 w-full min-w-[220px] text-center md:border-r md:border-base-300 md:last:border-none    ">
+          <div class="p-4 md:w-1/4 sm:w-1/2 w-full min-w-[220px] text-center md:border-r md:border-[var(--surface-3)] md:last:border-none    ">
             {icon && (
-              <div class="flex items-center justify-center mx-auto mb-4 text-primary">
+              <div class="flex items-center justify-center mx-auto mb-4 text-[var(--primary)]">
                 <Icon name={icon} class="w-8 h-8" />
               </div>
             )}
             {amount && (
-              <div class="font-heading text-base-content text-[2.6rem] font-semibold lg:text-5xl xl:text-6xl">
+              <div class="font-heading text-[var(--deep-text)] text-[2.6rem] font-semibold lg:text-5xl xl:text-6xl">
                 {amount}
               </div>
             )}
-            {title && <div class="text-[12px] font-medium uppercase tracking-wider text-neutral">{title}</div>}
+            {title && <div class="text-[12px] font-medium uppercase tracking-wider text-[var(--text-muted)]">{title}</div>}
           </div>
         ))
     }

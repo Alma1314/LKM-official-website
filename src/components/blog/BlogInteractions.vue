@@ -1,15 +1,15 @@
 <template>
   <div class="blog-interactions">
     <!-- 互动按钮栏 -->
-    <div class="flex items-center gap-3 py-3 border-y border-base-300 my-8">
+    <div class="flex items-center gap-3 py-3 border-y border-[var(--surface-3)] my-8">
       <!-- 点赞 -->
       <BlogLike :count="0" />
 
-      <span class="w-px h-5 bg-base-300" />
+      <span class="w-px h-5 bg-[var(--surface-3)]" />
 
       <!-- 评论跳转按钮 -->
       <button
-        class="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors hover:bg-base-200 text-base-content/60 group"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors hover:bg-[var(--page-bg)] text-[var(--deep-text)]/60 group"
         @click="scrollToComments"
         aria-label="查看评论"
         title="查看评论"
@@ -28,7 +28,7 @@
         <span class="text-sm font-medium">评论</span>
       </button>
 
-      <span class="w-px h-5 bg-base-300" />
+      <span class="w-px h-5 bg-[var(--surface-3)]" />
 
       <!-- 转发 -->
       <BlogShare :url="url" :title="title" :description="excerpt" />

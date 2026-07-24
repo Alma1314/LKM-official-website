@@ -53,8 +53,8 @@ const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlig
   };
 
   return (
-    <div className="w-80 border-l border-base-300 bg-base-200/50 flex flex-col">
-      <div className="flex items-center justify-between px-3 py-3 border-b border-base-300">
+    <div className="w-80 border-l border-[var(--surface-3)] bg-[var(--page-bg)]/50 flex flex-col">
+      <div className="flex items-center justify-between px-3 py-3 border-b border-[var(--surface-3)]">
         <h3 className="text-sm font-semibold">评论</h3>
         <button type="button" className="btn btn-ghost btn-xs" onClick={onClose}>
           ×
@@ -63,17 +63,17 @@ const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlig
 
       <div className="flex-1 overflow-y-auto">
         {threads.length === 0 ? (
-          <p className="text-xs text-base-content/50 px-3 py-4">暂无评论。选中文字后点击评论按钮添加。</p>
+          <p className="text-xs text-[var(--deep-text)]/50 px-3 py-4">暂无评论。选中文字后点击评论按钮添加。</p>
         ) : (
           threads.map((thread) => (
-            <div key={thread.id} className={`border-b border-base-300/50 ${thread.resolved ? 'opacity-60' : ''}`}>
+            <div key={thread.id} className={`border-b border-[var(--surface-3)]/50 ${thread.resolved ? 'opacity-60' : ''}`}>
               {/* Thread header */}
               <button
                 type="button"
-                className="w-full text-left px-3 py-2 text-xs hover:bg-base-200"
+                className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--page-bg)]"
                 onClick={() => onHighlightClick(thread.range)}
               >
-                <span className="font-mono text-base-content/50 italic">
+                <span className="font-mono text-[var(--deep-text)]/50 italic">
                   "{thread.text.slice(0, 60)}
                   {thread.text.length > 60 ? '…' : ''}"
                 </span>
@@ -82,12 +82,12 @@ const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlig
               {/* Replies */}
               <div className="px-3 pb-2 space-y-1.5">
                 {thread.comments.map((c) => (
-                  <div key={c.id} className="text-xs bg-base-100 rounded p-2">
+                  <div key={c.id} className="text-xs bg-[var(--card-bg)] rounded p-2">
                     <div className="flex items-center gap-1 mb-0.5">
                       <span className="font-medium">{c.author}</span>
-                      <span className="text-base-content/40">{new Date(c.createdAt).toLocaleString('zh-CN')}</span>
+                      <span className="text-[var(--deep-text)]/40">{new Date(c.createdAt).toLocaleString('zh-CN')}</span>
                     </div>
-                    <div className="text-base-content/80 whitespace-pre-wrap">{c.text}</div>
+                    <div className="text-[var(--deep-text)]/80 whitespace-pre-wrap">{c.text}</div>
                   </div>
                 ))}
               </div>
@@ -120,7 +120,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlig
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-xs btn-ghost text-success"
+                    className="btn btn-xs btn-ghost text-[var(--success)]"
                     onClick={() => handleResolve(thread.id)}
                   >
                     解决
@@ -128,7 +128,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, onClose, onHighlig
                 )}
                 <button
                   type="button"
-                  className="btn btn-xs btn-ghost text-error"
+                  className="btn btn-xs btn-ghost text-[var(--error)]"
                   onClick={() => handleDelete(thread.id)}
                 >
                   删除

@@ -32,7 +32,7 @@ export function getEditorExtensions(placeholder?: string) {
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
-        class: 'text-primary underline underline-offset-2 hover:opacity-80 transition-opacity',
+        class: 'text-[var(--primary)] underline underline-offset-2 hover:opacity-80 transition-opacity',
       },
     }),
     Underline,

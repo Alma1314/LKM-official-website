@@ -360,11 +360,11 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   const wordCount = metrics.words;
 
   return (
-    <div className="flex flex-col border border-base-300 rounded-lg bg-base-100 shadow-sm">
+    <div className="flex flex-col border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)] shadow-sm">
       {/* Tier 1: sticky 顶栏容器（两行一起固定） */}
       <div className="sticky top-0 z-30 rounded-t-lg overflow-hidden">
         {/* 上行：状态 + 操作按钮 */}
-        <div className="flex items-center justify-between px-2 md:px-4 py-1.5 border-b border-base-300 bg-base-200/50">
+        <div className="flex items-center justify-between px-2 md:px-4 py-1.5 border-b border-[var(--surface-3)] bg-[var(--page-bg)]/50">
           <SaveStatusIndicator
             status={saveStatus}
             charCount={mode === 'richtext' ? charCount : undefined}
@@ -471,9 +471,9 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
       ) : mode === 'preview' && editor ? (
         <PreviewPanel editor={editor} />
       ) : (
-        <div className="flex items-center justify-center min-h-[60vh] border border-base-300 rounded-lg bg-base-100">
+        <div className="flex items-center justify-center min-h-[60vh] border border-[var(--surface-3)] rounded-lg bg-[var(--card-bg)]">
           <span className="loading loading-spinner loading-md mr-2" />
-          <span className="text-base-content/50">正在加载编辑器……</span>
+          <span className="text-[var(--deep-text)]/50">正在加载编辑器……</span>
         </div>
       )}
 

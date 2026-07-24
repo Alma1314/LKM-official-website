@@ -1,13 +1,13 @@
 <template>
   <div class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-base-100/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 bg-[var(--card-bg)]/70 backdrop-blur-sm"></div>
 
     <!-- Logged in / success -->
     <div v-if="state.flow === 'logged_in'" class="relative w-full max-w-md text-center">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <div class="mb-4 flex justify-center">
           <svg
-            class="w-14 h-14 text-success"
+            class="w-14 h-14 text-[var(--success)]"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -20,7 +20,7 @@
           </svg>
         </div>
         <h2 class="text-2xl font-semibold">注册成功，已自动登录</h2>
-        <p class="text-neutral text-sm">
+        <p class="text-[var(--text-muted)] text-sm">
           欢迎加入理科迷，<span class="font-semibold">{{ state.user?.username }}</span>
         </p>
         <div class="flex gap-3 justify-center mt-6">
@@ -32,17 +32,17 @@
 
     <!-- Guide step -->
     <div v-else-if="showGuide" class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <RegisterGuide :onComplete="() => (showGuide = false)" :onSkip="() => (showGuide = false)" />
       </div>
     </div>
 
     <!-- Register form -->
     <div v-else class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <div class="text-center mb-6">
-          <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-base-content">注册</h1>
-          <p class="text-sm text-neutral">创建理科迷账号</p>
+          <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-[var(--deep-text)]">注册</h1>
+          <p class="text-sm text-[var(--text-muted)]">创建理科迷账号</p>
         </div>
 
         <div class="tabs tabs-bordered mb-6">
@@ -59,7 +59,7 @@
         <LocalRegister v-if="regType === 'local'" :onRegister="handleRegister" />
         <NormalRegister v-if="regType === 'normal'" :onRegister="handleRegister" :onComplete="handleComplete" />
         <div v-if="regType === 'github'" class="space-y-4 text-center">
-          <p class="text-sm text-neutral">GitHub OAuth 注册（模拟）</p>
+          <p class="text-sm text-[var(--text-muted)]">GitHub OAuth 注册（模拟）</p>
           <button type="button" class="btn btn-outline w-full gap-2" @click="handleGithubRegister">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -70,9 +70,9 @@
           </button>
         </div>
 
-        <p class="text-center text-[13px] text-neutral mt-5">
+        <p class="text-center text-[13px] text-[var(--text-muted)] mt-5">
           已有账号？
-          <a :href="getAuthPath('login')" class="text-primary font-semibold hover:underline">立即登录</a>
+          <a :href="getAuthPath('login')" class="text-[var(--primary)] font-semibold hover:underline">立即登录</a>
         </p>
       </div>
     </div>

@@ -49,10 +49,10 @@ export const BlockMath = Node.create({
             });
           } catch (err) {
             console.warn('[block-math] KaTeX 渲染失败:', err);
-            dom.innerHTML = '<span class="text-error text-sm">LaTeX 语法错误</span>';
+            dom.innerHTML = '<span class="text-[var(--error)] text-sm">LaTeX 语法错误</span>';
           }
         } else {
-          dom.innerHTML = '<span class="text-base-content/30 text-sm italic">点击编辑公式</span>';
+          dom.innerHTML = '<span class="text-[var(--deep-text)]/30 text-sm italic">点击编辑公式</span>';
         }
       };
       render((state.node.attrs.latex as string) || '');

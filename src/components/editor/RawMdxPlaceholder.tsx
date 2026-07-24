@@ -35,7 +35,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
 
   return (
     <div
-      className="my-2 border border-warning/40 rounded-lg bg-warning/10 p-4 select-none"
+      className="my-2 border border-[var(--warning)]/40 rounded-lg bg-[var(--warning)]/10 p-4 select-none"
       contentEditable={false}
       data-raw-mdx
     >
@@ -50,19 +50,19 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-warning"
+          className="text-[var(--warning)]"
         >
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
           <line x1="12" y1="9" x2="12" y2="13" />
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
-        <span className="text-sm font-medium text-warning">
+        <span className="text-sm font-medium text-[var(--warning)]">
           此{sourceKind === 'text' ? '行内' : ''}内容暂不支持可视化编辑
         </span>
       </div>
 
       {showSource && (
-        <pre className="text-xs bg-base-300/50 rounded p-2 mb-2 overflow-x-auto font-mono whitespace-pre-wrap">
+        <pre className="text-xs bg-[var(--surface-3)]/50 rounded p-2 mb-2 overflow-x-auto font-mono whitespace-pre-wrap">
           {truncatedSource}
         </pre>
       )}
@@ -74,7 +74,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
         <button type="button" className="btn btn-xs btn-ghost" onClick={handleCopy}>
           复制
         </button>
-        <button type="button" className="btn btn-xs btn-ghost text-error" onClick={handleDelete}>
+        <button type="button" className="btn btn-xs btn-ghost text-[var(--error)]" onClick={handleDelete}>
           删除
         </button>
       </div>

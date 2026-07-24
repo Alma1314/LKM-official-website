@@ -4,7 +4,7 @@
       <div class="modal-box max-w-xs text-center">
         <p class="text-sm font-medium mb-3">微信扫一扫分享</p>
         <div ref="qrContainer" class="bg-white rounded-xl p-2 mx-auto mb-3 inline-block" />
-        <p class="text-xs text-base-content/50 mb-3">打开微信"扫一扫"，扫描二维码分享文章</p>
+        <p class="text-xs text-[var(--deep-text)]/50 mb-3">打开微信"扫一扫"，扫描二维码分享文章</p>
         <div class="modal-action mt-0 justify-center">
           <form method="dialog">
             <button class="btn btn-sm btn-outline">关闭</button>
@@ -22,10 +22,10 @@
       </span>
     </Transition>
 
-    <span class="text-xs font-bold text-base-content/60 mr-1">分享</span>
+    <span class="text-xs font-bold text-[var(--deep-text)]/60 mr-1">分享</span>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 hover:text-green-500 text-base-content/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 hover:text-green-500 text-[var(--deep-text)]/60"
       title="分享到微信"
       aria-label="分享到微信"
       @click="shareToWechat"
@@ -38,7 +38,7 @@
     </button>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-blue-50 hover:text-blue-500 text-base-content/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-blue-50 hover:text-blue-500 text-[var(--deep-text)]/60"
       title="分享到 QQ"
       aria-label="分享到 QQ"
       @click="shareToQQ"
@@ -51,7 +51,7 @@
     </button>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-red-50 hover:text-red-500 text-base-content/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-red-50 hover:text-red-500 text-[var(--deep-text)]/60"
       title="分享到微博"
       aria-label="分享到微博"
       @click="shareToWeibo"
@@ -64,7 +64,7 @@
     </button>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-base-300 text-base-content/60 hover:text-base-content"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-[var(--surface-3)] text-[var(--deep-text)]/60 hover:text-[var(--deep-text)]"
       title="复制链接"
       aria-label="复制文章链接"
       @click="copyLink"
@@ -85,7 +85,7 @@
 
     <button
       v-if="supportsWebShare"
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-base-300 text-base-content/60 hover:text-base-content"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-[var(--surface-3)] text-[var(--deep-text)]/60 hover:text-[var(--deep-text)]"
       title="更多分享方式"
       aria-label="更多分享方式"
       @click="shareNative"
@@ -164,7 +164,7 @@ async function loadQRCode() {
     qrContainer.value.appendChild(canvas);
   } catch {
     if (qrContainer.value) {
-      qrContainer.value.innerHTML = '<p class="text-sm text-base-content/50">二维码加载失败</p>';
+      qrContainer.value.innerHTML = '<p class="text-sm text-[var(--deep-text)]/50">二维码加载失败</p>';
     }
   }
 }

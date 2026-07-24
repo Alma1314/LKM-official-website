@@ -41,7 +41,7 @@ export default function PublishButton({ documentId, onStatusChange, onOpenPublis
         <button type="button" className="btn btn-success btn-xs btn-outline" onClick={handleUnpublish}>
           已发布
         </button>
-        <button type="button" className="btn btn-ghost btn-xs text-error" onClick={handleArchive}>
+        <button type="button" className="btn btn-ghost btn-xs text-[var(--error)]" onClick={handleArchive}>
           归档
         </button>
       </div>
@@ -61,7 +61,7 @@ export default function PublishButton({ documentId, onStatusChange, onOpenPublis
       <button type="button" className="btn btn-primary btn-xs" onClick={handlePublish}>
         发布
       </button>
-      <button type="button" className="btn btn-ghost btn-xs text-error" onClick={handleArchive}>
+      <button type="button" className="btn btn-ghost btn-xs text-[var(--error)]" onClick={handleArchive}>
         归档
       </button>
     </div>

@@ -1,12 +1,12 @@
 <template>
   <!-- Done -->
   <div v-if="step === 'done'" class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-base-100/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 bg-[var(--card-bg)]/70 backdrop-blur-sm"></div>
     <div class="relative w-full max-w-md text-center">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <div class="mb-4 flex justify-center">
           <svg
-            class="w-14 h-14 text-success"
+            class="w-14 h-14 text-[var(--success)]"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -19,7 +19,7 @@
           </svg>
         </div>
         <h2 class="text-xl font-semibold mb-2">密码重置成功</h2>
-        <p class="text-sm text-neutral">所有设备已强制下线，请使用新密码重新登录</p>
+        <p class="text-sm text-[var(--text-muted)]">所有设备已强制下线，请使用新密码重新登录</p>
         <a :href="getAuthPath('login')" class="btn btn-primary btn-sm mt-4">去登录</a>
       </div>
     </div>
@@ -30,7 +30,7 @@
     v-else-if="step === '2fa' && account"
     class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4"
   >
-    <div class="absolute inset-0 bg-base-100/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 bg-[var(--card-bg)]/70 backdrop-blur-sm"></div>
     <div class="relative w-full max-w-md">
       <TwoFactorRecovery
         :level="account.level as 'normal' | 'admin'"
@@ -42,12 +42,12 @@
 
   <!-- Main form -->
   <div v-else class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-base-100/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 bg-[var(--card-bg)]/70 backdrop-blur-sm"></div>
     <div class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-base-100 shadow-2xl border border-base-300 p-6 sm:p-8">
+      <div class="rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8">
         <div class="text-center mb-6">
           <h1 class="text-3xl font-semibold mb-2">密码找回</h1>
-          <p class="text-sm text-neutral">重置您的登录密码</p>
+          <p class="text-sm text-[var(--text-muted)]">重置您的登录密码</p>
         </div>
 
         <div v-if="errorMsg" class="alert alert-error text-sm mb-4">{{ errorMsg }}</div>
@@ -80,14 +80,14 @@
 
         <!-- Step: verify (magic-link) -->
         <div v-if="step === 'verify' && method === 'magic-link'" class="space-y-4 text-center">
-          <p class="text-sm text-neutral">重置链接已发送至 {{ account?.email }}（模拟）</p>
+          <p class="text-sm text-[var(--text-muted)]">重置链接已发送至 {{ account?.email }}（模拟）</p>
           <button type="button" class="btn btn-primary" @click="handleMagicLinkClick">模拟点击重置链接</button>
           <button type="button" class="btn btn-ghost btn-sm" @click="step = 'input'">返回</button>
         </div>
 
         <!-- Step: verify (sms / email-code) -->
         <form v-if="step === 'verify' && method !== 'magic-link'" @submit.prevent="handleVerify" class="space-y-4">
-          <p class="text-sm text-neutral">验证码已发送（模拟码：000000）</p>
+          <p class="text-sm text-[var(--text-muted)]">验证码已发送（模拟码：000000）</p>
           <div>
             <label class="label pb-1"><span class="label-text font-medium">验证码</span></label>
             <input
@@ -104,7 +104,7 @@
 
         <!-- Step: reset -->
         <form v-if="step === 'reset'" @submit.prevent="handleReset" class="space-y-4">
-          <p class="text-sm text-neutral">为 {{ account?.username }} 设置新密码</p>
+          <p class="text-sm text-[var(--text-muted)]">为 {{ account?.username }} 设置新密码</p>
           <div>
             <label class="label pb-1"><span class="label-text font-medium">新密码</span></label>
             <input type="password" class="input input-bordered w-full" v-model="newPassword" placeholder="至少 6 位" />
