@@ -1,37 +1,42 @@
-import { getRssString } from '@astrojs/rss';
+import rss from "@astrojs/rss";
+import { getSortedPosts } from "@utils/content-utils";
+import { url } from "@utils/url-utils";
+import type { APIContext } from "astro";
+import MarkdownIt from "markdown-it";
+import sanitizeHtml from "sanitize-html";
+import { siteConfig } from "@/config";
 
-import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
-import { fetchPosts } from '~/utils/blog';
-import { getPermalink } from '~/utils/permalinks';
+const parser = new MarkdownIt();
 
-export const GET = async () => {
-  if (!APP_BLOG.isEnabled) {
-    return new Response(null, {
-      status: 404,
-      statusText: 'Not found',
-    });
-  }
+function stripInvalidXmlChars(str: string): string {
+	return str.replace(
+		// biome-ignore lint/suspicious/noControlCharactersInRegex: https://www.w3.org/TR/xml/#charsets
+		/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]/g,
+		"",
+	);
+}
 
-  const posts = await fetchPosts();
+export async function GET(context: APIContext) {
+	const blog = await getSortedPosts();
 
-  const rss = await getRssString({
-    title: `${SITE.name}’s Blog`,
-    description: METADATA?.description || '',
-    site: import.meta.env.SITE,
-
-    items: posts.map((post) => ({
-      link: getPermalink(post.permalink, 'post'),
-      title: post.title,
-      description: post.excerpt,
-      pubDate: post.publishDate,
-    })),
-
-    trailingSlash: SITE.trailingSlash,
-  });
-
-  return new Response(rss, {
-    headers: {
-      'Content-Type': 'application/xml',
-    },
-  });
-};
+	return rss({
+		title: siteConfig.title,
+		description: siteConfig.subtitle || "No description",
+		site: context.site ?? "https://fuwari.vercel.app",
+		items: blog.map((post) => {
+			const content =
+				typeof post.body === "string" ? post.body : String(post.body || "");
+			const cleanedContent = stripInvalidXmlChars(content);
+			return {
+				title: post.data.title,
+				pubDate: post.data.published,
+				description: post.data.description || "",
+				link: url(`/posts/${post.slug}/`),
+				content: sanitizeHtml(parser.render(cleanedContent), {
+					allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+				}),
+			};
+		}),
+		customData: `<language>${siteConfig.lang}</language>`,
+	});
+}
