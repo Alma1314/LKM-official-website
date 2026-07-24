@@ -7,7 +7,11 @@ interface VersionHistoryPanelProps {
   onClose: () => void;
 }
 
-const VersionHistoryPanel = memo(function VersionHistoryPanel({ documentId, onRestore, onClose }: VersionHistoryPanelProps) {
+const VersionHistoryPanel = memo(function VersionHistoryPanel({
+  documentId,
+  onRestore,
+  onClose,
+}: VersionHistoryPanelProps) {
   const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<VersionEntry | null>(null);
 

@@ -15,7 +15,11 @@ interface SaveStatusIndicatorProps {
   wordCount?: number;
 }
 
-const SaveStatusIndicator = memo(function SaveStatusIndicator({ status, charCount, wordCount }: SaveStatusIndicatorProps) {
+const SaveStatusIndicator = memo(function SaveStatusIndicator({
+  status,
+  charCount,
+  wordCount,
+}: SaveStatusIndicatorProps) {
   const config = STATUS_CONFIG[status];
 
   return (
