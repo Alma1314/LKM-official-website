@@ -81,12 +81,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useAuthProvider } from '~/composables/useAuth';
+import { useAuthProvider } from '../../../composables/useAuth';
 import { getAuthPath } from '../auth-paths';
 import LocalRegister from './LocalRegister.vue';
 import NormalRegister from './NormalRegister.vue';
 import RegisterGuide from './RegisterGuide.vue';
-import type { RegisterData, LoginResult } from '~/types/auth';
+import type { RegisterData, LoginResult } from '../../../types/auth';
 
 type RegType = 'local' | 'normal' | 'github';
 

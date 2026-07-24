@@ -128,9 +128,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getAuthPath } from '../auth-paths';
-import { findAccount, VALIDATE_CODE } from '~/data/demo-accounts';
+import { findAccount, VALIDATE_CODE } from '../../../data/demo-accounts';
 import TwoFactorRecovery from './TwoFactorRecovery.vue';
-import type { DemoUser } from '~/types/auth';
+import type { DemoUser } from '../../../types/auth';
 
 type Method = 'sms' | 'email-code' | 'magic-link';
 type Step = 'input' | 'verify' | 'reset' | '2fa' | 'done';

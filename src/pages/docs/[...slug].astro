@@ -1,11 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
-import Layout from '~/layouts/PageLayout.astro';
-import { getFormattedDate } from '~/utils/utils';
+import Layout from '../../layouts/PageLayout.astro';
+import { getFormattedDate } from '../../utils/utils';
 import { Icon } from 'astro-icon/components';
-import { getPermalink } from '~/utils/permalinks';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import { getPermalink } from '../../utils/permalinks';
+import WidgetWrapper from '../../components/ui/WidgetWrapper.astro';
 
 export const getStaticPaths = (async () => {
   const docs = await getCollection('docs', ({ data }) => {

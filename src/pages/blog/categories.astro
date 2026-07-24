@@ -1,9 +1,9 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import { fetchPosts } from '~/utils/blog';
-import { getPermalink } from '~/utils/permalinks';
-import type { Taxonomy } from '~/types';
+import Layout from '../../layouts/PageLayout.astro';
+import WidgetWrapper from '../../components/ui/WidgetWrapper.astro';
+import { fetchPosts } from '../../utils/blog';
+import { getPermalink } from '../../utils/permalinks';
+import type { Taxonomy } from '../../types';
 
 // 获取所有文章并统计分类
 const posts = await fetchPosts();

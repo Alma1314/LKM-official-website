@@ -6,7 +6,7 @@ import {
   reopenThread,
   deleteThread,
   type CommentThread,
-} from '~/lib/comment-store';
+} from '../../lib/comment-store';
 
 interface CommentPanelProps {
   documentId: string;

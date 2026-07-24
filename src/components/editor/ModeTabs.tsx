@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import type { EditorMode } from '~/editor/types';
+import type { EditorMode } from '../../editor/types';
 
 interface ModeTabsProps {
   mode: EditorMode;

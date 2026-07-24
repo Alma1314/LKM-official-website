@@ -1,6 +1,6 @@
-import type { DocumentData } from '~/editor/types';
-import { updateDocument, getDocument } from '~/lib/document-api';
-import { saveVersion } from '~/lib/version-store';
+import type { DocumentData } from '../../editor/types';
+import { updateDocument, getDocument } from '../../lib/document-api';
+import { saveVersion } from '../../lib/version-store';
 
 interface PublishButtonProps {
   documentId: string;

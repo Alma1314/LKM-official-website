@@ -126,8 +126,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { DEMO_ACCOUNTS } from '~/data/demo-accounts';
-import { useAuth } from '~/composables/useAuth';
+import { DEMO_ACCOUNTS } from '../../../data/demo-accounts';
+import { useAuth } from '../../../composables/useAuth';
 
 const props = defineProps<{
   onSuccess: (msg: string) => void;

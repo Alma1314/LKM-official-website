@@ -7,8 +7,8 @@ import type {
   RegisterData,
   RegisterResult,
   DemoUser,
-} from '~/types/auth';
-import { findAccount, checkPassword, VALIDATE_CODE } from '~/data/demo-accounts';
+} from '../types/auth';
+import { findAccount, checkPassword, VALIDATE_CODE } from '../data/demo-accounts';
 
 const AUTH_KEY = Symbol('auth');
 

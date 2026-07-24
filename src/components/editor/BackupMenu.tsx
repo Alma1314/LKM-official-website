@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { listDocuments, createDocument, getDocument, autosave } from '~/lib/document-api';
-import { exportAllToJson, importFromJson, getBackups, restoreFromBackup, saveBackup } from '~/lib/backup-store';
-import type { BackupData, BackupMeta } from '~/lib/backup-store';
+import { listDocuments, createDocument, getDocument, autosave } from '../../lib/document-api';
+import { exportAllToJson, importFromJson, getBackups, restoreFromBackup, saveBackup } from '../../lib/backup-store';
+import type { BackupData, BackupMeta } from '../../lib/backup-store';
 
 export default function BackupMenu() {
   const [open, setOpen] = useState(false);

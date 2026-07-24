@@ -1,4 +1,4 @@
-import type { DemoUser } from '~/types/auth';
+import type { DemoUser } from '../types/auth';
 
 export const VALIDATE_CODE = '000000';
 

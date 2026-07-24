@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
 import FullscreenButton from './FullscreenButton';
 import CommentPanel from './CommentPanel';
-import { addThread } from '~/lib/comment-store';
-import { setupKeyboardAutoScroll } from '~/lib/mobile-editor';
+import { addThread } from '../../lib/comment-store';
+import { setupKeyboardAutoScroll } from '../../lib/mobile-editor';
 import { useEditor, EditorContent } from '@tiptap/react';
-import { getEditorExtensions } from '~/editor/extensions';
-import { useEditorPersistence } from '~/lib/use-editor-persistence';
-import { exportMdx } from '~/editor/mdx';
-import { createDocument, getDocument as loadFromStorage } from '~/lib/document-api';
-import type { EditorMode } from '~/editor/types';
+import { getEditorExtensions } from '../../editor/extensions';
+import { useEditorPersistence } from '../../lib/use-editor-persistence';
+import { exportMdx } from '../../editor/mdx';
+import { createDocument, getDocument as loadFromStorage } from '../../lib/document-api';
+import type { EditorMode } from '../../editor/types';
 import EditorToolbar from './EditorToolbar';
 import ModeTabs from './ModeTabs';
 import SaveStatusIndicator from './SaveStatusIndicator';
@@ -19,9 +19,9 @@ import PublishButton from './PublishButton';
 import VersionHistoryPanel from './VersionHistoryPanel';
 import ExportMenu from './ExportMenu';
 import BackupMenu from './BackupMenu';
-import { saveVersion } from '~/lib/version-store';
-import { updateDocument, getDocument as getDoc } from '~/lib/document-api';
-import type { VersionEntry } from '~/lib/version-store';
+import { saveVersion } from '../../lib/version-store';
+import { updateDocument, getDocument as getDoc } from '../../lib/document-api';
+import type { VersionEntry } from '../../lib/version-store';
 
 // Lazy-loaded: CodeMirror (only when switching to source mode)
 const SourceEditor = lazy(() => import('./SourceEditor'));
@@ -35,7 +35,7 @@ interface DocumentEditorProps {
   documentId: string;
 }
 
-import { computeTextMetrics } from '~/lib/text-metrics';
+import { computeTextMetrics } from '../../lib/text-metrics';
 
 function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {

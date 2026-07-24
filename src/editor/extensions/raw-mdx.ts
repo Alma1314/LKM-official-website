@@ -1,6 +1,6 @@
 import { Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
-import RawMdxPlaceholder from '~/components/editor/RawMdxPlaceholder';
+import RawMdxPlaceholder from '../../components/editor/RawMdxPlaceholder';
 
 export const RawMdx = Node.create({
   name: 'rawMdx',

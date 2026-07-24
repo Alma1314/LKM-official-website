@@ -1,7 +1,7 @@
 import { Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
-import CalloutNodeView from '~/components/editor/CalloutNodeView';
-import { calloutPropsSchema } from '~/editor/registry/schemas';
+import CalloutNodeView from '../../components/editor/CalloutNodeView';
+import { calloutPropsSchema } from '../registry/schemas';
 
 export const Callout = Node.create({
   name: 'callout',

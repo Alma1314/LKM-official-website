@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import type { SaveStatus } from '~/editor/types';
+import type { SaveStatus } from '../../editor/types';
 
 const STATUS_CONFIG: Record<SaveStatus, { label: string; className: string; dot: string }> = {
   saved: { label: '已保存', className: 'badge-success', dot: '' },

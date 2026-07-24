@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from 'react';
-import { getVersions, getVersion, type VersionEntry } from '~/lib/version-store';
+import { getVersions, getVersion, type VersionEntry } from '../../lib/version-store';
 
 interface VersionHistoryPanelProps {
   documentId: string;

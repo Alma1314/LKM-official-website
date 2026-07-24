@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { useCanvasViewport } from '~/components/background/useCanvasViewport';
+import { useCanvasViewport } from '../useCanvasViewport';
 import { useColorMode } from './useColorMode';
 
 export interface DNASparkBackground3DProps {

@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
-import { BackgroundCanvas } from '~/components/background/BackgroundCanvas';
-import type { BackgroundFrame } from '~/components/background/useBackgroundCanvas';
+import { BackgroundCanvas } from '../BackgroundCanvas';
+import type { BackgroundFrame } from '../useBackgroundCanvas';
 import { useColorMode } from './useColorMode';
 
 export interface ConstellationFieldBackgroundProps {

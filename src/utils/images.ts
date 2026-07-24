@@ -1,6 +1,6 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import type { MetaDataOpenGraph } from '~/types';
+import type { MetaDataOpenGraph } from '../types';
 
 // 本地图片的延迟加载 glob。glob 只执行一次并缓存。
 let _localImages: Record<string, () => Promise<unknown>> | undefined;

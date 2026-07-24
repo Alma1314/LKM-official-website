@@ -71,13 +71,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useAuthProvider } from '~/composables/useAuth';
+import { useAuthProvider } from '../../../composables/useAuth';
 import { getAuthPath } from '../auth-paths';
 import ProtectedRoute from '../ProtectedRoute.vue';
 import BindMethods from './BindMethods.vue';
 import TwoFactorSetup from './TwoFactorSetup.vue';
 import PasskeySetup from './PasskeySetup.vue';
-import type { DemoUser } from '~/types/auth';
+import type { DemoUser } from '../../../types/auth';
 
 const { state, updateUser, logout } = useAuthProvider();
 

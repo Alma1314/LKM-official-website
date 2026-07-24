@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { RegisterData } from '~/types/auth';
+import type { RegisterData } from '../../../types/auth';
 
 const props = defineProps<{
   onRegister: (type: 'normal', data: RegisterData) => { success: boolean; error?: string };

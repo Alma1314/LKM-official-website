@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { SaveStatus } from '~/editor/types';
+import type { SaveStatus } from '../editor/types';
 import { autosave as apiAutosave, getDocument } from './document-api';
-import { exportMdx } from '~/editor/mdx';
+import { exportMdx } from '../editor/mdx';
 import { saveBackup } from './backup-store';
 import { saveVersion } from './version-store';
 

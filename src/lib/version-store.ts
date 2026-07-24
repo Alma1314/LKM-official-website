@@ -1,4 +1,4 @@
-import type { DocumentData } from '~/editor/types';
+import type { DocumentData } from '../editor/types';
 
 export interface VersionEntry {
   version: number;

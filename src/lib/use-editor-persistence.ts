@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { useAutoSave } from './autosave';
-import { importMdx } from '~/editor/mdx';
-import { exportMdx } from '~/editor/mdx';
-import type { ImportResult } from '~/editor/mdx/import-mdx';
+import { importMdx } from '../editor/mdx';
+import { exportMdx } from '../editor/mdx';
+import type { ImportResult } from '../editor/mdx/import-mdx';
 
 export function useEditorPersistence(docId: string) {
   const { saveStatus, triggerSave, loadDraft, flushImmediate } = useAutoSave(docId, 1000);

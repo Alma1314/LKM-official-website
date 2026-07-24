@@ -1,4 +1,4 @@
-import type { DocumentData, DocumentMeta, AutosavePayload, AutosaveResponse } from '~/editor/types';
+import type { DocumentData, DocumentMeta, AutosavePayload, AutosaveResponse } from '../editor/types';
 
 const DRAFTS_KEY = 'lkm-editor-drafts';
 const DRAFTS_INDEX_KEY = 'lkm-editor-drafts-index';

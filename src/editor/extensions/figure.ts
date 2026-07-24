@@ -1,7 +1,7 @@
 import { Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
-import FigureNodeView from '~/components/editor/FigureNodeView';
-import { figurePropsSchema } from '~/editor/registry/schemas';
+import FigureNodeView from '../../components/editor/FigureNodeView';
+import { figurePropsSchema } from '../registry/schemas';
 
 export const Figure = Node.create({
   name: 'figure',

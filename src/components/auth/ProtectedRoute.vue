@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '~/composables/useAuth';
+import { useAuth } from '../../composables/useAuth';
 import { getAuthPath } from './auth-paths';
 
 const { state } = useAuth();

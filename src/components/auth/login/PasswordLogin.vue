@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getAuthPath } from '../auth-paths';
-import type { LoginMethod, DemoUser } from '~/types/auth';
+import type { LoginMethod, DemoUser } from '../../../types/auth';
 
 const props = defineProps<{
   onLogin: (method: LoginMethod, credentials: Record<string, string>) => Promise<void>;

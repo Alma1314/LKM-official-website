@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { Editor } from '@tiptap/core';
-import { aiRequest, saveAiConfig, PROMPT_TEMPLATES } from '~/lib/ai-client';
+import { aiRequest, saveAiConfig, PROMPT_TEMPLATES } from '../../lib/ai-client';
 
 interface AiAssistantProps {
   editor: Editor;

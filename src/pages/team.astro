@@ -1,8 +1,8 @@
 ---
-import Layout from '~/layouts/SidebarLayout.astro';
-import Section from '~/components/widgets/Section.astro';
-import MemberCard from '~/components/MemberCard.astro';
-import DepartmentSection from '~/components/DepartmentSection.astro';
+import Layout from '../layouts/SidebarLayout.astro';
+import Section from '../components/widgets/Section.astro';
+import MemberCard from '../components/MemberCard.astro';
+import DepartmentSection from '../components/DepartmentSection.astro';
 
 import type { ImageMetadata } from 'astro';
 
@@ -17,10 +17,10 @@ import {
   techMembers,
   professionalSubGroups,
   alumniMembers,
-} from '~/data/members';
+} from '../data/members';
 
-import { teamTopTabs } from '~/navigation';
-import { getPermalink } from '~/utils/permalinks';
+import { teamTopTabs } from '../navigation';
+import { getPermalink } from '../utils/permalinks';
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {

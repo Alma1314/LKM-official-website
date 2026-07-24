@@ -140,16 +140,16 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useAuthProvider } from '~/composables/useAuth';
+import { useAuthProvider } from '../../../composables/useAuth';
 import { getAuthPath } from '../auth-paths';
-import { findAccount } from '~/data/demo-accounts';
+import { findAccount } from '../../../data/demo-accounts';
 import PasswordLogin from './PasswordLogin.vue';
 import SmsLogin from './SmsLogin.vue';
 import GithubLogin from './GithubLogin.vue';
 import MagicLinkLogin from './MagicLinkLogin.vue';
 import PasskeyLogin from './PasskeyLogin.vue';
 import TwoFactorVerify from './TwoFactorVerify.vue';
-import type { LoginMethod, DemoUser } from '~/types/auth';
+import type { LoginMethod, DemoUser } from '../../../types/auth';
 
 // Self-contained provider
 const { state, login } = useAuthProvider();

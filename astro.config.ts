@@ -1,6 +1,3 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import { defineConfig } from 'astro/config';
 
 import { unified } from '@astrojs/markdown-remark';
@@ -17,8 +14,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
 
-import astrowind from './src/integrations';
-
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { remarkExcerpt } from './src/plugins/remark-excerpt.js';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
@@ -30,8 +25,6 @@ import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { GithubCardComponent } from './src/plugins/rehype-component-github-card.mjs';
 import { AdmonitionComponent } from './src/plugins/rehype-component-admonition.mjs';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
@@ -84,10 +77,6 @@ export default defineConfig({
       JavaScript: false,
       SVG: false,
       Logger: 1,
-    }),
-
-    astrowind({
-      config: './src/config.yaml',
     }),
   ],
 
@@ -211,17 +200,7 @@ export default defineConfig({
       ],
     },
     resolve: {
-      alias: {
-        '~': path.resolve(__dirname, './src'),
-        '@components': path.resolve(__dirname, './src/components'),
-        '@layouts': path.resolve(__dirname, './src/layouts'),
-        '@i18n': path.resolve(__dirname, './src/i18n'),
-        '@utils': path.resolve(__dirname, './src/utils'),
-        '@constants': path.resolve(__dirname, './src/constants'),
-        '@plugins': path.resolve(__dirname, './src/plugins'),
-        '@types': path.resolve(__dirname, './src/types'),
-        '@/config': path.resolve(__dirname, './src/config.ts'),
-      },
+      alias: {},
     },
   },
 });

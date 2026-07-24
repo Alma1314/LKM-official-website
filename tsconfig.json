@@ -5,17 +5,7 @@
     "strictNullChecks": true,
     "allowJs": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["src/*"],
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@i18n/*": ["src/i18n/*"],
-      "@utils/*": ["src/utils/*"],
-      "@constants/*": ["src/constants/*"],
-      "@plugins/*": ["src/plugins/*"],
-      "@types/*": ["src/types/*"]
-    }
+    "paths": {}
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist/", "reference/"]

@@ -6,7 +6,7 @@
  *   pnpm add -D drizzle-kit @types/pg
  *
  * 使用方法:
- *   import { documents, documentVersions, assets } from '~/db/schema';
+ *   import { documents, documentVersions, assets } from './schema';
  */
 
 // 注意：以下 import 在安装 drizzle-orm 后生效

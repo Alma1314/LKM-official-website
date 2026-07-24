@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getAuthPath } from '../auth-paths';
-import type { RegisterData } from '~/types/auth';
+import type { RegisterData } from '../../../types/auth';
 
 const props = defineProps<{
   onRegister: (type: 'local', data: RegisterData) => { success: boolean; error?: string };
