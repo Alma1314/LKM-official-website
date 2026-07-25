@@ -139,79 +139,84 @@ const mobileLinks = flattenLinks(links);
 </div>
 
 <script is:inline>
-  // 关闭所有导航弹出（navbar dropdown + display-setting + nav-menu-panel）
-  function closeAllNavPopups() {
-    document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
-    document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-    const settingPanel = document.getElementById('display-setting');
-    if (settingPanel) settingPanel.classList.add('float-panel-closed');
-    const menuPanel = document.getElementById('nav-menu-panel');
-    if (menuPanel) menuPanel.classList.add('float-panel-closed');
-  }
+  function bindNavbarButtons() {
+    // ── display-setting 面板 ──
+    const settingBtn = document.getElementById('display-settings-switch');
+    if (settingBtn) {
+      settingBtn.addEventListener('click', function dsHandler(e) {
+        e.stopPropagation();
+        const panel = document.getElementById('display-setting');
+        if (!panel) return;
+        const willOpen = panel.classList.contains('float-panel-closed');
+        // 先关闭所有，再决定展开
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
+        if (willOpen) {
+          panel.classList.remove('float-panel-closed');
+        } else {
+          panel.classList.add('float-panel-closed');
+        }
+      });
+    }
 
-  // 开关 display-setting 面板（同时关闭其他所有弹出）
-  const settingBtn = document.getElementById('display-settings-switch');
-  if (settingBtn) {
-    settingBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const panel = document.getElementById('display-setting');
-      if (!panel) return;
-      const willOpen = panel.classList.contains('float-panel-closed');
-      // 先关闭所有，再决定展开
-      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
-      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-      document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
-      if (willOpen) {
-        panel.classList.remove('float-panel-closed');
-      } else {
-        panel.classList.add('float-panel-closed');
-      }
+    // ── nav-menu 面板（移动端） ──
+    const menuBtn = document.getElementById('nav-menu-switch');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', function nmHandler(e) {
+        e.stopPropagation();
+        const panel = document.getElementById('nav-menu-panel');
+        if (!panel) return;
+        const willOpen = panel.classList.contains('float-panel-closed');
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        document.getElementById('display-setting')?.classList.add('float-panel-closed');
+        if (willOpen) {
+          panel.classList.remove('float-panel-closed');
+        } else {
+          panel.classList.add('float-panel-closed');
+        }
+      });
+    }
+
+    // ── navbar dropdown ──
+    document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
+      const trigger = dropdown.querySelector('[data-dropdown-trigger]');
+      const menu = dropdown.querySelector('[data-dropdown-menu]');
+      const arrow = dropdown.querySelector('[data-dropdown-arrow]');
+      if (!trigger || !menu) return;
+
+      trigger.addEventListener('click', function ddHandler(e) {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('hidden');
+        // 关闭其他所有弹出
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        document.getElementById('display-setting')?.classList.add('float-panel-closed');
+        document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
+        if (!isOpen) {
+          menu.classList.remove('hidden');
+          if (arrow) arrow.classList.add('rotate-180');
+        }
+      });
     });
   }
 
-  // 开关 nav-menu-panel（同时关闭其他所有弹出）
-  const menuBtn = document.getElementById('nav-menu-switch');
-  if (menuBtn) {
-    menuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const panel = document.getElementById('nav-menu-panel');
-      if (!panel) return;
-      const willOpen = panel.classList.contains('float-panel-closed');
-      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
-      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+  // ── 全局：点击外部收起所有面板（document 上只需绑定一次） ──
+  if (!window.__navbar_outside) {
+    window.__navbar_outside = true;
+    document.addEventListener('click', () => {
       document.getElementById('display-setting')?.classList.add('float-panel-closed');
-      if (willOpen) {
-        panel.classList.remove('float-panel-closed');
-      } else {
-        panel.classList.add('float-panel-closed');
-      }
+      document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
+      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
     });
   }
 
-  // navbar dropdown：点击展开/收起，同时关闭其他面板
-  document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
-    const link = dropdown.querySelector('a');
-    const menu = dropdown.querySelector('[data-dropdown-menu]');
-    const arrow = dropdown.querySelector('[data-dropdown-arrow]');
-    if (!link || !menu) return;
-
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isOpen = !menu.classList.contains('hidden');
-      // 关闭其他所有弹出（navbar dropdowns + 浮动面板）
-      closeAllNavPopups();
-      if (!isOpen) {
-        menu.classList.remove('hidden');
-        if (arrow) arrow.classList.add('rotate-180');
-      }
-    });
-  });
-
-  // 点击外部关闭所有
-  document.addEventListener('click', () => {
-    closeAllNavPopups();
-  });
+  // 首次加载绑定
+  bindNavbarButtons();
+  // View Transitions 导航后重新绑定
+  document.addEventListener('astro:after-swap', bindNavbarButtons);
 </script>
 
 {
