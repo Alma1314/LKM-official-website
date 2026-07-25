@@ -31,9 +31,7 @@ const loadLocalImages = () => {
  *   - `"http(s)://…"` 或 `"/path"` → 原样返回（外部或 public/）
  *   - `"~/assets/images/…"`        → 通过 glob 解析为 ImageMetadata
  */
-export const findImage = async (
-  imagePath?: ImageSrc
-): Promise<ImageSrc> => {
+export const findImage = async (imagePath?: ImageSrc): Promise<ImageSrc> => {
   if (typeof imagePath !== 'string') return imagePath;
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
   if (imagePath.startsWith('/')) return `${import.meta.env.BASE_URL}${imagePath.replace(/^\//, '')}`;

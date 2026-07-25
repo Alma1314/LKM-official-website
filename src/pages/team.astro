@@ -1,11 +1,9 @@
 ---
 import type { ImageMetadata } from '~/core/types';
-;
 import Layout from '~/layouts/SidebarLayout.astro';
 import Section from '~/features/homepage/widgets/Section.astro';
 import MemberCard from '~/features/team/components/MemberCard.astro';
 import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
-
 
 import {
   founderMembers,
@@ -72,6 +70,7 @@ const sidebarLinks = [
   { text: '已离开成员', href: getPermalink('/team#alumni'), icon: 'tabler:user-x' },
 ];
 ---
+
 ;
 
 <Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/team')}>

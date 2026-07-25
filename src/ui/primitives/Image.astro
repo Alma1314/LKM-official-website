@@ -156,9 +156,9 @@ const cdnSrcSet =
   isCdnUrl && cdnWidths?.length
     ? cdnWidths.map((bw) => `${buildCdnUrl(bw, heightFromWidth(bw))} ${bw}w`).join(', ')
     : undefined;
+---
+
 {
-
-
   isCdnUrl ? (
     <img
       src={cdnSrc}

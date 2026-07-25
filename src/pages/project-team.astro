@@ -1,10 +1,8 @@
 ---
 import type { ImageMetadata } from '~/core/types';
-;
 import Layout from '~/layouts/SidebarLayout.astro';
 import MemberCard from '~/features/team/components/MemberCard.astro';
 import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
-
 
 import { projectSubGroups } from '~/features/team/data/members';
 
@@ -47,6 +45,7 @@ const sidebarLinks = [
   { text: '科普项目组', href: getPermalink('/project-team#science'), icon: 'tabler:flask' },
 ];
 ---
+
 ;
 
 <Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/project-team')}>

@@ -1,7 +1,5 @@
 ---
 import type { ImageMetadata } from '~/core/types';
-;
-
 export interface Props {
   name: string;
   avatar?: ImageMetadata;
@@ -15,6 +13,7 @@ export interface Props {
 const { name, avatar, role, desc, dream, quote, size = 'sm' } = Astro.props;
 const isLg = size === 'lg';
 ---
+
 ;
 
 <div class="profile-card">
