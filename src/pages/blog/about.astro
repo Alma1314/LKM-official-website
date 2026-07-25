@@ -1,9 +1,9 @@
 ---
 import { getEntry, render } from 'astro:content';
-import Markdown from '../../components/misc/Markdown.astro';
-import I18nKey from '../../i18n/i18nKey';
-import { i18n } from '../../i18n/translation';
-import MainGridLayout from '../../layouts/FuwariMainGridLayout.astro';
+import Markdown from '~/ui/primitives/Markdown.astro';
+import I18nKey from '~/core/i18n/i18nKey';
+import { i18n } from '~/core/i18n/translation';
+import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 
 const aboutPost = await getEntry('spec', 'about');
 

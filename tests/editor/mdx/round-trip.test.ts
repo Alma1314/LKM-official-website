@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { importMdx, exportMdx } from '~/editor/mdx';
+import { importMdx, exportMdx } from '~/features/editor/engine/mdx/index';
 
 function roundTrip(mdx: string): string {
   const imported = importMdx(mdx);

@@ -16,17 +16,17 @@ import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
-import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
-import { remarkExcerpt } from './src/plugins/remark-excerpt.js';
+import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
+import { remarkExcerpt } from './src/core/plugins/remark-excerpt.js';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
 import remarkDirective from 'remark-directive';
 import remarkSectionize from 'remark-sectionize';
-import { parseDirectiveNode } from './src/plugins/remark-directive-rehype.js';
+import { parseDirectiveNode } from './src/core/plugins/remark-directive-rehype.js';
 import rehypeSlug from 'rehype-slug';
 import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { GithubCardComponent } from './src/plugins/rehype-component-github-card.mjs';
-import { AdmonitionComponent } from './src/plugins/rehype-component-admonition.mjs';
+import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
+import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>

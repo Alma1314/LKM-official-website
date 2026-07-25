@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { importMdx, exportMdx, parseMdxString } from '~/editor/mdx';
+import { importMdx, exportMdx, parseMdxString } from '~/features/editor/engine/mdx/index';
 
 describe('Frontmatter', () => {
   it('parses YAML frontmatter', () => {

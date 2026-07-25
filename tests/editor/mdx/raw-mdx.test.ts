@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { importMdx } from '~/editor/mdx';
+import { importMdx } from '~/features/editor/engine/mdx/index';
 
 describe('rawMdx — unknown node fidelity', () => {
   it('preserves unknown MDX JSX component as rawMdx', () => {

@@ -4,7 +4,11 @@
     "strictNullChecks": true,
     "allowJs": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "~/core/*": ["./src/core/*"],
+      "~/ui/*": ["./src/ui/*"],
+      "~/features/*": ["./src/features/*"],
+      "~/layouts/*": ["./src/layouts/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

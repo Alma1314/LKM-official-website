@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/PageLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 
-import { getPermalink } from '../utils/permalinks';
+import { getPermalink } from '~/core/utils/permalinks';
 
-import BackgroundSwitcher from '../components/background/BackgroundSwitcher.astro';
-import Hero from '../components/widgets/Hero.astro';
+import BackgroundSwitcher from '~/features/shell/background/BackgroundSwitcher.astro';
+import Hero from '~/features/homepage/widgets/Hero.astro';
 
 import avatar七月花 from '../assets/images/member-optimized/七月花.webp';
 import avatar七月O from '../assets/images/member-optimized/七月O.webp';
@@ -12,10 +12,10 @@ import avatar七月郁离 from '../assets/images/member-optimized/七月郁离.w
 import avatar七月墨染 from '../assets/images/member-optimized/七月墨染.webp';
 import avatar七月有枝 from '../assets/images/member-optimized/七月有枝.webp';
 
-import BlogLatestPosts from '../components/widgets/BlogLatestPosts.astro';
-import FAQs from '../components/widgets/FAQs.astro';
-import ClockTimeline from '../components/widgets/ClockTimeline.astro';
-import Section from '../components/widgets/Section.astro';
+import BlogLatestPosts from '~/features/homepage/widgets/BlogLatestPosts.astro';
+import FAQs from '~/features/homepage/widgets/FAQs.astro';
+import ClockTimeline from '~/features/homepage/widgets/ClockTimeline.astro';
+import Section from '~/features/homepage/widgets/Section.astro';
 const metadata = {
   title: '理科迷 —— 科技爱好者',
   ignoreTitleTemplate: true,

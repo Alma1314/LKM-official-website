@@ -1,17 +1,18 @@
 ---
+import type { ImageMetadata } from '~/core/types';
+;
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import merge from 'lodash.merge';
-import type { ImageMetadata } from 'astro';
-import Layout from '../../layouts/PageLayout.astro';
-import SinglePost from '../../components/blog/SinglePost.astro';
-import ToBlogLink from '../../components/blog/ToBlogLink.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import SinglePost from '~/features/blog/components/SinglePost.astro';
+import ToBlogLink from '~/features/blog/components/ToBlogLink.astro';
 
-import { getCanonical, getPermalink } from '../../utils/permalinks';
-import { getStaticPathsBlogPost, blogPostRobots } from '../../utils/blog';
-import { findImage } from '../../utils/images';
-import type { MetaData } from '../../types';
-import RelatedPosts from '../../components/blog/RelatedPosts.astro';
+import { getCanonical, getPermalink } from '~/core/utils/permalinks';
+import { getStaticPathsBlogPost, blogPostRobots } from '~/core/utils/blog';
+import { findImage } from '~/core/utils/images';
+import type { MetaData } from '~/core/types';
+import RelatedPosts from '~/features/blog/components/RelatedPosts.astro';
 
 export const getStaticPaths = (async () => {
   return await getStaticPathsBlogPost();
@@ -42,6 +43,7 @@ const metadata = merge(
   { ...(post?.metadata ? { ...post.metadata, canonical: post.metadata?.canonical || url } : {}) }
 ) as MetaData;
 ---
+;
 
 <Layout metadata={metadata}>
   <SinglePost post={{ ...post, image: image }} url={url} headings={post.headings || []}>

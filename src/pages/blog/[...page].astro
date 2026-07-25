@@ -1,9 +1,9 @@
 ---
-import Pagination from '../../components/control/Pagination.astro';
-import PostPage from '../../components/PostPage.astro';
-import { PAGE_SIZE } from '../../constants/constants';
-import MainGridLayout from '../../layouts/FuwariMainGridLayout.astro';
-import { getSortedPosts } from '../../utils/content-utils';
+import Pagination from '~/ui/primitives/Pagination.astro';
+import PostPage from '~/features/team/components/PostPage.astro';
+import { PAGE_SIZE } from '~/core/constants/constants';
+import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
+import { getSortedPosts } from '~/core/utils/content-utils';
 
 export const getStaticPaths = (async () => {
   const allBlogPosts = await getSortedPosts();

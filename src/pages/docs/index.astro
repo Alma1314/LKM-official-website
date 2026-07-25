@@ -1,9 +1,9 @@
 ---
-import Layout from '../../layouts/PageLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 import { getCollection } from 'astro:content';
-import DocListItem from '../../components/docs/DocListItem.astro';
-import { getPermalink } from '../../utils/permalinks';
-import WidgetWrapper from '../../components/ui/WidgetWrapper.astro';
+import DocListItem from '~/features/docs/components/DocListItem.astro';
+import { getPermalink } from '~/core/utils/permalinks';
+import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
 
 const allDocs = await getCollection('docs', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;

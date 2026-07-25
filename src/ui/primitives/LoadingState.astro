@@ -1,0 +1,14 @@
+---
+interface Props {
+  message?: string;
+}
+
+const { message = '加载中...' } = Astro.props;
+---
+
+<div class="flex min-h-[200px] items-center justify-center">
+  <div class="flex items-center gap-2 text-muted-foreground">
+    <span class="loading loading-spinner loading-sm"></span>
+    <span>{message}</span>
+  </div>
+</div>

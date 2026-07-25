@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseMdxString, normalizeMDAST } from '~/editor/mdx';
+import { parseMdxString, normalizeMDAST } from '~/features/editor/engine/mdx/index';
 
 describe('Normalize MDAST', () => {
   it('normalizes adjacent text nodes into one', () => {

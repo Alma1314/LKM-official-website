@@ -1,19 +1,19 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
 import path from 'node:path';
-import License from '../../../components/misc/License.astro';
-import Markdown from '../../../components/misc/Markdown.astro';
-import I18nKey from '../../../i18n/i18nKey';
-import { i18n } from '../../../i18n/translation';
-import MainGridLayout from '../../../layouts/FuwariMainGridLayout.astro';
-import { getSortedPosts } from '../../../utils/content-utils';
-import { getDir, getPostUrlBySlug } from '../../../utils/url-utils';
+import License from '~/ui/primitives/License.astro';
+import Markdown from '~/ui/primitives/Markdown.astro';
+import I18nKey from '~/core/i18n/i18nKey';
+import { i18n } from '~/core/i18n/translation';
+import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
+import { getSortedPosts } from '~/core/utils/content-utils';
+import { getDir, getPostUrlBySlug } from '~/core/utils/url-utils';
 import { Icon } from 'astro-icon/components';
-import { licenseConfig } from '../../../config';
-import ImageWrapper from '../../../components/misc/ImageWrapper.astro';
-import PostMetadata from '../../../components/PostMeta.astro';
-import { profileConfig, siteConfig } from '../../../config';
-import { formatDateToYYYYMMDD } from '../../../utils/date-utils';
+import { licenseConfig } from '~/core/config';
+import ImageWrapper from '~/ui/primitives/ImageWrapper.astro';
+import PostMetadata from '~/features/team/components/PostMeta.astro';
+import { profileConfig, siteConfig } from '~/core/config';
+import { formatDateToYYYYMMDD } from '~/core/utils/date-utils';
 
 function getEntrySlug(entry: CollectionEntry<'posts'>): string {
   return entry.id.replace(/^posts\//, '').replace(/\.(md|mdx)$/, '');

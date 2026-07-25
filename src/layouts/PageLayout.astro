@@ -1,11 +1,11 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../components/FuwariNavbar.astro';
-import Footer from '../components/widgets/Footer.astro';
+import Layout from './BaseLayout.astro';
+import Navbar from '~/features/shell/components/FuwariNavbar.astro';
+import Footer from '~/features/shell/components/Footer.astro';
 
-import { footerData } from '../navigation';
+import { footerData } from '~/core/navigation';
 
-import type { MetaData } from '../types';
+import type { MetaData } from '~/core/types';
 
 export interface Props {
   metadata?: MetaData;

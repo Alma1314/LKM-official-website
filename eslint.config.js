@@ -59,10 +59,14 @@ export default [
         },
       ],
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/triple-slash-reference': 'off',
     },
   },
   {
-    files: ['src/components/common/Analytics.astro', 'src/components/common/Analytics.astro/**'],
+    files: [
+      'src/features/shell/common/components/Analytics.astro',
+      'src/features/shell/common/components/Analytics.astro/**',
+    ],
     rules: {
       'prefer-rest-params': 'off',
       'no-var': 'off',
@@ -77,8 +81,7 @@ export default [
       'types.generated.d.ts',
       '.astro',
       '.claude',
-      'src/layouts/FuwariLayout.astro',
-      'src/layouts/FuwariMainGridLayout.astro',
+      'src/layouts/BlogLayout.astro',
     ],
   },
 ];
