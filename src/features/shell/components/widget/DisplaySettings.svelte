@@ -4,8 +4,8 @@ import { i18n } from '~/core/i18n/translation';
 import Icon from "@iconify/svelte";
 import { getDefaultHue, getHue, setHue } from '~/core/utils/setting-utils';
 
-let hue = $state(getHue());
-const defaultHue = getDefaultHue();
+let hue = $state(typeof window !== 'undefined' ? getHue() : 250);
+const defaultHue = typeof window !== 'undefined' ? getDefaultHue() : 250;
 
 function resetHue() {
 	hue = getDefaultHue();

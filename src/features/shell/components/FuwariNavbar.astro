@@ -138,7 +138,8 @@ const mobileLinks = flattenLinks(links);
   </div>
 </div>
 
-<script>
+<script is:inline>
+  // 关闭所有导航弹出（navbar dropdown + display-setting + nav-menu-panel）
   function closeAllNavPopups() {
     document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
     document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
@@ -148,17 +149,15 @@ const mobileLinks = flattenLinks(links);
     if (menuPanel) menuPanel.classList.add('float-panel-closed');
   }
 
-  // 使用事件委托处理所有 navbar 交互，View Transitions 导航后无需重新绑定
-  document.addEventListener('click', (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
-
-    // display-setting 按钮
-    if (target.closest('#display-settings-switch')) {
+  // 开关 display-setting 面板（同时关闭其他所有弹出）
+  const settingBtn = document.getElementById('display-settings-switch');
+  if (settingBtn) {
+    settingBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const panel = document.getElementById('display-setting');
       if (!panel) return;
       const willOpen = panel.classList.contains('float-panel-closed');
+      // 先关闭所有，再决定展开
       document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
       document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
       document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
@@ -167,11 +166,13 @@ const mobileLinks = flattenLinks(links);
       } else {
         panel.classList.add('float-panel-closed');
       }
-      return;
-    }
+    });
+  }
 
-    // nav-menu 按钮
-    if (target.closest('#nav-menu-switch')) {
+  // 开关 nav-menu-panel（同时关闭其他所有弹出）
+  const menuBtn = document.getElementById('nav-menu-switch');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const panel = document.getElementById('nav-menu-panel');
       if (!panel) return;
@@ -184,30 +185,31 @@ const mobileLinks = flattenLinks(links);
       } else {
         panel.classList.add('float-panel-closed');
       }
-      return;
-    }
+    });
+  }
 
-    // navbar dropdown 触发按钮
-    const trigger = target.closest('[data-dropdown-trigger]');
-    if (trigger) {
-      const dropdown = trigger.closest('[data-nav-dropdown]');
-      if (dropdown) {
-        e.stopPropagation();
-        const menu = dropdown.querySelector<HTMLElement>('[data-dropdown-menu]');
-        const arrow = dropdown.querySelector('[data-dropdown-arrow]');
-        if (menu) {
-          const isOpen = !menu.classList.contains('hidden');
-          closeAllNavPopups();
-          if (!isOpen) {
-            menu.classList.remove('hidden');
-            if (arrow) arrow.classList.add('rotate-180');
-          }
-        }
-        return;
+  // navbar dropdown：点击展开/收起，同时关闭其他面板
+  document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
+    const link = dropdown.querySelector('a');
+    const menu = dropdown.querySelector('[data-dropdown-menu]');
+    const arrow = dropdown.querySelector('[data-dropdown-arrow]');
+    if (!link || !menu) return;
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = !menu.classList.contains('hidden');
+      // 关闭其他所有弹出（navbar dropdowns + 浮动面板）
+      closeAllNavPopups();
+      if (!isOpen) {
+        menu.classList.remove('hidden');
+        if (arrow) arrow.classList.add('rotate-180');
       }
-    }
+    });
+  });
 
-    // 点击外部关闭所有
+  // 点击外部关闭所有
+  document.addEventListener('click', () => {
     closeAllNavPopups();
   });
 </script>
