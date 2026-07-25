@@ -13,131 +13,106 @@ let pagefindLoaded = $state(false);
 let initialized = $state(false);
 
 const fakeResult: SearchResult[] = [
-	{
-		url: url("/"),
-		meta: {
-			title: "This Is a Fake Search Result",
-		},
-		excerpt:
-			"Because the search cannot work in the <mark>dev</mark> environment.",
-	},
-	{
-		url: url("/"),
-		meta: {
-			title: "If You Want to Test the Search",
-		},
-		excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
-	},
+  {
+    url: url("/"),
+    meta: { title: "This Is a Fake Search Result" },
+    excerpt: "Because the search cannot work in the <mark>dev</mark> environment.",
+  },
+  {
+    url: url("/"),
+    meta: { title: "If You Want to Test the Search" },
+    excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
+  },
 ];
 
 const togglePanel = () => {
-	const panel = document.getElementById("search-panel");
-	panel?.classList.toggle("float-panel-closed");
+  const panel = document.getElementById("search-panel");
+  panel?.classList.toggle("float-panel-closed");
 };
 
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
-	const panel = document.getElementById("search-panel");
-	if (!panel || !isDesktop) return;
-
-	if (show) {
-		panel.classList.remove("float-panel-closed");
-	} else {
-		panel.classList.add("float-panel-closed");
-	}
+  const panel = document.getElementById("search-panel");
+  if (!panel || !isDesktop) return;
+  if (show) {
+    panel.classList.remove("float-panel-closed");
+  } else {
+    panel.classList.add("float-panel-closed");
+  }
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
-	if (!keyword) {
-		setPanelVisibility(false, isDesktop);
-		result = [];
-		return;
-	}
+  if (!keyword) {
+    setPanelVisibility(false, isDesktop);
+    result = [];
+    return;
+  }
 
-	if (!initialized) {
-		return;
-	}
+  if (!initialized) return;
 
-	isSearching = true;
+  isSearching = true;
 
-	try {
-		let searchResults: SearchResult[] = [];
+  try {
+    let searchResults: SearchResult[] = [];
 
-		if (import.meta.env.PROD && pagefindLoaded && window.pagefind) {
-			const response = await window.pagefind.search(keyword);
-			searchResults = await Promise.all(
-				response.results.map((item) => item.data()),
-			);
-		} else if (import.meta.env.DEV) {
-			searchResults = fakeResult;
-		} else {
-			searchResults = [];
-			console.error("Pagefind is not available in production environment.");
-		}
+    if (import.meta.env.PROD && pagefindLoaded && window.pagefind) {
+      const response = await window.pagefind.search(keyword);
+      searchResults = await Promise.all(
+        response.results.map((item) => item.data()),
+      );
+    } else if (import.meta.env.DEV) {
+      searchResults = fakeResult;
+    } else {
+      searchResults = [];
+      console.error("Pagefind is not available in production environment.");
+    }
 
-		result = searchResults;
-		setPanelVisibility(result.length > 0, isDesktop);
-	} catch (error) {
-		console.error("Search error:", error);
-		result = [];
-		setPanelVisibility(false, isDesktop);
-	} finally {
-		isSearching = false;
-	}
+    result = searchResults;
+    setPanelVisibility(result.length > 0, isDesktop);
+  } catch (error) {
+    console.error("Search error:", error);
+    result = [];
+    setPanelVisibility(false, isDesktop);
+  } finally {
+    isSearching = false;
+  }
 };
 
+// 初始化 Pagefind，只执行一次
+function initPagefind() {
+  if (initialized) return;
+  initialized = true;
+  pagefindLoaded =
+    typeof window !== "undefined" &&
+    !!window.pagefind &&
+    typeof window.pagefind.search === "function";
+}
+
+if (import.meta.env.DEV) {
+  initPagefind();
+} else {
+  document.addEventListener("pagefindready", initPagefind);
+  document.addEventListener("pagefindloaderror", initPagefind);
+  setTimeout(() => {
+    if (!initialized) initPagefind();
+  }, 2000);
+}
+
+// 仅关键词变化时触发搜索（去抖 300ms）
+let desktopTimer: ReturnType<typeof setTimeout>;
+let mobileTimer: ReturnType<typeof setTimeout>;
+
 $effect(() => {
-	const initializeSearch = () => {
-		initialized = true;
-		pagefindLoaded =
-			typeof window !== "undefined" &&
-			!!window.pagefind &&
-			typeof window.pagefind.search === "function";
-		console.log("Pagefind status on init:", pagefindLoaded);
-		if (keywordDesktop) search(keywordDesktop, true);
-		if (keywordMobile) search(keywordMobile, false);
-	};
-
-	if (import.meta.env.DEV) {
-		console.log(
-			"Pagefind is not available in development mode. Using mock data.",
-		);
-		initializeSearch();
-	} else {
-		document.addEventListener("pagefindready", () => {
-			console.log("Pagefind ready event received.");
-			initializeSearch();
-		});
-		document.addEventListener("pagefindloaderror", () => {
-			console.warn(
-				"Pagefind load error event received. Search functionality will be limited.",
-			);
-			initializeSearch(); // Initialize with pagefindLoaded as false
-		});
-
-		// Fallback in case events are not caught or pagefind is already loaded by the time this script runs
-		setTimeout(() => {
-			if (!initialized) {
-				console.log("Fallback: Initializing search after timeout.");
-				initializeSearch();
-			}
-		}, 2000); // Adjust timeout as needed
-	}
-
-	return () => {
-		// cleanup handled by $effect auto-disposal
-	};
+  const kw = keywordDesktop;
+  if (!initialized) return;
+  clearTimeout(desktopTimer);
+  desktopTimer = setTimeout(() => search(kw, true), 300);
 });
 
 $effect(() => {
-	if (initialized && keywordDesktop) {
-		search(keywordDesktop, true);
-	}
-});
-
-$effect(() => {
-	if (initialized && keywordMobile) {
-		search(keywordMobile, false);
-	}
+  const kw = keywordMobile;
+  if (!initialized) return;
+  clearTimeout(mobileTimer);
+  mobileTimer = setTimeout(() => search(kw, false), 300);
 });
 </script>
 
@@ -147,9 +122,8 @@ $effect(() => {
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-    <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop} onfocus={() => search(keywordDesktop, true)}
-           class="transition-all pl-10 text-sm bg-transparent outline-0
-         h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
+    <input placeholder={i18n(I18nKey.search)} bind:value={keywordDesktop} onfocus={() => search(keywordDesktop, true)}
+           class="transition-all pl-10 text-sm bg-transparent outline-0 h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
     >
 </div>
 
