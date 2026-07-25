@@ -72,7 +72,7 @@ export const affairsSubGroups: Record<string, SubGroup> = {
       {
         name: '七月清汉',
         avatarKey: '七月清汉.png',
-        desc: '保密awa（是个宅女）',
+        desc: '保密awa（再改是小猪！）',
         dream: '梦想：无义务告知',
         quote: '—— WELCOME TO OUR KINGDOM ！',
       },
@@ -231,7 +231,7 @@ export const advisorMembers: Member[] = [
 /** 技术委员会 */
 export const techMembers: Member[] = [
   { name: '七月可分数列', avatarKey: '七月可分数列.jpg', role: '会长', desc: '平凡的ICPCer' },
-  { name: '七月A', avatarKey: '七月A.jpg', desc: '网站开发的主要牛马', dream: '以后不要当牛马' },
+  { name: '七月A（笨笨狐狸！）', avatarKey: '七月A.jpg', desc: '网站开发的主要牛马', dream: '以后不要当牛马' },
   { name: '七月合成魔法', avatarKey: '七月合成魔法.jpg' },
 ];
 
