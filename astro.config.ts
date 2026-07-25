@@ -201,6 +201,9 @@ export default defineConfig({
         '@tiptap/extension-image',
       ],
     },
+    css: {
+      transformer: 'postcss',
+    },
     resolve: {
       alias: {},
     },
