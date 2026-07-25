@@ -48,67 +48,70 @@ const mobileLinks = flattenLinks(links);
       'card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[1fr_auto_1fr] items-center px-4',
     ]}
   >
-    <a href={url('/')} class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95 justify-self-start">
+    <a
+      href={url('/')}
+      class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95 justify-self-start"
+    >
       <div class="flex flex-row text-primary items-center text-md">
         <Icon name="material-symbols:home-outline-rounded" class="text-[1.75rem] mb-1 mr-2" />
         {siteConfig.title}
       </div>
     </a>
     <div class="hidden md:flex" id="navbar-links">
-    {
-      links.map((l, idx) => {
-        const hasChildren = l.children && l.children.length > 0;
-        if (!hasChildren) {
+      {
+        links.map((l, idx) => {
+          const hasChildren = l.children && l.children.length > 0;
+          if (!hasChildren) {
+            return (
+              <a
+                aria-label={l.name}
+                href={l.external ? l.url : url(l.url)}
+                target={l.external ? '_blank' : null}
+                class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
+              >
+                {l.name}
+                {l.external && (
+                  <Icon
+                    name="fa6-solid:arrow-up-right-from-square"
+                    class="text-[0.875rem] -translate-y-[1px] text-black/[0.2] dark:text-white/[0.2]"
+                  />
+                )}
+              </a>
+            );
+          }
           return (
-            <a
-              aria-label={l.name}
-              href={l.external ? l.url : url(l.url)}
-              target={l.external ? '_blank' : null}
-              class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
-            >
-              {l.name}
-              {l.external && (
+            <div class="relative dropdown" data-nav-dropdown={idx}>
+              <button
+                type="button"
+                aria-label={l.name}
+                class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
+                data-dropdown-trigger
+              >
+                {l.name}
                 <Icon
-                  name="fa6-solid:arrow-up-right-from-square"
-                  class="text-[0.875rem] -translate-y-[1px] text-black/[0.2] dark:text-white/[0.2]"
+                  name="material-symbols:keyboard-arrow-down-rounded"
+                  class="text-[1rem] text-black/[0.3] dark:text-white/[0.3] transition-transform"
+                  data-dropdown-arrow
                 />
-              )}
-            </a>
-          );
-        }
-        return (
-          <div class="relative dropdown" data-nav-dropdown={idx}>
-            <button
-              type="button"
-              aria-label={l.name}
-              class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
-              data-dropdown-trigger
-            >
-              {l.name}
-              <Icon
-                name="material-symbols:keyboard-arrow-down-rounded"
-                class="text-[1rem] text-black/[0.3] dark:text-white/[0.3] transition-transform"
-                data-dropdown-arrow
-              />
-            </button>
-            <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
-              <div class="card-base float-panel p-2">
-                {l.children!.map((child) => (
-                  <a
-                    aria-label={child.name}
-                    href={child.external ? child.url : url(child.url)}
-                    target={child.external ? '_blank' : null}
-                    class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
-                  >
-                    {child.name}
-                  </a>
-                ))}
+              </button>
+              <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
+                <div class="card-base float-panel p-2">
+                  {l.children!.map((child) => (
+                    <a
+                      aria-label={child.name}
+                      href={child.external ? child.url : url(child.url)}
+                      target={child.external ? '_blank' : null}
+                      class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
+                    >
+                      {child.name}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })
-    }
+          );
+        })
+      }
     </div>
     <div class="flex justify-self-end">
       <Search client:only="svelte" />
