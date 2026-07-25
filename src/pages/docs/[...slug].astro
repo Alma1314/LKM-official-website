@@ -2,12 +2,10 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
-import { getFormattedDate } from '~/utils/utils';
+import { getFormattedDate } from '~/core/utils/utils';
 import { Icon } from 'astro-icon/components';
-import { getPermalink } from '~/utils/permalinks';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-
-export const prerender = true;
+import { getPermalink } from '~/core/utils/permalinks';
+import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
 
 export const getStaticPaths = (async () => {
   const docs = await getCollection('docs', ({ data }) => {
@@ -33,10 +31,10 @@ const metadata = {
     </a>
 
     <header class="mb-10">
-      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-base-content mb-3">
+      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-deep-text mb-3">
         {doc.data.title}
       </h1>
-      <div class="flex flex-wrap items-center gap-3 text-sm text-neutral">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-text-muted">
         <span class="flex items-center gap-1">
           <Icon name="tabler:clock" class="w-3.5 h-3.5" />
           <time datetime={String(doc.data.publishDate)}>发布于 {getFormattedDate(doc.data.publishDate)}</time>

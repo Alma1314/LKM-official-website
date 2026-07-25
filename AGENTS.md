@@ -1,10 +1,10 @@
-# AstroWind Agent 指令
+# LKM 项目 AI Agent 指令
 
 ## 项目概述
 
-AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Tailwind CSS v4** 构建。它生成完全静态的站点，针对性能、SEO 和无障碍访问进行了优化。
+LKM 官方网站是一个基于 **Astro v7** 和 **Tailwind CSS v4** 构建的网站。它以静态生成为主（`output: 'static'`），管理后台通过 `@astrojs/node` 保留服务器渲染能力，针对性能、SEO 和无障碍访问进行了优化。
 
-**技术栈：** Astro v6 | Tailwind CSS v4 | TypeScript 5.9 | MDX | Sharp
+**技术栈：** Astro v7 | Tailwind CSS v4 | TypeScript 5.9 | MDX | Sharp
 
 ## 快速参考
 
@@ -20,27 +20,33 @@ AstroWind 是一个免费、开源的网站模板，基于 **Astro v6** 和 **Ta
 
 ## 架构
 
-### 目录结构
+### 三层架构
 
 ```
 src/
-  styles/tailwind.css        # Tailwind v4 配置（主题、自定义工具类、插件）
-  components/
-    common/        # 共享组件：Image, Metadata, Analytics, ToggleTheme
-    ui/            # 基础组件：Button, Headline, WidgetWrapper, ItemGrid
-    widgets/       # 页面部件：Hero, Features, Pricing, Header, Footer
-    blog/          # 博客组件：SinglePost, List, Pagination, Tags
-    background/    # 背景切换器、Canvas 和交互式背景组件
-    CustomStyles.astro  # 颜色和字体的 CSS 变量
-  content.config.ts    # 内容集合 Schema（Astro v6 位置）
-  content/             # 内容文件：post/、docs/（.md、.mdx）
-  integrations/        # 自定义 Astro 集成（配置加载）
-  layouts/             # Layout.astro, PageLayout.astro, MarkdownLayout.astro
-  pages/               # 文件路由
-  utils/               # blog.ts, images.ts, permalinks.ts, frontmatter.ts
-  config.yaml          # 站点配置（作为虚拟模块加载）
-  navigation.ts        # 导航结构
-  types.d.ts           # TypeScript 类型定义
+  core/           # 核心基础设施（无业务逻辑）
+    config/       # 站点配置
+    constants/    # 常量定义
+    i18n/         # 国际化（中/英/日/韩等 13 种语言）
+    types/        # TypeScript 类型定义
+    utils/        # 工具函数（blog/images/permalinks/settings 等）
+    styles/       # 全局 CSS（tailwind.css, variables.css, main.css）
+    plugins/      # Remark/Rehype 插件
+  features/       # 业务功能模块
+    blog/         # 博客组件
+    content/      # 内容组件
+    editor/       # 富文本编辑器（React Tiptap + MDX 双向转换）
+    team/         # 团队页面组件
+    homepage/     # 首页 Widget（Hero/Features/Pricing 等）
+    shell/        # 顶栏/页脚/侧边栏/背景/通用 UI
+    auth/         # 登录认证组件
+    docs/         # 文档库
+  ui/             # 通用 UI 组件
+    primitives/   # 基础组件（Button/Image/Form 等）
+    patterns/     # 模式组件（TableOfContents/Timeline 等）
+  layouts/        # 页面布局（Base/Page/Sidebar/Markdown/Blog 等）
+  pages/          # 文件路由（含 /admin/documents 管理后台）
+  content/        # 内容文件（docs/、post/）
 ```
 
 ### 路径别名
@@ -48,49 +54,41 @@ src/
 使用 `~/` 从 `src/` 导入：
 
 ```typescript
-import Image from '~/components/common/Image.astro';
-import { SITE } from 'astrowind:config';
+import Image from '~/ui/primitives/Image.astro';
+import { siteConfig } from '~/core/config';
 ```
-
-### 配置系统
-
-站点配置在 `src/config.yaml` 中，由 `src/integrations/` 中的自定义集成作为 Vite 虚拟模块 `astrowind:config` 加载。导出项：`SITE`、`I18N`、`METADATA`、`APP_BLOG`、`UI`、`ANALYTICS`。
 
 ## Tailwind CSS v4
 
-配置以 CSS 优先，入口文件 `src/styles/tailwind.css`：
+配置以 CSS 优先，入口文件 `src/core/styles/tailwind.css`：
 
 - **主题令牌：** `@theme { --color-primary: var(--aw-color-primary); ... }`
 - **自定义工具类：** `@utility bg-page { ... }`
 - **暗色模式：** 通过 `@variant dark (&:where(.dark, .dark *))` 实现基于类的暗色模式
 - **插件：** `@plugin "@tailwindcss/typography"`
-- **自定义变体：** `@custom-variant intersect (&:not([no-intersect]))`
 
-颜色和字体的 CSS 变量在 `src/components/CustomStyles.astro` 中定义，带明暗主题变体。
-
-Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置（而非作为 Astro 集成）。
-
-### 类合并
-
-组件使用 `tailwind-merge` v3 的 `twMerge` 进行条件类组合。
+Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 
 ## 内容集合
 
-在 `src/content.config.ts` 中通过 Astro v6 Content Layer API 的 `glob()` 加载器定义。文章位于 `src/content/post/`，使用 `.md` 或 `.mdx` 格式。
+内容文件：
+
+- `src/content/post/` — 博客文章（.md/.mdx）
+- `src/content/docs/` — 文档（.md/.mdx）
 
 文章 frontmatter 字段：`title`（必填）、`publishDate`、`updateDate`、`draft`、`excerpt`、`image`、`category`、`tags`、`author`、`metadata`。
 
 ## 组件模式
 
-- Props 继承自 `~/types` 中的接口
+- Props 继承自 `~/core/types` 中的接口
 - 使用 `class:list` 进行条件样式绑定
 - 接收 `className` 覆写时使用 `twMerge()` 合并
 - 布局组合使用具名插槽（named slots）
-- Widget 组件接受标准化 props（参见 `~/types`）
+- 新组件应放在对应的 feature 目录或 ui 层
 
 ## 图片处理
 
-`src/components/common/Image.astro` 支持：
+`src/ui/primitives/Image.astro` 支持：
 
 - 本地图片通过 `astro:assets`（由 Sharp 优化）
 - 远程图片通过 Unpic CDN

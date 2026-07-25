@@ -1,14 +1,12 @@
 ---
+import type { ImageMetadata } from '~/core/types';
 import Layout from '~/layouts/SidebarLayout.astro';
-import MemberCard from '~/components/MemberCard.astro';
-import DepartmentSection from '~/components/DepartmentSection.astro';
+import MemberCard from '~/features/team/components/MemberCard.astro';
+import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
 
-import type { ImageMetadata } from 'astro';
+import { projectSubGroups } from '~/features/team/data/members';
 
-import { projectSubGroups } from '~/data/members';
-
-import { teamTopTabs } from '~/navigation';
-import { getPermalink } from '~/utils/permalinks';
+import { getPermalink } from '~/core/utils/permalinks';
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {
@@ -48,12 +46,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout
-  metadata={metadata}
-  topTabs={teamTopTabs}
-  sidebarLinks={sidebarLinks}
-  currentPath={getPermalink('/project-team')}
->
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/project-team')}>
   <!-- 教材项目组 -->
   {
     Object.entries(projectSubGroups).map(([, group]) => (
@@ -76,7 +69,7 @@ const sidebarLinks = [
             ))}
           </>
         ) : (
-          <p class="col-span-full text-center text-sm text-neutral/50 py-6">暂无成员，期待你的加入</p>
+          <p class="col-span-full text-center text-sm text-text-muted/50 py-6">暂无成员，期待你的加入</p>
         )}
       </DepartmentSection>
     ))

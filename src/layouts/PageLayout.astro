@@ -1,11 +1,11 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Header from '~/components/widgets/Header.astro';
-import Footer from '~/components/widgets/Footer.astro';
+import Layout from './BaseLayout.astro';
+import Navbar from '~/features/shell/components/FuwariNavbar.astro';
+import Footer from '~/features/shell/components/Footer.astro';
 
-import { headerData, footerData } from '~/navigation';
+import { footerData } from '~/core/navigation';
 
-import type { MetaData } from '~/types';
+import type { MetaData } from '~/core/types';
 
 export interface Props {
   metadata?: MetaData;
@@ -15,11 +15,10 @@ const { metadata } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
-  <!-- <slot name="announcement">
-    <Announcement />
-  </slot> -->
   <slot name="header">
-    <Header {...headerData} isSticky showGithub showToggleTheme />
+    <div class="sticky top-0 z-50 bg-card-bg">
+      <Navbar />
+    </div>
   </slot>
   <main>
     <slot />

@@ -69,3 +69,90 @@ analytics:
 
 ui:
   theme: 'system'
+
+# Fuwari blog theme configuration
+fuwari:
+  site:
+    title: 理科迷LKM
+    subtitle: 科技爱好者社区
+    lang: zh_CN
+    themeColor:
+      hue: 250
+      fixed: false
+    banner:
+      enable: false
+      src: assets/images/demo-banner.png
+      position: center
+      credit:
+        enable: false
+        text: ''
+        url: ''
+    toc:
+      enable: true
+      depth: 2
+    favicon: []
+
+  navbar:
+    links:
+      - name: 主页
+        url: /
+        children:
+          - name: 简明介绍
+            url: /
+          - name: 团队成员
+            url: /#team
+          - name: 发展历程
+            url: /#timeline
+          - name: 最近更新
+            url: /#update
+          - name: 常见问题
+            url: /#faq
+      - name: 博客
+        url: /blog
+        children:
+          - name: 博客列表
+            url: /blog
+          - name: 所有分类
+            url: /blog/categories
+          - name: 文章归档
+            url: /blog/archive
+          - name: 关于博客
+            url: /blog/about
+      - name: 文档库
+        url: /docs
+        children:
+          - name: 文档首页
+            url: /docs
+      - name: 七月团队
+        url: /team
+        children:
+          - name: 管理团队
+            url: /team
+          - name: 项目团队
+            url: /project-team
+          - name: 关于我们
+            url: /about
+          - name: 服务
+            url: /services
+          - name: 赞助与支持
+            url: /pricing
+          - name: 联系我们
+            url: /contact
+          - name: QQ社群
+            url: /communities
+  profile:
+    avatar: assets/images/demo-avatar.png
+    name: 理科迷LKM
+    bio: 创立于 2014 年的科技爱好者社区
+    links:
+      - name: GitHub
+        icon: fa6-brands:github
+        url: https://github.com/LKM-AHZ
+
+  license:
+    enable: true
+    name: CC BY-NC-SA 4.0
+    url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+  expressiveCode:
+    theme: github-dark

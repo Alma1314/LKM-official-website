@@ -1,11 +1,10 @@
 ---
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
+import CallToAction from '~/features/homepage/widgets/CallToAction.astro';
+import Features2 from '~/features/homepage/widgets/Features2.astro';
+import HeroText from '~/features/homepage/widgets/HeroText.astro';
 import Layout from '~/layouts/SidebarLayout.astro';
 
-import { teamTopTabs } from '~/navigation';
-import { getPermalink } from '~/utils/permalinks';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = {
   title: '服务',
@@ -18,7 +17,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} topTabs={teamTopTabs} sidebarLinks={sidebarLinks} currentPath={getPermalink('/services')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/services')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技回归每一个人"

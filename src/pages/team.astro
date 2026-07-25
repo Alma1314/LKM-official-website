@@ -1,10 +1,9 @@
 ---
+import type { ImageMetadata } from '~/core/types';
 import Layout from '~/layouts/SidebarLayout.astro';
-import Section from '~/components/widgets/Section.astro';
-import MemberCard from '~/components/MemberCard.astro';
-import DepartmentSection from '~/components/DepartmentSection.astro';
-
-import type { ImageMetadata } from 'astro';
+import Section from '~/features/homepage/widgets/Section.astro';
+import MemberCard from '~/features/team/components/MemberCard.astro';
+import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
 
 import {
   founderMembers,
@@ -17,10 +16,9 @@ import {
   techMembers,
   professionalSubGroups,
   alumniMembers,
-} from '~/data/members';
+} from '~/features/team/data/members';
 
-import { teamTopTabs } from '~/navigation';
-import { getPermalink } from '~/utils/permalinks';
+import { getPermalink } from '~/core/utils/permalinks';
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {
@@ -73,7 +71,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} topTabs={teamTopTabs} sidebarLinks={sidebarLinks} currentPath={getPermalink('/team')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/team')}>
   <!-- 创始人 -->
   <Section title="创始人" subtitle="理科迷的起点，一切从这里开始" id="founder">
     <div class="max-w-2xl mx-auto">
@@ -124,7 +122,7 @@ const sidebarLinks = [
     {
       Object.entries(affairsSubGroups).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-neutral">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
@@ -186,8 +184,8 @@ const sidebarLinks = [
     {
       Object.entries(newsSubGroups).map(([, group]) => (
         <div class="mt-8">
-          <h4 class="text-md font-bold mb-3 text-center text-neutral">{group.label}</h4>
-          <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-base-200 border border-base-300 rounded-[8px] text-center text-[13px] text-neutral leading-relaxed">
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[13px] text-text-muted leading-relaxed">
             {group.desc}
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -238,7 +236,7 @@ const sidebarLinks = [
     {
       Object.entries(professionalSubGroups).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-neutral">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
@@ -280,10 +278,10 @@ const sidebarLinks = [
   <Section id="alumni">
     <div class="max-w-7xl mx-auto">
       <h3 class="text-xl font-bold mb-9 text-center">
-        <span class="border-b-2 border-base-300 pb-1">已离开或失联成员</span>
+        <span class="border-b-2 border-surface-3 pb-1">已离开或失联成员</span>
       </h3>
       <p
-        class="max-w-3xl mx-auto mb-9 px-6 py-4 bg-base-200 border border-base-300 rounded-[8px] text-center text-[14px] text-neutral leading-relaxed"
+        class="max-w-3xl mx-auto mb-9 px-6 py-4 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[14px] text-text-muted leading-relaxed"
       >
         以下成员曾为理科迷作出贡献，因各种原因现无法联系，不管如何理科迷的大门永远向你们打开。
       </p>

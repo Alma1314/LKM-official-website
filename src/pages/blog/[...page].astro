@@ -1,0 +1,44 @@
+---
+import Pagination from '~/ui/primitives/Pagination.astro';
+import PostPage from '~/features/team/components/PostPage.astro';
+import { PAGE_SIZE } from '~/core/constants/constants';
+import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
+import { getSortedPosts } from '~/core/utils/content-utils';
+
+export const getStaticPaths = (async () => {
+  const allBlogPosts = await getSortedPosts();
+  const totalPages = Math.ceil(allBlogPosts.length / PAGE_SIZE);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 [...page] rest param inference conflict
+  const result: any[] = [];
+  for (let i = 0; i < totalPages; i++) {
+    result.push({
+      params: { page: i === 0 ? undefined : String(i + 1) },
+      props: {
+        page: {
+          data: allBlogPosts.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE),
+          currentPage: i + 1,
+          totalPages,
+          prev: i > 0 ? (i === 1 ? '/blog' : `/blog/page/${i}`) : undefined,
+          next: i < totalPages - 1 ? `/blog/page/${i + 2}` : undefined,
+        },
+      },
+    });
+  }
+  return result;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 strict GetStaticPaths type incompatible with optional rest param
+}) as any;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro v6 cannot infer props from getStaticPaths due to above
+const { page } = Astro.props as any;
+
+const len = page.data.length;
+---
+
+<MainGridLayout>
+  <PostPage page={page} />
+  <Pagination
+    class="mx-auto onload-animation"
+    page={page}
+    style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
+  />
+</MainGridLayout>

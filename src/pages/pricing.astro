@@ -1,11 +1,10 @@
 ---
 import Layout from '~/layouts/SidebarLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import HeroText from '~/features/homepage/widgets/HeroText.astro';
+import Features3 from '~/features/homepage/widgets/Features3.astro';
+import CallToAction from '~/features/homepage/widgets/CallToAction.astro';
 
-import { teamTopTabs } from '~/navigation';
-import { getPermalink } from '~/utils/permalinks';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = {
   title: '赞助与支持',
@@ -17,7 +16,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} topTabs={teamTopTabs} sidebarLinks={sidebarLinks} currentPath={getPermalink('/pricing')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/pricing')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技传播走得更远"

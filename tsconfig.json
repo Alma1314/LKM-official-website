@@ -1,12 +1,14 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "strictNullChecks": true,
     "allowJs": true,
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"],
+      "~/core/*": ["./src/core/*"],
+      "~/ui/*": ["./src/ui/*"],
+      "~/features/*": ["./src/features/*"],
+      "~/layouts/*": ["./src/layouts/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

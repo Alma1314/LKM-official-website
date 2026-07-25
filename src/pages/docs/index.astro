@@ -1,9 +1,9 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import { getCollection } from 'astro:content';
-import DocListItem from '~/components/docs/DocListItem.astro';
-import { getPermalink } from '~/utils/permalinks';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import DocListItem from '~/features/docs/components/DocListItem.astro';
+import { getPermalink } from '~/core/utils/permalinks';
+import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
 
 const allDocs = await getCollection('docs', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
@@ -25,8 +25,8 @@ const metadata = {
 <Layout metadata={metadata}>
   <WidgetWrapper width="narrow" spacing="default">
     <div class="mb-12">
-      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-base-content mb-3">文档库</h1>
-      <p class="text-[17px] text-neutral">理科迷社区文档，帮助你快速了解和使用社区的各项功能</p>
+      <h1 class="text-[28px] md:text-[40px] font-bold tracking-tight text-deep-text mb-3">文档库</h1>
+      <p class="text-[17px] text-text-muted">理科迷社区文档，帮助你快速了解和使用社区的各项功能</p>
     </div>
 
     {

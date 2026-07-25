@@ -1,15 +1,13 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
 import Layout from '~/layouts/PageLayout.astro';
-import BlogList from '~/components/blog/List.astro';
-import Headline from '~/components/blog/Headline.astro';
-import Pagination from '~/components/blog/Pagination.astro';
+import BlogList from '~/features/blog/components/List.astro';
+import Headline from '~/features/blog/components/Headline.astro';
+import Pagination from '~/features/blog/components/Pagination.astro';
 
-import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
-
-export const prerender = true;
+import { blogListRobots, getStaticPathsBlogList } from '~/core/utils/blog';
 
 export const getStaticPaths = (async ({ paginate }) => {
   return await getStaticPathsBlogList({ paginate });

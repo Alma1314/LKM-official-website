@@ -1,7 +1,7 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Button from '~/components/ui/Button.astro';
-import { getHomePermalink } from '~/utils/permalinks';
+import Layout from '~/layouts/BaseLayout.astro';
+import Button from '~/ui/primitives/Button.astro';
+import { getHomePermalink } from '~/core/utils/permalinks';
 
 const title = `页面未找到`;
 ---
@@ -15,7 +15,7 @@ const title = `页面未找到`;
           <span class="text-primary">404</span>
         </h2>
         <p class="text-[28px] font-semibold">抱歉，找不到此页面。</p>
-        <p class="mt-4 mb-8 text-[17px] text-neutral">别担心，返回首页还能找到更多精彩内容。</p>
+        <p class="mt-4 mb-8 text-[17px] text-text-muted">别担心，返回首页还能找到更多精彩内容。</p>
         <Button variant="primary" href={getHomePermalink()}>返回首页</Button>
       </div>
     </div>

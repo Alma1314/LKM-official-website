@@ -4,6 +4,7 @@ dist/
 docs/
 !src/data/docs/
 !src/components/docs/
+!src/features/docs/
 !src/pages/docs/
 
 # dependencies

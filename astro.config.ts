@@ -1,36 +1,47 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import { defineConfig } from 'astro/config';
 
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
+import svelte from '@astrojs/svelte';
+import node from '@astrojs/node';
+import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
+import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
-import astrowind from './src/integrations';
-
-import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
+import { remarkExcerpt } from './src/core/plugins/remark-excerpt.js';
+import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
+import remarkDirective from 'remark-directive';
+import remarkSectionize from 'remark-sectionize';
+import { parseDirectiveNode } from './src/core/plugins/remark-directive-rehype.js';
+import rehypeSlug from 'rehype-slug';
+import rehypeComponents from 'rehype-components';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
+import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
+  devToolbar: {
+    enabled: false,
+  },
+
   site: 'https://LKM-AHZ.github.io',
   base: '/LKM-official-website',
 
   output: 'static',
+  adapter: node({ mode: 'standalone' }),
 
   integrations: [
     sitemap(),
@@ -39,6 +50,7 @@ export default defineConfig({
     react({
       include: ['**/*.tsx', '**/*.jsx'],
     }),
+    svelte(),
     icon({
       include: {
         tabler: ['*'],
@@ -63,20 +75,12 @@ export default defineConfig({
     ),
 
     compress({
-      CSS: true,
-      HTML: {
-        'html-minifier-terser': {
-          removeAttributeQuotes: false,
-        },
-      },
-      Image: true,
-      JavaScript: true,
-      SVG: true,
+      CSS: false,
+      HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
+      Image: false,
+      JavaScript: false,
+      SVG: false,
       Logger: 1,
-    }),
-
-    astrowind({
-      config: './src/config.yaml',
     }),
   ],
 
@@ -95,17 +99,113 @@ export default defineConfig({
 
   markdown: {
     processor: unified({
-      remarkPlugins: [readingTimeRemarkPlugin, remarkMath],
-      rehypePlugins: [responsiveTablesRehypePlugin, rehypeKatex],
+      remarkPlugins: [
+        remarkMath,
+        remarkReadingTime,
+        remarkExcerpt,
+        remarkGithubAdmonitionsToDirectives,
+        remarkDirective,
+        remarkSectionize,
+        parseDirectiveNode as unknown as RemarkPlugin,
+      ],
+      rehypePlugins: [
+        rehypeKatex,
+        rehypeSlug,
+        [
+          rehypeComponents,
+          {
+            components: {
+              github: GithubCardComponent,
+              note: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'note'),
+              tip: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'tip'),
+              important: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'important'),
+              caution: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'caution'),
+              warning: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
+                AdmonitionComponent(x, y, 'warning'),
+            },
+          },
+        ],
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: 'append',
+            properties: {
+              className: ['anchor'],
+            },
+            content: {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                className: ['anchor-icon'],
+                'data-pagefind-ignore': true,
+              },
+              children: [
+                {
+                  type: 'text',
+                  value: '#',
+                },
+              ],
+            },
+          },
+        ],
+      ],
     }),
   },
 
   vite: {
-    plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        '~': path.resolve(__dirname, './src'),
+    plugins: [
+      tailwindcss(),
+      {
+        name: 'exclude-yaml',
+        resolveId(id) {
+          if (id.endsWith('.yaml') || id.endsWith('.yml')) {
+            return false; // prevent YAML from being resolved as a module
+          }
+        },
+        load(id) {
+          if (id.endsWith('.yaml') || id.endsWith('.yml')) {
+            return 'export default {}';
+          }
+        },
       },
+    ],
+    // 预构建优化：将重依赖预列入 include，避免懒构建导致的并发竞态。
+    // Windows + pnpm 下 Vite 的 deps 原子重命名可能失败，预列关键依赖让
+    // 它们在首次启动时一次性构建完成。
+    ssr: {
+      noExternal: ['@iconify/svelte'],
+    },
+    optimizeDeps: {
+      exclude: ['@iconify/svelte'],
+      include: [
+        'react',
+        'react-dom',
+        'react-dom/client',
+        '@tiptap/core',
+        '@tiptap/react',
+        '@tiptap/starter-kit',
+        '@tiptap/extension-placeholder',
+        '@tiptap/extension-character-count',
+        '@tiptap/extension-link',
+        '@tiptap/extension-underline',
+        '@tiptap/extension-task-list',
+        '@tiptap/extension-task-item',
+        '@tiptap/extension-table',
+        '@tiptap/extension-table-row',
+        '@tiptap/extension-table-cell',
+        '@tiptap/extension-table-header',
+        '@tiptap/extension-image',
+      ],
+    },
+    css: {
+      transformer: 'postcss',
+    },
+    resolve: {
+      alias: {},
     },
   },
 });
