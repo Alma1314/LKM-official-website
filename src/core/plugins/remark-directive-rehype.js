@@ -9,7 +9,7 @@ export function parseDirectiveNode() {
         const data = node.data || (node.data = {});
         node.attributes = node.attributes || {};
         if (node.children.length > 0 && node.children[0].data && node.children[0].data.directiveLabel) {
-          // Add a flag to the node to indicate that it has a directive label
+          // 给节点添加标记，表明它有指令标签
           node.attributes['has-directive-label'] = true;
         }
         const hast = h(node.name, node.attributes);

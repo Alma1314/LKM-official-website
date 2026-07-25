@@ -3,7 +3,7 @@ import type { Root, Table, List } from 'mdast';
 import type { JSONContent } from '@tiptap/core';
 import { toString as mdastToString } from 'mdast-util-to-string';
 
-// In MDAST these are parent nodes wrapping text, in Tiptap they are marks on text nodes.
+// MDAST 中这些是包裹文本的父节点，Tiptap 中它们是文本节点上的标记。
 interface MarkContext {
   type: 'strong' | 'emphasis' | 'delete' | 'link' | 'inlineCode';
   attrs?: Record<string, unknown>;
@@ -224,7 +224,7 @@ function convertBlockChildren(children: any[]): JSONContent[] {
         const el = child as { name?: string };
         const name = el.name ?? '';
         if (name === 'Callout' || name === 'Figure') {
-          // Inline Callout/Figure is not typical, treat as rawMdx
+          // 内联 Callout/Figure 不常见，作为 rawMdx 处理
           result.push({
             type: 'rawMdx',
             attrs: { source: mdastToString(child), sourceKind: 'text' },
@@ -238,7 +238,7 @@ function convertBlockChildren(children: any[]): JSONContent[] {
         break;
       }
       case 'yaml':
-        // frontmatter already extracted, skip
+        // frontmatter 已提取，跳过
         break;
       default:
         result.push({

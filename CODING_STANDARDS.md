@@ -122,7 +122,7 @@ const items = ['A', 'B', 'C'];
 ## 组件规范
 
 - 使用 TypeScript 类型定义
-- Props 接口继承自 `~/types`
+- Props 接口继承自 `~/core/types`
 - 使用 `class:list` 进行条件样式绑定
 - 接收 `className` 覆写时使用 `twMerge()` 合并
 - 布局组合使用具名插槽（named slots）
@@ -132,8 +132,8 @@ const items = ['A', 'B', 'C'];
 使用 `~/` 替代 `src/`：
 
 ```typescript
-import Image from '~/components/common/Image.astro';
-import { SITE } from 'astrowind:config';
+import Image from '~/ui/primitives/Image.astro';
+import { siteConfig } from '~/core/config';
 ```
 
 ## 运行环境
@@ -159,10 +159,10 @@ import { SITE } from 'astrowind:config';
 
 ## 站点配置
 
-站点元数据集中在 `src/config.yaml` 中管理，通过虚拟模块 `astrowind:config` 导入：
+站点元数据集中在 `src/config.yaml` 中管理，通过 `~/core/config` 导入：
 
 ```typescript
-import { SITE, METADATA, I18N, APP_BLOG, UI, ANALYTICS } from 'astrowind:config';
+import { siteConfig, navBarConfig, profileConfig } from '~/core/config';
 ```
 
 | 字段        | 说明                                          |

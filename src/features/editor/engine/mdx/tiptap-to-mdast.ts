@@ -1,7 +1,7 @@
 import type { Root, RootContent, PhrasingContent } from 'mdast';
 import type { JSONContent } from '@tiptap/core';
 
-/** Convert a Tiptap JSON content array back to an MDAST Root tree. */
+/** 将 Tiptap JSON 内容数组转换回 MDAST Root 树。 */
 export function tiptapToMdast(nodes: JSONContent[]): Root {
   const tree: Root = {
     type: 'root',
@@ -143,7 +143,7 @@ function convertBlocks(nodes: JSONContent[]): RootContent[] {
         break;
       }
       default:
-        // Unknown block -> raw html passthrough
+        // 未知块 → 原始 HTML 透传
         break;
     }
   }
@@ -151,7 +151,7 @@ function convertBlocks(nodes: JSONContent[]): RootContent[] {
   return result;
 }
 
-// Type helper for inline conversion (used in wrapWithMark)
+// 内联转换的类型辅助（wrapWithMark 中使用）
 interface MdastTextNode {
   type: 'text';
   value: string;
@@ -173,7 +173,7 @@ function convertListItem(node: JSONContent): RootContent {
   } as RootContent;
 }
 
-/** Convert a Tiptap mark to an MDAST wrapper node */
+/** 将 Tiptap mark 转换为 MDAST 包装节点 */
 function wrapWithMark(
   content: PhrasingContent[],
   markType: string,
@@ -215,11 +215,11 @@ function convertInline(nodes: JSONContent[]): PhrasingContent[] {
     if (node.type === 'text') {
       let current: PhrasingContent[] = [{ type: 'text', value: node.text ?? '' } as PhrasingContent];
 
-      // Apply marks from inside out (last mark is innermost in Tiptap, outermost in MDAST)
-      // We need to apply them in order: earliest phase wraps deepest
+      // 从内到外应用标记（Tiptap 中最后一个标记是最内层，MDAST 中最外层）
+      // 需要按顺序应用：越早的阶段包裹越深
       const marks = node.marks ?? [];
-      // MDAST nesting: link > strong > emphasis > delete
-      // Tiptap marks order doesn't guarantee nesting, so we apply in a fixed priority:
+      // MDAST 嵌套顺序：link > strong > emphasis > delete
+      // Tiptap 标记顺序不保证嵌套，因此按固定优先级应用：
       const priority = ['code', 'strike', 'italic', 'bold', 'link'];
       const sorted = [...marks].sort((a, b) => priority.indexOf(a.type) - priority.indexOf(b.type));
       for (const mark of sorted) {
@@ -241,7 +241,7 @@ function convertInline(nodes: JSONContent[]): PhrasingContent[] {
         value: (node.attrs as Record<string, string> | undefined)?.latex ?? '',
       } as PhrasingContent);
     }
-    // NOTE: inlineComponent handling is deferred — not typically used in Phase 2
+    // 注：inlineComponent 处理已推迟 — 第二阶段通常不使用
   }
 
   return result;

@@ -3,8 +3,8 @@ import type { Root } from 'mdast';
 type Node = { type?: string; children?: Node[]; value?: string; depth?: number };
 
 /**
- * Merge adjacent text nodes in paragraphs and headings.
- * remark-parse can produce multiple adjacent text nodes for the same inline content.
+ * 合并段落和标题中相邻的文本节点。
+ * remark-parse 可能为同一内联内容生成多个相邻文本节点。
  */
 function mergeTextChildren(children: Node[]): Node[] {
   const result: Node[] = [];
@@ -30,7 +30,7 @@ function walkNode(node: Node): void {
   }
 }
 
-/** Clamp heading depth to 1-6 */
+/** 限制标题深度为 1-6 */
 function clampHeadingDepth(depth: number): number {
   return Math.max(1, Math.min(6, depth));
 }

@@ -1,16 +1,14 @@
 # LKM Official Website · 理科迷官方网站
 
-[![Astro v6](https://img.shields.io/badge/Astro-v6-FF5D01?logo=astro)](https://astro.build)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Astro v7](https://img.shields.io/badge/Astro-v7-FF5D01?logo=astro)](https://astro.build)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
 [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs)](https://vuejs.org)
-[![Three.js](https://img.shields.io/badge/Three.js-0.178-000000?logo=threedotjs)](https://threejs.org)
-[![daisyUI](https://img.shields.io/badge/daisyUI-v5-5A0EF8?logo=daisyui)](https://daisyui.com)
+[![Three.js](https://img.shields.io/badge/Three.js-0.185-000000?logo=threedotjs)](https://threejs.org)
 
-**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v6 + Tailwind CSS v4 构建，静态生成为主，管理后台保留服务器渲染。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
-
-> 查看 [AGENTS.md](./AGENTS.md) 了解 AI Agent 工作指令。
+**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 构建，静态生成为主，管理后台保留服务器渲染。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
 
 ---
 
@@ -48,38 +46,37 @@ pnpm run dev
 ├── .github/workflows/          # CI/CD (GitHub Actions)
 ├── public/                     # 静态资源
 ├── src/
-│   ├── assets/
-│   │   └── images/
-│   │       ├── member/         # 原始头像图片
-│   │       └── member-optimized/  # 优化后的 WebP 头像
-│   ├── styles/tailwind.css     # Tailwind v4 配置入口
-│   ├── components/
-│   │   ├── auth/               # 登录认证组件
-│   │   ├── background/         # 可切换动态背景（13 种效果）
+│   ├── assets/images/
+│   │   ├── member/             # 原始头像图片
+│   │   └── member-optimized/   # 优化后的 WebP 头像
+│   ├── core/                   # 核心基础设施
+│   │   ├── config/             # 站点配置
+│   │   ├── constants/          # 常量定义
+│   │   ├── i18n/               # 国际化（中/英/日/韩等）
+│   │   ├── types/              # TypeScript 类型定义
+│   │   ├── utils/              # 工具函数
+│   │   ├── styles/             # 全局 CSS
+│   │   └── plugins/            # Remark/Rehype 插件
+│   ├── features/               # 业务功能模块
 │   │   ├── blog/               # 博客组件
-│   │   ├── common/             # 通用组件（Image, Metadata, Analytics 等）
-│   │   ├── editor/             # 富文本编辑器组件（32 个 React 组件）
-│   │   ├── ui/                 # 基础 UI 组件
-│   │   └── widgets/            # 页面部件（Hero, Header, Footer 等）
-│   ├── content/
-│   │   ├── docs/               # 文档内容 (.md / .mdx)
-│   │   └── post/               # 博客文章 (.md / .mdx)
-│   ├── data/
-│   │   ├── members.ts          # 团队成员数据
-│   │   └── communities.ts      # 社群数据
-│   ├── db/                     # 数据库工具
-│   ├── editor/                 # 编辑器核心（扩展、MDX 转换、类型）
+│   │   ├── content/            # 内容组件
+│   │   ├── editor/             # 富文本编辑器
+│   │   ├── team/               # 团队页面组件
+│   │   ├── homepage/           # 首页 Widget
+│   │   ├── shell/              # 顶栏/页脚/背景/通用 UI
+│   │   ├── auth/               # 登录认证
+│   │   └── docs/               # 文档库
+│   ├── ui/                     # UI 组件
+│   │   ├── primitives/         # 基础组件
+│   │   └── patterns/           # 模式组件
 │   ├── layouts/                # 页面布局
-│   ├── lib/                    # 工具库（自动保存、备份、版本、评论等 9 个模块）
-│   ├── pages/
-│   │   └── admin/documents/    # 文档管理后台（列表 + 富文本编辑器）
-│   ├── styles/                 # CSS 样式
-│   ├── utils/                  # 工具函数
-│   ├── config.yaml             # 站点主配置
-│   ├── content.config.ts       # 内容集合 Schema
-│   └── navigation.ts           # 导航结构
-├── src/integrations/           # 自定义 Astro 集成
+│   ├── pages/                  # 文件路由
+│   ├── content/                # 内容（docs/、post/）
+│   └── config.yaml             # 站点主配置
 ├── AGENTS.md                   # AI Agent 指令
+├── CLAUDE.md                   # Claude Code 配置
+├── CODING_STANDARDS.md         # 代码规范
+├── LICENSE.md                  # MIT 许可证
 ├── astro.config.ts             # Astro 配置
 └── tsconfig.json               # TypeScript 配置
 ```
@@ -88,45 +85,43 @@ pnpm run dev
 
 ## 页面路由
 
-| 路由       | 路径                      | 源文件                               | 布局           |
-| :--------- | :------------------------ | :----------------------------------- | :------------- |
-| 首页       | `/`                       | `pages/index.astro`                  | PageLayout     |
-| 管理团队   | `/team`                   | `pages/team.astro`                   | SidebarLayout  |
-| 项目团队   | `/project-team`           | `pages/project-team.astro`           | SidebarLayout  |
-| 关于       | `/about`                  | `pages/about.astro`                  | SidebarLayout  |
-| 服务       | `/services`               | `pages/services.astro`               | SidebarLayout  |
-| 赞助与支持 | `/pricing`                | `pages/pricing.astro`                | SidebarLayout  |
-| 联系我们   | `/contact`                | `pages/contact.astro`                | SidebarLayout  |
-| QQ 社群    | `/communities`            | `pages/communities.astro`            | SidebarLayout  |
-| 登录       | `/login`                  | `pages/login.astro`                  | PageLayout     |
-| 文档库     | `/docs`                   | `pages/docs/`                        | DocsLayout     |
-| 文档详情   | `/docs/<slug>`            | `pages/docs/[...slug].astro`         | DocsLayout     |
-| 文档管理   | `/admin/documents`        | `pages/admin/documents/index.astro`  | PageLayout     |
-| 编辑器     | `/admin/documents/editor` | `pages/admin/documents/editor.astro` | PageLayout     |
-| 隐私政策   | `/privacy`                | `pages/privacy.md`                   | MarkdownLayout |
-| 使用条款   | `/terms`                  | `pages/terms.md`                     | MarkdownLayout |
-| 博客       | `/blog`                   | `pages/[...blog]/`                   | PageLayout     |
-| 文章详情   | `/blog/<slug>`            | `pages/[...blog]/`                   | PageLayout     |
-| 404        | `/404`                    | `pages/404.astro`                    | PageLayout     |
-| RSS        | `/rss.xml`                | `pages/rss.xml.ts`                   | —              |
+| 路由       | 路径               | 源文件                       |
+| :--------- | :----------------- | :--------------------------- |
+| 首页       | `/`                | `pages/index.astro`          |
+| 管理团队   | `/team`            | `pages/team.astro`           |
+| 项目团队   | `/project-team`    | `pages/project-team.astro`   |
+| 关于       | `/about`           | `pages/about.astro`          |
+| 服务       | `/services`        | `pages/services.astro`       |
+| 赞助与支持 | `/pricing`         | `pages/pricing.astro`        |
+| 联系我们   | `/contact`         | `pages/contact.astro`        |
+| QQ 社群    | `/communities`     | `pages/communities.astro`    |
+| 登录       | `/login`           | `pages/login.astro`          |
+| 文档库     | `/docs`            | `pages/docs/`                |
+| 文档详情   | `/docs/<slug>`     | `pages/docs/[...slug].astro` |
+| 文档管理   | `/admin/documents` | `pages/admin/documents/`     |
+| 隐私政策   | `/privacy`         | `pages/privacy.md`           |
+| 使用条款   | `/terms`           | `pages/terms.md`             |
+| 博客       | `/blog`            | `pages/[...blog]/`           |
+| 404        | `/404`             | `pages/404.astro`            |
+| RSS        | `/rss.xml`         | `pages/rss.xml.ts`           |
 
 ---
 
 ## 配置系统
 
-`src/config.yaml` 通过 `src/integrations/` 注入为 Vite 虚拟模块 `astrowind:config`：
+`src/config.yaml` 通过自定义集成注入：
 
 ```ts
-import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from 'astrowind:config';
+import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from '~/core/config';
 ```
 
-常用配置项：站点名称/URL、SEO 元数据、博客开关与分页、Google Analytics ID、主题模式等。导航结构在 `src/navigation.ts` 中定义。
+常用配置项：站点名称/URL、SEO 元数据、博客开关与分页、Google Analytics ID、主题模式等。
 
 ---
 
 ## 样式系统
 
-**Tailwind CSS v4** — CSS-first 配置，入口 `src/styles/tailwind.css`，支持暗色模式、自定义主题变量、Typography 插件。组件使用 **CSS Modules** 实现局部作用域样式。UI 层面使用 **daisyUI v5** 组件库，结合 **KaTeX** 渲染数学公式。
+**Tailwind CSS v4** — CSS-first 配置，入口 `src/core/styles/tailwind.css`，支持暗色模式、自定义主题变量、Typography 插件。部分组件使用 **CSS Modules** 实现局部作用域样式，结合 **KaTeX** 渲染数学公式。
 
 ---
 
@@ -148,8 +143,6 @@ image: ~/assets/images/cover.jpg
 文章正文...
 ```
 
-Schema 由 `src/content.config.ts` (Zod) 验证，`src/utils/blog.ts` 负责加载、排序和关联。
-
 ---
 
 ## 构建部署
@@ -162,13 +155,13 @@ pnpm run build   # 输出到 ./dist/
 | :--------------- | :--------------------- |
 | GitHub Pages     | 推送 main 分支自动部署 |
 | Vercel / Netlify | 导入 Git 仓库即可      |
-| 任意静态托管     | 上传 `dist/` 目录      |
+| 任意静态托管     | 上传 `dist/client/`    |
 
 ---
 
 ## 团队成员
 
-团队数据维护在 `src/data/members.ts`，按部门分组导出（创始人、总务部、群务部、活动策划部、新闻办等）。`src/pages/team.astro` 通过 `MemberCard` / `DepartmentSection` 组件渲染，头像存放于 `src/assets/images/member-optimized/`。
+团队数据维护在 `src/features/team/data/members.ts`，按部门分组导出。`src/pages/team.astro` 通过 `MemberCard` / `DepartmentSection` 组件渲染，头像存放于 `src/assets/images/member-optimized/`。
 
 ### 添加新成员
 
@@ -184,7 +177,7 @@ node scripts/optimize-avatars.mjs
 
 **第 2 步：编辑数据**
 
-在 `src/data/members.ts` 中找到对应的部门数组，按格式添加：
+在 `src/features/team/data/members.ts` 中找到对应的部门数组，按格式添加：
 
 ```ts
 { name: '七月X', avatarKey: '文件名.jpg', desc: '简短描述', dream: '梦想：xxx', quote: '—— 格言' }
@@ -201,16 +194,7 @@ node scripts/optimize-avatars.mjs
 | `dream`     | 否   | 梦想/目标（紫色斜体）                                                  |
 | `quote`     | 否   | 一句话格言                                                             |
 
-**示例**：在总务部添加"七月小明"，头像为 `xiaoming.png`：
-
-1. 将 `xiaoming.png` 放入 `src/assets/images/member/`，运行 `node scripts/optimize-avatars.mjs`
-2. 在 `generalMembers` 数组末尾添加：
-
-```ts
-{ name: '七月小明', avatarKey: 'xiaoming.png', desc: '热爱物理的大二学生', dream: '梦想：成为理论物理学家', quote: '—— 仰望星空，脚踏实地' },
-```
-
-**部门对应关系**（`src/data/members.ts`）：
+**部门对应关系**（`src/features/team/data/members.ts`）：
 
 | 页面     | 部门            | 导出数组                              |
 | :------- | :-------------- | :------------------------------------ |
@@ -230,36 +214,33 @@ node scripts/optimize-avatars.mjs
 ## 架构概览
 
 ```
-配置层     config.yaml → src/integrations/ → astrowind:config (虚拟模块)
+core/           配置、类型、工具函数、CSS、插件
   ↓
-布局层     SidebarLayout / PageLayout / MarkdownLayout / DocsLayout
+features/       业务功能模块（blog/team/editor/homepage/shell/auth/docs）
   ↓
-页面层     src/pages/ (文件路由)
+ui/             UI 组件（primitives/patterns）
   ↓
-Widget 层  src/components/widgets/ (Hero, Features, Header, Footer…)
+layouts/        页面布局（BaseLayout/PageLayout/SidebarLayout/MarkdownLayout/BlogLayout）
   ↓
-UI 层      src/components/ui/ (Button, Form, Headline, Timeline…)
-  ↓
-Common 层  src/components/common/ (Image, Metadata, Analytics…)
-  ↓
-背景层     src/components/background/ (13 种可切换动态背景，3D 核苷酸模型可拖拽)
-  ↓
-数据层     src/data/ + src/utils/
+pages/          文件路由页面
 ```
-
----
 
 ## 特性
 
-- **Astro v6** 静态生成 + 选择性 SSR，PageSpeed Insights 评分优秀
+- **Astro v7** 静态生成 + 选择性 SSR
 - **Tailwind CSS v4** 暗色模式 + 自定义主题
-- **13 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
+- **12 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
 - **富文本编辑器** — 基于 Tiptap 3 的 MDX 双向编辑器，支持 AI 助手、版本历史、评论、自动保存
-- **双 UI 框架** — Vue 3 + React 19
+- **双 UI 框架** — Vue 3 + React 19 + Svelte 5
 - **View Transitions** SPA 风格页面切换
 - **博客系统** — MD/MDX、分类/标签、分页、KaTeX 公式
 - **SEO 完整** — Sitemap、RSS、Open Graph、Twitter Card
 - **图片优化** — Sharp + Unpic CDN
-- **daisyUI v5 + KaTeX** — 组件库 + 数学公式渲染
+- **Pagefind 全文搜索** — 客户端离线搜索
+- **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
 - **多平台部署** — GitHub Pages / Vercel / Netlify / 任意静态托管
+
+## 许可证
+
+本项目基于 MIT 许可证开源。详见 [LICENSE.md](./LICENSE.md)。

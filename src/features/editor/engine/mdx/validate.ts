@@ -14,16 +14,16 @@ function walkTree(node: WalkableNode, issues: ValidationIssue[]): void {
 
   const nodeType = node.type ?? 'unknown';
 
-  // Check for forbidden node types (code execution)
+  // 检查禁止的节点类型（代码执行安全）
   if (nodeType === 'mdxjsEsm') {
     issues.push({
-      message: 'MDX ESM imports/exports are not allowed for security',
+      message: 'MDX ESM 导入/导出出于安全原因不允许',
       nodeType: 'mdxjsEsm',
       severity: 'error',
     });
   }
 
-  // Check URL protocols on links and images
+  // 检查链接和图片的 URL 协议
   if ((nodeType === 'link' || nodeType === 'image') && node.url) {
     if (node.url.includes(':')) {
       const proto = node.url.split(':')[0] + ':';
@@ -34,7 +34,7 @@ function walkTree(node: WalkableNode, issues: ValidationIssue[]): void {
         !node.url.startsWith('#')
       ) {
         issues.push({
-          message: `Disallowed URL protocol in ${nodeType}: ${node.url}`,
+          message: `${nodeType} 中使用了不允许的 URL 协议: ${node.url}`,
           nodeType,
           severity: 'warning',
           details: node.url,

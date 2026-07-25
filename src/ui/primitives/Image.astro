@@ -1,27 +1,28 @@
 ---
 /**
- * AstroWind <Image /> wrapper.
+ * AstroWind <Image /> 包装器。
  *
- * Behaviour:
- *   • Detectable CDN URL (Unsplash, Cloudinary, Imgix…) → rewritten with
- *     CDN-side parameters via `transformUrl` from `unpic` and emitted as a
- *     plain <img> served straight from the source. No download, no Sharp.
- *   • Local image (ESM import or `~/assets/...` path) → delegated to Astro's
- *     native <Image /> from `astro:assets`, which optimizes through Sharp.
+ * 行为：
+ *   • 可识别的 CDN URL（Unsplash、Cloudinary、Imgix…）→ 通过
+ *     `unpic` 的 `transformUrl` 重写 CDN 端参数，直接以原生
+ *     <img> 标签从源站提供。无需下载，无需 Sharp。
+ *   • 本地图片（ESM 导入或 `~/assets/...` 路径）→ 交给 Astro
+ *     原生 <Image />（`astro:assets`），通过 Sharp 优化。
  *
- * Layout modes (control how the image fills its container):
- *   • `constrained` (default) — image scales down to fit, never above its own
- *     pixel dimensions. Heroes, brand logos, blog thumbnails.
- *   • `responsive` — image always 100% of container width, height auto from
- *     aspect ratio. Side-by-side feature illustrations.
- *   • `fullWidth` — image spans the container width, fixed pixel height.
- *     Full-bleed banners.
- *   • `fixed` — exact pixel dimensions, no scaling. Avatars and icons.
- *   • `cover` — fills the parent (max 100%) and crops with object-fit.
- *     Absolutely-positioned overlays (cards, step illustrations).
+ * 布局模式（控制图片如何填充容器）：
+ *   • `constrained`（默认）— 等比缩小适应容器，不超过自身像素尺寸。
+ *     适用于 Hero、品牌 Logo、博客缩略图。
+ *   • `responsive` — 始终 100% 容器宽度，高度由宽高比自动计算。
+ *     适用于并排的特性插图。
+ *   • `fullWidth` — 横跨容器宽度，固定像素高度。
+ *     适用于全幅横幅。
+ *   • `fixed` — 精确像素尺寸，不缩放。
+ *     适用于头像和图标。
+ *   • `cover` — 填充父容器（最大 100%）并通过 object-fit 裁剪。
+ *     适用于绝对定位的叠加层（卡片、步骤插图）。
  *
- * Accessibility:
- *   `alt` is required. Pass `alt=""` explicitly for purely decorative images.
+ * 无障碍：
+ *   `alt` 为必填项。纯装饰性图片请显式传递 `alt=""`。
  */
 import { Image as AstroImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -43,24 +44,24 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'width' | 'height'> 
 
 const { src, alt, width, height, widths, format, layout = 'constrained', ...rest } = Astro.props;
 
-// --- Accessibility ---------------------------------------------------------
+// --- 无障碍 ---------------------------------------------------------
 if (alt === undefined || alt === null) {
   throw new Error(
     `Image: missing required \`alt\` prop (src=${String(src)}). ` + `Pass alt="" explicitly for decorative images.`
   );
 }
 
-// --- Prop coercion (tolerate stringified numbers) --------------------------
+// --- 属性强制转换（容忍字符串数字） --------------------------
 const toNumber = (v: number | string | undefined): number | undefined =>
   typeof v === 'string' ? (Number.isFinite(Number(v)) ? Number(v) : undefined) : v;
 let w = toNumber(width);
 let h = toNumber(height);
 
-// --- Defaults --------------------------------------------------------------
+// --- 默认值 --------------------------------------------------------------
 rest.loading ??= 'lazy';
 rest.decoding ??= 'async';
 
-// --- Resolve src (handles `~/assets/...` paths) ----------------------------
+// --- 解析 src（处理 `~/assets/...` 路径） ----------------------------
 const resolved = await findImage(src as never);
 
 const isCdnUrl =
@@ -84,7 +85,7 @@ if (resolved && typeof resolved === 'object' && 'width' in resolved && 'height' 
 
 const aspectRatio = w && h ? w / h : undefined;
 
-// --- Layout → inline style mapping -----------------------------------------
+// --- 布局 → 内联样式映射 -----------------------------------------
 const px = (v?: number) => (v == null ? undefined : `${v}px`);
 const declarations: Array<[string, string | undefined]> = [
   ['object-fit', 'cover'],
@@ -124,7 +125,7 @@ const layoutStyle = declarations
   .join(';');
 const finalStyle = layoutStyle + (rest.style ? `;${rest.style}` : '');
 
-// --- CDN-side srcset -------------------------------------------------------
+// --- CDN 端 srcset -------------------------------------------------------
 const buildCdnUrl = (variantWidth?: number, variantHeight?: number): string | undefined =>
   transformUrl({
     url: resolved as string,
@@ -134,9 +135,8 @@ const buildCdnUrl = (variantWidth?: number, variantHeight?: number): string | un
   })?.toString();
 
 /**
- * Densify the user-provided srcset breakpoints so the browser can match the
- * actual display size more closely. Free for CDN URLs (variants are computed
- * provider-side, no local CPU cost).
+ * 加密用户提供的 srcset 断点，使浏览器能更精确地匹配实际显示尺寸。
+ * 对 CDN URL 免费（变体由提供商计算，无本地 CPU 开销）。
  */
 const CDN_BREAKPOINTS = [320, 400, 500, 640, 720, 828, 960, 1080, 1200, 1440, 1600, 1920, 2048];
 const expandWidths = (raw?: number[]): number[] | undefined => {

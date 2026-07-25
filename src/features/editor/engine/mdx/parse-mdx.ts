@@ -19,7 +19,7 @@ export function parseMdxString(mdx: string): ParsedMdx {
   const root = parser.parse(mdx) as Root;
   let frontmatter: Record<string, unknown> = {};
 
-  // Extract and remove YAML frontmatter from the tree
+  // 从树中提取并移除 YAML frontmatter
   const firstChild = root.children[0];
   if (firstChild?.type === 'yaml') {
     try {

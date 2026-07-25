@@ -9,7 +9,7 @@ import type {
 import { LinkPreset } from '~/types/config';
 import yaml from 'js-yaml';
 
-// Vite ?raw import — content is inlined at build time, no fs.readFileSync at runtime
+// Vite ?raw 导入 — 构建时将内容内联，运行时无需 fs.readFileSync
 import rawYaml from '~/config.yaml?raw';
 
 interface FuwariConfig {

@@ -23,11 +23,11 @@ import { saveVersion } from '../../stores/version-store';
 import { updateDocument, getDocument as getDoc } from '../../stores/document-api';
 import type { VersionEntry } from '../../stores/version-store';
 
-// Lazy-loaded: CodeMirror (only when switching to source mode)
+// 懒加载：CodeMirror（仅在切换到源码模式时加载）
 const SourceEditor = lazy(() => import('./SourceEditor'));
-// Lazy-loaded: AI assistant (only when clicking AI button)
+// 懒加载：AI 助手（仅在点击 AI 按钮时加载）
 const AiAssistant = lazy(() => import('../panels/AiAssistant'));
-// Lazy-loaded: panels and dialogs (only shown on demand)
+// 懒加载：面板和对话框（仅在需要时显示）
 const PropertyPanel = lazy(() => import('../panels/PropertyPanel'));
 const PublishDialog = lazy(() => import('../dialogs/PublishDialog'));
 
@@ -60,25 +60,25 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   } = useEditorPersistence(docId);
   const [mode, setMode] = useState<EditorMode>('richtext');
 
-  // Slash menu state
+  // Slash 菜单状态
   const [slashOpen, setSlashOpen] = useState(false);
   const [slashQuery, setSlashQuery] = useState('');
   const [slashPos, setSlashPos] = useState<{ top: number; left: number } | null>(null);
 
-  // Publish state
+  // 发布状态
   const [publishOpen, setPublishOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Version history state
+  // 版本历史状态
   const [versionPanelOpen, setVersionPanelOpen] = useState(false);
 
-  // AI assistant state
+  // AI 助手状态
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
-  // Comment panel state
+  // 评论面板状态
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
 
-  // Resolve document: new → create, existing → load
+  // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
     if (documentId === 'new') {
       const result = createDocument();
@@ -118,13 +118,13 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
                   );
                 })
                 .catch(() => {
-                  // Ignore file read errors (corrupted image, etc.)
+                  // 忽略文件读取错误（图片损坏等）
                 });
               return true;
             }
           }
         }
-        // TSV paste
+        // TSV 粘贴
         const text = event.clipboardData?.getData('text/plain');
         if (text && text.includes('\t')) {
           const rows = text
@@ -169,7 +169,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
                 view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: dataUrl })));
               })
               .catch(() => {
-                // Ignore file read errors
+                // 忽略文件读取错误
               });
           }
         });
@@ -178,7 +178,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     },
   });
 
-  // Detect slash command trigger
+  // 检测斜杠命令触发
   useEffect(() => {
     if (!editor) return;
 
@@ -216,7 +216,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     };
   }, [editor, slashOpen]);
 
-  // Mobile keyboard auto-scroll
+  // 移动端键盘自动滚动
   useEffect(() => {
     if (editor) {
       const el = (editor.view.dom as HTMLElement).closest('.ProseMirror') as HTMLElement;
@@ -224,7 +224,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     }
   }, [editor]);
 
-  // Load existing content when editor and docId are ready
+  // 编辑器和 docId 就绪后加载已有内容
   useEffect(() => {
     if (!editor || !docId || documentId === 'new') return;
     const doc = loadFromStorage(docId) ?? loadDraft();
@@ -247,7 +247,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
     }
   }, [editor, docId, documentId, loadDraft, importMdxContent, lastValidEditorJsonRef]);
 
-  // Mode switching
+  // 模式切换
   const handleModeChange = useCallback(
     async (newMode: EditorMode) => {
       if (newMode === mode) return;
@@ -315,7 +315,7 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   const handleComment = useCallback(
     (from: number, to: number, text: string) => {
       if (!editor || !docId) return;
-      // Add commentMark to the selected range
+      // 将 commentMark 添加到选中范围
       const threadId = crypto.randomUUID();
       editor.chain().focus().setMark('commentMark', { threadId, resolved: 'false' }).run();
       addThread(docId, { from, to }, text);
@@ -325,8 +325,8 @@ export default function DocumentEditor({ documentId }: DocumentEditorProps) {
   );
 
   const handleCommentHighlightClick = useCallback((_range: { from: number; to: number }) => {
-    // Scroll editor to the comment position
-    // For now, just toggle the panel
+    // 滚动编辑器到评论位置
+    // 目前仅切换面板
   }, []);
 
   const handleRestoreVersion = useCallback(

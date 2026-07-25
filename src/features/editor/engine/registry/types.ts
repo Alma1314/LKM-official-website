@@ -5,14 +5,14 @@ export interface MdxComponentDefinition<Props = Record<string, unknown>> {
   kind: 'inline' | 'block';
   schemaVersion: number;
   propsSchema: z.ZodSchema<Props>;
-  /** React component rendered inside the Tiptap editor NodeView */
+  /** 在 Tiptap 编辑器 NodeView 中渲染的 React 组件 */
   editor: React.ComponentType<Props>;
-  /** React/Astro component for final preview rendering */
+  /** 用于最终预览渲染的 React/Astro 组件 */
   preview: React.ComponentType<Props>;
-  /** Extract Props from an MDAST JSX element node */
+  /** 从 MDAST JSX 元素节点提取 Props */
   parse: (node: unknown) => Props;
-  /** Serialize valid Props back to a JSX attribute string */
+  /** 将有效 Props 序列化回 JSX 属性字符串 */
   serialize: (props: Props) => string;
-  /** Optional migration from old prop shapes */
+  /** 从旧 Props 结构迁移（可选） */
   migrate?: (oldProps: unknown, version: number) => Props;
 }

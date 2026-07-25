@@ -38,16 +38,16 @@ interface Props {
 
 let { title, banner: _banner, description, lang, setOGTypeArticle } = Astro.props;
 
-// apply a class to the body element to decide the height of the banner, only used for initial page load
-// Swup can update the body for each page visit, but it's after the page transition, causing a delay for banner height change
-// so use Swup hooks instead to change the height immediately when a link is clicked
+// 给 body 元素添加 class 以决定 Banner 高度，仅用于首次页面加载
+// Swup 可在每次页面访问时更新 body，但在页面过渡之后，导致 Banner 高度变化延迟
+// 因此使用 Swup hooks 在点击链接时立即更改高度
 const isHomePage = pathsEqual(Astro.url.pathname, url('/'));
 
-// defines global css variables
-// why doing this in Layout instead of GlobalStyles: https://github.com/withastro/astro/issues/6728#issuecomment-1502203757
+// 定义全局 CSS 变量
+// 为什么在 Layout 而非 GlobalStyles 中定义：https://github.com/withastro/astro/issues/6728#issuecomment-1502203757
 const configHue = siteConfig.themeColor.hue;
 
-// TODO don't use post cover as banner for now
+// TODO 暂时不用文章封面作为 Banner
 void _banner;
 
 const enableBanner = siteConfig.banner.enable;
@@ -111,7 +111,7 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
     <!-- Set the theme before the page is rendered to avoid a flash -->
     <script is:inline define:vars={{ DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, configHue }}
     >
-      // Load the theme from local storage
+      // 从 localStorage 加载主题
       const theme = localStorage.getItem('theme') || DEFAULT_THEME;
       switch (theme) {
         case LIGHT_MODE:
@@ -128,7 +128,7 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
           }
       }
 
-      // Load the hue from local storage
+      // 从 localStorage 加载色相
       const hue = localStorage.getItem('hue') || configHue;
       document.documentElement.style.setProperty('--hue', hue);
 
@@ -272,7 +272,7 @@ function disableAnimation() {
     document.addEventListener('click', (event) => {
       const panelDom = document.getElementById(panel);
       const tDom = event.target;
-      if (!(tDom instanceof Node)) return; // Ensure the event target is an HTML Node
+      if (!(tDom instanceof Node)) return; // 确保事件目标是 HTML 节点
       for (const ig of ignores) {
         const ie = document.getElementById(ig);
         if (ie == tDom || ie?.contains(tDom)) {
@@ -399,7 +399,7 @@ function disableAnimation() {
 	})
 */
     window.swup.hooks.on('link:click', () => {
-      // Remove the delay for the first time page load
+      // 移除首次页面加载的延迟
       document.documentElement.style.setProperty('--content-delay', '0ms');
 
       // prevent elements from overlapping the navbar
@@ -431,7 +431,7 @@ function disableAnimation() {
         heightExtend.classList.remove('hidden');
       }
 
-      // Hide the TOC while scrolling back to top
+      // 回到顶部时隐藏目录
       const toc = document.getElementById('toc-wrapper');
       if (toc) {
         toc.classList.add('toc-not-ready');
@@ -451,7 +451,7 @@ function disableAnimation() {
           heightExtend.classList.add('hidden');
         }
 
-        // Just make the transition looks better
+        // 让过渡效果更好看
         const toc = document.getElementById('toc-wrapper');
         if (toc) {
           toc.classList.remove('toc-not-ready');
@@ -490,7 +490,7 @@ function disableAnimation() {
     if (!bannerEnabled) return;
     if (navbar) {
       const NAVBAR_HEIGHT = 72;
-      const MAIN_PANEL_EXCESS_HEIGHT = MAIN_PANEL_OVERLAPS_BANNER_HEIGHT * 16; // The height the main panel overlaps the banner
+      const MAIN_PANEL_EXCESS_HEIGHT = MAIN_PANEL_OVERLAPS_BANNER_HEIGHT * 16; // 主面板与 Banner 重叠的高度
 
       let bannerHeight = BANNER_HEIGHT;
       if (document.body.classList.contains('lg:is-home') && window.innerWidth >= 1024) {
