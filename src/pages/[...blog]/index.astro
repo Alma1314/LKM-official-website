@@ -43,8 +43,6 @@ const metadata = merge(
 ) as MetaData;
 ---
 
-;
-
 <Layout metadata={metadata}>
   <SinglePost post={{ ...post, image: image }} url={url} headings={post.headings || []}>
     {post.Content && <post.Content />}
