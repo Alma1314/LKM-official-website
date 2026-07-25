@@ -4,7 +4,6 @@ import CommunityCard from '../components/CommunityCard.astro';
 import CommunitySection from '../components/CommunitySection.astro';
 
 import { communityCategories, communityNote } from '../data/communities';
-import { teamTopTabs } from '../navigation';
 import { getPermalink } from '../utils/permalinks';
 
 const metadata = {
@@ -27,7 +26,6 @@ const sectionIds = ['general', 'grades', 'groups', 'basic', 'applied', 'hobby', 
 
 <Layout
   metadata={metadata}
-  topTabs={teamTopTabs}
   sidebarLinks={sidebarLinks}
   currentPath={getPermalink('/communities')}
 >

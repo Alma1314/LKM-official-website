@@ -16,7 +16,9 @@ const { metadata } = Astro.props;
 
 <Layout metadata={metadata}>
   <slot name="header">
-    <Navbar />
+    <div class="sticky top-0 z-50 bg-card-bg">
+      <Navbar />
+    </div>
   </slot>
   <main>
     <slot />

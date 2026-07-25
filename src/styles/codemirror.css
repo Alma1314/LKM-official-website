@@ -1,3 +1,4 @@
+@reference "tailwindcss";
 /* CodeMirror 6 — Adapted for daisyUI light / dark themes */
 
 /* Override the default CodeMirror scrollbar and gutter to match daisyUI */
@@ -18,7 +19,7 @@
 }
 
 .cm-editor .cm-cursor {
-  @apply border-l-2 border-base-content;
+  border-left: 2px solid var(--base-content);
 }
 
 .cm-editor .cm-selectionBackground,
@@ -32,7 +33,9 @@
 }
 
 .dark .cm-editor .cm-gutters {
-  @apply bg-[var(--surface-3)]/80 border-base-content/10 text-[var(--deep-text)]/40;
+  background: color-mix(in srgb, var(--surface-3) 80%, transparent);
+  border-color: color-mix(in srgb, var(--base-content) 10%, transparent);
+  color: color-mix(in srgb, var(--deep-text) 40%, transparent);
 }
 
 .dark .cm-editor .cm-activeLine {
@@ -40,5 +43,5 @@
 }
 
 .dark .cm-editor .cm-cursor {
-  @apply border-base-content;
+  border-color: var(--base-content);
 }

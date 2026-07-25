@@ -4,7 +4,6 @@ import Features2 from '../components/widgets/Features2.astro';
 import HeroText from '../components/widgets/HeroText.astro';
 import Layout from '../layouts/SidebarLayout.astro';
 
-import { teamTopTabs } from '../navigation';
 import { getPermalink } from '../utils/permalinks';
 
 const metadata = {
@@ -18,7 +17,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} topTabs={teamTopTabs} sidebarLinks={sidebarLinks} currentPath={getPermalink('/services')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/services')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技回归每一个人"

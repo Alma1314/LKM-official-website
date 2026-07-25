@@ -9,6 +9,7 @@ import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -40,6 +41,7 @@ export default defineConfig({
   base: '/LKM-official-website',
 
   output: 'static',
+  adapter: node({ mode: 'standalone' }),
 
   integrations: [
     sitemap(),

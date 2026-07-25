@@ -52,12 +52,12 @@ const mobileLinks = flattenLinks(links);
         {siteConfig.title}
       </div>
     </a>
-    <div class="hidden md:flex">
+    <div class="hidden md:flex" id="navbar-links">
       {
-        links.map((l) => {
+        links.map((l, idx) => {
           const hasChildren = l.children && l.children.length > 0;
-          return (
-            <div class="relative dropdown group">
+          if (!hasChildren) {
+            return (
               <a
                 aria-label={l.name}
                 href={l.external ? l.url : url(l.url)}
@@ -71,28 +71,33 @@ const mobileLinks = flattenLinks(links);
                     class="text-[0.875rem] -translate-y-[1px] text-black/[0.2] dark:text-white/[0.2]"
                   />
                 )}
-                {hasChildren && (
-                  <Icon name="material-symbols:chevron-down-rounded" class="text-[1rem] text-black/[0.3] dark:text-white/[0.3]" />
-                )}
               </a>
-              {
-                hasChildren && (
-                  <ul class="dropdown-menu absolute left-0 top-full mt-1 hidden group-hover:block bg-card-bg rounded-lg shadow-xl border border-surface-3 min-w-[180px] py-1 z-50">
-                    {l.children!.map((child) => (
-                      <li>
-                        <a
-                          aria-label={child.name}
-                          href={child.external ? child.url : url(child.url)}
-                          target={child.external ? '_blank' : null}
-                          class="block px-4 py-2 text-sm font-medium text-deep-text hover:bg-page-bg hover:text-primary transition whitespace-nowrap"
-                        >
-                          {child.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )
-              }
+            );
+          }
+          return (
+            <div class="relative dropdown" data-nav-dropdown={idx}>
+              <a
+                href={url(l.url)}
+                aria-label={l.name}
+                class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
+              >
+                {l.name}
+                <Icon name="material-symbols:keyboard-arrow-down-rounded" class="text-[1rem] text-black/[0.3] dark:text-white/[0.3] transition-transform" data-dropdown-arrow />
+              </a>
+              <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
+                <div class="card-base float-panel p-2">
+                  {l.children!.map((child) => (
+                    <a
+                      aria-label={child.name}
+                      href={child.external ? child.url : url(child.url)}
+                      target={child.external ? '_blank' : null}
+                      class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
+                    >
+                      {child.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           );
         })
@@ -127,29 +132,79 @@ const mobileLinks = flattenLinks(links);
 </div>
 
 <script>
-  function loadButtonScript() {
-    const settingBtn = document.getElementById('display-settings-switch');
-    if (settingBtn) {
-      settingBtn.onclick = function () {
-        const settingPanel = document.getElementById('display-setting');
-        if (settingPanel) {
-          settingPanel.classList.toggle('float-panel-closed');
-        }
-      };
-    }
-
-    const menuBtn = document.getElementById('nav-menu-switch');
-    if (menuBtn) {
-      menuBtn.onclick = function () {
-        const menuPanel = document.getElementById('nav-menu-panel');
-        if (menuPanel) {
-          menuPanel.classList.toggle('float-panel-closed');
-        }
-      };
-    }
+  // 关闭所有导航弹出（navbar dropdown + display-setting + nav-menu-panel）
+  function closeAllNavPopups() {
+    document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+    document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+    const settingPanel = document.getElementById('display-setting');
+    if (settingPanel) settingPanel.classList.add('float-panel-closed');
+    const menuPanel = document.getElementById('nav-menu-panel');
+    if (menuPanel) menuPanel.classList.add('float-panel-closed');
   }
 
-  loadButtonScript();
+  // 开关 display-setting 面板（同时关闭其他所有弹出）
+  const settingBtn = document.getElementById('display-settings-switch');
+  if (settingBtn) {
+    settingBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const panel = document.getElementById('display-setting');
+      if (!panel) return;
+      const willOpen = panel.classList.contains('float-panel-closed');
+      // 先关闭所有，再决定展开
+      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+      document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
+      if (willOpen) {
+        panel.classList.remove('float-panel-closed');
+      } else {
+        panel.classList.add('float-panel-closed');
+      }
+    });
+  }
+
+  // 开关 nav-menu-panel（同时关闭其他所有弹出）
+  const menuBtn = document.getElementById('nav-menu-switch');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const panel = document.getElementById('nav-menu-panel');
+      if (!panel) return;
+      const willOpen = panel.classList.contains('float-panel-closed');
+      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+      document.getElementById('display-setting')?.classList.add('float-panel-closed');
+      if (willOpen) {
+        panel.classList.remove('float-panel-closed');
+      } else {
+        panel.classList.add('float-panel-closed');
+      }
+    });
+  }
+
+  // navbar dropdown：点击展开/收起，同时关闭其他面板
+  document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
+    const link = dropdown.querySelector('a');
+    const menu = dropdown.querySelector('[data-dropdown-menu]');
+    const arrow = dropdown.querySelector('[data-dropdown-arrow]');
+    if (!link || !menu) return;
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = !menu.classList.contains('hidden');
+      // 关闭其他所有弹出（navbar dropdowns + 浮动面板）
+      closeAllNavPopups();
+      if (!isOpen) {
+        menu.classList.remove('hidden');
+        if (arrow) arrow.classList.add('rotate-180');
+      }
+    });
+  });
+
+  // 点击外部关闭所有
+  document.addEventListener('click', () => {
+    closeAllNavPopups();
+  });
 </script>
 
 {

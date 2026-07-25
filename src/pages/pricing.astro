@@ -4,7 +4,6 @@ import HeroText from '../components/widgets/HeroText.astro';
 import Features3 from '../components/widgets/Features3.astro';
 import CallToAction from '../components/widgets/CallToAction.astro';
 
-import { teamTopTabs } from '../navigation';
 import { getPermalink } from '../utils/permalinks';
 
 const metadata = {
@@ -17,7 +16,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} topTabs={teamTopTabs} sidebarLinks={sidebarLinks} currentPath={getPermalink('/pricing')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/pricing')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技传播走得更远"
