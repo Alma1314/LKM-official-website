@@ -24,11 +24,7 @@ const sidebarLinks = [
 const sectionIds = ['general', 'grades', 'groups', 'basic', 'applied', 'hobby', 'events', 'legacy'];
 ---
 
-<Layout
-  metadata={metadata}
-  sidebarLinks={sidebarLinks}
-  currentPath={getPermalink('/communities')}
->
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/communities')}>
   {
     communityCategories.map((cat, i) => (
       <CommunitySection id={sectionIds[i]} title={cat.label} intro={cat.intro}>

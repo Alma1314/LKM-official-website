@@ -47,11 +47,7 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout
-  metadata={metadata}
-  sidebarLinks={sidebarLinks}
-  currentPath={getPermalink('/project-team')}
->
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/project-team')}>
   <!-- 教材项目组 -->
   {
     Object.entries(projectSubGroups).map(([, group]) => (

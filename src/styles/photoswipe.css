@@ -1,17 +1,29 @@
 @reference "tailwindcss";
 .pswp__button {
   transition: all 0.2s;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   @apply flex items-center justify-center w-12 h-12;
-  &:hover { background: rgba(0,0,0,0.5); }
-  &:active { background: rgba(0,0,0,0.6); }
-  &, &:hover, &:active { margin-right: 0 !important; width: 3rem !important; height: 3rem !important; }
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  &:active {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  &,
+  &:hover,
+  &:active {
+    margin-right: 0 !important;
+    width: 3rem !important;
+    height: 3rem !important;
+  }
 }
 .pswp__button--zoom,
 .pswp__button--close {
   margin-top: 1rem !important;
   border-radius: 0.75rem;
-  &:active { scale: 0.9; }
+  &:active {
+    scale: 0.9;
+  }
 }
 .pswp__button--zoom {
   margin-right: 0.625rem !important;

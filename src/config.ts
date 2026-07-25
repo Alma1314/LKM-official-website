@@ -1,4 +1,11 @@
-import type { ExpressiveCodeConfig, LicenseConfig, NavBarConfig, NavBarLink, ProfileConfig, SiteConfig } from './types/config';
+import type {
+  ExpressiveCodeConfig,
+  LicenseConfig,
+  NavBarConfig,
+  NavBarLink,
+  ProfileConfig,
+  SiteConfig,
+} from './types/config';
 import { LinkPreset } from './types/config';
 import yaml from 'js-yaml';
 
@@ -21,6 +28,7 @@ interface FuwariLinkItem {
   children?: FuwariLinkItem[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const projectConfig: Record<string, any> = yaml.load(rawYaml) as any;
 const cfg = (projectConfig.fuwari || {}) as FuwariConfig;
 
