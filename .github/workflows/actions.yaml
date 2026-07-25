@@ -34,7 +34,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist # 显式指定当前目录下的 dist
+          path: ./dist/client
 
   check:
     runs-on: ubuntu-latest
