@@ -1,4 +1,4 @@
-import type { ExpressiveCodeConfig, LicenseConfig, NavBarConfig, ProfileConfig, SiteConfig } from './types/config';
+import type { ExpressiveCodeConfig, LicenseConfig, NavBarConfig, NavBarLink, ProfileConfig, SiteConfig } from './types/config';
 import { LinkPreset } from './types/config';
 import yaml from 'js-yaml';
 
@@ -18,6 +18,7 @@ interface FuwariLinkItem {
   name?: string;
   url?: string;
   external?: boolean;
+  children?: FuwariLinkItem[];
 }
 
 const projectConfig = yaml.load(rawYaml) as Record<string, unknown>;
@@ -77,11 +78,35 @@ export const siteConfig: SiteConfig = {
   favicon: Array.isArray(siteCfg.favicon) ? (siteCfg.favicon as SiteConfig['favicon']) : [],
 };
 
+function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
+  return items.flatMap((link: FuwariLinkItem) => {
+    if (link.preset) {
+      // Expand a preset into a concrete NavBarLink
+      const preset = presetFromString(link.preset);
+      if (typeof preset === 'number') {
+        const map: Record<number, { name: string; url: string; external?: boolean }> = {
+          [LinkPreset.Home]: { name: 'Home', url: '/' },
+          [LinkPreset.Archive]: { name: 'Archive', url: '/archive' },
+          [LinkPreset.About]: { name: 'About', url: '/about' },
+        };
+        const resolved = map[preset];
+        if (resolved) return [{ ...resolved, external: false }];
+      }
+      return [];
+    }
+    return [
+      {
+        name: link.name ?? '',
+        url: link.url ?? '',
+        external: link.external ?? false,
+        ...(link.children ? { children: buildLinks(link.children) } : {}),
+      },
+    ];
+  });
+}
+
 export const navBarConfig: NavBarConfig = {
-  links: navCfg.links.map((link: FuwariLinkItem) => {
-    if (link.preset) return presetFromString(link.preset);
-    return { name: link.name ?? '', url: link.url ?? '', external: link.external ?? false };
-  }),
+  links: buildLinks(navCfg.links),
 };
 
 export const profileConfig: ProfileConfig = {

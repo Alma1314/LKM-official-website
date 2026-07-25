@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getAsset, getHomePermalink } from './utils/permalinks';
+import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 
 /** 管理团队 / 关于 / 服务等页面的共享顶部导航 Tab */
 export const teamTopTabs = [
@@ -10,96 +10,6 @@ export const teamTopTabs = [
   { text: '联系我们', href: getPermalink('/contact') },
   { text: 'QQ社群', href: getPermalink('/communities') },
 ];
-
-export const headerData = {
-  links: [
-    {
-      text: '主页',
-      // href: getPermalink('/'),
-      links: [
-        {
-          text: '简明介绍',
-          href: getHomePermalink(),
-        },
-        {
-          text: '团队成员',
-          href: getPermalink('/#team'),
-        },
-        {
-          text: '发展历程',
-          href: getPermalink('/#timeline'),
-        },
-        {
-          text: '最近更新',
-          href: getPermalink('/#update'),
-        },
-        {
-          text: '常见问题',
-          href: getPermalink('/#faq'),
-        },
-      ],
-    },
-    {
-      text: '博客',
-      links: [
-        {
-          text: '博客列表',
-          href: getBlogPermalink(),
-        },
-        {
-          text: '所有分类',
-          href: getPermalink('/blog/categories'),
-        },
-      ],
-    },
-    {
-      text: '文档库',
-      links: [
-        {
-          text: '文档首页',
-          href: getPermalink('/docs'),
-        },
-      ],
-    },
-    {
-      text: '七月团队',
-      links: [
-        {
-          text: '管理团队',
-          href: getPermalink('/team'),
-        },
-        {
-          text: '项目团队',
-          href: getPermalink('/project-team'),
-        },
-        {
-          text: '关于我们',
-          href: getPermalink('/about'),
-        },
-        {
-          text: '服务',
-          href: getPermalink('/services'),
-        },
-        {
-          text: '赞助与支持',
-          href: getPermalink('/pricing'),
-        },
-        {
-          text: '联系我们',
-          href: getPermalink('/contact'),
-        },
-        {
-          text: 'QQ社群',
-          href: getPermalink('/communities'),
-        },
-      ],
-    },
-  ],
-  actions: [
-    { text: '登录', href: getPermalink('/login') },
-    { text: '联系我们', href: getPermalink('/contact') },
-  ],
-};
 
 export const footerData = {
   links: [
