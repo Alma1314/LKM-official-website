@@ -2,6 +2,7 @@
 :root {
   --radius-large: 1rem;
   --content-delay: 150ms;
+  --page-width: 1280px;
 }
 
 /* ===== 浅色主题 ===== */
