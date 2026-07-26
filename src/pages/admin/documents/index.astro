@@ -41,9 +41,10 @@ const metadata = {
 
 <script>
   import { listDocuments, deleteDocument } from '@lkm/editor-persistence';
+  import type { DocumentMeta } from '@lkm/rich-text-editor';
 
   function renderList() {
-    let docs = listDocuments();
+    let docs: DocumentMeta[] = listDocuments();
     const container = document.getElementById('doc-list');
     if (!container) return;
 
