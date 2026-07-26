@@ -1,12 +1,12 @@
 ---
 import BackToTop from '~/ui/primitives/BackToTop.astro';
 import Footer from '~/features/shell/components/FuwariFooter.astro';
-import Navbar from '~/features/shell/components/FuwariNavbar.astro';
 import SideBar from '~/features/shell/components/BlogSidePanel.astro';
 import type { MarkdownHeading } from 'astro';
 import { Icon } from 'astro-icon/components';
 import ImageWrapper from '~/ui/primitives/ImageWrapper.astro';
 import TOC from '~/features/shell/components/TOC.astro';
+import SiteNavbar from '~/features/shell/components/SiteNavbar.astro';
 import { siteConfig } from '~/core/config';
 import { BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT } from '~/core/constants/constants';
 import Layout from './BlogLayout.astro';
@@ -27,16 +27,13 @@ const hasBannerLink = !!siteConfig.banner.credit.url;
 const mainPanelTop = siteConfig.banner.enable
   ? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
   : '5.5rem';
+
 ---
 
 <Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
   <!-- Navbar -->
   <slot slot="head" name="head" />
-  <div id="navbar-wrapper" class="pointer-events-auto sticky top-0 z-50 transition-all">
-    <div class="bg-card-bg">
-      <Navbar />
-    </div>
-  </div>
+  <SiteNavbar class="transition-all" />
 
   <!-- Banner -->
   {
