@@ -79,11 +79,19 @@ declare module '@lkm/rich-text-editor' {
     listDocuments(): Promise<DocumentSummary[]> | DocumentSummary[];
     saveVersion(docId: string, doc: DocumentData, message?: string): Promise<boolean> | boolean | void;
     getVersions(docId: string): Promise<VersionEntry[]> | VersionEntry[];
-    createBackup(docId: string, data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }): Promise<boolean> | boolean | void;
+    createBackup(
+      docId: string,
+      data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }
+    ): Promise<boolean> | boolean | void;
     getBackups(): Promise<BackupEntry[]> | BackupEntry[];
     saveComment?(thread: CommentThread): void;
     getComments?(docId: string): CommentThread[];
-    addThread?(docId: string, range: { from: number; to: number }, text: string, initialComment?: string): CommentThread;
+    addThread?(
+      docId: string,
+      range: { from: number; to: number },
+      text: string,
+      initialComment?: string
+    ): CommentThread;
     addReply?(docId: string, threadId: string, text: string): CommentReply | null;
     resolveThread?(docId: string, threadId: string): void;
     reopenThread?(docId: string, threadId: string): void;
@@ -108,7 +116,10 @@ declare module '@lkm/rich-text-editor' {
   export function getEditorExtensions(placeholder?: string): ReturnType<Editor['extensionManager']>;
   export function exportMdx(content: unknown[], frontmatter?: Record<string, unknown>): ExportResult;
   export function importMdx(mdx: string): ImportResult;
-  export function useEditorPersistence(docId: string, adapter: PersistenceAdapter): {
+  export function useEditorPersistence(
+    docId: string,
+    adapter: PersistenceAdapter
+  ): {
     saveStatus: SaveStatus;
     triggerSave: (content: Record<string, unknown>) => void;
     loadDraft: () => DocumentData | null;
@@ -119,7 +130,11 @@ declare module '@lkm/rich-text-editor' {
     frontmatterRef: { current: Record<string, unknown> };
     lastValidJsonRef: { current: Record<string, unknown> | null };
   };
-  export function useAutoSave(documentId: string, adapter: PersistenceAdapter, debounceMs?: number): {
+  export function useAutoSave(
+    documentId: string,
+    adapter: PersistenceAdapter,
+    debounceMs?: number
+  ): {
     saveStatus: SaveStatus;
     triggerSave: (content: Record<string, unknown>) => void;
     loadDraft: () => DocumentData | null;
