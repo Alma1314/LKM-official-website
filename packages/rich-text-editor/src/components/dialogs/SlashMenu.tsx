@@ -194,7 +194,11 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
   if (!position || filtered.length === 0) return null;
 
   return (
-    <div ref={menuRef} className="rte-slash-menu" style={{ top: position.top, left: position.left }}>
+    <div
+      ref={menuRef}
+      className="rte-slash-menu"
+      style={{ top: position.top, left: position.left }}
+    >
       <div className="p-1">
         {filtered.slice(0, 8).map((item, idx) => (
           <button

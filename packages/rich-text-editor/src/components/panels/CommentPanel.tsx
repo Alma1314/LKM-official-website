@@ -100,11 +100,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                       if (e.key === 'Enter') handleAddReply(thread.id);
                     }}
                   />
-                  <button
-                    type="button"
-                    className="rte-btn rte-btn--ghost rte-btn--xs"
-                    onClick={() => handleAddReply(thread.id)}
-                  >
+                  <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => handleAddReply(thread.id)}>
                     发送
                   </button>
                 </div>
@@ -113,11 +109,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
               {/* Actions */}
               <div className="flex gap-1 px-3 pb-2">
                 {thread.resolved ? (
-                  <button
-                    type="button"
-                    className="rte-btn rte-btn--ghost rte-btn--xs"
-                    onClick={() => handleReopen(thread.id)}
-                  >
+                  <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => handleReopen(thread.id)}>
                     重新打开
                   </button>
                 ) : (

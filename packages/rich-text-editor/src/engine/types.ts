@@ -103,10 +103,7 @@ export interface PersistenceAdapter {
   listDocuments(): Promise<DocumentSummary[]> | DocumentSummary[];
   saveVersion(docId: string, doc: DocumentData, message?: string): Promise<boolean> | boolean | void;
   getVersions(docId: string): Promise<VersionEntry[]> | VersionEntry[];
-  createBackup(
-    docId: string,
-    data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }
-  ): Promise<boolean> | boolean | void;
+  createBackup(docId: string, data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }): Promise<boolean> | boolean | void;
   getBackups(): Promise<BackupEntry[]> | BackupEntry[];
   saveComment?(thread: CommentThread): void;
   getComments?(docId: string): CommentThread[];

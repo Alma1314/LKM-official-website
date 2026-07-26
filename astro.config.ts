@@ -181,7 +181,11 @@ export default defineConfig({
     },
     optimizeDeps: {
       exclude: ['@iconify/svelte'],
-      include: ['react', 'react-dom', 'react-dom/client'],
+      include: [
+        'react',
+        'react-dom',
+        'react-dom/client',
+      ],
     },
     css: {
       transformer: 'postcss',

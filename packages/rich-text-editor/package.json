@@ -14,10 +14,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": [
-    "dist",
-    "src/styles"
-  ],
+  "files": ["dist", "src/styles"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -75,8 +72,6 @@
     "react-dom": "^19.2.8"
   },
   "vitest": {
-    "include": [
-      "__tests__/**/*.test.ts"
-    ]
+    "include": ["__tests__/**/*.test.ts"]
   }
 }

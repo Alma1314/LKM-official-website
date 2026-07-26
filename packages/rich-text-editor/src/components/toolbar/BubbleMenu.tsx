@@ -71,7 +71,10 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
   if (!show) return null;
 
   return (
-    <div className="rte-bubble-menu" style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}>
+    <div
+      className="rte-bubble-menu"
+      style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}
+    >
       <button
         type="button"
         className={`rte-toolbar-btn ${editor.isActive('bold') ? 'is-active' : ''}`}

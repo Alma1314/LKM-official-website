@@ -34,12 +34,7 @@ interface ExportPdfButtonProps {
 
 export default function ExportPdfButton({ editor }: ExportPdfButtonProps) {
   return (
-    <button
-      type="button"
-      className="rte-btn rte-btn--ghost rte-btn--xs"
-      title="导出 PDF"
-      onClick={() => handleExportPdf(editor)}
-    >
+    <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" title="导出 PDF" onClick={() => handleExportPdf(editor)}>
       PDF
     </button>
   );

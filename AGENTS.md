@@ -8,14 +8,14 @@ LKM 官方网站是一个基于 **Astro v7** 和 **Tailwind CSS v4** 构建的�
 
 ## 快速参考
 
-| 命令                      | 用途                                 |
-| ------------------------- | ------------------------------------ |
-| `pnpm run dev`            | 启动开发服务器（localhost:4321）     |
-| `pnpm run build`          | 生产构建到 `./dist/`                 |
-| `pnpm run build:packages` | 单独构建两个 monorepo 包             |
-| `pnpm run preview`        | 本地预览生产构建                     |
-| `pnpm run check`          | 运行 astro check + ESLint + Prettier |
-| `pnpm run fix`            | 自动修复 ESLint + Prettier 问题      |
+| 命令                   | 用途                                         |
+| ---------------------- | -------------------------------------------- |
+| `pnpm run dev`         | 启动开发服务器（localhost:4321）             |
+| `pnpm run build`       | 生产构建到 `./dist/`                          |
+| `pnpm run build:packages` | 单独构建两个 monorepo 包                  |
+| `pnpm run preview`     | 本地预览生产构建                             |
+| `pnpm run check`       | 运行 astro check + ESLint + Prettier         |
+| `pnpm run fix`         | 自动修复 ESLint + Prettier 问题              |
 
 **Node.js 要求：** >= 24.0.0
 

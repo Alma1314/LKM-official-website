@@ -179,6 +179,8 @@ export function importFromJson(json: string): Result<BackupData[]> {
       }))
     );
   } catch (e) {
-    return err(new AppError('IMPORT_FAILED', '导入 JSON 失败: ' + (e instanceof Error ? e.message : '格式错误'), e));
+    return err(
+      new AppError('IMPORT_FAILED', '导入 JSON 失败: ' + (e instanceof Error ? e.message : '格式错误'), e)
+    );
   }
 }
