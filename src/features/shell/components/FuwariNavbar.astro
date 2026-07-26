@@ -7,7 +7,7 @@ import { url } from '~/core/utils/url-utils';
 import LightDarkSwitch from './LightDarkSwitch.svelte';
 import Search from './Search.svelte';
 import DisplaySettings from './widget/DisplaySettings.svelte';
-import NavMenuPanel from '~/features/shell/components/NavMenuPanel.astro';
+import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
 
 interface Props {
   class?: string;
@@ -25,19 +25,6 @@ let links: NavBarLink[] =
     return item;
   });
 
-// 展平所有链接（含 children）给移动端 NavMenuPanel 使用
-function flattenLinks(items: NavBarLink[]): NavBarLink[] {
-  const result: NavBarLink[] = [];
-  for (const item of items) {
-    result.push({ name: item.name, url: item.url, external: item.external });
-    if (item.children) {
-      result.push(...flattenLinks(item.children));
-    }
-  }
-  return result;
-}
-
-const mobileLinks = flattenLinks(links);
 ---
 
 <div id="navbar" class="z-50 onload-animation">
@@ -130,13 +117,17 @@ const mobileLinks = flattenLinks(links);
       <button
         aria-label="Menu"
         name="Nav Menu"
-        class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden"
+        class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden group"
         id="nav-menu-switch"
       >
-        <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]" />
+        <Icon
+          name="material-symbols:menu-rounded"
+          class="text-[1.25rem] transition-transform duration-300"
+          data-menu-icon
+        />
       </button>
     </div>
-    <NavMenuPanel links={mobileLinks} />
+    <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={links} />
     <DisplaySettings client:only="svelte" />
   </div>
 </div>
@@ -154,7 +145,6 @@ const mobileLinks = flattenLinks(links);
         // 先关闭所有，再决定展开
         document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
         document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-        document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
         if (willOpen) {
           panel.classList.remove('float-panel-closed');
         } else {
@@ -165,20 +155,15 @@ const mobileLinks = flattenLinks(links);
 
     // ── nav-menu 面板（移动端） ──
     const menuBtn = document.getElementById('nav-menu-switch');
-    if (menuBtn) {
+    const menuIcon = menuBtn?.querySelector('[data-menu-icon]');
+    if (menuBtn?.id) {
       menuBtn.addEventListener('click', function nmHandler(e) {
         e.stopPropagation();
-        const panel = document.getElementById('nav-menu-panel');
-        if (!panel) return;
-        const willOpen = panel.classList.contains('float-panel-closed');
+        document.getElementById('display-setting')?.classList.add('float-panel-closed');
         document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
         document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-        document.getElementById('display-setting')?.classList.add('float-panel-closed');
-        if (willOpen) {
-          panel.classList.remove('float-panel-closed');
-        } else {
-          panel.classList.add('float-panel-closed');
-        }
+        const panel = window.__mobileNavPanel?.['mobile-nav-fuwari'];
+        panel?.toggle();
       });
     }
 
@@ -196,13 +181,27 @@ const mobileLinks = flattenLinks(links);
         document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
         document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
         document.getElementById('display-setting')?.classList.add('float-panel-closed');
-        document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
         if (!isOpen) {
           menu.classList.remove('hidden');
           if (arrow) arrow.classList.add('rotate-180');
         }
       });
     });
+
+    // 监听面板状态切换图标
+    const panelRoot = document.getElementById('mobile-nav-fuwari');
+    const panelEl = panelRoot?.querySelector('[data-nav-panel]');
+    if (panelEl && menuIcon) {
+      const observer = new MutationObserver(() => {
+        const isOpen = !panelEl.classList.contains('translate-x-full');
+        if (isOpen) {
+          menuIcon.setAttribute('name', 'material-symbols:close');
+        } else {
+          menuIcon.setAttribute('name', 'material-symbols:menu-rounded');
+        }
+      });
+      observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
+    }
   }
 
   // ── 全局：点击外部收起所有面板（document 上只需绑定一次） ──
@@ -210,7 +209,6 @@ const mobileLinks = flattenLinks(links);
     window.__navbar_outside = true;
     document.addEventListener('click', () => {
       document.getElementById('display-setting')?.classList.add('float-panel-closed');
-      document.getElementById('nav-menu-panel')?.classList.add('float-panel-closed');
       document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
       document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
     });

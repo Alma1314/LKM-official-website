@@ -3,9 +3,11 @@ import { Icon } from 'astro-icon/components';
 import Logo from '~/features/shell/components/Logo.astro';
 import ToggleTheme from '~/features/shell/common/components/ToggleTheme.astro';
 import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
+import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
 
 import { getHomePermalink } from '~/core/utils/permalinks';
 import { trimSlash, getAsset } from '~/core/utils/permalinks';
+import { url } from '~/core/utils/url-utils';
 
 interface Link {
   text?: string;
@@ -39,6 +41,20 @@ const {
 } = Astro.props;
 
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
+
+// 从 MenuLink[] 转换为 MobileNavPanel 需要的格式
+function toMobileLinks(items: Array<MenuLink>): Array<{ name: string; url: string; children?: Array<{ name: string; url: string }> }> {
+  return items.map(({ text, href, links }) => ({
+    name: text || '',
+    url: href || '#',
+    children: links?.map(({ text: childText, href: childHref }) => ({
+      name: childText || '',
+      url: childHref || '#',
+    })),
+  }));
+}
+
+const mobileLinks = toMobileLinks(links);
 ---
 
 <header
@@ -161,3 +177,5 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     </div>
   </div>
 </header>
+
+<MobileNavPanel id="mobile-nav-header" title="导航" links={mobileLinks} />

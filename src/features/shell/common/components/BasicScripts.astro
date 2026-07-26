@@ -55,16 +55,6 @@ import { UI } from '~/core/config';
       }
     }
 
-    function closeMobileMenu() {
-      document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
-      document.body.classList.remove('overflow-hidden');
-      document.getElementById('header')?.classList.remove('h-screen');
-      document.getElementById('header')?.classList.remove('expanded');
-      document.getElementById('header')?.classList.remove('bg-card-bg');
-      document.querySelector('#header nav')?.classList.add('hidden');
-      document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
-    }
-
     // 滚动状态在一次性滚动监听器和每次导航时
     // 的 applyHeaderStylesOnScroll() 初始调用之间共享。
     let lastKnownScrollPosition = window.scrollY;
@@ -87,18 +77,6 @@ import { UI } from '~/core/config';
 
     const onLoad = function () {
       if (!eventsBound) {
-        attachEvent('#header nav', 'click', closeMobileMenu);
-
-        attachEvent('[data-aw-toggle-menu]', 'click', function (_, elem) {
-          elem.classList.toggle('expanded');
-          document.body.classList.toggle('overflow-hidden');
-          document.getElementById('header')?.classList.toggle('h-screen');
-          document.getElementById('header')?.classList.toggle('expanded');
-          document.getElementById('header')?.classList.toggle('bg-card-bg');
-          document.querySelector('#header nav')?.classList.toggle('hidden');
-          document.querySelector('#header > div > div:last-child')?.classList.toggle('hidden');
-        });
-
         attachEvent('[data-aw-toggle-color-scheme]', 'click', function () {
           if (defaultTheme.endsWith(':only')) {
             return;
@@ -150,9 +128,6 @@ import { UI } from '~/core/config';
           newlink.click();
         });
 
-        const screenSize = window.matchMedia('(max-width: 767px)');
-        screenSize.addEventListener('change', closeMobileMenu);
-
         attachEvent([document], 'scroll', function () {
           lastKnownScrollPosition = window.scrollY;
 
@@ -198,7 +173,6 @@ import { UI } from '~/core/config';
 
     const onPageShow = function () {
       document.documentElement.classList.add('motion-safe:scroll-smooth');
-      closeMobileMenu();
     };
 
     window.onload = onLoad;
