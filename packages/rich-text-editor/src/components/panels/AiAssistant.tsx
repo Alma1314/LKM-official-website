@@ -83,7 +83,11 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
       <div className="flex items-center justify-between px-4 py-3 border-b border-surface-3">
         <h3 className="font-semibold text-sm">AI 写作助手</h3>
         <div className="flex gap-1">
-          <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setShowSettings(!showSettings)}>
+          <button
+            type="button"
+            className="rte-btn rte-btn--ghost rte-btn--xs"
+            onClick={() => setShowSettings(!showSettings)}
+          >
             设置
           </button>
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onClose}>
@@ -153,7 +157,12 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
             placeholder="留空则使用默认 prompt"
           />
 
-          <button type="button" className="rte-btn rte-btn--primary rte-btn--sm w-full" disabled={loading} onClick={handleRequest}>
+          <button
+            type="button"
+            className="rte-btn rte-btn--primary rte-btn--sm w-full"
+            disabled={loading}
+            onClick={handleRequest}
+          >
             {loading ? <div className="rte-spinner mr-1" /> : null}
             {loading ? '请求中…' : '发送请求'}
           </button>

@@ -8,7 +8,12 @@ interface PublishButtonProps {
   onOpenPublishDialog: () => void;
 }
 
-export default function PublishButton({ documentId, adapter, onStatusChange, onOpenPublishDialog }: PublishButtonProps) {
+export default function PublishButton({
+  documentId,
+  adapter,
+  onStatusChange,
+  onOpenPublishDialog,
+}: PublishButtonProps) {
   const [doc, setDoc] = useState<DocumentData | null>(null);
   const adapterRef = useRef(adapter);
   adapterRef.current = adapter;

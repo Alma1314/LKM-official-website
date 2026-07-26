@@ -5,12 +5,7 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   dts: true,
   clean: true,
-  external: [
-    'react',
-    'react-dom',
-    /^@tiptap\//,
-    /^@codemirror\//,
-  ],
+  external: ['react', 'react-dom', /^@tiptap\//, /^@codemirror\//],
   loader: {
     '.css': 'copy',
   },

@@ -61,9 +61,7 @@ class EditorErrorBoundary extends Component<Props, State> {
                 <span className="text-sm">
                   正在重试加载编辑器……({retries}/{MAX_RETRIES})
                 </span>
-                <pre className="rte-error">
-                  {error.message || String(error)}
-                </pre>
+                <pre className="rte-error">{error.message || String(error)}</pre>
               </div>
             </div>
           );
@@ -100,9 +98,7 @@ class EditorErrorBoundary extends Component<Props, State> {
               <line x1="12" x2="12.01" y1="16" y2="16" />
             </svg>
             <h3>编辑器加载失败</h3>
-            <p>
-              已尝试 {MAX_RETRIES} 次加载，仍无法启动编辑器。可能的原因：
-            </p>
+            <p>已尝试 {MAX_RETRIES} 次加载，仍无法启动编辑器。可能的原因：</p>
             <ul className="text-xs list-disc list-inside text-left">
               <li>开发服务器预构建缓存过期</li>
               <li>网络连接问题</li>
@@ -123,9 +119,7 @@ class EditorErrorBoundary extends Component<Props, State> {
                 重新尝试
               </button>
             </div>
-            <pre>
-              {error.message || String(error)}
-            </pre>
+            <pre>{error.message || String(error)}</pre>
           </div>
         </div>
       );

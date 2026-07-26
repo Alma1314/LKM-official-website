@@ -491,11 +491,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
       {publishOpen && (
         <Suspense fallback={null}>
-          <PublishDialog
-            currentTitle={''}
-            onConfirm={handlePublish}
-            onCancel={() => setPublishOpen(false)}
-          />
+          <PublishDialog currentTitle={''} onConfirm={handlePublish} onCancel={() => setPublishOpen(false)} />
         </Suspense>
       )}
 
