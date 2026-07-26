@@ -7,7 +7,5 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src'),
     },
   },
-  test: {
-    include: ['tests/**/*.test.ts'],
-  },
+  test: {},
 });

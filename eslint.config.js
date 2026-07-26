@@ -75,12 +75,14 @@ export default [
   {
     ignores: [
       'dist',
+      'packages/*/dist',
       'node_modules',
       '.github',
       'reference',
       'types.generated.d.ts',
       '.astro',
       '.claude',
+      '.superpowers',
       'src/layouts/BlogLayout.astro',
     ],
   },

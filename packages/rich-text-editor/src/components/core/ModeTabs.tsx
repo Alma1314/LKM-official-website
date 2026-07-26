@@ -1,0 +1,34 @@
+import { memo } from 'react';
+import type { EditorMode } from '../../engine/types';
+
+interface ModeTabsProps {
+  mode: EditorMode;
+  onModeChange: (mode: EditorMode) => void;
+}
+
+const TABS: { mode: EditorMode; label: string }[] = [
+  { mode: 'richtext', label: '富文本' },
+  { mode: 'source', label: '源码' },
+  { mode: 'preview', label: '预览' },
+];
+
+const ModeTabs = memo(function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
+  return (
+    <div className="flex items-center gap-0 border-l border-surface-3 pl-3 ml-2">
+      <div className="rte-mode-tabs">
+        {TABS.map((tab) => (
+          <button
+            key={tab.mode}
+            type="button"
+            className={`rte-mode-tab ${mode === tab.mode ? 'is-active' : ''}`}
+            onClick={() => onModeChange(tab.mode)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+export default ModeTabs;
