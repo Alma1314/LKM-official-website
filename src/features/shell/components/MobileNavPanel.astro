@@ -112,8 +112,9 @@ const { id, links = [], title = '导航' } = Astro.props;
   </div>
 </div>
 
-<script is:inline>
+<script define:vars={{ id }}>
   (function () {
+    const panelId = id;
     const openClass = 'mobile-nav-open';
 
     function getPanelElements(panelRoot) {
@@ -143,7 +144,6 @@ const { id, links = [], title = '导航' } = Astro.props;
       document.body.style.overflow = '';
       document.body.classList.remove(openClass);
 
-      // wait for animation to finish before marking non-interactive
       setTimeout(function () {
         if (panel.classList.contains('translate-x-full')) {
           panelRoot.classList.add('pointer-events-none');
@@ -162,7 +162,6 @@ const { id, links = [], title = '导航' } = Astro.props;
       }
     }
 
-    // register on window for external buttons to call (keyed by id)
     function getPanelInstance(panelId) {
       var root = document.getElementById(panelId);
       if (!root) return null;
@@ -173,31 +172,26 @@ const { id, links = [], title = '导航' } = Astro.props;
       };
     }
 
-    // init all panels' internal interactions
     function initAllPanels() {
       document.querySelectorAll('[data-mobile-nav-panel]').forEach(function (el) {
         var panelRoot = el;
         var overlay = panelRoot.querySelector('[data-nav-overlay]');
 
-        // overlay click to close
         if (overlay) {
           overlay.addEventListener('click', function () { close(panelRoot); });
         }
 
-        // close button
         var closeBtn = panelRoot.querySelector('[data-nav-close]');
         if (closeBtn) {
           closeBtn.addEventListener('click', function () { close(panelRoot); });
         }
 
-        // link clicks close the panel
         panelRoot.querySelectorAll('[data-nav-link]').forEach(function (link) {
           link.addEventListener('click', function () {
             setTimeout(function () { close(panelRoot); }, 150);
           });
         });
 
-        // accordion expand/collapse
         panelRoot.querySelectorAll('[data-nav-accordion-trigger]').forEach(function (trigger) {
           trigger.addEventListener('click', function () {
             var arrow = trigger.querySelector('[data-nav-accordion-arrow]');
@@ -215,15 +209,21 @@ const { id, links = [], title = '导航' } = Astro.props;
       });
     }
 
-    // expose to global scope
-    const panelId = '{id}';
     window.__mobileNavPanel = window.__mobileNavPanel || {};
-    Object.defineProperty(window.__mobileNavPanel, panelId, {
-      get: function () { return getPanelInstance(panelId); },
-      configurable: true,
-    });
+    window.__mobileNavPanel[panelId] = {
+      open: function () { open(document.getElementById(panelId)); },
+      close: function () { close(document.getElementById(panelId)); },
+      toggle: function () { toggle(document.getElementById(panelId)); },
+    };
 
     initAllPanels();
-    document.addEventListener('astro:after-swap', initAllPanels);
+    document.addEventListener('astro:after-swap', function () {
+      window.__mobileNavPanel[panelId] = {
+        open: function () { open(document.getElementById(panelId)); },
+        close: function () { close(document.getElementById(panelId)); },
+        toggle: function () { toggle(document.getElementById(panelId)); },
+      };
+      initAllPanels();
+    });
   })();
 </script>
