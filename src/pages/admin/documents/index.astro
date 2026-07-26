@@ -40,7 +40,7 @@ const metadata = {
 </PageLayout>
 
 <script>
-  import { listDocuments, deleteDocument } from '~/features/editor/stores/document-api';
+  import { listDocuments, deleteDocument } from '@lkm/editor-persistence';
 
   function renderList() {
     let docs = listDocuments();

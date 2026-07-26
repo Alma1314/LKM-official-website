@@ -8,13 +8,14 @@ LKM 官方网站是一个基于 **Astro v7** 和 **Tailwind CSS v4** 构建的�
 
 ## 快速参考
 
-| 命令               | 用途                                 |
-| ------------------ | ------------------------------------ |
-| `pnpm run dev`     | 启动开发服务器（localhost:4321）     |
-| `pnpm run build`   | 生产构建到 `./dist/`                 |
-| `pnpm run preview` | 本地预览生产构建                     |
-| `pnpm run check`   | 运行 astro check + ESLint + Prettier |
-| `pnpm run fix`     | 自动修复 ESLint + Prettier 问题      |
+| 命令                   | 用途                                         |
+| ---------------------- | -------------------------------------------- |
+| `pnpm run dev`         | 启动开发服务器（localhost:4321）             |
+| `pnpm run build`       | 生产构建到 `./dist/`                          |
+| `pnpm run build:packages` | 单独构建两个 monorepo 包                  |
+| `pnpm run preview`     | 本地预览生产构建                             |
+| `pnpm run check`       | 运行 astro check + ESLint + Prettier         |
+| `pnpm run fix`         | 自动修复 ESLint + Prettier 问题              |
 
 **Node.js 要求：** >= 24.0.0
 
@@ -35,7 +36,7 @@ src/
   features/       # 业务功能模块
     blog/         # 博客组件
     content/      # 内容组件
-    editor/       # 富文本编辑器（React Tiptap + MDX 双向转换）
+    editor/       # 编辑器的薄适配层（组装 @lkm/rich-text-editor + @lkm/editor-persistence）
     team/         # 团队页面组件
     homepage/     # 首页 Widget（Hero/Features/Pricing 等）
     shell/        # 顶栏/页脚/侧边栏/背景/通用 UI
@@ -47,7 +48,20 @@ src/
   layouts/        # 页面布局（Base/Page/Sidebar/Markdown/Blog 等）
   pages/          # 文件路由（含 /admin/documents 管理后台）
   content/        # 内容文件（docs/、post/）
+
+packages/
+  rich-text-editor/     # 编辑器核心包（engine + components + hooks + CSS，零外部 UI 依赖）
+  editor-persistence/   # 持久化插件（localStorage + IndexedDB，实现 PersistenceAdapter 接口）
 ```
+
+### pnpm Workspace Monorepo
+
+项目使用 pnpm workspace 管理多包：
+
+- `@lkm/rich-text-editor` — 基于 TipTap 3 的 MDX 富文本编辑器，可独立发布
+- `@lkm/editor-persistence` — 浏览器端持久化适配器，通过 `PersistenceAdapter` 接口注入
+
+主项目通过 `src/features/editor/index.ts` 组装两个包并导出给 Astro 页面使用。
 
 ### 路径别名
 
