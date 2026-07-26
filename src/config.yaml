@@ -141,7 +141,7 @@ fuwari:
           - name: QQ社群
             url: /communities
   profile:
-    avatar: assets/images/demo-avatar.png
+    avatar: assets/images/lkm-logo.jpg
     name: 理科迷LKM
     bio: 创立于 2014 年的科技爱好者社区
     links:
