@@ -12,7 +12,9 @@ const links = Astro.props.links;
 
 <div
   id="nav-menu-panel"
-  class:list={['float-panel float-panel-closed absolute transition-all fixed right-4 px-2 py-2']}
+  class:list={[
+    'float-panel float-panel-closed absolute transition-all fixed left-4 right-4 max-w-[calc(100vw-2rem)] px-2 py-2',
+  ]}
 >
   {
     links.map((link) => (

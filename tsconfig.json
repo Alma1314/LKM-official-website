@@ -9,9 +9,11 @@
       "~/core/*": ["./src/core/*"],
       "~/ui/*": ["./src/ui/*"],
       "~/features/*": ["./src/features/*"],
-      "~/layouts/*": ["./src/layouts/*"]
+      "~/layouts/*": ["./src/layouts/*"],
+      "@lkm/rich-text-editor": ["./packages/rich-text-editor/dist"],
+      "@lkm/editor-persistence": ["./packages/editor-persistence/dist"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist/", "reference/", "packages/"]
+  "exclude": ["dist/", "reference/", "packages/*/src", "packages/*/__tests__", "packages/*/node_modules"]
 }
