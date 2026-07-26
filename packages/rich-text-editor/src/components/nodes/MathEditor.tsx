@@ -24,14 +24,8 @@ export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel 
   );
 
   return (
-    <div
-      className="rte-dialog-backdrop"
-      onClick={onCancel}
-    >
-      <div
-        className="rte-dialog"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="rte-dialog-backdrop" onClick={onCancel}>
+      <div className="rte-dialog" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold mb-4">{isBlock ? '块级公式' : '行内公式'}</h3>
 
         <div className="mb-4">

@@ -28,14 +28,8 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
   };
 
   return (
-    <div
-      className="rte-dialog-backdrop"
-      onClick={onCancel}
-    >
-      <div
-        className="rte-dialog"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="rte-dialog-backdrop" onClick={onCancel}>
+      <div className="rte-dialog" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold mb-4">发布文档</h3>
 
         <label className="text-sm font-medium block mb-1">标题</label>

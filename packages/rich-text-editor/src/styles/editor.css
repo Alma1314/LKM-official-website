@@ -58,7 +58,9 @@
   background: transparent;
   color: var(--rte-btn-color, #374151);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   font-size: 0.875rem;
   line-height: 1;
 }
@@ -99,7 +101,9 @@
   cursor: pointer;
   font-size: 0.8125rem;
   line-height: 1.25rem;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .rte-btn:hover {
@@ -223,7 +227,9 @@
 }
 
 @keyframes rte-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ===== 错误状态 ===== */
@@ -286,7 +292,9 @@
   background: transparent;
   color: var(--rte-text-muted, #6b7280);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .rte-mode-tab:hover {

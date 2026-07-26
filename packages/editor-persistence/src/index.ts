@@ -1,4 +1,11 @@
-import type { PersistenceAdapter, DocumentData, DocumentSummary, VersionEntry, BackupEntry, CommentReply } from '@lkm/rich-text-editor';
+import type {
+  PersistenceAdapter,
+  DocumentData,
+  DocumentSummary,
+  VersionEntry,
+  BackupEntry,
+  CommentReply,
+} from '@lkm/rich-text-editor';
 import {
   getDocument,
   listDocuments,
@@ -12,14 +19,7 @@ export { listDocuments, deleteDocument };
 export type { DocumentData } from '@lkm/rich-text-editor';
 import { saveBackup, getBackups } from './backup-store';
 import { saveVersion, getVersions } from './version-store';
-import {
-  getThreads,
-  addThread,
-  addReply,
-  resolveThread,
-  reopenThread,
-  deleteThread,
-} from './comment-store';
+import { getThreads, addThread, addReply, resolveThread, reopenThread, deleteThread } from './comment-store';
 import type { CommentThread } from './comment-store';
 
 export function createLocalPersistence(): PersistenceAdapter {
@@ -50,7 +50,10 @@ export function createLocalPersistence(): PersistenceAdapter {
 
     getVersions: (docId: string): VersionEntry[] => getVersions(docId),
 
-    createBackup: async (docId: string, data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }): Promise<boolean> => {
+    createBackup: async (
+      docId: string,
+      data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }
+    ): Promise<boolean> => {
       const result = await saveBackup(docId, {
         docId,
         title: data.title,
@@ -69,12 +72,22 @@ export function createLocalPersistence(): PersistenceAdapter {
     },
 
     getComments: (docId: string): CommentThread[] => getThreads(docId),
-    addThread: (docId: string, range: { from: number; to: number }, text: string, initialComment?: string): CommentThread =>
-      addThread(docId, range, text, initialComment),
+    addThread: (
+      docId: string,
+      range: { from: number; to: number },
+      text: string,
+      initialComment?: string
+    ): CommentThread => addThread(docId, range, text, initialComment),
     addReply: (docId: string, threadId: string, text: string): CommentReply | null => addReply(docId, threadId, text),
-    resolveThread: (docId: string, threadId: string): void => { resolveThread(docId, threadId); },
-    reopenThread: (docId: string, threadId: string): void => { reopenThread(docId, threadId); },
-    deleteThread: (docId: string, threadId: string): void => { deleteThread(docId, threadId); },
+    resolveThread: (docId: string, threadId: string): void => {
+      resolveThread(docId, threadId);
+    },
+    reopenThread: (docId: string, threadId: string): void => {
+      reopenThread(docId, threadId);
+    },
+    deleteThread: (docId: string, threadId: string): void => {
+      deleteThread(docId, threadId);
+    },
   };
 }
 

@@ -23,46 +23,43 @@ export default function BackupMenu({ adapter }: BackupMenuProps) {
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
-  const handleExport = useCallback(
-    async () => {
-      const docs = await Promise.resolve(adapter.listDocuments());
-      if (docs.length === 0) {
-        alert('暂无文档可导出');
-        return;
-      }
-      const fullDocs = [];
-      for (const meta of docs) {
-        const doc = await Promise.resolve(adapter.loadDocument(meta.id));
-        fullDocs.push(
-          doc || {
-            id: meta.id,
-            title: meta.title,
-            contentMdx: '',
-            editorJson: null,
-            status: meta.status,
-            version: meta.version,
-            lastModified: meta.lastModified,
-            createdAt: '',
-            updatedAt: '',
-          }
-        );
-      }
-      const json = JSON.stringify(
-        fullDocs.map(({ id: _id, ...rest }) => rest),
-        null,
-        2
+  const handleExport = useCallback(async () => {
+    const docs = await Promise.resolve(adapter.listDocuments());
+    if (docs.length === 0) {
+      alert('暂无文档可导出');
+      return;
+    }
+    const fullDocs = [];
+    for (const meta of docs) {
+      const doc = await Promise.resolve(adapter.loadDocument(meta.id));
+      fullDocs.push(
+        doc || {
+          id: meta.id,
+          title: meta.title,
+          contentMdx: '',
+          editorJson: null,
+          status: meta.status,
+          version: meta.version,
+          lastModified: meta.lastModified,
+          createdAt: '',
+          updatedAt: '',
+        }
       );
-      const blob = new Blob([json], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `lkm-docs-backup-${new Date().toISOString().slice(0, 10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      setOpen(false);
-    },
-    [adapter]
-  );
+    }
+    const json = JSON.stringify(
+      fullDocs.map(({ id: _id, ...rest }) => rest),
+      null,
+      2
+    );
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `lkm-docs-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setOpen(false);
+  }, [adapter]);
 
   const handleImport = useCallback(() => {
     setOpen(false);
@@ -142,17 +139,14 @@ export default function BackupMenu({ adapter }: BackupMenuProps) {
     setShowBackups(true);
   }, [adapter]);
 
-  const handleRestore = useCallback(
-    async (docId: string, title: string) => {
-      if (!confirm(`从备份恢复"${title}"？当前数据将被覆盖。`)) return;
-      // Navigate to editor with this doc ID to load the backup content
-      setShowBackups(false);
-      setOpen(false);
-      const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
-      window.location.href = `${base}/admin/documents/editor?id=${docId}`;
-    },
-    []
-  );
+  const handleRestore = useCallback(async (docId: string, title: string) => {
+    if (!confirm(`从备份恢复"${title}"？当前数据将被覆盖。`)) return;
+    // Navigate to editor with this doc ID to load the backup content
+    setShowBackups(false);
+    setOpen(false);
+    const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
+    window.location.href = `${base}/admin/documents/editor?id=${docId}`;
+  }, []);
 
   return (
     <div ref={ref} className="relative">
