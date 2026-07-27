@@ -1,0 +1,23 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { getUserByUsername, mockUsers } from '~/features/profile/data/mock-users';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import ProfilePage from '~/features/profile/components/ProfilePage.vue';
+
+export function getStaticPaths() {
+  return mockUsers.map((u) => ({ params: { username: u.username } }));
+}
+
+const { username } = Astro.params;
+const user = getUserByUsername(username || '');
+
+if (!user) {
+  return Astro.redirect('/');
+}
+
+const metadata = { title: `${user.displayName} (@${user.username}) —— 理科迷` };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/user/${username}`}>
+  <ProfilePage client:load user={user} />
+</Layout>

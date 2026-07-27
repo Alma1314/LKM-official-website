@@ -1,0 +1,33 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { mockCompetitions } from '~/features/competition/data/mock-competitions';
+
+export function getStaticPaths() {
+  return mockCompetitions.map((c) => ({ params: { id: c.id } }));
+}
+
+const { id } = Astro.params;
+const comp = mockCompetitions.find((c) => c.id === id);
+
+const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详情' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/competition/${id}`}>
+  {
+    comp ? (
+      <div class="space-y-6">
+        <h1 class="text-3xl font-bold text-deep-text">{comp.title}</h1>
+        <p class="text-text-muted">{comp.description}</p>
+        <div class="bg-card-bg border border-surface-3 rounded-xl p-5 space-y-2 text-sm">
+          <div><span class="text-text-muted/60">开始：</span>{comp.startDate}</div>
+          <div><span class="text-text-muted/60">结束：</span>{comp.endDate}</div>
+          <div><span class="text-text-muted/60">答题时长：</span>{comp.duration} 分钟</div>
+          <div><span class="text-text-muted/60">状态：</span>{comp.status === 'ongoing' ? '进行中' : comp.status === 'upcoming' ? '即将开始' : '已结束'}</div>
+          <div><span class="text-text-muted/60">参赛人数：</span>{comp.participantCount || '待定'}</div>
+        </div>
+        {comp.status === 'ongoing' && <a href={`/competition/${id}/exam`} class="btn-primary px-6 py-3 rounded-lg text-base font-semibold inline-block">进入答题</a>}
+      </div>
+    ) : <p>竞赛不存在</p>
+  }
+</Layout>

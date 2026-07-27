@@ -1,0 +1,86 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getColumnBySlug, getArticlesByColumnId, mockColumns } from '~/features/column/data/mock-columns';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+
+export function getStaticPaths() {
+  return mockColumns.map((c) => ({ params: { slug: c.slug } }));
+}
+
+const { slug } = Astro.params;
+const column = getColumnBySlug(slug || '');
+
+if (!column) {
+  return Astro.redirect('/columns');
+}
+
+const articles = getArticlesByColumnId(column.id);
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const metadata = { title: `${column.title} —— 理科迷` };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/columns/${slug}`}>
+  <div class="space-y-6">
+    <!-- 专栏头部 -->
+    <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0">
+          <Icon name="tabler:article" class="w-10 h-10 text-primary" />
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-2xl font-bold text-deep-text">{column.title}</h1>
+            {
+              column.isVerified && (
+                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
+                  <Icon name="tabler:rosette" class="w-3 h-3" />
+                  专业认证
+                </span>
+              )
+            }
+          </div>
+          <p class="text-sm text-text-muted mt-1">{column.description}</p>
+          <div class="flex flex-wrap items-center gap-3 mt-3 text-sm text-text-muted/60">
+            <span>作者：{column.authorName} · {column.authorTitle}</span>
+            <span>{column.followerCount.toLocaleString()} 关注</span>
+            <span>{column.articleCount} 篇文章</span>
+          </div>
+          <div class="mt-3">
+            <button class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">关注专栏</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <div class="space-y-4">
+      {
+        articles.length > 0 ? (
+          articles.map((art) => (
+            <a href={`/columns/${column.slug}/${art.id}`} class="profile-card group block">
+              <div class="profile-inner p-5 flex gap-4">
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">{art.title}</h3>
+                  <p class="text-sm text-text-muted mt-1 line-clamp-2">{art.excerpt}</p>
+                  <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60">
+                    <span>{formatDate(art.createdAt)}</span>
+                    <span>{art.viewCount} 阅读</span>
+                    <span>{art.likeCount} 赞</span>
+                    <span>{art.commentCount} 评论</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))
+        ) : (
+          <div class="text-center py-12 text-text-muted text-sm">暂无文章</div>
+        )
+      }
+    </div>
+  </div>
+</Layout>

@@ -112,17 +112,14 @@ fuwari:
         children:
           - name: 博客列表
             url: /blog
+          - name: 文档库
+            url: /docs
           - name: 所有分类
             url: /blog/categories
           - name: 文章归档
             url: /blog/archive
           - name: 关于博客
             url: /blog/about
-      - name: 文档库
-        url: /docs
-        children:
-          - name: 文档首页
-            url: /docs
       - name: 七月团队
         url: /team
         children:

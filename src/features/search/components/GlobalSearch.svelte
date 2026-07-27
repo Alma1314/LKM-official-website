@@ -1,15 +1,12 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import { url } from '~/core/utils/url-utils';
 
-  // ── Mock 数据（社区内容搜索）──
   interface SearchResultItem {
     type: 'post' | 'file' | 'user';
     title: string;
     desc: string;
     url: string;
     tag?: string;
-    tagColor?: string;
   }
 
   const mockData: SearchResultItem[] = [
@@ -36,7 +33,6 @@
   function toggle() {
     isOpen = !isOpen;
     if (isOpen) {
-      // 聚焦输入框
       setTimeout(() => {
         const input = document.getElementById('global-search-input');
         input?.focus();
@@ -110,12 +106,12 @@
 <div id="global-search-btn" class="hidden lg:flex transition-all items-center h-11 mr-2 rounded-lg
     bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
     dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10 cursor-pointer"
-    onclick={toggle}
-    role="button"
-    tabindex="0"
+  onclick={toggle}
+  role="button"
+  tabindex="0"
 >
   <Icon icon="material-symbols:search" class="text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-  <span class="text-sm text-black/30 dark:text-white/30 px-3 w-40 select-none">搜索帖子、文件、用户...</span>
+  <span class="text-sm text-black/30 dark:text-white/30 px-3 w-40 select-none">搜索</span>
 </div>
 
 <!-- 移动端搜索按钮 -->
@@ -128,7 +124,7 @@
   <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
 
-<!-- 搜索面板 (Portal 到 body) -->
+<!-- 搜索面板 -->
 {#if isOpen}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -140,7 +136,6 @@
       class="w-full max-w-xl max-h-[80vh] overflow-y-auto card-base rounded-2xl shadow-2xl p-3 mx-4"
       onclick={(e) => e.stopPropagation()}
     >
-      <!-- 搜索输入框 -->
       <div class="flex items-center gap-3 px-2 pb-3 border-b border-surface-3">
         <Icon icon="material-symbols:search" class="w-5 h-5 text-text-muted shrink-0" />
         <input
@@ -154,7 +149,6 @@
         <button class="text-xs text-text-muted hover:text-deep-text px-2" onclick={close}>ESC</button>
       </div>
 
-      <!-- 搜索结果 -->
       {#if keyword.trim() === ''}
         <div class="px-3 py-8 text-center text-sm text-text-muted">
           输入关键词搜索社区内容
@@ -165,7 +159,6 @@
         </div>
       {:else}
         <div class="space-y-4 pt-2">
-          <!-- 帖子 -->
           {#if results.posts.length > 0}
             <div>
               <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">帖子</div>
@@ -182,7 +175,6 @@
             </div>
           {/if}
 
-          <!-- 文件 -->
           {#if results.files.length > 0}
             <div>
               <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">文件</div>
@@ -199,7 +191,6 @@
             </div>
           {/if}
 
-          <!-- 用户 -->
           {#if results.users.length > 0}
             <div>
               <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">用户</div>

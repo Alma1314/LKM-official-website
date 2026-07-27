@@ -1,0 +1,83 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { mockProjects } from '~/features/project-hub/data/mock-projects';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+
+export function getStaticPaths() {
+  return mockProjects.map((p) => ({ params: { projectId: p.id } }));
+}
+
+const { projectId } = Astro.params;
+const proj = mockProjects.find((p) => p.id === projectId);
+
+if (!proj) {
+  return Astro.redirect('/projects');
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const revisionLabel = (rev: number) => rev === 0 ? '初版' : rev === 1 ? '一改' : `${rev === 2 ? '二' : rev}改`;
+
+const metadata = { title: `${proj.name} —— 理科迷` };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/projects/${projectId}`}>
+  <div class="space-y-6">
+    <!-- 头部 -->
+    <div>
+      <div class="flex items-center gap-2 mb-2">
+        { proj.isPinned && (<span class="text-xs px-2 py-1 rounded font-medium bg-red-100 dark:bg-red-950/30 text-red-600">置顶</span>) }
+        { proj.isIncubated && (<span class="text-xs px-2 py-1 rounded font-medium bg-amber-100 dark:bg-amber-950/30 text-amber-600">七月团队孵化</span>) }
+        <span class="text-xs px-2 py-1 rounded font-medium" class:list={[{ 'bg-green-100 dark:bg-green-950/30 text-green-600': proj.isRecruiting }, { 'bg-blue-100 dark:bg-blue-950/30 text-blue-600': !proj.isRecruiting }]}>
+          { proj.type === 'recruiting' ? (proj.isRecruiting ? '招募中' : '已招满') : '成果展示' }
+        </span>
+      </div>
+      <h1 class="text-3xl font-bold text-deep-text">{proj.name}</h1>
+      <p class="text-sm text-text-muted mt-2">发起人：{proj.initiatorName} · {formatDate(proj.createdAt)}</p>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
+      <div class="flex items-center justify-between mb-2 text-sm"><span class="text-deep-text font-medium">项目进度</span><span class="text-primary font-bold">{proj.progress}%</span></div>
+      <div class="h-2.5 rounded-full bg-surface-3 overflow-hidden"><div class="h-full rounded-full bg-primary transition-all" style={`width: ${proj.progress}%`}></div></div>
+    </div>
+
+    <!-- 详情 -->
+    <div class="bg-card-bg border border-surface-3 rounded-xl p-6 space-y-4 text-sm">
+      { proj.background && (<div><h3 class="font-semibold text-deep-text mb-1">项目背景</h3><p class="text-text-muted leading-relaxed">{proj.background}</p></div>) }
+      { proj.goals && (<div><h3 class="font-semibold text-deep-text mb-1">目标</h3><p class="text-text-muted leading-relaxed">{proj.goals}</p></div>) }
+      { proj.requirements && (<div><h3 class="font-semibold text-deep-text mb-1">招募需求</h3><p class="text-text-muted leading-relaxed">{proj.requirements}</p></div>) }
+      { proj.teamIntro && (<div><h3 class="font-semibold text-deep-text mb-1">团队介绍</h3><p class="text-text-muted leading-relaxed">{proj.teamIntro}</p></div>) }
+      { proj.team.length > 0 && (
+        <div><h3 class="font-semibold text-deep-text mb-1">团队成员</h3><div class="flex flex-wrap gap-2">{
+          proj.team.map((m) => (<span class="text-xs px-2 py-1 rounded-full bg-surface-3 text-text-muted">{m.name} · {m.role}</span>))
+        }</div></div>
+      )}
+      { proj.recruitingRoles.length > 0 && (
+        <div><h3 class="font-semibold text-deep-text mb-1">招募角色</h3><div class="flex flex-wrap gap-2">{
+          proj.recruitingRoles.map((r) => (<span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">缺 {r}</span>))
+        }</div></div>
+      )}
+      { proj.tags.length > 0 && (<div class="flex flex-wrap gap-1">{ proj.tags.map((t) => (<span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{t}</span>)) }</div>) }
+    </div>
+
+    <!-- 汇报历史 -->
+    { proj.reports.length > 0 && (
+      <div class="bg-card-bg border border-surface-3 rounded-xl p-6">
+        <h3 class="font-semibold text-deep-text mb-4">项目汇报</h3>
+        <div class="space-y-4">
+          { proj.reports.map((r) => (
+            <div class="border-l-2 border-primary pl-4">
+              <div class="flex items-center gap-2 mb-1"><span class="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">{revisionLabel(r.revision)}</span><span class="text-xs text-text-muted/60">{r.date}</span></div>
+              <h4 class="font-medium text-deep-text">{r.title}</h4>
+              <p class="text-sm text-text-muted mt-1 leading-relaxed">{r.content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>
