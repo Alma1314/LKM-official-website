@@ -192,7 +192,7 @@
           >
             <div
               class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-              :class="task.completed ? 'bg-green-500 border-green-500 text-white' : 'border-surface-3 text-transparent'"
+              :class="task.completed ? 'bg-green-500 dark:bg-green-600 border-green-500 dark:border-green-600 text-white' : 'border-surface-3 text-transparent'"
             >
               <Icon v-if="task.completed" icon="material-symbols:check" class="w-3 h-3" />
             </div>

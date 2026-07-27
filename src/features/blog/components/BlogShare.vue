@@ -3,7 +3,7 @@
     <dialog ref="wechatDialog" class="modal" @close="showWechatQR = false">
       <div class="modal-box max-w-xs text-center">
         <p class="text-sm font-medium mb-3">微信扫一扫分享</p>
-        <div ref="qrContainer" class="bg-white rounded-xl p-2 mx-auto mb-3 inline-block" />
+        <div ref="qrContainer" class="bg-white/80 dark:bg-white/90 rounded-xl p-2 mx-auto mb-3 inline-block" />
         <p class="text-xs text-deep-text/50 mb-3">打开微信"扫一扫"，扫描二维码分享文章</p>
         <div class="modal-action mt-0 justify-center">
           <form method="dialog">
@@ -25,7 +25,7 @@
     <span class="text-xs font-bold text-deep-text/60 mr-1">分享</span>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 hover:text-green-500 text-deep-text/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 dark:hover:bg-green-950/30 hover:text-green-500 text-deep-text/60"
       title="分享到微信"
       aria-label="分享到微信"
       @click="shareToWechat"
@@ -38,7 +38,7 @@
     </button>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-blue-50 hover:text-blue-500 text-deep-text/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:text-blue-500 text-deep-text/60"
       title="分享到 QQ"
       aria-label="分享到 QQ"
       @click="shareToQQ"
@@ -51,7 +51,7 @@
     </button>
 
     <button
-      class="share-btn p-1.5 rounded-full transition-colors hover:bg-red-50 hover:text-red-500 text-deep-text/60"
+      class="share-btn p-1.5 rounded-full transition-colors hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-500 text-deep-text/60"
       title="分享到微博"
       aria-label="分享到微博"
       @click="shareToWeibo"

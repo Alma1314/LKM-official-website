@@ -133,7 +133,7 @@
     <Teleport to="body">
       <div
         v-if="showUpload"
-        class="fixed inset-0 bg-black/40 z-[150] flex items-center justify-center"
+        class="fixed inset-0 bg-black/40 dark:bg-black/70 z-[150] flex items-center justify-center"
         @click.self="showUpload = false"
       >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">

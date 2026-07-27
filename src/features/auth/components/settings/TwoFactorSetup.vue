@@ -20,7 +20,7 @@
     </div>
 
     <!-- Enable modal -->
-    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click="show = false">
+    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70" @click="show = false">
       <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4" @click.stop>
         <!-- Scan step -->
         <div v-if="curStep === 'scan'" class="space-y-4">
