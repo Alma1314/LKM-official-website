@@ -211,3 +211,40 @@
     }
   }
 }
+
+/*
+ * Tailwind v4 的 @apply 指令将 dark: 变体编译为
+ * @media (prefers-color-scheme: dark)，而不是基于 .dark class。
+ * 以下规则确保 .dark class 切换主题时文字颜色也正确适配。
+ */
+@layer components {
+  .dark .btn-plain {
+    color: color-mix(in oklab, var(--color-white) 75%, transparent);
+  }
+  .dark .btn-plain:hover {
+    @media (hover: hover) {
+      color: var(--primary);
+    }
+  }
+  .dark .btn-regular {
+    color: color-mix(in oklab, var(--color-white) 75%, transparent);
+  }
+  .dark .btn-card.disabled {
+    color: color-mix(in oklab, var(--color-white) 10%, transparent);
+  }
+  .dark .text-90 {
+    color: color-mix(in oklab, var(--color-white) 90%, transparent);
+  }
+  .dark .text-75 {
+    color: color-mix(in oklab, var(--color-white) 75%, transparent);
+  }
+  .dark .text-50 {
+    color: color-mix(in oklab, var(--color-white) 50%, transparent);
+  }
+  .dark .text-30 {
+    color: color-mix(in oklab, var(--color-white) 30%, transparent);
+  }
+  .dark .text-25 {
+    color: color-mix(in oklab, var(--color-white) 25%, transparent);
+  }
+}
