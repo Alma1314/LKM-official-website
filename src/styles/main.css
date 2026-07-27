@@ -2,10 +2,11 @@
 
 @layer components {
   .card-base {
-    @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
+    @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition
+           shadow-sm dark:shadow-none;
   }
   .card-shadow {
-    @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)];
+    @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)] dark:drop-shadow-none;
   }
   .link {
     @apply transition rounded-md p-1 -m-1 relative active:bg-none z-0;

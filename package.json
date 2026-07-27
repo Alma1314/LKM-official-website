@@ -59,6 +59,7 @@
     "limax": "4.2.3",
     "lodash.merge": "^4.6.2",
     "markdown-it": "^14.3.0",
+    "mermaid": "^11.16.0",
     "overlayscrollbars": "^2.16.0",
     "photoswipe": "^5.4.4",
     "qrcode": "^1.5.4",

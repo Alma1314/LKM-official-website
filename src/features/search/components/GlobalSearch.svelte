@@ -107,6 +107,7 @@
     bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
     dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10 cursor-pointer"
   onclick={toggle}
+  onkeydown={(e) => e.key === 'Enter' && toggle()}
   role="button"
   tabindex="0"
 >
@@ -126,11 +127,11 @@
 
 <!-- 搜索面板 -->
 {#if isOpen}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="fixed inset-0 bg-black/40 z-[100] flex items-start justify-center pt-20" onclick={close}>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div class="fixed inset-0 bg-black/40 dark:bg-black/70 z-[100] flex items-start justify-center pt-20" onclick={close}>
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       id="global-search-panel"
       class="w-full max-w-xl max-h-[80vh] overflow-y-auto card-base rounded-2xl shadow-2xl p-3 mx-4"

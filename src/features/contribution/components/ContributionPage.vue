@@ -102,7 +102,7 @@
               entry.rank === 1
                 ? 'text-yellow-400'
                 : entry.rank === 2
-                  ? 'text-gray-300'
+                  ? 'text-gray-300 dark:text-gray-400'
                   : entry.rank === 3
                     ? 'text-amber-600'
                     : 'text-text-muted/60'
