@@ -1,6 +1,6 @@
 // Post-build: pre-compress text-based static assets with gzip & brotli.
 // The Node standalone server will serve .gz/.br files with proper Content-Encoding.
-import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { glob } from 'tinyglobby';
 import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
 
@@ -25,9 +25,12 @@ for (const file of files) {
   const brPath = file + '.br';
 
   writeFileSync(gzPath, gzipSync(original, { level: 9 }));
-  writeFileSync(brPath, brotliCompressSync(original, {
-    params: { [constants.BROTLI_PARAM_QUALITY]: 11 },
-  }));
+  writeFileSync(
+    brPath,
+    brotliCompressSync(original, {
+      params: { [constants.BROTLI_PARAM_QUALITY]: 11 },
+    })
+  );
 
   totalSaved += size;
   count += 2;
