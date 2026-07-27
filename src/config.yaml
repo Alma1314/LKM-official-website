@@ -137,6 +137,15 @@ fuwari:
             url: /contact
           - name: QQ社群
             url: /communities
+      - name: 我的
+        url: /profile
+        children:
+          - name: 个人主页
+            url: /user/qiyue-hua
+          - name: 贡献系统
+            url: /contribution
+          - name: 设置
+            url: /account
   profile:
     avatar: assets/images/lkm-logo.jpg
     name: 理科迷LKM
