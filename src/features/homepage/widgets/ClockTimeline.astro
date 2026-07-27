@@ -398,15 +398,13 @@ const clockYears = items.map((i) => shortYear(i.year));
     const total = track.querySelectorAll('.ct-card').length;
     let currentIndex = 0;
     const angleStep = 360 / total;
-    const viewport = track.parentElement as HTMLElement;
 
-    function getCardHeight(): number {
-      const first = track.querySelector('.ct-card') as HTMLElement;
-      return first ? first.getBoundingClientRect().height : viewport.clientHeight;
-    }
+    const firstCard = track.querySelector('.ct-card') as HTMLElement;
+    const cardHeight = firstCard
+      ? firstCard.getBoundingClientRect().height
+      : (track.parentElement as HTMLElement).clientHeight;
 
     function update() {
-      const cardHeight = getCardHeight();
       track.style.transform = `translate3d(0, -${currentIndex * cardHeight}px, 0)`;
 
       const pointer = clockCol.querySelector('.clock-pointer') as HTMLElement;
