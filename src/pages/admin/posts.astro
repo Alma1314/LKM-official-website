@@ -1,0 +1,65 @@
+---
+import AdminLayout from '~/features/admin/components/AdminLayout.astro';
+import { adminPosts } from '~/features/admin/data/mock-admin';
+---
+
+<AdminLayout>
+  <h1 class="text-2xl font-bold text-deep-text mb-6">帖子管理</h1>
+  <div class="flex gap-2 mb-4">
+    <button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-on-primary">全部</button>
+    <button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-surface-3 text-text-muted">已标记</button>
+    <button class="px-3 py-1.5 rounded-lg text-sm font-medium bg-surface-3 text-text-muted">已删除</button>
+  </div>
+  <div class="bg-card-bg border border-surface-3 rounded-xl overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-surface-3/50">
+        <tr>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">标题</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted hidden sm:table-cell">作者</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">板块</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">状态</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">操作</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-3">
+        {
+          adminPosts.map((p) => (
+            <tr class="hover:bg-page-bg transition-colors">
+              <td class="px-4 py-3">
+                <>
+                  <div class="font-medium text-deep-text line-clamp-1 max-w-48">{p.title}</div>
+                  <div class="text-xs text-text-muted/60">
+                    {p.createdAt} · {p.viewCount} 浏览
+                  </div>
+                </>
+              </td>
+              <td class="px-4 py-3 hidden sm:table-cell text-text-muted">{p.authorName}</td>
+              <td class="px-4 py-3 hidden md:table-cell text-text-muted">{p.categoryName}</td>
+              <td class="px-4 py-3">
+                <span
+                  class="text-xs px-2 py-0.5 rounded-full font-medium"
+                  class:list={[
+                    { 'bg-green-100 dark:bg-green-950/30 text-green-500': p.status === 'published' },
+                    { 'bg-red-100 dark:bg-red-950/30 text-red-500': p.status === 'flagged' },
+                  ]}
+                >
+                  {p.status === 'published' ? '正常' : p.status === 'flagged' ? `已标记 · ${p.flagReason}` : '已删除'}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex gap-1">
+                  <>
+                    <button class="text-xs text-primary hover:underline">查看</button>
+                    <button class="text-xs text-red-500 hover:underline">
+                      {p.status === 'flagged' ? '删除' : '标记'}
+                    </button>
+                  </>
+                </div>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

@@ -1,0 +1,126 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { Icon } from 'astro-icon/components';
+import {
+  getColumnBySlug,
+  getArticleById,
+  getArticlesByColumnId,
+  mockColumnArticles,
+} from '~/features/column/data/mock-columns';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+
+export function getStaticPaths() {
+  return mockColumnArticles.map((a) => ({ params: { slug: a.columnSlug, articleId: a.id } }));
+}
+
+const { slug, articleId } = Astro.params;
+const column = getColumnBySlug(slug || '');
+const article = getArticleById(articleId || '');
+
+if (!column || !article) {
+  return Astro.redirect('/columns');
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+// 同专栏其他文章
+const otherArticles = getArticlesByColumnId(column.id)
+  .filter((a) => a.id !== article.id)
+  .slice(0, 4);
+
+const metadata = { title: `${article.title} —— 理科迷` };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/columns/${slug}`}>
+  <div class="max-w-3xl mx-auto">
+    <!-- 面包屑 -->
+    <div class="flex items-center gap-2 text-sm text-text-muted/60 mb-6">
+      <a href="/columns" class="hover:text-primary transition-colors">专栏</a>
+      <Icon name="tabler:chevron-right" class="w-3.5 h-3.5" />
+      <a href={`/columns/${column.slug}`} class="hover:text-primary transition-colors">{column.title}</a>
+    </div>
+
+    <!-- 文章头 -->
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-deep-text leading-tight">{article.title}</h1>
+      <div class="flex flex-wrap items-center gap-3 mt-4 text-sm text-text-muted/60">
+        <span>{column.authorName}</span>
+        <span>·</span>
+        <span>{formatDate(article.createdAt)}</span>
+      </div>
+      {
+        article.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            {article.tags.map((tag) => (
+              <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{tag}</span>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <!-- 正文 沉浸式阅读 -->
+    <div class="prose dark:prose-invert max-w-none prose-lg">
+      <Fragment set:html={article.content} />
+    </div>
+
+    <!-- 底部信息 -->
+    <div class="mt-10 pt-6 border-t border-surface-3">
+      <div class="flex items-center justify-between text-sm text-text-muted/60">
+        <span>{article.viewCount} 阅读 · {article.likeCount} 赞 · {article.commentCount} 评论</span>
+      </div>
+    </div>
+
+    <!-- 作者卡片 -->
+    <div class="mt-6 bg-card-bg border border-surface-3 rounded-xl p-5 flex items-start gap-4">
+      <div
+        class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0"
+      >
+        {column.authorName.charAt(0)}
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-deep-text">{column.authorName}</span>
+          {
+            column.isVerified && (
+              <span class="inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
+                <Icon name="tabler:rosette" class="w-3 h-3" />
+                专业认证
+              </span>
+            )
+          }
+        </div>
+        <p class="text-sm text-text-muted mt-0.5">{column.authorTitle}</p>
+        <p class="text-sm text-text-muted/60 mt-1">{column.authorBio}</p>
+      </div>
+    </div>
+
+    <!-- 同专栏其他文章 -->
+    {
+      otherArticles.length > 0 && (
+        <div class="mt-8 pt-6 border-t border-surface-3">
+          <h3 class="font-semibold text-deep-text mb-4">本专栏其他文章</h3>
+          <div class="space-y-3">
+            {otherArticles.map((a) => (
+              <a
+                href={`/columns/${column.slug}/${a.id}`}
+                class="block p-3 rounded-lg hover:bg-surface-3/50 transition-colors"
+              >
+                <div class="font-medium text-deep-text hover:text-primary transition-colors">{a.title}</div>
+                <div class="text-xs text-text-muted/60 mt-1">{formatDate(a.createdAt)}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</Layout>

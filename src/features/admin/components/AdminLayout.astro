@@ -1,0 +1,69 @@
+---
+import { Icon } from 'astro-icon/components';
+export interface AdminNavItem {
+  text: string;
+  href: string;
+  icon: string;
+}
+---
+
+<div class="min-h-screen bg-page-bg flex">
+  <!-- 侧边栏 -->
+  <aside class="w-56 shrink-0 bg-card-bg border-r border-surface-3 min-h-screen hidden md:block">
+    <div class="p-4 border-b border-surface-3">
+      <a href="/admin" class="text-lg font-bold text-primary">管理后台</a>
+    </div>
+    <nav class="p-2 space-y-1">
+      <a
+        href="/admin"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:dashboard" class="w-4 h-4" /> 仪表盘
+      </a>
+      <a
+        href="/admin/users"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:users" class="w-4 h-4" /> 用户管理
+      </a>
+      <a
+        href="/admin/posts"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:article" class="w-4 h-4" /> 帖子管理
+      </a>
+      <a
+        href="/admin/files"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:folder" class="w-4 h-4" /> 文件审核
+      </a>
+      <a
+        href="/admin/categories"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:category" class="w-4 h-4" /> 板块管理
+      </a>
+      <a
+        href="/admin/reports"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:flag" class="w-4 h-4" /> 举报管理
+      </a>
+      <div class="border-t border-surface-3 my-2"></div>
+      <a
+        href="/"
+        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
+      >
+        <Icon name="tabler:arrow-left" class="w-4 h-4" /> 返回前台
+      </a>
+    </nav>
+  </aside>
+
+  <!-- 主内容区 -->
+  <div class="flex-1 min-w-0">
+    <div class="p-6">
+      <slot />
+    </div>
+  </div>
+</div>

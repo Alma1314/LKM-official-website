@@ -1,0 +1,50 @@
+---
+import AdminLayout from '~/features/admin/components/AdminLayout.astro';
+import { adminReports } from '~/features/admin/data/mock-admin';
+---
+
+<AdminLayout>
+  <h1 class="text-2xl font-bold text-deep-text mb-6">举报管理</h1>
+  <div class="bg-card-bg border border-surface-3 rounded-xl overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-surface-3/50">
+        <tr>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">目标</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted hidden sm:table-cell">类型</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">举报人</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">原因</th>
+          <th class="text-left px-4 py-3 font-medium text-text-muted">操作</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-3">
+        {
+          adminReports.map((r) => (
+            <tr class="hover:bg-page-bg transition-colors">
+              <td class="px-4 py-3">
+                <>
+                  <span class="font-medium text-deep-text">{r.targetTitle}</span>
+                  <div class="text-xs text-text-muted/60">{r.createdAt}</div>
+                </>
+              </td>
+              <td class="px-4 py-3 hidden sm:table-cell">
+                <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">
+                  {r.type === 'post' ? '帖子' : r.type === 'comment' ? '评论' : '文件'}
+                </span>
+              </td>
+              <td class="px-4 py-3 hidden md:table-cell text-text-muted">{r.reporterName}</td>
+              <td class="px-4 py-3 text-text-muted">{r.reason}</td>
+              <td class="px-4 py-3">
+                <div class="flex gap-1">
+                  <>
+                    <button class="text-xs text-green-500 hover:underline">处理</button>
+                    <button class="text-xs text-red-500 hover:underline">驳回</button>
+                  </>
+                </div>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

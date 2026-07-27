@@ -122,8 +122,12 @@ $effect(() => {
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-    <input placeholder={i18n(I18nKey.search)} bind:value={keywordDesktop} onfocus={() => search(keywordDesktop, true)}
-           class="transition-all pl-10 text-sm bg-transparent outline-0 h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
+    <input
+      placeholder={i18n(I18nKey.search)}
+      bind:value={keywordDesktop}
+      onfocus={() => { search(keywordDesktop, true); document.getElementById('navbar')?.setAttribute('data-search-expanded', ''); }}
+      onblur={() => { document.getElementById('navbar')?.removeAttribute('data-search-expanded'); }}
+      class="transition-all pl-10 text-sm bg-transparent outline-0 h-full w-40 focus:w-80 text-black/50 dark:text-white/50"
     >
 </div>
 

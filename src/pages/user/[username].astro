@@ -1,0 +1,24 @@
+---
+import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
+import { getUserByUsername, mockUsers } from '~/features/profile/data/mock-users';
+import ProfilePage from '~/features/profile/components/ProfilePage.vue';
+
+export function getStaticPaths() {
+  return mockUsers.map((u) => ({ params: { username: u.username } }));
+}
+
+const { username } = Astro.params;
+const user = getUserByUsername(username || '');
+
+if (!user) {
+  return Astro.redirect('/');
+}
+---
+
+<MainGridLayout title={user.displayName} description={user.bio}>
+  <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+    <div class="card-base z-10 px-9 py-6 relative w-full">
+      <ProfilePage client:load user={user} />
+    </div>
+  </div>
+</MainGridLayout>

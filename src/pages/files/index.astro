@@ -1,0 +1,17 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import FileListPage from '~/features/file-library/components/FileListPage.vue';
+
+const metadata = { title: '文件库 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath="/files">
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-3xl font-bold text-deep-text">文件库</h1>
+      <p class="text-text-muted mt-2">结构化资源中心，学术资料、数据集、教程文件尽在掌握</p>
+    </div>
+    <FileListPage client:only="vue" />
+  </div>
+</Layout>

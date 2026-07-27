@@ -1,0 +1,14 @@
+---
+import ExamInterface from '~/features/competition/components/ExamInterface.vue';
+import { mockCompetitions } from '~/features/competition/data/mock-competitions';
+
+export function getStaticPaths() {
+  return mockCompetitions.filter((c) => c.status === 'ongoing').map((c) => ({ params: { id: c.id } }));
+}
+
+const { id: _id } = Astro.params;
+---
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <ExamInterface client:only="vue" />
+</div>

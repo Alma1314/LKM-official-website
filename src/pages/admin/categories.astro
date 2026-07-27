@@ -1,0 +1,52 @@
+---
+import AdminLayout from '~/features/admin/components/AdminLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getRootCategories, getChildCategories } from '~/features/forum/data/categories';
+---
+
+<AdminLayout>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-deep-text">板块管理</h1>
+    <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">新增板块</button>
+  </div>
+  <div class="space-y-6">
+    {
+      getRootCategories().map((root) => (
+        <div class="bg-card-bg border border-surface-3 rounded-xl overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-3 bg-surface-3/30 border-b border-surface-3">
+            <div class="flex items-center gap-2">
+              <Icon name={root.icon} class="w-5 h-5 text-primary" />
+              <span class="font-semibold text-deep-text">{root.name}</span>
+              <span class="text-xs text-text-muted/60">
+                {root.memberCount} 成员 · {root.postCount} 帖
+              </span>
+            </div>
+            <div class="flex gap-1">
+              <button class="text-xs text-primary hover:underline">编辑</button>
+              <button class="text-xs text-red-500 hover:underline">删除</button>
+            </div>
+          </div>
+          <div class="divide-y divide-surface-3">
+            {getChildCategories(root.id).map((child) => (
+              <div class="flex items-center justify-between px-5 py-2.5">
+                <div class="flex items-center gap-2 text-sm">
+                  <Icon name={child.icon} class="w-4 h-4 text-text-muted" />
+                  <span class="text-deep-text">{child.name}</span>
+                  <span class="text-xs text-text-muted/60">
+                    {child.memberCount} 成员 · {child.postCount} 帖
+                  </span>
+                </div>
+                <div class="flex gap-1">
+                  <button class="text-xs text-primary hover:underline">编辑</button>
+                  <button class="text-xs text-text-muted hover:underline">
+                    {child.memberCount > 0 ? '禁用' : '删除'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</AdminLayout>

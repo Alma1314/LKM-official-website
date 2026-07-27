@@ -76,7 +76,7 @@ const clockYears = items.map((i) => shortYear(i.year));
           items.map((_item, i) => {
             const deg = i * step;
             return (
-              <div class="clock-tick" style={`transform: rotate(${deg}deg)`}>
+              <div class="clock-tick cursor-pointer" style={`transform: rotate(${deg}deg)`}>
                 <div class="clock-tick-mark" data-ct-tick={i}>
                   <span class="clock-tick-year">{clockYears[i]}</span>
                 </div>
@@ -428,6 +428,15 @@ const clockYears = items.map((i) => shortYear(i.year));
     allNextBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         currentIndex = currentIndex >= total - 1 ? 0 : currentIndex + 1;
+        update();
+      });
+    });
+
+    // 钟表刻度点击 → 切换到对应事件
+    clockCol.querySelectorAll('[data-ct-tick]').forEach((tick) => {
+      tick.addEventListener('click', () => {
+        const idx = parseInt(tick.getAttribute('data-ct-tick') || '0');
+        currentIndex = idx;
         update();
       });
     });
