@@ -7,10 +7,7 @@ import type {
   SiteConfig,
 } from '~/types/config';
 import { LinkPreset } from '~/types/config';
-import yaml from 'js-yaml';
-
-// Vite ?raw 导入 — 构建时将内容内联，运行时无需 fs.readFileSync
-import rawYaml from '~/config.yaml?raw';
+import projectConfigRaw from 'virtual:config';
 
 interface FuwariConfig {
   site?: Record<string, unknown>;
@@ -29,7 +26,7 @@ interface FuwariLinkItem {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const projectConfig: Record<string, any> = yaml.load(rawYaml) as any;
+const projectConfig: Record<string, any> = projectConfigRaw as any;
 const cfg = (projectConfig.fuwari || {}) as FuwariConfig;
 
 function presetFromString(s: string): LinkPreset {

@@ -93,6 +93,8 @@ const clockYears = items.map((i) => shortYear(i.year));
   /* ===== 容器与布局 ===== */
   .ct-root {
     width: 100%;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
   }
 
   .ct-layout {
@@ -119,6 +121,7 @@ const clockYears = items.map((i) => shortYear(i.year));
     display: flex;
     flex-direction: column;
     transition: transform 0.8s ease-in-out;
+    will-change: transform;
   }
 
   .ct-card {
@@ -151,7 +154,7 @@ const clockYears = items.map((i) => shortYear(i.year));
   .ct-card-desc {
     font-size: 15px;
     line-height: 1.8;
-    color: var(--color-neutral);
+    color: oklch(0.35 0.01 var(--hue));
   }
 
   /* ===== 箭头按钮 ===== */
@@ -235,6 +238,7 @@ const clockYears = items.map((i) => shortYear(i.year));
     z-index: 10;
     transform-origin: left center;
     transition: transform 0.8s ease-in-out;
+    will-change: transform;
   }
 
   .clock-pointer-line {
@@ -265,16 +269,12 @@ const clockYears = items.map((i) => shortYear(i.year));
     height: 2px;
     background-color: var(--color-primary);
     opacity: 0.25;
-    transition:
-      opacity 0.3s,
-      height 0.3s,
-      width 0.3s;
+    transition: opacity 0.3s;
+    will-change: opacity;
   }
 
   .clock-tick-active {
     opacity: 1;
-    height: 3px;
-    width: 7%;
   }
 
   .clock-tick-year {
@@ -283,9 +283,8 @@ const clockYears = items.map((i) => shortYear(i.year));
     left: calc(90% + 4px);
     font-size: 22px;
     font-family: ui-monospace, monospace;
-    color: var(--color-primary);
+    color: oklch(0.30 0.01 var(--hue));
     white-space: nowrap;
-    opacity: 0.5;
   }
 
   .clock-tick-active .clock-tick-year {
@@ -435,8 +434,9 @@ const clockYears = items.map((i) => shortYear(i.year));
   }
 
   document.addEventListener('astro:page-load', () => {
+    const schedule = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
     document.querySelectorAll('[data-clock-timeline]').forEach((el) => {
-      initClockTimeline(el as HTMLElement);
+      schedule(() => initClockTimeline(el as HTMLElement), { timeout: 3000 });
     });
   });
 </script>

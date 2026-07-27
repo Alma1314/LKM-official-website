@@ -1,8 +1,5 @@
 ---
 import '~/core/styles/tailwind.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import '../styles/variables.css';
 import '../styles/main.css';
 import '../styles/markdown.css';
@@ -395,7 +392,11 @@ function disableAnimation() {
   }
 
   /* Load settings when entering the site */
-  init();
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(init, { timeout: 2000 });
+  } else {
+    setTimeout(init, 1);
+  }
 
   const setup = () => {
     // TODO: temp solution to change the height of the banner
@@ -583,9 +584,11 @@ function disableAnimation() {
     );
   };
 
-  if (window.swup) {
-    setup();
-  } else {
-    document.addEventListener('swup:enable', setup);
+  if (document.querySelector('.custom-md img')) {
+    if (window.swup) {
+      setup();
+    } else {
+      document.addEventListener('swup:enable', setup);
+    }
   }
 </script>

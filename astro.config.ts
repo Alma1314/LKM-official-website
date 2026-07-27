@@ -9,8 +9,10 @@ import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
+import Unfonts from 'unplugin-fonts/astro';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
+import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { AstroIntegration } from 'astro';
@@ -27,6 +29,8 @@ import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
 import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
+import fs from 'node:fs';
+import yaml from 'js-yaml';
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
@@ -73,6 +77,46 @@ export default defineConfig({
         config: { forward: ['dataLayer.push'] },
       })
     ),
+
+    Unfonts({
+      fontsource: {
+        families: [
+          {
+            name: 'Noto Sans SC',
+            weights: [400, 500, 700],
+            fallback: {
+              name: 'Noto Sans SC Fallback',
+              category: 'sans-serif',
+              fallbacks: ['Microsoft YaHei', 'system-ui', 'Arial'],
+            },
+          },
+          {
+            name: 'Inter',
+            variable: true,
+            fallback: {
+              name: 'Inter Fallback',
+              category: 'sans-serif',
+            },
+          },
+          {
+            name: 'JetBrains Mono',
+            variable: true,
+            fallback: {
+              name: 'JetBrains Mono Fallback',
+              category: 'monospace',
+            },
+          },
+          {
+            name: 'Roboto',
+            weights: [400, 500, 700],
+            fallback: {
+              name: 'Roboto Fallback',
+              category: 'sans-serif',
+            },
+          },
+        ],
+      },
+    }),
 
     compress({
       CSS: false,
@@ -159,6 +203,27 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      compression({
+        algorithm: 'gzip',
+        ext: '.gz',
+      }),
+      compression({
+        algorithm: 'brotliCompress',
+        ext: '.br',
+      }),
+      {
+        name: 'virtual-config',
+        resolveId(id) {
+          if (id === 'virtual:config') return '\0virtual:config';
+        },
+        load(id) {
+          if (id === '\0virtual:config') {
+            const raw = fs.readFileSync('src/config.yaml', 'utf-8');
+            const parsed = yaml.load(raw);
+            return `export default ${JSON.stringify(parsed)};`;
+          }
+        },
+      },
       {
         name: 'exclude-yaml',
         resolveId(id) {
@@ -179,8 +244,31 @@ export default defineConfig({
     ssr: {
       noExternal: ['@iconify/svelte'],
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
+              return 'vendor-ui';
+            }
+            if (id.includes('node_modules/three')) {
+              return 'vendor-three';
+            }
+            if (id.includes('node_modules/katex') || id.includes('node_modules/rehype-katex')) {
+              return 'vendor-katex';
+            }
+            if (id.includes('node_modules/svelte') || id.includes('node_modules/@iconify/svelte')) {
+              return 'vendor-svelte';
+            }
+          },
+        },
+      },
+    },
     optimizeDeps: {
-      exclude: ['@iconify/svelte'],
+      exclude: ['@iconify/svelte', 'virtual:config'],
       include: ['react', 'react-dom', 'react-dom/client'],
     },
     css: {
