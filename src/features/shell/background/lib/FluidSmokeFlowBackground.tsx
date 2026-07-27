@@ -65,7 +65,9 @@ export default function FluidSmokeFlowBackground({
   const draw = useCallback(
     (frame: BackgroundFrame) => {
       const { ctx, width, height, mouse, delta, performance } = frame;
-      const multiplier = QUALITY_MULTIPLIER[performance.quality];
+      const { quality } = performance;
+      if (quality === 'low' && performance.reducedMotion) return;
+      const multiplier = QUALITY_MULTIPLIER[quality];
       if (performance.quality !== lastQualityRef.current) {
         createParticles(width, height, performance.quality);
       }
@@ -88,8 +90,9 @@ export default function FluidSmokeFlowBackground({
           if (dist < scaledInteractionRadius) {
             const force = (scaledInteractionRadius - dist) / scaledInteractionRadius;
             const angle = Math.atan2(dy, dx);
-            p.vx -= Math.cos(angle) * force * scaledInteractionStrength * motionStep;
-            p.vy -= Math.sin(angle) * force * scaledInteractionStrength * motionStep;
+            const effectiveStrength = quality === 'low' ? scaledInteractionStrength * 0.5 : scaledInteractionStrength;
+            p.vx -= Math.cos(angle) * force * effectiveStrength * motionStep;
+            p.vy -= Math.sin(angle) * force * effectiveStrength * motionStep;
           }
         }
 

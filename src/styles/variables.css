@@ -17,7 +17,7 @@
   --primary-content: #ffffff;
 
   /* fuwari 原有变量 */
-  --primary: oklch(0.7 0.14 var(--hue));
+  --primary: oklch(0.7 0.15 var(--hue));
   --page-bg: oklch(0.95 0.01 var(--hue));
   --card-bg: white;
   --surface-3: oklch(0.9 0.01 var(--hue));
@@ -82,7 +82,7 @@
 
   /* Admonition 颜色 */
   --admonitions-color-tip: oklch(0.7 0.14 180);
-  --admonitions-color-note: oklch(0.7 0.14 250);
+  --admonitions-color-note: oklch(0.55 0.15 250);
   --admonitions-color-important: oklch(0.7 0.14 310);
   --admonitions-color-warning: oklch(0.7 0.14 60);
   --admonitions-color-caution: oklch(0.6 0.2 25);

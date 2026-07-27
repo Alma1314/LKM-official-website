@@ -1,7 +1,9 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { parseColor, buildRgba, type ParsedColor } from './colorUtils';
+import { SpatialGrid } from './spatialGrid';
 
 export interface ParticlesBackgroundProps {
   particleCount?: number | null;
@@ -47,31 +49,6 @@ interface Ripple {
 const QUALITY_MULTIPLIER = { high: 1, medium: 0.68, low: 0.4 } as const;
 const BASE_FRAME_RATE = 60;
 
-function withAlpha(color: string, alpha: number) {
-  const clampedAlpha = Math.max(0, Math.min(1, alpha));
-  const hex = color.match(/^#([\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i)?.[1];
-  if (hex) {
-    const expanded = hex.length <= 4 ? [...hex].map((value) => value + value).join('') : hex;
-    const rgb = expanded.slice(0, 6);
-    const sourceAlpha = expanded.length === 8 ? parseInt(expanded.slice(6, 8), 16) / 255 : 1;
-    const red = parseInt(rgb.slice(0, 2), 16);
-    const green = parseInt(rgb.slice(2, 4), 16);
-    const blue = parseInt(rgb.slice(4, 6), 16);
-    return `rgba(${red}, ${green}, ${blue}, ${clampedAlpha * sourceAlpha})`;
-  }
-
-  const functional = color
-    .match(/^rgba?\(([^)]+)\)$/i)?.[1]
-    ?.split(',')
-    .map((value) => value.trim());
-  if (functional && functional.length >= 3) {
-    const sourceAlpha = functional.length === 4 ? Number(functional[3]) : 1;
-    return `rgba(${functional[0]}, ${functional[1]}, ${functional[2]}, ${clampedAlpha * sourceAlpha})`;
-  }
-
-  return color;
-}
-
 export default function ParticlesBackground({
   particleCount = null,
   mouseRadius = 150,
@@ -92,6 +69,14 @@ export default function ParticlesBackground({
   const particleColor = propParticleColor || (mode === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)');
   const connectionColor = propConnectionColor || (mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.08)');
   const rippleColor = propRippleColor || (mode === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.08)');
+
+  const parsedParticleColor = useMemo(() => parseColor(particleColor), [particleColor]);
+  const parsedConnectionColor = useMemo(() => parseColor(connectionColor), [connectionColor]);
+  const parsedRippleColor = useMemo(() => parseColor(rippleColor), [rippleColor]);
+
+  function fastRgba(c: ParsedColor, a: number): string {
+    return buildRgba(c.r, c.g, c.b, Math.max(0, Math.min(1, a)));
+  }
 
   const particlesRef = useRef<Particle[]>([]);
   const backgroundRef = useRef<Particle[]>([]);
@@ -156,9 +141,10 @@ export default function ParticlesBackground({
   const draw = useCallback(
     (frame: BackgroundFrame) => {
       const { ctx, width, height, mouse, time, delta, performance } = frame;
-      const multiplier = QUALITY_MULTIPLIER[performance.quality];
+      const { quality, reducedMotion } = performance;
+      const multiplier = QUALITY_MULTIPLIER[quality];
       const motionStep = delta * BASE_FRAME_RATE;
-      const motionScale = performance.reducedMotion ? 0.05 : motionStep;
+      const motionScale = reducedMotion ? 0.05 : motionStep;
       const scaledMouseRadius = mouseRadius * multiplier;
       const scaledConnectionDistance = connectionDistance * multiplier;
       const scaledConnectionOpacity = connectionOpacityMultiplier * multiplier;
@@ -168,25 +154,27 @@ export default function ParticlesBackground({
       if (
         width !== lastSizeRef.current.width ||
         height !== lastSizeRef.current.height ||
-        performance.quality !== lastQualityRef.current
+        quality !== lastQualityRef.current
       ) {
         lastSizeRef.current = { width, height };
-        lastQualityRef.current = performance.quality;
+        lastQualityRef.current = quality;
         const { particles, background } = createParticles(width, height, multiplier);
         particlesRef.current = particles;
         backgroundRef.current = background;
       }
 
       // 消耗每帧产生的涟漪
-      for (const r of frame.ripples) {
-        ripplesRef.current.push({
-          x: r.x,
-          y: r.y,
-          radius: 0,
-          maxRadius: rippleMaxRadius,
-          opacity: 1,
-          growing: true,
-        });
+      if (quality !== 'low') {
+        for (const r of frame.ripples) {
+          ripplesRef.current.push({
+            x: r.x,
+            y: r.y,
+            radius: 0,
+            maxRadius: rippleMaxRadius,
+            opacity: 1,
+            growing: true,
+          });
+        }
       }
 
       // 更新粒子
@@ -201,7 +189,7 @@ export default function ParticlesBackground({
         const driftX = Math.cos(particle.randomDirection + time * 0.1) * 0.3;
         const driftY = Math.sin(particle.randomDirection + time * 0.1) * 0.3;
 
-        if (!performance.reducedMotion) {
+        if (!reducedMotion) {
           particle.vx += (driftX * 0.01 + randomX * 0.001) * motionStep;
           particle.vy += (driftY * 0.01 + randomY * 0.001) * motionStep;
 
@@ -211,8 +199,11 @@ export default function ParticlesBackground({
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < scaledMouseRadius) {
               const force = (scaledMouseRadius - distance) / scaledMouseRadius;
-              particle.vx += dx * force * 0.008 * particleSpeedMultiplier * multiplier * motionStep;
-              particle.vy += dy * force * 0.008 * particleSpeedMultiplier * multiplier * motionStep;
+              const interactionMultiplier = quality === 'low' ? 0.5 : 1;
+              particle.vx +=
+                dx * force * 0.008 * particleSpeedMultiplier * multiplier * motionStep * interactionMultiplier;
+              particle.vy +=
+                dy * force * 0.008 * particleSpeedMultiplier * multiplier * motionStep * interactionMultiplier;
             }
           }
 
@@ -258,15 +249,17 @@ export default function ParticlesBackground({
       });
 
       // 更新涟漪
-      ripplesRef.current = ripplesRef.current.filter((ripple) => {
-        if (ripple.growing) {
-          ripple.radius += rippleGrowthRate * motionScale;
-          ripple.opacity = 1 - ripple.radius / ripple.maxRadius;
-          if (ripple.radius >= ripple.maxRadius) ripple.growing = false;
-          return true;
-        }
-        return false;
-      });
+      if (quality !== 'low') {
+        ripplesRef.current = ripplesRef.current.filter((ripple) => {
+          if (ripple.growing) {
+            ripple.radius += rippleGrowthRate * motionScale;
+            ripple.opacity = 1 - ripple.radius / ripple.maxRadius;
+            if (ripple.radius >= ripple.maxRadius) ripple.growing = false;
+            return true;
+          }
+          return false;
+        });
+      }
 
       // 绘制
       ctx.clearRect(0, 0, width, height);
@@ -275,25 +268,36 @@ export default function ParticlesBackground({
       backgroundRef.current.forEach((particle) => {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = withAlpha(particleColor, particle.opacity * 0.5 * multiplier);
+        ctx.fillStyle = fastRgba(parsedParticleColor, particle.opacity * 0.5 * multiplier * parsedParticleColor.a);
         ctx.fill();
       });
 
-      // 连接线
-      ctx.lineWidth = 1;
-      for (let i = 0; i < particlesRef.current.length; i++) {
-        for (let j = i + 1; j < particlesRef.current.length; j++) {
-          const dx = particlesRef.current[i].x - particlesRef.current[j].x;
-          const dy = particlesRef.current[i].y - particlesRef.current[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < scaledConnectionDistance) {
-            const opacity =
-              ((scaledConnectionDistance - distance) / scaledConnectionDistance) * scaledConnectionOpacity;
-            ctx.strokeStyle = withAlpha(connectionColor, opacity);
-            ctx.beginPath();
-            ctx.moveTo(particlesRef.current[i].x, particlesRef.current[i].y);
-            ctx.lineTo(particlesRef.current[j].x, particlesRef.current[j].y);
-            ctx.stroke();
+      // 连接线 — 空间哈希邻域查询
+      if (quality !== 'low') {
+        ctx.lineWidth = 1;
+        const particles = particlesRef.current;
+        const grid = new SpatialGrid<{ index: number; x: number; y: number }>(scaledConnectionDistance);
+        for (let i = 0; i < particles.length; i++) {
+          grid.insert(i, particles[i].x, particles[i].y, { index: i, x: particles[i].x, y: particles[i].y });
+        }
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          const neighbors = grid.query(p.x, p.y, scaledConnectionDistance);
+          for (const neighbor of neighbors) {
+            if (neighbor.index <= i) continue;
+            const j = neighbor.index;
+            const dx = p.x - particles[j].x;
+            const dy = p.y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < scaledConnectionDistance) {
+              const opacity =
+                ((scaledConnectionDistance - distance) / scaledConnectionDistance) * scaledConnectionOpacity;
+              ctx.strokeStyle = fastRgba(parsedConnectionColor, opacity * parsedConnectionColor.a);
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
           }
         }
       }
@@ -302,7 +306,7 @@ export default function ParticlesBackground({
       particlesRef.current.forEach((particle) => {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = withAlpha(particleColor, particle.opacity * multiplier);
+        ctx.fillStyle = fastRgba(parsedParticleColor, particle.opacity * multiplier * parsedParticleColor.a);
         ctx.fill();
 
         if (particle.shooting) {
@@ -316,13 +320,15 @@ export default function ParticlesBackground({
       });
 
       // 涟漪
-      ripplesRef.current.forEach((ripple) => {
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = withAlpha(rippleColor, ripple.opacity * 0.8 * multiplier);
-        ctx.lineWidth = scaledRippleLineWidth;
-        ctx.stroke();
-      });
+      if (quality !== 'low') {
+        ripplesRef.current.forEach((ripple) => {
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = fastRgba(parsedRippleColor, ripple.opacity * 0.8 * multiplier * parsedRippleColor.a);
+          ctx.lineWidth = scaledRippleLineWidth;
+          ctx.stroke();
+        });
+      }
     },
     [
       createParticles,

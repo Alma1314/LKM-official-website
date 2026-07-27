@@ -758,6 +758,7 @@ export default function DNASparkBackground3D({
 
     let lastRenderTime: number | null = null;
     let nextRenderTime: number | null = null;
+    let raycasterFrameCounter = 0;
     const loop = (now: number) => {
       rafIdRef.current = requestAnimationFrame(loop);
       const interval = performance.frameInterval;
@@ -840,7 +841,10 @@ export default function DNASparkBackground3D({
       }
 
       updateClickRipples3D(frameScale);
-      updateGlowEffects();
+      raycasterFrameCounter++;
+      if (raycasterFrameCounter % 3 === 0) {
+        updateGlowEffects();
+      }
       if (rendererRef.current && sceneRef.current && cameraRef.current) {
         rendererRef.current.render(sceneRef.current, cameraRef.current);
       }

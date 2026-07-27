@@ -1,7 +1,8 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { parseColor, buildRgba } from './colorUtils';
 
 export interface OrbitClusterBackgroundProps {
   clusterCount?: number;
@@ -58,6 +59,7 @@ export default function OrbitClusterBackground({
 }: OrbitClusterBackgroundProps) {
   const mode = useColorMode();
   const color = propColor || (mode === 'dark' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.7)');
+  const parsedColor = useMemo(() => parseColor(color), [color]);
   const clustersRef = useRef<Cluster[]>([]);
   const gravityWarpRef = useRef<GravityWarp | null>(null);
   const lastSizeRef = useRef<{ width: number; height: number }>({ width: 0, height: 0 });
@@ -122,7 +124,12 @@ export default function OrbitClusterBackground({
       const mouseX = mouse.x ?? width / 2;
       const mouseY = mouse.y ?? height / 2;
 
-      clustersRef.current.forEach((cluster) => {
+      const quality = frame.performance.quality;
+      const visibleClusters =
+        quality === 'low'
+          ? clustersRef.current.slice(0, Math.max(2, Math.floor(clustersRef.current.length * 0.4)))
+          : clustersRef.current;
+      visibleClusters.forEach((cluster) => {
         cluster.particles.forEach((p) => {
           p.angle += p.speed;
 
@@ -146,7 +153,7 @@ export default function OrbitClusterBackground({
 
           ctx.beginPath();
           ctx.arc(x, y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = color.replace(/[\d.]+(?=\))/, p.opacity.toFixed(2));
+          ctx.fillStyle = buildRgba(parsedColor.r, parsedColor.g, parsedColor.b, p.opacity);
           ctx.fill();
         });
       });

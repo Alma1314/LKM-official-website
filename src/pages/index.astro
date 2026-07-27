@@ -99,10 +99,14 @@ const metadata = {
               <img
                 src={m.avatar.src}
                 alt={m.name}
+                width={96}
+                height={96}
                 class="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover shrink-0 sm:mb-3"
+                loading="lazy"
+                decoding="async"
               />
               <div class="flex-1 min-w-0">
-                <h4 class="font-bold text-lg text-deep-text">{m.name}</h4>
+                <h3 class="font-bold text-lg text-deep-text">{m.name}</h3>
                 <p class="text-xs text-text-muted mt-1">{m.desc}</p>
               </div>
             </div>

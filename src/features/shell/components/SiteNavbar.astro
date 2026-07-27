@@ -1,0 +1,14 @@
+---
+import FuwariNavbar from './FuwariNavbar.astro';
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<div id={id || 'navbar-wrapper'} class:list={['sticky top-0 z-50 bg-card-bg', className]}>
+  <FuwariNavbar />
+</div>

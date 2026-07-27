@@ -1,8 +1,7 @@
-import yaml from 'js-yaml';
-import rawYaml from '~/config.yaml?raw';
+import projectConfigRaw from 'virtual:config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const projectConfig: Record<string, any> = yaml.load(rawYaml) as any;
+const projectConfig: Record<string, any> = projectConfigRaw as any;
 
 interface SharedSiteConfig {
   name: string;

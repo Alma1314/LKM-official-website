@@ -15,5 +15,12 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist/", "reference/", "packages/*/src", "packages/*/__tests__", "packages/*/node_modules"]
+  "exclude": [
+    "dist/",
+    "reference/",
+    "packages/*/dist",
+    "packages/*/src",
+    "packages/*/__tests__",
+    "packages/*/node_modules"
+  ]
 }

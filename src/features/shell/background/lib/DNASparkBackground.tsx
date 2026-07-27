@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { ObjectPool } from './objectPool';
 
 export interface DNASparkBackgroundProps {
   sparkColor?: string;
@@ -77,6 +78,19 @@ export default function DNASparkBackground({
   const particleColor = propParticleColor || (mode === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)');
   const connectionColor = propConnectionColor || (mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)');
   const rippleColor = propRippleColor || (mode === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.08)');
+
+  const ripplePoolRef = useRef(
+    new ObjectPool<LocalRipple>(
+      () => ({ x: 0, y: 0, radius: 0, opacity: 0 }),
+      (r) => {
+        r.x = 0;
+        r.y = 0;
+        r.radius = 0;
+        r.opacity = 0;
+      },
+      50
+    )
+  );
 
   const particlesRef = useRef<Particle[]>([]);
   const basePairsRef = useRef<BasePair[]>([]);
@@ -183,25 +197,33 @@ export default function DNASparkBackground({
       }
 
       // 消耗每帧涟漪批次
-      for (const r of frame.ripples) {
-        ripplesRef.current.push({ x: r.x, y: r.y, radius: 0, opacity: 0.8 });
-        // 点击时触发破碎动画
-        if (!isShatteringRef.current && initialAnimationCompleteRef.current) {
-          isShatteringRef.current = true;
-          shatterProgressRef.current = 0;
-          basePairsRef.current.forEach((basePair) => {
-            const centerX = width / 2;
-            const centerY = height / 2;
-            const angle1 = Math.atan2(basePair.y1 - centerY, basePair.x1 - centerX);
-            basePair.velocityX = Math.cos(angle1) * 10;
-            basePair.velocityY = Math.sin(angle1) * 10;
-            basePair.startX1 = basePair.x1;
-            basePair.startY1 = basePair.y1;
-            basePair.startX2 = basePair.x2;
-            basePair.startY2 = basePair.y2;
-            basePair.animationProgress = 0;
-            basePair.trail = [];
-          });
+      const quality = frame.performance.quality;
+      if (quality !== 'low') {
+        for (const r of frame.ripples) {
+          const localRipple = ripplePoolRef.current.acquire();
+          localRipple.x = r.x;
+          localRipple.y = r.y;
+          localRipple.radius = 0;
+          localRipple.opacity = 0.8;
+          ripplesRef.current.push(localRipple);
+          // 点击时触发破碎动画
+          if (!isShatteringRef.current && initialAnimationCompleteRef.current) {
+            isShatteringRef.current = true;
+            shatterProgressRef.current = 0;
+            basePairsRef.current.forEach((basePair) => {
+              const centerX = width / 2;
+              const centerY = height / 2;
+              const angle1 = Math.atan2(basePair.y1 - centerY, basePair.x1 - centerX);
+              basePair.velocityX = Math.cos(angle1) * 10;
+              basePair.velocityY = Math.sin(angle1) * 10;
+              basePair.startX1 = basePair.x1;
+              basePair.startY1 = basePair.y1;
+              basePair.startX2 = basePair.x2;
+              basePair.startY2 = basePair.y2;
+              basePair.animationProgress = 0;
+              basePair.trail = [];
+            });
+          }
         }
       }
 
@@ -708,25 +730,31 @@ export default function DNASparkBackground({
       ctx.globalAlpha = 1;
 
       // 更新点击涟漪
-      ripplesRef.current = ripplesRef.current.filter((ripple) => {
-        ripple.radius += 5;
-        ripple.opacity -= 0.02;
-        return ripple.opacity > 0;
-      });
+      if (quality !== 'low') {
+        ripplesRef.current = ripplesRef.current.filter((ripple) => {
+          ripple.radius += 5;
+          ripple.opacity -= 0.02;
+          if (ripple.opacity <= 0) {
+            ripplePoolRef.current.release(ripple);
+            return false;
+          }
+          return true;
+        });
 
-      // 绘制点击涟漪
-      ripplesRef.current.forEach((ripple) => {
-        ctx.globalAlpha = ripple.opacity;
-        ctx.strokeStyle = rippleColor;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.globalAlpha = ripple.opacity * 0.5;
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius * 0.5, 0, Math.PI * 2);
-        ctx.stroke();
-      });
+        // 绘制点击涟漪
+        for (const ripple of ripplesRef.current) {
+          ctx.globalAlpha = ripple.opacity;
+          ctx.strokeStyle = rippleColor;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.globalAlpha = ripple.opacity * 0.5;
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius * 0.5, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
       ctx.globalAlpha = 1;
     },
     [sparkColor, strandColor, particleColor, connectionColor, rippleColor]

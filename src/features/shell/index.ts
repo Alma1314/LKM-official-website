@@ -6,7 +6,6 @@ export { default as ShellFuwariNavbar } from './components/FuwariNavbar.astro';
 export { default as ShellFuwariFooter } from './components/FuwariFooter.astro';
 export { default as ShellLogo } from './components/Logo.astro';
 export { default as ShellFavicons } from './components/Favicons.astro';
-export { default as ShellNavMenuPanel } from './components/NavMenuPanel.astro';
 export { default as ShellProfile } from './components/Profile.astro';
 export { default as ShellBlogSidePanel } from './components/BlogSidePanel.astro';
 export { default as ShellTOC } from './components/TOC.astro';

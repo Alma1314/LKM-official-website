@@ -58,8 +58,13 @@ export default function DreamyHaloBackground({
   const draw = useCallback(
     (frame: BackgroundFrame) => {
       const { ctx, width, height, time } = frame;
+      const quality = frame.performance.quality;
       ctx.clearRect(0, 0, width, height);
-      halosRef.current.forEach((halo, index) => {
+      const visibleHalos =
+        quality === 'low'
+          ? halosRef.current.slice(0, Math.max(3, Math.floor(halosRef.current.length * 0.3)))
+          : halosRef.current;
+      visibleHalos.forEach((halo, index) => {
         const pulse = Math.sin(time + halo.phase) * pulseAmplitude;
         const gradient = ctx.createRadialGradient(halo.x, halo.y, 0, halo.x, halo.y, halo.r + pulse);
         const hueShift = (baseHue + index * 10 + time * 10) % 360;

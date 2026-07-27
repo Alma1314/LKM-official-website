@@ -51,6 +51,8 @@ class BackgroundErrorBoundary extends Component<
 }
 
 export default function BackgroundSwitcher() {
+  if (typeof window === 'undefined') return null;
+
   const [currentBg, setCurrentBg] = useState<BackgroundId>(getInitialBackground);
   const [isDark, setIsDark] = useState(getIsDark);
   const [panelOpen, setPanelOpen] = useState(false);

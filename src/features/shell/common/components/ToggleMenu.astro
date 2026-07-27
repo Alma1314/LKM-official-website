@@ -6,24 +6,32 @@ export interface Props {
 
 const {
   label = 'Toggle Menu',
-  class: className = 'flex flex-col h-12 w-12 rounded justify-center items-center cursor-pointer group',
+  class: className = 'flex flex-col h-12 w-12 rounded justify-center items-center cursor-pointer',
 } = Astro.props;
 ---
 
-<button type="button" class={className} aria-label={label} data-aw-toggle-menu>
+<button type="button" class={className} aria-label={label} data-mobile-menu-trigger="mobile-nav-header">
   <span class="sr-only">{label}</span>
   <slot>
     <span
       aria-hidden="true"
-      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80 group-[.expanded]:rotate-45 group-[.expanded]:translate-y-2.5"
-    ></span>
+      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80"></span>
     <span
       aria-hidden="true"
-      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80 group-[.expanded]:opacity-0"
-    ></span>
+      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80"></span>
     <span
       aria-hidden="true"
-      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80 group-[.expanded]:-rotate-45 group-[.expanded]:-translate-y-2.5"
-    ></span>
+      class="h-0.5 w-6 my-1 rounded-full bg-base-content transition ease transform duration-200 opacity-80"></span>
   </slot>
 </button>
+
+<script is:inline>
+  (function () {
+    const trigger = document.querySelector('[data-mobile-menu-trigger="mobile-nav-header"]');
+    if (trigger) {
+      trigger.addEventListener('click', () => {
+        window.__mobileNavPanel?.['mobile-nav-header']?.toggle();
+      });
+    }
+  })();
+</script>

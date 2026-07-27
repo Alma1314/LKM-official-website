@@ -1,7 +1,9 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { parseColor, colorToString } from './colorUtils';
+import { SpatialGrid } from './spatialGrid';
 
 export interface ConstellationFieldBackgroundProps {
   particleColor?: string;
@@ -83,6 +85,9 @@ export default function ConstellationFieldBackground({
   const mode = useColorMode();
   const particleColor = propParticleColor || (mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.5)');
   const connectionColor = propConnectionColor || (mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.08)');
+
+  const parsedParticleColor = useMemo(() => parseColor(particleColor), [particleColor]);
+  const parsedConnectionColor = useMemo(() => parseColor(connectionColor), [connectionColor]);
 
   const particlesRef = useRef<Particle[]>([]);
   const shootingStarsRef = useRef<ShootingStar[]>([]);
@@ -195,23 +200,30 @@ export default function ConstellationFieldBackground({
           for (let i = 1; i < p.trail.length; i++) {
             ctx.lineTo(p.trail[i].x, p.trail[i].y);
           }
-          ctx.strokeStyle = particleColor.replace(/\d?\.\d+(?=\))/, '0.1');
+          ctx.strokeStyle = colorToString(parsedParticleColor, 0.1);
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       });
 
-      // 连接线
-      for (let i = 0; i < particlesRef.current.length; i++) {
-        for (let j = i + 1; j < particlesRef.current.length; j++) {
-          const p1 = particlesRef.current[i];
-          const p2 = particlesRef.current[j];
+      // 连接线 — 空间哈希
+      const grid = new SpatialGrid<{ index: number; x: number; y: number }>(maxDistance);
+      const pts = particlesRef.current;
+      for (let i = 0; i < pts.length; i++) {
+        grid.insert(i, pts[i].x, pts[i].y, { index: i, x: pts[i].x, y: pts[i].y });
+      }
+      for (let i = 0; i < pts.length; i++) {
+        const p1 = pts[i];
+        const neighbors = grid.query(p1.x, p1.y, maxDistance);
+        for (const neighbor of neighbors) {
+          if (neighbor.index <= i) continue;
+          const p2 = pts[neighbor.index];
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < maxDistance) {
             const opacity = (maxDistance - distance) / maxDistance;
-            ctx.strokeStyle = connectionColor.replace(/\d?\.\d+(?=\))/, opacity.toFixed(2));
+            ctx.strokeStyle = colorToString(parsedConnectionColor, opacity * parsedConnectionColor.a);
             ctx.lineWidth = connectionLineWidth;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);

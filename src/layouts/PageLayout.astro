@@ -1,6 +1,6 @@
 ---
 import Layout from './BaseLayout.astro';
-import Navbar from '~/features/shell/components/FuwariNavbar.astro';
+import SiteNavbar from '~/features/shell/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
 import { footerData } from '~/core/navigation';
@@ -15,11 +15,7 @@ const { metadata } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
-  <slot name="header">
-    <div class="sticky top-0 z-50 bg-card-bg">
-      <Navbar />
-    </div>
-  </slot>
+  <SiteNavbar />
   <main>
     <slot />
   </main>

@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
+import { SpatialGrid } from './spatialGrid';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
 
@@ -222,10 +223,16 @@ export default function QuantumWebBackground({
         connectionFrameRef.current === 1 || quality !== 'low' || connectionFrameRef.current % 3 === 0;
       if (shouldUpdateConnections) {
         const newConnections: Connection[] = [];
+        const grid = new SpatialGrid<{ index: number; x: number; y: number }>(scaledConnectionDistance);
         for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const p1 = particles[i];
-            const p2 = particles[j];
+          grid.insert(i, particles[i].x, particles[i].y, { index: i, x: particles[i].x, y: particles[i].y });
+        }
+        for (let i = 0; i < particles.length; i++) {
+          const p1 = particles[i];
+          const neighbors = grid.query(p1.x, p1.y, scaledConnectionDistance);
+          for (const neighbor of neighbors) {
+            if (neighbor.index <= i) continue;
+            const p2 = particles[neighbor.index];
             const dx = p1.x - p2.x;
             const dy = p1.y - p2.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
