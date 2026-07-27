@@ -79,40 +79,15 @@ export default defineConfig({
     ),
 
     Unfonts({
-      fontsource: {
+      google: {
         families: [
           {
             name: 'Noto Sans SC',
-            weights: [400, 500, 700],
-            fallback: {
-              name: 'Noto Sans SC Fallback',
-              category: 'sans-serif',
-              fallbacks: ['Microsoft YaHei', 'system-ui', 'Arial'],
-            },
-          },
-          {
-            name: 'Inter',
-            variable: true,
-            fallback: {
-              name: 'Inter Fallback',
-              category: 'sans-serif',
-            },
+            styles: 'wght@400;500;700',
           },
           {
             name: 'JetBrains Mono',
-            variable: true,
-            fallback: {
-              name: 'JetBrains Mono Fallback',
-              category: 'monospace',
-            },
-          },
-          {
-            name: 'Roboto',
-            weights: [400, 500, 700],
-            fallback: {
-              name: 'Roboto Fallback',
-              category: 'sans-serif',
-            },
+            styles: 'wght@400;500;700',
           },
         ],
       },
