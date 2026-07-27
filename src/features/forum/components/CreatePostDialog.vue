@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div
       v-if="visible"
-      class="fixed inset-0 bg-black/40 z-[150] flex items-start justify-center pt-12 overflow-y-auto"
+      class="fixed inset-0 bg-black/40 dark:bg-black/70 z-[150] flex items-start justify-center pt-12 overflow-y-auto"
       @click.self="close"
     >
       <div class="bg-card-bg rounded-2xl shadow-2xl w-full max-w-2xl mx-4 mb-12">

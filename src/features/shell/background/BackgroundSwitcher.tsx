@@ -17,16 +17,11 @@ function getLazyComponent(id: string, load: () => Promise<{ default: ComponentTy
 }
 
 function getIsDark(): boolean {
-  if (typeof document === 'undefined') return true;
+  if (typeof document === 'undefined') return false;
   return document.documentElement.classList.contains('dark');
 }
 
 function getInitialBackground(): BackgroundId {
-  if (typeof window === 'undefined') return DEFAULT_BACKGROUND;
-  const stored = localStorage.getItem('interactiveBackground');
-  if (stored && BACKGROUNDS.some((b) => b.id === stored)) {
-    return stored as BackgroundId;
-  }
   return DEFAULT_BACKGROUND;
 }
 
@@ -51,8 +46,6 @@ class BackgroundErrorBoundary extends Component<
 }
 
 export default function BackgroundSwitcher() {
-  if (typeof window === 'undefined') return null;
-
   const [currentBg, setCurrentBg] = useState<BackgroundId>(getInitialBackground);
   const [isDark, setIsDark] = useState(getIsDark);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -139,13 +132,25 @@ export default function BackgroundSwitcher() {
     return () => io.disconnect();
   }, []);
 
-  // 挂载时预加载默认背景和存储的背景
+  // 挂载时同步客户端状态并预加载
   useEffect(() => {
+    // 同步 localStorage 中的背景选择
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('interactiveBackground');
+      if (stored && BACKGROUNDS.some((b) => b.id === stored) && stored !== DEFAULT_BACKGROUND) {
+        setCurrentBg(stored as BackgroundId);
+      }
+    }
+    // 预加载默认背景和存储的背景
     const defaultEntry = BACKGROUNDS.find((b) => b.preload);
     if (defaultEntry) {
       void defaultEntry.load();
     }
-    const storedId = getInitialBackground();
+    const storedId = (() => {
+      if (typeof window === 'undefined') return DEFAULT_BACKGROUND;
+      const s = localStorage.getItem('interactiveBackground');
+      return s && BACKGROUNDS.some((b) => b.id === s) ? s : DEFAULT_BACKGROUND;
+    })();
     const stored = BACKGROUNDS.find((b) => b.id === storedId);
     if (stored) void stored.load();
   }, []);
@@ -239,7 +244,8 @@ export default function BackgroundSwitcher() {
         )}
       </div>
 
-      {portalRoot && createPortal(controls, portalRoot)}
+      {/* Controls: SSR renders in-tree; client portals to hero section */}
+      {portalRoot ? createPortal(controls, portalRoot) : controls}
     </div>
   );
 }

@@ -20,7 +20,8 @@ const { id, links = [], title = '导航' } = Astro.props;
 
 <div id={id} data-mobile-nav-panel class="fixed inset-0 z-[100] pointer-events-none" aria-hidden="true">
   <!-- overlay -->
-  <div data-nav-overlay class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"></div>
+  <div data-nav-overlay class="absolute inset-0 bg-black/50 dark:bg-black/70 opacity-0 transition-opacity duration-300">
+  </div>
 
   <!-- panel -->
   <div

@@ -15,6 +15,8 @@ import tailwindcss from '@tailwindcss/vite';
 import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import lilypond from 'astro-lilypond';
+import mermaid from 'astro-mermaid';
 import type { AstroIntegration } from 'astro';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
@@ -100,6 +102,12 @@ export default defineConfig({
       JavaScript: false,
       SVG: false,
       Logger: 1,
+    }),
+
+    lilypond(),
+    mermaid({
+      theme: 'default',
+      autoTheme: true,
     }),
   ],
 

@@ -85,8 +85,8 @@
   </button>
 
   {#if isOpen}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       class="absolute right-0 top-full mt-2 w-80 max-h-96 overflow-y-auto card-base float-panel p-2 z-50 shadow-2xl"
       onclick={(e) => e.stopPropagation()}

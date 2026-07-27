@@ -9,6 +9,13 @@
 
 @plugin '@tailwindcss/typography';
 
+/* 暗色模式下全局文字颜色自动适配 */
+@layer base {
+  .dark .text-deep-text {
+    color: oklch(0.85 0.01 var(--hue));
+  }
+}
+
 /* 暗色模式变体 — 使用 :root.dark / [data-theme='dark'] */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -235,8 +242,9 @@
 /* 团队成员/项目团队卡片 */
 @utility profile-card {
   position: relative;
-  background: light-dark(rgba(255, 255, 255, 0.95), rgba(10, 10, 12, 0.92));
+  background: var(--card-bg);
   border-radius: 16px;
+  border: 1px solid var(--surface-3);
   box-shadow:
     0 8px 32px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
     0 0 0 0px transparent;
@@ -263,6 +271,17 @@
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
+/* 暗色模式下统一禁用卡片阴影 */
+.dark .profile-card,
+.dark .profile-card:hover {
+  box-shadow: none;
+}
+
+/* 暗色模式下 card-shadow 工具类 */
+.dark .card-shadow {
+  filter: none;
+}
+
 @utility card-hover {
   transition:
     transform 200ms ease,
@@ -274,6 +293,11 @@
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--color-base-content) 20%, transparent);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+  .dark .card-hover:hover {
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 1px color-mix(in srgb, var(--color-primary) 15%, transparent);
   }
 }
 
