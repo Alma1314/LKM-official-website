@@ -4,6 +4,8 @@ import Logo from '~/features/shell/components/Logo.astro';
 import ToggleTheme from '~/features/shell/common/components/ToggleTheme.astro';
 import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
+import NotificationBell from '~/features/notification/components/NotificationBell.svelte';
+import UserAvatarMenu from '~/features/shell/components/user/UserAvatarMenu.vue';
 
 import { getHomePermalink } from '~/core/utils/permalinks';
 import { trimSlash, getAsset } from '~/core/utils/permalinks';
@@ -147,7 +149,9 @@ const mobileLinks = toMobileLinks(links);
       ]}
     >
       <div class="items-center flex justify-between w-full md:w-auto">
-        <div class="flex gap-1">
+        <div class="flex items-center gap-1">
+          <NotificationBell client:load />
+          <UserAvatarMenu client:only="vue" />
           {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
           {
             showGithub && (

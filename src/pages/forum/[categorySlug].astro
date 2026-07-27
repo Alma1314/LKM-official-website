@@ -1,0 +1,124 @@
+---
+import Layout from '~/layouts/SidebarLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getCategoryBySlug, getChildCategories, forumCategories } from '~/features/forum/data/categories';
+import { getPostsByCategory, getPinnedPosts, getFeaturedPosts, type MockPost } from '~/features/forum/data/mock-posts';
+import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import PostCard from '~/features/forum/components/PostCard.astro';
+
+export function getStaticPaths() {
+  return forumCategories.map((c) => ({ params: { categorySlug: c.slug } }));
+}
+
+const { categorySlug } = Astro.params;
+const category = getCategoryBySlug(categorySlug || '');
+
+if (!category) {
+  return Astro.redirect('/forum');
+}
+
+const isParent = !category.parentId;
+const children = isParent ? getChildCategories(category.id) : [];
+const allCategoryIds = isParent ? [category.id, ...children.map((c) => c.id)] : [category.id];
+
+// 获取所有相关帖子
+let allPosts: MockPost[] = [];
+for (const cid of allCategoryIds) {
+  allPosts = allPosts.concat(getPostsByCategory(cid));
+}
+
+// 排序：置顶优先，然后按时间
+allPosts.sort((a, b) => {
+  if (a.isPinned && !b.isPinned) return -1;
+  if (!a.isPinned && b.isPinned) return 1;
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+});
+
+// 如果是父分类，展示其子分类列表
+const childCategories = isParent ? children : [];
+// 如果是子分类，显示对应的标签过滤数据
+const categoryLabel = category.name;
+const pinnedPosts = allPosts.filter((p) => p.isPinned);
+const featuredPosts = allPosts.filter((p) => p.isFeatured);
+
+const metadata = { title: `${categoryLabel} —— 理科迷` };
+
+const tabs = [
+  { key: 'latest', label: '最新' },
+  { key: 'featured', label: '精华' },
+  { key: 'hot', label: '最热' },
+];
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/forum/${categorySlug}`}>
+  <div class="space-y-6">
+    <!-- 板块头部 -->
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        <a href="/forum" class="text-text-muted hover:text-primary transition-colors">
+          <Icon name="tabler:arrow-left" class="w-5 h-5" />
+        </a>
+        <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+          <Icon name={category.icon} class="w-6 h-6 text-primary" />
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-deep-text">{category.name}</h1>
+          <p class="text-sm text-text-muted">
+            {category.memberCount} 成员 · {category.postCount} 帖子 · 今日 {category.todayPostCount}
+          </p>
+        </div>
+      </div>
+
+      <p class="text-sm text-text-muted mb-4">{category.description}</p>
+
+      <div class="flex items-center gap-2">
+        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5">
+          <Icon name="tabler:heart-plus" class="w-4 h-4" />
+          关注
+        </button>
+        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5">
+          <Icon name="tabler:pencil-plus" class="w-4 h-4" />
+          发帖
+        </button>
+      </div>
+    </div>
+
+    <!-- 子分类列表（一级分类时显示） -->
+    {
+      childCategories.length > 0 && (
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+          {childCategories.map((child) => (
+            <a
+              href={`/forum/${child.slug}`}
+              class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-3/50 hover:bg-primary/10 transition-colors text-sm"
+            >
+              <Icon name={child.icon} class="w-4 h-4 text-primary shrink-0" />
+              <span class="text-deep-text font-medium truncate">{child.name}</span>
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Tab 切换 -->
+    <div class="hidden">
+      <!-- 预留给后续 CategoryTabs 的动态 client:only 版本 -->
+      <!-- 当前纯静态展示：按最新/精华/最热 切换通过 query param ？ -->
+    </div>
+
+    <!-- 帖子列表 -->
+    <div class="space-y-3">
+      {allPosts.length > 0 ? (
+        allPosts.map((post) => <PostCard post={post} />)
+      ) : (
+        <div class="bg-card-bg border border-surface-3 rounded-xl p-12 text-center">
+          <Icon name="tabler:article-off" class="w-12 h-12 text-text-muted/30 mx-auto mb-3" />
+          <p class="text-text-muted">暂无帖子</p>
+          <button type="button" class="mt-3 btn-primary px-4 py-2 rounded-lg text-sm">
+            发布第一个帖子
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
