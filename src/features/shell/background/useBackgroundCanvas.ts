@@ -38,12 +38,12 @@ export function getBackgroundPerformance(maxDpr = Number.POSITIVE_INFINITY): Bac
   const settings = {
     high: { dpr: 1.5, frameInterval: 1000 / 60 },
     medium: { dpr: 1.25, frameInterval: 1000 / 45 },
-    low: { dpr: 1, frameInterval: 1000 / 30 },
+    low: { dpr: 1, frameInterval: isMobile ? 1000 / 20 : 1000 / 30 },
   }[quality];
 
   return {
     quality,
-    dpr: Math.min(window.devicePixelRatio || 1, settings.dpr, maxDpr),
+    dpr: Math.min(window.devicePixelRatio || 1, quality === 'low' && isMobile ? 1 : settings.dpr, maxDpr),
     frameInterval: settings.frameInterval,
     reducedMotion,
   };
@@ -60,6 +60,7 @@ export interface BackgroundFrame {
   keys: { shift: boolean };
   time: number; // 秒，自启动累计；暂停期不增长
   delta: number; // 距上一帧秒数
+  sinceLastResize: number; // resize 以来的帧计数，用于跳过昂贵操作
 }
 
 export interface BackgroundInteractions {
@@ -128,6 +129,8 @@ export function useBackgroundCanvas({
     if (!ctx) return;
 
     const backgroundPerformance = getBackgroundPerformance(maxDpr);
+    let sinceLastResize = 0;
+
     const frame: BackgroundFrame = {
       ctx,
       width: 0,
@@ -139,6 +142,7 @@ export function useBackgroundCanvas({
       keys: { shift: false },
       time: 0,
       delta: 0,
+      sinceLastResize: 0,
     };
     frameRef.current = frame;
 
@@ -153,6 +157,7 @@ export function useBackgroundCanvas({
     pausedRef.current = false;
 
     const resize = () => {
+      sinceLastResize = 0;
       // fixed 定位 + 100vw/100vh，直接取 window 尺寸
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -287,6 +292,8 @@ export function useBackgroundCanvas({
       const intervalsElapsed = Math.max(1, Math.floor(elapsedSinceDraw / interval));
       lastDrawRef.current += intervalsElapsed * interval;
       if (now - lastDrawRef.current > interval) lastDrawRef.current = now;
+      if (sinceLastResize < 3) sinceLastResize++;
+      frame.sinceLastResize = sinceLastResize;
       frame.time = (now - startTimeRef.current - pausedElapsedRef.current) / 1000;
       frame.delta = Math.min((now - lastActualDrawRef.current) / 1000, 0.1);
 
@@ -298,7 +305,24 @@ export function useBackgroundCanvas({
     };
     rafIdRef.current = requestAnimationFrame(loop);
 
+    // WebGL 上下文丢失/恢复处理
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+    };
+    const onContextRestored = () => {
+      resize();
+      rafIdRef.current = requestAnimationFrame(loop);
+    };
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
+
     return () => {
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
       window.removeEventListener('resize', onResize);
       reducedQuery.removeEventListener('change', onReducedMotionChange);

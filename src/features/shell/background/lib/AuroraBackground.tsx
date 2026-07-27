@@ -75,11 +75,13 @@ export default function AuroraBackground({
       const waveSpeed = (propWaveSpeed ?? theme.waveSpeed) * motionScale;
 
       // 消费每帧涟漪批次，保持本地队列有界。
-      for (const ripple of frame.ripples) {
-        ripplesRef.current.push({ x: ripple.x, y: ripple.y, radius: 0, opacity: 1, growing: true });
-      }
-      if (ripplesRef.current.length > MAX_RIPPLES) {
-        ripplesRef.current.splice(0, ripplesRef.current.length - MAX_RIPPLES);
+      if (quality !== 'low') {
+        for (const ripple of frame.ripples) {
+          ripplesRef.current.push({ x: ripple.x, y: ripple.y, radius: 0, opacity: 1, growing: true });
+        }
+        if (ripplesRef.current.length > MAX_RIPPLES) {
+          ripplesRef.current.splice(0, ripplesRef.current.length - MAX_RIPPLES);
+        }
       }
 
       ctx.clearRect(0, 0, width, height);
@@ -108,24 +110,26 @@ export default function AuroraBackground({
         ctx.stroke();
       }
 
-      ripplesRef.current = ripplesRef.current.filter((ripple) => {
-        if (ripple.growing) {
-          ripple.radius += rippleGrowthRate * delta * 60 * qualityScale;
-          ripple.opacity = 1 - ripple.radius / rippleMaxRadius;
-          if (ripple.radius >= rippleMaxRadius) ripple.growing = false;
-          return true;
+      if (quality !== 'low') {
+        ripplesRef.current = ripplesRef.current.filter((ripple) => {
+          if (ripple.growing) {
+            ripple.radius += rippleGrowthRate * delta * 60 * qualityScale;
+            ripple.opacity = 1 - ripple.radius / rippleMaxRadius;
+            if (ripple.radius >= rippleMaxRadius) ripple.growing = false;
+            return true;
+          }
+          return false;
+        });
+        for (const ripple of ripplesRef.current) {
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = rippleColor;
+          ctx.globalAlpha = ripple.opacity * rippleOpacity;
+          ctx.lineWidth = rippleLineWidth;
+          ctx.stroke();
         }
-        return false;
-      });
-      for (const ripple of ripplesRef.current) {
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = rippleColor;
-        ctx.globalAlpha = ripple.opacity * rippleOpacity;
-        ctx.lineWidth = rippleLineWidth;
-        ctx.stroke();
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha = 1;
     },
     [
       mouseRadius,

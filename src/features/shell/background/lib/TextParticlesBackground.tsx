@@ -1,7 +1,8 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { parseColor, buildRgba } from './colorUtils';
 
 export interface TextParticlesBackgroundProps {
   text?: string;
@@ -31,11 +32,12 @@ export default function TextParticlesBackground({
 }: TextParticlesBackgroundProps) {
   const mode = useColorMode();
   const color = propColor || (mode === 'dark' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.7)');
+  const parsedColor = useMemo(() => parseColor(color), [color]);
   const particlesRef = useRef<Particle[]>([]);
   const lastSizeRef = useRef<{ width: number; height: number }>({ width: 0, height: 0 });
 
   const createTextParticles = useCallback(
-    (width: number, height: number) => {
+    (width: number, height: number, effectiveDensity = density) => {
       const dpr = window.devicePixelRatio || 1;
       const pw = Math.round(width * dpr);
       const ph = Math.round(height * dpr);
@@ -56,8 +58,8 @@ export default function TextParticlesBackground({
 
       const particles: Particle[] = [];
       // 在 CSS 像素空间遍历，但 index 用物理像素计算
-      for (let y = 0; y < height; y += density) {
-        for (let x = 0; x < width; x += density) {
+      for (let y = 0; y < height; y += effectiveDensity) {
+        for (let x = 0; x < width; x += effectiveDensity) {
           const px = Math.round(x * dpr);
           const py = Math.round(y * dpr);
           const index = (py * pw + px) * 4;
@@ -107,9 +109,11 @@ export default function TextParticlesBackground({
       const { ctx, width, height, mouse } = frame;
 
       // 确保模式：resize 时重建粒子
+      const { quality } = frame.performance;
       if (width !== lastSizeRef.current.width || height !== lastSizeRef.current.height) {
         lastSizeRef.current = { width, height };
-        particlesRef.current = createTextParticles(width, height);
+        const effectiveDensity = quality === 'low' ? density * 2.5 : density;
+        particlesRef.current = createTextParticles(width, height, effectiveDensity);
       }
 
       ctx.clearRect(0, 0, width, height);
@@ -138,7 +142,7 @@ export default function TextParticlesBackground({
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = color.replace(/[\d.]+(?=\))/, p.opacity.toFixed(2));
+        ctx.fillStyle = buildRgba(parsedColor.r, parsedColor.g, parsedColor.b, p.opacity);
         ctx.fill();
       });
     },

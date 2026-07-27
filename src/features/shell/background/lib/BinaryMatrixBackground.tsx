@@ -1,7 +1,8 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { BackgroundCanvas } from '~/features/shell/background/BackgroundCanvas';
 import type { BackgroundFrame } from '~/features/shell/background/useBackgroundCanvas';
 import { useColorMode } from '~/features/shell/background/useColorMode';
+import { parseColor, buildRgba } from './colorUtils';
 
 const DEFAULT_CHAR_SET = ['0', '1'];
 
@@ -56,6 +57,9 @@ export default function BinaryMatrixBackground({
   const color = propColor ?? (mode === 'dark' ? 'rgba(0,255,0,0.8)' : 'rgba(0,80,0,0.7)');
   const rippleColor = propRippleColor ?? (mode === 'dark' ? 'rgba(0,255,127,0.5)' : 'rgba(0,0,0,0.08)');
 
+  const parsedColor = useMemo(() => parseColor(color), [color]);
+  const fontString = useMemo(() => `${fontSize}px ${fontFamily}`, [fontSize, fontFamily]);
+
   const columnsRef = useRef<Column[]>([]);
   const ripplesRef = useRef<LocalRipple[]>([]);
   const mouseIntensityRef = useRef(0);
@@ -100,7 +104,8 @@ export default function BinaryMatrixBackground({
       // 确保模式：尺寸变化时重建列
       if (width !== last.width || height !== last.height) {
         lastSizeRef.current = { width, height };
-        const columnCount = Math.floor(width * density);
+        const effectiveDensity = frame.performance.quality === 'low' ? density * 0.5 : density;
+        const columnCount = Math.floor(width * effectiveDensity);
         const columnWidth = width / columnCount;
         const charCount = Math.floor(height / fontSize);
         const columns: Column[] = [];
@@ -160,7 +165,7 @@ export default function BinaryMatrixBackground({
       ctx.globalAlpha = 1;
 
       // 绘制二进制字符
-      ctx.font = `${fontSize}px ${fontFamily}`;
+      ctx.font = fontString;
       ctx.textAlign = 'center';
 
       columnsRef.current.forEach((column) => {
@@ -192,9 +197,8 @@ export default function BinaryMatrixBackground({
           const currentFlicker = i === 0 ? flickerIntensity : 1;
           const mouseEffect = isAffected ? (1 - Math.min(distToMouse / 200, 1)) * mouseIntensityRef.current : 0;
 
-          const match = color.match(/\d+/g);
-          const [r, g, b] = match ? match.map(Number) : [0, 255, 0];
-          const finalColor = `rgba(${r}, ${g}, ${b}, ${opacity * brightness * currentFlicker + mouseEffect})`;
+          const alpha = opacity * brightness * currentFlicker + mouseEffect;
+          const finalColor = buildRgba(parsedColor.r, parsedColor.g, parsedColor.b, Math.min(1, alpha));
           ctx.fillStyle = finalColor;
           ctx.fillText(chars[i], x, yPositions[i]);
 
