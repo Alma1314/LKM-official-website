@@ -1,7 +1,12 @@
 ---
 import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getColumnBySlug, getArticleById, getArticlesByColumnId, mockColumnArticles } from '~/features/column/data/mock-columns';
+import {
+  getColumnBySlug,
+  getArticleById,
+  getArticlesByColumnId,
+  mockColumnArticles,
+} from '~/features/column/data/mock-columns';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 
 export function getStaticPaths() {
@@ -18,12 +23,18 @@ if (!column || !article) {
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', {
-    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 }
 
 // 同专栏其他文章
-const otherArticles = getArticlesByColumnId(column.id).filter((a) => a.id !== article.id).slice(0, 4);
+const otherArticles = getArticlesByColumnId(column.id)
+  .filter((a) => a.id !== article.id)
+  .slice(0, 4);
 
 const metadata = { title: `${article.title} —— 理科迷` };
 ---
@@ -70,7 +81,9 @@ const metadata = { title: `${article.title} —— 理科迷` };
 
     <!-- 作者卡片 -->
     <div class="mt-6 bg-card-bg border border-surface-3 rounded-xl p-5 flex items-start gap-4">
-      <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0">
+      <div
+        class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0"
+      >
         {column.authorName.charAt(0)}
       </div>
       <div>
@@ -97,7 +110,10 @@ const metadata = { title: `${article.title} —— 理科迷` };
           <h3 class="font-semibold text-deep-text mb-4">本专栏其他文章</h3>
           <div class="space-y-3">
             {otherArticles.map((a) => (
-              <a href={`/columns/${column.slug}/${a.id}`} class="block p-3 rounded-lg hover:bg-surface-3/50 transition-colors">
+              <a
+                href={`/columns/${column.slug}/${a.id}`}
+                class="block p-3 rounded-lg hover:bg-surface-3/50 transition-colors"
+              >
                 <div class="font-medium text-deep-text hover:text-primary transition-colors">{a.title}</div>
                 <div class="text-xs text-text-muted/60 mt-1">{formatDate(a.createdAt)}</div>
               </a>

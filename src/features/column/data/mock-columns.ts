@@ -30,38 +30,64 @@ export interface MockColumnArticle {
 
 export const mockColumns: MockColumn[] = [
   {
-    id: 'col-1', authorId: 'user-qiyue-o', authorName: '七月O', authorTitle: '中国科学院国家天文台博士',
+    id: 'col-1',
+    authorId: 'user-qiyue-o',
+    authorName: '七月O',
+    authorTitle: '中国科学院国家天文台博士',
     authorBio: '引力波与黑洞物理方向，致力于天体物理科普',
-    title: '宇宙探索笔记', slug: 'cosmic-notes',
+    title: '宇宙探索笔记',
+    slug: 'cosmic-notes',
     description: '记录天体物理研究前沿，分享宇宙探索的奇妙旅程。从引力波到黑洞，从暗物质到宇宙大尺度结构。',
-    isVerified: true, followerCount: 1200, articleCount: 15,
+    isVerified: true,
+    followerCount: 1200,
+    articleCount: 15,
   },
   {
-    id: 'col-2', authorId: 'user-qiyue-hua', authorName: '七月花', authorTitle: '科学教育博士',
+    id: 'col-2',
+    authorId: 'user-qiyue-hua',
+    authorName: '七月花',
+    authorTitle: '科学教育博士',
     authorBio: '有理想的博士，梦想每个孩子都能接触科学',
-    title: '教育者的实验室', slug: 'edu-lab',
+    title: '教育者的实验室',
+    slug: 'edu-lab',
     description: '科学教育的理论与实践，课程设计、教学方法、科普写作的深度思考。',
-    isVerified: true, followerCount: 890, articleCount: 8,
+    isVerified: true,
+    followerCount: 890,
+    articleCount: 8,
   },
   {
-    id: 'col-3', authorId: 'user-col-3', authorName: '李教授', authorTitle: '复旦大学物理学教授',
+    id: 'col-3',
+    authorId: 'user-col-3',
+    authorName: '李教授',
+    authorTitle: '复旦大学物理学教授',
     authorBio: '凝聚态物理研究，学术写作指导',
-    title: '学术写作之道', slug: 'academic-writing',
+    title: '学术写作之道',
+    slug: 'academic-writing',
     description: '分享论文写作技巧、学术英语表达、科研方法论等硬核内容。',
-    isVerified: true, followerCount: 650, articleCount: 12,
+    isVerified: true,
+    followerCount: 650,
+    articleCount: 12,
   },
   {
-    id: 'col-4', authorId: 'user-col-4', authorName: '码农老王', authorTitle: '资深算法工程师',
+    id: 'col-4',
+    authorId: 'user-col-4',
+    authorName: '码农老王',
+    authorTitle: '资深算法工程师',
     authorBio: '10年算法竞赛与工程经验',
-    title: '算法之美', slug: 'algorithm-beauty',
+    title: '算法之美',
+    slug: 'algorithm-beauty',
     description: '深入浅出讲解算法与数据结构，从 LeetCode 到 ACM，从工程实践到理论推导。',
-    isVerified: false, followerCount: 450, articleCount: 20,
+    isVerified: false,
+    followerCount: 450,
+    articleCount: 20,
   },
 ];
 
 export const mockColumnArticles: MockColumnArticle[] = [
   {
-    id: 'art-1', columnId: 'col-1', columnSlug: 'cosmic-notes',
+    id: 'art-1',
+    columnId: 'col-1',
+    columnSlug: 'cosmic-notes',
     title: '引力波天文学：聆听宇宙的"声音"',
     excerpt: '从2015年GW150914首次探测至今，引力波天文学已经成为了解宇宙的全新窗口。',
     content: `## 引力波天文学：聆听宇宙的"声音"
@@ -86,10 +112,15 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 
 引力波天文学已经从一个"梦想"变成了一个蓬勃发展的领域。`,
     tags: ['引力波', '天体物理', 'LIGO'],
-    viewCount: 3400, likeCount: 256, commentCount: 42, createdAt: '2026-07-15T08:00:00Z',
+    viewCount: 3400,
+    likeCount: 256,
+    commentCount: 42,
+    createdAt: '2026-07-15T08:00:00Z',
   },
   {
-    id: 'art-2', columnId: 'col-1', columnSlug: 'cosmic-notes',
+    id: 'art-2',
+    columnId: 'col-1',
+    columnSlug: 'cosmic-notes',
     title: '黑洞信息悖论：物理学的最大谜题之一',
     excerpt: '霍金辐射的发现引发了一个深刻的问题：掉入黑洞的信息去哪了？',
     content: `## 黑洞信息悖论
@@ -110,10 +141,15 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 
 近年来，通过全息对偶、纠缠熵等工具，理论物理学家在解决这一悖论上取得了重大进展。黑洞信息悖论的研究正在改写我们对时空和量子力学的基本理解。`,
     tags: ['黑洞', '霍金辐射', '量子引力'],
-    viewCount: 2800, likeCount: 198, commentCount: 35, createdAt: '2026-07-10T10:00:00Z',
+    viewCount: 2800,
+    likeCount: 198,
+    commentCount: 35,
+    createdAt: '2026-07-10T10:00:00Z',
   },
   {
-    id: 'art-3', columnId: 'col-2', columnSlug: 'edu-lab',
+    id: 'art-3',
+    columnId: 'col-2',
+    columnSlug: 'edu-lab',
     title: '如何设计一门引人入胜的科普课程',
     excerpt: '基于认知科学和教学实践经验，探讨科普课程设计的核心原则。',
     content: `## 如何设计一门引人入胜的科普课程
@@ -134,10 +170,15 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 
 我在设计"光的奇妙世界"课程时，第一节课不是讲麦克斯韦方程组，而是让学生在暗室中用三棱镜分解白光，看到彩虹的瞬间，所有孩子的眼睛都亮了。`,
     tags: ['科学教育', '课程设计', '科普'],
-    viewCount: 1800, likeCount: 145, commentCount: 22, createdAt: '2026-07-08T09:00:00Z',
+    viewCount: 1800,
+    likeCount: 145,
+    commentCount: 22,
+    createdAt: '2026-07-08T09:00:00Z',
   },
   {
-    id: 'art-4', columnId: 'col-3', columnSlug: 'academic-writing',
+    id: 'art-4',
+    columnId: 'col-3',
+    columnSlug: 'academic-writing',
     title: '学术论文摘要写作的黄金法则',
     excerpt: '摘要是论文的"广告"，好的摘要能决定论文的引用率和影响力。',
     content: `## 学术论文摘要写作的黄金法则
@@ -164,10 +205,15 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 > [结果] 实验结果表明，该方法在ZZZ指标上提升了XX%。
 > [意义] 这一发现为AAA领域的进一步研究奠定了基础。`,
     tags: ['学术写作', '论文', '摘要'],
-    viewCount: 4200, likeCount: 312, commentCount: 28, createdAt: '2026-07-01T14:00:00Z',
+    viewCount: 4200,
+    likeCount: 312,
+    commentCount: 28,
+    createdAt: '2026-07-01T14:00:00Z',
   },
   {
-    id: 'art-5', columnId: 'col-4', columnSlug: 'algorithm-beauty',
+    id: 'art-5',
+    columnId: 'col-4',
+    columnSlug: 'algorithm-beauty',
     title: '动态规划：从入门到进阶的思维框架',
     excerpt: '动态规划不是一种算法，而是一种解决问题的思维方式。',
     content: `## 动态规划：思维框架
@@ -205,7 +251,10 @@ def length_of_lis(nums):
 
 如果三个问题都回答"是"，那么动态规划大概率可行。`,
     tags: ['算法', '动态规划', 'Python'],
-    viewCount: 5600, likeCount: 423, commentCount: 56, createdAt: '2026-06-28T11:00:00Z',
+    viewCount: 5600,
+    likeCount: 423,
+    commentCount: 56,
+    createdAt: '2026-06-28T11:00:00Z',
   },
 ];
 
@@ -221,6 +270,6 @@ export function getArticleById(id: string): MockColumnArticle | undefined {
   return mockColumnArticles.find((a) => a.id === id);
 }
 
-export function getArticleBySlug(columnSlug: string, articleSlug: string): MockColumnArticle | undefined {
+export function getArticleBySlug(columnSlug: string, _articleSlug: string): MockColumnArticle | undefined {
   return mockColumnArticles.find((a) => a.columnSlug === columnSlug);
 }

@@ -4,11 +4,7 @@
     <div class="bg-card-bg border-b border-surface-3">
       <div class="max-w-xl mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
-          <div
-            v-for="(step, i) in steps"
-            :key="i"
-            class="flex items-center"
-          >
+          <div v-for="(step, i) in steps" :key="i" class="flex items-center">
             <!-- 步骤圆点 -->
             <div class="flex flex-col items-center">
               <div
@@ -18,7 +14,10 @@
                 <Icon v-if="i < currentStep" icon="material-symbols:check" class="w-4 h-4" />
                 <span v-else>{{ i + 1 }}</span>
               </div>
-              <span class="text-xs mt-1 whitespace-nowrap" :class="i <= currentStep ? 'text-deep-text font-medium' : 'text-text-muted'">
+              <span
+                class="text-xs mt-1 whitespace-nowrap"
+                :class="i <= currentStep ? 'text-deep-text font-medium' : 'text-text-muted'"
+              >
                 {{ step.label }}
               </span>
             </div>
@@ -44,19 +43,11 @@
         </div>
 
         <!-- 动态组件 -->
-        <component
-          :is="steps[currentStep].component"
-          :ref="setStepRef"
-        />
+        <component :is="steps[currentStep].component" :ref="setStepRef" />
 
         <!-- 底部按钮 -->
         <div class="flex justify-between mt-8">
-          <button
-            v-if="currentStep > 0"
-            type="button"
-            class="btn-ghost text-sm px-4 py-2"
-            @click="prevStep"
-          >
+          <button v-if="currentStep > 0" type="button" class="btn-ghost text-sm px-4 py-2" @click="prevStep">
             上一步
           </button>
           <div v-else></div>
@@ -80,12 +71,7 @@
             >
               {{ steps[currentStep].buttonText || '下一步' }}
             </button>
-            <button
-              v-else
-              type="button"
-              class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold"
-              @click="finish"
-            >
+            <button v-else type="button" class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold" @click="finish">
               完成引导
             </button>
           </div>

@@ -32,11 +32,29 @@ function fileIcon(mime: string): string {
 }
 
 function statusLabel(status: string): string {
-  switch (status) { case 'approved': return '已通过'; case 'pending': return '审核中'; case 'rejected': return '已驳回'; default: return status; }
+  switch (status) {
+    case 'approved':
+      return '已通过';
+    case 'pending':
+      return '审核中';
+    case 'rejected':
+      return '已驳回';
+    default:
+      return status;
+  }
 }
 
-function statusColor(status: string): string {
-  switch (status) { case 'approved': return 'text-green-500 bg-green-50 dark:bg-green-950/20'; case 'pending': return 'text-yellow-500 bg-yellow-50 dark:bg-yellow-950/20'; case 'rejected': return 'text-red-500 bg-red-50 dark:bg-red-950/20'; default: return ''; }
+function _statusColor(status: string): string {
+  switch (status) {
+    case 'approved':
+      return 'text-green-500 bg-green-50 dark:bg-green-950/20';
+    case 'pending':
+      return 'text-yellow-500 bg-yellow-50 dark:bg-yellow-950/20';
+    case 'rejected':
+      return 'text-red-500 bg-red-50 dark:bg-red-950/20';
+    default:
+      return '';
+  }
 }
 
 const metadata = { title: `${file.originalName} —— 理科迷` };
@@ -61,17 +79,39 @@ const metadata = { title: `${file.originalName} —— 理科迷` };
     <!-- 文件信息 -->
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-        <div><span class="text-text-muted/60">上传者</span><p class="text-deep-text font-medium mt-0.5">{file.uploaderName}</p></div>
-        <div><span class="text-text-muted/60">文件大小</span><p class="text-deep-text font-medium mt-0.5">{formatSize(file.size)}</p></div>
-        <div><span class="text-text-muted/60">上传时间</span><p class="text-deep-text font-medium mt-0.5">{formatDate(file.createdAt)}</p></div>
-        <div><span class="text-text-muted/60">下载量</span><p class="text-deep-text font-medium mt-0.5">{file.downloadCount} 次</p></div>
+        <div>
+          <span class="text-text-muted/60">上传者</span><p class="text-deep-text font-medium mt-0.5">
+            {file.uploaderName}
+          </p>
+        </div>
+        <div>
+          <span class="text-text-muted/60">文件大小</span><p class="text-deep-text font-medium mt-0.5">
+            {formatSize(file.size)}
+          </p>
+        </div>
+        <div>
+          <span class="text-text-muted/60">上传时间</span><p class="text-deep-text font-medium mt-0.5">
+            {formatDate(file.createdAt)}
+          </p>
+        </div>
+        <div>
+          <span class="text-text-muted/60">下载量</span><p class="text-deep-text font-medium mt-0.5">
+            {file.downloadCount} 次
+          </p>
+        </div>
       </div>
       <div class="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-surface-3">
         <span class="text-sm text-text-muted/60">状态：</span>
-        <span class="text-xs px-2.5 py-1 rounded-full font-medium {statusColor(file.status)}">{statusLabel(file.status)}</span>
+        <span class="text-xs px-2.5 py-1 rounded-full font-medium {_statusColor(file.status)}"
+          >{statusLabel(file.status)}</span
+        >
         <span class="text-sm text-text-muted/60">分类：{file.categoryName}</span>
         <div class="flex flex-wrap gap-1">
-          {file.tags.map((tag) => <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{tag}</span>)}
+          {
+            file.tags.map((tag) => (
+              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{tag}</span>
+            ))
+          }
         </div>
       </div>
       {
@@ -90,8 +130,11 @@ const metadata = { title: `${file.originalName} —— 理科迷` };
     </div>
 
     <!-- 版权免责 -->
-    <div class="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800/30 rounded-xl p-4 text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">
-      <strong>免责声明：</strong>所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。
+    <div
+      class="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800/30 rounded-xl p-4 text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed"
+    >
+      <strong>免责声明：</strong
+      >所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。
     </div>
   </div>
 </Layout>

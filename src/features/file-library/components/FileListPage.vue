@@ -2,23 +2,35 @@
   <div class="space-y-6">
     <!-- 筛选器 -->
     <div class="flex flex-wrap items-center gap-3">
-      <select v-model="filterCategory" class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none">
+      <select
+        v-model="filterCategory"
+        class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
+      >
         <option value="">全部学科</option>
         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
       </select>
-      <select v-model="filterType" class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none">
+      <select
+        v-model="filterType"
+        class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
+      >
         <option value="">全部类型</option>
         <option value="pdf">PDF</option>
         <option value="zip">压缩包</option>
         <option value="other">其他</option>
       </select>
-      <select v-model="filterStatus" class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none">
+      <select
+        v-model="filterStatus"
+        class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
+      >
         <option value="">全部状态</option>
         <option value="approved">已通过</option>
         <option value="pending">审核中</option>
         <option value="rejected">已驳回</option>
       </select>
-      <select v-model="sortBy" class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none">
+      <select
+        v-model="sortBy"
+        class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
+      >
         <option value="newest">最新</option>
         <option value="downloads">最多下载</option>
       </select>
@@ -52,7 +64,10 @@
         >
           <span class="text-2xl shrink-0">{{ fileIcon(file.mimeType) }}</span>
           <div class="flex-1 min-w-0">
-            <a :href="`/files/${file.id}`" class="font-medium text-deep-text hover:text-primary transition-colors line-clamp-1">
+            <a
+              :href="`/files/${file.id}`"
+              class="font-medium text-deep-text hover:text-primary transition-colors line-clamp-1"
+            >
               {{ file.originalName }}
             </a>
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-text-muted/60">
@@ -83,7 +98,11 @@
         <div class="flex items-start gap-3 mb-3">
           <span class="text-3xl shrink-0">{{ fileIcon(file.mimeType) }}</span>
           <div class="flex-1 min-w-0">
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-2 text-sm leading-snug">{{ file.originalName }}</h3>
+            <h3
+              class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-2 text-sm leading-snug"
+            >
+              {{ file.originalName }}
+            </h3>
           </div>
         </div>
         <div class="text-xs text-text-muted/60 space-y-1 flex-1">
@@ -100,9 +119,7 @@
     </div>
 
     <!-- 空状态 -->
-    <div v-if="filteredFiles.length === 0" class="text-center py-12 text-sm text-text-muted">
-      暂无符合条件的文件
-    </div>
+    <div v-if="filteredFiles.length === 0" class="text-center py-12 text-sm text-text-muted">暂无符合条件的文件</div>
 
     <!-- 上传按钮 -->
     <button
@@ -114,25 +131,39 @@
 
     <!-- 上传弹窗 -->
     <Teleport to="body">
-      <div v-if="showUpload" class="fixed inset-0 bg-black/40 z-[150] flex items-center justify-center" @click.self="showUpload = false">
+      <div
+        v-if="showUpload"
+        class="fixed inset-0 bg-black/40 z-[150] flex items-center justify-center"
+        @click.self="showUpload = false"
+      >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
           <h3 class="text-lg font-semibold text-deep-text mb-4">上传文件</h3>
           <div class="space-y-4">
-            <div class="border-2 border-dashed border-surface-3 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer">
+            <div
+              class="border-2 border-dashed border-surface-3 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer"
+            >
               <Icon icon="material-symbols:cloud-upload-outline" class="w-10 h-10 text-text-muted/40 mx-auto mb-2" />
               <p class="text-sm text-text-muted">点击或拖拽文件到此处</p>
               <p class="text-xs text-text-muted/50 mt-1">支持 PDF、ZIP 等格式，最大 500MB</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-deep-text mb-1">所属分类</label>
-              <select v-model="uploadCategory" class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none">
+              <select
+                v-model="uploadCategory"
+                class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
+              >
                 <option value="">请选择分类</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-deep-text mb-1">简介</label>
-              <textarea v-model="uploadDesc" rows="2" class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none resize-none" placeholder="简单介绍文件内容..."></textarea>
+              <textarea
+                v-model="uploadDesc"
+                rows="2"
+                class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none resize-none"
+                placeholder="简单介绍文件内容..."
+              ></textarea>
             </div>
           </div>
           <div class="flex gap-2 justify-end mt-4">
@@ -167,7 +198,8 @@ const filteredFiles = computed(() => {
   if (filterCategory.value) files = files.filter((f) => f.categoryId === filterCategory.value);
   if (filterType.value === 'pdf') files = files.filter((f) => f.mimeType === 'application/pdf');
   if (filterType.value === 'zip') files = files.filter((f) => f.mimeType === 'application/zip');
-  if (filterType.value === 'other') files = files.filter((f) => !['application/pdf', 'application/zip'].includes(f.mimeType));
+  if (filterType.value === 'other')
+    files = files.filter((f) => !['application/pdf', 'application/zip'].includes(f.mimeType));
   if (filterStatus.value) files = files.filter((f) => f.status === filterStatus.value);
   if (sortBy.value === 'downloads') files.sort((a, b) => b.downloadCount - a.downloadCount);
   return files;
@@ -187,19 +219,27 @@ function formatSize(bytes: number): string {
 
 function statusLabel(status: string): string {
   switch (status) {
-    case 'approved': return '已通过 ✓';
-    case 'pending': return '审核中';
-    case 'rejected': return '已驳回 ✗';
-    default: return status;
+    case 'approved':
+      return '已通过 ✓';
+    case 'pending':
+      return '审核中';
+    case 'rejected':
+      return '已驳回 ✗';
+    default:
+      return status;
   }
 }
 
 function statusClass(status: string): string {
   switch (status) {
-    case 'approved': return 'bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400';
-    case 'pending': return 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-600 dark:text-yellow-400';
-    case 'rejected': return 'bg-red-100 dark:bg-red-950/30 text-red-600 dark:text-red-400';
-    default: return '';
+    case 'approved':
+      return 'bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400';
+    case 'pending':
+      return 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-600 dark:text-yellow-400';
+    case 'rejected':
+      return 'bg-red-100 dark:bg-red-950/30 text-red-600 dark:text-red-400';
+    default:
+      return '';
   }
 }
 

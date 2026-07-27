@@ -6,7 +6,7 @@ export function getStaticPaths() {
   return mockCompetitions.filter((c) => c.status === 'ongoing').map((c) => ({ params: { id: c.id } }));
 }
 
-const { id } = Astro.params;
+const { id: _id } = Astro.params;
 ---
 
 <div class="max-w-7xl mx-auto px-4 py-8">

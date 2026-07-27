@@ -1,16 +1,22 @@
 <template>
   <div class="space-y-4">
     <h3 class="font-semibold text-deep-text">
-      评论 (<span>{{ comments.length }}</span>)
+      评论 (<span>{{ comments.length }}</span
+      >)
     </h3>
 
     <!-- 评论输入 -->
     <div class="flex gap-3">
-      <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-sm">
+      <div
+        class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-sm"
+      >
         我
       </div>
       <div class="flex-1">
-        <div v-if="replyToId" class="text-xs text-primary bg-primary/5 px-3 py-1.5 rounded-lg mb-2 inline-flex items-center gap-1">
+        <div
+          v-if="replyToId"
+          class="text-xs text-primary bg-primary/5 px-3 py-1.5 rounded-lg mb-2 inline-flex items-center gap-1"
+        >
           回复 <span class="font-medium">@{{ replyToAuthor }}</span>
           <button class="ml-1 hover:text-red-500" @click="cancelReply">&times;</button>
         </div>
@@ -38,12 +44,10 @@
 
     <!-- 评论列表 -->
     <div v-if="comments.length > 0" class="space-y-3">
-      <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="flex gap-3"
-      >
-        <div class="w-9 h-9 rounded-full bg-surface-3 flex items-center justify-center shrink-0 text-text-muted font-bold text-sm">
+      <div v-for="comment in comments" :key="comment.id" class="flex gap-3">
+        <div
+          class="w-9 h-9 rounded-full bg-surface-3 flex items-center justify-center shrink-0 text-text-muted font-bold text-sm"
+        >
           {{ comment.authorName.charAt(0) }}
         </div>
         <div class="flex-1 min-w-0">
@@ -54,8 +58,17 @@
           </div>
           <p class="text-sm text-deep-text mt-1 leading-relaxed">{{ comment.content }}</p>
           <div class="flex items-center gap-3 mt-1.5">
-            <button class="text-xs text-text-muted/60 hover:text-primary transition-colors inline-flex items-center gap-1" @click="toggleCommentLike(comment.id)">
-              <Icon :icon="likedComments.has(comment.id) ? 'material-symbols:favorite' : 'material-symbols:favorite-outline'" class="w-3.5 h-3.5" :class="likedComments.has(comment.id) ? 'text-red-500' : ''" />
+            <button
+              class="text-xs text-text-muted/60 hover:text-primary transition-colors inline-flex items-center gap-1"
+              @click="toggleCommentLike(comment.id)"
+            >
+              <Icon
+                :icon="
+                  likedComments.has(comment.id) ? 'material-symbols:favorite' : 'material-symbols:favorite-outline'
+                "
+                class="w-3.5 h-3.5"
+                :class="likedComments.has(comment.id) ? 'text-red-500' : ''"
+              />
               {{ likedComments.has(comment.id) ? comment.likeCount + 1 : comment.likeCount || '' }}
             </button>
             <button
@@ -68,9 +81,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="text-center py-8 text-sm text-text-muted">
-      暂无评论，来发表第一条评论吧
-    </div>
+    <div v-else class="text-center py-8 text-sm text-text-muted">暂无评论，来发表第一条评论吧</div>
   </div>
 </template>
 

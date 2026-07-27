@@ -9,7 +9,10 @@
         <!-- Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-surface-3">
           <h2 class="text-lg font-semibold text-deep-text">发布新帖子</h2>
-          <button class="btn-plain w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-3" @click="close">
+          <button
+            class="btn-plain w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-3"
+            @click="close"
+          >
             <Icon icon="material-symbols:close" class="w-5 h-5" />
           </button>
         </div>

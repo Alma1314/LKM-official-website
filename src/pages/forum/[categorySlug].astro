@@ -2,7 +2,7 @@
 import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getCategoryBySlug, getChildCategories, forumCategories } from '~/features/forum/data/categories';
-import { getPostsByCategory, getPinnedPosts, getFeaturedPosts, type MockPost } from '~/features/forum/data/mock-posts';
+import { getPostsByCategory, type MockPost } from '~/features/forum/data/mock-posts';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
 
@@ -38,16 +38,7 @@ allPosts.sort((a, b) => {
 const childCategories = isParent ? children : [];
 // 如果是子分类，显示对应的标签过滤数据
 const categoryLabel = category.name;
-const pinnedPosts = allPosts.filter((p) => p.isPinned);
-const featuredPosts = allPosts.filter((p) => p.isFeatured);
-
 const metadata = { title: `${categoryLabel} —— 理科迷` };
-
-const tabs = [
-  { key: 'latest', label: '最新' },
-  { key: 'featured', label: '精华' },
-  { key: 'hot', label: '最热' },
-];
 ---
 
 <Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/forum/${categorySlug}`}>
@@ -72,11 +63,17 @@ const tabs = [
       <p class="text-sm text-text-muted mb-4">{category.description}</p>
 
       <div class="flex items-center gap-2">
-        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5">
+        <button
+          type="button"
+          class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5"
+        >
           <Icon name="tabler:heart-plus" class="w-4 h-4" />
           关注
         </button>
-        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5">
+        <button
+          type="button"
+          class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-1.5"
+        >
           <Icon name="tabler:pencil-plus" class="w-4 h-4" />
           发帖
         </button>
@@ -108,17 +105,19 @@ const tabs = [
 
     <!-- 帖子列表 -->
     <div class="space-y-3">
-      {allPosts.length > 0 ? (
-        allPosts.map((post) => <PostCard post={post} />)
-      ) : (
-        <div class="bg-card-bg border border-surface-3 rounded-xl p-12 text-center">
-          <Icon name="tabler:article-off" class="w-12 h-12 text-text-muted/30 mx-auto mb-3" />
-          <p class="text-text-muted">暂无帖子</p>
-          <button type="button" class="mt-3 btn-primary px-4 py-2 rounded-lg text-sm">
-            发布第一个帖子
-          </button>
-        </div>
-      )}
+      {
+        allPosts.length > 0 ? (
+          allPosts.map((post) => <PostCard post={post} />)
+        ) : (
+          <div class="bg-card-bg border border-surface-3 rounded-xl p-12 text-center">
+            <Icon name="tabler:article-off" class="w-12 h-12 text-text-muted/30 mx-auto mb-3" />
+            <p class="text-text-muted">暂无帖子</p>
+            <button type="button" class="mt-3 btn-primary px-4 py-2 rounded-lg text-sm">
+              发布第一个帖子
+            </button>
+          </div>
+        )
+      }
     </div>
   </div>
 </Layout>

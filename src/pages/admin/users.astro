@@ -1,6 +1,5 @@
 ---
 import AdminLayout from '~/features/admin/components/AdminLayout.astro';
-import { Icon } from 'astro-icon/components';
 import { adminUsers } from '~/features/admin/data/mock-admin';
 ---
 
@@ -22,31 +21,58 @@ import { adminUsers } from '~/features/admin/data/mock-admin';
         </tr>
       </thead>
       <tbody class="divide-y divide-surface-3">
-        {adminUsers.map((u) => (
-          <tr class="hover:bg-page-bg transition-colors">
-            <td class="px-4 py-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">{u.displayName.charAt(0)}</div>
-                <div><div class="font-medium text-deep-text">{u.displayName}</div><div class="text-xs text-text-muted/60">@{u.username}</div></div>
-              </div>
-            </td>
-            <td class="px-4 py-3 hidden md:table-cell">
-              <span class="text-xs px-2 py-0.5 rounded-full font-medium" class:list={[{ 'bg-purple-100 dark:bg-purple-950/30 text-purple-500': u.role === 'admin' }, { 'bg-blue-100 dark:bg-blue-950/30 text-blue-500': u.role === 'moderator' }, { 'bg-surface-3 text-text-muted': u.role === 'member' }]}>
-                {u.role === 'admin' ? '管理员' : u.role === 'moderator' ? '版主' : '成员'}
-              </span>
-            </td>
-            <td class="px-4 py-3 hidden md:table-cell text-text-muted">{u.postCount}</td>
-            <td class="px-4 py-3 hidden lg:table-cell text-text-muted">{u.points.toLocaleString()}</td>
-            <td class="px-4 py-3 hidden sm:table-cell">
-              <span class="text-xs px-2 py-0.5 rounded-full font-medium" class:list={[{ 'bg-green-100 dark:bg-green-950/30 text-green-500': !u.isBanned }, { 'bg-red-100 dark:bg-red-950/30 text-red-500': u.isBanned }]}>
-                {u.isBanned ? '已封禁' : '正常'}
-              </span>
-            </td>
-            <td class="px-4 py-3">
-              <div class="flex gap-1"><button class="text-xs text-primary hover:underline">编辑</button><button class="text-xs text-red-500 hover:underline">{u.isBanned ? '解封' : '封禁'}</button></div>
-            </td>
-          </tr>
-        ))}
+        {
+          adminUsers.map((u) => (
+            <tr class="hover:bg-page-bg transition-colors">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                    {u.displayName.charAt(0)}
+                  </div>
+                  <div>
+                    <>
+                      <div class="font-medium text-deep-text">{u.displayName}</div>
+                      <div class="text-xs text-text-muted/60">@{u.username}</div>
+                    </>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 hidden md:table-cell">
+                <span
+                  class="text-xs px-2 py-0.5 rounded-full font-medium"
+                  class:list={[
+                    { 'bg-purple-100 dark:bg-purple-950/30 text-purple-500': u.role === 'admin' },
+                    { 'bg-blue-100 dark:bg-blue-950/30 text-blue-500': u.role === 'moderator' },
+                    { 'bg-surface-3 text-text-muted': u.role === 'member' },
+                  ]}
+                >
+                  {u.role === 'admin' ? '管理员' : u.role === 'moderator' ? '版主' : '成员'}
+                </span>
+              </td>
+              <td class="px-4 py-3 hidden md:table-cell text-text-muted">{u.postCount}</td>
+              <td class="px-4 py-3 hidden lg:table-cell text-text-muted">{u.points.toLocaleString()}</td>
+              <td class="px-4 py-3 hidden sm:table-cell">
+                <span
+                  class="text-xs px-2 py-0.5 rounded-full font-medium"
+                  class:list={[
+                    { 'bg-green-100 dark:bg-green-950/30 text-green-500': !u.isBanned },
+                    { 'bg-red-100 dark:bg-red-950/30 text-red-500': u.isBanned },
+                  ]}
+                >
+                  {u.isBanned ? '已封禁' : '正常'}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex gap-1">
+                  <>
+                    <button class="text-xs text-primary hover:underline">编辑</button>
+                    <button class="text-xs text-red-500 hover:underline">{u.isBanned ? '解封' : '封禁'}</button>
+                  </>
+                </div>
+              </td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>

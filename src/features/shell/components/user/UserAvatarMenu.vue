@@ -21,29 +21,34 @@
 
     <!-- 下拉菜单 -->
     <Teleport to="body">
-      <div
-        v-if="isOpen"
-        class="fixed inset-0 z-40"
-        @click="close"
-      />
-      <div
-        v-if="isOpen"
-        class="absolute right-0 top-full mt-2 w-52 card-base float-panel py-1.5 z-50 shadow-2xl"
-      >
+      <div v-if="isOpen" class="fixed inset-0 z-40" @click="close" />
+      <div v-if="isOpen" class="absolute right-0 top-full mt-2 w-52 card-base float-panel py-1.5 z-50 shadow-2xl">
         <div class="px-4 py-2 border-b border-surface-3 mb-1">
           <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
           <div class="text-xs text-text-muted">{{ userLevelText }}</div>
         </div>
 
-        <a href="/profile" class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors" @click="close">
+        <a
+          href="/profile"
+          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+          @click="close"
+        >
           <Icon icon="material-symbols:person-outline" class="w-4 h-4" />
           个人中心
         </a>
-        <a href="/contribution" class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors" @click="close">
+        <a
+          href="/contribution"
+          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+          @click="close"
+        >
           <Icon icon="material-symbols:stars-outline" class="w-4 h-4" />
           贡献系统
         </a>
-        <a href="/account" class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors" @click="close">
+        <a
+          href="/account"
+          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+          @click="close"
+        >
           <Icon icon="material-symbols:settings-outline" class="w-4 h-4" />
           设置
         </a>

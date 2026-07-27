@@ -12,9 +12,16 @@
             <span v-if="comp.status === 'ongoing'">答题时长：{{ comp.duration }} 分钟</span>
           </div>
           <div class="flex items-center justify-between mt-4">
-            <span class="text-sm text-text-muted" v-if="comp.participantCount > 0">{{ comp.participantCount }} 人参赛</span>
+            <span class="text-sm text-text-muted" v-if="comp.participantCount > 0"
+              >{{ comp.participantCount }} 人参赛</span
+            >
             <span v-else class="text-sm text-text-muted">即将开始</span>
-            <a v-if="comp.status === 'ongoing'" :href="`/competition/${comp.id}/exam`" class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">进入答题</a>
+            <a
+              v-if="comp.status === 'ongoing'"
+              :href="`/competition/${comp.id}/exam`"
+              class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold"
+              >进入答题</a
+            >
             <span v-else-if="comp.status === 'upcoming'" class="text-sm text-primary font-medium">即将开始</span>
             <span v-else class="text-sm text-text-muted/60">已结束</span>
           </div>
@@ -38,6 +45,15 @@ const groupedCompetitions = computed(() => {
 });
 
 function statusLabel(s: string) {
-  switch (s) { case 'ongoing': return '进行中'; case 'upcoming': return '即将开始'; case 'ended': return '已结束'; default: return s; }
+  switch (s) {
+    case 'ongoing':
+      return '进行中';
+    case 'upcoming':
+      return '即将开始';
+    case 'ended':
+      return '已结束';
+    default:
+      return s;
+  }
 }
 </script>

@@ -6,17 +6,42 @@
     </div>
 
     <div class="space-y-4">
-      <input v-model="title" type="text" class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-amber-800/30 text-gray-200 text-sm focus:border-amber-700/50 outline-none placeholder-gray-500" placeholder="标题（选填）" />
-      <textarea v-model="content" rows="8" class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-amber-800/30 text-gray-200 text-sm focus:border-amber-700/50 outline-none placeholder-gray-500 resize-none" placeholder="在这里写下你想说的话..."></textarea>
+      <input
+        v-model="title"
+        type="text"
+        class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-amber-800/30 text-gray-200 text-sm focus:border-amber-700/50 outline-none placeholder-gray-500"
+        placeholder="标题（选填）"
+      />
+      <textarea
+        v-model="content"
+        rows="8"
+        class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-amber-800/30 text-gray-200 text-sm focus:border-amber-700/50 outline-none placeholder-gray-500 resize-none"
+        placeholder="在这里写下你想说的话..."
+      ></textarea>
       <div>
         <label class="text-xs text-gray-500 mb-1.5 block">选择标签</label>
         <div class="flex flex-wrap gap-2">
-          <button v-for="tag in LETTER_TAGS" :key="tag" type="button" class="px-3 py-1 rounded-full text-xs border transition-colors"
-            :class="selectedTags.includes(tag) ? 'border-amber-500 bg-amber-900/30 text-amber-300' : 'border-gray-700 text-gray-500 hover:border-gray-600'"
-            @click="toggleTag(tag)">{{ tag }}</button>
+          <button
+            v-for="tag in LETTER_TAGS"
+            :key="tag"
+            type="button"
+            class="px-3 py-1 rounded-full text-xs border transition-colors"
+            :class="
+              selectedTags.includes(tag)
+                ? 'border-amber-500 bg-amber-900/30 text-amber-300'
+                : 'border-gray-700 text-gray-500 hover:border-gray-600'
+            "
+            @click="toggleTag(tag)"
+          >
+            {{ tag }}
+          </button>
         </div>
       </div>
-      <button class="w-full py-3 rounded-xl bg-amber-900/40 border border-amber-800/50 text-amber-300 font-medium hover:bg-amber-900/50 transition-colors text-sm" :disabled="!content.trim()" @click="submit">
+      <button
+        class="w-full py-3 rounded-xl bg-amber-900/40 border border-amber-800/50 text-amber-300 font-medium hover:bg-amber-900/50 transition-colors text-sm"
+        :disabled="!content.trim()"
+        @click="submit"
+      >
         匿名发送
       </button>
     </div>

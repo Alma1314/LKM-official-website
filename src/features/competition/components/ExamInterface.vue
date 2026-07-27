@@ -6,9 +6,17 @@
         v-for="(q, i) in questions"
         :key="i"
         class="w-10 h-10 rounded-lg text-sm font-medium flex items-center justify-center transition-colors"
-        :class="currentIndex === i ? 'bg-primary text-on-primary' : answers[i] !== undefined ? 'bg-primary/20 text-primary' : 'bg-surface-3 text-text-muted'"
+        :class="
+          currentIndex === i
+            ? 'bg-primary text-on-primary'
+            : answers[i] !== undefined
+              ? 'bg-primary/20 text-primary'
+              : 'bg-surface-3 text-text-muted'
+        "
         @click="currentIndex = i"
-      >{{ i + 1 }}</button>
+      >
+        {{ i + 1 }}
+      </button>
     </div>
 
     <!-- 答题区 -->
@@ -27,7 +35,11 @@
             v-for="(opt, i) in currentQ.options"
             :key="i"
             class="w-full text-left px-4 py-3 rounded-lg text-sm border transition-colors"
-            :class="answers[currentIndex] === i ? 'border-primary bg-primary/10 text-primary' : 'border-surface-3 text-deep-text hover:border-primary/40'"
+            :class="
+              answers[currentIndex] === i
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-surface-3 text-deep-text hover:border-primary/40'
+            "
             @click="answers[currentIndex] = i"
           >
             <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ opt }}
@@ -36,10 +48,18 @@
       </div>
 
       <div class="flex justify-between mt-4">
-        <button class="btn-ghost text-sm px-4 py-2" :disabled="currentIndex === 0" @click="currentIndex--">上一题</button>
+        <button class="btn-ghost text-sm px-4 py-2" :disabled="currentIndex === 0" @click="currentIndex--">
+          上一题
+        </button>
         <div class="flex gap-2">
           <span class="text-xs text-text-muted self-center">已答 {{ answeredCount }}/{{ questions.length }}</span>
-          <button v-if="currentIndex < questions.length - 1" class="btn-primary px-5 py-2 rounded-lg text-sm" @click="currentIndex++">下一题</button>
+          <button
+            v-if="currentIndex < questions.length - 1"
+            class="btn-primary px-5 py-2 rounded-lg text-sm"
+            @click="currentIndex++"
+          >
+            下一题
+          </button>
           <button v-else class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" @click="submit">提交答卷</button>
         </div>
       </div>
@@ -63,7 +83,9 @@ const answeredCount = computed(() => answers.value.filter((a) => a !== undefined
 const labels = ['A', 'B', 'C', 'D'];
 
 onMounted(() => {
-  timer = setInterval(() => { if (remaining.value > 0) remaining.value--; }, 1000);
+  timer = setInterval(() => {
+    if (remaining.value > 0) remaining.value--;
+  }, 1000);
 });
 
 onUnmounted(() => clearInterval(timer));
@@ -77,7 +99,7 @@ function formatTime(s: number): string {
 function submit() {
   const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
   clearInterval(timer);
-  alert(`答卷已提交！正确 ${correct}/${questions.length}（${Math.round(correct/questions.length*100)}%）`);
+  alert(`答卷已提交！正确 ${correct}/${questions.length}（${Math.round((correct / questions.length) * 100)}%）`);
   window.location.href = '/competition';
 }
 </script>

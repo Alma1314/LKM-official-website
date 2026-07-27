@@ -29,7 +29,9 @@ const metadata = { title: `${column.title} —— 理科迷` };
     <!-- 专栏头部 -->
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
       <div class="flex items-start gap-4">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0">
+        <div
+          class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0"
+        >
           <Icon name="tabler:article" class="w-10 h-10 text-primary" />
         </div>
         <div class="flex-1">
@@ -65,7 +67,9 @@ const metadata = { title: `${column.title} —— 理科迷` };
             <a href={`/columns/${column.slug}/${art.id}`} class="profile-card group block">
               <div class="profile-inner p-5 flex gap-4">
                 <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">{art.title}</h3>
+                  <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
+                    {art.title}
+                  </h3>
                   <p class="text-sm text-text-muted mt-1 line-clamp-2">{art.excerpt}</p>
                   <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60">
                     <span>{formatDate(art.createdAt)}</span>

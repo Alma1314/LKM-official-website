@@ -2,7 +2,9 @@
   <div class="space-y-6">
     <div class="text-center">
       <h3 class="text-xl font-semibold text-deep-text">完善个人信息</h3>
-      <p class="text-sm text-text-muted mt-1">完成信息填写即可获得 <span class="text-primary font-semibold">100 积分</span> + "初来乍到" 称号</p>
+      <p class="text-sm text-text-muted mt-1">
+        完成信息填写即可获得 <span class="text-primary font-semibold">100 积分</span> + "初来乍到" 称号
+      </p>
     </div>
 
     <div class="max-w-sm mx-auto space-y-4">

@@ -12,9 +12,9 @@
       <button
         type="button"
         class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
-        :class="activeTab === 'category'
-          ? 'bg-primary text-on-primary'
-          : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'"
+        :class="
+          activeTab === 'category' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
+        "
         @click="activeTab = 'category'"
       >
         板块推荐
@@ -22,9 +22,9 @@
       <button
         type="button"
         class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
-        :class="activeTab === 'author'
-          ? 'bg-primary text-on-primary'
-          : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'"
+        :class="
+          activeTab === 'author' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
+        "
         @click="activeTab = 'author'"
       >
         作者推荐
@@ -38,12 +38,18 @@
         :key="item.id"
         type="button"
         class="flex items-start gap-3 p-3 rounded-lg border text-left transition-colors"
-        :class="selectedIds.includes(item.id)
-          ? 'border-primary bg-primary/5'
-          : 'border-surface-3 bg-card-bg hover:border-primary/30'"
+        :class="
+          selectedIds.includes(item.id)
+            ? 'border-primary bg-primary/5'
+            : 'border-surface-3 bg-card-bg hover:border-primary/30'
+        "
         @click="toggle(item.id)"
       >
-        <Icon :icon="item.icon" class="w-8 h-8 shrink-0 mt-0.5" :class="selectedIds.includes(item.id) ? 'text-primary' : 'text-text-muted'" />
+        <Icon
+          :icon="item.icon"
+          class="w-8 h-8 shrink-0 mt-0.5"
+          :class="selectedIds.includes(item.id) ? 'text-primary' : 'text-text-muted'"
+        />
         <div class="flex-1 min-w-0">
           <div class="font-medium text-sm text-deep-text flex items-center gap-2">
             {{ item.name }}
@@ -62,12 +68,16 @@
         :key="item.id"
         type="button"
         class="flex items-start gap-3 p-3 rounded-lg border text-left transition-colors"
-        :class="selectedIds.includes(item.id)
-          ? 'border-primary bg-primary/5'
-          : 'border-surface-3 bg-card-bg hover:border-primary/30'"
+        :class="
+          selectedIds.includes(item.id)
+            ? 'border-primary bg-primary/5'
+            : 'border-surface-3 bg-card-bg hover:border-primary/30'
+        "
         @click="toggle(item.id)"
       >
-        <div class="w-8 h-8 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+        <div
+          class="w-8 h-8 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm"
+        >
           {{ item.name.charAt(0) }}
         </div>
         <div class="flex-1 min-w-0">

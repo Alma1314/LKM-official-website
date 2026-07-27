@@ -23,27 +23,44 @@ import { adminFiles } from '~/features/admin/data/mock-admin';
         </tr>
       </thead>
       <tbody class="divide-y divide-surface-3">
-        {adminFiles.map((f) => (
-          <tr class="hover:bg-page-bg transition-colors">
-            <td class="px-4 py-3"><div class="font-medium text-deep-text line-clamp-1 max-w-56">{f.originalName}</div><div class="text-xs text-text-muted/60">{f.categoryName} · {f.createdAt}</div></td>
-            <td class="px-4 py-3 hidden sm:table-cell text-text-muted">{f.uploaderName}</td>
-            <td class="px-4 py-3 hidden md:table-cell text-text-muted">{f.size}</td>
-            <td class="px-4 py-3">
-              <span class="text-xs px-2 py-0.5 rounded-full font-medium" class:list={[
-                { 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500': f.status === 'pending' },
-                { 'bg-green-100 dark:bg-green-950/30 text-green-500': f.status === 'approved' },
-                { 'bg-red-100 dark:bg-red-950/30 text-red-500': f.status === 'rejected' },
-              ]}>
-                {f.status === 'pending' ? '审核中' : f.status === 'approved' ? '已通过' : '已驳回'}
-              </span>
-            </td>
-            <td class="px-4 py-3">
-              {f.status === 'pending' ? (
-                <div class="flex gap-1"><button class="text-xs text-green-500 hover:underline">通过</button><button class="text-xs text-red-500 hover:underline">驳回</button></div>
-              ) : (<span class="text-xs text-text-muted/60">—</span>)}
-            </td>
-          </tr>
-        ))}
+        {
+          adminFiles.map((f) => (
+            <tr class="hover:bg-page-bg transition-colors">
+              <td class="px-4 py-3">
+                <>
+                  <div class="font-medium text-deep-text line-clamp-1 max-w-56">{f.originalName}</div>
+                  <div class="text-xs text-text-muted/60">
+                    {f.categoryName} · {f.createdAt}
+                  </div>
+                </>
+              </td>
+              <td class="px-4 py-3 hidden sm:table-cell text-text-muted">{f.uploaderName}</td>
+              <td class="px-4 py-3 hidden md:table-cell text-text-muted">{f.size}</td>
+              <td class="px-4 py-3">
+                <span
+                  class="text-xs px-2 py-0.5 rounded-full font-medium"
+                  class:list={[
+                    { 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500': f.status === 'pending' },
+                    { 'bg-green-100 dark:bg-green-950/30 text-green-500': f.status === 'approved' },
+                    { 'bg-red-100 dark:bg-red-950/30 text-red-500': f.status === 'rejected' },
+                  ]}
+                >
+                  {f.status === 'pending' ? '审核中' : f.status === 'approved' ? '已通过' : '已驳回'}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                {f.status === 'pending' ? (
+                  <div class="flex gap-1">
+                    <button class="text-xs text-green-500 hover:underline">通过</button>
+                    <button class="text-xs text-red-500 hover:underline">驳回</button>
+                  </div>
+                ) : (
+                  <span class="text-xs text-text-muted/60">—</span>
+                )}
+              </td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>

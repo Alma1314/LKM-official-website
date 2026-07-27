@@ -13,8 +13,6 @@ const user = getUserByUsername(username || '');
 if (!user) {
   return Astro.redirect('/');
 }
-
-const metadata = { title: `${user.displayName} (@${user.username}) —— 理科迷` };
 ---
 
 <MainGridLayout title={user.displayName} description={user.bio}>

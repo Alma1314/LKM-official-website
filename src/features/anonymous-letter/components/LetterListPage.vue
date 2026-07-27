@@ -15,9 +15,16 @@
         class="block p-5 rounded-xl bg-gray-800/50 border border-amber-800/20 hover:border-amber-800/40 transition-colors group"
       >
         <div class="flex flex-wrap gap-1.5 mb-2">
-          <span v-for="tag in letter.tags" :key="tag" class="text-xs px-2 py-0.5 rounded-full bg-amber-900/30 text-amber-300">{{ tag }}</span>
+          <span
+            v-for="tag in letter.tags"
+            :key="tag"
+            class="text-xs px-2 py-0.5 rounded-full bg-amber-900/30 text-amber-300"
+            >{{ tag }}</span
+          >
         </div>
-        <h3 v-if="letter.title" class="font-medium text-gray-200 group-hover:text-amber-200 transition-colors mb-1">{{ letter.title }}</h3>
+        <h3 v-if="letter.title" class="font-medium text-gray-200 group-hover:text-amber-200 transition-colors mb-1">
+          {{ letter.title }}
+        </h3>
         <p class="text-sm text-gray-400 line-clamp-3 leading-relaxed">{{ letter.content }}</p>
         <div class="flex items-center justify-between mt-3 text-xs text-gray-500">
           <span>{{ formatTime(letter.createdAt) }}</span>
@@ -28,7 +35,10 @@
 
     <!-- 写信按钮 -->
     <div class="text-center mt-8">
-      <a href="/letters/write" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-900/30 border border-amber-800/40 text-amber-300 hover:bg-amber-900/40 transition-colors text-sm font-medium">
+      <a
+        href="/letters/write"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-900/30 border border-amber-800/40 text-amber-300 hover:bg-amber-900/40 transition-colors text-sm font-medium"
+      >
         <Icon icon="material-symbols:edit-outline" class="w-5 h-5" />
         写一封信
       </a>

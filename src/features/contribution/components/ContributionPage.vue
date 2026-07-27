@@ -3,7 +3,11 @@
     <!-- 顶部用户积分卡片 -->
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">我</div>
+        <div
+          class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl"
+        >
+          我
+        </div>
         <div class="flex-1">
           <h1 class="text-xl font-bold text-deep-text">贡献系统</h1>
           <div class="flex items-center gap-3 mt-1 text-sm">
@@ -21,7 +25,9 @@
         v-for="tab in pageTabs"
         :key="tab.key"
         class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors shrink-0"
-        :class="activeTab === tab.key ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'"
+        :class="
+          activeTab === tab.key ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
+        "
         @click="activeTab = tab.key"
       >
         <Icon :icon="tab.icon" class="w-4 h-4 inline mr-1" />
@@ -35,13 +41,19 @@
         v-for="ach in allAchievements"
         :key="ach.id"
         class="rounded-xl p-4 text-center transition-colors"
-        :class="ach.unlocked ? 'bg-card-bg border border-surface-3' : 'bg-surface-3/30 border border-surface-3 opacity-50'"
+        :class="
+          ach.unlocked ? 'bg-card-bg border border-surface-3' : 'bg-surface-3/30 border border-surface-3 opacity-50'
+        "
       >
-        <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2"
-          :class="ach.unlocked ? 'bg-primary/10 text-primary' : 'bg-surface-3 text-text-muted'">
+        <div
+          class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2"
+          :class="ach.unlocked ? 'bg-primary/10 text-primary' : 'bg-surface-3 text-text-muted'"
+        >
           <Icon :icon="ach.icon" class="w-6 h-6" />
         </div>
-        <div class="font-semibold text-sm" :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'">{{ ach.name }}</div>
+        <div class="font-semibold text-sm" :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'">
+          {{ ach.name }}
+        </div>
         <div class="text-xs text-text-muted/60 mt-1">{{ ach.description }}</div>
         <div v-if="!ach.unlocked" class="mt-2">
           <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden">
@@ -74,23 +86,33 @@
           v-for="p in ['daily', 'weekly', 'total']"
           :key="p"
           class="flex-1 px-4 py-3 text-sm font-medium transition-colors"
-          :class="leaderboardPeriod === p ? 'text-primary border-b-2 border-primary' : 'text-text-muted hover:text-deep-text'"
+          :class="
+            leaderboardPeriod === p ? 'text-primary border-b-2 border-primary' : 'text-text-muted hover:text-deep-text'
+          "
           @click="leaderboardPeriod = p"
         >
           {{ periodLabels[p] }}
         </button>
       </div>
       <div class="divide-y divide-surface-3">
-        <div
-          v-for="entry in currentLeaderboard"
-          :key="entry.username"
-          class="flex items-center gap-3 px-5 py-3"
-        >
-          <span class="w-8 text-center font-bold text-sm"
-            :class="entry.rank === 1 ? 'text-yellow-400' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-amber-600' : 'text-text-muted/60'">
+        <div v-for="entry in currentLeaderboard" :key="entry.username" class="flex items-center gap-3 px-5 py-3">
+          <span
+            class="w-8 text-center font-bold text-sm"
+            :class="
+              entry.rank === 1
+                ? 'text-yellow-400'
+                : entry.rank === 2
+                  ? 'text-gray-300'
+                  : entry.rank === 3
+                    ? 'text-amber-600'
+                    : 'text-text-muted/60'
+            "
+          >
             {{ entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : entry.rank === 3 ? '🥉' : entry.rank }}
           </span>
-          <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+          <div
+            class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm"
+          >
             {{ entry.displayName.charAt(0) }}
           </div>
           <div class="flex-1 min-w-0">
@@ -110,7 +132,14 @@
         class="bg-card-bg border border-surface-3 rounded-xl p-5 flex flex-col"
       >
         <div class="flex items-center gap-2 mb-2">
-          <span class="text-xs px-1.5 py-0.5 rounded-full" :class="item.isVirtual ? 'bg-blue-100 dark:bg-blue-950/30 text-blue-500' : 'bg-amber-100 dark:bg-amber-950/30 text-amber-500'">
+          <span
+            class="text-xs px-1.5 py-0.5 rounded-full"
+            :class="
+              item.isVirtual
+                ? 'bg-blue-100 dark:bg-blue-950/30 text-blue-500'
+                : 'bg-amber-100 dark:bg-amber-950/30 text-amber-500'
+            "
+          >
             {{ item.isVirtual ? '虚拟' : '实物' }}
           </span>
           <span v-if="item.stock > 0 && item.stock < 20" class="text-xs text-red-500">仅剩 {{ item.stock }}</span>
@@ -151,15 +180,27 @@
       <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
         <h3 class="font-semibold text-deep-text mb-4">今日任务</h3>
         <div class="space-y-3">
-          <div v-for="task in tasks" :key="task.id"
+          <div
+            v-for="task in tasks"
+            :key="task.id"
             class="flex items-center gap-3 p-3 rounded-lg border"
-            :class="task.completed ? 'border-green-200 dark:border-green-900/30 bg-green-50 dark:bg-green-950/10' : 'border-surface-3'">
-            <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-              :class="task.completed ? 'bg-green-500 border-green-500 text-white' : 'border-surface-3 text-transparent'">
+            :class="
+              task.completed
+                ? 'border-green-200 dark:border-green-900/30 bg-green-50 dark:bg-green-950/10'
+                : 'border-surface-3'
+            "
+          >
+            <div
+              class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+              :class="task.completed ? 'bg-green-500 border-green-500 text-white' : 'border-surface-3 text-transparent'"
+            >
               <Icon v-if="task.completed" icon="material-symbols:check" class="w-3 h-3" />
             </div>
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium" :class="task.completed ? 'text-text-muted line-through' : 'text-deep-text'">
+              <div
+                class="text-sm font-medium"
+                :class="task.completed ? 'text-text-muted line-through' : 'text-deep-text'"
+              >
                 {{ task.title }}
               </div>
               <div class="text-xs text-text-muted/60 mt-0.5">
@@ -167,7 +208,10 @@
               </div>
               <div class="mt-1.5">
                 <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden w-32">
-                  <div class="h-full rounded-full bg-primary transition-all" :style="{ width: (task.currentProgress / task.requirementCount * 100) + '%' }"></div>
+                  <div
+                    class="h-full rounded-full bg-primary transition-all"
+                    :style="{ width: (task.currentProgress / task.requirementCount) * 100 + '%' }"
+                  ></div>
                 </div>
                 <span class="text-xs text-text-muted/50">{{ task.currentProgress }}/{{ task.requirementCount }}</span>
               </div>
@@ -182,7 +226,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
-import { achievements, userAchievements, pointLogs, leaderboard, tasks, exchangeItems } from '../data/mock-contribution';
+import {
+  achievements,
+  userAchievements,
+  pointLogs,
+  leaderboard,
+  tasks,
+  exchangeItems,
+} from '../data/mock-contribution';
 
 const activeTab = ref('achievements');
 const leaderboardPeriod = ref<'daily' | 'weekly' | 'total'>('weekly');
@@ -217,7 +268,7 @@ function doCheckin() {
   dailyCheckedIn.value = true;
 }
 
-function handleExchange(item: typeof exchangeItems[0]) {
+function handleExchange(item: (typeof exchangeItems)[0]) {
   alert(`兑换成功！您已花费 ${item.pointsCost} 积分兑换"${item.name}"`);
 }
 </script>
