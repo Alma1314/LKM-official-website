@@ -10,37 +10,8 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ['dist/**', '.astro/**', 'coverage/**', 'node_modules/**'],
+    include: ['src/**/*.test.ts', 'packages/**/*.test.ts'],
+    exclude: ['dist/**', '.astro/**', 'coverage/**', 'node_modules/**', '**/node_modules/**'],
+    environment: 'node',
   },
-  projects: [
-    {
-      name: 'node',
-      test: {
-        include: ['src/**/*.test.ts', 'packages/**/*.test.ts'],
-        exclude: ['src/**/*.browser.test.ts'],
-        environment: 'node',
-      },
-    },
-    {
-      name: 'jsdom',
-      test: {
-        include: ['src/**/*.browser.test.ts'],
-        environment: 'jsdom',
-      },
-    },
-    {
-      name: 'security',
-      test: {
-        include: [
-          'packages/**/sanitize-html.test.ts',
-          'packages/**/sanitize*.test.ts',
-          'packages/**/ai-client.test.ts',
-          'src/**/sanitize-html.test.ts',
-          'src/**/sanitize*.test.ts',
-          'src/**/ai-client.test.ts',
-        ],
-        environment: 'node',
-      },
-    },
-  ],
 });
