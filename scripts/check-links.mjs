@@ -3,8 +3,8 @@
  * 内部链接检查脚本
  * 验证关键页面的内部链接不失效（忽略 mock 动态路由）。
  */
-import { readFileSync, existsSync } from 'node:fs';
-import { resolve, relative } from 'node:path';
+import { readFileSync, existsSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const DIST = resolve(import.meta.dirname, '..', 'dist');
 const BASE = '/LKM-official-website';

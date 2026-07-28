@@ -54,7 +54,6 @@ const PROMPT_TEMPLATES: Record<string, string> = {
 };
 
 const DEFAULT_MODEL = 'gpt-3.5-turbo';
-const DEFAULT_ENDPOINT = 'https://api.openai.com';
 const MAX_RESPONSE_BYTES = 262144; // 256 KiB
 const REQUEST_TIMEOUT_MS = 15000;
 

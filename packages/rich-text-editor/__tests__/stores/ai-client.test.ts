@@ -1,17 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { validateAiEndpoint, requestAiCompletion, setAiConfig, clearAiConfig } from '../../src/stores/ai-client';
 
-// Result type matching what validateAiEndpoint and requestAiCompletion return
-interface Ok<T> {
-  ok: true;
-  value: T;
-}
-interface Err {
-  ok: false;
-  error: string;
-}
-type Result<T> = Ok<T> | Err;
-
 const DEFAULT_ENDPOINT = 'https://api.openai.com';
 const DEFAULT_MODEL = 'gpt-3.5-turbo';
 
