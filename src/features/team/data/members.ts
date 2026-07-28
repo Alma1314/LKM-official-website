@@ -72,7 +72,7 @@ export const affairsSubGroups: Record<string, SubGroup> = {
       {
         name: '七月清汉',
         avatarKey: '七月清汉.png',
-        desc: '保密awa（再改是小猪！）',
+        desc: '保密awa',
         dream: '梦想：无义务告知',
         quote: '—— WELCOME TO OUR KINGDOM ！',
       },
