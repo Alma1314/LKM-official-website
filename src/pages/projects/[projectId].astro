@@ -2,6 +2,7 @@
 import Layout from '~/layouts/SidebarLayout.astro';
 import { mockProjects } from '~/features/project-hub/data/mock-projects';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockProjects.map((p) => ({ params: { projectId: p.id } }));
@@ -11,7 +12,7 @@ const { projectId } = Astro.params;
 const proj = mockProjects.find((p) => p.id === projectId);
 
 if (!proj) {
-  return Astro.redirect('/projects');
+  return Astro.redirect(getPermalink('/projects'));
 }
 
 function formatDate(dateStr: string): string {
@@ -23,7 +24,7 @@ const revisionLabel = (rev: number) => (rev === 0 ? '初版' : rev === 1 ? '一�
 const metadata = { title: `${proj.name} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/projects/${projectId}`}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/projects/${projectId}`)}>
   <div class="space-y-6">
     <!-- 头部 -->
     <div>

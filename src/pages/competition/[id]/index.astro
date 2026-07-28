@@ -2,6 +2,7 @@
 import Layout from '~/layouts/SidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 import { mockCompetitions } from '~/features/competition/data/mock-competitions';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockCompetitions.map((c) => ({ params: { id: c.id } }));
@@ -13,7 +14,7 @@ const comp = mockCompetitions.find((c) => c.id === id);
 const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详情' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/competition/${id}`}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/competition/${id}`)}>
   {
     comp ? (
       <div class="space-y-6">
@@ -43,7 +44,7 @@ const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详�
         </div>
         {comp.status === 'ongoing' && (
           <a
-            href={`/competition/${id}/exam`}
+            href={getPermalink(`/competition/${id}/exam`)}
             class="btn-primary px-6 py-3 rounded-lg text-base font-semibold inline-block"
           >
             进入答题

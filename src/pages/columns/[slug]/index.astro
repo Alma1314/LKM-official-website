@@ -3,6 +3,7 @@ import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getColumnBySlug, getArticlesByColumnId, mockColumns } from '~/features/column/data/mock-columns';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockColumns.map((c) => ({ params: { slug: c.slug } }));
@@ -12,7 +13,7 @@ const { slug } = Astro.params;
 const column = getColumnBySlug(slug || '');
 
 if (!column) {
-  return Astro.redirect('/columns');
+  return Astro.redirect(getPermalink('/columns'));
 }
 
 const articles = getArticlesByColumnId(column.id);
@@ -24,7 +25,7 @@ function formatDate(dateStr: string): string {
 const metadata = { title: `${column.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/columns/${slug}`}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/columns/${slug}`)}>
   <div class="space-y-6">
     <!-- 专栏头部 -->
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
@@ -64,7 +65,7 @@ const metadata = { title: `${column.title} —— 理科迷` };
       {
         articles.length > 0 ? (
           articles.map((art) => (
-            <a href={`/columns/${column.slug}/${art.id}`} class="profile-card group block">
+            <a href={getPermalink(`/columns/${column.slug}/${art.id}`)} class="profile-card group block">
               <div class="profile-inner p-5 flex gap-4">
                 <div class="flex-1 min-w-0">
                   <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">

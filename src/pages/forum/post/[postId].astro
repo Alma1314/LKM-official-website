@@ -7,6 +7,7 @@ import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 import PostInteractions from '~/features/forum/components/PostInteractions.vue';
 import CommentSection from '~/features/forum/components/CommentSection.vue';
 import PostCard from '~/features/forum/components/PostCard.astro';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockPosts.map((p) => ({ params: { postId: p.id } }));
@@ -16,7 +17,7 @@ const { postId } = Astro.params;
 const post = getPostById(postId || '');
 
 if (!post) {
-  return Astro.redirect('/forum');
+  return Astro.redirect(getPermalink('/forum'));
 }
 
 const category = getCategoryBySlug(post.categoryId);
@@ -40,17 +41,17 @@ function formatDate(dateStr: string): string {
 <Layout
   metadata={{ title: `${post.title} —— 理科迷` }}
   sidebarLinks={communitySidebarLinks}
-  currentPath={`/forum/post/${postId}`}
+  currentPath={getPermalink(`/forum/post/${postId}`)}
 >
   <div class="space-y-6">
     <!-- 面包屑 -->
     <div class="flex items-center gap-2 text-sm text-text-muted/60">
-      <a href="/forum" class="hover:text-primary transition-colors">板块广场</a>
+      <a href={getPermalink('/forum')} class="hover:text-primary transition-colors">板块广场</a>
       <Icon name="tabler:chevron-right" class="w-3.5 h-3.5" />
       {
         category && (
           <>
-            <a href={`/forum/${category.slug}`} class="hover:text-primary transition-colors">
+            <a href={getPermalink(`/forum/${category.slug}`)} class="hover:text-primary transition-colors">
               {category.name}
             </a>
             <Icon name="tabler:chevron-right" class="w-3.5 h-3.5" />

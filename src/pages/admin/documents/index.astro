@@ -1,5 +1,6 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = {
   title: '文档管理 — LKM',
@@ -25,7 +26,7 @@ const metadata = {
           <option value="published">已发布</option>
           <option value="archived">已归档</option>
         </select>
-        <a href="/admin/documents/editor" class="btn btn-primary btn-sm">新建文档</a>
+        <a href={getPermalink('/admin/documents/editor')} class="btn btn-primary btn-sm">新建文档</a>
       </div>
     </div>
     <div id="doc-list" class="bg-card-bg border border-surface-3 rounded-lg overflow-hidden">
@@ -78,7 +79,7 @@ const metadata = {
       .map(
         (doc) => `
       <div class="flex items-center justify-between p-4 border-b border-surface-3 last:border-b-0 hover:bg-page-bg transition-colors group">
-        <a href="/admin/documents/editor?id=${doc.id}" class="flex-1 min-w-0">
+        <a href="${import.meta.env.BASE_URL}admin/documents/editor?id=${doc.id}" class="flex-1 min-w-0">
           <h3 class="font-medium truncate">${escapeHtml(doc.title)}</h3>
           <p class="text-xs text-deep-text/50 mt-1">
             ${new Date(doc.lastModified).toLocaleString('zh-CN')} ·

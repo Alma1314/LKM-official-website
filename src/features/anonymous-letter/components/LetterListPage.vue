@@ -11,7 +11,7 @@
       <a
         v-for="letter in letters"
         :key="letter.id"
-        :href="`/letters/${letter.id}`"
+        :href="`${base}letters/${letter.id}`"
         class="block p-5 rounded-xl bg-gray-800/50 border border-amber-800/20 hover:border-amber-800/40 transition-colors group"
       >
         <div class="flex flex-wrap gap-1.5 mb-2">
@@ -36,7 +36,7 @@
     <!-- 写信按钮 -->
     <div class="text-center mt-8">
       <a
-        href="/letters/write"
+        :href="`${base}letters/write`"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-900/30 border border-amber-800/40 text-amber-300 hover:bg-amber-900/40 transition-colors text-sm font-medium"
       >
         <Icon icon="material-symbols:edit-outline" class="w-5 h-5" />
@@ -49,6 +49,8 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 import { mockLetters } from '../data/mock-letters';
+
+const base = import.meta.env.BASE_URL;
 
 const letters = mockLetters;
 

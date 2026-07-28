@@ -3,6 +3,7 @@ import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getQuestionById, getAnswersByQuestionId, mockQuestions } from '~/features/qa/data/mock-questions';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockQuestions.map((q) => ({ params: { questionId: q.id } }));
@@ -13,7 +14,7 @@ const question = getQuestionById(questionId || '');
 const answers = getAnswersByQuestionId(questionId || '');
 
 if (!question) {
-  return Astro.redirect('/qa');
+  return Astro.redirect(getPermalink('/qa'));
 }
 
 function formatDate(dateStr: string): string {
@@ -29,7 +30,7 @@ function formatDate(dateStr: string): string {
 const metadata = { title: `${question.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/qa/${questionId}`}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/qa/${questionId}`)}>
   <div class="space-y-6 max-w-3xl">
     <!-- 问题 -->
     <div>

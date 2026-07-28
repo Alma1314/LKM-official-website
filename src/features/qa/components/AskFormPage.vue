@@ -128,10 +128,10 @@ function toggleSubject(s: string) {
 
 function submit() {
   alert('问题已发布！');
-  window.location.href = '/qa';
+  window.location.href = import.meta.env.BASE_URL + 'qa';
 }
 function submitVolunteer() {
   alert('志愿咨询已发布！');
-  window.location.href = '/qa';
+  window.location.href = import.meta.env.BASE_URL + 'qa';
 }
 </script>

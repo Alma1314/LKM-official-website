@@ -1,8 +1,8 @@
 ---
-import Layout from '~/layouts/SidebarLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getFileById, mockFiles } from '~/features/file-library/data/mock-files';
-import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockFiles.map((f) => ({ params: { fileId: f.id } }));
@@ -12,7 +12,7 @@ const { fileId } = Astro.params;
 const file = getFileById(fileId || '');
 
 if (!file) {
-  return Astro.redirect('/files');
+  return Astro.redirect(getPermalink('/files'));
 }
 
 function formatSize(bytes: number): string {
@@ -60,11 +60,11 @@ function _statusColor(status: string): string {
 const metadata = { title: `${file.originalName} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/files/${fileId}`}>
+<Layout metadata={metadata}>
   <div class="space-y-6">
     <!-- 面包屑 -->
     <div class="flex items-center gap-2 text-sm text-text-muted/60">
-      <a href="/files" class="hover:text-primary transition-colors">文件库</a>
+      <a href={getPermalink('/files')} class="hover:text-primary transition-colors">文件库</a>
       <Icon name="tabler:chevron-right" class="w-3.5 h-3.5" />
       <span class="text-text-muted truncate">{file.originalName}</span>
     </div>

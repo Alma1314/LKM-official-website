@@ -2,6 +2,7 @@
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 import { getUserByUsername, mockUsers } from '~/features/profile/data/mock-users';
 import ProfilePage from '~/features/profile/components/ProfilePage.vue';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return mockUsers.map((u) => ({ params: { username: u.username } }));
@@ -11,7 +12,7 @@ const { username } = Astro.params;
 const user = getUserByUsername(username || '');
 
 if (!user) {
-  return Astro.redirect('/');
+  return Astro.redirect(getPermalink('/'));
 }
 ---
 
