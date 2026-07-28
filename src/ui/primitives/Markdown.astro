@@ -20,7 +20,6 @@ const className = Astro.props.class;
     const ecCopyBtn = target.closest('[data-code]') as HTMLElement | null;
     if (ecCopyBtn?.hasAttribute('data-code')) {
       // EC handles copy natively, just add visual feedback
-      const originalTitle = ecCopyBtn.getAttribute('title') || '';
       ecCopyBtn.setAttribute('data-copied', 'Copied!');
       const to = setTimeout(() => {
         ecCopyBtn.setAttribute('data-copied', '');

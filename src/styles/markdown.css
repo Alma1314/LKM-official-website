@@ -62,7 +62,6 @@
       &:after {
         content: none;
       }
-
     }
 
     /* Legacy copy-btn for custom Expressive Code copy button plugin */
@@ -116,7 +115,9 @@
     .expressive-code figcaption.header {
       background: oklch(0.15 0.02 var(--hue)) !important;
       color: oklch(0.95 0.01 var(--hue));
-      font-family: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-family:
+        'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
       font-size: 0.8125rem;
       font-weight: 500;
       padding: 0.45rem 1rem;
