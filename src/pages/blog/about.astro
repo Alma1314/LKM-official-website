@@ -1,12 +1,11 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import Markdown from '~/ui/primitives/Markdown.astro';
 import I18nKey from '~/core/i18n/i18nKey';
 import { i18n } from '~/core/i18n/translation';
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 
-const docs = await getCollection('docs', ({ id }) => id === 'about');
-const aboutPost = docs[0];
+const aboutPost = await getEntry('docs', 'about');
 
 if (!aboutPost) {
   throw new Error('About page content not found');
