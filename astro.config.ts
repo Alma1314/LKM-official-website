@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
+import astroExpressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
@@ -30,6 +31,7 @@ import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
 import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
+import { responsiveTablesRehypePlugin } from './src/core/utils/frontmatter.js';
 import fs from 'node:fs';
 import yaml from 'js-yaml';
 
@@ -49,6 +51,10 @@ export default defineConfig({
 
   integrations: [
     sitemap(),
+    astroExpressiveCode({
+      themes: ['github-dark'],
+      plugins: [],
+    }),
     mdx(),
     vue(),
     react({
@@ -134,6 +140,7 @@ export default defineConfig({
         parseDirectiveNode as unknown as RemarkPlugin,
       ],
       rehypePlugins: [
+        responsiveTablesRehypePlugin,
         rehypeKatex,
         rehypeSlug,
         [

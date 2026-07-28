@@ -8,7 +8,9 @@
 **理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 构建的纯静态站点，部署于 GitHub Pages。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
 
 ---
+
 ## 前言 · 新手指导 · 环境部署
+
 如果你有兴趣来参与理科迷的网站建设工作，在正式你的开发之旅前，我们首先建议开发工作在电脑端完成，这里以WINDOWS系统为例，你需要预备如下工具来完成对环境的部署：
 Git bash（以下简称git），pnpm，NodeJS 24+，以及一个稳定可靠的网络。
 
@@ -29,6 +31,7 @@ NodeJS： [Node.js — Download Node.js®](https://nodejs.org/en/download)
 ```bash
 git clone https://github.com/LKM-AHZ/LKM-official-website.git
 ```
+
 克隆成功后，运行
 
 ```
@@ -71,6 +74,7 @@ pnpm install
 ```bash
 pnpm store prune
 ```
+
 如果只是中途发生错误，并不需要更换镜像源的话，输入下面这串指令以清除缓存
 
 ```bash
@@ -111,7 +115,7 @@ pnpm install --network-concurrency=2 --fetch-timeout=60000
 git stash
 git pull
 pnpm install --network-concurrency=2 --fetch-timeout=60000
-````
+```
 
 即可完成更新
 
@@ -184,27 +188,33 @@ git push
 
 以上传你的改动
 
-
 ## 快速开始
+
 更新数据
+
 ```bash
 cd LKM-official-website
 git pull
 pnpm install
 ```
+
 启动
+
 ```bash
 pnpm dev
 ```
 
 浏览器访问 `http://localhost:4321/LKM-official-website`
 ---
+
 上传改动
+
 ```bash
 git add .
 git commit -m "<请输入文本>"
 git push
 ```
+
 ## 常用命令
 
 | 命令                      | 说明                         |
