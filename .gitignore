@@ -2,7 +2,6 @@
 dist/
 .output/
 docs/
-!src/content/docs/
 !src/data/docs/
 !src/components/docs/
 !src/features/docs/

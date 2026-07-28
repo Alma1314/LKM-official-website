@@ -112,8 +112,6 @@ fuwari:
         children:
           - name: 博客列表
             url: /blog
-          - name: 文档库
-            url: /docs
           - name: 所有分类
             url: /blog/categories
           - name: 文章归档
