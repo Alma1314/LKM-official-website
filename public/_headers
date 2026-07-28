@@ -1,2 +1,11 @@
-/_astro/*
-  Cache-Control: public, max-age=31536000, immutable
+# GitHub Pages 不支持自定义 HTTP 头文件。
+# Cloudflare Pages 中可用 `_headers`，但部署到 GitHub Pages 时此文件不生效。
+#
+# 如需缓存控制，请使用以下各层：
+#   - `<meta http-equiv>` 标签（HTML 内联声明，浏览器遵守但被代理忽略）
+#   - `astro.config.ts` 中 site/base 生成 <link rel="preconnect"> 和 `<link rel="dns-prefetch">`
+#   - Astro 静态资源的 content hash 文件名自带隐式 long-cache
+#
+# 原规则（仅供参考，部署时不生效）：
+# /_astro/*
+#   Cache-Control: public, max-age=31536000, immutable

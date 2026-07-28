@@ -37,7 +37,9 @@ const postUrl = decodeURIComponent(Astro.url.toString());
     </div>
     <div>
       <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.license)}</div>
-      <a href={licenseConf.url} target="_blank" class="link text-primary line-clamp-2">{licenseConf.name}</a>
+      <a href={licenseConf.url} target="_blank" rel="noopener noreferrer" class="link text-primary line-clamp-2"
+        >{licenseConf.name}</a
+      >
     </div>
   </div>
   <Icon

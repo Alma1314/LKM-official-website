@@ -2,20 +2,20 @@
 
 ## 步骤
 
-1. 在 `src/content/post/` 下创建新的 `.md` 或 `.mdx` 文件
+1. 在 `src/content/posts/` 下创建新的 `.md` 或 `.mdx` 文件
 2. 添加必需的 frontmatter：
 
 ```yaml
 ---
-publishDate: 2026-01-15T00:00:00Z
 title: '文章标题'
-excerpt: '文章摘要'
+published: 2026-01-15
+description: '文章描述'
 image: '~/assets/images/your-image.png'
 category: 'tutorials'
 tags:
   - astro
   - tailwind
-author: '作者名'
+draft: false
 ---
 ```
 
@@ -24,18 +24,17 @@ author: '作者名'
 
 ## Frontmatter 字段
 
-| 字段          | 是否必填 | 说明                               |
-| ------------- | -------- | ---------------------------------- |
-| `title`       | 是       | 文章标题                           |
-| `publishDate` | 否       | ISO 8601 日期                      |
-| `updateDate`  | 否       | ISO 8601 日期                      |
-| `draft`       | 否       | 设为 `true` 则不在列表中显示       |
-| `excerpt`     | 否       | 列表页摘要                         |
-| `image`       | 否       | 封面图路径（本地图片用 `~/` 前缀） |
-| `category`    | 否       | 单个分类名称                       |
-| `tags`        | 否       | 标签数组                           |
-| `author`      | 否       | 作者名                             |
-| `metadata`    | 否       | 覆盖 SEO 元数据                    |
+| 字段          | 是否必填 | 说明                                         |
+| ------------- | -------- | -------------------------------------------- |
+| `title`       | 是       | 文章标题                                     |
+| `published`   | 是       | 发布日期                                     |
+| `updated`     | 否       | 更新日期                                     |
+| `draft`       | 否       | 设为 `true` 则不在列表中显示（默认 `false`） |
+| `description` | 否       | 文章描述/摘要                                |
+| `image`       | 否       | 封面图路径（本地图片用 `~/` 前缀）           |
+| `category`    | 否       | 单个分类名称                                 |
+| `tags`        | 否       | 标签数组                                     |
+| `lang`        | 否       | 语言（默认空字符串）                         |
 
 ## URL 模式
 

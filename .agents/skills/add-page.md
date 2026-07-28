@@ -3,16 +3,16 @@
 ## 步骤
 
 1. 在 `src/pages/` 下创建新的 `.astro` 文件
-2. 标准页面使用 `PageLayout`，自定义布局使用 `Layout`
-3. 使用 `src/components/widgets/` 中的 Widget 组件组合页面
+2. 标准页面使用 `PageLayout`，自定义布局使用 `BaseLayout`
+3. 使用 `src/features/` 和 `src/ui/` 中的组件组合页面
 
 ## 模板
 
 ```astro
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero from '~/features/homepage/Hero.astro';
+import Features from '~/features/homepage/Features.astro';
 
 const metadata = {
   title: '页面标题',
@@ -20,7 +20,7 @@ const metadata = {
 };
 ---
 
-<Layout metadata={metadata}>
+<PageLayout metadata={metadata}>
   <Hero
     tagline="可选标签"
     title="页面主标题"
@@ -38,16 +38,36 @@ const metadata = {
       { title: '功能 2', description: '描述', icon: 'tabler:rocket' },
     ]}
   />
-</Layout>
+</PageLayout>
 ```
 
-## 可用 Widget 组件
+## 可用布局
 
-Hero, Features, Content, Steps, Testimonials, FAQs, Stats, Pricing, Brands, CallToAction, Contact, Team
+| 布局             | 路径                             | 用途                    |
+| ---------------- | -------------------------------- | ----------------------- |
+| `BaseLayout`     | `~/layouts/BaseLayout.astro`     | 最简布局（含顶栏/页脚） |
+| `PageLayout`     | `~/layouts/PageLayout.astro`     | 标准页面布局            |
+| `SidebarLayout`  | `~/layouts/SidebarLayout.astro`  | 带侧边栏布局            |
+| `MarkdownLayout` | `~/layouts/MarkdownLayout.astro` | Markdown 内容布局       |
+| `BlogLayout`     | `~/layouts/BlogLayout.astro`     | 博客页面布局            |
+
+## 可用业务组件
+
+业务组件按功能模块组织在 `src/features/` 下：
+
+| 模块       | 路径                    | 说明       |
+| ---------- | ----------------------- | ---------- |
+| `homepage` | `~/features/homepage/`  | 首页组件   |
+| `blog`     | `~/features/blog/`      | 博客组件   |
+| `team`     | `~/features/team/`      | 团队组件   |
+| `auth`     | `~/features/auth/`      | 认证组件   |
+| `docs`     | `~/features/docs/`      | 文档组件   |
+| `search`   | `~/features/search/`    | 搜索组件   |
+| `shell`    | `~/features/shell/`     | 通用 UI 壳 |
+| (其他)     | `~/features/<feature>/` | 按需查阅   |
 
 ## 注意事项
 
 - `src/pages/` 下的页面按文件名自动路由
-- 使用 `PageLayout`（含 Header + Footer）或 `Layout`（最简布局）
-- 所有 Widget 接受 `id` prop 用于锚点链接
+- 使用 `PageLayout`（含 Header + Footer）或 `BaseLayout`（最简布局）
 - 图标使用 `tabler:icon-name` 格式，来自 `@iconify-json/tabler`

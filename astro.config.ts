@@ -10,7 +10,6 @@ import vue from '@astrojs/vue';
 import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import Unfonts from 'unplugin-fonts/astro';
-import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
@@ -47,7 +46,6 @@ export default defineConfig({
   base: '/LKM-official-website',
 
   output: 'static',
-  adapter: node({ mode: 'standalone' }),
 
   integrations: [
     sitemap(),

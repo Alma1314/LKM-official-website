@@ -38,7 +38,7 @@ const config = profileConfig;
         config.links.length > 1 &&
           config.links.map((item) => (
             <a
-              rel="me"
+              rel="me noopener noreferrer"
               aria-label={item.name}
               href={item.url}
               target="_blank"
@@ -51,7 +51,7 @@ const config = profileConfig;
       {
         config.links.length == 1 && (
           <a
-            rel="me"
+            rel="me noopener noreferrer"
             aria-label={config.links[0].name}
             href={config.links[0].url}
             target="_blank"

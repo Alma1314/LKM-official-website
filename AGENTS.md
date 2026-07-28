@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-LKM 官方网站是一个基于 **Astro v7** 和 **Tailwind CSS v4** 构建的网站。它以静态生成为主（`output: 'static'`），管理后台通过 `@astrojs/node` 保留服务器渲染能力，针对性能、SEO 和无障碍访问进行了优化。
+LKM 官方网站是一个基于 **Astro v7** 和 **Tailwind CSS v4** 构建的纯静态站点。所有页面均为预渲染的静态 HTML，部署于 GitHub Pages，针对性能、SEO 和无障碍访问进行了优化。
 
 **技术栈：** Astro v7 | Tailwind CSS v4 | TypeScript 5.9 | MDX | Sharp
 
@@ -28,30 +28,44 @@ src/
   core/           # 核心基础设施（无业务逻辑）
     config/       # 站点配置
     constants/    # 常量定义
-    i18n/         # 国际化（中/英/日/韩等 13 种语言）
+    i18n/         # 国际化（中/英/日/韩等）
     types/        # TypeScript 类型定义
-    utils/        # 工具函数（blog/images/permalinks/settings 等）
-    styles/       # 全局 CSS（tailwind.css, variables.css, main.css）
+    utils/        # 工具函数
+    styles/       # 全局 CSS（tailwind.css）
     plugins/      # Remark/Rehype 插件
   features/       # 业务功能模块
     blog/         # 博客组件
-    content/      # 内容组件
-    editor/       # 编辑器的薄适配层（组装 @lkm/rich-text-editor + @lkm/editor-persistence）
     team/         # 团队页面组件
-    homepage/     # 首页 Widget（Hero/Features/Pricing 等）
-    shell/        # 顶栏/页脚/侧边栏/背景/通用 UI
+    editor/       # 编辑器薄适配层
+    homepage/     # 首页组件
+    shell/        # 顶栏/页脚/侧边栏/背景
     auth/         # 登录认证组件
-    docs/         # 文档库
+    docs/         # 文档库组件
+    search/       # 搜索组件
+    column/       # 专栏组件
+    forum/        # 论坛组件
+    dashboard/    # 仪表盘组件
+    profile/      # 个人中心组件
+    notification/ # 通知组件
+    project-hub/  # 项目中心组件
+    competition/  # 竞赛组件
+    qa/           # 问答组件
+    funding/      # 赞助组件
+    contribution/ # 贡献组件
+    file-library/ # 文件库组件
+    admin/        # 管理后台组件
+    anonymous-letter/ # 匿名信组件
+    content/      # 内容组件
   ui/             # 通用 UI 组件
     primitives/   # 基础组件（Button/Image/Form 等）
-    patterns/     # 模式组件（TableOfContents/Timeline 等）
+    patterns/     # 模式组件
   layouts/        # 页面布局（Base/Page/Sidebar/Markdown/Blog 等）
   pages/          # 文件路由（含 /admin/documents 管理后台）
-  content/        # 内容文件（docs/、post/）
+  content/        # 内容文件（posts/、docs/）
 
 packages/
-  rich-text-editor/     # 编辑器核心包（engine + components + hooks + CSS，零外部 UI 依赖）
-  editor-persistence/   # 持久化插件（localStorage + IndexedDB，实现 PersistenceAdapter 接口）
+  rich-text-editor/     # 编辑器核心包（engine + components + hooks + CSS）
+  editor-persistence/   # 持久化插件（localStorage + IndexedDB）
 ```
 
 ### pnpm Workspace Monorepo
@@ -76,9 +90,9 @@ import { siteConfig } from '~/core/config';
 
 配置以 CSS 优先，入口文件 `src/core/styles/tailwind.css`：
 
-- **主题令牌：** `@theme { --color-primary: var(--aw-color-primary); ... }`
-- **自定义工具类：** `@utility bg-page { ... }`
-- **暗色模式：** 通过 `@variant dark (&:where(.dark, .dark *))` 实现基于类的暗色模式
+- **主题令牌：** `@theme { --color-primary: var(--primary); ... }`
+- **自定义工具类：** `@utility profile-card { ... }`
+- **暗色模式：** 通过 `@custom-variant dark (&:where(.dark, .dark *))` 实现基于类的暗色模式
 - **插件：** `@plugin "@tailwindcss/typography"`
 
 Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
@@ -87,10 +101,10 @@ Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 
 内容文件：
 
-- `src/content/post/` — 博客文章（.md/.mdx）
+- `src/content/posts/` — 博客文章（.md/.mdx）
 - `src/content/docs/` — 文档（.md/.mdx）
 
-文章 frontmatter 字段：`title`（必填）、`publishDate`、`updateDate`、`draft`、`excerpt`、`image`、`category`、`tags`、`author`、`metadata`。
+文章 frontmatter 字段（与 `src/content.config.ts` 中 `posts` schema 一致）：`title`（必填）、`published`（必填）、`updated`、`draft`、`description`、`image`、`tags`、`category`、`lang`。
 
 ## 组件模式
 

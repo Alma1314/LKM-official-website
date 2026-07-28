@@ -40,21 +40,19 @@ const generatePermalink = async ({
     .join('/');
 };
 
-const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> => {
+const getNormalizedPost = async (post: CollectionEntry<'posts'>): Promise<Post> => {
   const { id, data } = post;
   const { Content, remarkPluginFrontmatter, headings } = await render(post);
 
   const {
-    publishDate: rawPublishDate = new Date(),
-    updateDate: rawUpdateDate,
+    published: rawPublishDate = new Date(),
+    updated: rawUpdateDate,
     title,
-    excerpt,
+    description: excerpt,
     image,
     tags: rawTags = [],
     category: rawCategory,
-    author,
     draft = false,
-    metadata = {},
   } = data;
 
   const slug = cleanSlug(id); // cleanSlug(rawSlug.split('/').pop());
@@ -87,11 +85,11 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
 
     category: category,
     tags: tags,
-    author: author,
+    author: undefined,
 
     draft: draft,
 
-    metadata,
+    metadata: undefined,
 
     Content: Content,
     headings: headings,
@@ -102,7 +100,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
 };
 
 const load = async function (): Promise<Array<Post>> {
-  const posts = await getCollection('post');
+  const posts = await getCollection('posts');
   const normalizedPosts = posts.map(async (post) => await getNormalizedPost(post));
 
   const results = (await Promise.all(normalizedPosts))

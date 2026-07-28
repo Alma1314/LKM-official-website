@@ -27,15 +27,11 @@ jobs:
       - run: |
           pnpm run build
           ls -la
-      # - name: Upload Pages artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: ./dist
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/client
+          path: ./dist
 
   check:
     runs-on: ubuntu-latest

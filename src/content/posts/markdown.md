@@ -1,175 +1,88 @@
 ---
-title: Markdown Example
-published: 2023-10-01
-description: A simple example of a Markdown blog post.
-tags: [Markdown, Blogging, Demo]
-category: Examples
+title: Markdown 基础语法
+published: 2026-07-18
+description: Markdown 基础语法示例与实际渲染效果。
+tags: [Markdown, 语法, 示例]
+category: 示例
 draft: false
 ---
 
-# An h1 header
+# 一级标题
 
-Paragraphs are separated by a blank line.
+段落之间用空行分隔。
 
-2nd paragraph. _Italic_, **bold**, and `monospace`. Itemized lists
-look like:
+第二个段落。_斜体_、**粗体**、`行内代码`。无序列表：
 
-- this one
-- that one
-- the other one
+- 第一项
+- 第二项
+- 第三项
 
-Note that --- not considering the asterisk --- the actual text
-content starts at 4-columns in.
+## 二级标题
 
-> Block quotes are
-> written like so.
+有序列表：
+
+1. 第一项
+2. 第二项
+3. 第三项
+
+> 引用块是这样写的。
 >
-> They can span multiple paragraphs,
-> if you like.
+> 它们可以跨越多段，
+> 也可以嵌套使用。
 
-Use 3 dashes for an em-dash. Use 2 dashes for ranges (ex., "it's all
-in chapters 12--14"). Three dots ... will be converted to an ellipsis.
-Unicode is supported. ☺
+## 代码块
 
-## An h2 header
-
-Here's a numbered list:
-
-1. first item
-2. second item
-3. third item
-
-Note again how the actual text starts at 4 columns in (4 characters
-from the left side). Here's a code sample:
-
-    # Let me re-iterate ...
-    for i in 1 .. 10 { do-something(i) }
-
-As you probably guessed, indented 4 spaces. By the way, instead of
-indenting the block, you can use delimited blocks, if you like:
+使用三个反引号标明代码块：
 
 ```
 define foobar() {
-    print "Welcome to flavor country!";
+    print "欢迎来到 LKM！";
 }
 ```
 
-(which makes copying & pasting easier). You can optionally mark the
-delimited block for Pandoc to syntax highlight it:
+带语言标记的语法高亮：
 
 ```python
 import time
-# Quick, count to ten!
+
 for i in range(10):
-    # (but not *too* quick)
     time.sleep(0.5)
-    print i
+    print(i)
 ```
 
-### An h3 header
+### 嵌套列表
 
-Now a nested list:
+1. 第一步，准备食材：
+   - 胡萝卜
+   - 芹菜
+   - 扁豆
 
-1. First, get these ingredients:
+2. 第二步，烧开水。
 
-   - carrots
-   - celery
-   - lentils
+3. 第三步，放入锅中炖煮。
 
-2. Boil some water.
+链接示例：[Astro 官网](https://astro.build/)，以及[回到顶部](#一级标题)。
 
-3. Dump everything in the pot and follow
-   this algorithm:
+## 表格
 
-        find wooden spoon
-        uncover pot
-        stir
-        cover pot
-        balance wooden spoon precariously on pot handle
-        wait 10 minutes
-        goto first step (or shut off burner when done)
+| 尺寸 | 材质 | 颜色 |
+| ---- | ---- | ---- |
+| 9    | 皮革 | 棕色 |
+| 10   | 帆布 | 本色 |
+| 11   | 玻璃 | 透明 |
 
-   Do not bump wooden spoon or it will fall.
-
-Notice again how text always lines up on 4-space indents (including
-that last line which continues item 3 above).
-
-Here's a link to [a website](http://foo.bar), to a [local
-doc](local-doc.html), and to a [section heading in the current
-doc](#an-h2-header). Here's a footnote [^1].
-
-[^1]: Footnote text goes here.
-
-Tables can look like this:
-
-size material color
+## 分割线
 
 ---
 
-9 leather brown
-10 hemp canvas natural
-11 glass transparent
+## 图片
 
-Table: Shoes, their sizes, and what they're made of
+![示例图片](https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&q=80 '示例图片')
 
-(The above is the caption for the table.) Pandoc also supports
-multi-line tables:
+## 数学公式
 
----
+行内公式：$\omega = d\phi / dt$
 
-keyword text
-
----
-
-red Sunsets, apples, and
-other red or reddish
-things.
-
-green Leaves, grass, frogs
-and other things it's
-not easy being.
-
----
-
-A horizontal rule follows.
-
----
-
-Here's a definition list:
-
-apples
-: Good for making applesauce.
-oranges
-: Citrus!
-tomatoes
-: There's no "e" in tomatoe.
-
-Again, text is indented 4 spaces. (Put a blank line between each
-term/definition pair to spread things out more.)
-
-Here's a "line block":
-
-| Line one
-| Line too
-| Line tree
-
-and images can be specified like so:
-
-[//]: # '![example image](./demo-banner.png "An exemplary image")'
-
-Inline math equations go in like so: $\omega = d\phi / dt$. Display
-math should get its own line and be put in in double-dollarsigns:
+块级公式：
 
 $$I = \int \rho R^{2} dV$$
-
-$$
-\begin{equation*}
-\pi
-=3.1415926535
- \;8979323846\;2643383279\;5028841971\;6939937510\;5820974944
- \;5923078164\;0628620899\;8628034825\;3421170679\;\ldots
-\end{equation*}
-$$
-
-And note that you can backslash-escape any punctuation characters
-which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
