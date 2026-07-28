@@ -4,11 +4,8 @@
 [![Astro v7](https://img.shields.io/badge/Astro-v7-FF5D01?logo=astro)](https://astro.build)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org)
-[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
-[![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs)](https://vuejs.org)
-[![Three.js](https://img.shields.io/badge/Three.js-0.185-000000?logo=threedotjs)](https://threejs.org)
 
-**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 构建，静态生成为主，管理后台保留服务器渲染。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
+**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 构建的纯静态站点，部署于 GitHub Pages。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
 
 ---
 
@@ -29,13 +26,15 @@ pnpm run dev
 
 ## 常用命令
 
-| 命令               | 说明                         |
-| :----------------- | :--------------------------- |
-| `pnpm run dev`     | 启动开发服务器               |
-| `pnpm run build`   | 生产构建到 `./dist/`         |
-| `pnpm run preview` | 本地预览生产构建             |
-| `pnpm run check`   | 类型检查 + ESLint + Prettier |
-| `pnpm run fix`     | 自动修复 ESLint + Prettier   |
+| 命令                      | 说明                         |
+| :------------------------ | :--------------------------- |
+| `pnpm run dev`            | 启动开发服务器               |
+| `pnpm run build`          | 生产构建到 `./dist/`         |
+| `pnpm run preview`        | 本地预览生产构建             |
+| `pnpm run check`          | 类型检查 + ESLint + Prettier |
+| `pnpm run fix`            | 自动修复 ESLint + Prettier   |
+| `pnpm run build:packages` | 单独构建 workspace 包        |
+| `pnpm run test`           | 运行 Vitest 测试             |
 
 ---
 
@@ -62,7 +61,7 @@ pnpm run dev
 │   │   ├── content/            # 内容组件
 │   │   ├── editor/             # 富文本编辑器
 │   │   ├── team/               # 团队页面组件
-│   │   ├── homepage/           # 首页 Widget
+│   │   ├── homepage/           # 首页组件
 │   │   ├── shell/              # 顶栏/页脚/背景/通用 UI
 │   │   ├── auth/               # 登录认证
 │   │   └── docs/               # 文档库
@@ -71,7 +70,7 @@ pnpm run dev
 │   │   └── patterns/           # 模式组件
 │   ├── layouts/                # 页面布局
 │   ├── pages/                  # 文件路由
-│   ├── content/                # 内容（docs/、post/）
+│   ├── content/                # 内容（posts/、docs/）
 │   └── config.yaml             # 站点主配置
 ├── AGENTS.md                   # AI Agent 指令
 ├── CLAUDE.md                   # Claude Code 配置
@@ -127,16 +126,16 @@ import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from '~/core/config';
 
 ## 内容管理
 
-在 `src/content/post/` 下创建 `.md` 或 `.mdx` 文件：
+在 `src/content/posts/` 下创建 `.md` 或 `.mdx` 文件：
 
 ```md
 ---
-publishDate: 2025-01-15T00:00:00Z
 title: 文章标题
-excerpt: 文章摘要
+published: 2025-01-15
+description: 文章摘要
 tags: [web, tutorial]
 category: tutorials
-author: 作者名
+draft: false
 image: ~/assets/images/cover.jpg
 ---
 
@@ -151,11 +150,7 @@ image: ~/assets/images/cover.jpg
 pnpm run build   # 输出到 ./dist/
 ```
 
-| 平台             | 说明                   |
-| :--------------- | :--------------------- |
-| GitHub Pages     | 推送 main 分支自动部署 |
-| Vercel / Netlify | 导入 Git 仓库即可      |
-| 任意静态托管     | 上传 `dist/client/`    |
+推送 `main` 分支后，GitHub Actions 自动部署到 GitHub Pages。
 
 ---
 
@@ -227,11 +222,11 @@ pages/          文件路由页面
 
 ## 特性
 
-- **Astro v7** 静态生成 + 选择性 SSR
+- **Astro v7** 纯静态生成
 - **Tailwind CSS v4** 暗色模式 + 自定义主题
 - **12 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
 - **富文本编辑器** — 基于 Tiptap 3 的 MDX 双向编辑器，支持 AI 助手、版本历史、评论、自动保存
-- **双 UI 框架** — Vue 3 + React 19 + Svelte 5
+- **多框架支持** — React 19 + Vue 3 + Svelte 5 按需引入
 - **View Transitions** SPA 风格页面切换
 - **博客系统** — MD/MDX、分类/标签、分页、KaTeX 公式
 - **SEO 完整** — Sitemap、RSS、Open Graph、Twitter Card
@@ -239,7 +234,6 @@ pages/          文件路由页面
 - **Pagefind 全文搜索** — 客户端离线搜索
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
-- **多平台部署** — GitHub Pages / Vercel / Netlify / 任意静态托管
 
 ## 许可证
 

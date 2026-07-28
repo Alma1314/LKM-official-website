@@ -53,9 +53,9 @@ const base = import.meta.env.BASE_URL;  // 声明但未使用
 ## 常用命令
 
 ```bash
-npm run check    # 运行所有检查：astro check + ESLint + Prettier
-npm run fix      # 自动修复 ESLint + Prettier 问题
-npm run build    # 生产构建（CI 会同时运行 check）
+pnpm run check    # 运行所有检查：astro check + ESLint + Prettier
+pnpm run fix      # 自动修复 ESLint + Prettier 问题
+pnpm run build    # 生产构建（CI 会同时运行 check）
 ```
 
 ## CI 流程
@@ -64,11 +64,11 @@ GitHub Actions 配置了一个工作流文件：
 
 ### actions.yaml — PR 与 Push 检查 + 部署
 
-| Job      | 触发                                   | 内容                                                |
-| -------- | -------------------------------------- | --------------------------------------------------- |
-| `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                           |
-| `check`  | PR 到 main / Push 到 main              | `pnpm run check`（astro check + ESLint + Prettier） |
-| `deploy` | Push 到 main（build + check 都通过后） | 部署到 GitHub Pages                                 |
+| Job      | 触发                                   | 内容                                                            |
+| -------- | -------------------------------------- | --------------------------------------------------------------- |
+| `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                                       |
+| `check`  | PR 到 main / Push 到 main              | `pnpm run check`（check:astro + check:eslint + check:prettier） |
+| `deploy` | Push 到 main（build + check 都通过后） | 部署到 GitHub Pages                                             |
 
 ### 部署
 
@@ -189,38 +189,36 @@ import { siteConfig, navBarConfig, profileConfig } from '~/core/config';
 
 ### 文件位置
 
-博客文章放在 `src/content/post/`，支持 `.md` 和 `.mdx` 格式。
+博客文章放在 `src/content/posts/`，支持 `.md` 和 `.mdx` 格式。
 
 ### 必需字段
 
-| 字段          | 类型      | 说明                        |
-| ------------- | --------- | --------------------------- |
-| `title`       | `string`  | **必填**，文章标题          |
-| `publishDate` | `Date`    | 发布日期                    |
-| `draft`       | `boolean` | 草稿模式（`true` 时不发布） |
+| 字段        | 类型     | 说明               |
+| ----------- | -------- | ------------------ |
+| `title`     | `string` | **必填**，文章标题 |
+| `published` | `Date`   | 发布日期           |
 
 ### 可选字段
 
-| 字段         | 类型       | 说明            |
-| ------------ | ---------- | --------------- |
-| `updateDate` | `Date`     | 更新日期        |
-| `excerpt`    | `string`   | 文章摘要        |
-| `image`      | `string`   | 封面图路径      |
-| `category`   | `string`   | 分类            |
-| `tags`       | `string[]` | 标签列表        |
-| `author`     | `string`   | 作者名          |
-| `metadata`   | `object`   | 覆盖 SEO 元数据 |
+| 字段          | 类型       | 说明                     |
+| ------------- | ---------- | ------------------------ |
+| `updated`     | `Date`     | 更新日期                 |
+| `draft`       | `boolean`  | 草稿模式（默认 `false`） |
+| `description` | `string`   | 文章描述                 |
+| `image`       | `string`   | 封面图路径               |
+| `category`    | `string`   | 分类                     |
+| `tags`        | `string[]` | 标签列表                 |
+| `lang`        | `string`   | 语言                     |
 
 ### 示例
 
 ```markdown
 ---
 title: 我的第一篇文章
-publishDate: 2026-07-04
-excerpt: 这是一篇示例文章。
+published: 2026-07-04
+description: 这是一篇示例文章。
 category: tutorials
 tags: [astro, tailwind]
-author: LKM
 ---
 ```
 

@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { Editor } from '@tiptap/core';
-import { aiRequest, saveAiConfig, PROMPT_TEMPLATES } from '../../stores/ai-client';
+import { setAiConfig, requestAiCompletion, validateAiEndpoint, PROMPT_TEMPLATES } from '../../stores/ai-client';
 
 interface AiAssistantProps {
   editor: Editor;
@@ -8,6 +8,8 @@ interface AiAssistantProps {
 }
 
 const OPERATIONS = Object.keys(PROMPT_TEMPLATES);
+
+const THIRD_PARTY_NOTICE = '注意：您的编辑器内容将被发送至第三方 AI 服务商处理。请勿在内容中包含个人敏感信息。';
 
 export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   const [operation, setOperation] = useState('续写');
@@ -19,21 +21,14 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   const [apiEndpoint, setApiEndpoint] = useState('');
   const [apiKey, setApiKey] = useState('');
 
-  // Initialize from URL params if available
+  // Abort controller ref for in-flight requests – aborted on unmount
+  const abortRef = useRef<AbortController | null>(null);
+
+  // Cleanup: abort any in-flight request when the panel unmounts
   useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const ep = params.get('ai_endpoint');
-      const key = params.get('ai_key');
-      const model = params.get('ai_model');
-      if (ep) {
-        setApiEndpoint(ep);
-        setApiKey(key || '');
-        saveAiConfig(ep, key || '', model || 'gpt-3.5-turbo');
-      }
-    } catch (err) {
-      console.warn('[AiAssistant] 读取 AI 配置失败:', err);
-    }
+    return () => {
+      abortRef.current?.abort();
+    };
   }, []);
 
   const selectedText = editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ');
@@ -41,6 +36,17 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   const handleRequest = useCallback(async () => {
     setLoading(true);
     setError('');
+
+    // Validate endpoint before calling the store (which will also validate)
+    if (apiEndpoint) {
+      const validation = validateAiEndpoint(apiEndpoint);
+      if (!validation.ok) {
+        setError(validation.error);
+        setLoading(false);
+        return;
+      }
+    }
+
     const context =
       customPrompt ||
       selectedText ||
@@ -50,14 +56,25 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
       setLoading(false);
       return;
     }
-    const res = await aiRequest({ prompt: customPrompt, context, operation });
-    if (res.error) {
-      setError(res.error);
-    } else {
-      setResult(res.text);
+
+    // Abort any previous request
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    const res = await requestAiCompletion({ prompt: customPrompt, context, operation }, { signal: controller.signal });
+
+    if (!controller.signal.aborted) {
+      if (res.ok) {
+        setResult(res.value);
+      } else {
+        setError(res.error);
+      }
     }
+
+    abortRef.current = null;
     setLoading(false);
-  }, [customPrompt, selectedText, operation, editor]);
+  }, [customPrompt, selectedText, operation, editor, apiEndpoint]);
 
   const handleInsert = () => {
     if (result) {
@@ -74,8 +91,15 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
   };
 
   const handleSaveSettings = () => {
-    saveAiConfig(apiEndpoint, apiKey, 'gpt-3.5-turbo');
+    // Validate endpoint before storing
+    const validation = validateAiEndpoint(apiEndpoint);
+    if (!validation.ok) {
+      setError(validation.error);
+      return;
+    }
+    setAiConfig(apiEndpoint, apiKey, 'gpt-3.5-turbo');
     setShowSettings(false);
+    setError('');
   };
 
   return (
@@ -117,7 +141,7 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
           <p className="text-xs text-deep-text/50">
             兼容 OpenAI / Ollama / LM Studio 等 API 格式
             <br />
-            Key 仅保存在当前会话中，关闭浏览器后自动清除。
+            Key 仅保存在当前页面内存中，刷新或关闭页面后自动清除。
             <br />
             生产环境建议通过服务端代理调用。
           </p>
@@ -127,6 +151,9 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
         </div>
       ) : (
         <div className="flex-1 flex flex-col p-4 gap-3 overflow-y-auto">
+          {/* Third-party data sharing notice */}
+          <div className="text-xs text-warning bg-warning/5 rounded p-2 leading-relaxed">{THIRD_PARTY_NOTICE}</div>
+
           <label className="text-xs font-medium">操作</label>
           <select
             className="rte-select rte-select--sm w-full"

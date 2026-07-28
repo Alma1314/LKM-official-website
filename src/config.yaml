@@ -128,7 +128,7 @@ fuwari:
           - name: 项目团队
             url: /project-team
           - name: 关于我们
-            url: /about
+            url: /blog/about
           - name: 服务
             url: /services
           - name: 赞助与支持

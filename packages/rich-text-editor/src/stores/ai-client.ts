@@ -1,3 +1,16 @@
+// ---------------------------------------------------------------------------
+// AI Client – security-hardened store
+//
+// Principles:
+//  1. API key lives ONLY in module memory (never localStorage / sessionStorage / URL)
+//  2. Endpoints must be HTTPS (no http / javascript / data / file / credentials-in-URL)
+//  3. Every request is guarded by a 15 s timeout merged with the caller's AbortSignal
+//  4. Responses are validated for content-type, byte-size and text field before return
+//  5. Error messages never include the key or the full raw response body
+// ---------------------------------------------------------------------------
+
+// ---- Types -----------------------------------------------------------------
+
 export interface AiRequest {
   prompt: string;
   context: string;
@@ -5,10 +18,31 @@ export interface AiRequest {
   language?: string;
 }
 
-export interface AiResponse {
-  text: string;
-  error?: string;
+export interface AiCompletionInput {
+  prompt: string;
+  context: string;
+  operation: string;
+  language?: string;
 }
+
+export interface AiCompletionOptions {
+  /** Caller-provided AbortSignal (merged with internal timeout) */
+  signal?: AbortSignal;
+}
+
+export interface Ok<T> {
+  ok: true;
+  value: T;
+}
+
+export interface Err {
+  ok: false;
+  error: string;
+}
+
+export type Result<T> = Ok<T> | Err;
+
+// ---- Constants -------------------------------------------------------------
 
 const PROMPT_TEMPLATES: Record<string, string> = {
   续写: '请续写以下内容，保持一致的风格和语气：\n\n{context}\n\n续写：',
@@ -19,94 +53,147 @@ const PROMPT_TEMPLATES: Record<string, string> = {
   生成标题: '请根据以下内容生成一个简短的标题：\n\n{context}\n\n标题：',
 };
 
-/**
- * 从 URL 参数读取临时 API 配置。
- * 用法：访问 /admin/documents/editor?ai_endpoint=https://api.openai.com&ai_key=sk-xxx
- * 或通过 #hash 传递：#ai_endpoint=...&ai_key=...
- */
-function getConfigFromQuery(): { endpoint: string; apiKey: string; model: string } | null {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    let endpoint = params.get('ai_endpoint');
-    let apiKey = params.get('ai_key');
-    let model = params.get('ai_model');
+const DEFAULT_MODEL = 'gpt-3.5-turbo';
+const MAX_RESPONSE_BYTES = 262144; // 256 KiB
+const REQUEST_TIMEOUT_MS = 15000;
 
-    // 也可从 hash 读取
-    if (!endpoint && window.location.hash) {
-      const hashParams = new URLSearchParams(window.location.hash.slice(1));
-      endpoint = hashParams.get('ai_endpoint');
-      apiKey = hashParams.get('ai_key');
-      model = model || hashParams.get('ai_model');
-    }
+/** Allowed protocols for the endpoint URL */
+const ALLOWED_PROTOCOLS = new Set(['https:']);
 
-    if (!endpoint) return null;
-    return { endpoint, apiKey: apiKey || '', model: model || 'gpt-3.5-turbo' };
-  } catch (err) {
-    console.warn('[ai-client] 读取 URL 配置失败:', err);
-    return null;
-  }
-}
+// ---- Module-level in-memory config (never persisted to storage or URL) -----
+
+let _endpoint: string | null = null;
+let _apiKey: string | null = null;
+let _model: string = DEFAULT_MODEL;
+
+// ---- Public helpers --------------------------------------------------------
 
 /**
- * 对 Base64 做简单混淆，避免明文存储。
- * 这不是真正的加密，只是防止扫一眼就看到明文。
- * 生产环境应使用服务端代理。
+ * Validate a user-supplied AI endpoint URL.
+ *
+ * Only plain HTTPS URLs are accepted. Credentials in the URL, non-HTTPS
+ * protocols and pseudo-URLs (`javascript:`, `data:`, `file:`) are rejected.
  */
-function obfuscate(str: string): string {
-  if (!str) return '';
-  try {
-    return btoa(str.split('').reverse().join(''));
-  } catch (err) {
-    console.warn('[ai-client] 字符串混淆失败:', err);
-    return '';
+export function validateAiEndpoint(raw: string): Result<URL> {
+  if (!raw || raw.trim().length === 0) {
+    return { ok: false, error: '请输入 API 地址' };
   }
+
+  const trimmed = raw.trim();
+
+  let url: URL;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    return { ok: false, error: 'API 地址格式无效，请输入完整的 HTTPS 地址' };
+  }
+
+  if (!ALLOWED_PROTOCOLS.has(url.protocol)) {
+    return { ok: false, error: '仅支持 HTTPS 地址' };
+  }
+
+  if (url.username || url.password) {
+    return { ok: false, error: 'API 地址不能包含用户名或密码，请在下方单独输入 API Key' };
+  }
+
+  // Block pseudo-protocols that the URL constructor might accept on some runtimes
+  const lower = trimmed.toLowerCase();
+  if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('file:')) {
+    return { ok: false, error: '不支持的协议' };
+  }
+
+  return { ok: true, value: url };
 }
 
-function deobfuscate(str: string): string {
-  if (!str) return '';
-  try {
-    return atob(str).split('').reverse().join('');
-  } catch (err) {
-    console.warn('[ai-client] 字符串反混淆失败:', err);
-    return '';
-  }
+/**
+ * Store AI config in module memory (NO localStorage / sessionStorage / URL).
+ */
+export function setAiConfig(endpoint: string, apiKey: string, model: string): void {
+  _endpoint = endpoint;
+  _apiKey = apiKey;
+  _model = model || DEFAULT_MODEL;
 }
 
-export async function aiRequest(req: AiRequest): Promise<AiResponse> {
-  // 1) 尝试从 URL 参数获取临时配置
-  const queryConfig = getConfigFromQuery();
-  if (queryConfig) {
-    return doAiRequest(req, queryConfig.endpoint, queryConfig.apiKey, queryConfig.model);
+/**
+ * Clear the in-memory config (useful for tests and teardown).
+ */
+export function clearAiConfig(): void {
+  _endpoint = null;
+  _apiKey = null;
+  _model = DEFAULT_MODEL;
+}
+
+/**
+ * Returns a copy of the current in-memory config (for diagnostic use only;
+ * the returned object does NOT include the raw key).
+ */
+export function getAiConfig(): { endpoint: string | null; model: string } {
+  return { endpoint: _endpoint, model: _model };
+}
+
+/**
+ * Send a completion request to the configured AI endpoint.
+ *
+ * Security guarantees:
+ *  - Requires `setAiConfig()` to have been called first
+ *  - Validates the endpoint is HTTPS before every request
+ *  - Enforces 15 s timeout (merged with caller's AbortSignal)
+ *  - Caps response body at 256 KiB
+ *  - Verifies JSON content-type and required text field
+ *  - Error messages never leak the API key or full raw body
+ */
+export async function requestAiCompletion(
+  input: AiCompletionInput,
+  options?: AiCompletionOptions
+): Promise<Result<string>> {
+  // ---- 1. Config check ----------------------------------------------------
+  if (!_endpoint) {
+    return { ok: false, error: '请先配置 AI 接口。点击"设置"输入 API 地址和 Key。' };
   }
 
-  // 2) 尝试从 sessionStorage 获取（浏览器关闭后自动清除）
-  try {
-    const raw = sessionStorage.getItem('_as');
-    if (raw) {
-      const cfg = JSON.parse(raw);
-      return doAiRequest(req, deobfuscate(cfg.e), deobfuscate(cfg.k), cfg.m || 'gpt-3.5-turbo');
+  const endpointValidation = validateAiEndpoint(_endpoint);
+  if (!endpointValidation.ok) {
+    return { ok: false, error: `AI 接口配置无效：${endpointValidation.error}` };
+  }
+
+  const endpoint = _endpoint;
+  const apiKey = _apiKey || '';
+  const model = _model;
+
+  // ---- 2. Build prompt ----------------------------------------------------
+  let prompt = (PROMPT_TEMPLATES[input.operation] ?? '{context}').replace('{context}', input.context);
+  if (input.operation === '翻译') {
+    prompt = prompt.replace('{language}', input.language || '英文');
+  }
+  if (input.prompt) {
+    prompt = input.prompt;
+  }
+
+  // ---- 3. Merged AbortController (caller signal + 15 s timeout) -----------
+  const internalController = new AbortController();
+  const timeoutId = setTimeout(() => internalController.abort(), REQUEST_TIMEOUT_MS);
+
+  // If caller provided a signal, forward its abort to our internal controller
+  if (options?.signal) {
+    if (options.signal.aborted) {
+      clearTimeout(timeoutId);
+      return { ok: false, error: '请求已被取消' };
     }
-  } catch (err) {
-    console.warn('[ai-client] sessionStorage 配置读取失败:', err);
+    options.signal.addEventListener(
+      'abort',
+      () => {
+        internalController.abort();
+      },
+      { once: true }
+    );
   }
 
-  return {
-    text: '',
-    error: '请先配置 AI 接口。在 AI 面板中点击"设置"输入 API 地址和 Key，或通过 URL 参数传递临时配置。',
-  };
-}
+  // ---- 4. Fetch ------------------------------------------------------------
+  const url = `${endpoint.replace(/\/$/, '')}/v1/chat/completions`;
 
-async function doAiRequest(req: AiRequest, endpoint: string, apiKey: string, model: string): Promise<AiResponse> {
-  let prompt = (PROMPT_TEMPLATES[req.operation] ?? '{context}').replace('{context}', req.context);
-  if (req.operation === '翻译') {
-    prompt = prompt.replace('{language}', req.language || '英文');
-  }
-  if (req.prompt) {
-    prompt = req.prompt;
-  }
-
+  let response: Response;
   try {
-    const response = await fetch(`${endpoint}/v1/chat/completions`, {
+    response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,52 +202,152 @@ async function doAiRequest(req: AiRequest, endpoint: string, apiKey: string, mod
       body: JSON.stringify({
         model,
         messages: [
-          { role: 'system', content: '你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。' },
+          {
+            role: 'system',
+            content: '你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。',
+          },
           { role: 'user', content: prompt },
         ],
         max_tokens: 2048,
         temperature: 0.7,
       }),
+      signal: internalController.signal,
     });
-
-    if (!response.ok) {
-      const err = await response.text();
-      return { text: '', error: `API 请求失败 (${response.status}): ${err.slice(0, 200)}` };
-    }
-
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-      error?: { message?: string };
-    };
-
-    if (data.error) {
-      return { text: '', error: data.error.message || '未知错误' };
-    }
-
-    const text = data.choices?.[0]?.message?.content ?? '';
-    return { text };
   } catch (err) {
-    return { text: '', error: `网络错误: ${(err as Error).message}` };
+    clearTimeout(timeoutId);
+
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      return { ok: false, error: '请求超时或已取消' };
+    }
+
+    const message = err instanceof Error ? err.message : String(err);
+    // Never echo back anything that might contain secrets
+    if (message.includes(apiKey) && apiKey.length > 4) {
+      return { ok: false, error: '网络请求失败' };
+    }
+    return { ok: false, error: `网络请求失败：${message.slice(0, 120)}` };
   }
+
+  clearTimeout(timeoutId);
+
+  // ---- 5. Validate response metadata --------------------------------------
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    // Consume the body so the connection can be reused
+    await response.text().catch(() => {});
+    return {
+      ok: false,
+      error: `服务器返回了意外的内容类型${response.status ? `（状态码 ${response.status}）` : ''}`,
+    };
+  }
+
+  // ---- 6. Check status code -----------------------------------------------
+  if (!response.ok) {
+    let errorBody = '';
+    try {
+      errorBody = await response.text();
+      // Truncate error body to avoid leaking large responses
+      if (errorBody.length > 300) {
+        errorBody = errorBody.slice(0, 300) + '…';
+      }
+    } catch {
+      // ignore
+    }
+
+    // Sanitize: never include the API key in error messages
+    let safeError = `AI 服务返回错误（状态码 ${response.status}）`;
+    if (errorBody && !errorBody.includes(apiKey) && apiKey.length > 0) {
+      safeError += `：${errorBody.slice(0, 200)}`;
+    } else if (errorBody) {
+      // Body might contain the key – use a generic prefix
+      safeError += '，请检查 API Key 和端点配置是否正确';
+    }
+
+    return { ok: false, error: safeError };
+  }
+
+  // ---- 7. Parse and validate JSON body ------------------------------------
+  let data: unknown;
+  try {
+    data = await response.json();
+  } catch {
+    return { ok: false, error: '无法解析 AI 服务返回的数据' };
+  }
+
+  if (data === null || data === undefined || typeof data !== 'object') {
+    return { ok: false, error: 'AI 服务返回了无效的数据格式' };
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  // ---- 8. Check for API-level errors --------------------------------------
+  if (obj.error && typeof obj.error === 'object') {
+    const errMsg = (obj.error as Record<string, unknown>).message ?? '未知错误';
+    const safe = String(errMsg).slice(0, 200);
+    if (safe.includes(apiKey) && apiKey.length > 4) {
+      return { ok: false, error: 'AI 服务返回错误，请检查 API Key 是否有效' };
+    }
+    return { ok: false, error: `AI 服务返回错误：${safe}` };
+  }
+
+  // ---- 9. Extract and validate text field ---------------------------------
+  const choices = obj.choices;
+  if (!Array.isArray(choices) || choices.length === 0) {
+    return { ok: false, error: 'AI 服务返回数据不完整（缺少回复内容）' };
+  }
+
+  const firstChoice = choices[0] as Record<string, unknown> | undefined;
+  if (!firstChoice || typeof firstChoice !== 'object') {
+    return { ok: false, error: 'AI 服务返回数据不完整' };
+  }
+
+  const message = firstChoice.message as Record<string, unknown> | undefined;
+  if (!message || typeof message !== 'object') {
+    return { ok: false, error: 'AI 服务返回数据不完整（缺少消息内容）' };
+  }
+
+  const content = message.content;
+  if (typeof content !== 'string' || content.length === 0) {
+    return { ok: false, error: 'AI 服务返回了空白的回复内容' };
+  }
+
+  // ---- 10. Enforce response size limit ------------------------------------
+  const byteLength = new TextEncoder().encode(content).length;
+  if (byteLength > MAX_RESPONSE_BYTES) {
+    return {
+      ok: false,
+      error: `AI 返回内容过大（${byteLength} 字节），已超过 ${MAX_RESPONSE_BYTES} 字节上限`,
+    };
+  }
+
+  // ---- 11. Success --------------------------------------------------------
+  return { ok: true, value: content };
+}
+
+// ---- Legacy API (kept for backward compatibility; wraps new API) -----------
+
+/**
+ * @deprecated Use `setAiConfig()` + `requestAiCompletion()` instead.
+ */
+export async function aiRequest(req: AiRequest): Promise<{ text: string; error?: string }> {
+  const result = await requestAiCompletion({
+    prompt: req.prompt,
+    context: req.context,
+    operation: req.operation,
+    language: req.language,
+  });
+
+  if (result.ok) {
+    return { text: result.value };
+  }
+  return { text: '', error: result.error };
 }
 
 /**
- * 存储 AI 配置到 sessionStorage（浏览器关闭后自动清除）。
- * Key 通过简单混淆存储，避免明文扫描。
+ * @deprecated Use `setAiConfig()` instead.
  */
 export function saveAiConfig(endpoint: string, apiKey: string, model: string): void {
-  try {
-    sessionStorage.setItem(
-      '_as',
-      JSON.stringify({
-        e: obfuscate(endpoint),
-        k: obfuscate(apiKey),
-        m: model,
-      })
-    );
-  } catch (err) {
-    console.warn('[ai-client] 保存 AI 配置失败:', err);
-  }
+  setAiConfig(endpoint, apiKey, model);
 }
 
 export { PROMPT_TEMPLATES };

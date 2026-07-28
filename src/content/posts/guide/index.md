@@ -1,44 +1,45 @@
 ---
-title: Simple Guides for Fuwari
-published: 2024-04-01
-description: 'How to use this blog template.'
+title: LKM 网站贡献指南
+published: 2026-07-20
+description: 如何为 LKM 官网撰写文章和参与开发。
 image: './cover.jpeg'
-tags: ['Fuwari', 'Blogging', 'Customization']
-category: Guides
+tags: [指南, 贡献, Astro]
+category: 教程
 draft: false
 ---
 
-> Cover image source: [Source](<https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/208fc754-890d-4adb-9753-2c963332675d/width=2048/01651-1456859105-(colour_1.5),girl,_Blue,yellow,green,cyan,purple,red,pink,_best,8k,UHD,masterpiece,male%20focus,%201boy,gloves,%20ponytail,%20long%20hair,.jpeg>)
+本指南面向希望为 LKM 网站做出贡献的用户，无论是撰写技术文章还是改进网站功能。
 
-This blog template is built with [Astro](https://astro.build/). For the things that are not mentioned in this guide, you may find the answers in the [Astro Docs](https://docs.astro.build/).
+## 文章 Frontmatter
 
-## Front-matter of Posts
+每篇文章需要在文件顶部使用 YAML 格式声明元信息：
 
 ```yaml
 ---
-title: My First Blog Post
-published: 2023-09-09
-description: This is the first post of my new Astro blog.
+title: 文章标题
+published: 2026-07-20
+description: 文章简介，会显示在列表页
 image: ./cover.jpg
-tags: [Foo, Bar]
-category: Front-end
+tags: [标签1, 标签2]
+category: 分类
 draft: false
 ---
 ```
 
-| Attribute     | Description                                                                                                                                                                                                 |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`       | The title of the post.                                                                                                                                                                                      |
-| `published`   | The date the post was published.                                                                                                                                                                            |
-| `description` | A short description of the post. Displayed on index page.                                                                                                                                                   |
-| `image`       | The cover image path of the post.<br/>1. Start with `http://` or `https://`: Use web image<br/>2. Start with `/`: For image in `public` dir<br/>3. With none of the prefixes: Relative to the markdown file |
-| `tags`        | The tags of the post.                                                                                                                                                                                       |
-| `category`    | The category of the post.                                                                                                                                                                                   |
-| `draft`       | If this post is still a draft, which won't be displayed.                                                                                                                                                    |
+| 字段          | 说明                                                                      |
+| ------------- | ------------------------------------------------------------------------- |
+| `title`       | 文章标题（必填）                                                          |
+| `published`   | 发布日期                                                                  |
+| `description` | 文章简介，显示在列表页                                                    |
+| `image`       | 封面图片路径。支持三种形式：网络图片（以 `http://` 或 `https://` 开头）、 |
+|               | public 目录下的图片（以 `/` 开头）、相对于 Markdown 文件的本地图片        |
+| `tags`        | 文章标签，数组格式                                                        |
+| `category`    | 文章分类                                                                  |
+| `draft`       | 设为 `true` 则文章为草稿，不会在正式站点显示                              |
 
-## Where to Place the Post Files
+## 文章存放位置
 
-Your post files should be placed in `src/content/posts/` directory. You can also create sub-directories to better organize your posts and assets.
+文章文件应放在 `src/content/posts/` 目录下。可以在其中创建子目录来组织文章和相关资源：
 
 ```
 src/content/posts/
@@ -47,3 +48,66 @@ src/content/posts/
     ├── cover.png
     └── index.md
 ```
+
+## 环境准备
+
+开始前请确保安装以下工具：
+
+- **Node.js** >= 24
+- **Git**
+- **pnpm**（项目使用 pnpm workspace 管理依赖）
+
+克隆项目并安装依赖：
+
+```bash
+git clone https://github.com/LKM-AHZ/LKM-official-website.git
+cd LKM-official-website
+pnpm install
+```
+
+启动开发服务器：
+
+```bash
+pnpm dev
+```
+
+访问 `http://localhost:4321` 即可预览网站。
+
+## 撰写文章
+
+使用 Markdown 语法撰写文章。项目支持：
+
+- 标准 Markdown（标题、列表、引用、链接、图片等）
+- 代码高亮（见"[代码块功能展示](/posts/expressive-code)"）
+- HTML 直接嵌入（如视频 iframe）
+- `.mdx` 文件中可使用 Astro 组件
+
+## 项目结构概览
+
+```
+src/
+  content/              # 内容集合
+    posts/              # 博客文章（Markdown/MDX）
+    docs/               # 文档页面
+  pages/                # 文件路由
+  components/           # 组件目录
+  core/                 # 核心工具与配置
+  ui/                   # UI 原语组件
+  features/             # 业务 feature 模块
+```
+
+## 提交规范
+
+提交信息建议使用以下前缀：
+
+- `feat:` 新功能
+- `fix:` 修复
+- `docs:` 文档更新
+- `style:` 代码格式
+- `refactor:` 代码重构
+
+## 获取帮助
+
+- 查看项目 [README](https://github.com/LKM-AHZ/LKM-official-website) 和 [AGENTS.md](https://github.com/LKM-AHZ/LKM-official-website/blob/main/AGENTS.md)
+- 在 GitHub 仓库提 Issue
+- 技术栈：Astro v7 + Tailwind CSS v4 + TypeScript

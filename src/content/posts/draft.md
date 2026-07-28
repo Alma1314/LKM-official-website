@@ -1,23 +1,29 @@
 ---
-title: Draft Example
-published: 2022-07-01
-tags: [Markdown, Blogging, Demo]
-category: Examples
+title: 草稿机制说明
+published: 2026-07-20
+tags: [说明, 博客功能]
+category: 教程
 draft: true
 ---
 
-# This Article is a Draft
+# 这是一篇草稿
 
-This article is currently in a draft state and is not published. Therefore, it will not be visible to the general audience. The content is still a work in progress and may require further editing and review.
+这篇文章当前处于草稿状态，不会对外发布。在预览环境中可以看到它，但在正式站点中不可见。
 
-When the article is ready for publication, you can update the "draft" field to "false" in the Frontmatter:
+当文章完成后，将 frontmatter 中的 `draft` 字段设为 `false` 即可对外公开：
 
 ```markdown
 ---
-title: Draft Example
-published: 2024-01-11T04:40:26.381Z
-tags: [Markdown, Blogging, Demo]
-category: Examples
+title: 草稿机制说明
+published: 2026-07-20
+tags: [说明, 博客功能]
+category: 教程
 draft: false
 ---
 ```
+
+草稿机制非常适合以下场景：
+
+- 尚未写完的技术文章
+- 需要内部评审的内容
+- 仅在本地预览的实验性页面

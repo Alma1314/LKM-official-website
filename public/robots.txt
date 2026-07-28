@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /_astro/
+
+Sitemap: https://lkm-ahz.github.io/LKM-official-website/sitemap-index.xml

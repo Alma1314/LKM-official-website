@@ -91,7 +91,7 @@ function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
         const map: Record<number, { name: string; url: string; external?: boolean }> = {
           [LinkPreset.Home]: { name: 'Home', url: '/' },
           [LinkPreset.Archive]: { name: 'Archive', url: '/archive' },
-          [LinkPreset.About]: { name: 'About', url: '/about' },
+          [LinkPreset.About]: { name: 'About', url: '/blog/about' },
         };
         const resolved = map[preset];
         if (resolved) return [{ ...resolved, external: false }];

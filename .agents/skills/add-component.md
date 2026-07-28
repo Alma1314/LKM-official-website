@@ -1,44 +1,42 @@
-# 添加 Widget 组件
+# 添加组件
+
+## 组件归属判断
+
+| 组件类型                               | 放置位置                  | 说明                          |
+| -------------------------------------- | ------------------------- | ----------------------------- |
+| 通用基础组件（Button、Image、Form 等） | `src/ui/primitives/`      | 无业务逻辑，可跨 feature 复用 |
+| 复合/模式组件（TableOfContents 等）    | `src/ui/patterns/`        | 组合多个 primitive 的通用模式 |
+| 业务功能组件（博客卡片、团队卡片等）   | `src/features/<feature>/` | 与特定业务模块耦合            |
 
 ## 步骤
 
-1. 在 `src/components/widgets/` 下创建新的 `.astro` 文件
-2. 在 `src/types.d.ts` 中定义 Props 接口（或使用内联方式）
+1. 根据上表确定组件放置位置
+2. 创建 `.astro` 文件（`.tsx` 用于需要客户端状态的 React 组件）
 3. 遵循现有组件模式
 
-## 模板
+## 基础组件模板
 
 ```astro
 ---
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Headline from '~/components/ui/Headline.astro';
-import type { MyWidget as Props } from '~/types';
+import { twMerge } from 'tailwind-merge';
+import type { SomeProps } from '~/core/types';
 
-const {
-  title = await Astro.slots.render('title'),
-  subtitle = await Astro.slots.render('subtitle'),
-  tagline,
-  items = [],
-  id,
-  isDark = false,
-  classes = {},
-  bg = await Astro.slots.render('bg'),
-} = Astro.props;
+interface Props extends SomeProps {
+  className?: string;
+}
+const { className, ...rest } = Astro.props;
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={classes?.container ?? ''} bg={bg}>
-  <Headline title={title} subtitle={subtitle} tagline={tagline} classes={classes?.headline} />
-  <div class="max-w-5xl mx-auto">
-    <!-- 组件内容 -->
-  </div>
-</WidgetWrapper>
+<div class={twMerge('...', className)} {...rest}>
+  <slot />
+</div>
 ```
 
 ## 约定
 
-- Props 接口继承 `~/types` 中的 `Widget` 基础接口
-- 使用 `WidgetWrapper` 保持一致的间距和暗色模式支持
-- 使用 `Headline` 渲染标题/副标题/标签行
-- 接受 `classes` prop 并用 `twMerge()` 进行样式覆写
-- 支持 `title`、`subtitle`、`bg` 等具名插槽
-- 使用 `intersect-once` 类实现滚动触发动画
+- Props 使用 TypeScript 类型定义，继承自 `~/core/types`
+- 使用 `class:list` 进行条件样式绑定
+- 接收 `className` 覆写时使用 `twMerge()` 合并
+- 布局组合使用具名插槽（named slots）
+- 业务组件放在 `src/features/<feature>/` 下对应的目录
+- 跨功能复用的通用组件放在 `src/ui/primitives/` 或 `src/ui/patterns/`
