@@ -108,12 +108,16 @@ const { lowPerf, highContrast } = app
 
 let synced = false
 
-// 强制刷新：如果检测到主题不匹配，reload 页面
-function forceReloadIfThemeMismatch() {
+function forceSync() {
   if (synced) return
+  // 同步主题
   const htmlDark = document.documentElement.classList.contains('dark')
   const expectedDark = localStorage.theme === 'dark' ||
     (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  // 同步色相
+  const hue = localStorage.getItem('hue')
+  if (hue) document.documentElement.style.setProperty('--hue', hue)
+  // 主题不匹配则 reload
   if (htmlDark !== expectedDark) {
     location.reload()
     return
@@ -122,7 +126,7 @@ function forceReloadIfThemeMismatch() {
   app.setTheme(htmlDark ? 'night' : 'day')
 }
 
-onMounted(forceReloadIfThemeMismatch)
+onMounted(forceSync)
 
 onUnmounted(() => {})
 </script>

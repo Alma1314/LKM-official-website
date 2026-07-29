@@ -11,6 +11,8 @@ const metadata: MetaData = { title: '设置 — 拾光树洞', description: '个
   (function () {
     var theme = localStorage.theme;
     var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.classList.toggle("dark", isDark);
+    var hue = localStorage.getItem("hue");
+    if (hue) document.documentElement.style.setProperty("--hue", hue);
   })();
 </script>
