@@ -13,6 +13,10 @@
       <!-- ==================== 顶部导航栏 ==================== -->
       <header class="top-nav glass">
         <div class="nav-inner">
+          <!-- 返回主站 -->
+          <a :href="`${base}apps`" class="nav-exit-btn" title="返回主站">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
           <!-- 品牌 -->
           <a :href="`${base}treehole`" class="nav-brand" aria-label="拾光树洞首页">
             <span class="brand-icon">🌳</span>
@@ -31,7 +35,7 @@
           <!-- 右侧操作 -->
           <div class="nav-actions">
             <a :href="`${base}treehole/write`" class="btn-grad nav-write-btn">✍️ 写信</a>
-            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
+            <button class="nav-icon-btn" @click="toggleTheme" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
               {{ app.isNight ? '☀️' : '🌙' }}
             </button>
             <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
@@ -182,6 +186,12 @@ const base = import.meta.env.BASE_URL || '/'
 const app = useApp()
 const { lowPerf, highContrast } = app
 
+function toggleTheme() {
+  app.toggleTheme()
+  const isNight = document.documentElement.getAttribute('data-theme') === 'night'
+  document.documentElement.classList.toggle('dark', isNight)
+}
+
 const tab = ref('letters')
 const letters = ref([])
 const favList = ref([])
@@ -195,7 +205,31 @@ function load() {
   drafts.value = getDrafts()
 }
 
-onMounted(() => { load() })
+onMounted(() => {
+  // Sync initial theme from Astro's <html class="dark"> to treehole's data-theme
+  const isDark = document.documentElement.classList.contains('dark')
+  const html = document.documentElement
+  if (isDark) {
+    html.setAttribute('data-theme', 'night')
+    if (app.isNight.value === false) app.setTheme('night')
+  } else {
+    html.setAttribute('data-theme', 'day')
+    if (app.isNight.value === true) app.setTheme('day')
+  }
+  // Watch for Astro theme changes
+  const observer = new MutationObserver(() => {
+    const nowDark = document.documentElement.classList.contains('dark')
+    const treeholeTheme = document.documentElement.getAttribute('data-theme')
+    if (nowDark && treeholeTheme !== 'night') {
+      app.setTheme('night')
+    } else if (!nowDark && treeholeTheme !== 'day') {
+      app.setTheme('day')
+    }
+  })
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+
+  load()
+})
 
 function refreshFavs() { load() }
 
@@ -275,6 +309,15 @@ function resetDraftsConfirm() {
   justify-content: space-between;
   gap: 16px;
 }
+.nav-exit-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid var(--card-border); color: var(--text-sub);
+  background: transparent; cursor: pointer; transition: all .2s;
+  margin-right: 4px; flex-shrink: 0;
+}
+.nav-exit-btn:hover { color: var(--accent); border-color: var(--blue); transform: translateX(-2px); }
+
 .nav-brand {
   display: flex;
   align-items: center;
