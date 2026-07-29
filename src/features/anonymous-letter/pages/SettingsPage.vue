@@ -1,5 +1,5 @@
 <template>
-  <div class="th-app" :class="{ 'low-perf': lowPerf.value, 'high-contrast': highContrast.value }">
+  <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
     <div class="app-root">
 
       <!-- 背景层 -->
@@ -14,25 +14,25 @@
       <header class="top-nav glass">
         <div class="nav-inner">
           <!-- 品牌 -->
-          <a href="/treehole" class="nav-brand" aria-label="拾光树洞首页">
+          <a :href="`${base}treehole`" class="nav-brand" aria-label="拾光树洞首页">
             <span class="brand-icon">🌳</span>
             <span class="brand-text grad-text">拾光树洞</span>
           </a>
 
           <!-- 桌面导航链接 -->
           <nav class="nav-links" aria-label="主导航">
-            <a href="/treehole" class="nav-link">广场</a>
-            <a href="/treehole/random" class="nav-link">随机</a>
-            <a href="/treehole/bottle" class="nav-link">漂流瓶</a>
-            <a href="/treehole/wish" class="nav-link">许愿墙</a>
-            <a href="/treehole/rank" class="nav-link">榜单</a>
+            <a :href="`${base}treehole`" class="nav-link">广场</a>
+            <a :href="`${base}treehole/random`" class="nav-link">随机</a>
+            <a :href="`${base}treehole/bottle`" class="nav-link">漂流瓶</a>
+            <a :href="`${base}treehole/wish`" class="nav-link">许愿墙</a>
+            <a :href="`${base}treehole/rank`" class="nav-link">榜单</a>
           </nav>
 
           <!-- 右侧操作 -->
           <div class="nav-actions">
-            <a href="/treehole/write" class="btn-grad nav-write-btn">✍️ 写信</a>
-            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight.value ? '切换到日间模式' : '切换到夜间模式'">
-              {{ app.isNight.value ? '☀️' : '🌙' }}
+            <a :href="`${base}treehole/write`" class="btn-grad nav-write-btn">✍️ 写信</a>
+            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
+              {{ app.isNight ? '☀️' : '🌙' }}
             </button>
             <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
               <span :class="{ open: mobileMenuOpen }">☰</span>
@@ -44,15 +44,15 @@
       <!-- 移动端下拉菜单 -->
       <transition name="slide-down">
         <nav v-if="mobileMenuOpen" class="mobile-menu glass" aria-label="移动端导航" @click="mobileMenuOpen = false">
-          <a href="/treehole" class="mobile-nav-link">🏠 广场</a>
-          <a href="/treehole/write" class="mobile-nav-link">✍️ 写信</a>
-          <a href="/treehole/random" class="mobile-nav-link">🎲 随机树洞</a>
-          <a href="/treehole/bottle" class="mobile-nav-link">🍾 漂流瓶</a>
-          <a href="/treehole/wish" class="mobile-nav-link">⭐ 许愿墙</a>
-          <a href="/treehole/rank" class="mobile-nav-link">🏆 榜单</a>
-          <a href="/treehole/mine" class="mobile-nav-link">📬 我的信箱</a>
-          <a href="/treehole/messages" class="mobile-nav-link">💬 私信</a>
-          <a href="/treehole/settings" class="mobile-nav-link active">⚙️ 设置</a>
+          <a :href="`${base}treehole`" class="mobile-nav-link">🏠 广场</a>
+          <a :href="`${base}treehole/write`" class="mobile-nav-link">✍️ 写信</a>
+          <a :href="`${base}treehole/random`" class="mobile-nav-link">🎲 随机树洞</a>
+          <a :href="`${base}treehole/bottle`" class="mobile-nav-link">🍾 漂流瓶</a>
+          <a :href="`${base}treehole/wish`" class="mobile-nav-link">⭐ 许愿墙</a>
+          <a :href="`${base}treehole/rank`" class="mobile-nav-link">🏆 榜单</a>
+          <a :href="`${base}treehole/mine`" class="mobile-nav-link">📬 我的信箱</a>
+          <a :href="`${base}treehole/messages`" class="mobile-nav-link">💬 私信</a>
+          <a :href="`${base}treehole/settings`" class="mobile-nav-link active">⚙️ 设置</a>
         </nav>
       </transition>
 
@@ -123,7 +123,7 @@
                 <b>👁️ 高对比度护眼模式</b>
                 <small>加深文字对比，缓解眼疲劳</small>
               </div>
-              <button class="switch" :class="{ on: highContrast.value }" @click="toggleHighContrast()">
+              <button class="switch" :class="{ on: highContrast }" @click="toggleHighContrast()">
                 <span class="knob"></span>
               </button>
             </div>
@@ -134,7 +134,7 @@
                 <b>🐢 低性能设备特效开关</b>
                 <small>关闭重特效与粒子，更流畅</small>
               </div>
-              <button class="switch" :class="{ on: lowPerf.value }" @click="toggleLowPerf()">
+              <button class="switch" :class="{ on: lowPerf }" @click="toggleLowPerf()">
                 <span class="knob"></span>
               </button>
             </div>
@@ -184,22 +184,22 @@
 
       <!-- ==================== 移动端底部导航栏 ==================== -->
       <nav class="bottom-nav glass" aria-label="移动端底部导航">
-        <a href="/treehole" class="bn-item">
+        <a :href="`${base}treehole`" class="bn-item">
           <span class="bn-icon">🏠</span>
           <span class="bn-label">广场</span>
         </a>
-        <a href="/treehole/random" class="bn-item">
+        <a :href="`${base}treehole/random`" class="bn-item">
           <span class="bn-icon">🎲</span>
           <span class="bn-label">随机</span>
         </a>
-        <a href="/treehole/write" class="bn-item bn-center">
+        <a :href="`${base}treehole/write`" class="bn-item bn-center">
           <span class="bn-center-circle">✍️</span>
         </a>
-        <a href="/treehole/bottle" class="bn-item">
+        <a :href="`${base}treehole/bottle`" class="bn-item">
           <span class="bn-icon">🍾</span>
           <span class="bn-label">漂流瓶</span>
         </a>
-        <a href="/treehole/mine" class="bn-item">
+        <a :href="`${base}treehole/mine`" class="bn-item">
           <span class="bn-icon">📬</span>
           <span class="bn-label">信箱</span>
         </a>
@@ -216,6 +216,8 @@ import Particles from '../components/Particles.vue'
 import { useApp } from '../store/app'
 import * as store from '../store/storage'
 import '../styles/global.css'
+
+const base = import.meta.env.BASE_URL || '/'
 
 const app = useApp()
 const { state, isNight, lowPerf, highContrast, setTheme, setFontScale, toggleMuted, setAccent, toggleLowPerf, toggleHighContrast, setRateLimit } = app
