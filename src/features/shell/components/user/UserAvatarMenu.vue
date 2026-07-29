@@ -1,15 +1,15 @@
 <template>
   <div ref="menuRef" class="relative">
     <!-- 未登录 -->
-    <button
+    <a
       v-if="!isLoggedIn"
-      type="button"
+      :href="`${base}login`"
       class="btn-plain scale-animation rounded-lg h-11 px-4 font-bold active:scale-95 flex items-center gap-1.5 text-sm text-primary hover:bg-primary/10 transition-colors"
-      @click="openLogin"
+      @click.prevent="openLogin"
     >
       <Icon icon="material-symbols:login-rounded" class="text-[1.25rem]" />
       <span class="hidden sm:inline">登录</span>
-    </button>
+    </a>
 
     <!-- 已登录 -->
     <button
