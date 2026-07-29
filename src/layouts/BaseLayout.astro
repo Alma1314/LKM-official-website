@@ -73,5 +73,76 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
     <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={navbarLinks} />
 
     <BasicScripts />
+
+    <!-- 登录浮层 -->
+    <div
+      id="login-modal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-login-close></div>
+      <div id="login-modal-content" class="relative z-10 w-full max-w-md mx-4"></div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        const modal = document.getElementById('login-modal');
+        const content = document.getElementById('login-modal-content');
+        if (!modal || !content) return;
+
+        let loaded = false;
+        async function open() {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+          if (!loaded) {
+            loaded = true;
+            try {
+              const resp = await fetch(window.__BASE_URL__ + 'login');
+              const html = await resp.text();
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              const card = doc.querySelector('.rounded-2xl.bg-card-bg.shadow-2xl');
+              if (card) {
+                // 追加关闭按钮
+                const closeBtn = document.createElement('button');
+                closeBtn.type = 'button';
+                closeBtn.className = 'absolute top-4 right-4 btn btn-ghost btn-sm btn-circle';
+                closeBtn.setAttribute('aria-label', '关闭');
+                closeBtn.textContent = '✕';
+                closeBtn.addEventListener('click', close);
+                card.style.position = 'relative';
+                card.appendChild(closeBtn);
+                content.innerHTML = '';
+                content.appendChild(card);
+              }
+            } catch {
+              window.location.href = window.__BASE_URL__ + 'login';
+            }
+          }
+        }
+
+        function close() {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+
+        modal.querySelectorAll('[data-login-close]').forEach((el) => {
+          el.addEventListener('click', close);
+        });
+
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) close();
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+        });
+
+        window.addEventListener('open-login-modal', open);
+      })();
+    </script>
   </body>
 </html>

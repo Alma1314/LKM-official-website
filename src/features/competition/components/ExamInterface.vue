@@ -100,6 +100,6 @@ function submit() {
   const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
   clearInterval(timer);
   alert(`答卷已提交！正确 ${correct}/${questions.length}（${Math.round((correct / questions.length) * 100)}%）`);
-  window.location.href = '/competition';
+  window.location.href = import.meta.env.BASE_URL + 'competition';
 }
 </script>

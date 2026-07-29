@@ -4,6 +4,7 @@ import PostPage from '~/features/team/components/PostPage.astro';
 import { PAGE_SIZE } from '~/core/constants/constants';
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 import { getSortedPosts } from '~/core/utils/content-utils';
+import { url } from '~/core/utils/url-utils';
 
 export const getStaticPaths = (async () => {
   const allBlogPosts = await getSortedPosts();
@@ -18,8 +19,8 @@ export const getStaticPaths = (async () => {
           data: allBlogPosts.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE),
           currentPage: i + 1,
           totalPages,
-          prev: i > 0 ? (i === 1 ? '/blog' : `/blog/page/${i}`) : undefined,
-          next: i < totalPages - 1 ? `/blog/page/${i + 2}` : undefined,
+          prev: i > 0 ? (i === 1 ? url('/blog') : url(`/blog/page/${i}`)) : undefined,
+          next: i < totalPages - 1 ? url(`/blog/page/${i + 2}`) : undefined,
         },
       },
     });

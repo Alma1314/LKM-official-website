@@ -65,6 +65,6 @@ function toggleTag(tag: string) {
 function submit() {
   if (!content.value.trim()) return;
   alert('你的信已匿名发出。');
-  window.location.href = '/letters';
+  window.location.href = import.meta.env.BASE_URL + 'letters';
 }
 </script>

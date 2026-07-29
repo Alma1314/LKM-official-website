@@ -90,7 +90,7 @@ const metadata = {
   <Section classes={{ container: 'bg-card-bg pb-8' }}>
     <div class="flex justify-center gap-4 flex-wrap">
       <a
-        href="/files"
+        href={getPermalink('/files')}
         class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors group"
       >
         <span
@@ -114,7 +114,7 @@ const metadata = {
         <span class="text-sm font-medium text-deep-text">上传文件</span>
       </a>
       <a
-        href="/forum"
+        href={getPermalink('/forum')}
         class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors group"
       >
         <span
@@ -139,7 +139,7 @@ const metadata = {
         <span class="text-sm font-medium text-deep-text">发帖</span>
       </a>
       <a
-        href="/qa/ask"
+        href={getPermalink('/qa/ask')}
         class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors group"
       >
         <span
@@ -166,7 +166,7 @@ const metadata = {
         <span class="text-sm font-medium text-deep-text">提问</span>
       </a>
       <a
-        href="/contribution"
+        href={getPermalink('/contribution')}
         class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors group"
       >
         <span
@@ -196,7 +196,7 @@ const metadata = {
       <h2 class="text-2xl font-bold text-deep-text text-center mb-2">探索板块</h2>
       <p class="text-sm text-text-muted text-center mb-6">发现你感兴趣的内容</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="/forum/basic-science" class="profile-card group">
+        <a href={getPermalink('/forum/basic-science')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -220,7 +220,7 @@ const metadata = {
             <p class="text-xs text-text-muted">1.2k 成员 · 今日 45 帖</p>
           </div>
         </a>
-        <a href="/forum/applied-science" class="profile-card group">
+        <a href={getPermalink('/forum/applied-science')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -242,7 +242,7 @@ const metadata = {
             <p class="text-xs text-text-muted">890 成员 · 今日 32 帖</p>
           </div>
         </a>
-        <a href="/forum/hobby" class="profile-card group">
+        <a href={getPermalink('/forum/hobby')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -267,7 +267,7 @@ const metadata = {
             <p class="text-xs text-text-muted">520 成员 · 今日 28 帖</p>
           </div>
         </a>
-        <a href="/columns" class="profile-card group">
+        <a href={getPermalink('/columns')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -431,9 +431,8 @@ const metadata = {
         },
         {
           year: '2025.04',
-          title: '团队组建与官网文档库建设',
-          description:
-            '开始吸纳组建新团队，重新建设官网文档库，具备文档存储与词条查阅功能，打造面向社区内部的实用型知识平台。',
+          title: '团队组建与官网建设',
+          description: '开始吸纳组建新团队，重新建设官网，打造面向社区内部的实用型知识平台。',
           iconName: 'tabler:database',
         },
         {
@@ -500,9 +499,8 @@ const metadata = {
           '理科迷是一个共建共享的社区。你可以加入管理团队（总务部、群务部、新闻办等），也可以加入项目团队（教材编写项目组、科普产出项目组等），也可以投稿作品文章、参加活动、帮忙宣传和推广。',
       },
       {
-        title: '理科迷有网站或文档库吗？',
-        description:
-          '是的。理科迷拥有官方网站和文档库，支持文档存储与词条查阅功能。2026 年我们以更稳健的架构重建了官网，为你提供更好的在线体验。',
+        title: '理科迷有官网吗？',
+        description: '是的。理科迷拥有官方网站，2026 年我们以更稳健的架构重建了官网，为你提供更好的在线体验。',
       },
       {
         title: '有问题或建议怎么联系？',

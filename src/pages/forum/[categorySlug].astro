@@ -5,6 +5,7 @@ import { getCategoryBySlug, getChildCategories, forumCategories } from '~/featur
 import { getPostsByCategory, type MockPost } from '~/features/forum/data/mock-posts';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
+import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {
   return forumCategories.map((c) => ({ params: { categorySlug: c.slug } }));
@@ -14,7 +15,7 @@ const { categorySlug } = Astro.params;
 const category = getCategoryBySlug(categorySlug || '');
 
 if (!category) {
-  return Astro.redirect('/forum');
+  return Astro.redirect(getPermalink('/forum'));
 }
 
 const isParent = !category.parentId;
@@ -41,12 +42,12 @@ const categoryLabel = category.name;
 const metadata = { title: `${categoryLabel} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={`/forum/${categorySlug}`}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/forum/${categorySlug}`)}>
   <div class="space-y-6">
     <!-- 板块头部 -->
     <div>
       <div class="flex items-center gap-3 mb-3">
-        <a href="/forum" class="text-text-muted hover:text-primary transition-colors">
+        <a href={getPermalink('/forum')} class="text-text-muted hover:text-primary transition-colors">
           <Icon name="tabler:arrow-left" class="w-5 h-5" />
         </a>
         <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -86,7 +87,7 @@ const metadata = { title: `${categoryLabel} —— 理科迷` };
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
           {childCategories.map((child) => (
             <a
-              href={`/forum/${child.slug}`}
+              href={getPermalink(`/forum/${child.slug}`)}
               class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-3/50 hover:bg-primary/10 transition-colors text-sm"
             >
               <Icon name={child.icon} class="w-4 h-4 text-primary shrink-0" />

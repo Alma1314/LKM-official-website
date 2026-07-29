@@ -145,7 +145,7 @@ function finish() {
   localStorage.setItem('lkm-onboarding-done', 'true');
   localStorage.setItem('lkm-onboarding-data', JSON.stringify(allData));
   // 跳转到首页
-  window.location.href = '/';
+  window.location.href = import.meta.env.BASE_URL;
 }
 
 function stepClass(i: number) {

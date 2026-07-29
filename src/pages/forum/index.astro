@@ -3,6 +3,7 @@ import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getRootCategories, getChildCategories } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = { title: '板块广场 —— 理科迷' };
 const rootCategories = getRootCategories();
@@ -14,7 +15,7 @@ function gridCols(count: number): string {
 }
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath="/forum">
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/forum')}>
   <div class="space-y-10">
     <div>
       <h1 class="text-3xl font-bold text-deep-text">板块广场</h1>
@@ -39,7 +40,7 @@ function gridCols(count: number): string {
                 </p>
               </div>
               <a
-                href={`/forum/${root.slug}`}
+                href={getPermalink(`/forum/${root.slug}`)}
                 class="ml-auto text-sm text-primary hover:underline whitespace-nowrap shrink-0"
               >
                 查看全部 →
@@ -49,7 +50,7 @@ function gridCols(count: number): string {
             {showChildren ? (
               <div class={`grid ${gridCols(children.length)} gap-4`}>
                 {children.map((child) => (
-                  <a href={`/forum/${child.slug}`} class="profile-card group">
+                  <a href={getPermalink(`/forum/${child.slug}`)} class="profile-card group">
                     <div class="profile-inner p-4 flex flex-col gap-2 h-full">
                       <div class="flex items-center gap-2">
                         <Icon name={child.icon} class="w-5 h-5 text-primary shrink-0" />
@@ -74,7 +75,7 @@ function gridCols(count: number): string {
                 <p class="text-text-muted text-sm mb-2">{root.description}</p>
                 {root.slug === 'school-club' && (
                   <a
-                    href="/contact"
+                    href={getPermalink('/contact')}
                     class="inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline"
                   >
                     <Icon name="tabler:plus" class="w-4 h-4" />

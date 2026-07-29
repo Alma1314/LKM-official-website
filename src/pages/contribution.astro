@@ -1,11 +1,12 @@
 ---
-import Layout from '~/layouts/SidebarLayout.astro';
-import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import Layout from '~/layouts/PageLayout.astro';
 import ContributionPage from '~/features/contribution/components/ContributionPage.vue';
 
 const metadata = { title: '贡献系统 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath="/contribution">
-  <ContributionPage client:only="vue" />
+<Layout metadata={metadata}>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <ContributionPage client:only="vue" />
+  </div>
 </Layout>

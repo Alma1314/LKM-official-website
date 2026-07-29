@@ -3,11 +3,12 @@ import Layout from '~/layouts/SidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { mockColumns } from '~/features/column/data/mock-columns';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = { title: '专栏 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath="/columns">
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/columns')}>
   <div class="space-y-6">
     <div>
       <h1 class="text-3xl font-bold text-deep-text">专栏</h1>
@@ -17,7 +18,7 @@ const metadata = { title: '专栏 —— 理科迷' };
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {
         mockColumns.map((col) => (
-          <a href={`/columns/${col.slug}`} class="profile-card group overflow-hidden flex flex-col">
+          <a href={getPermalink(`/columns/${col.slug}`)} class="profile-card group overflow-hidden flex flex-col">
             {/* 封面区 */}
             <div class="h-36 bg-gradient-to-br from-primary/20 via-primary/10 to-surface-3 flex items-center justify-center relative">
               {col.isVerified && (

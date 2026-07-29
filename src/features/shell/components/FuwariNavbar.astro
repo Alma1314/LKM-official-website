@@ -32,7 +32,7 @@ let links: NavBarLink[] =
   <div
     class:list={[
       className,
-      'card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[1fr_auto_1fr] items-center px-4',
+      'card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4',
     ]}
   >
     <a
@@ -115,7 +115,7 @@ let links: NavBarLink[] =
       }
       <LightDarkSwitch client:only="svelte" />
       <NotificationBell client:load />
-      <UserAvatarMenu client:only="vue" />
+      <UserAvatarMenu client:only="vue" base={url('/')} />
       <button
         aria-label="Menu"
         name="Nav Menu"

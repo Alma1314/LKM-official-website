@@ -112,8 +112,6 @@ fuwari:
         children:
           - name: 博客列表
             url: /blog
-          - name: 文档库
-            url: /docs
           - name: 所有分类
             url: /blog/categories
           - name: 文章归档
@@ -137,6 +135,27 @@ fuwari:
             url: /contact
           - name: QQ社群
             url: /communities
+      - name: 资源
+        url: /forum
+        children:
+          - name: 板块广场
+            url: /forum
+          - name: 专栏
+            url: /columns
+          - name: 文件库
+            url: /files
+          - name: 匿名信
+            url: /letters
+          - name: 帮助/求助
+            url: /qa
+          - name: 项目大厅
+            url: /projects
+          - name: 竞赛
+            url: /competition
+          - name: 资助系统
+            url: /funding
+          - name: 其他应用
+            url: /apps
       - name: 我的
         url: /profile
         children:

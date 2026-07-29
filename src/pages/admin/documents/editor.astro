@@ -1,6 +1,7 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
 import { EditorMount, persistence } from '~/features/editor';
+import { getPermalink } from '~/core/utils/permalinks';
 
 const metadata = {
   title: '编辑文档 — LKM',
@@ -11,7 +12,7 @@ const metadata = {
 <PageLayout metadata={metadata}>
   <div class="section-container max-w-4xl mx-auto py-8 px-4">
     <div class="mb-4 flex items-center gap-3">
-      <a href="/admin/documents" class="btn btn-ghost btn-sm gap-1">
+      <a href={getPermalink('/admin/documents')} class="btn btn-ghost btn-sm gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
