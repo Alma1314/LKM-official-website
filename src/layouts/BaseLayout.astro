@@ -3,7 +3,6 @@ import '~/core/styles/tailwind.css';
 import '../styles/main.css';
 import '../styles/variables.css';
 
-import LoginPage from '~/features/auth/components/login/LoginPage.vue';
 import { I18N } from '~/core/config';
 import { siteConfig } from '~/core/config';
 import CommonMeta from '~/features/shell/common/components/CommonMeta.astro';
@@ -87,7 +86,7 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
     </div>
 
     <script is:inline>
-      (function() {
+      (function () {
         const modal = document.getElementById('login-modal');
         const content = document.getElementById('login-modal-content');
         if (!modal || !content) return;
@@ -130,15 +129,15 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
           document.body.style.overflow = '';
         }
 
-        modal.querySelectorAll('[data-login-close]').forEach(el => {
+        modal.querySelectorAll('[data-login-close]').forEach((el) => {
           el.addEventListener('click', close);
         });
 
-        modal.addEventListener('click', function(e) {
+        modal.addEventListener('click', function (e) {
           if (e.target === modal) close();
         });
 
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
         });
 
