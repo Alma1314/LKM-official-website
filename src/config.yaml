@@ -144,8 +144,6 @@ fuwari:
             url: /columns
           - name: 文件库
             url: /files
-          - name: 匿名信
-            url: /letters
           - name: 帮助/求助
             url: /qa
           - name: 项目大厅

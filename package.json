@@ -44,6 +44,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/svelte": "^9.0.1",
     "@astrojs/vue": "^7.0.1",
+    "@element-plus/icons-vue": "^2.3.2",
     "@expressive-code/core": "^0.44.1",
     "@expressive-code/plugin-collapsible-sections": "^0.44.1",
     "@expressive-code/plugin-line-numbers": "^0.44.1",
@@ -64,6 +65,7 @@
     "astro-lilypond": "^0.12.0",
     "astro-mermaid": "^2.1.0",
     "astro-seo": "^1.1.0",
+    "element-plus": "^2.14.3",
     "hastscript": "^9.0.1",
     "katex": "^0.18.1",
     "limax": "4.2.3",
@@ -90,7 +92,8 @@
     "three": "0.185.1",
     "unist-util-visit": "^5.1.0",
     "unpic": "^4.2.2",
-    "vue": "^3.5.40"
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

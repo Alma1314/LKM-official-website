@@ -1,0 +1,16 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import TreeholeApp from '~/features/anonymous-letter/TreeholeApp.vue';
+import type { MetaData } from '~/core/types';
+
+const metadata: MetaData = {
+  title: '拾光树洞 · 匿名信',
+  description: '一个治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。',
+};
+---
+
+<Layout metadata={metadata}>
+  <div id="treehole-root" class="min-h-screen">
+    <TreeholeApp client:only="vue" />
+  </div>
+</Layout>

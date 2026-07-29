@@ -1,0 +1,177 @@
+<template>
+  <div class="letter-card glass glass-hover float-up" :style="{ '--card-grad': grad }">
+    <!-- 顶部：分类 + 代号 + 时间 -->
+    <div class="lc-head">
+      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ category.label }}</span>
+      <span class="lc-code">{{ letter.codename }}</span>
+    </div>
+
+    <!-- 信纸背景正文 -->
+    <div class="lc-body" :style="{ background: paperBg }" :class="{ expanded }">
+      <div v-if="letter.sticker" class="lc-sticker">{{ letter.sticker }}</div>
+      <p class="lc-content" :class="{ clamped: !expanded && isLong }">{{ letter.content }}</p>
+      <div v-if="!expanded && isLong" class="lc-fade"></div>
+    </div>
+    <button v-if="isLong && (!letter.encrypted || decrypted)" class="lc-toggle" @click="expanded = !expanded">
+      {{ expanded ? '收起 ▲' : '展开全文 ▼' }}
+    </button>
+
+    <!-- 心情标签 -->
+    <div class="lc-moods" v-if="letter.moods && letter.moods.length">
+      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ m }}</span>
+    </div>
+    <!-- 内容标签 -->
+    <div class="lc-tags" v-if="letter.tags && letter.tags.length">
+      <span v-for="t in letter.tags" :key="t" class="lc-tag" :style="{ background: tagColor(t) }">{{ tagEmoji(t) }} {{ tagLabel(t) }}</span>
+    </div>
+    <slot name="extra" />
+
+    <!-- 操作栏 -->
+    <div class="lc-actions">
+      <button class="lc-act" :class="{ liked: letter.liked }" @click="onLike">
+        <span class="lc-ic" :class="{ 'heart-burst': burst }">❤️</span><span v-if="burst" class="heart-particles"><span v-for="n in 6" :key="n" :style="particleStyle(n)">💗</span></span>{{ letter.likes || 0 }}
+      </button>
+      <button class="lc-act" :class="{ favd: isFav }" @click="onFav">
+        <span class="lc-ic">{{ isFav ? '⭐' : '☆' }}</span>{{ favCount }}
+      </button>
+      <button class="lc-act" @click="onCopy"><span class="lc-ic">📋</span>复制</button>
+      <button class="lc-act" @click="onReport"><span class="lc-ic">⚠️</span>举报</button>
+    </div>
+
+    <div class="lc-foot">
+      <span>{{ formatTime(letter.createdAt) }}</span>
+      <button class="lc-same" @click="onSameType">同类树洞 ›</button>
+    </div>
+
+    <ReportDialog v-model="reportVisible" :target="letter.codename" :target-id="letter.id" target-type="letter" @reported="onReported" />
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { getCategory, getPaper, getTag } from '../store/constants'
+import { toggleFavorite, getFavorites } from '../store/storage'
+import ReportDialog from './ReportDialog.vue'
+
+const props = defineProps({ letter: { type: Object, required: true } })
+const emit = defineEmits(['like', 'fav', 'same-type'])
+
+const category = computed(() => getCategory(props.letter.category))
+const paperBg = computed(() => getPaper(props.letter.paper).gradient)
+const grad = computed(() => category.value.color)
+function tagColor(k) { return (getTag(k) || {}).color || '#8e7cff' }
+function tagLabel(k) { return (getTag(k) || {}).label || k }
+function tagEmoji(k) { return (getTag(k) || {}).emoji || '🏷️' }
+
+const expanded = ref(false)
+const isLong = computed(() => (props.letter.content || '').length > 90)
+
+const isFav = ref(false)
+const favCount = computed(() => (props.letter.favorites || 0) + (isFav.value ? 1 : 0))
+
+const reportVisible = ref(false)
+const burst = ref(false)
+
+function particleStyle(n) {
+  const angle = (n / 6) * Math.PI * 2
+  const dist = 22 + Math.random() * 10
+  return { '--dx': Math.cos(angle) * dist + 'px', '--dy': Math.sin(angle) * dist + 'px', animationDelay: (n * 0.02) + 's' }
+}
+
+function formatTime(ts) {
+  const d = new Date(ts)
+  const diff = Date.now() - ts
+  if (diff < 60000) return '刚刚'
+  if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前'
+  if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前'
+  return `${d.getMonth() + 1}月${d.getDate()}日`
+}
+
+function onLike() {
+  emit('like', props.letter)
+  if (!props.letter.liked) {
+    burst.value = false
+    requestAnimationFrame(() => { burst.value = true; setTimeout(() => (burst.value = false), 700) })
+  }
+}
+function onFav() {
+  const added = toggleFavorite(props.letter.id)
+  isFav.value = added
+  props.letter.favorites = Math.max(0, (props.letter.favorites || 0) + (added ? 1 : -1))
+}
+async function onCopy() {
+  const text = `【拾光树洞】${category.value.label} · ${props.letter.codename}\n${props.letter.content}`
+  try {
+    await navigator.clipboard.writeText(text)
+    ElMessage({ message: '信件内容已复制 📋', type: 'success', customClass: 'th-toast' })
+  } catch {
+    ElMessage({ message: '复制失败，请手动选择', type: 'warning', customClass: 'th-toast' })
+  }
+}
+function onReport() { reportVisible.value = true }
+function onReported() {
+  props.letter.reported = true
+}
+function onSameType() { emit('same-type', props.letter.category) }
+</script>
+
+<style scoped>
+.letter-card {
+  padding: 16px 16px 12px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-image: var(--line-grad) 1;
+}
+.lc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.lc-cat {
+  color: var(--accent); font-size: 12px; font-weight: 700;
+  padding: 3px 11px; border-radius: 999px;
+  border: 1px solid var(--card-border);
+}
+.lc-code { font-size: 12px; color: var(--text-sub); }
+.lc-body {
+  border-radius: 12px; padding: 14px; position: relative;
+  border: 1px solid rgba(153,208,255,0.25);
+  background: rgba(153,208,255,0.04);
+  font-size: calc(14px * var(--font-scale)); line-height: 1.75;
+  color: var(--text-main); min-height: 40px;
+}
+.lc-content { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.lc-content.clamped { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.lc-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 2.4em; background: linear-gradient(to bottom, transparent, var(--card-bg)); border-radius: 0 0 12px 12px; pointer-events: none; }
+.lc-encrypted { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 0; }
+.lc-lock { font-size: 13px; color: var(--text-sub); }
+.lc-decrypt { border: 1px solid var(--accent); color: var(--accent); background: transparent; border-radius: var(--radius-pill); padding: 6px 16px; cursor: pointer; font-size: 13px; transition: all .2s; }
+.lc-decrypt:hover { background: var(--grad-soft); }
+.lc-sticker { position: absolute; top: 8px; right: 10px; font-size: 20px; opacity: 0.8; }
+.lc-act { position: relative; }
+.lc-ic { font-size: 13px; display: inline-block; }
+.heart-particles { position: absolute; left: 50%; top: 50%; pointer-events: none; }
+.lc-toggle {
+  background: none; border: none; color: var(--accent); cursor: pointer;
+  font-size: 12px; padding: 6px 0 2px;
+}
+.lc-moods { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.lc-mood { font-size: 12px; color: var(--accent); border: 1px solid var(--card-border); padding: 2px 9px; border-radius: 999px; }
+.lc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.lc-tag { color: var(--text-sub); font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--card-border); }
+.lc-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.lc-act {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--card-border); background: transparent;
+  color: var(--text-sub); border-radius: 999px; padding: 5px 11px;
+  font-size: 12px; cursor: pointer; transition: all .2s;
+}
+.lc-act:hover { transform: translateY(-2px); border-color: var(--blue); color: var(--accent); }
+.lc-act.liked { color: var(--danger); border-color: var(--danger); }
+.lc-act.favd { color: #e6a23c; border-color: #e6a23c; }
+.lc-ic { font-size: 13px; }
+.lc-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px; font-size: 11px; color: var(--text-sub);
+}
+.lc-same { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 11px; }
+</style>

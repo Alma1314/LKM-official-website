@@ -18,6 +18,7 @@
   "exclude": [
     "dist/",
     "reference/",
+    "anonymous-treehole/",
     "packages/*/dist",
     "packages/*/src",
     "packages/*/__tests__",
