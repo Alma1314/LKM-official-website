@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   title: { type: String, default: '这里还空空如也' },
   sub: { type: String, default: '去写下第一封信，或逛逛树洞广场吧～' }

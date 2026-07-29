@@ -12,8 +12,8 @@
           <span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span>
         </div>
         <div class="hero-acts">
-          <a :href="`${base}treehole/write`" class="btn-grad">✍️ 写一封信</a>
-          <a :href="`${base}treehole/random`" class="chip">🎲 随机树洞</a>
+          <a :href="`${base}/treehole/write`" class="btn-grad">✍️ 写一封信</a>
+          <a :href="`${base}/treehole/random`" class="chip">🎲 随机树洞</a>
         </div>
       </section>
 
@@ -87,13 +87,11 @@ import TreeholeShell from '../components/TreeholeShell.vue'
 import LetterCard from '../components/LetterCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../store/constants'
-import { getLetters, getFavorites, getFavGroups, saveFavGroups, toggleFavorite } from '../store/storage'
-import { useApp } from '../store/app'
+import { getLetters, getFavorites, toggleFavorite } from '../store/storage'
 import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 
-const app = useApp()
 const categories = CATEGORIES
 
 const tags = TAGS
@@ -126,16 +124,6 @@ function load() {
 onMounted(() => {
   load()
   typeLoop()
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
 })
 
 // 跨标签页同步

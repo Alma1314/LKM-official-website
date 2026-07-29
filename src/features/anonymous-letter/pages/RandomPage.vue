@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import { getCategory, getPaper } from '../store/constants'
 import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage'
@@ -163,18 +163,6 @@ function formatDate(ts) {
   return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
 }
 
-onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-})
 </script>
 
 <style scoped>

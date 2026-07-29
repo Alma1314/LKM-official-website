@@ -38,28 +38,14 @@ import TreeholeShell from '../components/TreeholeShell.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getCategory } from '../store/constants'
 import { getLetters } from '../store/storage'
-import { useApp } from '../store/app'
 import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
-
-const app = useApp()
 
 const range = ref('today')
 const letters = ref([])
 
 onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-
   letters.value = getLetters().filter(l => l.status === 'published' && l.privacy === 'public')
 })
 

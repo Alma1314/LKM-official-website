@@ -30,7 +30,7 @@
             <div class="item-foot">
               <span>{{ timeText(l.createdAt) }}</span>
               <div class="item-acts">
-                <a v-if="['pending','rejected','scheduled'].includes(l.status)" :href="`${base}treehole/write?letterId=` + l.id" class="mini">✏️ 编辑</a>
+                <a v-if="['pending','rejected','scheduled'].includes(l.status)" :href="`${base}/treehole/write?letterId=` + l.id" class="mini">✏️ 编辑</a>
                 <button class="mini danger" @click="removeLetter(l)">🗑️ 删除</button>
               </div>
             </div>
@@ -57,7 +57,7 @@
             <div class="item-foot">
               <span>{{ timeText(d.updatedAt) }}</span>
               <div class="item-acts">
-                <a :href="`${base}treehole/write?draftId=` + d.id" class="mini">继续编辑</a>
+                <a :href="`${base}/treehole/write?draftId=` + d.id" class="mini">继续编辑</a>
                 <button class="mini danger" @click="removeDraft(d)">删除</button>
               </div>
             </div>
@@ -90,12 +90,9 @@ import EmptyState from '../components/EmptyState.vue'
 import BackupPanel from '../components/BackupPanel.vue'
 import { getCategory } from '../store/constants'
 import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../store/storage'
-import { useApp } from '../store/app'
 import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
-
-const app = useApp()
 
 const tab = ref('letters')
 const letters = ref([])
@@ -110,17 +107,6 @@ function load() {
 }
 
 onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-
   load()
 })
 

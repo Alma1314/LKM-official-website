@@ -227,8 +227,8 @@
           <h2 class="modal-title">投递成功</h2>
           <p class="modal-desc">{{ successMsg }}</p>
           <div class="modal-actions">
-            <a :href="`${base}treehole`" class="btn-grad">🏠 返回广场</a>
-            <a :href="`${base}treehole/mine`" class="chip">📬 我的信箱</a>
+            <a :href="`${base}/treehole`" class="btn-grad">🏠 返回广场</a>
+            <a :href="`${base}/treehole/mine`" class="chip">📬 我的信箱</a>
             <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
           </div>
         </div>
@@ -245,8 +245,8 @@ import {
   getCategory, getPaper, TAGS, EMOJIS, SENSITIVE_WORDS
 } from '../store/constants'
 import {
-  addLetter, updateLetter, saveDraft, getDrafts, getLetters,
-  canPost, logPost, logMood, getSettings, saveSettings, saveSketch
+  addLetter, updateLetter, saveDraft, getLetters,
+  canPost, logPost, logMood, saveSketch
 } from '../store/storage'
 import { randomCodename } from '../utils/codename'
 import { useApp } from '../store/app'
@@ -499,17 +499,6 @@ function writeAnother() {
 
 // ---------- 初始化 ----------
 onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-
   genCaptcha()
 
   // 尝试从 URL 参数加载编辑的信件

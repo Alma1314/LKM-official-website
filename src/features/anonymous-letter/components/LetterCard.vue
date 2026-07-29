@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { getCategory, getPaper, getTag } from '../store/constants'
 import { toggleFavorite, getFavorites } from '../store/storage'

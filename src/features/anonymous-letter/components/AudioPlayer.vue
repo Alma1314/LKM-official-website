@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useApp } from '../store/app'
 import * as store from '../store/storage'

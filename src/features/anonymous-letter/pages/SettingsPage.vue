@@ -126,7 +126,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import PrivacyDialog from '../components/PrivacyDialog.vue'
 import { useApp } from '../store/app'
@@ -166,18 +166,6 @@ function toggleAudio() {
   store.saveSettings({ audioOn: state.settings.audioOn })
 }
 
-onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-})
 </script>
 
 <style scoped>

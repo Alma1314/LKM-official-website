@@ -5,6 +5,8 @@
 //       漂流瓶、许愿墙、月度情绪、备份、桌面通知、涂鸦手写信纸、本地加密
 // =============================================================
 
+import { randomCodename } from '../utils/codename'
+
 // ---------- 类型定义 ----------
 
 export interface Letter {
@@ -125,16 +127,6 @@ function write<T>(key: string, value: T): void {
 // 深拷贝，避免引用污染
 export function clone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T
-}
-
-// 生成匿名代号（如：夜行的猫37）
-const ADJ = ['夜行的', '迷路的', '温柔的', '沉默的', '发光的', '慵懒的', '勇敢的', '失眠的', '偷心的', '漫步的', '微醺的', '等风的']
-const NOUN = ['猫', '鲸', '鹿', '信使', '云朵', '旅人', '星星', '小熊', '知更鸟', '月亮', '萤火', '风铃']
-export function randomCodename(): string {
-  const a = ADJ[Math.floor(Math.random() * ADJ.length)]
-  const n = NOUN[Math.floor(Math.random() * NOUN.length)]
-  const num = Math.floor(Math.random() * 90) + 10
-  return `${a}${n}${num}`
 }
 
 // ---------- 轻量本地加密 (AES-GCM via Web Crypto) ----------

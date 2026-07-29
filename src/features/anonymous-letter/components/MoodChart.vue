@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import EmptyState from './EmptyState.vue'
 import * as store from '../store/storage'

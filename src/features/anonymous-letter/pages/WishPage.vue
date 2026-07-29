@@ -93,12 +93,9 @@
 import { ref, onMounted } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import { getWishes, addWish, lightWish, saveWishes } from '../store/storage'
-import { useApp } from '../store/app'
 import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
-
-const app = useApp()
 
 const wishes = ref([])
 const makeDialogOpen = ref(false)
@@ -173,17 +170,6 @@ function cardColor(id) {
 }
 
 onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-
   loadWishes()
 })
 </script>

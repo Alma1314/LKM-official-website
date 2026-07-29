@@ -44,7 +44,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { getCategory, getPaper } from '../store/constants'
-import { getLetters, getOrCreateConversation, appendMessage, randomCodename } from '../store/storage'
+import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage'
 
 const pool = ref([])
 const current = ref(null)

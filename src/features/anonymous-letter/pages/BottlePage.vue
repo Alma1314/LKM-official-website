@@ -89,12 +89,9 @@
 import { ref, computed, onMounted } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import { getBottles, addBottle, pickBottle, markBottlePicked } from '../store/storage'
-import { useApp } from '../store/app'
 import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
-
-const app = useApp()
 
 const allBottles = ref([])
 const currentBottle = ref(null)
@@ -157,17 +154,6 @@ function formatDate(ts) {
 }
 
 onMounted(() => {
-  // Sync theme: ensure data-theme mirrors dark class
-  const isDark = document.documentElement.classList.contains("dark")
-  const html = document.documentElement
-  if (isDark) {
-    html.setAttribute('data-theme', 'night')
-    if (app.isNight.value === false) app.setTheme('night')
-  } else {
-    html.setAttribute('data-theme', 'day')
-    if (app.isNight.value === true) app.setTheme('day')
-  }
-
   loadBottles()
 })
 </script>

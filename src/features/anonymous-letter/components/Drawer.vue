@@ -19,7 +19,7 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({ modelValue: Boolean, title: { type: String, default: '' }, side: { type: String, default: 'right' } })
 defineEmits(['update:modelValue'])
 </script>

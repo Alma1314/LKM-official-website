@@ -137,7 +137,7 @@ body {
 
 /* 渐变按钮 */
 .btn-grad {
-  border: 1px solid transparent;
+  border: 1px solid var(--accent);
   cursor: pointer;
   color: var(--accent);
   background: transparent;
@@ -146,20 +146,16 @@ body {
   font-size: calc(14px * var(--font-scale));
   font-weight: 600;
   letter-spacing: 0.5px;
-  background-image: linear-gradient(#fff, #fff), var(--line-grad);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
-:root.dark .btn-grad { background-image: linear-gradient(var(--card-bg), var(--card-bg)), var(--line-grad); color: var(--accent); }
-.btn-grad:hover { background-image: var(--grad-soft), var(--line-grad); box-shadow: 0 4px 14px var(--glow); }
+.btn-grad:hover { background: var(--grad-soft); box-shadow: 0 4px 14px var(--glow); }
 .btn-grad:active { transform: scale(0.96); }
 .btn-grad:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* 标签 chip */
 .chip {
   display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 13px; border-radius: 999px;
+  padding: 5px 14px; border-radius: 999px;
   font-size: calc(12px * var(--font-scale));
   background: transparent; border: 1px solid var(--card-border);
   color: var(--text-sub); cursor: pointer;
@@ -167,11 +163,8 @@ body {
 }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 .chip.active {
-  border-color: transparent; color: var(--accent);
-  border-image: var(--line-grad) 1;
-  background-image: var(--grad-soft), var(--line-grad);
-  background-origin: border-box; background-clip: content-box, border-box;
-  box-shadow: 0 0 10px var(--glow);
+  border-color: var(--accent); color: var(--accent);
+  background: var(--grad-soft);
 }
 
 /* 动画 */
