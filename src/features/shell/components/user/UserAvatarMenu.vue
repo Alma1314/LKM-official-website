@@ -1,14 +1,15 @@
 <template>
   <div ref="menuRef" class="relative">
     <!-- 未登录 -->
-    <a
+    <button
       v-if="!isLoggedIn"
-      :href="`${base}login`"
+      type="button"
       class="btn-plain scale-animation rounded-lg h-11 px-4 font-bold active:scale-95 flex items-center gap-1.5 text-sm text-primary hover:bg-primary/10 transition-colors"
+      @click="openLogin"
     >
       <Icon icon="material-symbols:login-rounded" class="text-[1.25rem]" />
       <span class="hidden sm:inline">登录</span>
-    </a>
+    </button>
 
     <!-- 已登录 -->
     <button
@@ -91,6 +92,10 @@ const userLevelText = computed(() => {
       return '普通用户';
   }
 });
+
+function openLogin() {
+  window.dispatchEvent(new CustomEvent('open-login-modal'));
+}
 
 function toggle() {
   isOpen.value = !isOpen.value;

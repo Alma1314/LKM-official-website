@@ -1,15 +1,13 @@
 <template>
-  <div class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-card-bg/70 backdrop-blur-sm"></div>
-
+  <div>
     <!-- 2FA flow -->
-    <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full max-w-md">
+    <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full">
       <TwoFactorVerify :onSuccess="handle2FASuccess" :onError="handle2FAError" />
     </div>
 
     <!-- Logged in -->
-    <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8 text-center">
+    <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full">
+      <div class="text-center">
         <div class="mb-4 flex justify-center">
           <svg
             class="w-14 h-14 text-success"
@@ -59,8 +57,8 @@
     </div>
 
     <!-- Login form -->
-    <div v-else class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8">
+    <div v-else class="relative w-full">
+      <div>
         <div class="text-center mb-6">
           <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-deep-text">登录</h1>
           <p class="text-sm text-text-muted">登录理科迷账号，访问社区资源与文档</p>

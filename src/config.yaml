@@ -154,6 +154,8 @@ fuwari:
             url: /competition
           - name: 资助系统
             url: /funding
+          - name: 其他应用
+            url: /apps
       - name: 我的
         url: /profile
         children:
