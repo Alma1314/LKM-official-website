@@ -29,7 +29,6 @@ export const communitySidebarLinks: CommunitySidebarLink[] = [
   { text: '板块广场', href: getPermalink('/forum'), icon: 'material-symbols:forum-outline' },
   { text: '专栏', href: getPermalink('/columns'), icon: 'material-symbols:article-outline' },
   { text: '文件库', href: getPermalink('/files'), icon: 'material-symbols:folder-outline' },
-  { text: '匿名信', href: getPermalink('/letters'), icon: 'material-symbols:mail-outline' },
   { text: '帮助/求助', href: getPermalink('/qa'), icon: 'material-symbols:help-outline' },
   { text: '项目大厅', href: getPermalink('/projects'), icon: 'material-symbols:rocket-launch-outline' },
   { text: '竞赛', href: getPermalink('/competition'), icon: 'tabler:trophy' },

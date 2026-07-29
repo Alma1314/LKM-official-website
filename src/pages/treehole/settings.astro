@@ -1,0 +1,19 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import SettingsPage from '~/features/anonymous-letter/pages/SettingsPage.vue';
+import '~/features/anonymous-letter/styles/global.css';
+import type { MetaData } from '~/core/types';
+const metadata: MetaData = { title: '设置 — 拾光树洞', description: '个性化你的树洞体验。' };
+---
+
+<Layout metadata={metadata}><SettingsPage client:only="vue" /></Layout>
+
+<script is:inline>
+  (function () {
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    const hue = localStorage.getItem('hue');
+    if (hue) document.documentElement.style.setProperty('--hue', hue);
+  })();
+</script>

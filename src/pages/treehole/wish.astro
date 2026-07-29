@@ -1,0 +1,19 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import WishPage from '~/features/anonymous-letter/pages/WishPage.vue';
+import '~/features/anonymous-letter/styles/global.css';
+import type { MetaData } from '~/core/types';
+const metadata: MetaData = { title: '许愿墙 — 拾光树洞', description: '把愿望交给星光，被温柔照亮。' };
+---
+
+<Layout metadata={metadata}><WishPage client:only="vue" /></Layout>
+
+<script is:inline>
+  (function () {
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    const hue = localStorage.getItem('hue');
+    if (hue) document.documentElement.style.setProperty('--hue', hue);
+  })();
+</script>
