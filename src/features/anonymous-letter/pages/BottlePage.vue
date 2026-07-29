@@ -89,7 +89,6 @@
 import { ref, computed, onMounted } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import { getBottles, addBottle, pickBottle, markBottlePicked } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

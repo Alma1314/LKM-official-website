@@ -90,7 +90,6 @@ import EmptyState from '../components/EmptyState.vue'
 import BackupPanel from '../components/BackupPanel.vue'
 import { getCategory } from '../store/constants'
 import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

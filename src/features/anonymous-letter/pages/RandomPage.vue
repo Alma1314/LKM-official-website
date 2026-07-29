@@ -81,7 +81,6 @@ import TreeholeShell from '../components/TreeholeShell.vue'
 import { getCategory, getPaper } from '../store/constants'
 import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage'
 import { useApp } from '../store/app'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

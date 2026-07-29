@@ -80,7 +80,6 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getReplies, appendMessage, recallMessage, blockConversation, clearConversation, deleteConversation } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

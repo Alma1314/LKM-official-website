@@ -93,7 +93,6 @@
 import { ref, onMounted } from 'vue'
 import TreeholeShell from '../components/TreeholeShell.vue'
 import { getWishes, addWish, lightWish, saveWishes } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

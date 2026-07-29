@@ -250,7 +250,6 @@ import {
 } from '../store/storage'
 import { randomCodename } from '../utils/codename'
 import { useApp } from '../store/app'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

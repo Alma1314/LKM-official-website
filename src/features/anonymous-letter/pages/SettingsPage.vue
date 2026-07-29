@@ -131,7 +131,6 @@ import TreeholeShell from '../components/TreeholeShell.vue'
 import PrivacyDialog from '../components/PrivacyDialog.vue'
 import { useApp } from '../store/app'
 import * as store from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

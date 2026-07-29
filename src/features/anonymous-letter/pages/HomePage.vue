@@ -88,7 +88,6 @@ import LetterCard from '../components/LetterCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../store/constants'
 import { getLetters, getFavorites, toggleFavorite } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

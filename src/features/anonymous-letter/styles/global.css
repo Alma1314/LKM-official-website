@@ -1,10 +1,10 @@
 /* =============================================================
    拾光树洞 · 全局样式
-   主题色来自主站 --hue 色相（默认 250 蓝紫）
-   通过 :root.dark / :root 跟随主站主题切换
+   直接复用主站 CSS 变量，不自行定义颜色体系
+   主站通过 :root.dark 切换主题，树洞自动跟随
    ============================================================= */
 
-/* 确保 --hue 有初始值 */
+/* 确保 --hue 有初始值（与主站 tailwind.css 一致） */
 @property --hue {
   syntax: '<number>';
   initial-value: 250;
@@ -14,8 +14,8 @@
 :root {
   --font-scale: 1;
 
-  /* ── 从主站 --hue 派生树洞主辅色 ── */
-  --accent: oklch(0.65 0.18 var(--hue));
+  /* ── 桥接主站变量到树洞命名 ── */
+  --accent: var(--primary);
   --accent-2: oklch(0.6 0.12 calc(var(--hue) + 40));
   --blue: var(--accent);
   --lav: var(--accent-2);
@@ -24,44 +24,27 @@
   --line-grad: linear-gradient(90deg, var(--accent), var(--accent-2));
   --accent-grad: var(--grad);
 
-  /* ── 日间主题 ── */
-  --bg-1: oklch(0.98 0.005 var(--hue));
-  --bg-2: #ffffff;
-  --bg-3: oklch(0.97 0.008 var(--hue));
-  --bg-4: oklch(0.96 0.01 var(--hue));
-  --text-main: #333333;
-  --text-sub: #777777;
-  --line: color-mix(in srgb, var(--accent) 55%, transparent);
-  --card-bg: #ffffff;
-  --card-border: color-mix(in srgb, var(--accent) 35%, transparent);
-  --card-shadow: 0 6px 22px rgba(120, 150, 210, 0.10);
-  --nav-bg: rgba(255, 255, 255, 0.92);
-  --mask: rgba(60, 70, 100, 0.18);
-  --danger: #e57373;
+  --bg-1: var(--base-100);
+  --bg-2: var(--base-200);
+  --bg-3: var(--base-300);
+  --bg-4: var(--page-bg);
+  --text-main: var(--base-content);
+  --text-sub: var(--text-muted);
+  --line: var(--line-divider);
+  --card-bg: var(--card-bg);
+  --card-border: var(--line-divider);
+  --card-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  --nav-bg: color-mix(in srgb, var(--base-100) 92%, transparent);
+  --mask: rgba(0, 0, 0, 0.18);
+  --danger: var(--error);
   --glow: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-/* ── 深色主题（跟随主站 .dark class） ── */
 :root.dark {
-  --bg-1: oklch(0.18 0.015 var(--hue));
-  --bg-2: oklch(0.20 0.015 var(--hue));
-  --bg-3: oklch(0.22 0.018 var(--hue));
-  --bg-4: oklch(0.16 0.012 var(--hue));
-  --text-main: #e7e7f0;
-  --text-sub: #9a9ab4;
-  --line: color-mix(in srgb, var(--accent) 35%, transparent);
-  --card-bg: oklch(0.22 0.018 var(--hue));
-  --card-border: color-mix(in srgb, var(--accent) 25%, transparent);
-  --card-shadow: 0 8px 26px rgba(0, 0, 0, 0.4);
-  --accent: oklch(0.75 0.14 var(--hue));
-  --accent-2: oklch(0.7 0.10 calc(var(--hue) + 40));
-  --accent-grad: var(--grad);
-  --nav-bg: rgba(20, 19, 31, 0.92);
-  --mask: rgba(5, 4, 15, 0.55);
-  --danger: #ff8a8a;
-  --glow: color-mix(in srgb, var(--accent) 35%, transparent);
+  --card-shadow: none;
+  --mask: rgba(0, 0, 0, 0.55);
+  --nav-bg: color-mix(in srgb, var(--base-100) 92%, transparent);
 }
-
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; }
@@ -142,10 +125,7 @@ body {
   transition: all 0.25s; white-space: nowrap;
 }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
-.chip.active {
-  border-color: var(--accent); color: var(--accent);
-  background: var(--grad-soft);
-}
+.chip.active { border-color: var(--accent); color: var(--accent); background: var(--grad-soft); }
 
 /* 动画 */
 @keyframes floatUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }

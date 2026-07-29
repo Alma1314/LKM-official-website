@@ -1,7 +1,16 @@
 ---
 import Layout from '~/layouts/BaseLayout.astro';
 import RankPage from '~/features/anonymous-letter/pages/RankPage.vue';
+import '~/features/anonymous-letter/styles/global.css';
 import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '热门榜单 — 拾光树洞', description: '此刻最被温柔以待的匿名信。' };
 ---
 <Layout metadata={metadata}><RankPage client:only="vue" /></Layout>
+
+<script is:inline>
+  (function () {
+    var theme = localStorage.theme;
+    var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+  })();
+</script>

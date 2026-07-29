@@ -38,7 +38,6 @@ import TreeholeShell from '../components/TreeholeShell.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getCategory } from '../store/constants'
 import { getLetters } from '../store/storage'
-import '../styles/global.css'
 
 const base = import.meta.env.BASE_URL || '/'
 

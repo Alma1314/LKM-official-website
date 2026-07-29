@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import Particles from './Particles.vue'
 import { useApp } from '../store/app'
 
@@ -105,6 +105,26 @@ const app = useApp()
 const mobileMenuOpen = ref(false)
 
 const { lowPerf, highContrast } = app
+
+let synced = false
+
+// 强制刷新：如果检测到主题不匹配，reload 页面
+function forceReloadIfThemeMismatch() {
+  if (synced) return
+  const htmlDark = document.documentElement.classList.contains('dark')
+  const expectedDark = localStorage.theme === 'dark' ||
+    (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  if (htmlDark !== expectedDark) {
+    location.reload()
+    return
+  }
+  synced = true
+  app.setTheme(htmlDark ? 'night' : 'day')
+}
+
+onMounted(forceReloadIfThemeMismatch)
+
+onUnmounted(() => {})
 </script>
 
 <style scoped>

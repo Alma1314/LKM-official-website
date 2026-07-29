@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/BaseLayout.astro';
 import HomePage from '~/features/anonymous-letter/pages/HomePage.vue';
+import '~/features/anonymous-letter/styles/global.css';
 import type { MetaData } from '~/core/types';
 
 const metadata: MetaData = {
@@ -12,3 +13,12 @@ const metadata: MetaData = {
 <Layout metadata={metadata}>
   <HomePage client:only="vue" />
 </Layout>
+
+<script is:inline>
+  // 在 Vue 组件 mount 前强制同步主题——确保 CSS 变量在首次渲染时就正确
+  (function () {
+    var theme = localStorage.theme;
+    var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+  })();
+</script>
