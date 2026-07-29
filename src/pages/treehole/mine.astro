@@ -1,0 +1,7 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import MinePage from '~/features/anonymous-letter/pages/MinePage.vue';
+import type { MetaData } from '~/core/types';
+const metadata: MetaData = { title: '我的树洞 — 拾光树洞', description: '查看你发布的所有信件、收藏与草稿。' };
+---
+<Layout metadata={metadata}><MinePage client:only="vue" /></Layout>

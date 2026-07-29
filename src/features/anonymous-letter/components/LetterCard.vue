@@ -49,7 +49,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { getCategory, getPaper, getTag } from '../store/constants'
 import { toggleFavorite, getFavorites } from '../store/storage'
 import ReportDialog from './ReportDialog.vue'
@@ -104,9 +103,8 @@ async function onCopy() {
   const text = `【拾光树洞】${category.value.label} · ${props.letter.codename}\n${props.letter.content}`
   try {
     await navigator.clipboard.writeText(text)
-    ElMessage({ message: '信件内容已复制 📋', type: 'success', customClass: 'th-toast' })
   } catch {
-    ElMessage({ message: '复制失败，请手动选择', type: 'warning', customClass: 'th-toast' })
+    // silently fail, user can manually select text
   }
 }
 function onReport() { reportVisible.value = true }

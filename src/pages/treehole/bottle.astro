@@ -1,0 +1,7 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import BottlePage from '~/features/anonymous-letter/pages/BottlePage.vue';
+import type { MetaData } from '~/core/types';
+const metadata: MetaData = { title: '漂流瓶 — 拾光树洞', description: '把心事装进瓶子，交给海流，等一个陌生的回应。' };
+---
+<Layout metadata={metadata}><BottlePage client:only="vue" /></Layout>

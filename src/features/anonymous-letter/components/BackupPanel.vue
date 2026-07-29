@@ -14,7 +14,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
 import * as store from '../store/storage'
 
 const fileInput = ref(null)
@@ -40,10 +39,8 @@ function onImport(e) {
     try {
       store.importAll(reader.result)
       msg.value = '导入成功，刷新页面后生效 ✅'
-      ElMessage({ message: '备份已导入', type: 'success', customClass: 'th-toast' })
     } catch (err) {
-      msg.value = '导入失败：文件格式不正确'
-      ElMessage({ message: '导入失败', type: 'error', customClass: 'th-toast' })
+      msg.value = '导入失败：文件格式不正确 ❌'
     }
   }
   reader.readAsText(file)

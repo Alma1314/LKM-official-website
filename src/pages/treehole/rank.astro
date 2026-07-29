@@ -1,0 +1,7 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import RankPage from '~/features/anonymous-letter/pages/RankPage.vue';
+import type { MetaData } from '~/core/types';
+const metadata: MetaData = { title: '热门榜单 — 拾光树洞', description: '此刻最被温柔以待的匿名信。' };
+---
+<Layout metadata={metadata}><RankPage client:only="vue" /></Layout>

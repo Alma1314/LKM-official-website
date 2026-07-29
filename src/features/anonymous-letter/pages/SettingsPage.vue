@@ -1,0 +1,529 @@
+<template>
+  <div class="th-app" :class="{ 'low-perf': lowPerf.value, 'high-contrast': highContrast.value }">
+    <div class="app-root">
+
+      <!-- 背景层 -->
+      <div class="bg-flow" aria-hidden="true"></div>
+      <Particles />
+      <!-- 角落装饰 -->
+      <div class="corner-deco tl"></div>
+      <div class="corner-deco br"></div>
+      <div class="corner-deco tr"></div>
+
+      <!-- ==================== 顶部导航栏 ==================== -->
+      <header class="top-nav glass">
+        <div class="nav-inner">
+          <!-- 品牌 -->
+          <a href="/treehole" class="nav-brand" aria-label="拾光树洞首页">
+            <span class="brand-icon">🌳</span>
+            <span class="brand-text grad-text">拾光树洞</span>
+          </a>
+
+          <!-- 桌面导航链接 -->
+          <nav class="nav-links" aria-label="主导航">
+            <a href="/treehole" class="nav-link">广场</a>
+            <a href="/treehole/random" class="nav-link">随机</a>
+            <a href="/treehole/bottle" class="nav-link">漂流瓶</a>
+            <a href="/treehole/wish" class="nav-link">许愿墙</a>
+            <a href="/treehole/rank" class="nav-link">榜单</a>
+          </nav>
+
+          <!-- 右侧操作 -->
+          <div class="nav-actions">
+            <a href="/treehole/write" class="btn-grad nav-write-btn">✍️ 写信</a>
+            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight.value ? '切换到日间模式' : '切换到夜间模式'">
+              {{ app.isNight.value ? '☀️' : '🌙' }}
+            </button>
+            <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
+              <span :class="{ open: mobileMenuOpen }">☰</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 移动端下拉菜单 -->
+      <transition name="slide-down">
+        <nav v-if="mobileMenuOpen" class="mobile-menu glass" aria-label="移动端导航" @click="mobileMenuOpen = false">
+          <a href="/treehole" class="mobile-nav-link">🏠 广场</a>
+          <a href="/treehole/write" class="mobile-nav-link">✍️ 写信</a>
+          <a href="/treehole/random" class="mobile-nav-link">🎲 随机树洞</a>
+          <a href="/treehole/bottle" class="mobile-nav-link">🍾 漂流瓶</a>
+          <a href="/treehole/wish" class="mobile-nav-link">⭐ 许愿墙</a>
+          <a href="/treehole/rank" class="mobile-nav-link">🏆 榜单</a>
+          <a href="/treehole/mine" class="mobile-nav-link">📬 我的信箱</a>
+          <a href="/treehole/messages" class="mobile-nav-link">💬 私信</a>
+          <a href="/treehole/settings" class="mobile-nav-link active">⚙️ 设置</a>
+        </nav>
+      </transition>
+
+      <!-- ==================== 主内容区 ==================== -->
+      <main class="main-content float-up">
+        <div class="container">
+
+          <h1 class="page-title">⚙️ 设置中心</h1>
+          <p class="page-sub">个性化你的树洞体验。</p>
+
+          <section class="set-card glass">
+            <!-- 主题模式 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🌗 主题模式</b>
+                <small>白日温柔奶油风 / 暗夜深空渐变风</small>
+              </div>
+              <div class="theme-switch">
+                <button class="theme-opt" :class="{ active: !isNight }" @click="setTheme('day')">☀️ 日间</button>
+                <button class="theme-opt" :class="{ active: isNight }" @click="setTheme('night')">🌙 夜间</button>
+              </div>
+            </div>
+
+            <!-- 自定义主题配色 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🎨 自定义主题配色</b>
+                <small>点击色块切换强调色</small>
+              </div>
+              <div class="accent-picks">
+                <button
+                  v-for="a in accents" :key="a[0]"
+                  class="accent-dot" :class="{ active: state.settings.accent === a[0] }"
+                  :style="{ background: `linear-gradient(135deg, ${a[0]}, ${a[1]})` }"
+                  @click="setAccent(a[0], a[1])"
+                ></button>
+                <input type="color" v-model="customA" class="accent-color" @input="onCustom" title="自定义主色" />
+              </div>
+            </div>
+
+            <!-- 字体大小 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🔤 字体大小</b>
+                <small>三档调节，全站生效</small>
+              </div>
+              <div class="theme-switch">
+                <button class="theme-opt" :class="{ active: state.settings.fontScale === 'small' }" @click="setFontScale('small')">小</button>
+                <button class="theme-opt" :class="{ active: state.settings.fontScale === 'normal' }" @click="setFontScale('normal')">中</button>
+                <button class="theme-opt" :class="{ active: state.settings.fontScale === 'large' }" @click="setFontScale('large')">大</button>
+              </div>
+            </div>
+
+            <!-- 白噪音背景音乐 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🌫️ 白噪音背景音乐</b>
+                <small>柔和雨声，沉浸书写</small>
+              </div>
+              <button class="switch" :class="{ on: state.settings.audioOn }" @click="toggleAudio">
+                <span class="knob"></span>
+              </button>
+            </div>
+
+            <!-- 高对比度护眼模式 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>👁️ 高对比度护眼模式</b>
+                <small>加深文字对比，缓解眼疲劳</small>
+              </div>
+              <button class="switch" :class="{ on: highContrast.value }" @click="toggleHighContrast()">
+                <span class="knob"></span>
+              </button>
+            </div>
+
+            <!-- 低性能设备特效开关 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🐢 低性能设备特效开关</b>
+                <small>关闭重特效与粒子，更流畅</small>
+              </div>
+              <button class="switch" :class="{ on: lowPerf.value }" @click="toggleLowPerf()">
+                <span class="knob"></span>
+              </button>
+            </div>
+
+            <!-- 全站动效静音 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🔕 全站动效静音</b>
+                <small>暂停漂浮粒子与过渡动画</small>
+              </div>
+              <button class="switch" :class="{ on: state.settings.muted }" @click="toggleMuted">
+                <span class="knob"></span>
+              </button>
+            </div>
+
+            <!-- 投稿限流 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🚦 投稿限流（自定义）</b>
+                <small>每分钟最多可投稿 {{ state.settings.rateLimit }} 封</small>
+              </div>
+              <div class="rate-pick">
+                <button
+                  v-for="n in [1,2,3,5,10]" :key="n"
+                  class="theme-opt" :class="{ active: state.settings.rateLimit === n }"
+                  @click="setRateLimit(n)"
+                >{{ n }}</button>
+              </div>
+            </div>
+
+            <!-- 隐私声明 -->
+            <div class="set-row">
+              <div class="set-info">
+                <b>🔒 隐私声明</b>
+                <small>查看数据本地存储说明</small>
+              </div>
+              <button class="mini" @click="showPrivacy = true">查看</button>
+            </div>
+          </section>
+
+          <p class="foot-note">数据保存于本地浏览器（匿名），投稿发布至服务器数据库。</p>
+
+          <PrivacyDialog v-model="showPrivacy" />
+
+        </div>
+      </main>
+
+      <!-- ==================== 移动端底部导航栏 ==================== -->
+      <nav class="bottom-nav glass" aria-label="移动端底部导航">
+        <a href="/treehole" class="bn-item">
+          <span class="bn-icon">🏠</span>
+          <span class="bn-label">广场</span>
+        </a>
+        <a href="/treehole/random" class="bn-item">
+          <span class="bn-icon">🎲</span>
+          <span class="bn-label">随机</span>
+        </a>
+        <a href="/treehole/write" class="bn-item bn-center">
+          <span class="bn-center-circle">✍️</span>
+        </a>
+        <a href="/treehole/bottle" class="bn-item">
+          <span class="bn-icon">🍾</span>
+          <span class="bn-label">漂流瓶</span>
+        </a>
+        <a href="/treehole/mine" class="bn-item">
+          <span class="bn-icon">📬</span>
+          <span class="bn-label">信箱</span>
+        </a>
+      </nav>
+
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import PrivacyDialog from '../components/PrivacyDialog.vue'
+import Particles from '../components/Particles.vue'
+import { useApp } from '../store/app'
+import * as store from '../store/storage'
+import '../styles/global.css'
+
+const app = useApp()
+const { state, isNight, lowPerf, highContrast, setTheme, setFontScale, toggleMuted, setAccent, toggleLowPerf, toggleHighContrast, setRateLimit } = app
+
+const showPrivacy = ref(false)
+const mobileMenuOpen = ref(false)
+
+const accents = [
+  ['#e8a87c', '#c3aed6'], ['#8b7ff0', '#5fd0e0'], ['#ff9aa2', '#ffc6ff'],
+  ['#7bdff2', '#b2f7ef'], ['#f6c28b', '#d9a7c7'], ['#a0c4ff', '#bdb2ff']
+]
+const customA = ref(state.settings.accent)
+
+function onCustom() {
+  const b = customA.value
+  const b2 = shade(b, 40)
+  setAccent(b, b2)
+}
+
+function shade(hex, amt) {
+  const h = hex.replace('#', '')
+  let r = parseInt(h.slice(0, 2), 16) + amt
+  let g = parseInt(h.slice(2, 4), 16) + amt
+  let bl = parseInt(h.slice(4, 6), 16) + amt
+  r = Math.max(0, Math.min(255, r)); g = Math.max(0, Math.min(255, g)); bl = Math.max(0, Math.min(255, bl))
+  return '#' + [r, g, bl].map(x => x.toString(16).padStart(2, '0')).join('')
+}
+
+function toggleAudio() {
+  state.settings.audioOn = !state.settings.audioOn
+  store.saveSettings({ audioOn: state.settings.audioOn })
+}
+</script>
+
+<style scoped>
+/* ============================================================
+   全局容器样式（与 HomePage 一致）
+   ============================================================ */
+
+.th-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ---------- 顶部导航栏 ---------- */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+.nav-inner {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand-icon { font-size: 22px; }
+.brand-text {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.nav-links {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.nav-link {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-sub);
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.nav-link:hover { color: var(--accent); background: var(--grad-soft); }
+.nav-link.active { color: var(--accent); font-weight: 700; }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.nav-write-btn {
+  padding: 6px 16px;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-icon-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--text-sub);
+}
+.nav-icon-btn:hover { border-color: var(--blue); color: var(--accent); }
+.hamburger { display: none; }
+.hamburger span { transition: transform 0.3s; display: inline-block; }
+.hamburger span.open { transform: rotate(90deg); }
+
+/* ---------- 移动端下拉菜单 ---------- */
+.mobile-menu {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--card-shadow);
+}
+.mobile-nav-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.mobile-nav-link:hover { background: var(--grad-soft); }
+.mobile-nav-link.active { color: var(--accent); font-weight: 700; background: var(--grad-soft); }
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s cubic-bezier(.2,.8,.25,1);
+}
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* ---------- 主内容区 ---------- */
+.main-content {
+  flex: 1;
+  padding-top: 76px;
+  padding-bottom: 90px;
+}
+
+/* ---------- 移动端底部导航 ---------- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--card-border);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  height: 62px;
+  padding: 0 8px;
+}
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--text-sub);
+  font-size: 10px;
+  transition: color 0.2s;
+  padding: 4px 10px;
+}
+.bn-item.active { color: var(--accent); }
+.bn-icon { font-size: 20px; }
+.bn-label { font-size: 10px; }
+.bn-center {
+  position: relative;
+  top: -16px;
+}
+.bn-center-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 14px var(--glow);
+  color: #fff;
+}
+
+/* ========== Settings 页面内容样式 ========== */
+
+.page-title { font-size: 26px; font-weight: 800; margin: 0 0 4px; }
+.page-sub { color: var(--text-sub); margin: 0 0 18px; font-size: 14px; }
+
+.set-card { padding: 8px 18px; border-radius: 20px; }
+.set-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--card-border); gap: 12px; }
+.set-row:last-child { border-bottom: none; }
+.set-info b { font-size: 15px; }
+.set-info small { display: block; font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+
+.theme-switch, .rate-pick, .accent-picks { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.theme-opt {
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.4);
+  color: var(--text-sub);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.theme-opt.active { background: var(--grad-soft); color: var(--accent); border-color: var(--blue); box-shadow: 0 0 12px var(--glow); }
+
+.accent-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform .2s; }
+.accent-dot.active { border-color: var(--text-main); transform: scale(1.15); }
+.accent-color { width: 32px; height: 30px; border: none; background: none; cursor: pointer; }
+
+.switch {
+  width: 50px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+  transition: background .3s;
+  flex-shrink: 0;
+}
+.switch.on { background: var(--grad-soft); border-color: var(--blue); }
+.knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.switch.on .knob { transform: translateX(22px); }
+
+.mini {
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.4);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.foot-note { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 18px; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 768px) {
+  .main-content { padding-top: 66px; padding-bottom: 100px; }
+  .top-nav { height: 50px; }
+  .nav-links { display: none; }
+  .nav-write-btn { display: none; }
+  .hamburger { display: flex; }
+  .bottom-nav { display: flex; }
+}
+</style>
