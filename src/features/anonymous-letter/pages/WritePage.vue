@@ -1,329 +1,245 @@
 <template>
-  <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
-    <div class="app-root">
+  <TreeholeShell active-nav="write">
+    <div class="container">
 
-      <!-- 背景层 -->
-      <div class="bg-flow" aria-hidden="true"></div>
-      <Particles />
-      <!-- 角落装饰 -->
-      <div class="corner-deco tl"></div>
-      <div class="corner-deco br"></div>
-      <div class="corner-deco tr"></div>
+      <!-- 页面标题 -->
+      <section class="write-header">
+        <h1 class="page-title grad-text">✍️ 写一封信</h1>
+        <p class="page-sub">把你的心事、秘密、表白或悄悄话，装进信封，投递给树洞。</p>
+      </section>
 
-      <!-- ==================== 顶部导航栏 ==================== -->
-      <header class="top-nav glass">
-        <div class="nav-inner">
-          <a :href="`${base}apps`" class="nav-exit-btn" title="返回主站">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-          </a>
-          <a :href="`${base}treehole`" class="nav-brand" aria-label="拾光树洞首页">
-            <span class="brand-icon">🌳</span>
-            <span class="brand-text grad-text">拾光树洞</span>
-          </a>
+      <!-- 双栏布局 -->
+      <div class="write-grid">
 
-          <nav class="nav-links" aria-label="主导航">
-            <a :href="`${base}treehole`" class="nav-link">广场</a>
-            <a :href="`${base}treehole/random`" class="nav-link">随机</a>
-            <a :href="`${base}treehole/bottle`" class="nav-link">漂流瓶</a>
-            <a :href="`${base}treehole/wish`" class="nav-link">许愿墙</a>
-            <a :href="`${base}treehole/rank`" class="nav-link">榜单</a>
-          </nav>
-
-          <div class="nav-actions">
-            <a :href="`${base}treehole/write`" class="btn-grad nav-write-btn active-nav-btn">✍️ 写信</a>
-            <button class="nav-icon-btn" @click="toggleTheme" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
-              {{ app.isNight ? '☀️' : '🌙' }}
-            </button>
-            <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
-              <span :class="{ open: mobileMenuOpen }">☰</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <!-- 移动端下拉菜单 -->
-      <transition name="slide-down">
-        <nav v-if="mobileMenuOpen" class="mobile-menu glass" aria-label="移动端导航" @click="mobileMenuOpen = false">
-          <a :href="`${base}treehole`" class="mobile-nav-link">🏠 广场</a>
-          <a :href="`${base}treehole/write`" class="mobile-nav-link active">✍️ 写信</a>
-          <a :href="`${base}treehole/random`" class="mobile-nav-link">🎲 随机树洞</a>
-          <a :href="`${base}treehole/bottle`" class="mobile-nav-link">🍾 漂流瓶</a>
-          <a :href="`${base}treehole/wish`" class="mobile-nav-link">⭐ 许愿墙</a>
-          <a :href="`${base}treehole/rank`" class="mobile-nav-link">🏆 榜单</a>
-          <a :href="`${base}treehole/mine`" class="mobile-nav-link">📬 我的信箱</a>
-          <a :href="`${base}treehole/messages`" class="mobile-nav-link">💬 私信</a>
-          <a :href="`${base}treehole/settings`" class="mobile-nav-link">⚙️ 设置</a>
-        </nav>
-      </transition>
-
-      <!-- ==================== 主内容区 ==================== -->
-      <main class="main-content float-up">
-        <div class="container">
-
-          <!-- 页面标题 -->
-          <section class="write-header">
-            <h1 class="page-title grad-text">✍️ 写一封信</h1>
-            <p class="page-sub">把你的心事、秘密、表白或悄悄话，装进信封，投递给树洞。</p>
-          </section>
-
-          <!-- 双栏布局 -->
-          <div class="write-grid">
-
-            <!-- ========== 左栏：编辑器 ========== -->
-            <section class="editor-panel glass">
-              <!-- 工具栏 -->
-              <div class="editor-toolbar">
-                <div class="tb-left">
-                  <button class="tb-btn" @click="emojiOpen = !emojiOpen" title="表情">😊</button>
-                  <span class="tb-divider"></span>
-                  <button class="tb-btn" :class="{ active: fontSize === 'small' }" @click="setFontSize('small')" title="缩小字体">A<sup>-</sup></button>
-                  <button class="tb-btn" :class="{ active: fontSize === 'normal' }" @click="setFontSize('normal')" title="正常字体">A</button>
-                  <button class="tb-btn" :class="{ active: fontSize === 'large' }" @click="setFontSize('large')" title="放大字体">A<sup>+</sup></button>
-                  <span class="tb-divider"></span>
-                  <button class="tb-btn tb-btn-clear" @click="clearContent" title="清空内容">🗑️ 清空</button>
-                </div>
-                <div class="tb-right">
-                  <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }">{{ charCount }}/1000</span>
-                </div>
-              </div>
-
-              <!-- Emoji 面板 -->
-              <transition name="slide-down">
-                <div v-if="emojiOpen" class="emoji-panel">
-                  <button
-                    v-for="e in EMOJIS" :key="e"
-                    class="emoji-btn"
-                    @click="insertEmoji(e)"
-                  >{{ e }}</button>
-                </div>
-              </transition>
-
-              <!-- 信纸背景区域 + textarea -->
-              <div class="paper-wrap" :style="{ background: selectedPaper.gradient }" :class="{ 'is-night': app.isNight && selectedPaper.key === 'starry' }">
-                <textarea
-                  ref="textareaRef"
-                  class="editor-textarea"
-                  :class="'fs-' + fontSize"
-                  :style="{ fontSize: fsValue }"
-                  v-model="content"
-                  placeholder="写下你的心事、表白、吐槽或悄悄话…"
-                  maxlength="1000"
-                  @input="onContentInput"
-                ></textarea>
-              </div>
-            </section>
-
-            <!-- ========== 右栏：设置 ========== -->
-            <aside class="setup-panel">
-
-              <!-- 分类 -->
-              <div class="setup-card glass">
-                <div class="setup-label">📂 信件分类</div>
-                <div class="cat-grid">
-                  <button
-                    v-for="c in CATEGORIES" :key="c.key"
-                    class="cat-btn"
-                    :class="{ active: form.category === c.key }"
-                    @click="form.category = c.key"
-                  >{{ c.emoji }} {{ c.label }}</button>
-                </div>
-              </div>
-
-              <!-- 隐私等级 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🔒 隐私等级</div>
-                <div class="privacy-row">
-                  <button
-                    v-for="p in PRIVACY" :key="p.key"
-                    class="privacy-btn"
-                    :class="{ active: form.privacy === p.key }"
-                    @click="form.privacy = p.key"
-                  >
-                    <span class="privacy-dot" :class="p.key"></span>
-                    <span class="privacy-label">{{ p.label }}</span>
-                    <span class="privacy-desc">{{ p.desc }}</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- 匿名代号 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🎭 匿名代号</div>
-                <div class="codename-row">
-                  <input
-                    class="native-input"
-                    v-model="form.codename"
-                    placeholder="系统自动生成…"
-                    maxlength="20"
-                  />
-                  <button class="chip" @click="form.codename = randomCodename()">🎲 随机</button>
-                </div>
-              </div>
-
-              <!-- 心情标签 -->
-              <div class="setup-card glass">
-                <div class="setup-label">💭 心情标签</div>
-                <div class="chip-row">
-                  <button
-                    v-for="m in MOODS" :key="m"
-                    class="chip"
-                    :class="{ active: form.moods.includes(m) }"
-                    @click="toggleMood(m)"
-                  >#{{ m }}</button>
-                </div>
-              </div>
-
-              <!-- 内容标签 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🏷️ 内容标签</div>
-                <div class="chip-row">
-                  <button
-                    v-for="t in TAGS" :key="t.key"
-                    class="chip"
-                    :class="{ active: form.tags.includes(t.key) }"
-                    @click="toggleTag(t.key)"
-                  >{{ t.emoji }} {{ t.label }}</button>
-                </div>
-              </div>
-
-              <!-- 贴纸 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🌸 贴纸</div>
-                <div class="chip-row">
-                  <button
-                    v-for="s in STICKERS" :key="s"
-                    class="sticker-btn"
-                    :class="{ active: form.sticker === s }"
-                    @click="form.sticker = form.sticker === s ? '' : s"
-                  >{{ s }}</button>
-                </div>
-              </div>
-
-              <!-- 信纸模板 -->
-              <div class="setup-card glass">
-                <div class="setup-label">📄 信纸模板</div>
-                <div class="paper-row">
-                  <button
-                    v-for="p in PAPERS" :key="p.key"
-                    class="paper-btn"
-                    :class="{ active: form.paper === p.key }"
-                    :style="{ background: p.gradient }"
-                    @click="form.paper = p.key"
-                  >{{ p.label }}</button>
-                </div>
-              </div>
-
-              <!-- 定时发布 -->
-              <div class="setup-card glass">
-                <div class="setup-label">⏰ 定时发布</div>
-                <div class="toggle-row">
-                  <label class="toggle-switch">
-                    <input type="checkbox" v-model="scheduleEnabled" />
-                    <span class="toggle-track"></span>
-                  </label>
-                  <span class="toggle-label">{{ scheduleEnabled ? '已开启' : '关闭' }}</span>
-                </div>
-                <input
-                  v-if="scheduleEnabled"
-                  class="native-input native-input-dt"
-                  type="datetime-local"
-                  v-model="form.scheduledAt"
-                />
-              </div>
-
-              <!-- 限时封存 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🔐 限时封存</div>
-                <div class="toggle-row">
-                  <label class="toggle-switch">
-                    <input type="checkbox" v-model="sealEnabled" />
-                    <span class="toggle-track"></span>
-                  </label>
-                  <span class="toggle-label">{{ sealEnabled ? '已开启' : '关闭' }}</span>
-                </div>
-                <input
-                  v-if="sealEnabled"
-                  class="native-input native-input-dt"
-                  type="datetime-local"
-                  v-model="form.sealUntil"
-                />
-              </div>
-
-              <!-- 验证码 -->
-              <div class="setup-card glass">
-                <div class="setup-label">🤖 验证码</div>
-                <div class="captcha-row">
-                  <div class="captcha-code" @click="genCaptcha">{{ captchaCode }}</div>
-                  <input
-                    class="native-input captcha-input"
-                    v-model="captchaInput"
-                    placeholder="请输入验证码"
-                    maxlength="4"
-                  />
-                </div>
-              </div>
-
-              <!-- 操作按钮 -->
-              <div class="submit-actions">
-                <button class="btn-grad btn-submit" @click="submitLetter" :disabled="submitting">
-                  <span v-if="submitting" class="spinner-small"></span>
-                  <span v-else>📮 投递信件</span>
-                </button>
-                <button class="btn-outline" @click="saveAsDraft">💾 保存草稿</button>
-                <button class="btn-text" @click="clearAll">🗑️ 全部清空</button>
-              </div>
-            </aside>
-
-          </div>
-        </div>
-      </main>
-
-      <!-- ==================== 成功弹窗 ==================== -->
-      <transition name="dialog-fade">
-        <div v-if="showSuccess" class="modal-overlay" @click.self="showSuccess = false">
-          <div class="modal-card pop-scale">
-            <div class="modal-icon">✅</div>
-            <h2 class="modal-title">投递成功</h2>
-            <p class="modal-desc">{{ successMsg }}</p>
-            <div class="modal-actions">
-              <a :href="`${base}treehole`" class="btn-grad">🏠 返回广场</a>
-              <a :href="`${base}treehole/mine`" class="chip">📬 我的信箱</a>
-              <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
+        <!-- ========== 左栏：编辑器 ========== -->
+        <section class="editor-panel glass">
+          <!-- 工具栏 -->
+          <div class="editor-toolbar">
+            <div class="tb-left">
+              <button class="tb-btn" @click="emojiOpen = !emojiOpen" title="表情">😊</button>
+              <span class="tb-divider"></span>
+              <button class="tb-btn" :class="{ active: fontSize === 'small' }" @click="setFontSize('small')" title="缩小字体">A<sup>-</sup></button>
+              <button class="tb-btn" :class="{ active: fontSize === 'normal' }" @click="setFontSize('normal')" title="正常字体">A</button>
+              <button class="tb-btn" :class="{ active: fontSize === 'large' }" @click="setFontSize('large')" title="放大字体">A<sup>+</sup></button>
+              <span class="tb-divider"></span>
+              <button class="tb-btn tb-btn-clear" @click="clearContent" title="清空内容">🗑️ 清空</button>
+            </div>
+            <div class="tb-right">
+              <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }">{{ charCount }}/1000</span>
             </div>
           </div>
-        </div>
-      </transition>
 
-      <!-- ==================== 移动端底部导航栏 ==================== -->
-      <nav class="bottom-nav glass" aria-label="移动端底部导航">
-        <a :href="`${base}treehole`" class="bn-item">
-          <span class="bn-icon">🏠</span>
-          <span class="bn-label">广场</span>
-        </a>
-        <a :href="`${base}treehole/random`" class="bn-item">
-          <span class="bn-icon">🎲</span>
-          <span class="bn-label">随机</span>
-        </a>
-        <a :href="`${base}treehole/write`" class="bn-item bn-center">
-          <span class="bn-center-circle active-bn-center">✍️</span>
-        </a>
-        <a :href="`${base}treehole/bottle`" class="bn-item">
-          <span class="bn-icon">🍾</span>
-          <span class="bn-label">漂流瓶</span>
-        </a>
-        <a :href="`${base}treehole/mine`" class="bn-item">
-          <span class="bn-icon">📬</span>
-          <span class="bn-label">信箱</span>
-        </a>
-      </nav>
+          <!-- Emoji 面板 -->
+          <transition name="slide-down">
+            <div v-if="emojiOpen" class="emoji-panel">
+              <button
+                v-for="e in EMOJIS" :key="e"
+                class="emoji-btn"
+                @click="insertEmoji(e)"
+              >{{ e }}</button>
+            </div>
+          </transition>
 
+          <!-- 信纸背景区域 + textarea -->
+          <div class="paper-wrap" :style="{ background: selectedPaper.gradient }" :class="{ 'is-night': app.isNight && selectedPaper.key === 'starry' }">
+            <textarea
+              ref="textareaRef"
+              class="editor-textarea"
+              :class="'fs-' + fontSize"
+              :style="{ fontSize: fsValue }"
+              v-model="content"
+              placeholder="写下你的心事、表白、吐槽或悄悄话…"
+              maxlength="1000"
+              @input="onContentInput"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- ========== 右栏：设置 ========== -->
+        <aside class="setup-panel">
+
+          <!-- 分类 -->
+          <div class="setup-card glass">
+            <div class="setup-label">📂 信件分类</div>
+            <div class="cat-grid">
+              <button
+                v-for="c in CATEGORIES" :key="c.key"
+                class="cat-btn"
+                :class="{ active: form.category === c.key }"
+                @click="form.category = c.key"
+              >{{ c.emoji }} {{ c.label }}</button>
+            </div>
+          </div>
+
+          <!-- 隐私等级 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🔒 隐私等级</div>
+            <div class="privacy-row">
+              <button
+                v-for="p in PRIVACY" :key="p.key"
+                class="privacy-btn"
+                :class="{ active: form.privacy === p.key }"
+                @click="form.privacy = p.key"
+              >
+                <span class="privacy-dot" :class="p.key"></span>
+                <span class="privacy-label">{{ p.label }}</span>
+                <span class="privacy-desc">{{ p.desc }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 匿名代号 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🎭 匿名代号</div>
+            <div class="codename-row">
+              <input
+                class="native-input"
+                v-model="form.codename"
+                placeholder="系统自动生成…"
+                maxlength="20"
+              />
+              <button class="chip" @click="form.codename = randomCodename()">🎲 随机</button>
+            </div>
+          </div>
+
+          <!-- 心情标签 -->
+          <div class="setup-card glass">
+            <div class="setup-label">💭 心情标签</div>
+            <div class="chip-row">
+              <button
+                v-for="m in MOODS" :key="m"
+                class="chip"
+                :class="{ active: form.moods.includes(m) }"
+                @click="toggleMood(m)"
+              >#{{ m }}</button>
+            </div>
+          </div>
+
+          <!-- 内容标签 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🏷️ 内容标签</div>
+            <div class="chip-row">
+              <button
+                v-for="t in TAGS" :key="t.key"
+                class="chip"
+                :class="{ active: form.tags.includes(t.key) }"
+                @click="toggleTag(t.key)"
+              >{{ t.emoji }} {{ t.label }}</button>
+            </div>
+          </div>
+
+          <!-- 贴纸 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🌸 贴纸</div>
+            <div class="chip-row">
+              <button
+                v-for="s in STICKERS" :key="s"
+                class="sticker-btn"
+                :class="{ active: form.sticker === s }"
+                @click="form.sticker = form.sticker === s ? '' : s"
+              >{{ s }}</button>
+            </div>
+          </div>
+
+          <!-- 信纸模板 -->
+          <div class="setup-card glass">
+            <div class="setup-label">📄 信纸模板</div>
+            <div class="paper-row">
+              <button
+                v-for="p in PAPERS" :key="p.key"
+                class="paper-btn"
+                :class="{ active: form.paper === p.key }"
+                :style="{ background: p.gradient }"
+                @click="form.paper = p.key"
+              >{{ p.label }}</button>
+            </div>
+          </div>
+
+          <!-- 定时发布 -->
+          <div class="setup-card glass">
+            <div class="setup-label">⏰ 定时发布</div>
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" v-model="scheduleEnabled" />
+                <span class="toggle-track"></span>
+              </label>
+              <span class="toggle-label">{{ scheduleEnabled ? '已开启' : '关闭' }}</span>
+            </div>
+            <input
+              v-if="scheduleEnabled"
+              class="native-input native-input-dt"
+              type="datetime-local"
+              v-model="form.scheduledAt"
+            />
+          </div>
+
+          <!-- 限时封存 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🔐 限时封存</div>
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" v-model="sealEnabled" />
+                <span class="toggle-track"></span>
+              </label>
+              <span class="toggle-label">{{ sealEnabled ? '已开启' : '关闭' }}</span>
+            </div>
+            <input
+              v-if="sealEnabled"
+              class="native-input native-input-dt"
+              type="datetime-local"
+              v-model="form.sealUntil"
+            />
+          </div>
+
+          <!-- 验证码 -->
+          <div class="setup-card glass">
+            <div class="setup-label">🤖 验证码</div>
+            <div class="captcha-row">
+              <div class="captcha-code" @click="genCaptcha">{{ captchaCode }}</div>
+              <input
+                class="native-input captcha-input"
+                v-model="captchaInput"
+                placeholder="请输入验证码"
+                maxlength="4"
+              />
+            </div>
+          </div>
+
+          <!-- 操作按钮 -->
+          <div class="submit-actions">
+            <button class="btn-grad btn-submit" @click="submitLetter" :disabled="submitting">
+              <span v-if="submitting" class="spinner-small"></span>
+              <span v-else>📮 投递信件</span>
+            </button>
+            <button class="btn-outline" @click="saveAsDraft">💾 保存草稿</button>
+            <button class="btn-text" @click="clearAll">🗑️ 全部清空</button>
+          </div>
+        </aside>
+
+      </div>
     </div>
-  </div>
+
+    <!-- ==================== 成功弹窗 ==================== -->
+    <transition name="dialog-fade">
+      <div v-if="showSuccess" class="modal-overlay" @click.self="showSuccess = false">
+        <div class="modal-card pop-scale">
+          <div class="modal-icon">✅</div>
+          <h2 class="modal-title">投递成功</h2>
+          <p class="modal-desc">{{ successMsg }}</p>
+          <div class="modal-actions">
+            <a :href="`${base}treehole`" class="btn-grad">🏠 返回广场</a>
+            <a :href="`${base}treehole/mine`" class="chip">📬 我的信箱</a>
+            <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </TreeholeShell>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
-import Particles from '../components/Particles.vue'
+import TreeholeShell from '../components/TreeholeShell.vue'
 import {
   CATEGORIES, PRIVACY, MOODS, STICKERS, PAPERS,
   getCategory, getPaper, TAGS, EMOJIS, SENSITIVE_WORDS
@@ -339,15 +255,8 @@ import '../styles/global.css'
 const base = import.meta.env.BASE_URL || '/'
 
 const app = useApp()
-const { lowPerf, highContrast } = app
 
-function toggleTheme() {
-  app.toggleTheme()
-  const dark = document.documentElement.classList.contains("dark")
-  document.documentElement.classList.toggle("dark", dark)
-}
 const textareaRef = ref(null)
-const mobileMenuOpen = ref(false)
 
 // ---------- 表单状态 ----------
 const form = reactive({
@@ -635,221 +544,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* ============================================================
-   WritePage 专用样式
-   ============================================================ */
-
-/* ---------- 根容器 ---------- */
-.th-app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
-}
-.app-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
-}
-
-/* ---------- 顶部导航栏 ---------- */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--card-border);
-  height: 56px;
-  display: flex;
-  align-items: center;
-}
-.nav-inner {
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.nav-exit-btn {
-  display: flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border-radius: 10px;
-  border: 1px solid var(--card-border); color: var(--text-sub);
-  background: transparent; cursor: pointer; transition: all .2s;
-  margin-right: 4px; flex-shrink: 0;
-}
-.nav-exit-btn:hover { color: var(--accent); border-color: var(--blue); transform: translateX(-2px); }
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-.brand-icon { font-size: 22px; }
-.brand-text {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-}
-.nav-links {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.nav-link {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--text-sub);
-  text-decoration: none;
-  transition: all 0.2s;
-  font-weight: 500;
-}
-.nav-link:hover { color: var(--accent); background: var(--grad-soft); }
-.active-nav-btn {
-  color: var(--accent) !important;
-  font-weight: 700 !important;
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.nav-write-btn {
-  padding: 6px 16px;
-  font-size: 13px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.nav-icon-btn {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--card-border);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  color: var(--text-sub);
-}
-.nav-icon-btn:hover { border-color: var(--blue); color: var(--accent); }
-.hamburger { display: none; }
-.hamburger span { transition: transform 0.3s; display: inline-block; }
-.hamburger span.open { transform: rotate(90deg); }
-
-/* ---------- 移动端下拉菜单 ---------- */
-.mobile-menu {
-  position: fixed;
-  top: 56px;
-  left: 0;
-  right: 0;
-  z-index: 99;
-  background: var(--nav-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--card-border);
-  padding: 12px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  box-shadow: var(--card-shadow);
-}
-.mobile-nav-link {
-  display: block;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 14px;
-  color: var(--text-main);
-  text-decoration: none;
-  transition: background 0.2s;
-}
-.mobile-nav-link:hover { background: var(--grad-soft); }
-.mobile-nav-link.active { color: var(--accent); font-weight: 700; background: var(--grad-soft); }
-
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.3s cubic-bezier(.2,.8,.25,1);
-}
-.slide-down-enter-from,
-.slide-down-leave-to {
-  opacity: 0;
-  transform: translateY(-12px);
-}
-
-/* ---------- 主内容区 ---------- */
-.main-content {
-  flex: 1;
-  padding-top: 76px;
-  padding-bottom: 90px;
-}
-
-/* ---------- 移动端底部导航 ---------- */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--card-border);
-  display: none;
-  justify-content: space-around;
-  align-items: center;
-  height: 62px;
-  padding: 0 8px;
-}
-.bn-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-decoration: none;
-  color: var(--text-sub);
-  font-size: 10px;
-  transition: color 0.2s;
-  padding: 4px 10px;
-}
-.bn-item.active { color: var(--accent); }
-.bn-icon { font-size: 20px; }
-.bn-label { font-size: 10px; }
-.bn-center {
-  position: relative;
-  top: -16px;
-}
-.bn-center-circle {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: var(--grad);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 14px var(--glow);
-  color: #fff;
-}
-.active-bn-center {
-  box-shadow: 0 4px 20px var(--glow), 0 0 0 4px rgba(153,208,255,0.3);
-}
+/* ========== WritePage 专用样式 ========== */
 
 /* ========== 页面头部 ========== */
 .write-header {
@@ -1417,12 +1112,6 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .main-content { padding-top: 66px; padding-bottom: 100px; }
-  .top-nav { height: 50px; }
-  .nav-links { display: none; }
-  .nav-write-btn { display: none; }
-  .hamburger { display: flex; }
-  .bottom-nav { display: flex; }
   .paper-wrap {
     padding: 18px 16px;
     min-height: 300px;
