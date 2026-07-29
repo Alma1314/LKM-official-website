@@ -17,10 +17,10 @@ const metadata: MetaData = {
 <script is:inline>
   // 在 Vue 组件 mount 前强制同步主题和色相——确保 CSS 变量在首次渲染时就正确
   (function () {
-    var theme = localStorage.theme;
-    var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.classList.toggle('dark', isDark);
-    var hue = localStorage.getItem('hue');
+    const hue = localStorage.getItem('hue');
     if (hue) document.documentElement.style.setProperty('--hue', hue);
   })();
 </script>

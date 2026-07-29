@@ -13,45 +13,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import * as store from '../store/storage'
+import { ref } from 'vue';
+import * as store from '../store/storage';
 
-const fileInput = ref(null)
-const msg = ref('')
+const fileInput = ref(null);
+const msg = ref('');
 
 function exportData() {
-  const json = store.exportAll()
-  const blob = new Blob([json], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `shiguang-backup-${new Date().toISOString().slice(0, 10)}.json`
-  a.click()
-  URL.revokeObjectURL(url)
-  msg.value = '已导出备份文件 ✅'
+  const json = store.exportAll();
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `shiguang-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  msg.value = '已导出备份文件 ✅';
 }
-function triggerImport() { fileInput.value?.click() }
+function triggerImport() {
+  fileInput.value?.click();
+}
 function onImport(e) {
-  const file = e.target.files[0]
-  if (!file) return
-  const reader = new FileReader()
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
   reader.onload = () => {
     try {
-      store.importAll(reader.result)
-      msg.value = '导入成功，刷新页面后生效 ✅'
+      store.importAll(reader.result);
+      msg.value = '导入成功，刷新页面后生效 ✅';
     } catch (err) {
-      msg.value = '导入失败：文件格式不正确 ❌'
+      msg.value = '导入失败：文件格式不正确 ❌';
     }
-  }
-  reader.readAsText(file)
-  e.target.value = ''
+  };
+  reader.readAsText(file);
+  e.target.value = '';
 }
 </script>
 
 <style scoped>
-.backup { padding: 18px; border-radius: var(--radius); }
-.backup h3 { margin: 0 0 6px; font-size: 16px; }
-.bk-tip { font-size: 12px; color: var(--text-sub); margin: 0 0 12px; }
-.bk-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-.bk-msg { margin-top: 10px; font-size: 12px; color: var(--accent); }
+.backup {
+  padding: 18px;
+  border-radius: var(--radius);
+}
+.backup h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+.bk-tip {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin: 0 0 12px;
+}
+.bk-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bk-msg {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--accent);
+}
 </style>

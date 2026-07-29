@@ -1,7 +1,6 @@
 <template>
   <TreeholeShell active-nav="random">
     <div class="container">
-
       <!-- 抽取状态 -->
       <section v-if="!current" class="random-hero glass float-up">
         <div class="random-pick-area">
@@ -63,105 +62,103 @@
             <button class="chip" @click="toggleReplyFont">
               {{ replyFontLarge ? 'A⁻' : 'A⁺' }}
             </button>
-            <button class="btn-grad btn-sm" @click="sendReply" :disabled="!replyText.trim()">
-              📨 发送回信
-            </button>
+            <button class="btn-grad btn-sm" @click="sendReply" :disabled="!replyText.trim()">📨 发送回信</button>
           </div>
           <p v-if="replySent" class="reply-ok">回信已发送，愿文字温暖彼此 🌿</p>
         </div>
       </section>
-
     </div>
   </TreeholeShell>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import TreeholeShell from '../components/TreeholeShell.vue'
-import { getCategory, getPaper } from '../store/constants'
-import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage'
-import { useApp } from '../store/app'
+import { ref, computed } from 'vue';
+import TreeholeShell from '../components/TreeholeShell.vue';
+import { getCategory, getPaper } from '../store/constants';
+import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage';
+import { useApp } from '../store/app';
 
-const base = import.meta.env.BASE_URL || '/'
+const base = import.meta.env.BASE_URL || '/';
 
-const app = useApp()
+const app = useApp();
 
-const current = ref(null)
-const picking = ref(false)
-const replyText = ref('')
-const replyFontLarge = ref(false)
-const replySent = ref(false)
+const current = ref(null);
+const picking = ref(false);
+const replyText = ref('');
+const replyFontLarge = ref(false);
+const replySent = ref(false);
 
 const poolCount = computed(() => {
-  const all = getLetters()
-  return all.filter(l => l.status === 'published' && l.privacy === 'public').length
-})
+  const all = getLetters();
+  return all.filter((l) => l.status === 'published' && l.privacy === 'public').length;
+});
 
 const catInfo = computed(() => {
-  if (!current.value) return { emoji: '💌', label: '' }
-  return getCategory(current.value.category || 'confess')
-})
+  if (!current.value) return { emoji: '💌', label: '' };
+  return getCategory(current.value.category || 'confess');
+});
 
 const paperBg = computed(() => {
-  if (!current.value) return 'transparent'
-  return getPaper(current.value.paper || 'paper').gradient
-})
+  if (!current.value) return 'transparent';
+  return getPaper(current.value.paper || 'paper').gradient;
+});
 
 const letterFontSize = computed(() => {
-  const s = app.state.settings.fontScale
-  return s === 'large' ? '1.15rem' : s === 'small' ? '0.9rem' : '1rem'
-})
+  const s = app.state.settings.fontScale;
+  return s === 'large' ? '1.15rem' : s === 'small' ? '0.9rem' : '1rem';
+});
 
 const replyFontSize = computed(() => {
-  const base = parseFloat(letterFontSize.value)
-  return (replyFontLarge.value ? base * 1.15 : base) + 'rem'
-})
+  const base = parseFloat(letterFontSize.value);
+  return (replyFontLarge.value ? base * 1.15 : base) + 'rem';
+});
 
 function pickRandom() {
-  const all = getLetters()
-  const pool = all.filter(l => l.status === 'published' && l.privacy === 'public')
+  const all = getLetters();
+  const pool = all.filter((l) => l.status === 'published' && l.privacy === 'public');
   if (!pool.length) {
-    current.value = null
-    return
+    current.value = null;
+    return;
   }
-  picking.value = true
-  replyText.value = ''
-  replySent.value = false
+  picking.value = true;
+  replyText.value = '';
+  replySent.value = false;
   // slight delay for animation feel
   setTimeout(() => {
-    current.value = pool[Math.floor(Math.random() * pool.length)]
-    picking.value = false
-  }, 400)
+    current.value = pool[Math.floor(Math.random() * pool.length)];
+    picking.value = false;
+  }, 400);
 }
 
 function toggleReplyFont() {
-  replyFontLarge.value = !replyFontLarge.value
+  replyFontLarge.value = !replyFontLarge.value;
 }
 
 function sendReply() {
-  if (!current.value || !replyText.value.trim()) return
+  if (!current.value || !replyText.value.trim()) return;
   const conv = getOrCreateConversation(
     'random_' + current.value.id,
     current.value.codename || '匿名',
     current.value.id
-  )
+  );
   appendMessage(conv.id, {
     id: 'msg_' + Date.now(),
     text: replyText.value.trim(),
     from: 'me',
-    createdAt: Date.now()
-  })
-  replyText.value = ''
-  replySent.value = true
-  setTimeout(() => { replySent.value = false }, 3000)
+    createdAt: Date.now(),
+  });
+  replyText.value = '';
+  replySent.value = true;
+  setTimeout(() => {
+    replySent.value = false;
+  }, 3000);
 }
 
 function formatDate(ts) {
-  if (!ts) return ''
-  const d = new Date(ts)
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
-
 </script>
 
 <style scoped>
@@ -181,8 +178,13 @@ function formatDate(ts) {
   animation: float 3s ease-in-out infinite;
 }
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 .pick-slogan {
   color: var(--text-sub);
@@ -195,7 +197,10 @@ function formatDate(ts) {
   border: none;
   cursor: pointer;
 }
-.pick-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.pick-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .empty-hint {
   color: var(--text-sub);
   margin-top: 14px;
@@ -220,7 +225,7 @@ function formatDate(ts) {
 .letter-paper {
   padding: 28px 24px;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 .letter-meta {
   margin-bottom: 14px;
@@ -235,7 +240,9 @@ function formatDate(ts) {
   padding: 4px 14px;
   border-radius: 999px;
 }
-.cat-emoji { font-size: 16px; }
+.cat-emoji {
+  font-size: 16px;
+}
 .letter-body {
   color: var(--text-main);
   line-height: 1.8;
@@ -251,18 +258,22 @@ function formatDate(ts) {
 .mood-tag {
   font-size: 12px;
   color: var(--accent);
-  background: rgba(255,255,255,0.45);
+  background: rgba(255, 255, 255, 0.45);
   padding: 2px 10px;
   border-radius: 999px;
 }
-:root.dark .mood-tag { background: rgba(255,255,255,0.08); }
+:root.dark .mood-tag {
+  background: rgba(255, 255, 255, 0.08);
+}
 .letter-footer {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
   color: var(--text-sub);
 }
-.letter-codename { font-style: italic; }
+.letter-codename {
+  font-style: italic;
+}
 
 /* 操作栏 */
 .read-actions {
@@ -286,7 +297,7 @@ function formatDate(ts) {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 12px;
-  background: var(--bg-card, rgba(255,255,255,0.6));
+  background: var(--bg-card, rgba(255, 255, 255, 0.6));
   color: var(--text-main);
   font-size: 1rem;
   resize: vertical;
@@ -294,7 +305,9 @@ function formatDate(ts) {
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
-.reply-textarea:focus { border-color: var(--accent); }
+.reply-textarea:focus {
+  border-color: var(--accent);
+}
 .reply-bar {
   display: flex;
   justify-content: space-between;
@@ -308,7 +321,10 @@ function formatDate(ts) {
   cursor: pointer;
   border-radius: 999px;
 }
-.btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .reply-ok {
   color: var(--accent);
   font-size: 13px;
@@ -318,14 +334,26 @@ function formatDate(ts) {
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
-  .random-hero { padding: 40px 16px; }
-  .pick-emoji { font-size: 60px; }
-  .letter-read { padding: 16px; }
-  .letter-paper { padding: 20px 16px; }
+  .random-hero {
+    padding: 40px 16px;
+  }
+  .pick-emoji {
+    font-size: 60px;
+  }
+  .letter-read {
+    padding: 16px;
+  }
+  .letter-paper {
+    padding: 20px 16px;
+  }
 }
 
 @media (max-width: 600px) {
-  .pick-emoji { font-size: 48px; }
-  .pick-slogan { font-size: 14px; }
+  .pick-emoji {
+    font-size: 48px;
+  }
+  .pick-slogan {
+    font-size: 14px;
+  }
 }
 </style>

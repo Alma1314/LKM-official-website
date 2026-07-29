@@ -7,10 +7,18 @@
 </template>
 
 <script setup>
-import Bottle from '../components/Bottle.vue'
+import Bottle from '../components/Bottle.vue';
 </script>
 
 <style scoped>
-.page-title { font-size: 26px; font-weight: 800; margin: 0 0 4px; }
-.page-sub { color: var(--text-sub); margin: 0 0 18px; font-size: 14px; }
+.page-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+.page-sub {
+  color: var(--text-sub);
+  margin: 0 0 18px;
+  font-size: 14px;
+}
 </style>

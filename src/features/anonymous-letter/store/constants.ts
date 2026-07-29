@@ -3,24 +3,24 @@
 // ---------- 类型定义 ----------
 
 export interface CategoryInfo {
-  key: string
-  label: string
-  emoji: string
-  color: string
+  key: string;
+  label: string;
+  emoji: string;
+  color: string;
 }
 
 export interface TagInfo {
-  key: string
-  label: string
-  emoji: string
-  desc?: string
-  color: string
+  key: string;
+  label: string;
+  emoji: string;
+  desc?: string;
+  color: string;
 }
 
 export interface PaperInfo {
-  key: string
-  label: string
-  gradient: string
+  key: string;
+  label: string;
+  gradient: string;
 }
 
 // 信件分类
@@ -34,11 +34,11 @@ export const CATEGORIES: CategoryInfo[] = [
   { key: 'crush', label: '暗恋', emoji: '🌙', color: '#ffc6ff' },
   { key: 'heal', label: '治愈', emoji: '🌿', color: '#b9fbc0' },
   { key: 'fun', label: '趣事', emoji: '🎉', color: '#ffadad' },
-  { key: 'insight', label: '感悟', emoji: '💡', color: '#fdffb6' }
-]
+  { key: 'insight', label: '感悟', emoji: '💡', color: '#fdffb6' },
+];
 
 export function getCategory(key: string): CategoryInfo {
-  return CATEGORIES.find(c => c.key === key) || CATEGORIES[0]
+  return CATEGORIES.find((c) => c.key === key) || CATEGORIES[0];
 }
 
 // 内容标签（可多选，区别于“心情”，用于人群/主题归类，如学术）
@@ -49,28 +49,59 @@ export const TAGS: TagInfo[] = [
   { key: 'growth', label: '成长', emoji: '🌱', color: '#ffb74d' },
   { key: 'love', label: '情感', emoji: '💗', color: '#f06292' },
   { key: 'family', label: '家庭', emoji: '🏠', color: '#9575cd' },
-  { key: 'life', label: '生活', emoji: '🌈', color: '#4db6ac' }
-]
+  { key: 'life', label: '生活', emoji: '🌈', color: '#4db6ac' },
+];
 
 export function getTag(key: string): TagInfo | undefined {
-  return TAGS.find(t => t.key === key)
+  return TAGS.find((t) => t.key === key);
 }
 
 // 保密等级
 export const PRIVACY = [
   { key: 'public', label: '公开可见', desc: '展示在树洞广场' },
   { key: 'self', label: '仅自己可见', desc: '只保存在本地' },
-  { key: 'random', label: '随机匿名推送', desc: '随机发给陌生人' }
-]
+  { key: 'random', label: '随机匿名推送', desc: '随机发给陌生人' },
+];
 
 // 心情标签
 export const MOODS = [
-  '开心', '难过', 'emo', '平静', '焦虑', '期待', '释怀', '孤独',
-  '心动', '疲惫', '勇敢', '迷茫', '感恩', '委屈', '治愈', '懵圈'
-]
+  '开心',
+  '难过',
+  'emo',
+  '平静',
+  '焦虑',
+  '期待',
+  '释怀',
+  '孤独',
+  '心动',
+  '疲惫',
+  '勇敢',
+  '迷茫',
+  '感恩',
+  '委屈',
+  '治愈',
+  '懵圈',
+];
 
 // 背景贴纸（emoji）
-export const STICKERS = ['🌸', '⭐', '🌈', '🍃', '🌙', '☁️', '🐱', '💭', '🕯️', '🍂', '🫧', '🌟', '🦋', '🍰', '🌊', '✨']
+export const STICKERS = [
+  '🌸',
+  '⭐',
+  '🌈',
+  '🍃',
+  '🌙',
+  '☁️',
+  '🐱',
+  '💭',
+  '🕯️',
+  '🍂',
+  '🫧',
+  '🌟',
+  '🦋',
+  '🍰',
+  '🌊',
+  '✨',
+];
 
 // 信纸模板（渐变背景 + 名称）
 export const PAPERS: PaperInfo[] = [
@@ -78,18 +109,18 @@ export const PAPERS: PaperInfo[] = [
   { key: 'starry', label: '星空', gradient: 'radial-gradient(circle at 30% 20%, #2b2f77, #0d0b2b)' },
   { key: 'minimal', label: '简约', gradient: 'linear-gradient(135deg,#fdfdfd,#eef2f5)' },
   { key: 'art', label: '文艺', gradient: 'linear-gradient(135deg,#f6e7d8,#e9d5ec)' },
-  { key: 'campus', label: '校园', gradient: 'linear-gradient(135deg,#e8f5e9,#dbeafe)' }
-]
+  { key: 'campus', label: '校园', gradient: 'linear-gradient(135deg,#e8f5e9,#dbeafe)' },
+];
 export function getPaper(key: string): PaperInfo {
-  return PAPERS.find(p => p.key === key) || PAPERS[0]
+  return PAPERS.find((p) => p.key === key) || PAPERS[0];
 }
 
 // 字体大小三档
 export const FONT_SCALES = {
   small: '0.9',
   normal: '1',
-  large: '1.15'
-}
+  large: '1.15',
+};
 
 // 每日治愈文案
 export const DAILY_QUOTES = [
@@ -107,18 +138,63 @@ export const DAILY_QUOTES = [
   '你今天的努力，是幸运的伏笔。',
   '月亮本无光，借了太阳的光，你亦可。',
   '不要急着要答案，时间会替你慢慢揭晓。',
-  '生活明朗，万物可爱，人间值得。'
-]
+  '生活明朗，万物可爱，人间值得。',
+];
 export function randomQuote(): string {
-  return DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]
+  return DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
 }
 
 // 简易敏感词（演示用，真实场景需后端词库）
-export const SENSITIVE_WORDS = ['傻逼', '废物', '去死', '政治', '赌博', '诈骗', '代开发票', '加微信', '加我vx', '操你']
+export const SENSITIVE_WORDS = ['傻逼', '废物', '去死', '政治', '赌博', '诈骗', '代开发票', '加微信', '加我vx', '操你'];
 
 // 表情面板
 export const EMOJIS = [
-  '😀','😁','😂','🤣','😊','😍','😘','😎','🤔','😴','😭','😡','👍','👏','🙏','💪',
-  '❤️','🧡','💛','💚','💙','💜','🖤','💔','✨','🌟','⭐','🌈','🌸','🌹','🍀','🔥',
-  '🍃','🌿','🌊','☁️','🌙','⚡','🎉','🎈','🍰','🍓','🐱','🐶','🦋','🐬','🌻','💡'
-]
+  '😀',
+  '😁',
+  '😂',
+  '🤣',
+  '😊',
+  '😍',
+  '😘',
+  '😎',
+  '🤔',
+  '😴',
+  '😭',
+  '😡',
+  '👍',
+  '👏',
+  '🙏',
+  '💪',
+  '❤️',
+  '🧡',
+  '💛',
+  '💚',
+  '💙',
+  '💜',
+  '🖤',
+  '💔',
+  '✨',
+  '🌟',
+  '⭐',
+  '🌈',
+  '🌸',
+  '🌹',
+  '🍀',
+  '🔥',
+  '🍃',
+  '🌿',
+  '🌊',
+  '☁️',
+  '🌙',
+  '⚡',
+  '🎉',
+  '🎈',
+  '🍰',
+  '🍓',
+  '🐱',
+  '🐶',
+  '🦋',
+  '🐬',
+  '🌻',
+  '💡',
+];

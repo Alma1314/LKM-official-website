@@ -19,11 +19,19 @@
 <script setup lang="ts">
 defineProps({
   title: { type: String, default: '这里还空空如也' },
-  sub: { type: String, default: '去写下第一封信，或逛逛树洞广场吧～' }
-})
+  sub: { type: String, default: '去写下第一封信，或逛逛树洞广场吧～' },
+});
 </script>
 
 <style scoped>
-.empty-title { font-size: 16px; font-weight: 700; color: var(--text-main); margin: 0; }
-.empty-sub { font-size: 13px; margin: 0; }
+.empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+.empty-sub {
+  font-size: 13px;
+  margin: 0;
+}
 </style>

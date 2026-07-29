@@ -1,7 +1,6 @@
 <template>
   <TreeholeShell active-nav="bottle">
     <div class="container">
-
       <!-- 头部 -->
       <section class="bottle-head glass float-up">
         <h1 class="page-title">🍶 漂流瓶</h1>
@@ -14,11 +13,7 @@
           <div class="sea-emoji">🌊</div>
           <p class="sea-text">海里有 {{ bottleCount }} 个漂流瓶在漂流</p>
           <p class="sea-sub">每一个瓶子里都藏着一个故事</p>
-          <button
-            class="btn-grad"
-            @click="pickBottleHandler"
-            :disabled="picking || bottleCount === 0"
-          >
+          <button class="btn-grad" @click="pickBottleHandler" :disabled="picking || bottleCount === 0">
             {{ picking ? '🌊 打捞中...' : '🫙 捞一个漂流瓶' }}
           </button>
         </div>
@@ -44,14 +39,16 @@
             rows="3"
           ></textarea>
           <div class="reply-actions">
-            <button class="chip" @click="currentBottle = null; replyText = ''">← 换个瓶子</button>
             <button
-              class="btn-grad btn-sm"
-              @click="sendBottleReply"
-              :disabled="!replyText.trim()"
+              class="chip"
+              @click="
+                currentBottle = null;
+                replyText = '';
+              "
             >
-              📨 放回海里
+              ← 换个瓶子
             </button>
+            <button class="btn-grad btn-sm" @click="sendBottleReply" :disabled="!replyText.trim()">📨 放回海里</button>
           </div>
           <p v-if="replyOk" class="reply-ok">回复已随海浪漂走 🌊</p>
         </div>
@@ -69,92 +66,93 @@
             rows="4"
           ></textarea>
           <div class="dialog-actions">
-            <button class="chip" @click="throwDialogOpen = false; throwText = ''">取消</button>
             <button
-              class="btn-grad btn-sm"
-              @click="throwBottle"
-              :disabled="!throwText.trim()"
+              class="chip"
+              @click="
+                throwDialogOpen = false;
+                throwText = '';
+              "
             >
-              🍶 扔进海里
+              取消
             </button>
+            <button class="btn-grad btn-sm" @click="throwBottle" :disabled="!throwText.trim()">🍶 扔进海里</button>
           </div>
         </div>
       </div>
-
     </div>
   </TreeholeShell>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import TreeholeShell from '../components/TreeholeShell.vue'
-import { getBottles, addBottle, pickBottle, markBottlePicked } from '../store/storage'
+import { ref, computed, onMounted } from 'vue';
+import TreeholeShell from '../components/TreeholeShell.vue';
+import { getBottles, addBottle, pickBottle, markBottlePicked } from '../store/storage';
 
-const base = import.meta.env.BASE_URL || '/'
+const base = import.meta.env.BASE_URL || '/';
 
-const allBottles = ref([])
-const currentBottle = ref(null)
-const picking = ref(false)
-const replyText = ref('')
-const replyOk = ref(false)
-const throwDialogOpen = ref(false)
-const throwText = ref('')
+const allBottles = ref([]);
+const currentBottle = ref(null);
+const picking = ref(false);
+const replyText = ref('');
+const replyOk = ref(false);
+const throwDialogOpen = ref(false);
+const throwText = ref('');
 
 const bottleCount = computed(() => {
-  return allBottles.value.filter(b => !b.picked).length
-})
+  return allBottles.value.filter((b) => !b.picked).length;
+});
 
 function loadBottles() {
-  allBottles.value = getBottles()
+  allBottles.value = getBottles();
 }
 
 function pickBottleHandler() {
-  picking.value = true
-  replyText.value = ''
-  replyOk.value = false
+  picking.value = true;
+  replyText.value = '';
+  replyOk.value = false;
   setTimeout(() => {
-    const bottle = pickBottle()
-    currentBottle.value = bottle
-    picking.value = false
-  }, 500)
+    const bottle = pickBottle();
+    currentBottle.value = bottle;
+    picking.value = false;
+  }, 500);
 }
 
 function sendBottleReply() {
-  if (!currentBottle.value || !replyText.value.trim()) return
-  markBottlePicked(currentBottle.value.id, replyText.value.trim())
-  replyOk.value = true
-  loadBottles()
+  if (!currentBottle.value || !replyText.value.trim()) return;
+  markBottlePicked(currentBottle.value.id, replyText.value.trim());
+  replyOk.value = true;
+  loadBottles();
   setTimeout(() => {
-    currentBottle.value = null
-    replyText.value = ''
-    replyOk.value = false
-  }, 1500)
+    currentBottle.value = null;
+    replyText.value = '';
+    replyOk.value = false;
+  }, 1500);
 }
 
 function throwBottle() {
-  if (!throwText.value.trim()) return
+  if (!throwText.value.trim()) return;
   addBottle({
     id: 'bottle_' + Date.now(),
     text: throwText.value.trim(),
     from: '海那边的陌生人',
     createdAt: Date.now(),
     picked: false,
-    ownerId: 'me_local'
-  })
-  throwText.value = ''
-  throwDialogOpen.value = false
-  loadBottles()
+    ownerId: 'me_local',
+  });
+  throwText.value = '';
+  throwDialogOpen.value = false;
+  loadBottles();
 }
 
 function formatDate(ts) {
-  if (!ts) return ''
-  const d = new Date(ts)
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
 
 onMounted(() => {
-  loadBottles()
-})
+  loadBottles();
+});
 </script>
 
 <style scoped>
@@ -190,9 +188,16 @@ onMounted(() => {
   animation: wave 3s ease-in-out infinite;
 }
 @keyframes wave {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-6px) rotate(-2deg); }
-  75% { transform: translateY(4px) rotate(2deg); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+  75% {
+    transform: translateY(4px) rotate(2deg);
+  }
 }
 .sea-text {
   font-size: 17px;
@@ -223,7 +228,7 @@ onMounted(() => {
   text-align: center;
 }
 :root.dark .bottle-display {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 .bottle-icon {
   font-size: 40px;
@@ -243,7 +248,9 @@ onMounted(() => {
   font-size: 13px;
   color: var(--text-sub);
 }
-.bottle-from { font-style: italic; }
+.bottle-from {
+  font-style: italic;
+}
 
 /* 回复区域 */
 .bottle-reply {
@@ -255,7 +262,7 @@ onMounted(() => {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 12px;
-  background: var(--bg-card, rgba(255,255,255,0.6));
+  background: var(--bg-card, rgba(255, 255, 255, 0.6));
   color: var(--text-main);
   font-size: 1rem;
   resize: vertical;
@@ -263,7 +270,9 @@ onMounted(() => {
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
-.reply-textarea:focus { border-color: var(--accent); }
+.reply-textarea:focus {
+  border-color: var(--accent);
+}
 .reply-actions {
   display: flex;
   justify-content: space-between;
@@ -277,7 +286,10 @@ onMounted(() => {
   cursor: pointer;
   border-radius: 999px;
 }
-.btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .reply-ok {
   color: var(--accent);
   font-size: 13px;
@@ -290,7 +302,7 @@ onMounted(() => {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,14 +331,16 @@ onMounted(() => {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 12px;
-  background: var(--bg-card, rgba(255,255,255,0.6));
+  background: var(--bg-card, rgba(255, 255, 255, 0.6));
   color: var(--text-main);
   font-size: 1rem;
   resize: vertical;
   outline: none;
   box-sizing: border-box;
 }
-.dialog-textarea:focus { border-color: var(--accent); }
+.dialog-textarea:focus {
+  border-color: var(--accent);
+}
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -336,15 +350,30 @@ onMounted(() => {
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
-  .bottle-head { flex-direction: column; gap: 12px; }
-  .page-title { font-size: 20px; }
-  .bottle-empty { padding: 40px 16px; }
-  .sea-emoji { font-size: 60px; }
-  .bottle-current { padding: 16px; }
-  .bottle-display { padding: 20px 16px; }
+  .bottle-head {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .page-title {
+    font-size: 20px;
+  }
+  .bottle-empty {
+    padding: 40px 16px;
+  }
+  .sea-emoji {
+    font-size: 60px;
+  }
+  .bottle-current {
+    padding: 16px;
+  }
+  .bottle-display {
+    padding: 20px 16px;
+  }
 }
 
 @media (max-width: 600px) {
-  .sea-emoji { font-size: 48px; }
+  .sea-emoji {
+    font-size: 48px;
+  }
 }
 </style>

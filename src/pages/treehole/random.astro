@@ -5,14 +5,15 @@ import '~/features/anonymous-letter/styles/global.css';
 import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '随机树洞 — 拾光树洞', description: '抽一封陌生人的信，安静地读，温柔地回。' };
 ---
+
 <Layout metadata={metadata}><RandomPage client:only="vue" /></Layout>
 
 <script is:inline>
   (function () {
-    var theme = localStorage.theme;
-    var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    document.documentElement.classList.toggle("dark", isDark);
-    var hue = localStorage.getItem("hue");
-    if (hue) document.documentElement.style.setProperty("--hue", hue);
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    const hue = localStorage.getItem('hue');
+    if (hue) document.documentElement.style.setProperty('--hue', hue);
   })();
 </script>

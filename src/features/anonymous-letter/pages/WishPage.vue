@@ -1,7 +1,6 @@
 <template>
   <TreeholeShell active-nav="wish">
     <div class="container">
-
       <!-- 头部 -->
       <section class="wish-head glass float-up">
         <h1 class="page-title">🌟 许愿墙</h1>
@@ -26,9 +25,7 @@
         >
           <p class="wish-text">{{ w.text }}</p>
           <div class="wish-meta">
-            <button class="light-btn" @click="onLight(w)" :title="'点亮这个愿望'">
-              🕯️ {{ w.lights || 0 }}
-            </button>
+            <button class="light-btn" @click="onLight(w)" :title="'点亮这个愿望'">🕯️ {{ w.lights || 0 }}</button>
             <span class="wish-date">{{ formatDate(w.createdAt) }}</span>
             <template v-if="w.ownerId === 'me_local'">
               <button class="wish-action-chip" @click="openEdit(w)">✏️</button>
@@ -37,7 +34,6 @@
           </div>
         </div>
       </section>
-
     </div>
 
     <!-- 许愿弹窗 -->
@@ -45,21 +41,18 @@
       <div class="dialog-box glass">
         <h3 class="dialog-title">🌟 许个愿</h3>
         <p class="dialog-desc">写下你的愿望，让星星听到。</p>
-        <textarea
-          v-model="makeText"
-          class="dialog-textarea"
-          placeholder="我希望..."
-          rows="4"
-        ></textarea>
+        <textarea v-model="makeText" class="dialog-textarea" placeholder="我希望..." rows="4"></textarea>
         <div class="dialog-actions">
-          <button class="chip" @click="makeDialogOpen = false; makeText = ''">取消</button>
           <button
-            class="btn-grad btn-sm"
-            @click="onMake"
-            :disabled="!makeText.trim()"
+            class="chip"
+            @click="
+              makeDialogOpen = false;
+              makeText = '';
+            "
           >
-            🌟 点亮愿望
+            取消
           </button>
+          <button class="btn-grad btn-sm" @click="onMake" :disabled="!makeText.trim()">🌟 点亮愿望</button>
         </div>
       </div>
     </div>
@@ -68,21 +61,10 @@
     <div v-if="editDialogOpen" class="dialog-overlay" @click.self="editDialogOpen = false">
       <div class="dialog-box glass">
         <h3 class="dialog-title">✏️ 编辑愿望</h3>
-        <textarea
-          v-model="editText"
-          class="dialog-textarea"
-          placeholder="修改你的愿望..."
-          rows="4"
-        ></textarea>
+        <textarea v-model="editText" class="dialog-textarea" placeholder="修改你的愿望..." rows="4"></textarea>
         <div class="dialog-actions">
           <button class="chip" @click="editDialogOpen = false">取消</button>
-          <button
-            class="btn-grad btn-sm"
-            @click="onSaveEdit"
-            :disabled="!editText.trim()"
-          >
-            💾 保存
-          </button>
+          <button class="btn-grad btn-sm" @click="onSaveEdit" :disabled="!editText.trim()">💾 保存</button>
         </div>
       </div>
     </div>
@@ -90,87 +72,98 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import TreeholeShell from '../components/TreeholeShell.vue'
-import { getWishes, addWish, lightWish, saveWishes } from '../store/storage'
+import { ref, onMounted } from 'vue';
+import TreeholeShell from '../components/TreeholeShell.vue';
+import { getWishes, addWish, lightWish, saveWishes } from '../store/storage';
 
-const base = import.meta.env.BASE_URL || '/'
+const base = import.meta.env.BASE_URL || '/';
 
-const wishes = ref([])
-const makeDialogOpen = ref(false)
-const makeText = ref('')
-const editDialogOpen = ref(false)
-const editText = ref('')
-const editId = ref('')
+const wishes = ref([]);
+const makeDialogOpen = ref(false);
+const makeText = ref('');
+const editDialogOpen = ref(false);
+const editText = ref('');
+const editId = ref('');
 
 function loadWishes() {
-  wishes.value = getWishes()
+  wishes.value = getWishes();
 }
 
 function onMake() {
-  if (!makeText.value.trim()) return
+  if (!makeText.value.trim()) return;
   addWish({
     id: 'wish_' + Date.now(),
     text: makeText.value.trim(),
     lights: 0,
     createdAt: Date.now(),
-    ownerId: 'me_local'
-  })
-  makeText.value = ''
-  makeDialogOpen.value = false
-  loadWishes()
+    ownerId: 'me_local',
+  });
+  makeText.value = '';
+  makeDialogOpen.value = false;
+  loadWishes();
 }
 
 function onLight(w) {
-  lightWish(w.id)
-  loadWishes()
+  lightWish(w.id);
+  loadWishes();
 }
 
 function openEdit(w) {
-  editId.value = w.id
-  editText.value = w.text
-  editDialogOpen.value = true
+  editId.value = w.id;
+  editText.value = w.text;
+  editDialogOpen.value = true;
 }
 
 function onSaveEdit() {
-  if (!editText.value.trim()) return
-  const list = getWishes()
-  const idx = list.findIndex(w => w.id === editId.value)
+  if (!editText.value.trim()) return;
+  const list = getWishes();
+  const idx = list.findIndex((w) => w.id === editId.value);
   if (idx > -1) {
-    list[idx].text = editText.value.trim()
-    saveWishes(list)
+    list[idx].text = editText.value.trim();
+    saveWishes(list);
   }
-  editDialogOpen.value = false
-  editText.value = ''
-  editId.value = ''
-  loadWishes()
+  editDialogOpen.value = false;
+  editText.value = '';
+  editId.value = '';
+  loadWishes();
 }
 
 function onDelete(w) {
-  if (!confirm('确定删除这个愿望吗？')) return
-  const list = getWishes().filter(x => x.id !== w.id)
-  saveWishes(list)
-  loadWishes()
+  if (!confirm('确定删除这个愿望吗？')) return;
+  const list = getWishes().filter((x) => x.id !== w.id);
+  saveWishes(list);
+  loadWishes();
 }
 
 function formatDate(ts) {
-  if (!ts) return ''
-  const d = new Date(ts)
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
 
-const COLORS = ['#ff9aa2', '#a0c4ff', '#ffd6a5', '#bdb2ff', '#9bf6ff', '#caffbf', '#ffc6ff', '#b9fbc0', '#ffadad', '#fdffb6']
+const COLORS = [
+  '#ff9aa2',
+  '#a0c4ff',
+  '#ffd6a5',
+  '#bdb2ff',
+  '#9bf6ff',
+  '#caffbf',
+  '#ffc6ff',
+  '#b9fbc0',
+  '#ffadad',
+  '#fdffb6',
+];
 function cardColor(id) {
-  let hash = 0
+  let hash = 0;
   for (let i = 0; i < (id || '').length; i++) {
-    hash = id.charCodeAt(i) + ((hash << 5) - hash)
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return COLORS[Math.abs(hash) % COLORS.length]
+  return COLORS[Math.abs(hash) % COLORS.length];
 }
 
 onMounted(() => {
-  loadWishes()
-})
+  loadWishes();
+});
 </script>
 
 <style scoped>
@@ -206,8 +199,15 @@ onMounted(() => {
   animation: twinkle 2s ease-in-out infinite;
 }
 @keyframes twinkle {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.15); }
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 .empty-text {
   font-size: 17px;
@@ -234,7 +234,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .wish-card:hover {
   transform: translateY(-2px);
@@ -257,7 +259,7 @@ onMounted(() => {
   align-items: center;
   gap: 4px;
   border: 1px solid var(--card-border);
-  background: rgba(255,255,255,0.45);
+  background: rgba(255, 255, 255, 0.45);
   border-radius: 999px;
   padding: 3px 12px;
   font-size: 13px;
@@ -265,7 +267,9 @@ onMounted(() => {
   transition: all 0.2s;
   color: var(--text-main);
 }
-:root.dark .light-btn { background: rgba(255,255,255,0.08); }
+:root.dark .light-btn {
+  background: rgba(255, 255, 255, 0.08);
+}
 .light-btn:hover {
   background: var(--grad-soft);
   border-color: var(--accent);
@@ -278,23 +282,29 @@ onMounted(() => {
 }
 .wish-action-chip {
   border: none;
-  background: rgba(255,255,255,0.45);
+  background: rgba(255, 255, 255, 0.45);
   border-radius: 999px;
   padding: 3px 10px;
   font-size: 14px;
   cursor: pointer;
   transition: background 0.2s;
 }
-:root.dark .wish-action-chip { background: rgba(255,255,255,0.08); }
-.wish-action-chip:hover { background: var(--grad-soft); }
-.wish-del:hover { background: rgba(255, 100, 100, 0.2); }
+:root.dark .wish-action-chip {
+  background: rgba(255, 255, 255, 0.08);
+}
+.wish-action-chip:hover {
+  background: var(--grad-soft);
+}
+.wish-del:hover {
+  background: rgba(255, 100, 100, 0.2);
+}
 
 /* 弹窗 */
 .dialog-overlay {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,14 +333,16 @@ onMounted(() => {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 12px;
-  background: var(--bg-card, rgba(255,255,255,0.6));
+  background: var(--bg-card, rgba(255, 255, 255, 0.6));
   color: var(--text-main);
   font-size: 1rem;
   resize: vertical;
   outline: none;
   box-sizing: border-box;
 }
-.dialog-textarea:focus { border-color: var(--accent); }
+.dialog-textarea:focus {
+  border-color: var(--accent);
+}
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -344,17 +356,31 @@ onMounted(() => {
   cursor: pointer;
   border-radius: 999px;
 }
-.btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
-  .wish-head { flex-direction: column; gap: 12px; }
-  .page-title { font-size: 20px; }
-  .wish-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-  .wish-empty { padding: 40px 16px; }
+  .wish-head {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .page-title {
+    font-size: 20px;
+  }
+  .wish-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .wish-empty {
+    padding: 40px 16px;
+  }
 }
 
 @media (max-width: 600px) {
-  .wish-grid { grid-template-columns: 1fr; }
+  .wish-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

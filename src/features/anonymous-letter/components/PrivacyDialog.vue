@@ -5,9 +5,7 @@
       <div class="privacy">
         <div class="privacy-emoji">🔒</div>
         <h2 class="grad-text">隐私声明</h2>
-        <p class="privacy-text">
-          欢迎来到 <b>拾光树洞</b>。这是一个 <b>纯匿名、无注册登录</b> 的倾诉空间：
-        </p>
+        <p class="privacy-text">欢迎来到 <b>拾光树洞</b>。这是一个 <b>纯匿名、无注册登录</b> 的倾诉空间：</p>
         <ul class="privacy-list">
           <li>🌿 你发布的信件保存在 <b>服务器数据库</b>，匿名代号随机生成</li>
           <li>🌿 系统 <b>不收集任何真实个人信息</b>，账号可选登录</li>
@@ -24,28 +22,72 @@
 </template>
 
 <script setup lang="ts">
-import { useApp } from '../store/app'
-const props = defineProps({ modelValue: Boolean })
-const emit = defineEmits(['update:modelValue'])
-const { acceptPrivacy } = useApp()
+import { useApp } from '../store/app';
+const props = defineProps({ modelValue: Boolean });
+const emit = defineEmits(['update:modelValue']);
+const { acceptPrivacy } = useApp();
 
 function accept() {
-  acceptPrivacy()
-  emit('update:modelValue', false)
+  acceptPrivacy();
+  emit('update:modelValue', false);
 }
 </script>
 
 <style scoped>
-.dialog-overlay { position: fixed; inset: 0; z-index: 200; background: var(--mask); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; padding: 20px; }
-.dialog { padding: 24px; border-radius: var(--radius); max-width: 440px; width: 92vw; background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: var(--card-shadow); }
-.privacy {
-  padding: 28px 26px; text-align: center; border-radius: 22px;
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--mask);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-.privacy-emoji { font-size: 46px; margin-bottom: 6px; }
-.privacy h2 { font-size: 22px; margin: 4px 0 14px; }
-.privacy-text { text-align: left; color: var(--text-sub); margin: 0 0 10px; }
-.privacy-list { text-align: left; padding-left: 4px; list-style: none; margin: 0 0 12px; }
-.privacy-list li { margin: 8px 0; font-size: 14px; }
-.privacy-tip { font-size: 12px; color: var(--text-sub); margin: 6px 0 18px; }
-.privacy-actions .btn-grad { width: 100%; }
+.dialog {
+  padding: 24px;
+  border-radius: var(--radius);
+  max-width: 440px;
+  width: 92vw;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+.privacy {
+  padding: 28px 26px;
+  text-align: center;
+  border-radius: 22px;
+}
+.privacy-emoji {
+  font-size: 46px;
+  margin-bottom: 6px;
+}
+.privacy h2 {
+  font-size: 22px;
+  margin: 4px 0 14px;
+}
+.privacy-text {
+  text-align: left;
+  color: var(--text-sub);
+  margin: 0 0 10px;
+}
+.privacy-list {
+  text-align: left;
+  padding-left: 4px;
+  list-style: none;
+  margin: 0 0 12px;
+}
+.privacy-list li {
+  margin: 8px 0;
+  font-size: 14px;
+}
+.privacy-tip {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin: 6px 0 18px;
+}
+.privacy-actions .btn-grad {
+  width: 100%;
+}
 </style>

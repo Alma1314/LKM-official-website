@@ -6,9 +6,18 @@
     <template>
       <!-- 统计 -->
       <section class="stats">
-        <div class="stat glass"><b>{{ letters.length }}</b><span>发布信件</span></div>
-        <div class="stat glass"><b>{{ favs.length }}</b><span>收藏树洞</span></div>
-        <div class="stat glass"><b>{{ drafts.length }}</b><span>本地草稿</span></div>
+        <div class="stat glass">
+          <b>{{ letters.length }}</b
+          ><span>发布信件</span>
+        </div>
+        <div class="stat glass">
+          <b>{{ favs.length }}</b
+          ><span>收藏树洞</span>
+        </div>
+        <div class="stat glass">
+          <b>{{ drafts.length }}</b
+          ><span>本地草稿</span>
+        </div>
       </section>
 
       <div class="tabs">
@@ -22,14 +31,22 @@
         <div v-if="letters.length" class="list">
           <div v-for="l in letters" :key="l.id" class="item glass">
             <div class="item-head">
-              <span class="item-cat" :style="{ background: getCategory(l.category).color }">{{ getCategory(l.category).emoji }} {{ getCategory(l.category).label }}</span>
+              <span class="item-cat" :style="{ background: getCategory(l.category).color }"
+                >{{ getCategory(l.category).emoji }} {{ getCategory(l.category).label }}</span
+              >
               <span class="item-status" :class="l.status">{{ statusLabel(l.status) }}</span>
             </div>
             <p class="item-content">{{ l.content }}</p>
             <div class="item-foot">
               <span>{{ timeText(l.createdAt) }}</span>
               <div class="item-acts">
-                <button v-if="['pending','rejected','scheduled'].includes(l.status)" class="mini" @click="editLetter(l)">✏️ 编辑</button>
+                <button
+                  v-if="['pending', 'rejected', 'scheduled'].includes(l.status)"
+                  class="mini"
+                  @click="editLetter(l)"
+                >
+                  ✏️ 编辑
+                </button>
                 <button class="mini danger" @click="removeLetter(l)">🗑️ 删除</button>
               </div>
             </div>
@@ -79,86 +96,250 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import LetterCard from '../components/LetterCard.vue'
-import EmptyState from '../components/EmptyState.vue'
-import BackupPanel from '../components/BackupPanel.vue'
-import { getCategory } from '../store/constants'
-import * as store from '../store/storage'
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import LetterCard from '../components/LetterCard.vue';
+import EmptyState from '../components/EmptyState.vue';
+import BackupPanel from '../components/BackupPanel.vue';
+import { getCategory } from '../store/constants';
+import * as store from '../store/storage';
 
-const router = useRouter()
-const tab = ref('letters')
-const letters = ref([])
-const favs = ref([])
-const drafts = ref([])
+const router = useRouter();
+const tab = ref('letters');
+const letters = ref([]);
+const favs = ref([]);
+const drafts = ref([]);
 
 function load() {
-  letters.value = store.getLetters()
-  const favIds = store.getFavorites()
-  favs.value = store.getLetters().filter(l => favIds.includes(l.id) && l.status === 'published' && l.privacy === 'public')
+  letters.value = store.getLetters();
+  const favIds = store.getFavorites();
+  favs.value = store
+    .getLetters()
+    .filter((l) => favIds.includes(l.id) && l.status === 'published' && l.privacy === 'public');
 }
 
-onMounted(() => { load(); drafts.value = store.getDrafts() })
+onMounted(() => {
+  load();
+  drafts.value = store.getDrafts();
+});
 
 function statusLabel(s) {
-  return s === 'pending' ? '审核中' : s === 'published' ? '已公开' : s === 'rejected' ? '已驳回' : s === 'scheduled' ? '定时发布' : s === 'sealed' ? '已封存' : '个人可见'
+  return s === 'pending'
+    ? '审核中'
+    : s === 'published'
+      ? '已公开'
+      : s === 'rejected'
+        ? '已驳回'
+        : s === 'scheduled'
+          ? '定时发布'
+          : s === 'sealed'
+            ? '已封存'
+            : '个人可见';
 }
 function timeText(ts) {
-  const d = new Date(ts)
-  return `${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  const d = new Date(ts);
+  return `${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
 function editLetter(l) {
-  router.push({ name: 'write', query: { letterId: l.id } })
+  router.push({ name: 'write', query: { letterId: l.id } });
 }
 function removeLetter(l) {
-  ElMessageBox.confirm('确定删除这封信？', '确认删除', { confirmButtonText: '删除', cancelButtonText: '取消', type: 'warning' }).then(() => {
-    store.deleteLetter(l.id)
-    letters.value = store.getLetters()
-    ElMessage({ message: '已删除', type: 'success', customClass: 'th-toast' })
-  }).catch(() => {})
+  ElMessageBox.confirm('确定删除这封信？', '确认删除', {
+    confirmButtonText: '删除',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      store.deleteLetter(l.id);
+      letters.value = store.getLetters();
+      ElMessage({ message: '已删除', type: 'success', customClass: 'th-toast' });
+    })
+    .catch(() => {});
 }
-function onFav() { load() }
-function editDraft(d) { router.push({ name: 'write', query: { draftId: d.id } }) }
-function removeDraft(d) { store.deleteDraft(d.id); drafts.value = store.getDrafts() }
+function onFav() {
+  load();
+}
+function editDraft(d) {
+  router.push({ name: 'write', query: { draftId: d.id } });
+}
+function removeDraft(d) {
+  store.deleteDraft(d.id);
+  drafts.value = store.getDrafts();
+}
 
 function reset() {
   ElMessageBox.confirm('确定清空全部本地草稿？', '确认重置', {
-    confirmButtonText: '清空', cancelButtonText: '取消', type: 'warning'
-  }).then(() => {
-    store.resetDrafts(); drafts.value = []; ElMessage({ message: '草稿已清空 🌿', type: 'success', customClass: 'th-toast' })
-  }).catch(() => {})
+    confirmButtonText: '清空',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      store.resetDrafts();
+      drafts.value = [];
+      ElMessage({ message: '草稿已清空 🌿', type: 'success', customClass: 'th-toast' });
+    })
+    .catch(() => {});
 }
 </script>
 
 <style scoped>
-.page-title { font-size: 26px; font-weight: 800; margin: 0 0 4px; }
-.page-sub { color: var(--text-sub); margin: 0 0 18px; font-size: 14px; }
-.login-hint { padding: 24px; text-align: center; border-radius: 18px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat { padding: 16px; text-align: center; border-radius: 18px; display: flex; flex-direction: column; gap: 2px; }
-.stat b { font-size: 24px; color: var(--accent); }
-.stat span { font-size: 12px; color: var(--text-sub); }
-.tabs { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
-.list { display: flex; flex-direction: column; gap: 14px; }
-.item { padding: 16px; border-radius: 18px; cursor: default; transition: all .2s; }
-.item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.item-cat { color: #5a4a3f; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
-.item-status { font-size: 11px; padding: 2px 9px; border-radius: 999px; background: rgba(255,255,255,0.5); color: var(--text-sub); }
-.item-status.published { background: rgba(155,230,160,0.4); color: #3a7d44; }
-.item-status.pending { background: rgba(255,218,165,0.4); color: #9a6a1f; }
-.item-status.rejected { background: rgba(255,180,180,0.4); color: #b04a4a; }
-.item-content { margin: 0 0 10px; white-space: pre-wrap; font-size: calc(14px * var(--font-scale)); line-height: 1.7; }
-.item-foot { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-sub); }
-.item-acts { display: flex; gap: 8px; }
-.mini { border: 1px solid var(--card-border); background: rgba(255,255,255,0.4); color: var(--text-main); border-radius: 999px; padding: 4px 12px; font-size: 12px; cursor: pointer; transition: all .2s; }
-.mini:hover { border-color: var(--accent); }
-.mini.danger:hover { border-color: var(--danger); color: var(--danger); }
-.danger-zone { margin-top: 8px; padding: 18px; border-radius: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid rgba(229,115,115,0.3); }
-.danger-zone b { font-size: 14px; }
-.danger-zone p { font-size: 12px; color: var(--text-sub); margin: 4px 0 0; }
-.btn-reset { border: 1px solid var(--danger); color: var(--danger); background: rgba(229,115,115,0.1); border-radius: 999px; padding: 8px 18px; cursor: pointer; font-size: 13px; transition: all .2s; white-space: nowrap; }
-.btn-reset:hover { background: var(--danger); color: #fff; }
+.page-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+.page-sub {
+  color: var(--text-sub);
+  margin: 0 0 18px;
+  font-size: 14px;
+}
+.login-hint {
+  padding: 24px;
+  text-align: center;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.stat {
+  padding: 16px;
+  text-align: center;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat b {
+  font-size: 24px;
+  color: var(--accent);
+}
+.stat span {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.item {
+  padding: 16px;
+  border-radius: 18px;
+  cursor: default;
+  transition: all 0.2s;
+}
+.item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.item-cat {
+  color: #5a4a3f;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.item-status {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--text-sub);
+}
+.item-status.published {
+  background: rgba(155, 230, 160, 0.4);
+  color: #3a7d44;
+}
+.item-status.pending {
+  background: rgba(255, 218, 165, 0.4);
+  color: #9a6a1f;
+}
+.item-status.rejected {
+  background: rgba(255, 180, 180, 0.4);
+  color: #b04a4a;
+}
+.item-content {
+  margin: 0 0 10px;
+  white-space: pre-wrap;
+  font-size: calc(14px * var(--font-scale));
+  line-height: 1.7;
+}
+.item-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+.item-acts {
+  display: flex;
+  gap: 8px;
+}
+.mini {
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mini:hover {
+  border-color: var(--accent);
+}
+.mini.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.danger-zone {
+  margin-top: 8px;
+  padding: 18px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid rgba(229, 115, 115, 0.3);
+}
+.danger-zone b {
+  font-size: 14px;
+}
+.danger-zone p {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin: 4px 0 0;
+}
+.btn-reset {
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  background: rgba(229, 115, 115, 0.1);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-reset:hover {
+  background: var(--danger);
+  color: #fff;
+}
 </style>

@@ -1,7 +1,6 @@
 <template>
   <TreeholeShell active-nav="write">
     <div class="container">
-
       <!-- 页面标题 -->
       <section class="write-header">
         <h1 class="page-title grad-text">✍️ 写一封信</h1>
@@ -10,7 +9,6 @@
 
       <!-- 双栏布局 -->
       <div class="write-grid">
-
         <!-- ========== 左栏：编辑器 ========== -->
         <section class="editor-panel glass">
           <!-- 工具栏 -->
@@ -18,30 +16,53 @@
             <div class="tb-left">
               <button class="tb-btn" @click="emojiOpen = !emojiOpen" title="表情">😊</button>
               <span class="tb-divider"></span>
-              <button class="tb-btn" :class="{ active: fontSize === 'small' }" @click="setFontSize('small')" title="缩小字体">A<sup>-</sup></button>
-              <button class="tb-btn" :class="{ active: fontSize === 'normal' }" @click="setFontSize('normal')" title="正常字体">A</button>
-              <button class="tb-btn" :class="{ active: fontSize === 'large' }" @click="setFontSize('large')" title="放大字体">A<sup>+</sup></button>
+              <button
+                class="tb-btn"
+                :class="{ active: fontSize === 'small' }"
+                @click="setFontSize('small')"
+                title="缩小字体"
+              >
+                A<sup>-</sup>
+              </button>
+              <button
+                class="tb-btn"
+                :class="{ active: fontSize === 'normal' }"
+                @click="setFontSize('normal')"
+                title="正常字体"
+              >
+                A
+              </button>
+              <button
+                class="tb-btn"
+                :class="{ active: fontSize === 'large' }"
+                @click="setFontSize('large')"
+                title="放大字体"
+              >
+                A<sup>+</sup>
+              </button>
               <span class="tb-divider"></span>
               <button class="tb-btn tb-btn-clear" @click="clearContent" title="清空内容">🗑️ 清空</button>
             </div>
             <div class="tb-right">
-              <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }">{{ charCount }}/1000</span>
+              <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }"
+                >{{ charCount }}/1000</span
+              >
             </div>
           </div>
 
           <!-- Emoji 面板 -->
           <transition name="slide-down">
             <div v-if="emojiOpen" class="emoji-panel">
-              <button
-                v-for="e in EMOJIS" :key="e"
-                class="emoji-btn"
-                @click="insertEmoji(e)"
-              >{{ e }}</button>
+              <button v-for="e in EMOJIS" :key="e" class="emoji-btn" @click="insertEmoji(e)">{{ e }}</button>
             </div>
           </transition>
 
           <!-- 信纸背景区域 + textarea -->
-          <div class="paper-wrap" :style="{ background: selectedPaper.gradient }" :class="{ 'is-night': app.isNight && selectedPaper.key === 'starry' }">
+          <div
+            class="paper-wrap"
+            :style="{ background: selectedPaper.gradient }"
+            :class="{ 'is-night': app.isNight && selectedPaper.key === 'starry' }"
+          >
             <textarea
               ref="textareaRef"
               class="editor-textarea"
@@ -57,17 +78,19 @@
 
         <!-- ========== 右栏：设置 ========== -->
         <aside class="setup-panel">
-
           <!-- 分类 -->
           <div class="setup-card glass">
             <div class="setup-label">📂 信件分类</div>
             <div class="cat-grid">
               <button
-                v-for="c in CATEGORIES" :key="c.key"
+                v-for="c in CATEGORIES"
+                :key="c.key"
                 class="cat-btn"
                 :class="{ active: form.category === c.key }"
                 @click="form.category = c.key"
-              >{{ c.emoji }} {{ c.label }}</button>
+              >
+                {{ c.emoji }} {{ c.label }}
+              </button>
             </div>
           </div>
 
@@ -76,7 +99,8 @@
             <div class="setup-label">🔒 隐私等级</div>
             <div class="privacy-row">
               <button
-                v-for="p in PRIVACY" :key="p.key"
+                v-for="p in PRIVACY"
+                :key="p.key"
                 class="privacy-btn"
                 :class="{ active: form.privacy === p.key }"
                 @click="form.privacy = p.key"
@@ -92,12 +116,7 @@
           <div class="setup-card glass">
             <div class="setup-label">🎭 匿名代号</div>
             <div class="codename-row">
-              <input
-                class="native-input"
-                v-model="form.codename"
-                placeholder="系统自动生成…"
-                maxlength="20"
-              />
+              <input class="native-input" v-model="form.codename" placeholder="系统自动生成…" maxlength="20" />
               <button class="chip" @click="form.codename = randomCodename()">🎲 随机</button>
             </div>
           </div>
@@ -107,11 +126,14 @@
             <div class="setup-label">💭 心情标签</div>
             <div class="chip-row">
               <button
-                v-for="m in MOODS" :key="m"
+                v-for="m in MOODS"
+                :key="m"
                 class="chip"
                 :class="{ active: form.moods.includes(m) }"
                 @click="toggleMood(m)"
-              >#{{ m }}</button>
+              >
+                #{{ m }}
+              </button>
             </div>
           </div>
 
@@ -120,11 +142,14 @@
             <div class="setup-label">🏷️ 内容标签</div>
             <div class="chip-row">
               <button
-                v-for="t in TAGS" :key="t.key"
+                v-for="t in TAGS"
+                :key="t.key"
                 class="chip"
                 :class="{ active: form.tags.includes(t.key) }"
                 @click="toggleTag(t.key)"
-              >{{ t.emoji }} {{ t.label }}</button>
+              >
+                {{ t.emoji }} {{ t.label }}
+              </button>
             </div>
           </div>
 
@@ -133,11 +158,14 @@
             <div class="setup-label">🌸 贴纸</div>
             <div class="chip-row">
               <button
-                v-for="s in STICKERS" :key="s"
+                v-for="s in STICKERS"
+                :key="s"
                 class="sticker-btn"
                 :class="{ active: form.sticker === s }"
                 @click="form.sticker = form.sticker === s ? '' : s"
-              >{{ s }}</button>
+              >
+                {{ s }}
+              </button>
             </div>
           </div>
 
@@ -146,12 +174,15 @@
             <div class="setup-label">📄 信纸模板</div>
             <div class="paper-row">
               <button
-                v-for="p in PAPERS" :key="p.key"
+                v-for="p in PAPERS"
+                :key="p.key"
                 class="paper-btn"
                 :class="{ active: form.paper === p.key }"
                 :style="{ background: p.gradient }"
                 @click="form.paper = p.key"
-              >{{ p.label }}</button>
+              >
+                {{ p.label }}
+              </button>
             </div>
           </div>
 
@@ -215,7 +246,6 @@
             <button class="btn-text" @click="clearAll">🗑️ 全部清空</button>
           </div>
         </aside>
-
       </div>
     </div>
 
@@ -238,24 +268,38 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, nextTick } from 'vue'
-import TreeholeShell from '../components/TreeholeShell.vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue';
+import TreeholeShell from '../components/TreeholeShell.vue';
 import {
-  CATEGORIES, PRIVACY, MOODS, STICKERS, PAPERS,
-  getCategory, getPaper, TAGS, EMOJIS, SENSITIVE_WORDS
-} from '../store/constants'
+  CATEGORIES,
+  PRIVACY,
+  MOODS,
+  STICKERS,
+  PAPERS,
+  getCategory,
+  getPaper,
+  TAGS,
+  EMOJIS,
+  SENSITIVE_WORDS,
+} from '../store/constants';
 import {
-  addLetter, updateLetter, saveDraft, getLetters,
-  canPost, logPost, logMood, saveSketch
-} from '../store/storage'
-import { randomCodename } from '../utils/codename'
-import { useApp } from '../store/app'
+  addLetter,
+  updateLetter,
+  saveDraft,
+  getLetters,
+  canPost,
+  logPost,
+  logMood,
+  saveSketch,
+} from '../store/storage';
+import { randomCodename } from '../utils/codename';
+import { useApp } from '../store/app';
 
-const base = import.meta.env.BASE_URL || '/'
+const base = import.meta.env.BASE_URL || '/';
 
-const app = useApp()
+const app = useApp();
 
-const textareaRef = ref(null)
+const textareaRef = ref(null);
 
 // ---------- 表单状态 ----------
 const form = reactive({
@@ -267,138 +311,139 @@ const form = reactive({
   sticker: '',
   paper: 'paper',
   scheduledAt: '',
-  sealUntil: ''
-})
+  sealUntil: '',
+});
 
-const content = ref('')
-const fontSize = ref('normal')
-const emojiOpen = ref(false)
-const scheduleEnabled = ref(false)
-const sealEnabled = ref(false)
-const captchaCode = ref('')
-const captchaInput = ref('')
-const submitting = ref(false)
-const showSuccess = ref(false)
-const successMsg = ref('')
+const content = ref('');
+const fontSize = ref('normal');
+const emojiOpen = ref(false);
+const scheduleEnabled = ref(false);
+const sealEnabled = ref(false);
+const captchaCode = ref('');
+const captchaInput = ref('');
+const submitting = ref(false);
+const showSuccess = ref(false);
+const successMsg = ref('');
 
 // 编辑模式
-const editId = ref('')
+const editId = ref('');
 
 // ---------- 计算属性 ----------
-const charCount = computed(() => content.value.length)
+const charCount = computed(() => content.value.length);
 const fsValue = computed(() => {
-  return fontSize.value === 'small' ? '0.9em' : fontSize.value === 'large' ? '1.15em' : '1em'
-})
-const selectedPaper = computed(() => getPaper(form.paper))
-const selectedCategory = computed(() => getCategory(form.category))
+  return fontSize.value === 'small' ? '0.9em' : fontSize.value === 'large' ? '1.15em' : '1em';
+});
+const selectedPaper = computed(() => getPaper(form.paper));
+const selectedCategory = computed(() => getCategory(form.category));
 
 // ---------- 验证码 ----------
 function genCaptcha() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-  let code = ''
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
   for (let i = 0; i < 4; i++) {
-    code += chars[Math.floor(Math.random() * chars.length)]
+    code += chars[Math.floor(Math.random() * chars.length)];
   }
-  captchaCode.value = code
+  captchaCode.value = code;
 }
 
 // ---------- 工具栏 ----------
 function setFontSize(s) {
-  fontSize.value = s
+  fontSize.value = s;
 }
 
 function insertEmoji(e) {
-  content.value += e
-  emojiOpen.value = false
-  nextTick(() => textareaRef.value?.focus())
+  content.value += e;
+  emojiOpen.value = false;
+  nextTick(() => textareaRef.value?.focus());
 }
 
 function clearContent() {
-  content.value = ''
+  content.value = '';
 }
 
 function onContentInput() {
   // 敏感词检测
-  const lower = content.value.toLowerCase()
+  const lower = content.value.toLowerCase();
   for (const w of SENSITIVE_WORDS) {
     if (lower.includes(w.toLowerCase())) {
-      content.value = content.value.replace(new RegExp(w, 'gi'), '***')
+      content.value = content.value.replace(new RegExp(w, 'gi'), '***');
     }
   }
 }
 
 // ---------- 选项切换 ----------
 function toggleMood(m) {
-  const idx = form.moods.indexOf(m)
+  const idx = form.moods.indexOf(m);
   if (idx > -1) {
-    form.moods.splice(idx, 1)
+    form.moods.splice(idx, 1);
   } else {
     if (form.moods.length < 3) {
-      form.moods.push(m)
+      form.moods.push(m);
     }
   }
 }
 
 function toggleTag(key) {
-  const idx = form.tags.indexOf(key)
+  const idx = form.tags.indexOf(key);
   if (idx > -1) {
-    form.tags.splice(idx, 1)
+    form.tags.splice(idx, 1);
   } else {
     if (form.tags.length < 3) {
-      form.tags.push(key)
+      form.tags.push(key);
     }
   }
 }
 
 // ---------- 清空 ----------
 function clearAll() {
-  content.value = ''
-  form.category = 'confess'
-  form.privacy = 'public'
-  form.codename = randomCodename()
-  form.moods = []
-  form.tags = []
-  form.sticker = ''
-  form.paper = 'paper'
-  form.scheduledAt = ''
-  form.sealUntil = ''
-  scheduleEnabled.value = false
-  sealEnabled.value = false
-  captchaInput.value = ''
-  genCaptcha()
+  content.value = '';
+  form.category = 'confess';
+  form.privacy = 'public';
+  form.codename = randomCodename();
+  form.moods = [];
+  form.tags = [];
+  form.sticker = '';
+  form.paper = 'paper';
+  form.scheduledAt = '';
+  form.sealUntil = '';
+  scheduleEnabled.value = false;
+  sealEnabled.value = false;
+  captchaInput.value = '';
+  genCaptcha();
 }
 
 // ---------- 验证 ----------
 function validate() {
   if (!content.value.trim()) {
-    alert('请先写点什么吧～')
-    return false
+    alert('请先写点什么吧～');
+    return false;
   }
   if (charCount.value > 1000) {
-    alert('内容超过 1000 字限制')
-    return false
+    alert('内容超过 1000 字限制');
+    return false;
   }
   if (!canPost()) {
-    alert('投稿太频繁了，请稍后再试～')
-    return false
+    alert('投稿太频繁了，请稍后再试～');
+    return false;
   }
   if (captchaInput.value.toUpperCase() !== captchaCode.value) {
-    alert('验证码不正确')
-    genCaptcha()
-    captchaInput.value = ''
-    return false
+    alert('验证码不正确');
+    genCaptcha();
+    captchaInput.value = '';
+    return false;
   }
-  return true
+  return true;
 }
 
 // ---------- 构建信件对象 ----------
 function buildLetter() {
-  const now = Date.now()
-  const status = scheduleEnabled.value && form.scheduledAt
-    ? 'scheduled'
-    : sealEnabled.value && form.sealUntil
-      ? 'published'
-      : 'published'
+  const now = Date.now();
+  const status =
+    scheduleEnabled.value && form.scheduledAt
+      ? 'scheduled'
+      : sealEnabled.value && form.sealUntil
+        ? 'published'
+        : 'published';
 
   return {
     id: editId.value || 'L_' + now + '_' + Math.floor(Math.random() * 10000),
@@ -412,62 +457,58 @@ function buildLetter() {
     tags: form.tags.slice(),
     sticker: form.sticker,
     paper: form.paper,
-    scheduledAt: scheduleEnabled.value && form.scheduledAt
-      ? new Date(form.scheduledAt).getTime()
-      : undefined,
+    scheduledAt: scheduleEnabled.value && form.scheduledAt ? new Date(form.scheduledAt).getTime() : undefined,
     scheduledPrivacy: scheduleEnabled.value ? form.privacy : undefined,
-    sealUntil: sealEnabled.value && form.sealUntil
-      ? new Date(form.sealUntil).getTime()
-      : undefined,
+    sealUntil: sealEnabled.value && form.sealUntil ? new Date(form.sealUntil).getTime() : undefined,
     status,
     publishedAt: status === 'published' ? now : undefined,
     createdAt: editId.value ? undefined : now,
     updatedAt: now,
     likes: 0,
-    favorites: 0
-  }
+    favorites: 0,
+  };
 }
 
 // ---------- 提交 ----------
 function submitLetter() {
-  if (!validate()) return
-  submitting.value = true
+  if (!validate()) return;
+  submitting.value = true;
 
   // 上报心情
-  form.moods.forEach(m => logMood(m))
+  form.moods.forEach((m) => logMood(m));
 
-  const letter = buildLetter()
+  const letter = buildLetter();
 
   try {
     if (editId.value) {
-      updateLetter(editId.value, letter)
+      updateLetter(editId.value, letter);
     } else {
-      addLetter(letter)
-      logPost()
+      addLetter(letter);
+      logPost();
     }
 
     if (form.sticker) {
-      saveSketch(form.sticker)
+      saveSketch(form.sticker);
     }
 
     successMsg.value = editId.value
       ? '信件已更新发布！'
       : scheduleEnabled.value && form.scheduledAt
         ? `信件已定时 ${new Date(form.scheduledAt).toLocaleString()} 发布`
-        : '你的信件已投入树洞，快去看看大家的回应吧～'
+        : '你的信件已投入树洞，快去看看大家的回应吧～';
 
-    showSuccess.value = true
+    showSuccess.value = true;
   } catch (e) {
-    alert('投稿失败，请重试')
+    alert('投稿失败，请重试');
   } finally {
-    submitting.value = false
+    submitting.value = false;
   }
 }
 
 function saveAsDraft() {
   if (!content.value.trim()) {
-    alert('还没有任何内容哦～')
-    return
+    alert('还没有任何内容哦～');
+    return;
   }
   const draft = {
     id: editId.value || 'draft_' + Date.now(),
@@ -481,54 +522,54 @@ function saveAsDraft() {
     paper: form.paper,
     scheduledAt: scheduleEnabled.value ? form.scheduledAt : '',
     sealUntil: sealEnabled.value ? form.sealUntil : '',
-    savedAt: Date.now()
-  }
-  saveDraft(draft)
-  alert('草稿已保存到本地！')
+    savedAt: Date.now(),
+  };
+  saveDraft(draft);
+  alert('草稿已保存到本地！');
 }
 
 function writeAnother() {
-  showSuccess.value = false
-  clearAll()
+  showSuccess.value = false;
+  clearAll();
   nextTick(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    textareaRef.value?.focus()
-  })
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    textareaRef.value?.focus();
+  });
 }
 
 // ---------- 初始化 ----------
 onMounted(() => {
-  genCaptcha()
+  genCaptcha();
 
   // 尝试从 URL 参数加载编辑的信件
   if (typeof window !== 'undefined') {
-    const params = new URLSearchParams(window.location.search)
-    const letterId = params.get('edit')
+    const params = new URLSearchParams(window.location.search);
+    const letterId = params.get('edit');
     if (letterId) {
-      const letters = getLetters()
-      const found = letters.find(l => l.id === letterId)
+      const letters = getLetters();
+      const found = letters.find((l) => l.id === letterId);
       if (found) {
-        editId.value = found.id
-        content.value = found.content || ''
-        form.category = found.category || 'confess'
-        form.privacy = found.privacy || 'public'
-        form.codename = found.codename || randomCodename()
-        form.moods = found.moods ? found.moods.slice() : []
-        form.tags = found.tags ? found.tags.slice() : []
-        form.sticker = found.sticker || ''
-        form.paper = found.paper || 'paper'
+        editId.value = found.id;
+        content.value = found.content || '';
+        form.category = found.category || 'confess';
+        form.privacy = found.privacy || 'public';
+        form.codename = found.codename || randomCodename();
+        form.moods = found.moods ? found.moods.slice() : [];
+        form.tags = found.tags ? found.tags.slice() : [];
+        form.sticker = found.sticker || '';
+        form.paper = found.paper || 'paper';
         if (found.scheduledAt) {
-          scheduleEnabled.value = true
-          form.scheduledAt = new Date(found.scheduledAt).toISOString().slice(0, 16)
+          scheduleEnabled.value = true;
+          form.scheduledAt = new Date(found.scheduledAt).toISOString().slice(0, 16);
         }
         if (found.sealUntil) {
-          sealEnabled.value = true
-          form.sealUntil = new Date(found.sealUntil).toISOString().slice(0, 16)
+          sealEnabled.value = true;
+          form.sealUntil = new Date(found.sealUntil).toISOString().slice(0, 16);
         }
       }
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -580,7 +621,9 @@ onMounted(() => {
   align-items: center;
   gap: 4px;
 }
-.tb-right { flex-shrink: 0; }
+.tb-right {
+  flex-shrink: 0;
+}
 .tb-btn {
   width: 32px;
   height: 32px;
@@ -596,7 +639,8 @@ onMounted(() => {
   transition: all 0.2s;
   line-height: 1;
 }
-.tb-btn:hover, .tb-btn.active {
+.tb-btn:hover,
+.tb-btn.active {
   border-color: var(--blue);
   color: var(--accent);
   background: var(--grad-soft);
@@ -617,8 +661,13 @@ onMounted(() => {
   color: var(--text-sub);
   font-variant-numeric: tabular-nums;
 }
-.char-counter.warn { color: #e6a817; }
-.char-counter.danger { color: var(--danger); font-weight: 700; }
+.char-counter.warn {
+  color: #e6a817;
+}
+.char-counter.danger {
+  color: var(--danger);
+  font-weight: 700;
+}
 
 /* Emoji 面板 */
 .emoji-panel {
@@ -764,9 +813,15 @@ onMounted(() => {
   border-radius: 50%;
   flex-shrink: 0;
 }
-.privacy-dot.public { background: #4fc3f7; }
-.privacy-dot.self { background: #81c784; }
-.privacy-dot.random { background: #ffb74d; }
+.privacy-dot.public {
+  background: #4fc3f7;
+}
+.privacy-dot.self {
+  background: #81c784;
+}
+.privacy-dot.random {
+  background: #ffb74d;
+}
 .privacy-label {
   font-size: 13px;
   font-weight: 600;
@@ -796,7 +851,9 @@ onMounted(() => {
   font-size: 13px;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 .native-input:focus {
   border-color: var(--blue);
@@ -856,11 +913,11 @@ onMounted(() => {
   color: #333;
   font-weight: 600;
   transition: all 0.2s;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .paper-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .paper-btn.active {
   border-color: var(--blue);
@@ -998,11 +1055,15 @@ onMounted(() => {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
   animation: spinGlow 0.9s linear infinite;
 }
-@keyframes spinGlow { to { transform: rotate(360deg); } }
+@keyframes spinGlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* ========== 成功弹窗 ========== */
 .modal-overlay {
@@ -1071,20 +1132,32 @@ onMounted(() => {
   opacity: 0;
 }
 .pop-scale-enter-active {
-  animation: popScaleIn 0.32s cubic-bezier(.2,1.3,.4,1);
+  animation: popScaleIn 0.32s cubic-bezier(0.2, 1.3, 0.4, 1);
 }
 @keyframes popScaleIn {
-  from { opacity: 0; transform: scale(0.86); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .pop-scale {
-  animation: popScaleIn 0.32s cubic-bezier(.2,1.3,.4,1);
+  animation: popScaleIn 0.32s cubic-bezier(0.2, 1.3, 0.4, 1);
 }
 
 /* ========== 字体大小类 ========== */
-.fs-small { font-size: 0.9em; }
-.fs-normal { font-size: 1em; }
-.fs-large { font-size: 1.15em; }
+.fs-small {
+  font-size: 0.9em;
+}
+.fs-normal {
+  font-size: 1em;
+}
+.fs-large {
+  font-size: 1.15em;
+}
 
 /* ========== 响应式 ========== */
 @media (max-width: 1024px) {
@@ -1116,8 +1189,12 @@ onMounted(() => {
 }
 
 @media (max-width: 600px) {
-  .page-title { font-size: clamp(18px, 5vw, 24px); }
-  .editor-toolbar { padding: 10px 12px; }
+  .page-title {
+    font-size: clamp(18px, 5vw, 24px);
+  }
+  .editor-toolbar {
+    padding: 10px 12px;
+  }
   .emoji-panel {
     grid-template-columns: repeat(6, 1fr);
   }

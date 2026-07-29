@@ -1,7 +1,6 @@
 <template>
   <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
     <div class="app-root">
-
       <!-- 背景层 -->
       <div class="bg-flow" aria-hidden="true"></div>
       <Particles />
@@ -15,7 +14,18 @@
         <div class="nav-inner">
           <div class="nav-left">
             <a :href="`${base}/apps`" class="nav-exit-btn" title="返回主站">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
             </a>
             <a :href="`${base}/treehole`" class="nav-brand" aria-label="拾光树洞首页">
               <span class="brand-icon">&#x1F333;</span>
@@ -34,7 +44,11 @@
           <!-- 右侧操作 -->
           <div class="nav-actions">
             <a :href="`${base}/treehole/write`" class="btn-grad nav-write-btn">&#x270D;&#xFE0F; 写信</a>
-            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
+            <button
+              class="nav-icon-btn"
+              @click="app.toggleTheme()"
+              :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'"
+            >
               {{ app.isNight ? '&#x2600;&#xFE0F;' : '&#x1F319;' }}
             </button>
             <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
@@ -47,15 +61,33 @@
       <!-- 移动端下拉菜单 -->
       <transition name="slide-down">
         <nav v-if="mobileMenuOpen" class="mobile-menu glass" aria-label="移动端导航" @click="mobileMenuOpen = false">
-          <a :href="`${base}/treehole`" class="mobile-nav-link" :class="{ active: activeNav === 'home' }">&#x1F3E0; 广场</a>
-          <a :href="`${base}/treehole/write`" class="mobile-nav-link" :class="{ active: activeNav === 'write' }">&#x270D;&#xFE0F; 写信</a>
-          <a :href="`${base}/treehole/random`" class="mobile-nav-link" :class="{ active: activeNav === 'random' }">&#x1F3B2; 随机树洞</a>
-          <a :href="`${base}/treehole/bottle`" class="mobile-nav-link" :class="{ active: activeNav === 'bottle' }">&#x1F37E; 漂流瓶</a>
-          <a :href="`${base}/treehole/wish`" class="mobile-nav-link" :class="{ active: activeNav === 'wish' }">&#x2B50; 许愿墙</a>
-          <a :href="`${base}/treehole/rank`" class="mobile-nav-link" :class="{ active: activeNav === 'rank' }">&#x1F3C6; 榜单</a>
-          <a :href="`${base}/treehole/mine`" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }">&#x1F4EC; 我的信箱</a>
-          <a :href="`${base}/treehole/messages`" class="mobile-nav-link" :class="{ active: activeNav === 'messages' }">&#x1F4AC; 私信</a>
-          <a :href="`${base}/treehole/settings`" class="mobile-nav-link" :class="{ active: activeNav === 'settings' }">&#x2699;&#xFE0F; 设置</a>
+          <a :href="`${base}/treehole`" class="mobile-nav-link" :class="{ active: activeNav === 'home' }"
+            >&#x1F3E0; 广场</a
+          >
+          <a :href="`${base}/treehole/write`" class="mobile-nav-link" :class="{ active: activeNav === 'write' }"
+            >&#x270D;&#xFE0F; 写信</a
+          >
+          <a :href="`${base}/treehole/random`" class="mobile-nav-link" :class="{ active: activeNav === 'random' }"
+            >&#x1F3B2; 随机树洞</a
+          >
+          <a :href="`${base}/treehole/bottle`" class="mobile-nav-link" :class="{ active: activeNav === 'bottle' }"
+            >&#x1F37E; 漂流瓶</a
+          >
+          <a :href="`${base}/treehole/wish`" class="mobile-nav-link" :class="{ active: activeNav === 'wish' }"
+            >&#x2B50; 许愿墙</a
+          >
+          <a :href="`${base}/treehole/rank`" class="mobile-nav-link" :class="{ active: activeNav === 'rank' }"
+            >&#x1F3C6; 榜单</a
+          >
+          <a :href="`${base}/treehole/mine`" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }"
+            >&#x1F4EC; 我的信箱</a
+          >
+          <a :href="`${base}/treehole/messages`" class="mobile-nav-link" :class="{ active: activeNav === 'messages' }"
+            >&#x1F4AC; 私信</a
+          >
+          <a :href="`${base}/treehole/settings`" class="mobile-nav-link" :class="{ active: activeNav === 'settings' }"
+            >&#x2699;&#xFE0F; 设置</a
+          >
         </nav>
       </transition>
 
@@ -86,49 +118,48 @@
           <span class="bn-label">信箱</span>
         </a>
       </nav>
-
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import Particles from './Particles.vue'
-import { useApp } from '../store/app'
+import { ref, onMounted, onUnmounted } from 'vue';
+import Particles from './Particles.vue';
+import { useApp } from '../store/app';
 
 defineProps<{
-  activeNav?: string
-}>()
+  activeNav?: string;
+}>();
 
-const base = import.meta.env.BASE_URL || '/'
-const app = useApp()
-const mobileMenuOpen = ref(false)
+const base = import.meta.env.BASE_URL || '/';
+const app = useApp();
+const mobileMenuOpen = ref(false);
 
-const { lowPerf, highContrast } = app
+const { lowPerf, highContrast } = app;
 
-let synced = false
+let synced = false;
 
 function forceSync() {
-  if (synced) return
+  if (synced) return;
   // 同步主题
-  const htmlDark = document.documentElement.classList.contains('dark')
-  const expectedDark = localStorage.theme === 'dark' ||
-    (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const htmlDark = document.documentElement.classList.contains('dark');
+  const expectedDark =
+    localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
   // 同步色相
-  const hue = localStorage.getItem('hue')
-  if (hue) document.documentElement.style.setProperty('--hue', hue)
+  const hue = localStorage.getItem('hue');
+  if (hue) document.documentElement.style.setProperty('--hue', hue);
   // 主题不匹配则 reload
   if (htmlDark !== expectedDark) {
-    location.reload()
-    return
+    location.reload();
+    return;
   }
-  synced = true
-  app.setTheme(htmlDark ? 'night' : 'day')
+  synced = true;
+  app.setTheme(htmlDark ? 'night' : 'day');
 }
 
-onMounted(forceSync)
+onMounted(forceSync);
 
-onUnmounted(() => {})
+onUnmounted(() => {});
 </script>
 
 <style scoped>
@@ -184,13 +215,24 @@ onUnmounted(() => {})
   gap: 16px;
 }
 .nav-exit-btn {
-  display: flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border-radius: 10px;
-  border: 1px solid var(--card-border); color: var(--text-sub);
-  background: transparent; cursor: pointer; transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  color: var(--text-sub);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
   flex-shrink: 0;
 }
-.nav-exit-btn:hover { color: var(--accent); border-color: var(--accent); transform: translateX(-2px); }
+.nav-exit-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateX(-2px);
+}
 
 .nav-brand {
   display: flex;
@@ -199,7 +241,9 @@ onUnmounted(() => {})
   text-decoration: none;
   flex-shrink: 0;
 }
-.brand-icon { font-size: 22px; }
+.brand-icon {
+  font-size: 22px;
+}
 .brand-text {
   font-size: 18px;
   font-weight: 800;
@@ -219,8 +263,14 @@ onUnmounted(() => {})
   transition: all 0.2s;
   font-weight: 500;
 }
-.nav-link:hover { color: var(--accent); background: var(--grad-soft); }
-.nav-link.active { color: var(--accent); font-weight: 700; }
+.nav-link:hover {
+  color: var(--accent);
+  background: var(--grad-soft);
+}
+.nav-link.active {
+  color: var(--accent);
+  font-weight: 700;
+}
 
 .nav-actions {
   display: flex;
@@ -250,10 +300,20 @@ onUnmounted(() => {})
   transition: all 0.2s;
   color: var(--text-sub);
 }
-.nav-icon-btn:hover { border-color: var(--blue); color: var(--accent); }
-.hamburger { display: none; }
-.hamburger span { transition: transform 0.3s; display: inline-block; }
-.hamburger span.open { transform: rotate(90deg); }
+.nav-icon-btn:hover {
+  border-color: var(--blue);
+  color: var(--accent);
+}
+.hamburger {
+  display: none;
+}
+.hamburger span {
+  transition: transform 0.3s;
+  display: inline-block;
+}
+.hamburger span.open {
+  transform: rotate(90deg);
+}
 
 /* ---------- 移动端下拉菜单 ---------- */
 .mobile-menu {
@@ -281,12 +341,18 @@ onUnmounted(() => {})
   text-decoration: none;
   transition: background 0.2s;
 }
-.mobile-nav-link:hover { background: var(--grad-soft); }
-.mobile-nav-link.active { color: var(--accent); font-weight: 700; background: var(--grad-soft); }
+.mobile-nav-link:hover {
+  background: var(--grad-soft);
+}
+.mobile-nav-link.active {
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--grad-soft);
+}
 
 .slide-down-enter-active,
 .slide-down-leave-active {
-  transition: all 0.3s cubic-bezier(.2,.8,.25,1);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.25, 1);
 }
 .slide-down-enter-from,
 .slide-down-leave-to {
@@ -329,9 +395,15 @@ onUnmounted(() => {})
   transition: color 0.2s;
   padding: 4px 10px;
 }
-.bn-item.active { color: var(--accent); }
-.bn-icon { font-size: 20px; }
-.bn-label { font-size: 10px; }
+.bn-item.active {
+  color: var(--accent);
+}
+.bn-icon {
+  font-size: 20px;
+}
+.bn-label {
+  font-size: 10px;
+}
 .bn-center {
   position: relative;
   top: -16px;
@@ -351,11 +423,24 @@ onUnmounted(() => {})
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
-  .main-content { padding-top: 66px; padding-bottom: 100px; }
-  .top-nav { height: 50px; }
-  .nav-links { display: none; }
-  .nav-write-btn { display: none; }
-  .hamburger { display: flex; }
-  .bottom-nav { display: flex; }
+  .main-content {
+    padding-top: 66px;
+    padding-bottom: 100px;
+  }
+  .top-nav {
+    height: 50px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-write-btn {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .bottom-nav {
+    display: flex;
+  }
 }
 </style>
