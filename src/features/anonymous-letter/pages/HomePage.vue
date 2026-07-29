@@ -197,7 +197,7 @@ function onFav({ letter }) {
   padding: 12px 20px; border-radius: 16px; margin-bottom: 18px;
   font-size: calc(14px * var(--font-scale));
 }
-html[data-theme='night'] .hero-quote { background: rgba(255,255,255,0.06); }
+:root.dark .hero-quote { background: rgba(255,255,255,0.06); }
 .quote-mark { color: var(--accent); font-size: 20px; font-weight: 700; }
 .hero-acts { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
@@ -218,7 +218,7 @@ html[data-theme='night'] .hero-quote { background: rgba(255,255,255,0.06); }
   border: none; background: rgba(255,255,255,0.45); color: var(--accent);
   padding: 4px 12px; border-radius: 999px; cursor: pointer; transition: all .2s;
 }
-html[data-theme='night'] .mc-tag { background: rgba(255,255,255,0.08); }
+:root.dark .mc-tag { background: rgba(255,255,255,0.08); }
 .mc-tag:hover { background: var(--grad-soft); color: var(--accent); border: 1px solid var(--blue); transform: translateY(-2px); }
 
 /* ---------- 响应式 ---------- */

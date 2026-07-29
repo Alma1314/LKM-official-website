@@ -1,6 +1,6 @@
 // =============================================================
 // 全局响应式状态 (composable)
-// 让主题、设置、收件箱提醒在任意组件共享并实时更新
+// 主题跟随主站 .dark class，不自行管理 data-theme
 // =============================================================
 import { reactive, computed, watch } from 'vue'
 import * as store from './storage'
@@ -10,85 +10,64 @@ interface AppState {
   settings: TreeholeSettings
 }
 
-interface AppReturn {
-  state: AppState
-  isNight: import('vue').ComputedRef<boolean>
-  lowPerf: import('vue').ComputedRef<boolean>
-  highContrast: import('vue').ComputedRef<boolean>
-  toggleTheme: () => void
-  setTheme: (t: 'day' | 'night') => void
-  toggleMuted: () => void
-  setFontScale: (s: 'small' | 'normal' | 'large') => void
-  setAccent: (a: string, b: string) => void
-  toggleLowPerf: () => void
-  toggleHighContrast: () => void
-  setRateLimit: (n: number) => void
-  acceptPrivacy: () => void
-}
+export function useApp() {
+  const settings = store.getSettings()
+  // 始终从主站 .dark class 同步初始主题，不被 localStorage 覆盖
+  if (typeof document !== 'undefined') {
+    settings.theme = document.documentElement.classList.contains('dark') ? 'night' : 'day'
+  }
 
-const state = reactive<AppState>({
-  settings: store.getSettings()
-})
+  const state = reactive<AppState>({ settings })
 
-// 主题切换 -> 写入 <html data-theme>
-watch(
-  () => state.settings.theme,
-  (t) => { document.documentElement.setAttribute('data-theme', t) },
-  { immediate: true }
-)
+  // 监听主站 theme 变化（astro:after-swap 后 BasicScripts 会更新 .dark class）
+  if (typeof document !== 'undefined') {
+    document.addEventListener('astro:after-swap', () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      state.settings.theme = isDark ? 'night' : 'day'
+    })
+  }
 
-// 字体大小 -> 写入根节点 css 变量
-watch(
-  () => state.settings.fontScale,
-  (s) => {
-    document.documentElement.style.setProperty('--font-scale', s === 'small' ? '0.9' : s === 'large' ? '1.15' : '1')
-  },
-  { immediate: true }
-)
-
-// 自定义强调色
-watch(
-  () => [state.settings.accent, state.settings.accent2],
-  ([a, b]) => {
-    document.documentElement.style.setProperty('--accent', a)
-    document.documentElement.style.setProperty('--accent-2', b)
-    document.documentElement.style.setProperty('--accent-grad', `linear-gradient(135deg, ${a}, ${b})`)
-    document.documentElement.style.setProperty('--glow', hexToRgba(a, 0.55))
-  },
-  { immediate: true }
-)
-
-// 高对比度护眼模式
-watch(
-  () => state.settings.highContrast,
-  (on) => {
-    document.documentElement.classList.toggle('high-contrast', !!on)
-  },
-  { immediate: true }
-)
-
-// 低性能设备：关闭重特效
-watch(
-  () => state.settings.lowPerf,
-  (on) => { document.documentElement.classList.toggle('low-perf', !!on) },
-  { immediate: true }
-)
-
-// 同步设置到存储
-watch(
-  () => state.settings,
-  (s) => store.saveSettings(s),
-  { deep: true }
-)
-
-// 定时发布 / 限时封存 现在由后端定时任务处理，前端无需轮询
-
-export function useApp(): AppReturn {
   const isNight = computed(() => state.settings.theme === 'night')
   const lowPerf = computed(() => state.settings.lowPerf || state.settings.muted)
   const highContrast = computed(() => state.settings.highContrast)
 
-  function toggleTheme(): void { state.settings.theme = isNight.value ? 'day' : 'night' }
+  // 字体大小 -> 写入根节点 css 变量
+  watch(
+    () => state.settings.fontScale,
+    (s) => {
+      document.documentElement.style.setProperty('--font-scale', s === 'small' ? '0.9' : s === 'large' ? '1.15' : '1')
+    },
+    { immediate: true }
+  )
+
+  // 高对比度护眼模式
+  watch(
+    () => state.settings.highContrast,
+    (on) => { document.documentElement.classList.toggle('high-contrast', !!on) },
+    { immediate: true }
+  )
+
+  // 低性能设备：关闭重特效
+  watch(
+    () => state.settings.lowPerf,
+    (on) => { document.documentElement.classList.toggle('low-perf', !!on) },
+    { immediate: true }
+  )
+
+  // 同步设置到存储
+  watch(
+    () => state.settings,
+    (s) => store.saveSettings(s),
+    { deep: true }
+  )
+
+  function toggleTheme(): void {
+    const next = isNight.value ? 'day' : 'night'
+    state.settings.theme = next
+    document.documentElement.classList.toggle('dark', next === 'night')
+    localStorage.theme = next === 'night' ? 'dark' : 'light'
+  }
+
   function setTheme(t: 'day' | 'night'): void { state.settings.theme = t }
   function toggleMuted(): void { state.settings.muted = !state.settings.muted }
   function setFontScale(s: 'small' | 'normal' | 'large'): void { state.settings.fontScale = s }
@@ -103,12 +82,4 @@ export function useApp(): AppReturn {
     toggleTheme, setTheme, toggleMuted, setFontScale, setAccent,
     toggleLowPerf, toggleHighContrast, setRateLimit, acceptPrivacy
   }
-}
-
-function hexToRgba(hex: string, a: number): string {
-  const h = (hex || '#e8a87c').replace('#', '')
-  const r = parseInt(h.slice(0, 2), 16)
-  const g = parseInt(h.slice(2, 4), 16)
-  const b = parseInt(h.slice(4, 6), 16)
-  return `rgba(${r},${g},${b},${a})`
 }

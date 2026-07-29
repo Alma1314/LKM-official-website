@@ -62,26 +62,6 @@
   --glow: color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* 保持对原 data-theme 属性的兼容（树洞内部 useApp 切换） */
-html[data-theme='night'] {
-  --bg-1: oklch(0.18 0.015 var(--hue));
-  --bg-2: oklch(0.20 0.015 var(--hue));
-  --bg-3: oklch(0.22 0.018 var(--hue));
-  --bg-4: oklch(0.16 0.012 var(--hue));
-  --text-main: #e7e7f0;
-  --text-sub: #9a9ab4;
-  --line: color-mix(in srgb, var(--accent) 35%, transparent);
-  --card-bg: oklch(0.22 0.018 var(--hue));
-  --card-border: color-mix(in srgb, var(--accent) 25%, transparent);
-  --card-shadow: 0 8px 26px rgba(0, 0, 0, 0.4);
-  --accent: oklch(0.75 0.14 var(--hue));
-  --accent-2: oklch(0.7 0.10 calc(var(--hue) + 40));
-  --accent-grad: var(--grad);
-  --nav-bg: rgba(20, 19, 31, 0.92);
-  --mask: rgba(5, 4, 15, 0.55);
-  --danger: #ff8a8a;
-  --glow: color-mix(in srgb, var(--accent) 35%, transparent);
-}
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; }
@@ -214,7 +194,7 @@ html.high-contrast {
   --glow: rgba(0,0,0,0.2) !important;
   filter: contrast(1.12) saturate(0.92);
 }
-:root.dark.high-contrast, html[data-theme='night'].high-contrast {
+:root.dark.high-contrast {
   --text-main: #ffffff !important; --text-sub: #c9c2e8 !important;
   --card-bg: #181726 !important;
   filter: contrast(1.12) saturate(1.05);

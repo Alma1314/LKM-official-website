@@ -266,7 +266,7 @@ onMounted(() => {
   transition: all 0.2s;
   color: var(--text-main);
 }
-html[data-theme='night'] .light-btn { background: rgba(255,255,255,0.08); }
+:root.dark .light-btn { background: rgba(255,255,255,0.08); }
 .light-btn:hover {
   background: var(--grad-soft);
   border-color: var(--accent);
@@ -286,7 +286,7 @@ html[data-theme='night'] .light-btn { background: rgba(255,255,255,0.08); }
   cursor: pointer;
   transition: background 0.2s;
 }
-html[data-theme='night'] .wish-action-chip { background: rgba(255,255,255,0.08); }
+:root.dark .wish-action-chip { background: rgba(255,255,255,0.08); }
 .wish-action-chip:hover { background: var(--grad-soft); }
 .wish-del:hover { background: rgba(255, 100, 100, 0.2); }
 

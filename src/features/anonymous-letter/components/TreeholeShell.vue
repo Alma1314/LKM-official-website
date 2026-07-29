@@ -34,7 +34,7 @@
           <!-- 右侧操作 -->
           <div class="nav-actions">
             <a :href="`${base}/treehole/write`" class="btn-grad nav-write-btn">&#x270D;&#xFE0F; 写信</a>
-            <button class="nav-icon-btn" @click="toggleTheme" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
+            <button class="nav-icon-btn" @click="app.toggleTheme()" :aria-label="app.isNight ? '切换到日间模式' : '切换到夜间模式'">
               {{ app.isNight ? '&#x2600;&#xFE0F;' : '&#x1F319;' }}
             </button>
             <button class="nav-icon-btn hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import Particles from './Particles.vue'
 import { useApp } from '../store/app'
 
@@ -105,29 +105,6 @@ const app = useApp()
 const mobileMenuOpen = ref(false)
 
 const { lowPerf, highContrast } = app
-
-function syncTheme() {
-  const isDark = document.documentElement.classList.contains('dark')
-  document.documentElement.setAttribute('data-theme', isDark ? 'night' : 'day')
-  if (isDark && !app.isNight.value) app.setTheme('night')
-  else if (!isDark && app.isNight.value) app.setTheme('day')
-}
-
-function toggleTheme() {
-  app.toggleTheme()
-  const dark = document.documentElement.classList.contains('dark')
-  document.documentElement.classList.toggle('dark', dark)
-}
-
-onMounted(() => {
-  syncTheme()
-  // 监听 Astro View Transitions 切换页面后的主题变化
-  document.addEventListener('astro:page-load', syncTheme)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('astro:page-load', syncTheme)
-})
 </script>
 
 <style scoped>

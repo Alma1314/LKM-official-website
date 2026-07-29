@@ -256,7 +256,7 @@ function formatDate(ts) {
   padding: 2px 10px;
   border-radius: 999px;
 }
-html[data-theme='night'] .mood-tag { background: rgba(255,255,255,0.08); }
+:root.dark .mood-tag { background: rgba(255,255,255,0.08); }
 .letter-footer {
   display: flex;
   justify-content: space-between;

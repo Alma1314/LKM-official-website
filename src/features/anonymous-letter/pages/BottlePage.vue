@@ -223,7 +223,7 @@ onMounted(() => {
   border-radius: 16px;
   text-align: center;
 }
-html[data-theme='night'] .bottle-display {
+:root.dark .bottle-display {
   background: rgba(255,255,255,0.05);
 }
 .bottle-icon {
