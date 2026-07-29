@@ -228,8 +228,8 @@ const { state, isNight, lowPerf, highContrast, setTheme, setFontScale, toggleMut
 
 function toggleTheme() {
   app.toggleTheme()
-  const isNightResult = document.documentElement.getAttribute('data-theme') === 'night'
-  document.documentElement.classList.toggle('dark', isNightResult)
+  const dark = document.documentElement.classList.contains("dark")
+  document.documentElement.classList.toggle("dark", dark)
 }
 
 const showPrivacy = ref(false)
@@ -262,8 +262,8 @@ function toggleAudio() {
 }
 
 onMounted(() => {
-  // Sync initial theme from Astro's <html class="dark"> to treehole's data-theme
-  const isDark = document.documentElement.classList.contains('dark')
+  // Sync theme: ensure data-theme mirrors dark class
+  const isDark = document.documentElement.classList.contains("dark")
   const html = document.documentElement
   if (isDark) {
     html.setAttribute('data-theme', 'night')
@@ -272,17 +272,6 @@ onMounted(() => {
     html.setAttribute('data-theme', 'day')
     if (app.isNight.value === true) app.setTheme('day')
   }
-  // Watch for Astro theme changes
-  const observer = new MutationObserver(() => {
-    const nowDark = document.documentElement.classList.contains('dark')
-    const treeholeTheme = document.documentElement.getAttribute('data-theme')
-    if (nowDark && treeholeTheme !== 'night') {
-      app.setTheme('night')
-    } else if (!nowDark && treeholeTheme !== 'day') {
-      app.setTheme('day')
-    }
-  })
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 })
 </script>
 
