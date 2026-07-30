@@ -1,4 +1,4 @@
-import type { z } from 'astro/zod';
+import { z } from 'zod';
 
 export interface MdxComponentDefinition<Props = Record<string, unknown>> {
   name: string;

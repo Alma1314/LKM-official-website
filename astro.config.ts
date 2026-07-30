@@ -64,6 +64,28 @@ export default defineConfig({
     icon({
       include: {
         tabler: ['*'],
+        'material-symbols': [
+          'book-2-outline-rounded',
+          'calendar-today-outline-rounded',
+          'check-circle',
+          'chevron-left-rounded',
+          'chevron-right-rounded',
+          'close',
+          'copyright-outline-rounded',
+          'edit-calendar-outline-rounded',
+          'home-outline-rounded',
+          'keyboard-arrow-down-rounded',
+          'keyboard-arrow-up-rounded',
+          'menu-rounded',
+          'more-horiz',
+          'notes-rounded',
+          'palette-outline',
+          'schedule-outline-rounded',
+          'tag-rounded',
+        ],
+        'fa6-brands': ['creative-commons'],
+        'fa6-regular': ['address-card'],
+        'fa6-solid': ['arrow-up-right-from-square'],
         'flat-color-icons': [
           'template',
           'gallery',

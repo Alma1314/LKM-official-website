@@ -58,7 +58,14 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
     <SiteVerification />
     <Analytics />
 
+    <!-- 字体预连接：减少 Google Fonts DNS/TLS 延迟 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" />
+    <!-- Iconify API 预连接 -->
+    <link rel="preconnect" href="https://api.iconify.design" />
+    <link rel="preconnect" href="https://api.simplesvg.com" />
+    <link rel="preconnect" href="https://api.unisvg.com" />
 
     <!-- 注释下面这行以禁用 View Transitions -->
     <ClientRouter fallback="swap" />

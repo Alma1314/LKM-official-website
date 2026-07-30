@@ -5,6 +5,7 @@ export type { EditorMountProps } from './components/core/EditorMount';
 // engine — 纯函数
 export { getEditorExtensions } from './engine/extensions/index';
 export { exportMdx, importMdx } from './engine/mdx/index';
+export type { ImportResult } from './engine/mdx/import-mdx';
 export type {
   EditorMode,
   SaveStatus,
