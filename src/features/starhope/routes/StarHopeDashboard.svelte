@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { authStore } from '../stores/auth.svelte';
-  import { questionBankStore } from '../stores/question-bank.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
+  import { questionBankStore } from '~/features/starhope/stores/question-bank.svelte';
 
   let questionCount = $state(0);
   let folderCount = $state(0);

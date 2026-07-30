@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { gradeOptions, majorOptions, interestOptions } from '../../data/onboarding-tags';
+import { gradeOptions, majorOptions, interestOptions } from '~/features/auth/data/onboarding-tags';
 import { Icon } from '@iconify/vue';
 
 const selectedGrade = ref('');

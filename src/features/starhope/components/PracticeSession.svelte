@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { practiceStore } from '../../stores/practice.svelte';
-  import { navigation } from '../../stores/navigation.svelte';
+  import { practiceStore } from '~/features/starhope/stores/practice.svelte';
+  import { navigation } from '~/features/starhope/stores/navigation.svelte';
 
   interface Props {
     onExit: () => void;

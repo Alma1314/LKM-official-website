@@ -1,5 +1,6 @@
-import { db, type AiAgent, type AiMessage } from './db.svelte';
-import { authStore } from './auth.svelte';
+import { db } from '~/features/starhope/stores/db.svelte';
+import type { AiAgent, AiMessage } from '~/features/starhope/types';
+import { authStore } from '~/features/starhope/stores/auth.svelte';
 
 class AiStore {
   agents = $state<AiAgent[]>([]);
@@ -7,21 +8,27 @@ class AiStore {
   messages = $state<AiMessage[]>([]);
   isGenerating = $state(false);
   streamContent = $state('');
+  error = $state<string | null>(null);
 
   get currentAgent() {
     return this.agents.find((a) => a.id === this.currentAgentId) ?? null;
   }
 
   async loadAgents() {
-    if (!authStore.currentUser) return;
-    this.agents = await db.aiAgents.where('userId').equals(authStore.currentUser.id).toArray();
-    // 如果没有 Agent，创建默认的
-    if (this.agents.length === 0) {
-      await this.createDefaultAgent();
-    }
-    if (!this.currentAgentId && this.agents.length > 0) {
-      this.currentAgentId = this.agents[0].id;
-      await this.loadMessages();
+    try {
+      if (!authStore.currentUser) return;
+      this.agents = await db.aiAgents.where('userId').equals(authStore.currentUser.id).toArray();
+      // 如果没有 Agent，创建默认的
+      if (this.agents.length === 0) {
+        await this.createDefaultAgent();
+      }
+      if (!this.currentAgentId && this.agents.length > 0) {
+        this.currentAgentId = this.agents[0].id;
+        await this.loadMessages();
+      }
+    } catch (e) {
+      this.error = '加载 AI 助手失败';
+      console.error('loadAgents failed:', e);
     }
   }
 
@@ -44,29 +51,44 @@ class AiStore {
   }
 
   async createAgent(data: Omit<AiAgent, 'id' | 'userId' | 'createdAt'>) {
-    const agent: AiAgent = {
-      ...data,
-      id: crypto.randomUUID(),
-      userId: authStore.currentUser!.id,
-      createdAt: new Date().toISOString(),
-    };
-    await db.aiAgents.put(agent);
-    await this.loadAgents();
-    return agent;
+    try {
+      const agent: AiAgent = {
+        ...data,
+        id: crypto.randomUUID(),
+        userId: authStore.currentUser!.id,
+        createdAt: new Date().toISOString(),
+      };
+      await db.aiAgents.put(agent);
+      await this.loadAgents();
+      return agent;
+    } catch (e) {
+      this.error = '创建 AI 助手失败';
+      console.error('createAgent failed:', e);
+    }
   }
 
   async updateAgent(id: string, data: Partial<AiAgent>) {
-    await db.aiAgents.update(id, data);
-    await this.loadAgents();
+    try {
+      await db.aiAgents.update(id, data);
+      await this.loadAgents();
+    } catch (e) {
+      this.error = '更新 AI 助手失败';
+      console.error('updateAgent failed:', e);
+    }
   }
 
   async deleteAgent(id: string) {
-    await db.aiAgents.delete(id);
-    await db.aiMessages.where('agentId').equals(id).delete();
-    await this.loadAgents();
-    if (this.currentAgentId === id) {
-      this.currentAgentId = this.agents[0]?.id ?? null;
-      await this.loadMessages();
+    try {
+      await db.aiAgents.delete(id);
+      await db.aiMessages.where('agentId').equals(id).delete();
+      await this.loadAgents();
+      if (this.currentAgentId === id) {
+        this.currentAgentId = this.agents[0]?.id ?? null;
+        await this.loadMessages();
+      }
+    } catch (e) {
+      this.error = '删除 AI 助手失败';
+      console.error('deleteAgent failed:', e);
     }
   }
 
@@ -76,11 +98,16 @@ class AiStore {
   }
 
   async loadMessages() {
-    if (!this.currentAgentId) {
-      this.messages = [];
-      return;
+    try {
+      if (!this.currentAgentId) {
+        this.messages = [];
+        return;
+      }
+      this.messages = await db.aiMessages.where('agentId').equals(this.currentAgentId).sortBy('timestamp');
+    } catch (e) {
+      this.error = '加载消息失败';
+      console.error('loadMessages failed:', e);
     }
-    this.messages = await db.aiMessages.where('agentId').equals(this.currentAgentId).sortBy('timestamp');
   }
 
   async sendMessage(content: string, attachments?: { name: string; data: string; type: string }[]) {

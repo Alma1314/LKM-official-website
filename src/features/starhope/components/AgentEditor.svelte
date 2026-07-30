@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { aiStore } from '../../stores/ai.svelte';
-  import type { AiAgent } from '../../stores/db.svelte';
+  import { aiStore } from '~/features/starhope/stores/ai.svelte';
+  import type { AiAgent } from '~/features/starhope/types';
 
   interface Props {
     agent: AiAgent | null;

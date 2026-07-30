@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { questionBankStore } from '../stores/question-bank.svelte';
-  import { practiceStore, type PracticeConfig } from '../stores/practice.svelte';
-  import { navigation } from '../stores/navigation.svelte';
-  import PracticeSession from '../components/starhope/PracticeSession.svelte';
+  import { questionBankStore } from '~/features/starhope/stores/question-bank.svelte';
+  import { practiceStore, type PracticeConfig } from '~/features/starhope/stores/practice.svelte';
+  import { navigation } from '~/features/starhope/stores/navigation.svelte';
+  import PracticeSession from '~/features/starhope/components/PracticeSession.svelte';
 
   onMount(() => {
     questionBankStore.loadQuestions();

@@ -1,13 +1,6 @@
 ---
 import TimelineItem from '~/ui/patterns/TimelineItem.astro';
-
-interface TimelineData {
-  year: string;
-  title: string;
-  description: string;
-  iconColor?: string;
-  iconName?: string;
-}
+import type { TimelineData } from '~/core/types';
 
 interface Props {
   items: TimelineData[];

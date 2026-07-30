@@ -18,6 +18,8 @@ import rehypeKatex from 'rehype-katex';
 import lilypond from 'astro-lilypond';
 import mermaid from 'astro-mermaid';
 import type { AstroIntegration } from 'astro';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
 import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
@@ -268,7 +270,9 @@ export default defineConfig({
       transformer: 'postcss',
     },
     resolve: {
-      alias: {},
+      alias: {
+        '~': path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'src'),
+      },
     },
   },
 });

@@ -1,4 +1,5 @@
-import { db, type LocalUser } from './db.svelte';
+import { db } from '~/features/starhope/stores/db.svelte';
+import type { LocalUser } from '~/features/starhope/types';
 
 class AuthStore {
   currentUser = $state<LocalUser | null>(null);

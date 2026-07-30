@@ -129,9 +129,9 @@ import { ref, computed } from 'vue';
 import { DEMO_ACCOUNTS } from '~/features/auth/data/demo-accounts';
 import { useAuth } from '~/features/auth/composables/useAuth';
 
-const props = defineProps<{
-  onSuccess: (msg: string) => void;
-  onError: (msg: string) => void;
+const emit = defineEmits<{
+  (e: 'success', msg: string): void;
+  (e: 'error', msg: string): void;
 }>();
 
 const DUMMY_TOTP_SECRET = 'JBSWY3DPEHPK3PXP';
@@ -176,7 +176,7 @@ function handleTOTPSubmit() {
     state.tempSession = null;
     state.passwordAttempts = 0;
     state.lockedUntil = null;
-    props.onSuccess('验证通过，登录成功');
+    emit('success','验证通过，登录成功');
   } else if (totpAttempts.value >= 3) {
     totpError.value = '验证码错误次数过多，请使用备用恢复码';
   } else {
@@ -193,7 +193,7 @@ function handleRecoverySubmit() {
     state.tempSession = null;
     state.passwordAttempts = 0;
     state.lockedUntil = null;
-    props.onSuccess('恢复码验证通过，登录成功。请在设置中重新绑定 2FA。');
+    emit('success','恢复码验证通过，登录成功。请在设置中重新绑定 2FA。');
   } else {
     recoveryError.value = '恢复码无效，请重试';
   }
@@ -220,6 +220,6 @@ function handleRecoveryConfirm() {
   state.tempSession = null;
   state.passwordAttempts = 0;
   state.lockedUntil = null;
-  props.onSuccess('2FA 绑定完成，登录成功');
+  emit('success','2FA 绑定完成，登录成功');
 }
 </script>

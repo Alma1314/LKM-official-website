@@ -1,5 +1,6 @@
-import { db, type Question, type PracticeSession } from './db.svelte';
-import { authStore } from './auth.svelte';
+import { db } from '~/features/starhope/stores/db.svelte';
+import type { Question, PracticeSession } from '~/features/starhope/types';
+import { authStore } from '~/features/starhope/stores/auth.svelte';
 
 export interface PracticeConfig {
   questionIds: string[];
@@ -16,6 +17,7 @@ class PracticeStore {
   questions = $state<Question[]>([]);
   elapsedSeconds = $state(0);
   timerInterval = $state<ReturnType<typeof setInterval> | null>(null);
+  error = $state<string | null>(null);
 
   get totalQuestions() {
     return this.questions.length;
@@ -40,39 +42,49 @@ class PracticeStore {
   }
 
   async startPractice(config: PracticeConfig) {
-    if (!authStore.currentUser) return;
-    this.questions = (await db.questions.bulkGet(config.questionIds)) as Question[];
-    this.questions = this.questions.filter(Boolean);
+    try {
+      if (!authStore.currentUser) return;
+      this.questions = (await db.questions.bulkGet(config.questionIds)) as Question[];
+      this.questions = this.questions.filter(Boolean);
 
-    const session: PracticeSession = {
-      id: crypto.randomUUID(),
-      userId: authStore.currentUser.id,
-      type: config.type,
-      mode: config.mode,
-      questionIds: this.questions.map((q) => q.id),
-      answers: {},
-      status: 'ongoing',
-      startedAt: new Date().toISOString(),
-      timeLimit: config.timeLimit,
-      passingGrade: config.passingGrade,
-    };
-    await db.practiceSessions.put(session);
-    this.currentSession = session;
-    this.currentIndex = 0;
-    this.elapsedSeconds = 0;
-    this.loadCurrentQuestion();
-    this.startTimer();
+      const session: PracticeSession = {
+        id: crypto.randomUUID(),
+        userId: authStore.currentUser.id,
+        type: config.type,
+        mode: config.mode,
+        questionIds: this.questions.map((q) => q.id),
+        answers: {},
+        status: 'ongoing',
+        startedAt: new Date().toISOString(),
+        timeLimit: config.timeLimit,
+        passingGrade: config.passingGrade,
+      };
+      await db.practiceSessions.put(session);
+      this.currentSession = session;
+      this.currentIndex = 0;
+      this.elapsedSeconds = 0;
+      this.loadCurrentQuestion();
+      this.startTimer();
+    } catch (e) {
+      this.error = '开始练习失败';
+      console.error('startPractice failed:', e);
+    }
   }
 
   async resumeSession(sessionId: string) {
-    const session = await db.practiceSessions.get(sessionId);
-    if (!session) return;
-    this.currentSession = session;
-    this.questions = (await db.questions.bulkGet(session.questionIds)) as Question[];
-    this.questions = this.questions.filter(Boolean);
-    this.currentIndex = 0;
-    this.loadCurrentQuestion();
-    this.startTimer();
+    try {
+      const session = await db.practiceSessions.get(sessionId);
+      if (!session) return;
+      this.currentSession = session;
+      this.questions = (await db.questions.bulkGet(session.questionIds)) as Question[];
+      this.questions = this.questions.filter(Boolean);
+      this.currentIndex = 0;
+      this.loadCurrentQuestion();
+      this.startTimer();
+    } catch (e) {
+      this.error = '恢复练习失败';
+      console.error('resumeSession failed:', e);
+    }
   }
 
   setAnswer(answer: string | string[]) {
@@ -122,38 +134,48 @@ class PracticeStore {
   }
 
   async submitExam() {
-    if (!this.currentSession) return;
-    // 阅卷模式下批量批改所有题目
-    if (this.currentSession.mode === 'batch') {
-      for (const q of this.questions) {
-        const userAnswer = this.currentSession.answers[q.id];
-        if (!userAnswer) continue;
-        const correctAnswer = q.answer;
-        let correct = false;
-        if (Array.isArray(correctAnswer) && Array.isArray(userAnswer)) {
-          const sorted1 = [...correctAnswer].sort();
-          const sorted2 = [...userAnswer].sort();
-          correct = sorted1.length === sorted2.length && sorted1.every((v, i) => v === sorted2[i]);
-        } else if (typeof correctAnswer === 'string' && typeof userAnswer === 'string') {
-          correct = correctAnswer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
+    try {
+      if (!this.currentSession) return;
+      // 阅卷模式下批量批改所有题目
+      if (this.currentSession.mode === 'batch') {
+        for (const q of this.questions) {
+          const userAnswer = this.currentSession.answers[q.id];
+          if (!userAnswer) continue;
+          const correctAnswer = q.answer;
+          let correct = false;
+          if (Array.isArray(correctAnswer) && Array.isArray(userAnswer)) {
+            const sorted1 = [...correctAnswer].sort();
+            const sorted2 = [...userAnswer].sort();
+            correct = sorted1.length === sorted2.length && sorted1.every((v, i) => v === sorted2[i]);
+          } else if (typeof correctAnswer === 'string' && typeof userAnswer === 'string') {
+            correct = correctAnswer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
+          }
+          if (!this.currentSession.results) this.currentSession.results = {};
+          this.currentSession.results[q.id] = { correct };
         }
-        if (!this.currentSession.results) this.currentSession.results = {};
-        this.currentSession.results[q.id] = { correct };
       }
-    }
 
-    this.currentSession.status = 'completed';
-    this.currentSession.completedAt = new Date().toISOString();
-    await db.practiceSessions.put(this.currentSession);
-    this.stopTimer();
-    return this.currentSession;
+      this.currentSession.status = 'completed';
+      this.currentSession.completedAt = new Date().toISOString();
+      await db.practiceSessions.put(this.currentSession);
+      this.stopTimer();
+      return this.currentSession;
+    } catch (e) {
+      this.error = '提交考试失败';
+      console.error('submitExam failed:', e);
+    }
   }
 
   async pauseSession() {
-    if (!this.currentSession) return;
-    this.currentSession.status = 'paused';
-    await db.practiceSessions.put(this.currentSession);
-    this.stopTimer();
+    try {
+      if (!this.currentSession) return;
+      this.currentSession.status = 'paused';
+      await db.practiceSessions.put(this.currentSession);
+      this.stopTimer();
+    } catch (e) {
+      this.error = '暂停练习失败';
+      console.error('pauseSession failed:', e);
+    }
   }
 
   getSessionResult() {
@@ -193,30 +215,42 @@ class PracticeStore {
   }
 
   async loadSessions(type?: 'practice' | 'exam') {
-    if (!authStore.currentUser) return [];
-    let query = db.practiceSessions.where('userId').equals(authStore.currentUser.id);
-    if (type) query = query.and((s) => s.type === type);
-    return query.reverse().sortBy('startedAt');
+    try {
+      if (!authStore.currentUser) return [];
+      let query = db.practiceSessions.where('userId').equals(authStore.currentUser.id);
+      if (type) query = query.and((s) => s.type === type);
+      return query.reverse().sortBy('startedAt');
+    } catch (e) {
+      this.error = '加载练习记录失败';
+      console.error('loadSessions failed:', e);
+      return [];
+    }
   }
 
   async loadWrongQuestions(): Promise<Question[]> {
-    if (!authStore.currentUser) return [];
-    const sessions = await db.practiceSessions
-      .where('userId')
-      .equals(authStore.currentUser.id)
-      .filter((s) => s.results !== undefined && s.status === 'completed')
-      .toArray();
+    try {
+      if (!authStore.currentUser) return [];
+      const sessions = await db.practiceSessions
+        .where('userId')
+        .equals(authStore.currentUser.id)
+        .filter((s) => s.results !== undefined && s.status === 'completed')
+        .toArray();
 
-    const wrongIds = new Set<string>();
-    for (const s of sessions) {
-      if (!s.results) continue;
-      for (const [id, result] of Object.entries(s.results)) {
-        if (!result.correct) wrongIds.add(id);
+      const wrongIds = new Set<string>();
+      for (const s of sessions) {
+        if (!s.results) continue;
+        for (const [id, result] of Object.entries(s.results)) {
+          if (!result.correct) wrongIds.add(id);
+        }
       }
-    }
 
-    const questions = (await db.questions.bulkGet([...wrongIds])) as Question[];
-    return questions.filter(Boolean);
+      const questions = (await db.questions.bulkGet([...wrongIds])) as Question[];
+      return questions.filter(Boolean);
+    } catch (e) {
+      this.error = '加载错题失败';
+      console.error('loadWrongQuestions failed:', e);
+      return [];
+    }
   }
 
   reset() {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { questionBankStore } from '../../stores/question-bank.svelte';
-  import type { Folder } from '../../stores/db.svelte';
+  import { questionBankStore } from '~/features/starhope/stores/question-bank.svelte';
+  import type { Folder } from '~/features/starhope/types';
 
   onMount(() => {
     questionBankStore.loadFolders();

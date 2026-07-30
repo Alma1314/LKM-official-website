@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { authStore } from '../../stores/auth.svelte';
-  import AuthGuard from '../../hooks/AuthGuard.svelte';
-  import StarHopeLogin from '../../routes/StarHopeLogin.svelte';
-  import StarHopeDashboard from '../../routes/StarHopeDashboard.svelte';
-  import StarHopeBank from '../../routes/StarHopeBank.svelte';
-  import StarHopePractice from '../../routes/StarHopePractice.svelte';
-  import StarHopeExam from '../../routes/StarHopeExam.svelte';
-  import StarHopeWrongBook from '../../routes/StarHopeWrongBook.svelte';
-  import StarHopeAi from '../../routes/StarHopeAi.svelte';
-  import StarHopeReader from '../../routes/StarHopeReader.svelte';
-  import StarHopePlugins from '../../routes/StarHopePlugins.svelte';
-  import StarHopeSettings from '../../routes/StarHopeSettings.svelte';
-  import { navigation, type StarHopeRoute } from '../../stores/navigation.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
+  import AuthGuard from '~/features/starhope/hooks/AuthGuard.svelte';
+  import StarHopeLogin from '~/features/starhope/routes/StarHopeLogin.svelte';
+  import StarHopeDashboard from '~/features/starhope/routes/StarHopeDashboard.svelte';
+  import StarHopeBank from '~/features/starhope/routes/StarHopeBank.svelte';
+  import StarHopePractice from '~/features/starhope/routes/StarHopePractice.svelte';
+  import StarHopeExam from '~/features/starhope/routes/StarHopeExam.svelte';
+  import StarHopeWrongBook from '~/features/starhope/routes/StarHopeWrongBook.svelte';
+  import StarHopeAi from '~/features/starhope/routes/StarHopeAi.svelte';
+  import StarHopeReader from '~/features/starhope/routes/StarHopeReader.svelte';
+  import StarHopePlugins from '~/features/starhope/routes/StarHopePlugins.svelte';
+  import StarHopeSettings from '~/features/starhope/routes/StarHopeSettings.svelte';
+  import { navigation, type StarHopeRoute } from '~/features/starhope/stores/navigation.svelte';
 
-  const { current } = navigation;
+  const { currentRoute: current } = navigation;
 
   const routeTable: Record<StarHopeRoute, unknown> = {
     login: StarHopeLogin,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { practiceStore } from '../stores/practice.svelte';
-  import type { Question } from '../stores/db.svelte';
+  import { practiceStore } from '~/features/starhope/stores/practice.svelte';
+  import type { Question } from '~/features/starhope/types';
 
   onMount(() => {
     loadWrong();

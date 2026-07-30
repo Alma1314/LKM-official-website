@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { authStore } from '../stores/auth.svelte';
-  import StarHopeLogin from '../routes/StarHopeLogin.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
+  import StarHopeLogin from '~/features/starhope/routes/StarHopeLogin.svelte';
 
   let { children } = $props<{ children: import('svelte').Snippet }>();
 

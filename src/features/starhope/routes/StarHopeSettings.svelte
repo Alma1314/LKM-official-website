@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { authStore } from '../stores/auth.svelte';
-  import { db } from '../stores/db.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
+  import { db } from '~/features/starhope/stores/db.svelte';
 
   let exportStatus = $state('');
   let importStatus = $state('');

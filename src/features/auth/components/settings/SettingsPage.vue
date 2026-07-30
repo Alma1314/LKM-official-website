@@ -47,17 +47,17 @@
 
         <!-- Bindings -->
         <div v-if="state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <BindMethods :user="state.user" :onUpdate="handleUpdate" />
+          <BindMethods :user="state.user" @update="handleUpdate" />
         </div>
 
         <!-- 2FA -->
         <div v-if="state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <TwoFactorSetup :user="state.user" :onUpdate="handleUpdate" />
+          <TwoFactorSetup :user="state.user" @update="handleUpdate" />
         </div>
 
         <!-- Passkey -->
         <div v-if="state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <PasskeySetup :user="state.user" :onUpdate="handleUpdate" />
+          <PasskeySetup :user="state.user" @update="handleUpdate" />
         </div>
 
         <div class="flex gap-3 justify-between">

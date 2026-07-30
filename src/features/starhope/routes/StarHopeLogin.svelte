@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { authStore } from '../stores/auth.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
 
   let nickname = $state('');
   let account = $state('');

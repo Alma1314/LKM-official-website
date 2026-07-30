@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { navigation, navItems } from '../../stores/navigation.svelte';
-  import { authStore } from '../../stores/auth.svelte';
+  import { navigation } from '~/features/starhope/stores/navigation.svelte';
+  import { authStore } from '~/features/starhope/stores/auth.svelte';
 
   let { children } = $props<{ children: import('svelte').Snippet }>();
 
   function handleNav(route: string) {
-    navigation.navigate(route as typeof navigation.current);
+    navigation.navigate(route as typeof navigation.currentRoute);
   }
 </script>
 
@@ -18,10 +18,10 @@
     </div>
 
     <nav class="space-y-1">
-      {#each navItems as item}
+      {#each navigation.navItems as item}
         <button
           onclick={() => handleNav(item.route)}
-          class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 {navigation.current === item.route ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-3'}"
+          class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 {navigation.currentRoute === item.route ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-3'}"
         >
           <span class="text-base">{item.icon}</span>
           <span>{item.label}</span>

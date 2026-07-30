@@ -118,6 +118,27 @@ Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 - 布局组合使用具名插槽（named slots）
 - 新组件应放在对应的 feature 目录或 ui 层
 
+## CSS Strategy
+
+本项目使用 **Tailwind CSS v4** 作为主要样式方案（`src/core/styles/tailwind.css` 作为入口）。
+
+**优先级：**
+1. **Tailwind utility classes** — 首选方案，用于所有组件模板中
+2. **全局 CSS @layer components** — 用于可复用的复合类（如 `.btn`, `.btn-primary`, `.card-base`, `bg-card-bg`, `text-deep-text` 等），定义在 `tailwind.css` 和 `src/styles/main.css`
+3. **CSS Modules (`*.module.css`)** — 仅在复杂布局 Tailwind 不便表达时使用（如 Hero, Sidebar 的 grid/scroll 布局）
+4. **Scoped `<style>` — 最后手段，仅用于 CSS Module 无法满足的场景**
+
+**禁止：**
+- 在 `.vue`、`.svelte`、`.astro` 组件中使用 scoped `<style>` 块（Svelte scoped 可用但优先 Tailwind）
+- 使用 CSS-in-JS 库
+- 在组件模板中直接引用 CSS 变量（`var(--xxx)`），应使用对应的 Tailwind utility class
+
+**跨框架一致性：**
+- Astro `.astro`：使用 `class` 属性 + Tailwind
+- Vue `.vue`：使用 `class` 属性 + Tailwind
+- Svelte `.svelte`：使用 `class` 属性 + Tailwind
+- React `.tsx`：使用 `className` 属性 + Tailwind
+
 ## 图片处理
 
 `src/ui/primitives/Image.astro` 支持：

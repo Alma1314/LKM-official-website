@@ -119,6 +119,14 @@ export interface Content extends Omit<Headline, 'classes'>, Widget {
   callToAction?: CallToAction;
 }
 
+export interface TimelineData {
+  year: string;
+  title: string;
+  description: string;
+  iconName?: string;
+  iconColor?: string;
+}
+
 export interface Contact extends Omit<Headline, 'classes'>, Widget {
   inputs?: Array<{
     type: string;

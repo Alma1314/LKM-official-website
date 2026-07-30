@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { aiStore } from '../stores/ai.svelte';
-  import AgentEditor from '../components/starhope/AgentEditor.svelte';
-  import type { AiAgent } from '../stores/db.svelte';
+  import { aiStore } from '~/features/starhope/stores/ai.svelte';
+  import AgentEditor from '~/features/starhope/components/AgentEditor.svelte';
+  import type { AiAgent } from '~/features/starhope/types';
 
   onMount(() => {
     aiStore.loadAgents();

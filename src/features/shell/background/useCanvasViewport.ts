@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { getBackgroundPerformance, type BackgroundPerformance, type BackgroundQuality } from './useBackgroundCanvas';
+import { getBackgroundPerformance, type BackgroundPerformance, type BackgroundQuality, type Ripple } from './useBackgroundCanvas';
 
 export interface CanvasViewportMouse {
   x: number | null;
   y: number | null;
-}
-
-export interface ViewportRipple {
-  x: number;
-  y: number;
-  startTime: number;
 }
 
 export interface CanvasViewport {
@@ -17,7 +11,7 @@ export interface CanvasViewport {
   width: number;
   height: number;
   mouse: CanvasViewportMouse;
-  ripples: ViewportRipple[];
+  ripples: Ripple[];
   isVisible: boolean;
   reducedMotion: boolean;
   quality: BackgroundQuality;
@@ -32,7 +26,7 @@ export function useCanvasViewport(interactions: { mouse?: boolean; click?: boole
     getBackgroundPerformance()
   );
   const mouseRef = useRef<CanvasViewportMouse>({ x: null, y: null });
-  const ripplesRef = useRef<ViewportRipple[]>([]);
+  const ripplesRef = useRef<Ripple[]>([]);
 
   useEffect(() => {
     const el = containerRef.current;

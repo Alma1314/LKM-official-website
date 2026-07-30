@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Question } from '../../stores/db.svelte';
+  import type { Question } from '~/features/starhope/types';
 
   interface Props {
     question: Question;

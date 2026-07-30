@@ -47,8 +47,11 @@
 import { ref, computed } from 'vue';
 import type { LoginMethod, DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
+}>();
+
 const props = defineProps<{
-  onLogin: (method: LoginMethod, credentials: Record<string, string>) => Promise<void>;
   identifiedAccount: DemoUser;
 }>();
 
@@ -65,7 +68,7 @@ function handleSend(e: Event) {
 
 async function handleSimulateClick() {
   loading.value = true;
-  await props.onLogin('magic-link', { email: email.value });
+  emit('login', 'magic-link', { email: email.value });
   loading.value = false;
 }
 </script>

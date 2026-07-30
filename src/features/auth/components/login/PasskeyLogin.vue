@@ -18,8 +18,8 @@
 import { ref } from 'vue';
 import type { LoginMethod } from '~/types/auth';
 
-const props = defineProps<{
-  onLogin: (method: LoginMethod, credentials: Record<string, string>) => Promise<void>;
+const emit = defineEmits<{
+  (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
 }>();
 
 const loading = ref(false);
@@ -29,7 +29,7 @@ async function handleClick() {
   loading.value = true;
   errorMsg.value = '';
   await new Promise((r) => setTimeout(r, 1000));
-  await props.onLogin('passkey', {});
+  emit('login', 'passkey', {});
   loading.value = false;
 }
 </script>

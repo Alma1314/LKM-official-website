@@ -1,6 +1,6 @@
 <script lang="ts">
-  import StarHopeLayout from './starhope/StarHopeLayout.svelte';
-  import StarHopeRouter from './starhope/StarHopeRouter.svelte';
+  import StarHopeLayout from '~/features/starhope/components/StarHopeLayout.svelte';
+  import StarHopeRouter from '~/features/starhope/components/StarHopeRouter.svelte';
 </script>
 
 <div class="starhope-app min-h-screen bg-page-bg text-default">

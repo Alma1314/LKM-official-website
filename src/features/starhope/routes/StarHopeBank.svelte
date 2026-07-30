@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { questionBankStore } from '../stores/question-bank.svelte';
-  import QuestionCard from '../components/starhope/QuestionCard.svelte';
-  import QuestionEditor from '../components/starhope/QuestionEditor.svelte';
-  import FolderTree from '../components/starhope/FolderTree.svelte';
-  import type { Question } from '../stores/db.svelte';
+  import { questionBankStore } from '~/features/starhope/stores/question-bank.svelte';
+  import QuestionCard from '~/features/starhope/components/QuestionCard.svelte';
+  import QuestionEditor from '~/features/starhope/components/QuestionEditor.svelte';
+  import FolderTree from '~/features/starhope/components/FolderTree.svelte';
+  import type { Question } from '~/features/starhope/types';
 
   onMount(() => {
     questionBankStore.loadQuestions();

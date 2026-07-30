@@ -1,4 +1,4 @@
-import { reactive, provide, inject } from 'vue';
+import { reactive, provide, inject, watch } from 'vue';
 import type {
   AuthState,
   AuthContextType,
@@ -25,6 +25,32 @@ const initialState: AuthState = {
 
 export function useAuthProvider() {
   const state = reactive<AuthState>({ ...initialState });
+
+  // 从 localStorage 恢复状态
+  try {
+    const saved = localStorage.getItem('lkm-auth-state');
+    if (saved) {
+      const parsed = JSON.parse(saved) as AuthState;
+      if (parsed.user && parsed.isLoggedIn) {
+        Object.assign(state, parsed);
+      }
+    }
+  } catch {
+    localStorage.removeItem('lkm-auth-state');
+  }
+
+  // 状态变更时同步到 localStorage
+  watch(
+    () => ({ ...state }),
+    (val) => {
+      if (val.isLoggedIn && val.user) {
+        localStorage.setItem('lkm-auth-state', JSON.stringify(val));
+      } else {
+        localStorage.removeItem('lkm-auth-state');
+      }
+    },
+    { deep: true }
+  );
 
   function login(method: LoginMethod, credentials: Record<string, string>, account?: DemoUser): LoginResult {
     state.flow = 'logging_in';

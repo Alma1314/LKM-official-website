@@ -79,8 +79,8 @@ import { ref } from 'vue';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 import type { RegisterData } from '~/types/auth';
 
-const props = defineProps<{
-  onRegister: (type: 'local', data: RegisterData) => { success: boolean; error?: string };
+const emit = defineEmits<{
+  (e: 'register', type: 'local', data: RegisterData): void;
 }>();
 
 const username = ref('');
@@ -104,11 +104,7 @@ function validate(): boolean {
 function handleSubmit() {
   submitError.value = '';
   if (!validate()) return;
-  const result = props.onRegister('local', { username: username.value.trim(), password: password.value });
-  if (!result.success) {
-    submitError.value = result.error || '注册失败';
-    return;
-  }
+  emit('register', 'local', { username: username.value.trim(), password: password.value });
   submitted.value = true;
 }
 </script>

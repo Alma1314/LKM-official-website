@@ -38,21 +38,6 @@ export interface AuthState {
   trustedUntil: number | null;
 }
 
-export type AuthAction =
-  | { type: 'LOGIN_START'; method: LoginMethod }
-  | { type: 'LOGIN_SUCCESS'; user: DemoUser }
-  | { type: 'LOGIN_2FA_REQUIRED'; userId: string; method: LoginMethod }
-  | { type: 'LOGIN_2FA_SETUP_REQUIRED'; userId: string; method: LoginMethod }
-  | { type: 'LOGIN_2FA_PASSED' }
-  | { type: 'LOGIN_FAILED'; reason: string }
-  | { type: 'PASSWORD_ATTEMPT_FAILED' }
-  | { type: 'ACCOUNT_LOCKED'; until: number }
-  | { type: 'LOGOUT' }
-  | { type: 'UPDATE_USER'; user: DemoUser }
-  | { type: 'SET_FLOW'; flow: AuthFlow }
-  | { type: 'CLEAR_ERROR' }
-  | { type: 'TRUST_DEVICE'; until: number };
-
 export interface AuthContextType {
   state: AuthState;
   login: (method: LoginMethod, credentials: Record<string, string>, account?: DemoUser) => LoginResult;
@@ -68,7 +53,10 @@ export interface LoginResult {
   error?: string;
 }
 
-export type RegisterResult = LoginResult;
+export interface RegisterResult {
+  success: boolean;
+  error?: string;
+}
 
 export interface RegisterData {
   username: string;

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Question } from '../../stores/db.svelte';
-  import { questionBankStore } from '../../stores/question-bank.svelte';
+  import type { Question } from '~/features/starhope/types';
+  import { questionBankStore } from '~/features/starhope/stores/question-bank.svelte';
 
   interface Props {
     question: Question | null;
