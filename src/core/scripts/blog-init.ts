@@ -87,18 +87,21 @@ export function initCustomScrollbar() {
     element.setAttribute('data-scrollbar-initialized', 'true');
   };
 
-  const katexObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        processKatexElement(entry.target as HTMLElement);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    root: null,
-    rootMargin: '100px',
-    threshold: 0.1,
-  });
+  const katexObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          processKatexElement(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1,
+    }
+  );
 
   katexElements.forEach((element) => {
     katexObserver.observe(element);

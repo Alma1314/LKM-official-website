@@ -9,10 +9,7 @@
  * - TOC 隐藏/显示
  */
 
-import {
-  BANNER_HEIGHT,
-  BANNER_HEIGHT_EXTEND,
-} from '~/core/constants/constants';
+import { BANNER_HEIGHT, BANNER_HEIGHT_EXTEND } from '~/core/constants/constants';
 import { pathsEqual, url } from '~/core/utils/url-utils';
 
 const bannerEnabled = !!document.getElementById('banner-wrapper');
