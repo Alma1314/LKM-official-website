@@ -128,6 +128,37 @@ Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 
 Hero 图片使用 `loading="eager"` 和 `fetchpriority="high"`。
 
+## Icon 管理
+
+所有 icon 通过 `astro-icon` 本地 bundle，禁止运行时第三方 API 调用：
+
+- `astro.config.ts` 中 `icon.include` 配置了 `tabler: ['*']`、`material-symbols: ['*']`、`fa6-*`、`flat-color-icons` 等全部使用的 icon 集
+- `@iconify/svelte` 中的 `<Icon>` 也由 `astro-icon` 的 Vite 插件提供本地数据，不再发起 API 请求
+- 新增 icon 直接使用即可，无需额外配置（通配符已覆盖）
+
+## 性能规范
+
+### Icon
+
+- **禁止运行时 Iconify API 调用** — 所有 icon 必须通过 `astro-icon` 的 `include` 配置本地打包
+- `astro.config.ts` 的 `icon.include` 已覆盖 `tabler`、`material-symbols`、`fa6-*`、`flat-color-icons` 四个集合
+- 新增 icon 集时同步更新 `astro.config.ts` 的 `include` 列表
+
+### Vue `client:only` 组件
+
+- 使用 `client:only` 的 Vue 组件**必须包裹带 `min-height` 的容器**，防止挂载后内容注入造成 CLS
+- 推荐值：`style="min-height: 400px"`（列表/卡片类页面）
+
+### Vendor 拆分策略
+
+- 非全局使用的重量级依赖（`overlayscrollbars`、`photoswipe`）**不加入** `manualChunks` 统一 vendor chunk
+- 让其独立拆分为异步 chunk，仅在引用页面加载
+
+### CSS 加载
+
+- 全局样式的 preconnect 已添加到 `BaseLayout.astro`：Google Fonts、Iconify API、Unsplash
+- 所有页面使用 `BaseLayout` 或 `BlogLayout` 自动继承 preconnect
+
 ## 验证检查清单
 
 修改代码后，务必验证：
