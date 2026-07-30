@@ -1,8 +1,9 @@
-import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ComponentType } from 'react';
 import type { BackgroundId } from './backgrounds';
 import { BACKGROUNDS, DEFAULT_BACKGROUND } from './backgrounds';
+import { ReactErrorBoundary } from '~/core/errors';
 
 // 按 id 缓存 lazy() 以避免每次渲染都重新创建组件。
 const lazyCache = new Map<string, ReturnType<typeof lazy>>();
@@ -23,26 +24,6 @@ function getIsDark(): boolean {
 
 function getInitialBackground(): BackgroundId {
   return DEFAULT_BACKGROUND;
-}
-
-/** Canvas 背景组件的错误边界 */
-class BackgroundErrorBoundary extends Component<
-  { children: React.ReactNode; fallback: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: React.ReactNode; fallback: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
 }
 
 export default function BackgroundSwitcher() {
@@ -236,11 +217,11 @@ export default function BackgroundSwitcher() {
       {/* 背景 Canvas 层 */}
       <div style={{ pointerEvents: 'auto', position: 'absolute', inset: 0, overflow: 'hidden' }}>
         {heroVisible && ActiveComponent && (
-          <BackgroundErrorBoundary fallback={<div className="absolute inset-0 bg-card-bg" />}>
+          <ReactErrorBoundary fallback={<div className="absolute inset-0 bg-card-bg" />}>
             <Suspense fallback={<div className="absolute inset-0 bg-card-bg" />}>
               <ActiveComponent key={`${currentBg}-${isDark ? 'dark' : 'light'}`} className="" {...colorProps} />
             </Suspense>
-          </BackgroundErrorBoundary>
+          </ReactErrorBoundary>
         )}
       </div>
 

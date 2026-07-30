@@ -3,21 +3,35 @@ import { Icon } from 'astro-icon/components';
 import Button from '~/ui/primitives/Button.astro';
 import Headline from '~/ui/primitives/Headline.astro';
 import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
+import Image from '~/ui/primitives/Image.astro';
 import type { Features as Props } from '~/core/types';
+
+// variant:
+//   'card'  — 保留的 Features2 卡片风格
+//   'inline' — 保留的 Features3 内联列表风格
+//
+// 额外 props（仅 inline 用）：
+//   image, isBeforeContent, isAfterContent
 
 const {
   title = await Astro.slots.render('title'),
   subtitle = await Astro.slots.render('subtitle'),
   tagline = await Astro.slots.render('tagline'),
+  image,
   items = [],
-  columns = 3,
+  columns,
   defaultIcon,
+  isBeforeContent,
+  isAfterContent,
+  variant = 'card',
 
   id,
   isDark = false,
   classes = {},
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
+
+const isInline = variant === 'inline';
 
 const columnsClass =
   columns === 4
@@ -27,45 +41,85 @@ const columnsClass =
       : columns === 2
         ? 'sm:grid-cols-2'
         : '';
+
+function iconClass(defaultIconClass: string) {
+  return isInline ? 'flex-shrink-0 mt-0.5 mr-2 rtl:mr-0 rtl:ml-2 w-5 h-5 text-primary' : defaultIconClass;
+}
+
+function itemContainerClass() {
+  return isInline
+    ? 'flex flex-row max-w-full sm:max-w-md'
+    : 'relative flex flex-col rounded-[12px] bg-page-bg border border-surface-3 p-6 card-hover';
+}
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper
+  id={id}
+  isDark={isDark}
+  containerClass={`${isInline && isBeforeContent ? 'md:pb-8 lg:pb-12' : ''} ${isInline && isAfterContent ? 'pt-0 md:pt-0 lg:pt-0' : ''} max-w-7xl mx-auto ${classes?.container ?? ''}`}
+  bg={bg}
+>
   <Headline title={title} subtitle={subtitle} tagline={tagline} classes={classes?.headline as Record<string, string>} />
+
+  <!-- inline 变体：上方的图片 -->
+  {
+    isInline && image && (
+      <div aria-hidden="true" class="aspect-w-16 aspect-h-7">
+        <div class="w-full h-80 object-cover rounded-[16px] mx-auto bg-surface-3 overflow-hidden">
+          {typeof image === 'string' ? (
+            <Fragment set:html={image} />
+          ) : (
+            <Image
+              class="w-full h-80 object-cover rounded-[16px] mx-auto bg-surface-3 overflow-hidden"
+              width={768}
+              height={320}
+              widths={[400, 768]}
+              layout="fullWidth"
+              format="webp"
+              {...image}
+            />
+          )}
+        </div>
+      </div>
+    )
+  }
 
   {
     items.length > 0 && (
-      <div class:list={['grid gap-5 md:gap-6 gap-x-8', columnsClass]}>
+      <div class:list={['grid mx-auto gap-8 md:gap-y-12', isInline ? 'mt-12' : 'gap-5 md:gap-6 gap-x-8', columnsClass]}>
         {items.map(({ title: itemTitle, description, icon, callToAction }) => (
-          <div class="relative flex flex-col rounded-[12px] bg-page-bg border border-surface-3 p-6  card-hover">
-            {(icon || defaultIcon) &&
-              (/^tabler:/.test(icon || defaultIcon || '') ? (
-                <Icon name={icon || defaultIcon} class="mb-6 w-12 h-12 text-primary" />
-              ) : /^(https?:)/.test(icon || defaultIcon || '') ? (
-                <img
-                  src={icon || defaultIcon || ''}
-                  alt={itemTitle || 'Avatar'}
-                  class="mb-6 w-12 h-12 rounded-full object-cover shadow-sm border border-surface-3"
-                />
-              ) : /^\//.test(icon || defaultIcon || '') ? (
-                <img
-                  src={icon || defaultIcon || ''}
-                  alt={itemTitle || 'Avatar'}
-                  class="mb-6 w-12 h-12 rounded-full object-cover shadow-sm border border-surface-3"
-                />
-              ) : (
-                <img
-                  src={icon || defaultIcon || ''}
-                  alt={itemTitle || 'Avatar'}
-                  class="mb-6 w-12 h-12 rounded-full object-cover shadow-sm border border-surface-3"
-                />
-              ))}
-            <div class="text-[17px] font-semibold text-deep-text leading-snug">{itemTitle}</div>
-            {description && <p class="text-[14px] text-text-muted mt-2 leading-relaxed" set:html={description} />}
-            {callToAction && (
-              <div class="mt-2">
-                <Button {...callToAction} />
+          <div class={itemContainerClass()}>
+            <div class={isInline ? 'flex flex-row max-w-full sm:max-w-md' : ''}>
+              {(icon || defaultIcon) && (
+                <div class="flex justify-center">
+                  {isInline ? (
+                    <Icon name={icon || defaultIcon} class={iconClass('')} />
+                  ) : /^tabler:/.test(icon || defaultIcon || '') ? (
+                    <Icon name={icon || defaultIcon} class="mb-6 w-12 h-12 text-primary" />
+                  ) : (
+                    <img
+                      src={icon || defaultIcon || ''}
+                      alt={itemTitle || 'Avatar'}
+                      class="mb-6 w-12 h-12 rounded-full object-cover shadow-sm border border-surface-3"
+                    />
+                  )}
+                </div>
+              )}
+              <div class={isInline ? 'mt-0.5' : ''}>
+                {itemTitle && <h3 class="text-[17px] font-semibold text-deep-text leading-snug">{itemTitle}</h3>}
+                {description && (
+                  <p
+                    class:list={[{ 'mt-2': !!itemTitle }, 'text-[14px] text-text-muted leading-relaxed']}
+                    set:html={description}
+                  />
+                )}
+                {callToAction && (
+                  <div class:list={[{ 'mt-2': !isInline, 'mt-3': isInline && (itemTitle || description) }]}>
+                    {isInline ? <Button variant="link" {...callToAction} /> : <Button {...callToAction} />}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>

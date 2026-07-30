@@ -1,7 +1,49 @@
 import projectConfigRaw from 'virtual:config';
 
+// virtual:config 运行时数据无编译期类型 —— 在此唯一断言一次
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const projectConfig: Record<string, any> = projectConfigRaw as any;
+const projectConfig = projectConfigRaw as Record<string, any>;
+
+// ── 解析层中间类型（仅内部使用） ──
+
+interface RawOGImage {
+  url?: string;
+  width?: number;
+  height?: number;
+}
+
+interface RawMetadata {
+  title?: { default?: string; template?: string };
+  description?: string;
+  robots?: { index?: boolean; follow?: boolean };
+  openGraph?: { type?: string; site_name?: string; images?: RawOGImage[] };
+  twitter?: { handle?: string; site?: string; cardType?: string };
+}
+
+interface RawBlogPost {
+  isEnabled?: boolean;
+  permalink?: string;
+  robots?: { index?: boolean; follow?: boolean };
+}
+
+interface RawBlogList {
+  isEnabled?: boolean;
+  pathname?: string;
+  robots?: { index?: boolean; follow?: boolean };
+}
+
+interface RawBlog {
+  isEnabled?: boolean;
+  postsPerPage?: number;
+  isRelatedPostsEnabled?: boolean;
+  relatedPostsCount?: number;
+  post?: RawBlogPost;
+  list?: RawBlogList;
+  category?: RawBlogList;
+  tag?: RawBlogList;
+}
+
+// ── 公共配置类型 ──
 
 interface SharedSiteConfig {
   name: string;
@@ -45,9 +87,9 @@ interface SharedAnalyticsConfig {
 
 const site = projectConfig.site ?? {};
 const i18n = projectConfig.i18n ?? {};
-const metadata = projectConfig.metadata ?? {};
+const metadata = (projectConfig.metadata ?? {}) as RawMetadata;
 const apps = projectConfig.apps ?? {};
-const blog = apps.blog ?? {};
+const blog = (apps.blog ?? {}) as RawBlog;
 const uiCfg = projectConfig.ui ?? {};
 const analyticsCfg = projectConfig.analytics ?? {};
 
@@ -77,10 +119,10 @@ export const METADATA: MetaDataConfig = {
   openGraph: {
     type: metadata.openGraph?.type ?? 'website',
     site_name: metadata.openGraph?.site_name,
-    images: (metadata.openGraph?.images as Array<Record<string, unknown>> | undefined)?.map((img) => ({
-      url: img.url as string,
-      width: img.width as number,
-      height: img.height as number,
+    images: metadata.openGraph?.images?.map((img) => ({
+      url: img.url ?? '',
+      width: img.width ?? 0,
+      height: img.height ?? 0,
     })),
   },
   twitter: {

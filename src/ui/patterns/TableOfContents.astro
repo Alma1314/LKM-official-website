@@ -17,7 +17,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       <h3 class="text-[12px] font-semibold uppercase tracking-wider text-text-muted mb-3">目录</h3>
       <ul class="space-y-2 text-sm text-deep-text/60">
         {filteredHeadings.map((heading) => (
-          <li class={`toc-item transition-all duration-200 ${heading.depth === 3 ? 'pl-4' : ''}`}>
+          <li class:list={['toc-item transition-all duration-200', { 'pl-4': heading.depth === 3 }]}>
             <a
               href={`#${heading.slug}`}
               class="hover:text-primary block py-0.5 text-[14px] text-text-muted"

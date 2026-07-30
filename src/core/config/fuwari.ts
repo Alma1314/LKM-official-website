@@ -9,13 +9,9 @@ import type {
 import { LinkPreset } from '~/types/config';
 import projectConfigRaw from 'virtual:config';
 
-interface FuwariConfig {
-  site?: Record<string, unknown>;
-  navbar?: { links: FuwariLinkItem[] };
-  profile?: Record<string, unknown>;
-  license?: Record<string, unknown>;
-  expressiveCode?: { theme: string };
-}
+// virtual:config 运行时数据没有编译期类型 —— 在此唯一断言一次
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const projectConfig = projectConfigRaw as Record<string, any>;
 
 interface FuwariLinkItem {
   preset?: string;
@@ -25,9 +21,48 @@ interface FuwariLinkItem {
   children?: FuwariLinkItem[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const projectConfig: Record<string, any> = projectConfigRaw as any;
-const cfg = (projectConfig.fuwari || {}) as FuwariConfig;
+interface RawCredit {
+  enable?: boolean;
+  text?: string;
+  url?: string;
+}
+
+interface RawBanner {
+  enable?: boolean;
+  src?: string;
+  position?: string;
+  credit?: RawCredit;
+}
+
+interface RawThemeColor {
+  hue?: number;
+  fixed?: boolean;
+}
+
+interface RawToc {
+  enable?: boolean;
+  depth?: number;
+}
+
+interface RawSiteConfig {
+  title?: string;
+  subtitle?: string;
+  lang?: string;
+  themeColor?: RawThemeColor;
+  banner?: RawBanner;
+  toc?: RawToc;
+  favicon?: unknown[];
+}
+
+const cfg = projectConfig.fuwari as
+  | {
+      site?: RawSiteConfig;
+      navbar?: { links: FuwariLinkItem[] };
+      profile?: Record<string, unknown>;
+      license?: Record<string, unknown>;
+      expressiveCode?: { theme: string };
+    }
+  | undefined;
 
 function presetFromString(s: string): LinkPreset {
   switch (s) {
@@ -42,43 +77,33 @@ function presetFromString(s: string): LinkPreset {
   }
 }
 
-const siteCfg = cfg.site ?? {};
-const navCfg = cfg.navbar ?? { links: [] };
-const profileCfg = cfg.profile ?? {};
-const licCfg = cfg.license ?? {};
-const ecCfg = cfg.expressiveCode ?? { theme: 'github-dark' };
+const siteCfg = cfg?.site ?? {};
+const navCfg = cfg?.navbar ?? { links: [] };
+const profileCfg = cfg?.profile ?? {};
+const licCfg = cfg?.license ?? {};
+const ecCfg = cfg?.expressiveCode ?? { theme: 'github-dark' };
 
 export const siteConfig: SiteConfig = {
-  title: String(siteCfg.title || 'Fuwari'),
-  subtitle: String(siteCfg.subtitle || ''),
-  lang: String(siteCfg.lang || 'en') as SiteConfig['lang'],
+  title: siteCfg.title || 'Fuwari',
+  subtitle: siteCfg.subtitle || '',
+  lang: (siteCfg.lang || 'en') as SiteConfig['lang'],
   themeColor: {
-    hue: Number((siteCfg.themeColor as Record<string, unknown> | undefined)?.hue ?? 250),
-    fixed: Boolean((siteCfg.themeColor as Record<string, unknown> | undefined)?.fixed ?? false),
+    hue: siteCfg.themeColor?.hue ?? 250,
+    fixed: siteCfg.themeColor?.fixed ?? false,
   },
   banner: {
-    enable: Boolean((siteCfg.banner as Record<string, unknown> | undefined)?.enable ?? false),
-    src: String((siteCfg.banner as Record<string, unknown> | undefined)?.src || 'assets/images/demo-banner.png'),
-    position: String((siteCfg.banner as Record<string, unknown> | undefined)?.position || 'center') as
-      'top' | 'center' | 'bottom' | undefined,
+    enable: siteCfg.banner?.enable ?? false,
+    src: siteCfg.banner?.src || 'assets/images/demo-banner.png',
+    position: (siteCfg.banner?.position || 'center') as SiteConfig['banner']['position'],
     credit: {
-      enable: Boolean(
-        ((siteCfg.banner as Record<string, unknown> | undefined)?.credit as Record<string, unknown> | undefined)
-          ?.enable ?? false
-      ),
-      text: String(
-        ((siteCfg.banner as Record<string, unknown> | undefined)?.credit as Record<string, unknown> | undefined)
-          ?.text || ''
-      ),
-      url: String(
-        ((siteCfg.banner as Record<string, unknown> | undefined)?.credit as Record<string, unknown> | undefined)?.url ||
-          ''
-      ),
+      enable: siteCfg.banner?.credit?.enable ?? false,
+      text: siteCfg.banner?.credit?.text || '',
+      url: siteCfg.banner?.credit?.url || '',
     },
   },
   toc: {
-    enable: Boolean((siteCfg.toc as Record<string, unknown> | undefined)?.enable ?? true),
-    depth: Number((siteCfg.toc as Record<string, unknown> | undefined)?.depth ?? 2) as 1 | 2 | 3,
+    enable: siteCfg.toc?.enable ?? true,
+    depth: (siteCfg.toc?.depth ?? 2) as 1 | 2 | 3,
   },
   favicon: Array.isArray(siteCfg.favicon) ? (siteCfg.favicon as SiteConfig['favicon']) : [],
 };
@@ -129,5 +154,3 @@ export const licenseConfig: LicenseConfig = {
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
   theme: ecCfg.theme ?? 'github-dark',
 };
-
-export { projectConfig };

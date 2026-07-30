@@ -101,18 +101,12 @@ export interface Features extends Omit<Headline, 'classes'>, Widget {
   defaultIcon?: string;
   isBeforeContent?: boolean;
   isAfterContent?: boolean;
+  variant?: 'card' | 'inline';
 }
 
 export interface Faqs extends Omit<Headline, 'classes'>, Widget {
   items?: Array<Item>;
   columns?: number;
-}
-
-export interface Steps extends Omit<Headline, 'classes'>, Widget {
-  items?: Array<Item>;
-  callToAction?: string | CallToAction;
-  image?: string | Image;
-  isReversed?: boolean;
 }
 
 export interface Content extends Omit<Headline, 'classes'>, Widget {
