@@ -1,10 +1,17 @@
 @reference "tailwindcss";
-/* Page transition animations with Swup */
-html.is-changing .transition-swup-fade {
-  @apply transition-all duration-200;
+
+/* View Transitions — fade + slide up effect (replaces Swup .transition-swup-fade) */
+::view-transition-old(root) {
+  animation: 200ms ease-out both fade-out;
 }
-html.is-animating .transition-swup-fade {
-  @apply opacity-0 translate-y-4;
+::view-transition-new(root) {
+  animation: 300ms ease-out both fade-in-up;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 /* Fade-in animations for components */
@@ -31,7 +38,7 @@ html.is-animating .transition-swup-fade {
 #sidebar {
   animation-delay: 100ms;
 }
-#swup-container {
+#main-container {
   outline: none;
 }
 #content-wrapper {

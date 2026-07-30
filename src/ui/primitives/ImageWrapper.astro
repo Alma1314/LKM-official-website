@@ -21,7 +21,9 @@ const isPublic = src.startsWith('/');
 
 // TODO temporary workaround for images dynamic import
 // https://github.com/withastro/astro/issues/3373
-let img: unknown = null;
+import type { ImageMetadata } from 'astro';
+
+let img: ImageMetadata | null = null;
 if (isLocal) {
   const files = import.meta.glob('../../**', {
     import: 'default',
@@ -32,7 +34,7 @@ if (isLocal) {
     console.error(`\n[ERROR] Image file not found: ${normalizedPath.replace('../../', 'src/')}`);
     img = null;
   } else {
-    img = await file();
+    img = (await file()) as ImageMetadata;
   }
 }
 
@@ -42,7 +44,6 @@ const imageStyle = `object-position: ${position}`;
 
 <div id={id} class:list={[className, 'overflow-hidden relative']}>
   <div class="transition absolute inset-0 dark:bg-black/10 bg-opacity-50 pointer-events-none"></div>
-  {/* @ts-expect-error — dynamic import.meta.glob image metadata; runtime type is ImageMetadata */}
   {isLocal && img && <Image src={img} alt={alt || ''} class={imageClass} style={imageStyle} />}
   {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ''} class={imageClass} style={imageStyle} />}
 </div>

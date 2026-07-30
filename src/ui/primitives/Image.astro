@@ -172,14 +172,17 @@ const cdnSrcSet =
       style={finalStyle}
     />
   ) : (
-    /* 原生 <Image /> 的类型对我们转发包装器来说过于严格；
-       通过 unknown 展开一次，使每个调用位置保持干净的类型。 */
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     resolved && (
       <AstroImage
-        {...({ ...rest, src: resolved, width: w, height: h, alt, widths, format, style: finalStyle } as any)}
+        src={resolved as ImageMetadata}
+        width={w as number}
+        height={h as number}
+        alt={alt}
+        width-s={widths as number[]}
+        format={format}
+        style={finalStyle}
+        {...rest}
       />
     )
-    /* eslint-enable @typescript-eslint/no-explicit-any */
   )
 }
