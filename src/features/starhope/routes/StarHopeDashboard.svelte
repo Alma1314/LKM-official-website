@@ -17,7 +17,7 @@
 
 <div class="max-w-7xl mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold text-deep-text mb-1">
-    你好，{authStore.currentUser?.nickname ?? '用户'}
+    你好，{authStore.currentUser?.username ?? '用户'}
   </h1>
   <p class="text-sm text-text-muted mb-8">欢迎回到 StarHope 学习助手</p>
 

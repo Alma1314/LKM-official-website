@@ -33,20 +33,20 @@
       {#if authStore.currentUser}
         <div class="flex items-center gap-2 px-3 py-2">
           <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">
-            {authStore.currentUser.nickname.charAt(0)}
+            {authStore.currentUser.username.charAt(0)}
           </div>
           <div class="text-sm">
-            <div class="font-medium text-deep-text">{authStore.currentUser.nickname}</div>
-            <div class="text-xs text-text-muted">@{authStore.currentUser.account}</div>
+            <div class="font-medium text-deep-text">{authStore.currentUser.username}</div>
+            <div class="text-xs text-text-muted">{authStore.currentUser.level}</div>
           </div>
         </div>
       {/if}
-      <button
-        onclick={() => { authStore.logout(); navigation.navigate('login'); }}
-        class="w-full text-left px-3 py-2 text-xs text-text-muted hover:text-red-500 rounded-lg hover:bg-surface-3 transition-colors"
+      <a
+        href="/login"
+        class="w-full text-left px-3 py-2 text-xs text-text-muted hover:text-red-500 rounded-lg hover:bg-surface-3 transition-colors block"
       >
         退出登录
-      </button>
+      </a>
     </div>
   </aside>
 

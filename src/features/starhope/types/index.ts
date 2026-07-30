@@ -1,12 +1,6 @@
-export interface LocalUser {
-  id: string;
-  nickname: string;
-  account: string;
-  passwordHash: string;
-  salt: string;
-  avatar?: string;
-  createdAt: string;
-}
+// StarHope 不再使用独立账户（原 LocalUser），
+// 直接复用网站主账户 DemoUser (from ~/types/auth)
+// 所有 userId 字段引用 User.id
 
 export interface Question {
   id: string;

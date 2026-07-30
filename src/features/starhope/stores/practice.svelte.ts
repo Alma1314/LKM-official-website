@@ -43,13 +43,13 @@ class PracticeStore {
 
   async startPractice(config: PracticeConfig) {
     try {
-      if (!authStore.currentUser) return;
+      if (!authStore.isLoggedIn) return;
       this.questions = (await db.questions.bulkGet(config.questionIds)) as Question[];
       this.questions = this.questions.filter(Boolean);
 
       const session: PracticeSession = {
         id: crypto.randomUUID(),
-        userId: authStore.currentUser.id,
+        userId: authStore.userId!,
         type: config.type,
         mode: config.mode,
         questionIds: this.questions.map((q) => q.id),
@@ -216,8 +216,8 @@ class PracticeStore {
 
   async loadSessions(type?: 'practice' | 'exam') {
     try {
-      if (!authStore.currentUser) return [];
-      let query = db.practiceSessions.where('userId').equals(authStore.currentUser.id);
+      if (!authStore.isLoggedIn) return [];
+      let query = db.practiceSessions.where('userId').equals(authStore.userId!);
       if (type) query = query.and((s) => s.type === type);
       return query.reverse().sortBy('startedAt');
     } catch (e) {
@@ -229,10 +229,10 @@ class PracticeStore {
 
   async loadWrongQuestions(): Promise<Question[]> {
     try {
-      if (!authStore.currentUser) return [];
+      if (!authStore.isLoggedIn) return [];
       const sessions = await db.practiceSessions
         .where('userId')
-        .equals(authStore.currentUser.id)
+        .equals(authStore.userId!)
         .filter((s) => s.results !== undefined && s.status === 'completed')
         .toArray();
 

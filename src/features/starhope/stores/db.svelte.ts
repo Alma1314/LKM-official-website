@@ -1,8 +1,9 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { LocalUser, Question, Folder, PracticeSession, AiAgent, AiMessage } from '~/features/starhope/types';
+import type { Question, Folder, PracticeSession, AiAgent, AiMessage } from '~/features/starhope/types';
 
+// StarHope 不再使用独立 users 表（原 LocalUser），
+// 账户系统复用网站主 Auth (DemoUser)
 const db = new Dexie('starhope') as Dexie & {
-  users: EntityTable<LocalUser, 'id'>;
   questions: EntityTable<Question, 'id'>;
   folders: EntityTable<Folder, 'id'>;
   practiceSessions: EntityTable<PracticeSession, 'id'>;
@@ -10,8 +11,7 @@ const db = new Dexie('starhope') as Dexie & {
   aiMessages: EntityTable<AiMessage, 'id'>;
 };
 
-db.version(1).stores({
-  users: 'id, account',
+db.version(2).stores({
   questions: 'id, userId, folderId, type, difficulty, tags, createdAt',
   folders: 'id, userId, parentId',
   practiceSessions: 'id, userId, type, status',
