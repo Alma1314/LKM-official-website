@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { authStore } from '~/features/starhope/stores/auth.svelte';
   import AuthGuard from '~/features/starhope/hooks/AuthGuard.svelte';
-  import StarHopeLogin from '~/features/starhope/routes/StarHopeLogin.svelte';
+  import StarHopeLoginRequired from '~/features/starhope/routes/StarHopeLoginRequired.svelte';
   import StarHopeDashboard from '~/features/starhope/routes/StarHopeDashboard.svelte';
   import StarHopeBank from '~/features/starhope/routes/StarHopeBank.svelte';
   import StarHopePractice from '~/features/starhope/routes/StarHopePractice.svelte';
@@ -16,7 +15,7 @@
   const { currentRoute: current } = navigation;
 
   const routeTable: Record<StarHopeRoute, unknown> = {
-    login: StarHopeLogin,
+    login: StarHopeLoginRequired,
     dashboard: StarHopeDashboard,
     bank: StarHopeBank,
     practice: StarHopePractice,
@@ -30,7 +29,7 @@
 </script>
 
 {#if current === 'login'}
-  <StarHopeLogin />
+  <StarHopeLoginRequired />
 {:else}
   <AuthGuard>
     {#each Object.keys(routeTable) as key}

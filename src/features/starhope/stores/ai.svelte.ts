@@ -16,8 +16,8 @@ class AiStore {
 
   async loadAgents() {
     try {
-      if (!authStore.currentUser) return;
-      this.agents = await db.aiAgents.where('userId').equals(authStore.currentUser.id).toArray();
+      if (!authStore.isLoggedIn) return;
+      this.agents = await db.aiAgents.where('userId').equals(authStore.userId!).toArray();
       // 如果没有 Agent，创建默认的
       if (this.agents.length === 0) {
         await this.createDefaultAgent();
@@ -35,7 +35,7 @@ class AiStore {
   async createDefaultAgent() {
     const agent: AiAgent = {
       id: crypto.randomUUID(),
-      userId: authStore.currentUser!.id,
+      userId: authStore.userId!,
       name: '通用助手',
       systemPrompt: '你是一个有用的学习助手，帮助用户解答问题、解释概念、提供学习建议。请用中文回答。',
       service: 'openai',
@@ -55,7 +55,7 @@ class AiStore {
       const agent: AiAgent = {
         ...data,
         id: crypto.randomUUID(),
-        userId: authStore.currentUser!.id,
+        userId: authStore.userId!,
         createdAt: new Date().toISOString(),
       };
       await db.aiAgents.put(agent);
@@ -111,7 +111,7 @@ class AiStore {
   }
 
   async sendMessage(content: string, attachments?: { name: string; data: string; type: string }[]) {
-    if (!this.currentAgentId || !authStore.currentUser) return;
+    if (!this.currentAgentId || !authStore.isLoggedIn) return;
 
     const userMsg: AiMessage = {
       id: crypto.randomUUID(),

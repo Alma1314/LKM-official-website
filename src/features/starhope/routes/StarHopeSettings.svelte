@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { authStore } from '~/features/starhope/stores/auth.svelte';
   import { db } from '~/features/starhope/stores/db.svelte';
 
   let exportStatus = $state('');
@@ -74,9 +73,8 @@
     await db.practiceSessions.clear();
     await db.aiAgents.clear();
     await db.aiMessages.clear();
-    authStore.logout();
     alert('所有数据已清除');
-    location.reload();
+    location.href = '/starhope';
   }
 </script>
 

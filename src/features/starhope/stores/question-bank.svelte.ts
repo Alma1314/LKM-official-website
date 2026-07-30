@@ -24,8 +24,8 @@ class QuestionBankStore {
 
   async loadQuestions() {
     try {
-      if (!authStore.currentUser) return;
-      let query = db.questions.where('userId').equals(authStore.currentUser.id);
+      if (!authStore.isLoggedIn) return;
+      let query = db.questions.where('userId').equals(authStore.userId!);
       if (this.currentFolderId) {
         query = query.and((q) => q.folderId === this.currentFolderId);
       }
@@ -39,8 +39,8 @@ class QuestionBankStore {
 
   async loadFolders() {
     try {
-      if (!authStore.currentUser) return;
-      this.folders = await db.folders.where('userId').equals(authStore.currentUser.id).toArray();
+      if (!authStore.isLoggedIn) return;
+      this.folders = await db.folders.where('userId').equals(authStore.userId!).toArray();
     } catch (e) {
       this.error = '加载文件夹失败';
       console.error('loadFolders failed:', e);
@@ -52,7 +52,7 @@ class QuestionBankStore {
       const question: Question = {
         ...data,
         id: crypto.randomUUID(),
-        userId: authStore.currentUser!.id,
+        userId: authStore.userId!,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -91,7 +91,7 @@ class QuestionBankStore {
     try {
       const folder: Folder = {
         id: crypto.randomUUID(),
-        userId: authStore.currentUser!.id,
+        userId: authStore.userId!,
         name,
         parentId,
         sort: this.folders.length,
