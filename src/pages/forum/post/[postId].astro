@@ -111,7 +111,7 @@ function formatDate(dateStr: string): string {
 
       <!-- 交互栏 -->
       <PostInteractions
-        client:load
+        client:visible
         likeCount={post.likeCount}
         bookmarkCount={post.bookmarkCount}
         forwardCount={post.forwardCount}
@@ -119,7 +119,7 @@ function formatDate(dateStr: string): string {
 
       <!-- 评论 -->
       <div id="comments" class="mt-8 pt-6 border-t border-surface-3">
-        <CommentSection client:load postId={post.id} />
+        <CommentSection client:visible postId={post.id} />
       </div>
     </article>
 

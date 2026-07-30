@@ -14,7 +14,7 @@
       "@lkm/editor-persistence": ["./packages/editor-persistence/dist"]
     }
   },
-  "include": [".astro/types.d.ts", "**/*"],
+  "include": [".astro/types.d.ts", "src/**/*", "packages/*/src/**/*", "scripts/**/*"],
   "exclude": [
     "dist/",
     "reference/",

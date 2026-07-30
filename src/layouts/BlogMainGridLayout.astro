@@ -95,10 +95,9 @@ const mainPanelTop = siteConfig.banner.enable
           headings={headings}
         />
 
-        <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
+        <main id="main-container" class="col-span-2 lg:col-span-1 overflow-hidden">
           <div id="content-wrapper" class="onload-animation">
             <!-- the overflow-hidden here prevent long text break the layout-->
-            <!-- make id different from windows.swup global property -->
             <slot />
             <div class="footer col-span-2 onload-animation hidden lg:block">
               <Footer />
@@ -132,7 +131,7 @@ const mainPanelTop = siteConfig.banner.enable
               id="toc-inner-wrapper"
               class="fixed top-14 w-[var(--toc-width)] h-[calc(100vh_-_20rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar"
             >
-              <div id="toc" class="w-full h-full transition-swup-fade ">
+              <div id="toc" class="w-full h-full">
                 <div class="h-8 w-full" />
                 <TOC headings={headings} />
                 <div class="h-8 w-full" />
@@ -142,7 +141,7 @@ const mainPanelTop = siteConfig.banner.enable
         )
       }
 
-      <!-- #toc needs to exist for Swup to work normally -->
+      <!-- #toc needs to exist for View Transitions to work normally -->
       {!siteConfig.toc.enable && <div id="toc" />}
     </div>
   </div>

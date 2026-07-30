@@ -9,6 +9,7 @@ const sortedPostsList = await getSortedPostsList();
 ---
 
 <MainGridLayout title={i18n(I18nKey.archive)}>
-  <!-- @ts-expect-error - client:only Svelte component infers props type from component file -->
+  <!-- client:only 组件的 props 类型无法跨文件边界推断 -->
+  <!-- @ts-expect-error -->
   <ArchivePanel tags={[]} categories={[]} sortedPosts={sortedPostsList} client:only="svelte" />
 </MainGridLayout>

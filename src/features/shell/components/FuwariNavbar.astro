@@ -101,7 +101,7 @@ let links: NavBarLink[] =
       }
     </div>
     <div class="flex justify-self-end items-center">
-      <GlobalSearch client:load />
+      <GlobalSearch client:idle />
       {
         !siteConfig.themeColor.fixed && (
           <button
@@ -114,7 +114,7 @@ let links: NavBarLink[] =
         )
       }
       <LightDarkSwitch client:only="svelte" />
-      <NotificationBell client:load />
+      <NotificationBell client:idle />
       <UserAvatarMenu client:only="vue" base={url('/')} />
       <button
         aria-label="Menu"
