@@ -28,7 +28,9 @@ src/
   core/           # 核心基础设施（无业务逻辑）
     config/       # 站点配置
     constants/    # 常量定义
+    errors/       # 错误边界与错误码
     i18n/         # 国际化（中/英/日/韩等）
+    scripts/      # 客户端脚本（blog 初始化/PhotoSwipe/过渡动画）
     types/        # TypeScript 类型定义
     utils/        # 工具函数
     styles/       # 全局 CSS（tailwind.css）
@@ -40,7 +42,6 @@ src/
     homepage/     # 首页组件
     shell/        # 顶栏/页脚/侧边栏/背景
     auth/         # 登录认证组件
-    docs/         # 文档库组件
     search/       # 搜索组件
     column/       # 专栏组件
     forum/        # 论坛组件
@@ -56,12 +57,16 @@ src/
     admin/        # 管理后台组件
     anonymous-letter/ # 匿名信组件
     content/      # 内容组件
+  assets/         # 静态资源（图片/图标等，由 astro:assets 处理）
+  db/             # 客户端数据库适配器
+  styles/         # 全局/组件级 CSS
+  types/          # 全局 TypeScript 类型声明
   ui/             # 通用 UI 组件
     primitives/   # 基础组件（Button/Image/Form 等）
     patterns/     # 模式组件
   layouts/        # 页面布局（Base/Page/Sidebar/Markdown/Blog 等）
   pages/          # 文件路由（含 /admin/documents 管理后台）
-  content/        # 内容文件（posts/、docs/）
+  content/        # 内容文件（posts/）
 
 packages/
   rich-text-editor/     # 编辑器核心包（engine + components + hooks + CSS）
@@ -102,7 +107,6 @@ Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 内容文件：
 
 - `src/content/posts/` — 博客文章（.md/.mdx）
-- `src/content/docs/` — 文档（.md/.mdx）
 
 文章 frontmatter 字段（与 `src/content.config.ts` 中 `posts` schema 一致）：`title`（必填）、`published`（必填）、`updated`、`draft`、`description`、`image`、`tags`、`category`、`lang`。
 

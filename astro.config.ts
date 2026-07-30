@@ -64,6 +64,10 @@ export default defineConfig({
     icon({
       include: {
         tabler: ['*'],
+        'material-symbols': ['*'],
+        'fa6-brands': ['creative-commons', 'github'],
+        'fa6-regular': ['address-card'],
+        'fa6-solid': ['arrow-rotate-left', 'arrow-up-right-from-square', 'chevron-right'],
         'flat-color-icons': [
           'template',
           'gallery',
@@ -240,7 +244,8 @@ export default defineConfig({
               return 'vendor-react';
             }
             if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
-              return 'vendor-ui';
+              // 仅 blog 页面使用，让其独立 chunk，避免非 blog 页加载无用代码
+              return;
             }
             if (id.includes('node_modules/three')) {
               return 'vendor-three';

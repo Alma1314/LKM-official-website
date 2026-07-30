@@ -18,7 +18,13 @@ export class AppError extends Error {
   }
 }
 
-import type { DocumentData, DocumentMeta, AutosavePayload, AutosaveResponse } from '@lkm/rich-text-editor';
+import type {
+  DocumentData,
+  DocumentMeta,
+  DocumentSummary,
+  AutosavePayload,
+  AutosaveResponse,
+} from '@lkm/rich-text-editor';
 
 const DRAFTS_KEY = 'lkm-editor-drafts';
 const DRAFTS_INDEX_KEY = 'lkm-editor-drafts-index';
@@ -81,7 +87,7 @@ export function getDocument(id: string): DocumentData | null {
   }
 }
 
-export function listDocuments(): DocumentMeta[] {
+export function listDocuments(): DocumentSummary[] {
   return readIndex();
 }
 

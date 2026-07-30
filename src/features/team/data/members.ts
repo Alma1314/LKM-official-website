@@ -326,7 +326,7 @@ export const professionalSubGroups: Record<string, SubGroup> = {
     members: [
       {
         name: '七月雨夜',
-        avatarKey: '七月雨夜.jpeg',
+        // avatarKey: 文件不存在，使用文字回退
         desc: '高一在读，3年群管理经验，6岁开始接触中医学。中医世家',
         dream: '梦想：有一份稳定工作',
         quote: '—— 追风赶路莫停留，平芜尽处是春山。',
@@ -357,15 +357,15 @@ export const projectSubGroups: Record<string, SubGroup> = {
 export const alumniMembers: Member[] = [
   { name: '七月逗', avatarKey: '七月逗.png', role: '组长' },
   { name: '七月喵', avatarKey: '七月喵.jpg', role: '组长' },
-  { name: '七月丫', avatarKey: '七月丫.jpeg', role: '组长' },
-  { name: 'Spica', avatarKey: 'Spica.jpeg', role: '总务组成员' },
+  { name: '七月丫', role: '组长' },
+  { name: 'Spica', role: '总务组成员' },
   { name: '七月烧', avatarKey: '七月烧.jpg', role: '群务组监督' },
   { name: '七月凡', avatarKey: '七月凡.png', role: '总务组成员' },
   { name: '七月Toy', avatarKey: '七月Toy.png', role: '专务' },
   { name: '七月希', avatarKey: '七月希.jpg', role: '总务组成员' },
   { name: '七月钗', avatarKey: '七月钗.jpg', role: '总务组成员' },
   { name: '七月铝', avatarKey: '七月铝.jpg', role: '专务 / 顾问组成员' },
-  { name: '七月雨', avatarKey: '七月雨.jpeg', role: '总务组成员' },
+  { name: '七月雨', role: '总务组成员' },
   { name: '七月九', avatarKey: '七月九.jpg', role: '群务组组长' },
   { name: '本群最弱玩家', avatarKey: '本群最弱玩家.jpg', role: '18级管理' },
   { name: '道德同志', avatarKey: '道德同志.jpg', role: '18级管理' },
@@ -381,5 +381,5 @@ export const alumniMembers: Member[] = [
   { name: '七月糊-又', avatarKey: '七月糊-又.jpg', role: '总务组专务' },
   { name: '七月哔', avatarKey: '七月哔.jpg', role: '顾问组成员' },
   { name: '乾坤胤', avatarKey: '乾坤胤.jpg', role: '顾问组成员' },
-  { name: 'Ryan', avatarKey: 'Ryan.jpeg', role: '顾问组成员' },
+  { name: 'Ryan', role: '顾问组成员' },
 ];
