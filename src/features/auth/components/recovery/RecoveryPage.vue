@@ -34,8 +34,8 @@
     <div class="relative w-full max-w-md">
       <TwoFactorRecovery
         :level="account.level as 'normal' | 'admin'"
-        :onSuccess="() => (step = 'reset')"
-        :onBack="() => (step = 'verify')"
+        @success="() => (step = 'reset')"
+        @back="() => (step = 'verify')"
       />
     </div>
   </div>

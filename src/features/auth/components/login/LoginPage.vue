@@ -2,7 +2,7 @@
   <div>
     <!-- 2FA flow -->
     <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full">
-      <TwoFactorVerify :onSuccess="handle2FASuccess" :onError="handle2FAError" />
+      <TwoFactorVerify @success="handle2FASuccess" @error="handle2FAError" />
     </div>
 
     <!-- Logged in -->
@@ -119,17 +119,17 @@
 
           <PasswordLogin
             v-if="activeTab === 'password'"
-            :onLogin="handleLogin"
+            @login="handleLogin"
             :identifiedAccount="identifiedAccount"
           />
-          <SmsLogin v-if="activeTab === 'sms'" :onLogin="handleLogin" :identifiedAccount="identifiedAccount" />
-          <GithubLogin v-if="activeTab === 'github'" :onLogin="handleLogin" />
+          <SmsLogin v-if="activeTab === 'sms'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
+          <GithubLogin v-if="activeTab === 'github'" @login="handleLogin" />
           <MagicLinkLogin
             v-if="activeTab === 'magic-link'"
-            :onLogin="handleLogin"
+            @login="handleLogin"
             :identifiedAccount="identifiedAccount"
           />
-          <PasskeyLogin v-if="activeTab === 'passkey'" :onLogin="handleLogin" />
+          <PasskeyLogin v-if="activeTab === 'passkey'" @login="handleLogin" />
         </template>
       </div>
     </div>

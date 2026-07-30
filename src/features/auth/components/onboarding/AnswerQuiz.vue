@@ -131,7 +131,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
-import { quizQuestions, quizFields } from '../../data/quiz-questions';
+import { quizQuestions, quizFields } from '~/features/auth/data/quiz-questions';
 
 const selectedField = ref('');
 const quizStarted = ref(false);

@@ -1,13 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
-
-interface TimelineData {
-  year: string;
-  title: string;
-  description: string;
-  iconName?: string;
-  iconColor?: string;
-}
+import type { TimelineData } from '~/core/types';
 
 interface Props {
   items: TimelineData[];

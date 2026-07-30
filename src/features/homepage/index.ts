@@ -17,3 +17,7 @@ export { default as ClockTimeline } from './widgets/ClockTimeline.astro';
 export { default as BlogHighlightedPosts } from './widgets/BlogHighlightedPosts.astro';
 export { default as BlogLatestPosts } from './widgets/BlogLatestPosts.astro';
 export { default as Section } from './widgets/Section.astro';
+
+export { default as Timeline } from './widgets/Timeline.astro';
+export { default as TopNav } from './widgets/TopNav.astro';
+export { default as Sidebar } from './widgets/Sidebar.astro';

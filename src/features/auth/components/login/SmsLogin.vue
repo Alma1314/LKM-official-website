@@ -35,8 +35,11 @@
 import { ref, computed, onBeforeUnmount } from 'vue';
 import type { LoginMethod, DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
+}>();
+
 const props = defineProps<{
-  onLogin: (method: LoginMethod, credentials: Record<string, string>) => Promise<void>;
   identifiedAccount: DemoUser;
 }>();
 
@@ -79,7 +82,7 @@ async function handleSubmit() {
   loading.value = true;
   codeError.value = '';
   attempts.value++;
-  await props.onLogin('sms', { phoneOrEmail: props.identifiedAccount.username, code: code.value });
+  emit('login', 'sms', { phoneOrEmail: props.identifiedAccount.username, code: code.value });
   loading.value = false;
 }
 

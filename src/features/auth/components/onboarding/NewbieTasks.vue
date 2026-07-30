@@ -14,7 +14,7 @@
         <input
           v-model="displayName"
           type="text"
-          class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-deep-text text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+          class="input input-bordered w-full"
           placeholder="你的昵称"
         />
       </div>
@@ -25,7 +25,7 @@
         <input
           v-model="bio"
           type="text"
-          class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-deep-text text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+          class="input input-bordered w-full"
           placeholder="一句话介绍自己"
         />
       </div>

@@ -17,5 +17,6 @@ export type {
   Faqs,
   Content,
   Contact,
+  TimelineData,
 } from './widget';
 export type { Image, CallToAction, Collapse, Input, Textarea, Disclaimer, Form } from './component';

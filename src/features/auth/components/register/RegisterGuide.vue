@@ -18,8 +18,8 @@
     </div>
     <p class="text-sm text-text-muted">通过指纹/面容/设备 PIN 实现免密登录</p>
     <div class="flex gap-3 justify-center">
-      <button type="button" class="btn btn-ghost btn-sm" @click="props.onSkip()">跳过</button>
-      <button type="button" class="btn btn-primary btn-sm" @click="props.onComplete()">创建（模拟）</button>
+      <button type="button" class="btn btn-ghost btn-sm" @click="emit('skip')">跳过</button>
+      <button type="button" class="btn btn-primary btn-sm" @click="emit('complete')">创建（模拟）</button>
     </div>
   </div>
 </template>
@@ -27,9 +27,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = defineProps<{
-  onComplete: () => void;
-  onSkip: () => void;
+const emit = defineEmits<{
+  (e: 'complete'): void;
+  (e: 'skip'): void;
 }>();
 
 const step = ref<'2fa' | 'passkey'>('2fa');

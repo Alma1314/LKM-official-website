@@ -1,0 +1,16 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import StarHopeShell from '~/features/starhope/components/StarHopeShell.svelte';
+
+export function getStaticPaths() {
+  return [{ params: { route: undefined } }];
+}
+
+const metadata = { title: 'StarHope 学习助手 —— 理科迷' };
+---
+
+<Layout metadata={metadata}>
+  <div style="min-height: calc(100vh - 10rem)">
+    <StarHopeShell client:only="svelte" />
+  </div>
+</Layout>

@@ -39,15 +39,18 @@
 import { ref } from 'vue';
 import type { DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'update', user: DemoUser): void;
+}>();
+
 const props = defineProps<{
   user: DemoUser;
-  onUpdate: (user: DemoUser) => void;
 }>();
 
 const showCreate = ref(false);
 
 function handleCreate() {
-  props.onUpdate({
+  emit('update',{
     ...props.user,
     hasPasskey: true,
     bindings: [...new Set([...props.user.bindings, 'passkey'])],
@@ -56,7 +59,7 @@ function handleCreate() {
 }
 
 function handleDelete() {
-  props.onUpdate({
+  emit('update',{
     ...props.user,
     hasPasskey: false,
     bindings: props.user.bindings.filter((b) => b !== 'passkey'),

@@ -28,3 +28,20 @@ export { default as ShellConfigCarrier } from './common/components/ConfigCarrier
 export { default as ShellGlobalStyles } from './common/components/GlobalStyles.astro';
 export { default as ShellCustomStyles } from './common/components/CustomStyles.astro';
 export { default as ShellBackToTop } from '~/ui/primitives/BackToTop.astro';
+export * from './common/shell-events';
+
+// Svelte components
+export { default as ShellSearch } from './components/Search.svelte';
+export { default as ShellLightDarkSwitch } from './components/LightDarkSwitch.svelte';
+export { default as ShellArchivePanel } from './components/ArchivePanel.svelte';
+export { default as ShellDisplaySettings } from './components/widget/DisplaySettings.svelte';
+
+// Vue components
+export { default as ShellUserAvatarMenu } from './components/user/UserAvatarMenu.vue';
+
+// Astro components
+export { default as ShellMobileNavPanel } from './components/MobileNavPanel.astro';
+export { default as ShellSiteNavbar } from './components/SiteNavbar.astro';
+
+// Events
+export * from './common/shell-events';
