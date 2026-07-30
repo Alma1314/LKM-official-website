@@ -163,8 +163,7 @@ let links: NavBarLink[] =
         document.getElementById('display-setting')?.classList.add('float-panel-closed');
         document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
         document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-        const panel = window.__mobileNavPanel?.['mobile-nav-fuwari'];
-        panel?.toggle();
+        document.getElementById('mobile-nav-fuwari')?.dispatchEvent(new CustomEvent('mobile-nav:toggle'));
       });
     }
 
@@ -236,12 +235,12 @@ let links: NavBarLink[] =
         await pagefind.options({ excerptLength: 20 });
         window.pagefind = pagefind;
         document.dispatchEvent(new CustomEvent('pagefindready'));
-        console.log('Pagefind loaded and initialized successfully, event dispatched.');
+        // Pagefind loaded successfully
     } catch (error) {
         console.error('Failed to load Pagefind:', error);
         window.pagefind = { search: function() { return Promise.resolve({ results: [] }); }, options: function() { return Promise.resolve(); } };
         document.dispatchEvent(new CustomEvent('pagefindloaderror'));
-        console.log('Pagefind load error, event dispatched.');
+        // Pagefind fallback activated
     }
 }
 if (document.readyState === 'loading') {

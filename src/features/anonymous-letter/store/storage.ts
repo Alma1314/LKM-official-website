@@ -115,7 +115,8 @@ function read<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
     return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
+  } catch (err) {
+    console.warn('[storage] 读取 key 失败:', key, err);
     return fallback;
   }
 }
@@ -139,7 +140,8 @@ export async function encryptText(text: string, pass: string): Promise<string> {
     const iv = crypto.getRandomValues(new Uint8Array(12));
     const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(text));
     return 'enc:' + b64(arrayBufferToBase64(iv.buffer as ArrayBuffer)) + ':' + b64(arrayBufferToBase64(ct));
-  } catch {
+  } catch (err) {
+    console.warn('[storage] 加密失败，返回明文:', err);
     return text;
   }
 }
@@ -155,7 +157,8 @@ export async function decryptText(payload: string, pass: string): Promise<string
     const ct = new Uint8Array(base64ToArrayBuffer(unb64(ctB64)));
     const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
     return new TextDecoder().decode(pt);
-  } catch {
+  } catch (err) {
+    console.warn('[storage] 解密失败:', err);
     return '【解密失败：密码错误或未加密】';
   }
 }
@@ -534,8 +537,8 @@ export function notifyDesktop(title: string, body: string): void {
         }
       });
     }
-  } catch {
-    /* Notification API not supported */
+  } catch (err) {
+    console.warn('[storage] 桌面通知失败:', err);
   }
 }
 

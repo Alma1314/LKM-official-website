@@ -200,32 +200,22 @@ const { id, links = [], title = '导航' } = Astro.props;
       });
     }
 
-    window.__mobileNavPanel = window.__mobileNavPanel || {};
-    window.__mobileNavPanel[panelId] = {
-      open: function () {
-        open(document.getElementById(panelId));
-      },
-      close: function () {
-        close(document.getElementById(panelId));
-      },
-      toggle: function () {
-        toggle(document.getElementById(panelId));
-      },
-    };
+    // 通过 CustomEvent 暴露面板 API，替代 window.__mobileNavPanel 全局对象
+    const panelRootEl = document.getElementById(panelId);
+    if (panelRootEl) {
+      panelRootEl.addEventListener('mobile-nav:open', () => open(panelRootEl));
+      panelRootEl.addEventListener('mobile-nav:close', () => close(panelRootEl));
+      panelRootEl.addEventListener('mobile-nav:toggle', () => toggle(panelRootEl));
+    }
 
     initAllPanels();
     document.addEventListener('astro:after-swap', function () {
-      window.__mobileNavPanel[panelId] = {
-        open: function () {
-          open(document.getElementById(panelId));
-        },
-        close: function () {
-          close(document.getElementById(panelId));
-        },
-        toggle: function () {
-          toggle(document.getElementById(panelId));
-        },
-      };
+      const el = document.getElementById(panelId);
+      if (el) {
+        el.addEventListener('mobile-nav:open', () => open(el));
+        el.addEventListener('mobile-nav:close', () => close(el));
+        el.addEventListener('mobile-nav:toggle', () => toggle(el));
+      }
       initAllPanels();
     });
   })();

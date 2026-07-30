@@ -10,8 +10,14 @@ import { UI } from '~/core/config';
 
     window.basic_script = true;
 
+    // 与 ApplyColorMode.astro 和 setting-utils.ts 保持一致的 applyTheme
     function applyTheme(theme) {
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      if (theme === 'auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', prefersDark);
+      } else {
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      }
     }
 
     function updateToggleThemeIcon() {
@@ -30,17 +36,15 @@ import { UI } from '~/core/config';
       }
     }
 
-    // ApplyColorMode.astro 已在绘制前设置了初始主题。
-    // 此处从 localStorage 重新应用以在 View Transitions
-    // (astro:after-swap) 之后保持主题切换状态一致。
+    // 从 localStorage 重新应用主题，保持 View Transitions 后的状态一致
     const initTheme = function () {
-      const theme = localStorage.theme;
-      if (theme === 'dark') {
+      const stored = localStorage.theme;
+      if (stored === 'dark') {
         applyTheme('dark');
-      } else if (theme === 'light') {
+      } else if (stored === 'light') {
         applyTheme('light');
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        applyTheme('dark');
+      } else {
+        applyTheme('auto');
       }
       updateToggleThemeIcon();
     };
@@ -81,10 +85,9 @@ import { UI } from '~/core/config';
           if (defaultTheme.endsWith(':only')) {
             return;
           }
-
           const isDark = document.documentElement.classList.contains('dark');
           const next = isDark ? 'light' : 'dark';
-          document.documentElement.classList.toggle('dark', next === 'dark');
+          applyTheme(next);
           localStorage.theme = next === 'dark' ? 'dark' : 'light';
           updateToggleThemeIcon();
         });

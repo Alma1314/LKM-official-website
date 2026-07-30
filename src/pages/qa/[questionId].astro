@@ -36,7 +36,12 @@ const metadata = { title: `${question.title} —— 理科迷` };
     <div>
       <div class="flex items-center gap-2 mb-2">
         <span
-          class={`text-xs px-2 py-0.5 rounded-full font-medium ${question.status === 'resolved' ? 'bg-green-100 dark:bg-green-950/30 text-green-500' : 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500'}`}
+          class:list={[
+            'text-xs px-2 py-0.5 rounded-full font-medium',
+            question.status === 'resolved'
+              ? 'bg-green-100 dark:bg-green-950/30 text-green-500'
+              : 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500',
+          ]}
         >
           {question.status === 'resolved' ? '已解决' : '待解决'}
         </span>

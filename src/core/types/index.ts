@@ -15,7 +15,6 @@ export type {
   Brands,
   Features,
   Faqs,
-  Steps,
   Content,
   Contact,
 } from './widget';

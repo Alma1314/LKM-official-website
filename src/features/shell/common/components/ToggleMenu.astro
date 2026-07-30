@@ -30,7 +30,7 @@ const {
     const trigger = document.querySelector('[data-mobile-menu-trigger="mobile-nav-header"]');
     if (trigger) {
       trigger.addEventListener('click', () => {
-        window.__mobileNavPanel?.['mobile-nav-header']?.toggle();
+        document.getElementById('mobile-nav-header')?.dispatchEvent(new CustomEvent('mobile-nav:toggle'));
       });
     }
   })();

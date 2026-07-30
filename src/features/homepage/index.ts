@@ -1,7 +1,5 @@
 export { default as Hero } from './widgets/Hero.astro';
-export { default as Hero2 } from './widgets/Hero2.astro';
 export { default as HeroText } from './widgets/HeroText.astro';
-export { default as Features } from './widgets/Features.astro';
 export { default as Features2 } from './widgets/Features2.astro';
 export { default as Features3 } from './widgets/Features3.astro';
 export { default as Stats } from './widgets/Stats.astro';
@@ -9,8 +7,7 @@ export { default as Pricing } from './widgets/Pricing.astro';
 export { default as Testimonials } from './widgets/Testimonials.astro';
 export { default as Brands } from './widgets/Brands.astro';
 export { default as FAQs } from './widgets/FAQs.astro';
-export { default as Steps } from './widgets/Steps.astro';
-export { default as Steps2 } from './widgets/Steps2.astro';
+
 export { default as CallToAction } from './widgets/CallToAction.astro';
 export { default as Content } from './widgets/Content.astro';
 export { default as Contact } from './widgets/Contact.astro';
