@@ -117,11 +117,7 @@
             >
           </div>
 
-          <PasswordLogin
-            v-if="activeTab === 'password'"
-            @login="handleLogin"
-            :identifiedAccount="identifiedAccount"
-          />
+          <PasswordLogin v-if="activeTab === 'password'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
           <SmsLogin v-if="activeTab === 'sms'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
           <GithubLogin v-if="activeTab === 'github'" @login="handleLogin" />
           <MagicLinkLogin

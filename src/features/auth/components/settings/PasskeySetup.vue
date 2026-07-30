@@ -50,7 +50,7 @@ const props = defineProps<{
 const showCreate = ref(false);
 
 function handleCreate() {
-  emit('update',{
+  emit('update', {
     ...props.user,
     hasPasskey: true,
     bindings: [...new Set([...props.user.bindings, 'passkey'])],
@@ -59,7 +59,7 @@ function handleCreate() {
 }
 
 function handleDelete() {
-  emit('update',{
+  emit('update', {
     ...props.user,
     hasPasskey: false,
     bindings: props.user.bindings.filter((b) => b !== 'passkey'),
