@@ -9,6 +9,9 @@
 //  5. Error messages never include the key or the full raw response body
 // ---------------------------------------------------------------------------
 
+import { ok, err } from 'neverthrow';
+import type { Result } from 'neverthrow';
+
 // ---- Types -----------------------------------------------------------------
 
 export interface AiRequest {
@@ -29,18 +32,6 @@ export interface AiCompletionOptions {
   /** Caller-provided AbortSignal (merged with internal timeout) */
   signal?: AbortSignal;
 }
-
-export interface Ok<T> {
-  ok: true;
-  value: T;
-}
-
-export interface Err {
-  ok: false;
-  error: string;
-}
-
-export type Result<T> = Ok<T> | Err;
 
 // ---- Constants -------------------------------------------------------------
 
@@ -74,9 +65,9 @@ let _model: string = DEFAULT_MODEL;
  * Only plain HTTPS URLs are accepted. Credentials in the URL, non-HTTPS
  * protocols and pseudo-URLs (`javascript:`, `data:`, `file:`) are rejected.
  */
-export function validateAiEndpoint(raw: string): Result<URL> {
+export function validateAiEndpoint(raw: string): Result<URL, string> {
   if (!raw || raw.trim().length === 0) {
-    return { ok: false, error: '请输入 API 地址' };
+    return err('请输入 API 地址');
   }
 
   const trimmed = raw.trim();
@@ -85,24 +76,24 @@ export function validateAiEndpoint(raw: string): Result<URL> {
   try {
     url = new URL(trimmed);
   } catch {
-    return { ok: false, error: 'API 地址格式无效，请输入完整的 HTTPS 地址' };
+    return err('API 地址格式无效，请输入完整的 HTTPS 地址');
   }
 
   if (!ALLOWED_PROTOCOLS.has(url.protocol)) {
-    return { ok: false, error: '仅支持 HTTPS 地址' };
+    return err('仅支持 HTTPS 地址');
   }
 
   if (url.username || url.password) {
-    return { ok: false, error: 'API 地址不能包含用户名或密码，请在下方单独输入 API Key' };
+    return err('API 地址不能包含用户名或密码，请在下方单独输入 API Key');
   }
 
   // Block pseudo-protocols that the URL constructor might accept on some runtimes
   const lower = trimmed.toLowerCase();
   if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('file:')) {
-    return { ok: false, error: '不支持的协议' };
+    return err('不支持的协议');
   }
 
-  return { ok: true, value: url };
+  return ok(url);
 }
 
 /**
@@ -145,15 +136,15 @@ export function getAiConfig(): { endpoint: string | null; model: string } {
 export async function requestAiCompletion(
   input: AiCompletionInput,
   options?: AiCompletionOptions
-): Promise<Result<string>> {
+): Promise<Result<string, string>> {
   // ---- 1. Config check ----------------------------------------------------
   if (!_endpoint) {
-    return { ok: false, error: '请先配置 AI 接口。点击"设置"输入 API 地址和 Key。' };
+    return err('请先配置 AI 接口。点击"设置"输入 API 地址和 Key。');
   }
 
   const endpointValidation = validateAiEndpoint(_endpoint);
   if (!endpointValidation.ok) {
-    return { ok: false, error: `AI 接口配置无效：${endpointValidation.error}` };
+    return err(`AI 接口配置无效：${endpointValidation.error}`);
   }
 
   const endpoint = _endpoint;
@@ -177,7 +168,7 @@ export async function requestAiCompletion(
   if (options?.signal) {
     if (options.signal.aborted) {
       clearTimeout(timeoutId);
-      return { ok: false, error: '请求已被取消' };
+      return err('请求已被取消');
     }
     options.signal.addEventListener(
       'abort',
@@ -213,19 +204,19 @@ export async function requestAiCompletion(
       }),
       signal: internalController.signal,
     });
-  } catch (err) {
+  } catch (catchErr) {
     clearTimeout(timeoutId);
 
-    if (err instanceof DOMException && err.name === 'AbortError') {
-      return { ok: false, error: '请求超时或已取消' };
+    if (catchErr instanceof DOMException && catchErr.name === 'AbortError') {
+      return err('请求超时或已取消');
     }
 
-    const message = err instanceof Error ? err.message : String(err);
+    const message = catchErr instanceof Error ? catchErr.message : String(catchErr);
     // Never echo back anything that might contain secrets
     if (message.includes(apiKey) && apiKey.length > 4) {
-      return { ok: false, error: '网络请求失败' };
+      return err('网络请求失败');
     }
-    return { ok: false, error: `网络请求失败：${message.slice(0, 120)}` };
+    return err(`网络请求失败：${message.slice(0, 120)}`);
   }
 
   clearTimeout(timeoutId);
@@ -235,10 +226,7 @@ export async function requestAiCompletion(
   if (!contentType.includes('application/json')) {
     // Consume the body so the connection can be reused
     await response.text().catch(() => {});
-    return {
-      ok: false,
-      error: `服务器返回了意外的内容类型${response.status ? `（状态码 ${response.status}）` : ''}`,
-    };
+    return err(`服务器返回了意外的内容类型${response.status ? `（状态码 ${response.status}）` : ''}`);
   }
 
   // ---- 6. Check status code -----------------------------------------------
@@ -263,7 +251,7 @@ export async function requestAiCompletion(
       safeError += '，请检查 API Key 和端点配置是否正确';
     }
 
-    return { ok: false, error: safeError };
+    return err(safeError);
   }
 
   // ---- 7. Parse and validate JSON body ------------------------------------
@@ -271,11 +259,11 @@ export async function requestAiCompletion(
   try {
     data = await response.json();
   } catch {
-    return { ok: false, error: '无法解析 AI 服务返回的数据' };
+    return err('无法解析 AI 服务返回的数据');
   }
 
   if (data === null || data === undefined || typeof data !== 'object') {
-    return { ok: false, error: 'AI 服务返回了无效的数据格式' };
+    return err('AI 服务返回了无效的数据格式');
   }
 
   const obj = data as Record<string, unknown>;
@@ -285,69 +273,40 @@ export async function requestAiCompletion(
     const errMsg = (obj.error as Record<string, unknown>).message ?? '未知错误';
     const safe = String(errMsg).slice(0, 200);
     if (safe.includes(apiKey) && apiKey.length > 4) {
-      return { ok: false, error: 'AI 服务返回错误，请检查 API Key 是否有效' };
+      return err('AI 服务返回错误，请检查 API Key 是否有效');
     }
-    return { ok: false, error: `AI 服务返回错误：${safe}` };
+    return err(`AI 服务返回错误：${safe}`);
   }
 
   // ---- 9. Extract and validate text field ---------------------------------
   const choices = obj.choices;
   if (!Array.isArray(choices) || choices.length === 0) {
-    return { ok: false, error: 'AI 服务返回数据不完整（缺少回复内容）' };
+    return err('AI 服务返回数据不完整（缺少回复内容）');
   }
 
   const firstChoice = choices[0] as Record<string, unknown> | undefined;
   if (!firstChoice || typeof firstChoice !== 'object') {
-    return { ok: false, error: 'AI 服务返回数据不完整' };
+    return err('AI 服务返回数据不完整');
   }
 
   const message = firstChoice.message as Record<string, unknown> | undefined;
   if (!message || typeof message !== 'object') {
-    return { ok: false, error: 'AI 服务返回数据不完整（缺少消息内容）' };
+    return err('AI 服务返回数据不完整（缺少消息内容）');
   }
 
   const content = message.content;
   if (typeof content !== 'string' || content.length === 0) {
-    return { ok: false, error: 'AI 服务返回了空白的回复内容' };
+    return err('AI 服务返回了空白的回复内容');
   }
 
   // ---- 10. Enforce response size limit ------------------------------------
   const byteLength = new TextEncoder().encode(content).length;
   if (byteLength > MAX_RESPONSE_BYTES) {
-    return {
-      ok: false,
-      error: `AI 返回内容过大（${byteLength} 字节），已超过 ${MAX_RESPONSE_BYTES} 字节上限`,
-    };
+    return err(`AI 返回内容过大（${byteLength} 字节），已超过 ${MAX_RESPONSE_BYTES} 字节上限`);
   }
 
   // ---- 11. Success --------------------------------------------------------
-  return { ok: true, value: content };
-}
-
-// ---- Legacy API (kept for backward compatibility; wraps new API) -----------
-
-/**
- * @deprecated Use `setAiConfig()` + `requestAiCompletion()` instead.
- */
-export async function aiRequest(req: AiRequest): Promise<{ text: string; error?: string }> {
-  const result = await requestAiCompletion({
-    prompt: req.prompt,
-    context: req.context,
-    operation: req.operation,
-    language: req.language,
-  });
-
-  if (result.ok) {
-    return { text: result.value };
-  }
-  return { text: '', error: result.error };
-}
-
-/**
- * @deprecated Use `setAiConfig()` instead.
- */
-export function saveAiConfig(endpoint: string, apiKey: string, model: string): void {
-  setAiConfig(endpoint, apiKey, model);
+  return ok(content);
 }
 
 export { PROMPT_TEMPLATES };

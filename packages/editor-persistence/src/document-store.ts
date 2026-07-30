@@ -1,11 +1,5 @@
-// 本地 Result 类型（零外部依赖）
-export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
-export function ok<T>(value: T): Result<T, never> {
-  return { ok: true, value };
-}
-export function err<E = Error>(error: E): Result<never, E> {
-  return { ok: false, error };
-}
+import { ok, err } from 'neverthrow';
+import type { Result } from 'neverthrow';
 
 export class AppError extends Error {
   constructor(

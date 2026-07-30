@@ -1,5 +1,6 @@
-import type { Result } from './document-store';
-import { ok, err, AppError } from './document-store';
+import { ok, err } from 'neverthrow';
+import type { Result } from 'neverthrow';
+import { AppError } from './document-store';
 
 const DB_NAME = 'lkm-editor-backup';
 const DB_VERSION = 1;

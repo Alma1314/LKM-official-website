@@ -243,8 +243,8 @@ async function handleLogin(method: LoginMethod, credentials: Record<string, stri
   error.value = null;
   success.value = null;
   const result = login(method, credentials, identifiedAccount.value ?? undefined);
-  if (!result.success) {
-    error.value = result.error || '登录失败';
+  if (!result.ok) {
+    error.value = result.error?.message || '登录失败';
   }
 }
 

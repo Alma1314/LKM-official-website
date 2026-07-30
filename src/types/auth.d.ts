@@ -46,17 +46,16 @@ export interface AuthContextType {
   updateUser: (user: DemoUser) => void;
 }
 
-export interface LoginResult {
-  success: boolean;
+import type { AppError } from '~/core/errors/error-codes';
+
+export interface AuthSuccess {
   requires2FA?: boolean;
   requires2FASetup?: boolean;
-  error?: string;
 }
 
-export interface RegisterResult {
-  success: boolean;
-  error?: string;
-}
+export type LoginResult = import('~/core/errors/result').Result<AuthSuccess, AppError>;
+
+export type RegisterResult = import('~/core/errors/result').Result<void, AppError>;
 
 export interface RegisterData {
   username: string;
