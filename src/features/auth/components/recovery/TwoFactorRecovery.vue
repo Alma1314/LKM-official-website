@@ -39,12 +39,7 @@
       </div>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
       <button type="submit" class="btn btn-primary w-full">验证</button>
-      <button
-        v-if="props.level === 'admin'"
-        type="button"
-        class="btn btn-ghost w-full btn-sm"
-        @click="emit('success')"
-      >
+      <button v-if="props.level === 'admin'" type="button" class="btn btn-ghost w-full btn-sm" @click="emit('success')">
         联系其他管理员协助（模拟）
       </button>
     </form>

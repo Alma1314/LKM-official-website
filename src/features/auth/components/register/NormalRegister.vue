@@ -34,8 +34,8 @@
     <p class="font-semibold text-lg">普通账户注册成功</p>
     <p class="text-sm text-text-muted">现在可以设置 2FA 和通行密钥增强安全性</p>
     <div class="flex gap-3 justify-center">
-      <button type="button" class="btn btn-ghost btn-sm" @click="emit('complete',false)">跳过</button>
-      <button type="button" class="btn btn-primary btn-sm" @click="emit('complete',true)">去设置 2FA</button>
+      <button type="button" class="btn btn-ghost btn-sm" @click="emit('complete', false)">跳过</button>
+      <button type="button" class="btn btn-primary btn-sm" @click="emit('complete', true)">去设置 2FA</button>
     </div>
   </div>
 

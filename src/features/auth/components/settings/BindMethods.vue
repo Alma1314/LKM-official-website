@@ -157,7 +157,7 @@ function handleVerify() {
   } else {
     successMsg.value = '绑定成功';
   }
-  emit('update',updated);
+  emit('update', updated);
   showBind.value = null;
 }
 
@@ -179,7 +179,7 @@ function handleUnbind(method: string) {
     updated.hasPasskey = false;
     updated.bindings = updated.bindings.filter((b) => b !== 'passkey');
   }
-  emit('update',updated);
+  emit('update', updated);
   successMsg.value = '解绑成功';
 }
 </script>

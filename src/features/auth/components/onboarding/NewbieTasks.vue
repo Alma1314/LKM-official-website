@@ -11,23 +11,13 @@
       <!-- 显示名称 -->
       <div>
         <label class="block text-sm font-medium text-deep-text mb-1.5">显示名称</label>
-        <input
-          v-model="displayName"
-          type="text"
-          class="input input-bordered w-full"
-          placeholder="你的昵称"
-        />
+        <input v-model="displayName" type="text" class="input input-bordered w-full" placeholder="你的昵称" />
       </div>
 
       <!-- 座右铭 -->
       <div>
         <label class="block text-sm font-medium text-deep-text mb-1.5">座右铭</label>
-        <input
-          v-model="bio"
-          type="text"
-          class="input input-bordered w-full"
-          placeholder="一句话介绍自己"
-        />
+        <input v-model="bio" type="text" class="input input-bordered w-full" placeholder="一句话介绍自己" />
       </div>
 
       <!-- 简介 -->

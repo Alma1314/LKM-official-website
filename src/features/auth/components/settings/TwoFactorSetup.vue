@@ -109,7 +109,7 @@ function handleVerify() {
 
 function handleConfirm() {
   if (!savedCodes.value) return;
-  emit('update',{ ...props.user, has2FA: true });
+  emit('update', { ...props.user, has2FA: true });
   show.value = false;
 }
 
@@ -119,6 +119,6 @@ function handleDisable() {
     updated.level = 'normal';
     alert('关闭 2FA 后，管理员账户已自动降级为普通账户');
   }
-  emit('update',updated);
+  emit('update', updated);
 }
 </script>
