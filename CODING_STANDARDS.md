@@ -222,6 +222,52 @@ tags: [astro, tailwind]
 ---
 ```
 
+## 性能规范
+
+### Lighthouse 性能分析
+
+项目通过 `scripts/lighthouse-report.mjs` 进行全站 Lighthouse 分析：
+
+```bash
+pnpm run build                         # 1. 确保 dist/ 是最新构建
+node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页面）
+# 报告输出到 reports/lighthouse/summary.md
+```
+
+**性能目标：**
+
+| 指标                 | 目标  |
+| -------------------- | ----- |
+| 平均 Performance     | >= 80 |
+| FAIL (<50) 页面      | 0     |
+| PASS (90+) 页面      | >= 4  |
+| 平均 Accessibility   | >= 90 |
+| Best Practices / SEO | 100   |
+
+### Icon 本地化
+
+- 所有 icon 通过 `astro-icon` 的 `include` 配置本地打包，禁止运行时 Iconify API 调用
+- `astro.config.ts` → `integrations.icon.include` 已覆盖 `tabler`、`material-symbols`、`fa6-brands`、`fa6-regular`、`fa6-solid`、`flat-color-icons`
+- 新增 icon 集需同步更新 `include` 列表
+
+### Vue `client:only` CLS 防护
+
+- `client:only` 的 Vue 组件**必须包裹 `style="min-height: XXXpx"` 容器**
+- 防止 Vue 挂载后内容注入造成 Cumulative Layout Shift
+
+### Vendor chunk 策略
+
+- `astro.config.ts` → `vite.build.rollupOptions.output.manualChunks`
+- 仅全局使用的重依赖（react、svelte、three、katex）加入 vendor chunk
+- 页面级小众依赖（overlayscrollbars、photoswipe）保持独立异步加载
+
+### Preconnect
+
+- `BaseLayout.astro` 已配置以下域名 preconnect：
+  - `fonts.googleapis.com` / `fonts.gstatic.com`
+  - `images.unsplash.com`
+  - `api.iconify.design` / `api.simplesvg.com` / `api.unisvg.com`
+
 ## Git 规范
 
 | 规则     | 说明                                                              |
