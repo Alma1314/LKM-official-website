@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { id, class: className } = Astro.props;
-const baseClasses = 'sticky top-0 z-50 bg-card-bg';
+const baseClasses = 'sticky top-0 z-50 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]';
 const mergedClass = [baseClasses, className].filter(Boolean).join(' ');
 ---
 

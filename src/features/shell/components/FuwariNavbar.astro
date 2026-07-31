@@ -16,7 +16,7 @@ interface Props {
 }
 
 const className = Astro.props.class;
-const navInnerClass = ['card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4', className].filter(Boolean).join(' ');
+const navInnerClass = ['bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none transition !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4', className].filter(Boolean).join(' ');
 
 let links: NavBarLink[] =
   Astro.props.links ||
@@ -29,7 +29,7 @@ let links: NavBarLink[] =
 ---
 
 <div id="navbar" class="z-50 onload-animation">
-  <div class="absolute h-8 left-0 right-0 -top-8 bg-card-bg transition"></div>
+  <div class="absolute h-8 left-0 right-0 -top-8 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] transition"></div>
   <div
     class={navInnerClass}
   >
