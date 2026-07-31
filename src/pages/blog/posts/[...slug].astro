@@ -1,12 +1,12 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
-import path from 'node:path';
 import { License, Markdown, ImageWrapper } from '~/ui/primitives';
 import I18nKey from '~/core/i18n/i18nKey';
 import { i18n } from '~/core/i18n/translation';
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 import { getSortedPosts } from '~/core/utils/content-utils';
-import { getDir, getPostUrlBySlug } from '~/core/utils/url-utils';
+import { getPostUrlBySlug } from '~/core/utils/url-utils';
+import { getPostImageBasePath } from '~/core/utils/paths';
 import { Icon } from 'astro-icon/components';
 import { licenseConfig } from '~/core/config';
 import PostMetadata from '~/features/team/components/PostMeta.astro';
@@ -121,7 +121,7 @@ const jsonLd = {
           <ImageWrapper
             id="post-cover"
             src={entry.data.image}
-            basePath={path.join('content/posts/', getDir(entry.id))}
+            basePath={getPostImageBasePath(entry.id)}
             class="mb-8 rounded-xl banner-container onload-animation"
           />
         )

@@ -1,6 +1,7 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { MetaDataOpenGraph } from '~/core/types';
+import { buildUrl } from './paths';
 
 type ImageSrc = string | ImageMetadata | null | undefined;
 
@@ -34,7 +35,7 @@ const loadLocalImages = () => {
 export const findImage = async (imagePath?: ImageSrc): Promise<ImageSrc> => {
   if (typeof imagePath !== 'string') return imagePath;
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-  if (imagePath.startsWith('/')) return `${import.meta.env.BASE_URL}${imagePath.replace(/^\//, '')}`;
+  if (imagePath.startsWith('/')) return buildUrl(imagePath);
   if (!imagePath.startsWith('~/assets/images')) return imagePath;
 
   const images = loadLocalImages();

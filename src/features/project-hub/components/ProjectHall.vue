@@ -16,7 +16,7 @@
       <a
         v-for="proj in filteredProjects"
         :key="proj.id"
-        :href="`${base}projects/${proj.id}`"
+        :href="buildUrl(`/projects/${proj.id}`)"
         class="profile-card group block"
       >
         <div class="profile-inner p-5 flex flex-col gap-2.5 h-full">
@@ -63,8 +63,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { mockProjects } from '../data/mock-projects';
-
-const base = import.meta.env.BASE_URL;
+import { buildUrl } from '~/core/utils/paths';
 
 const activeTab = ref('recruiting');
 const filteredProjects = computed(() =>

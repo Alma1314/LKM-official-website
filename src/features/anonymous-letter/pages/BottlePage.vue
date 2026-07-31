@@ -87,8 +87,7 @@
 import { ref, computed, onMounted } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import { getBottles, addBottle, pickBottle, markBottlePicked } from '../store/storage';
-
-const base = import.meta.env.BASE_URL || '/';
+import { buildUrl } from '~/core/utils/paths';
 
 const allBottles = ref([]);
 const currentBottle = ref(null);

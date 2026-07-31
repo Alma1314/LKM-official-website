@@ -3,7 +3,7 @@
     <!-- 未登录 -->
     <a
       v-if="!isLoggedIn"
-      :href="`${base}login`"
+      :href="buildUrl('/login')"
       class="btn-plain scale-animation rounded-lg h-11 px-4 font-bold active:scale-95 flex items-center gap-1.5 text-sm text-primary hover:bg-primary/10 transition-colors"
       @click.prevent="openLogin"
     >
@@ -30,7 +30,7 @@
         </div>
 
         <a
-          :href="`${base}profile`"
+          :href="buildUrl('/profile')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -38,7 +38,7 @@
           个人中心
         </a>
         <a
-          :href="`${base}contribution`"
+          :href="buildUrl('/contribution')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -46,7 +46,7 @@
           贡献系统
         </a>
         <a
-          :href="`${base}account`"
+          :href="buildUrl('/account')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -71,9 +71,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
+import { buildUrl } from '~/core/utils/paths';
 
-const props = defineProps<{ base?: string }>();
-const base = computed(() => props.base || '/');
+defineProps<{ base?: string }>();
 
 const isOpen = ref(false);
 const isLoggedIn = ref(false);

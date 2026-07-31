@@ -10,8 +10,8 @@
         <p class="hero-sub">把心事交给风，把秘密留给树洞。</p>
         <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
         <div class="hero-acts">
-          <a :href="`${base}/treehole/write`" class="btn-grad">✍️ 写一封信</a>
-          <a :href="`${base}/treehole/random`" class="chip">🎲 随机树洞</a>
+          <a :href="buildUrl('/treehole/write')" class="btn-grad">✍️ 写一封信</a>
+          <a :href="buildUrl('/treehole/random')" class="chip">🎲 随机树洞</a>
         </div>
       </section>
 
@@ -94,8 +94,7 @@ import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../store/constants';
 import { getLetters, getFavorites, toggleFavorite } from '../store/storage';
-
-const base = import.meta.env.BASE_URL || '/';
+import { buildUrl } from '~/core/utils/paths';
 
 const categories = CATEGORIES;
 

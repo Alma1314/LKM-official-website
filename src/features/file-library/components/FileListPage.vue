@@ -65,7 +65,7 @@
           <span class="text-2xl shrink-0">{{ fileIcon(file.mimeType) }}</span>
           <div class="flex-1 min-w-0">
             <a
-              :href="`${base}files/${file.id}`"
+              :href="buildUrl(`/files/${file.id}`)"
               class="font-medium text-deep-text hover:text-primary transition-colors line-clamp-1"
             >
               {{ file.originalName }}
@@ -81,7 +81,7 @@
             <span class="text-xs px-2 py-0.5 rounded-full font-medium" :class="statusClass(file.status)">
               {{ statusLabel(file.status) }}
             </span>
-            <a :href="`${base}files/${file.id}`" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium">查看</a>
+            <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium">查看</a>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@
       <a
         v-for="file in filteredFiles"
         :key="file.id"
-        :href="`${base}files/${file.id}`"
+        :href="buildUrl(`/files/${file.id}`)"
         class="bg-card-bg border border-surface-3 rounded-xl p-5 hover:border-primary/30 transition-colors group flex flex-col"
       >
         <div class="flex items-start gap-3 mb-3">
@@ -181,8 +181,7 @@ import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import { mockFiles } from '../data/mock-files';
 import { forumCategories } from '../../forum/data/categories';
-
-const base = import.meta.env.BASE_URL;
+import { buildUrl } from '~/core/utils/paths';
 
 const viewMode = ref<'list' | 'grid'>('list');
 const filterCategory = ref('');

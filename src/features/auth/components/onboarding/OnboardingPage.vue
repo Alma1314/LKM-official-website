@@ -88,6 +88,7 @@ import IdentityTags from './IdentityTags.vue';
 import FollowRecommend from './FollowRecommend.vue';
 import AnswerQuiz from './AnswerQuiz.vue';
 import NewbieTasks from './NewbieTasks.vue';
+import { buildUrl } from '~/core/utils/paths';
 
 interface StepConfig {
   label: string;
@@ -145,7 +146,7 @@ function finish() {
   localStorage.setItem('lkm-onboarding-done', 'true');
   localStorage.setItem('lkm-onboarding-data', JSON.stringify(allData));
   // 跳转到首页
-  window.location.href = import.meta.env.BASE_URL;
+  window.location.href = buildUrl('');
 }
 
 function stepClass(i: number) {

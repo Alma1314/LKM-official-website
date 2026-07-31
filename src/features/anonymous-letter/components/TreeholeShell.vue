@@ -13,7 +13,7 @@
       <header class="top-nav glass">
         <div class="nav-inner">
           <div class="nav-left">
-            <a :href="`${base}/apps`" class="nav-exit-btn" title="返回主站">
+            <a :href="buildUrl('/apps')" class="nav-exit-btn" title="返回主站">
               <svg
                 width="18"
                 height="18"
@@ -27,23 +27,23 @@
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </a>
-            <a :href="`${base}/treehole`" class="nav-brand" aria-label="拾光树洞首页">
+            <a :href="buildUrl('/treehole')" class="nav-brand" aria-label="拾光树洞首页">
               <span class="brand-icon">&#x1F333;</span>
               <span class="brand-text grad-text">拾光树洞</span>
             </a>
           </div>
 
           <nav class="nav-links" aria-label="主导航">
-            <a :href="`${base}/treehole`" class="nav-link" :class="{ active: activeNav === 'home' }">广场</a>
-            <a :href="`${base}/treehole/random`" class="nav-link" :class="{ active: activeNav === 'random' }">随机</a>
-            <a :href="`${base}/treehole/bottle`" class="nav-link" :class="{ active: activeNav === 'bottle' }">漂流瓶</a>
-            <a :href="`${base}/treehole/wish`" class="nav-link" :class="{ active: activeNav === 'wish' }">许愿墙</a>
-            <a :href="`${base}/treehole/rank`" class="nav-link" :class="{ active: activeNav === 'rank' }">榜单</a>
+            <a :href="buildUrl('/treehole')" class="nav-link" :class="{ active: activeNav === 'home' }">广场</a>
+            <a :href="buildUrl('/treehole/random')" class="nav-link" :class="{ active: activeNav === 'random' }">随机</a>
+            <a :href="buildUrl('/treehole/bottle')" class="nav-link" :class="{ active: activeNav === 'bottle' }">漂流瓶</a>
+            <a :href="buildUrl('/treehole/wish')" class="nav-link" :class="{ active: activeNav === 'wish' }">许愿墙</a>
+            <a :href="buildUrl('/treehole/rank')" class="nav-link" :class="{ active: activeNav === 'rank' }">榜单</a>
           </nav>
 
           <!-- 右侧操作 -->
           <div class="nav-actions">
-            <a :href="`${base}/treehole/write`" class="btn-grad nav-write-btn">&#x270D;&#xFE0F; 写信</a>
+            <a :href="buildUrl('/treehole/write')" class="btn-grad nav-write-btn">&#x270D;&#xFE0F; 写信</a>
             <button
               class="nav-icon-btn"
               @click="app.toggleTheme()"
@@ -61,31 +61,31 @@
       <!-- 移动端下拉菜单 -->
       <transition name="slide-down">
         <nav v-if="mobileMenuOpen" class="mobile-menu glass" aria-label="移动端导航" @click="mobileMenuOpen = false">
-          <a :href="`${base}/treehole`" class="mobile-nav-link" :class="{ active: activeNav === 'home' }"
+          <a :href="buildUrl('/treehole')" class="mobile-nav-link" :class="{ active: activeNav === 'home' }"
             >&#x1F3E0; 广场</a
           >
-          <a :href="`${base}/treehole/write`" class="mobile-nav-link" :class="{ active: activeNav === 'write' }"
+          <a :href="buildUrl('/treehole/write')" class="mobile-nav-link" :class="{ active: activeNav === 'write' }"
             >&#x270D;&#xFE0F; 写信</a
           >
-          <a :href="`${base}/treehole/random`" class="mobile-nav-link" :class="{ active: activeNav === 'random' }"
+          <a :href="buildUrl('/treehole/random')" class="mobile-nav-link" :class="{ active: activeNav === 'random' }"
             >&#x1F3B2; 随机树洞</a
           >
-          <a :href="`${base}/treehole/bottle`" class="mobile-nav-link" :class="{ active: activeNav === 'bottle' }"
+          <a :href="buildUrl('/treehole/bottle')" class="mobile-nav-link" :class="{ active: activeNav === 'bottle' }"
             >&#x1F37E; 漂流瓶</a
           >
-          <a :href="`${base}/treehole/wish`" class="mobile-nav-link" :class="{ active: activeNav === 'wish' }"
+          <a :href="buildUrl('/treehole/wish')" class="mobile-nav-link" :class="{ active: activeNav === 'wish' }"
             >&#x2B50; 许愿墙</a
           >
-          <a :href="`${base}/treehole/rank`" class="mobile-nav-link" :class="{ active: activeNav === 'rank' }"
+          <a :href="buildUrl('/treehole/rank')" class="mobile-nav-link" :class="{ active: activeNav === 'rank' }"
             >&#x1F3C6; 榜单</a
           >
-          <a :href="`${base}/treehole/mine`" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }"
+          <a :href="buildUrl('/treehole/mine')" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }"
             >&#x1F4EC; 我的信箱</a
           >
-          <a :href="`${base}/treehole/messages`" class="mobile-nav-link" :class="{ active: activeNav === 'messages' }"
+          <a :href="buildUrl('/treehole/messages')" class="mobile-nav-link" :class="{ active: activeNav === 'messages' }"
             >&#x1F4AC; 私信</a
           >
-          <a :href="`${base}/treehole/settings`" class="mobile-nav-link" :class="{ active: activeNav === 'settings' }"
+          <a :href="buildUrl('/treehole/settings')" class="mobile-nav-link" :class="{ active: activeNav === 'settings' }"
             >&#x2699;&#xFE0F; 设置</a
           >
         </nav>
@@ -98,22 +98,22 @@
 
       <!-- ==================== 移动端底部导航栏 ==================== -->
       <nav class="bottom-nav glass" aria-label="移动端底部导航">
-        <a :href="`${base}/treehole`" class="bn-item" :class="{ active: activeNav === 'home' }">
+        <a :href="buildUrl('/treehole')" class="bn-item" :class="{ active: activeNav === 'home' }">
           <span class="bn-icon">&#x1F3E0;</span>
           <span class="bn-label">广场</span>
         </a>
-        <a :href="`${base}/treehole/random`" class="bn-item" :class="{ active: activeNav === 'random' }">
+        <a :href="buildUrl('/treehole/random')" class="bn-item" :class="{ active: activeNav === 'random' }">
           <span class="bn-icon">&#x1F3B2;</span>
           <span class="bn-label">随机</span>
         </a>
-        <a :href="`${base}/treehole/write`" class="bn-item bn-center" :class="{ active: activeNav === 'write' }">
+        <a :href="buildUrl('/treehole/write')" class="bn-item bn-center" :class="{ active: activeNav === 'write' }">
           <span class="bn-center-circle">&#x270D;&#xFE0F;</span>
         </a>
-        <a :href="`${base}/treehole/bottle`" class="bn-item" :class="{ active: activeNav === 'bottle' }">
+        <a :href="buildUrl('/treehole/bottle')" class="bn-item" :class="{ active: activeNav === 'bottle' }">
           <span class="bn-icon">&#x1F37E;</span>
           <span class="bn-label">漂流瓶</span>
         </a>
-        <a :href="`${base}/treehole/mine`" class="bn-item" :class="{ active: activeNav === 'mine' }">
+        <a :href="buildUrl('/treehole/mine')" class="bn-item" :class="{ active: activeNav === 'mine' }">
           <span class="bn-icon">&#x1F4EC;</span>
           <span class="bn-label">信箱</span>
         </a>
@@ -126,12 +126,12 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import Particles from './Particles.vue';
 import { useApp } from '../store/app';
+import { buildUrl } from '~/core/utils/paths';
 
 defineProps<{
   activeNav?: string;
 }>();
 
-const base = import.meta.env.BASE_URL || '/';
 const app = useApp();
 const mobileMenuOpen = ref(false);
 

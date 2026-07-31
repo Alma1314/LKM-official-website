@@ -1,7 +1,6 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-
-  const base = import.meta.env.BASE_URL;
+  import { buildUrl } from '~/core/utils/paths';
 
   interface SearchResultItem {
     type: 'post' | 'file' | 'user';
@@ -12,14 +11,14 @@
   }
 
   const mockData: SearchResultItem[] = [
-    { type: 'post', title: '量子力学入门：波函数坍缩', desc: '作者：七月O · 12 点赞 · 34 评论', url: `${base}forum/post/post-1`, tag: '物理学' },
-    { type: 'post', title: '数学建模竞赛经验分享', desc: '作者：七月花 · 28 点赞 · 56 评论', url: `${base}forum/post/post-3`, tag: '数学' },
-    { type: 'post', title: 'Python 数据分析入门教程', desc: '作者：七月墨染 · 45 点赞 · 23 评论', url: `${base}forum/post/post-5`, tag: '信息科学' },
-    { type: 'file', title: '天体物理数据集（2026版）.zip', desc: '上传者：七月O · 128 MB · 下载 230 次', url: `${base}files/file-1`, tag: '文件' },
-    { type: 'file', title: '线性代数习题集.pdf', desc: '上传者：七月墨染 · 5.2 MB · 下载 89 次', url: `${base}files/file-3`, tag: '文件' },
-    { type: 'user', title: '七月O', desc: '中国科学院国家天文台博士 · 引力波与黑洞物理', url: `${base}user/qiyue-o`, tag: '用户' },
-    { type: 'user', title: '七月花', desc: '有理想的博士 · 科学教育倡导者', url: `${base}user/qiyue-hua`, tag: '用户' },
-    { type: 'user', title: '七月墨染', desc: '双非物理，卧薪尝胆三千日', url: `${base}user/qiyue-moran`, tag: '用户' },
+    { type: 'post', title: '量子力学入门：波函数坍缩', desc: '作者：七月O · 12 点赞 · 34 评论', url: buildUrl(`/forum/post/post-1`), tag: '物理学' },
+    { type: 'post', title: '数学建模竞赛经验分享', desc: '作者：七月花 · 28 点赞 · 56 评论', url: buildUrl(`/forum/post/post-3`), tag: '数学' },
+    { type: 'post', title: 'Python 数据分析入门教程', desc: '作者：七月墨染 · 45 点赞 · 23 评论', url: buildUrl(`/forum/post/post-5`), tag: '信息科学' },
+    { type: 'file', title: '天体物理数据集（2026版）.zip', desc: '上传者：七月O · 128 MB · 下载 230 次', url: buildUrl(`/files/file-1`), tag: '文件' },
+    { type: 'file', title: '线性代数习题集.pdf', desc: '上传者：七月墨染 · 5.2 MB · 下载 89 次', url: buildUrl(`/files/file-3`), tag: '文件' },
+    { type: 'user', title: '七月O', desc: '中国科学院国家天文台博士 · 引力波与黑洞物理', url: buildUrl(`/user/qiyue-o`), tag: '用户' },
+    { type: 'user', title: '七月花', desc: '有理想的博士 · 科学教育倡导者', url: buildUrl(`/user/qiyue-hua`), tag: '用户' },
+    { type: 'user', title: '七月墨染', desc: '双非物理，卧薪尝胆三千日', url: buildUrl(`/user/qiyue-moran`), tag: '用户' },
   ];
 
   let keyword = $state('');

@@ -1,5 +1,6 @@
 import I18nKey from '~/core/i18n/i18nKey';
 import { i18n } from '~/core/i18n/translation';
+import { buildUrl } from './paths';
 
 export function pathsEqual(path1: string, path2: string) {
   const normalizedPath1 = path1.replace(/^\/|\/$/g, '').toLowerCase();
@@ -7,18 +8,13 @@ export function pathsEqual(path1: string, path2: string) {
   return normalizedPath1 === normalizedPath2;
 }
 
-function joinUrl(...parts: string[]): string {
-  const joined = parts.join('/');
-  return joined.replace(/\/+/g, '/');
-}
-
 export function getPostUrlBySlug(slug: string): string {
-  return url(`/blog/posts/${slug}/`);
+  return buildUrl(`/blog/posts/${slug}/`);
 }
 
 export function getTagUrl(tag: string): string {
-  if (!tag) return url('/blog/archive/');
-  return url(`/blog/archive/?tag=${encodeURIComponent(tag.trim())}`);
+  if (!tag) return buildUrl('/blog/archive/');
+  return buildUrl(`/blog/archive/?tag=${encodeURIComponent(tag.trim())}`);
 }
 
 export function getCategoryUrl(category: string | null): string {
@@ -27,8 +23,8 @@ export function getCategoryUrl(category: string | null): string {
     category.trim() === '' ||
     category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
   )
-    return url('/blog/archive/?uncategorized=true');
-  return url(`/blog/archive/?category=${encodeURIComponent(category.trim())}`);
+    return buildUrl('/blog/archive/?uncategorized=true');
+  return buildUrl(`/blog/archive/?category=${encodeURIComponent(category.trim())}`);
 }
 
 export function getDir(path: string): string {
@@ -40,5 +36,5 @@ export function getDir(path: string): string {
 }
 
 export function url(path: string) {
-  return joinUrl('', import.meta.env.BASE_URL, path);
+  return buildUrl(path);
 }

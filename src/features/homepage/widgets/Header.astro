@@ -5,7 +5,8 @@ import ToggleTheme from '~/features/shell/common/components/ToggleTheme.astro';
 import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
 
 import { getHomePermalink } from '~/core/utils/permalinks';
-import { trimSlash, getAsset } from '~/core/utils/permalinks';
+import { trimSlash } from '~/core/utils/paths';
+import { getAsset } from '~/core/utils/permalinks';
 
 interface Link {
   text?: string;

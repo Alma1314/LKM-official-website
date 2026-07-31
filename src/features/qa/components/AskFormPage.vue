@@ -107,6 +107,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { buildUrl } from '~/core/utils/paths';
 
 const activeTab = ref('general');
 const tabs = [
@@ -128,10 +129,10 @@ function toggleSubject(s: string) {
 
 function submit() {
   alert('问题已发布！');
-  window.location.href = import.meta.env.BASE_URL + 'qa';
+  window.location.href = buildUrl('/qa');
 }
 function submitVolunteer() {
   alert('志愿咨询已发布！');
-  window.location.href = import.meta.env.BASE_URL + 'qa';
+  window.location.href = buildUrl('/qa');
 }
 </script>
