@@ -426,6 +426,43 @@ pages/          文件路由页面
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
 
+## 致谢 · 开源项目
+
+本项目基于以下开源项目构建：
+
+| 项目                                                              | 许可证     | 用途             |
+| :---------------------------------------------------------------- | :--------- | :--------------- |
+| [Astro](https://astro.build)                                      | MIT        | Web 框架         |
+| [AstroWind](https://github.com/arthelokyo/astrowind)              | MIT        | 项目模板基础     |
+| [Tailwind CSS](https://tailwindcss.com)                           | MIT        | 样式系统         |
+| [React](https://react.dev)                                        | MIT        | UI 组件          |
+| [Vue.js](https://vuejs.org)                                       | MIT        | UI 组件          |
+| [Svelte](https://svelte.dev)                                      | MIT        | UI 组件          |
+| [Element Plus](https://element-plus.org)                          | MIT        | UI 组件库        |
+| [Tiptap](https://tiptap.dev)                                      | MIT        | 富文本编辑器引擎 |
+| [Three.js](https://threejs.org)                                   | MIT        | 3D 图形渲染      |
+| [KaTeX](https://katex.org)                                        | MIT        | 数学公式渲染     |
+| [Mermaid](https://mermaid.js.org)                                 | MIT        | 图表渲染         |
+| [Pagefind](https://pagefind.app)                                  | MIT        | 全文搜索         |
+| [PhotoSwipe](https://photoswipe.com)                              | MIT        | 图片预览         |
+| [Expressive Code](https://expressive-code.com)                    | MIT        | 代码高亮         |
+| [Markdown-it](https://github.com/markdown-it/markdown-it)         | MIT        | Markdown 解析    |
+| [sanitize-html](https://github.com/apostrophecms/sanitize-html)   | MIT        | HTML 消毒        |
+| [Neverthrow](https://github.com/supermacro/neverthrow)            | MIT        | 类型安全错误处理 |
+| [Dexie.js](https://dexie.org)                                     | Apache-2.0 | IndexedDB 封装   |
+| [OverlayScrollbars](https://kingsora.github.io/OverlayScrollbars) | MIT        | 自定义滚动条     |
+| [unpic](https://unpic.pics)                                       | MIT        | 图片优化         |
+| [QRCode](https://github.com/soldair/node-qrcode)                  | MIT        | 二维码生成       |
+| [sharp](https://sharp.pixelplumbing.com)                          | Apache-2.0 | 图片处理         |
+| [Lighthouse](https://github.com/GoogleChrome/lighthouse)          | Apache-2.0 | 性能审计         |
+| [Playwright](https://playwright.dev)                              | Apache-2.0 | E2E 测试         |
+| [Vitest](https://vitest.dev)                                      | MIT        | 单元测试         |
+| [ESLint](https://eslint.org)                                      | MIT        | 代码检查         |
+| [Prettier](https://prettier.io)                                   | MIT        | 代码格式化       |
+| [TypeScript](https://www.typescriptlang.org)                      | Apache-2.0 | 类型系统         |
+
+---
+
 ## 许可证
 
 本项目基于 MIT 许可证开源。详见 [LICENSE.md](./LICENSE.md)。

@@ -25,7 +25,19 @@ const fakeResult: SearchResult[] = [
   },
 ];
 
-const togglePanel = () => {
+const sanitizeHtmlExcerpt = (html: string): string => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  doc.querySelectorAll('script, style, iframe, object, embed, link').forEach((el) => el.remove());
+  doc.querySelectorAll('*').forEach((el) => {
+    for (const attr of el.getAttributeNames()) {
+      if (attr.startsWith('on')) {
+        el.removeAttribute(attr);
+      }
+    }
+  });
+  return doc.body.innerHTML;
+};
   const panel = document.getElementById("search-panel");
   panel?.classList.toggle("float-panel-closed");
 };
@@ -162,7 +174,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
                 {item.meta.title}<Icon icon="fa6-solid:chevron-right" class="transition text-[0.75rem] translate-x-1 my-auto text-[var(--primary)]"></Icon>
             </div>
             <div class="transition text-sm text-50">
-                {@html item.excerpt}
+                {@html sanitizeHtmlExcerpt(item.excerpt)}
             </div>
         </a>
     {/each}

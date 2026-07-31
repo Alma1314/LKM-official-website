@@ -8,6 +8,7 @@ import PostInteractions from '~/features/forum/components/PostInteractions.vue';
 import CommentSection from '~/features/forum/components/CommentSection.vue';
 import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/core/utils/permalinks';
+import sanitizeHtml from 'sanitize-html';
 
 export function getStaticPaths() {
   return mockPosts.map((p) => ({ params: { postId: p.id } }));
@@ -106,7 +107,15 @@ function formatDate(dateStr: string): string {
       <!-- 正文 -->
       <div class="prose dark:prose-invert max-w-none mb-8">
         <!-- 纯 Markdown 渲染，通过 Astro 的 Markdown.astro 或直接 set:html -->
-        <Fragment set:html={post.content} />
+        <Fragment
+          set:html={sanitizeHtml(post.content, {
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+            allowedAttributes: {
+              ...sanitizeHtml.defaults.allowedAttributes,
+              img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+            },
+          })}
+        />
       </div>
 
       <!-- 交互栏 -->

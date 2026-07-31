@@ -46,6 +46,10 @@ export async function GET(context: APIContext) {
         link: url(`/blog/posts/${getSlug(post)}/`),
         content: sanitizeHtml(parser.render(cleanedContent), {
           allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+          allowedAttributes: {
+            ...sanitizeHtml.defaults.allowedAttributes,
+            img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+          },
         }),
       };
     }),
