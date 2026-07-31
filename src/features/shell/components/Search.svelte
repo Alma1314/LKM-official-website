@@ -25,6 +25,17 @@ const fakeResult: SearchResult[] = [
   },
 ];
 
+const sanitizeHtmlExcerpt = (html: string): string => {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+    .replace(/<object[\s\S]*?<\/object>/gi, '')
+    .replace(/<embed[\s\S]*?>/gi, '')
+    .replace(/<link[\s\S]*?>/gi, '')
+    .replace(/\bon\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, '');
+};
+
 const togglePanel = () => {
   const panel = document.getElementById("search-panel");
   panel?.classList.toggle("float-panel-closed");
@@ -162,7 +173,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
                 {item.meta.title}<Icon icon="fa6-solid:chevron-right" class="transition text-[0.75rem] translate-x-1 my-auto text-[var(--primary)]"></Icon>
             </div>
             <div class="transition text-sm text-50">
-                {@html item.excerpt}
+                {@html sanitizeHtmlExcerpt(item.excerpt)}
             </div>
         </a>
     {/each}

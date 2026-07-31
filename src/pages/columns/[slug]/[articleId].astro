@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { getColumnBySlug, getArticleById, getArticlesByColumnId, mockColumnArticles } from '~/features/column';
 import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
 import { getPermalink } from '~/core/utils/permalinks';
+import sanitizeHtml from 'sanitize-html';
 
 export function getStaticPaths() {
   return mockColumnArticles.map((a) => ({ params: { slug: a.columnSlug, articleId: a.id } }));
@@ -65,7 +66,15 @@ const metadata = { title: `${article.title} —— 理科迷` };
 
     <!-- 正文 沉浸式阅读 -->
     <div class="prose dark:prose-invert max-w-none prose-lg">
-      <Fragment set:html={article.content} />
+      <Fragment
+        set:html={sanitizeHtml(article.content, {
+          allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+          allowedAttributes: {
+            ...sanitizeHtml.defaults.allowedAttributes,
+            img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+          },
+        })}
+      />
     </div>
 
     <!-- 底部信息 -->

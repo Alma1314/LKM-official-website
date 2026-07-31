@@ -13,6 +13,7 @@ import ApplyColorMode from '~/features/shell/common/components/ApplyColorMode.as
 import Metadata from '~/features/shell/common/components/Metadata.astro';
 import SiteVerification from '~/features/shell/common/components/SiteVerification.astro';
 import Analytics from '~/features/shell/common/components/Analytics.astro';
+import SecurityHeaders from '~/features/shell/common/components/SecurityHeaders.astro';
 import BasicScripts from '~/features/shell/common/components/BasicScripts.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
 import { navBarConfig } from '~/core/config';
@@ -51,6 +52,7 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
         document.documentElement.style.setProperty('--hue', hue);
       })();
     </script>
+    <SecurityHeaders />
     <Favicons />
     <CustomStyles />
     <ApplyColorMode />
