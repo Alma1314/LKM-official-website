@@ -49,7 +49,7 @@ function openDB(): Promise<IDBDatabase | null> {
   });
 }
 
-export async function saveBackup(docId: string, data: BackupData): Promise<Result<void>> {
+export async function saveBackup(docId: string, data: BackupData): Promise<Result<void, AppError>> {
   try {
     const db = await openDB();
     if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
@@ -99,7 +99,7 @@ async function cleanOldSnapshots(db?: IDBDatabase): Promise<void> {
   }
 }
 
-export async function getBackups(): Promise<Result<BackupMeta[]>> {
+export async function getBackups(): Promise<Result<BackupMeta[], AppError>> {
   try {
     const db = await openDB();
     if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
@@ -122,7 +122,7 @@ export async function getBackups(): Promise<Result<BackupMeta[]>> {
   }
 }
 
-export async function getLatestBackup(docId: string): Promise<Result<BackupData | null>> {
+export async function getLatestBackup(docId: string): Promise<Result<BackupData | null, AppError>> {
   try {
     const db = await openDB();
     if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
@@ -144,11 +144,11 @@ export async function getLatestBackup(docId: string): Promise<Result<BackupData 
   }
 }
 
-export async function restoreFromBackup(docId: string): Promise<Result<BackupData | null>> {
+export async function restoreFromBackup(docId: string): Promise<Result<BackupData | null, AppError>> {
   return getLatestBackup(docId);
 }
 
-export function exportAllToJson(docs: BackupData[]): Result<string> {
+export function exportAllToJson(docs: BackupData[]): Result<string, AppError> {
   try {
     return ok(
       JSON.stringify(
@@ -162,7 +162,7 @@ export function exportAllToJson(docs: BackupData[]): Result<string> {
   }
 }
 
-export function importFromJson(json: string): Result<BackupData[]> {
+export function importFromJson(json: string): Result<BackupData[], AppError> {
   try {
     const parsed = JSON.parse(json);
     if (!Array.isArray(parsed)) {

@@ -27,7 +27,7 @@ export function getVersions(docId: string): VersionEntry[] {
   }
 }
 
-export function saveVersion(docId: string, doc: DocumentData, message = ''): Result<void> {
+export function saveVersion(docId: string, doc: DocumentData, message = ''): Result<void, AppError> {
   try {
     const versions = getVersions(docId);
     const entry: VersionEntry = {

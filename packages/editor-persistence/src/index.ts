@@ -30,22 +30,22 @@ export function createLocalPersistence(): PersistenceAdapter {
       const existing = getDocument(doc.id);
       if (existing) {
         const result = updateDocument(doc.id, doc);
-        return result.ok;
+        return result.isOk();
       }
       const result = createDoc(doc.title);
-      return result.ok;
+      return result.isOk();
     },
 
     deleteDocument: async (id: string): Promise<boolean> => {
       const result = deleteDocument(id);
-      return result.ok;
+      return result.isOk();
     },
 
     listDocuments: (): DocumentSummary[] => listDocuments(),
 
     saveVersion: async (docId: string, doc: DocumentData, message?: string): Promise<boolean> => {
       const result = saveVersion(docId, doc, message);
-      return result.ok;
+      return result.isOk();
     },
 
     getVersions: (docId: string): VersionEntry[] => getVersions(docId),
@@ -63,12 +63,12 @@ export function createLocalPersistence(): PersistenceAdapter {
         version: data.version,
         timestamp: new Date().toISOString(),
       } as Parameters<typeof saveBackup>[1]);
-      return result.ok;
+      return result.isOk();
     },
 
     getBackups: async (): Promise<BackupEntry[]> => {
       const result = await getBackups();
-      return result.ok ? result.value : [];
+      return result.isOk() ? result.value : [];
     },
 
     getComments: (docId: string): CommentThread[] => getThreads(docId),

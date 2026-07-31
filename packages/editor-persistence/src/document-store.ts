@@ -39,7 +39,7 @@ function readDrafts(): Record<string, DocumentData> {
   return draftsCache ?? {};
 }
 
-function writeDrafts(drafts: Record<string, DocumentData>): Result<void> {
+function writeDrafts(drafts: Record<string, DocumentData>): Result<void, AppError> {
   try {
     draftsCache = drafts;
     localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
@@ -61,7 +61,7 @@ function readIndex(): DocumentMeta[] {
   return indexCache ?? [];
 }
 
-function writeIndex(index: DocumentMeta[]): Result<void> {
+function writeIndex(index: DocumentMeta[]): Result<void, AppError> {
   try {
     indexCache = index;
     localStorage.setItem(DRAFTS_INDEX_KEY, JSON.stringify(index));
@@ -85,7 +85,7 @@ export function listDocuments(): DocumentSummary[] {
   return readIndex();
 }
 
-export function createDocument(title?: string): Result<DocumentData> {
+export function createDocument(title?: string): Result<DocumentData, AppError> {
   try {
     const now = new Date().toISOString();
     const doc: DocumentData = {
@@ -103,7 +103,7 @@ export function createDocument(title?: string): Result<DocumentData> {
     const drafts = readDrafts();
     drafts[doc.id] = doc;
     const wd = writeDrafts(drafts);
-    if (!wd.ok) return wd;
+    if (!wd.isOk()) return err(wd.error);
 
     const index = readIndex();
     index.unshift({
@@ -113,13 +113,14 @@ export function createDocument(title?: string): Result<DocumentData> {
       status: doc.status,
       version: doc.version,
     });
-    return writeIndex(index).ok ? ok(doc) : ok(doc);
+    writeIndex(index);
+    return ok(doc);
   } catch (e) {
     return err(new AppError('DB_WRITE_FAILED', '创建文档失败', e));
   }
 }
 
-export function updateDocument(id: string, data: Partial<DocumentData>): Result<DocumentData | null> {
+export function updateDocument(id: string, data: Partial<DocumentData>): Result<DocumentData | null, AppError> {
   try {
     const drafts = readDrafts();
     const existing = drafts[id];
@@ -133,7 +134,7 @@ export function updateDocument(id: string, data: Partial<DocumentData>): Result<
     };
     drafts[id] = updated;
     const wd = writeDrafts(drafts);
-    if (!wd.ok) return wd;
+    if (!wd.isOk()) return err(wd.error);
 
     const index = readIndex();
     const idx = index.findIndex((m) => m.id === id);
@@ -145,7 +146,7 @@ export function updateDocument(id: string, data: Partial<DocumentData>): Result<
         status: updated.status,
         version: updated.version,
       };
-      return writeIndex(index).ok ? ok(updated) : ok(updated);
+      writeIndex(index);
     }
 
     return ok(updated);
@@ -198,12 +199,12 @@ export function autosave(id: string, payload: AutosavePayload): AutosaveResponse
   return { ok: true, version: newVersion };
 }
 
-export function deleteDocument(id: string): Result<void> {
+export function deleteDocument(id: string): Result<void, AppError> {
   try {
     const drafts = readDrafts();
     delete drafts[id];
     const wd = writeDrafts(drafts);
-    if (!wd.ok) return wd;
+    if (!wd.isOk()) return wd;
 
     const index = readIndex();
     return writeIndex(index.filter((m) => m.id !== id));
