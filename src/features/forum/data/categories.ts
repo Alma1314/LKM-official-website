@@ -30,6 +30,18 @@ export const forumCategories: ForumCategory[] = [
     todayPostCount: 45,
   },
   {
+    id: 'basic-science',
+    name: '基础学科',
+    slug: 'basic-science',
+    description:
+      '数学、物理、化学、生物、天文、地球科学等基础科学讨论区，是万物根本，应用学科从此生根发芽延伸至诸多领域。',
+    icon: 'tabler:atom',
+    type: 'basic_science',
+    memberCount: 1200,
+    postCount: 3560,
+    todayPostCount: 45,
+  },
+  {
     id: 'applied-science',
     name: '应用学科',
     slug: 'applied-science',
@@ -513,9 +525,9 @@ export const forumCategories: ForumCategory[] = [
     todayPostCount: 5,
   },
    {
-    id: 'group-junior high',
+    id: 'group-junior-high',
     name: '初中学生',
-    slug: 'group-junior high',
+    slug: 'group-junior-high',
     parentId: 'group',
     description: '初中阶段文理学习讨论，备战中考。',
     icon: 'tabler:world',
@@ -525,9 +537,9 @@ export const forumCategories: ForumCategory[] = [
     todayPostCount: 5,
   },
    {
-    id: 'group-Senior high school',
+    id: 'group-Senior high-school',
     name: '高中学生',
-    slug: 'group-Senior high school',
+    slug: 'group-Senior high-school',
     parentId: 'group',
     description: '高中阶段文理学习讨论，备战高考。',
     icon: 'tabler:world',
