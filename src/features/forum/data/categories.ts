@@ -524,7 +524,7 @@ export const forumCategories: ForumCategory[] = [
     postCount: 350,
     todayPostCount: 5,
   },
-   {
+  {
     id: 'group-junior-high',
     name: '初中学生',
     slug: 'group-junior-high',
@@ -536,7 +536,7 @@ export const forumCategories: ForumCategory[] = [
     postCount: 350,
     todayPostCount: 5,
   },
-   {
+  {
     id: 'group-Senior high-school',
     name: '高中学生',
     slug: 'group-Senior high-school',
@@ -560,7 +560,7 @@ export const forumCategories: ForumCategory[] = [
     postCount: 240,
     todayPostCount: 3,
   },
-   {
+  {
     id: 'group-scientist',
     name: '科普工作者',
     slug: 'group-scientist',
@@ -572,8 +572,6 @@ export const forumCategories: ForumCategory[] = [
     postCount: 240,
     todayPostCount: 3,
   },
-
-
 ];
 
 /** 获取一级分类（没有 parentId 的） */
