@@ -7,57 +7,53 @@ const DEFAULT_MODEL = 'gpt-3.5-turbo';
 describe('validateAiEndpoint', () => {
   it('rejects empty string', () => {
     const result = validateAiEndpoint('');
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toBeTruthy();
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toBeTruthy();
   });
 
   it('rejects http:// URLs', () => {
     const result = validateAiEndpoint('http://api.openai.com');
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toMatch(/https/i);
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toMatch(/https/i);
   });
 
   it('rejects javascript: pseudo-URLs', () => {
     const result = validateAiEndpoint('javascript:alert(1)');
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('rejects URLs with username:password', () => {
     const result = validateAiEndpoint('https://user:pass@api.openai.com');
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('rejects URLs with username only', () => {
     const result = validateAiEndpoint('https://user@evil.com');
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('rejects data: URLs', () => {
     const result = validateAiEndpoint('data:text/html,<script>alert(1)</script>');
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('rejects file: URLs', () => {
     const result = validateAiEndpoint('file:///etc/passwd');
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('accepts a plain HTTPS URL without trailing slash', () => {
     const result = validateAiEndpoint('https://api.openai.com');
-    expect(result.ok).toBe(true);
-    if (result.ok) {
+    expect(result.isOk()).toBe(true);
+    if (result.isOk()) {
       expect(result.value.href).toBe('https://api.openai.com/');
     }
   });
 
   it('normalises trailing slash on a bare HTTPS domain', () => {
     const result = validateAiEndpoint('https://example.com/api');
-    expect(result.ok).toBe(true);
-    if (result.ok) {
+    expect(result.isOk()).toBe(true);
+    if (result.isOk()) {
       // Only HTTPS, no credentials, no fragment
       expect(result.value.protocol).toBe('https:');
       expect(result.value.username).toBe('');
@@ -68,7 +64,7 @@ describe('validateAiEndpoint', () => {
 
   it('accepts localhost HTTPS (for local development)', () => {
     const result = validateAiEndpoint('https://localhost:11434/v1');
-    expect(result.ok).toBe(true);
+    expect(result.isOk()).toBe(true);
   });
 });
 
@@ -104,10 +100,8 @@ describe('requestAiCompletion (mocked fetch)', () => {
 
   it('requires config to be set first', async () => {
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toMatch(/配置/);
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toMatch(/配置/);
   });
 
   it('sends a completion request and returns the text', async () => {
@@ -118,8 +112,8 @@ describe('requestAiCompletion (mocked fetch)', () => {
     );
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(true);
-    if (result.ok) {
+    expect(result.isOk()).toBe(true);
+    if (result.isOk()) {
       expect(result.value).toBe('续写结果');
     }
   });
@@ -133,10 +127,8 @@ describe('requestAiCompletion (mocked fetch)', () => {
     );
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toMatch(/大|size|字节|limit/i);
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toMatch(/大|size|字节|limit/i);
   });
 
   it('rejects response missing the text field', async () => {
@@ -144,10 +136,8 @@ describe('requestAiCompletion (mocked fetch)', () => {
     mockFetch({ status: 200, headers: { 'content-type': 'application/json' } }, { choices: [{ message: {} }] });
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toBeTruthy();
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toBeTruthy();
   });
 
   it('rejects non-JSON content-type response', async () => {
@@ -156,7 +146,7 @@ describe('requestAiCompletion (mocked fetch)', () => {
 
     const result = await requestAiCompletion(input);
     // Either fails parsing or rejects upfront from content-type check
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
   });
 
   it('handles cancellation via AbortSignal', async () => {
@@ -167,10 +157,8 @@ describe('requestAiCompletion (mocked fetch)', () => {
     controller.abort();
 
     const result = await requestAiCompletion(input, { signal: controller.signal });
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error).toMatch(/取消|abort|cancel/i);
-    }
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toMatch(/取消|abort|cancel/i);
   });
 
   it('handles timeout (simulated)', async () => {
@@ -188,13 +176,10 @@ describe('requestAiCompletion (mocked fetch)', () => {
 
     globalThis.fetch = vi.fn().mockReturnValue(timeoutPromise) as unknown as typeof fetch;
 
-    // requestAiCompletion uses its own 15s timeout; we test external cancel
-    const result = await requestAiCompletion(input, { signal: controller.signal }).catch(() => ({
-      ok: false as const,
-      error: 'aborted',
-    }));
+    const result = await requestAiCompletion(input, { signal: controller.signal });
 
-    expect(result.ok).toBe(false);
+    expect(result.isErr()).toBe(true);
+    expect(result.error).toMatch(/取消|abort|cancel|超时/i);
   });
 
   it('requires HTTPS in the configured endpoint before sending', async () => {
@@ -209,11 +194,9 @@ describe('requestAiCompletion (mocked fetch)', () => {
     setAiConfig('http://evil.com', 'key', DEFAULT_MODEL);
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      // Should reject before sending any fetch
-      expect(fetchSpy).not.toHaveBeenCalled();
-    }
+    expect(result.isErr()).toBe(true);
+    // Should reject before sending any fetch
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 
   it('error text never contains the api key', async () => {
@@ -229,13 +212,11 @@ describe('requestAiCompletion (mocked fetch)', () => {
     ) as unknown as typeof fetch;
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      // The error message must NOT contain the actual key
-      expect(result.error).not.toContain(secretKey);
-      // Also must not contain secrets from config
-      expect(result.error).not.toContain('sk-secret');
-    }
+    expect(result.isErr()).toBe(true);
+    // The error message must NOT contain the actual key
+    expect(result.error).not.toContain(secretKey);
+    // Also must not contain secrets from config
+    expect(result.error).not.toContain('sk-secret');
   });
 
   it('error text never contains full response document on server error', async () => {
@@ -251,16 +232,14 @@ describe('requestAiCompletion (mocked fetch)', () => {
     ) as unknown as typeof fetch;
 
     const result = await requestAiCompletion(input);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      // Should truncate, not include the full 5000-char body
-      expect(result.error.length).toBeLessThan(hugeErrorBody.length);
-    }
+    expect(result.isErr()).toBe(true);
+    // Should truncate, not include the full 5000-char body
+    expect(result.error.length).toBeLessThan(hugeErrorBody.length);
   });
 
   it('default endpoint is usable when no custom endpoint is set', async () => {
     // setAiConfig with DEFAULT_ENDPOINT should be accepted
     const validation = validateAiEndpoint(DEFAULT_ENDPOINT);
-    expect(validation.ok).toBe(true);
+    expect(validation.isOk()).toBe(true);
   });
 });
