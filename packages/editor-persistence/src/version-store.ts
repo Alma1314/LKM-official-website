@@ -1,6 +1,7 @@
 import type { DocumentData } from '@lkm/rich-text-editor';
-import { ok, err, AppError } from './document-store';
-import type { Result } from './document-store';
+import { ok, err } from 'neverthrow';
+import type { Result } from 'neverthrow';
+import { AppError } from './document-store';
 
 export interface VersionEntry {
   version: number;
@@ -26,7 +27,7 @@ export function getVersions(docId: string): VersionEntry[] {
   }
 }
 
-export function saveVersion(docId: string, doc: DocumentData, message = ''): Result<void> {
+export function saveVersion(docId: string, doc: DocumentData, message = ''): Result<void, AppError> {
   try {
     const versions = getVersions(docId);
     const entry: VersionEntry = {

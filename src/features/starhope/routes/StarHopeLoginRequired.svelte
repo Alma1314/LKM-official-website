@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { getAuthPath } from '~/features/auth/constants/auth-paths';
   // 跳转到网站主登录页，附带 redirect 参数让登录成功后回到 StarHope
-  const loginUrl = '/login?redirect=/starhope';
+  const loginUrl = getAuthPath('login?redirect=/starhope');
 </script>
 
 <div class="min-h-screen flex items-center justify-center bg-page-bg">
@@ -12,7 +13,7 @@
         StarHope 使用 LKM 网站统一账户，请先登录后再使用学习助手。
       </p>
       <a
-        href="/login?redirect=/starhope"
+        href={loginUrl}
         class="inline-block btn-primary rounded-lg px-6 py-2.5 text-sm font-semibold"
       >
         前往登录

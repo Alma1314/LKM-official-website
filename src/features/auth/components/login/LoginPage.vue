@@ -51,7 +51,8 @@
         </div>
         <div class="flex gap-3 justify-center">
           <a :href="getAuthPath('account')" class="btn btn-ghost btn-sm">账户设置</a>
-          <a :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
+          <a v-if="redirectParam" :href="redirectUrl" class="btn btn-primary btn-sm">返回目标页面</a>
+          <a v-else :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
         </div>
       </div>
     </div>
@@ -133,9 +134,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
-import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import { getAuthPath, getBaseUrl } from '~/features/auth/constants/auth-paths';
 import { findAccount } from '~/features/auth/data/demo-accounts';
 import PasswordLogin from './PasswordLogin.vue';
 import SmsLogin from './SmsLogin.vue';
@@ -147,6 +148,19 @@ import type { LoginMethod, DemoUser } from '~/types/auth';
 
 // Self-contained provider
 const { state, login } = useAuthProvider();
+
+// 读取 redirect 参数，登录成功后跳转
+const redirectParam = ref('');
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search);
+  redirectParam.value = params.get('redirect') || '';
+});
+
+const redirectUrl = computed(() => {
+  if (!redirectParam.value) return getAuthPath('');
+  const base = getBaseUrl().replace(/\/$/, '');
+  return base + redirectParam.value;
+});
 
 interface Tab {
   key: LoginMethod;
@@ -243,8 +257,8 @@ async function handleLogin(method: LoginMethod, credentials: Record<string, stri
   error.value = null;
   success.value = null;
   const result = login(method, credentials, identifiedAccount.value ?? undefined);
-  if (!result.success) {
-    error.value = result.error || '登录失败';
+  if (!result.ok) {
+    error.value = result.error?.message || '登录失败';
   }
 }
 

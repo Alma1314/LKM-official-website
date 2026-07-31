@@ -36,7 +36,7 @@ src/
     styles/       # 全局 CSS（tailwind.css）
     plugins/      # Remark/Rehype 插件
   features/       # 业务功能模块
-    blog/         # 博客组件
+    blog/         # 博客组件（含 Comment、HighlightedPosts 等跨页共用）
     team/         # 团队页面组件
     editor/       # 编辑器薄适配层
     homepage/     # 首页组件
@@ -53,6 +53,7 @@ src/
     qa/           # 问答组件
     funding/      # 赞助组件
     contribution/ # 贡献组件
+    starhope/      # StarHope 学习平台（Svelte，auth 通过 ~/types 解耦）
     file-library/ # 文件库组件
     admin/        # 管理后台组件
     anonymous-letter/ # 匿名信组件
@@ -127,13 +128,12 @@ Vite 插件 `@tailwindcss/vite` 在 `astro.config.ts` 中配置。
 1. **Tailwind utility classes** — 首选方案，用于所有组件模板中
 2. **全局 CSS @layer components** — 用于可复用的复合类（如 `.btn`, `.btn-primary`, `.card-base`, `bg-card-bg`, `text-deep-text` 等），定义在 `tailwind.css` 和 `src/styles/main.css`
 3. **CSS Modules (`*.module.css`)** — 仅在复杂布局 Tailwind 不便表达时使用（如 Hero, Sidebar 的 grid/scroll 布局）
-4. **Scoped `<style>` — 最后手段，仅用于 CSS Module 无法满足的场景**
 
 **禁止：**
 
-- 在 `.vue`、`.svelte`、`.astro` 组件中使用 scoped `<style>` 块（Svelte scoped 可用但优先 Tailwind）
+- 在任何组件（`.astro`、`.vue`、`.svelte`、`.tsx`）中使用 scoped `<style>` 块
 - 使用 CSS-in-JS 库
-- 在组件模板中直接引用 CSS 变量（`var(--xxx)`），应使用对应的 Tailwind utility class
+- 在组件模板中直接引用 CSS 变量（`var(--xxx)`），应使用 `@theme` 映射为 Tailwind utility class
 
 **跨框架一致性：**
 
@@ -175,8 +175,9 @@ Hero 图片使用 `loading="eager"` 和 `fetchpriority="high"`。
 
 ### Vendor 拆分策略
 
-- 非全局使用的重量级依赖（`overlayscrollbars`、`photoswipe`）**不加入** `manualChunks` 统一 vendor chunk
-- 让其独立拆分为异步 chunk，仅在引用页面加载
+- **全局使用的框架加入 vendor chunk**：`react` / `react-dom` → `vendor-react`，`vue` / `@iconify/vue` → `vendor-vue`，`svelte` / `@iconify/svelte` → `vendor-svelte`
+- `three` → `vendor-three`，`katex` / `rehype-katex` → `vendor-katex`
+- 非全局使用的重量级依赖（`overlayscrollbars`、`photoswipe`）**不加入** vendor chunk，让其独立拆分为异步 chunk，仅在引用页面加载
 
 ### CSS 加载
 

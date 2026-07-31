@@ -1,5 +1,6 @@
 <script lang="ts">
   import { db } from '~/features/starhope/stores/db.svelte';
+  import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
   let exportStatus = $state('');
   let importStatus = $state('');
@@ -74,7 +75,7 @@
     await db.aiAgents.clear();
     await db.aiMessages.clear();
     alert('所有数据已清除');
-    location.href = '/starhope';
+    location.href = getAuthPath('starhope');
   }
 </script>
 

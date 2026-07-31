@@ -1,11 +1,11 @@
 ---
 import { Icon } from 'astro-icon/components';
 import type { MarkdownHeading } from 'astro';
-import Image from '~/ui/primitives/Image.astro';
+import { Image } from '~/ui/primitives';
 import PostTags from './Tags.astro';
 import SocialShare from '~/features/shell/common/components/SocialShare.astro';
 import BlogInteractions from './BlogInteractions.vue';
-import TableOfContents from '~/ui/patterns/TableOfContents.astro';
+import { TableOfContents } from '~/ui/patterns';
 
 import { getPermalink, transitionName } from '~/core/utils/permalinks';
 import { getFormattedDate } from '~/core/utils/utils';

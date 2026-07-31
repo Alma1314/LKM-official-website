@@ -9,6 +9,7 @@ import type {
   DemoUser,
 } from '~/types/auth';
 import { findAccount, checkPassword, VALIDATE_CODE } from '../data/demo-accounts';
+import { AppError, ErrorCode, ok, err } from '~/core/errors';
 
 const AUTH_KEY = Symbol('auth');
 
@@ -60,14 +61,14 @@ export function useAuthProvider() {
     if (state.lockedUntil && Date.now() < state.lockedUntil) {
       const remaining = Math.ceil((state.lockedUntil - Date.now()) / 60000);
       state.flow = 'idle';
-      return { success: false, error: `账号已锁定，请 ${remaining} 分钟后重试` };
+      return err(new AppError(ErrorCode.AUTH_ERROR, `账号已锁定，请 ${remaining} 分钟后重试`));
     }
 
     if (method === 'password') {
       const acc = findAccount(credentials.username || '');
       if (!acc) {
         state.flow = 'idle';
-        return { success: false, error: '账号或密码错误' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '账号或密码错误'));
       }
       if (!checkPassword(acc, credentials.password || '')) {
         state.passwordAttempts += 1;
@@ -76,10 +77,10 @@ export function useAuthProvider() {
         if (remaining <= 0) {
           state.lockedUntil = Date.now() + 15 * 60 * 1000;
           state.flow = 'idle';
-          return { success: false, error: '密码错误次数过多，账号已锁定 15 分钟' };
+          return err(new AppError(ErrorCode.AUTH_ERROR, '密码错误次数过多，账号已锁定 15 分钟'));
         }
         state.flow = 'idle';
-        return { success: false, error: `账号或密码错误，剩余尝试次数：${remaining}` };
+        return err(new AppError(ErrorCode.AUTH_ERROR, `账号或密码错误，剩余尝试次数：${remaining}`));
       }
       if (acc.level === 'local') {
         state.isLoggedIn = true;
@@ -88,17 +89,17 @@ export function useAuthProvider() {
         state.tempSession = null;
         state.passwordAttempts = 0;
         state.lockedUntil = null;
-        return { success: true };
+        return ok({});
       }
       if (acc.has2FA) {
         state.flow = '2fa_required';
         state.tempSession = { userId: acc.id, method };
-        return { success: true, requires2FA: true };
+        return ok({ requires2FA: true });
       }
       if (acc.level === 'admin' && !acc.has2FA) {
         state.flow = '2fa_setup_required';
         state.tempSession = { userId: acc.id, method };
-        return { success: true, requires2FASetup: true };
+        return ok({ requires2FASetup: true });
       }
       state.isLoggedIn = true;
       state.user = acc;
@@ -106,27 +107,27 @@ export function useAuthProvider() {
       state.tempSession = null;
       state.passwordAttempts = 0;
       state.lockedUntil = null;
-      return { success: true };
+      return ok({});
     }
 
     if (method === 'sms') {
       if (!account || account.level === 'local') {
         state.flow = 'idle';
-        return { success: false, error: '本地账户不支持验证码登录' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持验证码登录'));
       }
       if (credentials.code !== VALIDATE_CODE) {
         state.flow = 'idle';
-        return { success: false, error: '验证码错误，请重新输入' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '验证码错误，请重新输入'));
       }
       if (account.has2FA) {
         state.flow = '2fa_required';
         state.tempSession = { userId: account.id, method };
-        return { success: true, requires2FA: true };
+        return ok({ requires2FA: true });
       }
       if (account.level === 'admin' && !account.has2FA) {
         state.flow = '2fa_setup_required';
         state.tempSession = { userId: account.id, method };
-        return { success: true, requires2FASetup: true };
+        return ok({ requires2FASetup: true });
       }
       state.isLoggedIn = true;
       state.user = account;
@@ -134,18 +135,18 @@ export function useAuthProvider() {
       state.tempSession = null;
       state.passwordAttempts = 0;
       state.lockedUntil = null;
-      return { success: true };
+      return ok({});
     }
 
     if (method === 'github') {
       if (!account) {
         state.flow = 'idle';
-        return { success: false, error: '请先识别账户' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '请先识别账户'));
       }
       if (account.has2FA) {
         state.flow = '2fa_required';
         state.tempSession = { userId: account.id, method };
-        return { success: true, requires2FA: true };
+        return ok({ requires2FA: true });
       }
       state.isLoggedIn = true;
       state.user = account;
@@ -153,37 +154,37 @@ export function useAuthProvider() {
       state.tempSession = null;
       state.passwordAttempts = 0;
       state.lockedUntil = null;
-      return { success: true };
+      return ok({});
     }
 
     if (method === 'magic-link') {
       if (!account || account.level === 'local') {
         state.flow = 'idle';
-        return { success: false, error: '本地账户不支持 Magic Link 登录' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持 Magic Link 登录'));
       }
       if (account.level === 'admin') {
         state.flow = 'idle';
-        return { success: false, error: '管理员账户不支持 Magic Link 登录，请使用其他方式' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '管理员账户不支持 Magic Link 登录，请使用其他方式'));
       }
       state.flow = '2fa_required';
       state.tempSession = { userId: account.id, method };
-      return { success: true, requires2FA: true };
+      return ok({ requires2FA: true });
     }
 
     if (method === 'passkey') {
       if (!account || account.level === 'local') {
         state.flow = 'idle';
-        return { success: false, error: '本地账户不支持 Passkey 登录' };
+        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持 Passkey 登录'));
       }
       if (account.has2FA) {
         state.flow = '2fa_required';
         state.tempSession = { userId: account.id, method };
-        return { success: true, requires2FA: true };
+        return ok({ requires2FA: true });
       }
       if (account.level === 'admin' && !account.has2FA) {
         state.flow = '2fa_setup_required';
         state.tempSession = { userId: account.id, method };
-        return { success: true, requires2FASetup: true };
+        return ok({ requires2FASetup: true });
       }
       state.isLoggedIn = true;
       state.user = account;
@@ -191,17 +192,17 @@ export function useAuthProvider() {
       state.tempSession = null;
       state.passwordAttempts = 0;
       state.lockedUntil = null;
-      return { success: true };
+      return ok({});
     }
 
     state.flow = 'idle';
-    return { success: false, error: '不支持的登录方式' };
+    return err(new AppError(ErrorCode.AUTH_ERROR, '不支持的登录方式'));
   }
 
   function register(type: 'local' | 'normal', data: RegisterData): RegisterResult {
     const existing = findAccount(data.username);
     if (existing) {
-      return { success: false, error: '用户名已存在' };
+      return err(new AppError(ErrorCode.VALIDATION_ERROR, '用户名已存在'));
     }
     const newUser: DemoUser = {
       id: `user-${Date.now()}`,
@@ -221,7 +222,7 @@ export function useAuthProvider() {
     state.user = newUser;
     state.flow = 'logged_in';
     state.tempSession = null;
-    return { success: true };
+    return ok(undefined);
   }
 
   function logout() {

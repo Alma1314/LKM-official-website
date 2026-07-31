@@ -14,7 +14,6 @@ export { default as Contact } from './widgets/Contact.astro';
 export { default as Note } from './widgets/Note.astro';
 export { default as Announcement } from './widgets/Announcement.astro';
 export { default as ClockTimeline } from './widgets/ClockTimeline.astro';
-export { default as BlogHighlightedPosts } from './widgets/BlogHighlightedPosts.astro';
 export { default as BlogLatestPosts } from './widgets/BlogLatestPosts.astro';
 export { default as Section } from './widgets/Section.astro';
 

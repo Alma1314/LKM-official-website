@@ -6,7 +6,7 @@ import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '写信 — 拾光树洞', description: '写下你的心事、表白、吐槽或悄悄话。' };
 ---
 
-<Layout metadata={metadata}><WritePage client:only="vue" /></Layout>
+<Layout metadata={metadata}><div style="min-height: 400px"><WritePage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {

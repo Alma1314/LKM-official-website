@@ -1,6 +1,7 @@
 <script lang="ts">
   import { navigation } from '~/features/starhope/stores/navigation.svelte';
   import { authStore } from '~/features/starhope/stores/auth.svelte';
+  import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
   let { children } = $props<{ children: import('svelte').Snippet }>();
 
@@ -42,7 +43,7 @@
         </div>
       {/if}
       <a
-        href="/login"
+        href={getAuthPath('login')}
         class="w-full text-left px-3 py-2 text-xs text-text-muted hover:text-red-500 rounded-lg hover:bg-surface-3 transition-colors block"
       >
         退出登录

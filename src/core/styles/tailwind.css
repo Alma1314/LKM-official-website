@@ -402,6 +402,369 @@
   }
 }
 
+/* ===== 钟表时间线组件 ===== */
+@layer components {
+  .ct-root {
+    width: 100%;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
+  .ct-layout {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow: visible;
+  }
+
+  .ct-cards-col {
+    flex: 0 0 38%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ct-cards-viewport {
+    overflow: hidden;
+    height: 360px;
+    flex: 1;
+  }
+
+  .ct-cards-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.8s ease-in-out;
+    will-change: transform;
+  }
+
+  .ct-card {
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0.5rem;
+    min-height: 360px;
+    position: relative;
+  }
+
+  .ct-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ct-arrows-desktop {
+    flex-shrink: 0;
+  }
+
+  .ct-arrows-mobile {
+    display: none;
+  }
+
+  .ct-card-body {
+    flex: 1;
+  }
+
+  .ct-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    background: var(--color-base-100);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .ct-arrow:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+
+  .ct-clock-col {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+
+  .clock-face {
+    position: relative;
+    width: 420px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 4px solid var(--color-primary);
+    background-color: var(--color-base-100);
+    box-shadow: 0 0 60px color-mix(in srgb, var(--color-primary) 15%, transparent);
+    margin: 40px;
+  }
+
+  .clock-face::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    transform: translate(-50%, -50%);
+    z-index: 11;
+  }
+
+  .clock-pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 38%;
+    height: 0;
+    z-index: 10;
+    transform-origin: left center;
+    transition: transform 0.8s ease-in-out;
+    will-change: transform;
+  }
+
+  .clock-pointer-line {
+    position: absolute;
+    top: -3px;
+    right: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
+
+  .clock-tick {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 0;
+    transform-origin: left center;
+  }
+
+  .clock-tick-mark {
+    position: absolute;
+    right: 40%;
+    top: 50%;
+    width: 5%;
+    height: 2px;
+    background-color: var(--color-primary);
+    opacity: 0.25;
+    transition: opacity 0.3s;
+    will-change: opacity;
+  }
+
+  .clock-tick-active {
+    opacity: 1;
+  }
+
+  .clock-tick-year {
+    position: absolute;
+    top: -11px;
+    left: calc(90% + 4px);
+    font-size: 22px;
+    font-family: ui-monospace, monospace;
+    color: oklch(0.3 0.01 var(--hue));
+    white-space: nowrap;
+  }
+
+  .clock-tick-active .clock-tick-year {
+    opacity: 1;
+    font-weight: 700;
+    font-size: 24px;
+  }
+}
+
+/* 钟表时间线移动端适配 */
+@layer components {
+  @media (max-width: 767px) {
+    .ct-layout {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ct-clock-col {
+      width: 100%;
+      order: -1;
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .ct-clock-col .clock-face {
+      width: 260px;
+      border-width: 3px;
+    }
+
+    .clock-pointer-line {
+      height: 4px;
+    }
+
+    .clock-tick-mark {
+      width: 3%;
+    }
+
+    .clock-tick-active {
+      width: 5%;
+    }
+
+    .clock-tick-year {
+      font-size: 14px;
+      top: -7px;
+    }
+
+    .clock-tick-active .clock-tick-year {
+      font-size: 15px;
+    }
+
+    .ct-cards-col {
+      flex: 1 1 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    .ct-cards-viewport {
+      height: 380px;
+    }
+
+    .ct-card {
+      min-height: 380px;
+      padding: 0;
+    }
+
+    .ct-card {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .ct-arrows-desktop {
+      display: none;
+    }
+
+    .ct-arrows-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+/* ===== 时间线节点组件 ===== */
+@layer components {
+  .tl-row {
+    position: relative;
+    min-height: 3.5rem;
+  }
+
+  .tl-circle {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-base-100);
+  }
+
+  .tl-left .tl-circle {
+    left: 25%;
+  }
+
+  .tl-right .tl-circle {
+    left: 75%;
+  }
+
+  .tl-content {
+    padding: 0.75rem 0;
+  }
+
+  .tl-left .tl-content {
+    margin-left: calc(25% + 2.25rem);
+    margin-right: 10%;
+  }
+
+  .tl-right .tl-content {
+    margin-right: calc(25% + 2.25rem);
+    margin-left: 10%;
+  }
+
+  .tl-right .tl-content p {
+    margin-left: auto;
+  }
+
+  .tl-dot-mobile {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-base-100);
+  }
+}
+
+/* ===== 返回顶部按钮 ===== */
+@layer components {
+  .back-to-top-wrapper {
+    width: 3.75rem;
+    height: 3.75rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+  }
+
+  .back-to-top-btn {
+    color: var(--primary);
+    font-size: 2.25rem;
+    font-weight: bold;
+    border: none;
+    position: fixed;
+    bottom: 10rem;
+    opacity: 1;
+    cursor: pointer;
+    transform: translateX(5rem);
+    pointer-events: auto;
+  }
+
+  .back-to-top-btn i {
+    font-size: 1.75rem;
+  }
+
+  .back-to-top-btn.hide {
+    transform: translateX(5rem) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .back-to-top-btn:active {
+    transform: translateX(5rem) scale(0.9);
+  }
+}
+
+/* ===== text-oklch-hue ===== */
+@utility text-oklch-hue {
+  color: oklch(0.35 0.01 var(--hue));
+}
+
 /* ===== 按钮组件（替代 daisyui btn） ===== */
 @layer components {
   .btn {

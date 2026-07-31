@@ -252,14 +252,20 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ### Vue `client:only` CLS 防护
 
-- `client:only` 的 Vue 组件**必须包裹 `style="min-height: XXXpx"` 容器**
-- 防止 Vue 挂载后内容注入造成 Cumulative Layout Shift
+- 使用 `client:only` 指令的组件（Vue / Svelte）**必须包裹 `style="min-height: 400px"` 容器**
+- 防止组件挂载后内容注入造成 Cumulative Layout Shift
+- 例外：已使用全高布局（如 `MainGridLayout`、`SidebarLayout`）的页面，布局本身提供高度保障时可不额外包裹
 
 ### Vendor chunk 策略
 
 - `astro.config.ts` → `vite.build.rollupOptions.output.manualChunks`
-- 仅全局使用的重依赖（react、svelte、three、katex）加入 vendor chunk
+- 全局使用的框架和图标库加入对应 vendor chunk：
+  - `react` / `react-dom` → `vendor-react`
+  - `vue` / `@iconify/vue` → `vendor-vue`
+  - `svelte` / `@iconify/svelte` → `vendor-svelte`
+  - `three` → `vendor-three`，`katex` / `rehype-katex` → `vendor-katex`
 - 页面级小众依赖（overlayscrollbars、photoswipe）保持独立异步加载
+- 新增全局框架依赖时需同步更新 `manualChunks`
 
 ### Preconnect
 

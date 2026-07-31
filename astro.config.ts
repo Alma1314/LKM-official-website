@@ -258,6 +258,9 @@ export default defineConfig({
             if (id.includes('node_modules/svelte') || id.includes('node_modules/@iconify/svelte')) {
               return 'vendor-svelte';
             }
+            if (id.includes('node_modules/vue') || id.includes('node_modules/@iconify/vue')) {
+              return 'vendor-vue';
+            }
           },
         },
       },

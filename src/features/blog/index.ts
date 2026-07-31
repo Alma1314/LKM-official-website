@@ -6,3 +6,4 @@ export { default as BlogTags } from './components/Tags.astro';
 export { default as BlogHeadline } from './components/Headline.astro';
 export { default as BlogPagination } from './components/Pagination.astro';
 export { default as BlogToBlogLink } from './components/ToBlogLink.astro';
+export { default as BlogHighlightedPosts } from './components/HighlightedPosts.astro';
