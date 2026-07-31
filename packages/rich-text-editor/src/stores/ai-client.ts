@@ -143,7 +143,7 @@ export async function requestAiCompletion(
   }
 
   const endpointValidation = validateAiEndpoint(_endpoint);
-  if (!endpointValidation.ok) {
+  if (endpointValidation.isErr()) {
     return err(`AI 接口配置无效：${endpointValidation.error}`);
   }
 
