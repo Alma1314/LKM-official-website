@@ -1,13 +1,15 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+const BASE_PATH = '/LKM-official-website';
+
 const KEY_ROUTES = [
-  { path: '/', label: '首页' },
-  { path: '/blog/', label: '博客列表' },
-  { path: '/blog/about/', label: '博客关于' },
-  { path: '/privacy/', label: '隐私政策' },
-  { path: '/terms/', label: '服务条款' },
-  { path: '/contact/', label: '联系' },
+  { path: `${BASE_PATH}/`, label: '首页' },
+  { path: `${BASE_PATH}/blog/`, label: '博客列表' },
+  { path: `${BASE_PATH}/blog/about/`, label: '博客关于' },
+  { path: `${BASE_PATH}/privacy/`, label: '隐私政策' },
+  { path: `${BASE_PATH}/terms/`, label: '服务条款' },
+  { path: `${BASE_PATH}/contact/`, label: '联系' },
 ];
 
 test.describe('无障碍检查 (axe)', () => {
