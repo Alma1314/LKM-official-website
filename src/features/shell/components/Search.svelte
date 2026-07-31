@@ -26,18 +26,17 @@ const fakeResult: SearchResult[] = [
 ];
 
 const sanitizeHtmlExcerpt = (html: string): string => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  doc.querySelectorAll('script, style, iframe, object, embed, link').forEach((el) => el.remove());
-  doc.querySelectorAll('*').forEach((el) => {
-    for (const attr of el.getAttributeNames()) {
-      if (attr.startsWith('on')) {
-        el.removeAttribute(attr);
-      }
-    }
-  });
-  return doc.body.innerHTML;
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+    .replace(/<object[\s\S]*?<\/object>/gi, '')
+    .replace(/<embed[\s\S]*?>/gi, '')
+    .replace(/<link[\s\S]*?>/gi, '')
+    .replace(/\bon\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, '');
 };
+
+const togglePanel = () => {
   const panel = document.getElementById("search-panel");
   panel?.classList.toggle("float-panel-closed");
 };
