@@ -46,7 +46,7 @@ export interface AuthContextType {
   updateUser: (user: DemoUser) => void;
 }
 
-import type { AppError } from '~/core/errors/error-codes';
+import type { AppError } from '~/core/errors';
 
 export interface AuthSuccess {
   requires2FA?: boolean;

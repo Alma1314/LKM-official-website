@@ -1,11 +1,11 @@
 ---
 import { APP_BLOG } from '~/core/config';
 
-import Grid from '~/features/blog/components/Grid.astro';
+import { BlogGrid } from '~/features/blog';
 
 import { getBlogPermalink } from '~/core/utils/permalinks';
 import { findPostsByIds } from '~/core/utils/blog';
-import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
+import { WidgetWrapper } from '~/ui/primitives';
 import type { Widget } from '~/core/types';
 
 export interface Props extends Widget {
@@ -53,7 +53,7 @@ const posts = APP_BLOG.isEnabled ? await findPostsByIds(postIds) : [];
         {information && <p class="text-[17px] text-text-muted lg:max-w-md leading-relaxed" set:html={information} />}
       </div>
 
-      <Grid posts={posts} />
+      <BlogGrid posts={posts} />
     </WidgetWrapper>
   ) : (
     <Fragment />

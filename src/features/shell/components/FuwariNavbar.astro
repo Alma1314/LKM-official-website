@@ -5,9 +5,9 @@ import { LinkPresets } from '~/core/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import { url } from '~/core/utils/url-utils';
 import LightDarkSwitch from './LightDarkSwitch.svelte';
-import GlobalSearch from '~/features/search/components/GlobalSearch.svelte';
+import { SearchGlobalSearch } from '~/features/search';
 import DisplaySettings from './widget/DisplaySettings.svelte';
-import NotificationBell from '~/features/notification/components/NotificationBell.svelte';
+import { NotificationBell } from '~/features/notification';
 import UserAvatarMenu from './user/UserAvatarMenu.vue';
 
 interface Props {
@@ -101,7 +101,7 @@ let links: NavBarLink[] =
       }
     </div>
     <div class="flex justify-self-end items-center">
-      <GlobalSearch client:idle />
+      <SearchGlobalSearch client:idle />
       {
         !siteConfig.themeColor.fixed && (
           <button

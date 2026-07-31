@@ -1,7 +1,6 @@
 ---
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
-import { getUserByUsername, mockUsers } from '~/features/profile/data/mock-users';
-import ProfilePage from '~/features/profile/components/ProfilePage.vue';
+import { getUserByUsername, mockUsers, ProfilePage } from '~/features/profile';
 import { getPermalink } from '~/core/utils/permalinks';
 
 export function getStaticPaths() {

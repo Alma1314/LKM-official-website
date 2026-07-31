@@ -1,5 +1,14 @@
-// 仅作模块标记，组件通过路径导入
 export { default as Button } from './Button.astro';
 export { default as Form } from './Form.astro';
 export { default as Headline } from './Headline.astro';
 export { default as WidgetWrapper } from './WidgetWrapper.astro';
+export { default as Image } from './Image.astro';
+export { default as Pagination } from './Pagination.astro';
+export { default as License } from './License.astro';
+export { default as Markdown } from './Markdown.astro';
+export { default as ImageWrapper } from './ImageWrapper.astro';
+export { default as BackToTop } from './BackToTop.astro';
+export { default as ButtonLink } from './ButtonLink.astro';
+export { default as ButtonTag } from './ButtonTag.astro';
+export { default as EmptyState } from './EmptyState.astro';
+export { default as LoadingState } from './LoadingState.astro';

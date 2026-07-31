@@ -1,8 +1,7 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
 import path from 'node:path';
-import License from '~/ui/primitives/License.astro';
-import Markdown from '~/ui/primitives/Markdown.astro';
+import { License, Markdown, ImageWrapper } from '~/ui/primitives';
 import I18nKey from '~/core/i18n/i18nKey';
 import { i18n } from '~/core/i18n/translation';
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
@@ -10,7 +9,6 @@ import { getSortedPosts } from '~/core/utils/content-utils';
 import { getDir, getPostUrlBySlug } from '~/core/utils/url-utils';
 import { Icon } from 'astro-icon/components';
 import { licenseConfig } from '~/core/config';
-import ImageWrapper from '~/ui/primitives/ImageWrapper.astro';
 import PostMetadata from '~/features/team/components/PostMeta.astro';
 import { profileConfig, siteConfig } from '~/core/config';
 import { formatDateToYYYYMMDD } from '~/core/utils/date-utils';

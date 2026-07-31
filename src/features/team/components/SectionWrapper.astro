@@ -1,9 +1,8 @@
 ---
-import HeadlinePrimitive from '~/ui/primitives/Headline.astro';
-import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
-import type { Widget, Headline } from '~/core/types';
+import { Headline, WidgetWrapper } from '~/ui/primitives';
+import type { Widget, Headline as HeadlineType } from '~/core/types';
 
-interface Props extends Widget, Pick<Headline, 'title' | 'subtitle' | 'tagline'> {
+interface Props extends Widget, Pick<HeadlineType, 'title' | 'subtitle' | 'tagline'> {
   classes?: Record<string, string | Record<string, string>>;
 }
 
@@ -20,12 +19,7 @@ const {
 ---
 
 <WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
-  <HeadlinePrimitive
-    title={title}
-    subtitle={subtitle}
-    tagline={tagline}
-    classes={classes?.headline as Record<string, string>}
-  />
+  <Headline title={title} subtitle={subtitle} tagline={tagline} classes={classes?.headline as Record<string, string>} />
 
   <slot />
 </WidgetWrapper>
