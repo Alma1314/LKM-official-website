@@ -7,8 +7,10 @@ interface Props {
 }
 
 const { id, class: className } = Astro.props;
+const baseClasses = 'sticky top-0 z-50 bg-card-bg';
+const mergedClass = [baseClasses, className].filter(Boolean).join(' ');
 ---
 
-<div id={id || 'navbar-wrapper'} class:list={['sticky top-0 z-50 bg-card-bg', className]}>
+<div id={id || 'navbar-wrapper'} class={mergedClass}>
   <FuwariNavbar />
 </div>
