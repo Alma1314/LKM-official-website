@@ -3,7 +3,7 @@
     <div class="text-center">
       <h2 class="text-xl font-semibold text-deep-text mb-2">请先登录</h2>
       <p class="text-text-muted mb-4">访问此页面需要登录</p>
-      <a href="/login" class="btn btn-primary">前往登录</a>
+      <a :href="getAuthPath('login')" class="btn btn-primary">前往登录</a>
     </div>
   </div>
   <slot v-else />
@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { useAuth } from '../../composables/useAuth';
+import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
 const auth = useAuth();
 </script>

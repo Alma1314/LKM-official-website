@@ -6,7 +6,7 @@ import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '许愿墙 — 拾光树洞', description: '把愿望交给星光，被温柔照亮。' };
 ---
 
-<Layout metadata={metadata}><WishPage client:only="vue" /></Layout>
+<Layout metadata={metadata}><div style="min-height: 400px"><WishPage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {

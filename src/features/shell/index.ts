@@ -42,6 +42,3 @@ export { default as ShellUserAvatarMenu } from './components/user/UserAvatarMenu
 // Astro components
 export { default as ShellMobileNavPanel } from './components/MobileNavPanel.astro';
 export { default as ShellSiteNavbar } from './components/SiteNavbar.astro';
-
-// Events
-export * from './common/shell-events';

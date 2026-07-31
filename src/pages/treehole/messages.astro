@@ -6,7 +6,7 @@ import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '匿名回信 — 拾光树洞', description: '全程匿名，双方都不暴露真实身份。' };
 ---
 
-<Layout metadata={metadata}><MessagesPage client:only="vue" /></Layout>
+<Layout metadata={metadata}><div style="min-height: 400px"><MessagesPage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {

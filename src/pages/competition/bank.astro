@@ -10,6 +10,6 @@ const metadata = { title: '题库中心 —— 理科迷' };
 <Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/competition/bank')}>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">题库中心</h1>
-    <QuestionBank client:only="vue" />
+    <div style="min-height: 400px"><QuestionBank client:only="vue" /></div>
   </div>
 </Layout>

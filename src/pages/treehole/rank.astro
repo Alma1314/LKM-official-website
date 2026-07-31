@@ -6,7 +6,7 @@ import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '热门榜单 — 拾光树洞', description: '此刻最被温柔以待的匿名信。' };
 ---
 
-<Layout metadata={metadata}><RankPage client:only="vue" /></Layout>
+<Layout metadata={metadata}><div style="min-height: 400px"><RankPage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {

@@ -8,5 +8,5 @@ const metadata = { title: '提出问题 —— 理科迷' };
 ---
 
 <Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/qa/ask')}>
-  <AskFormPage client:only="vue" />
+  <div style="min-height: 400px"><AskFormPage client:only="vue" /></div>
 </Layout>

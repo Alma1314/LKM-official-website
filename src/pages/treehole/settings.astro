@@ -6,7 +6,7 @@ import type { MetaData } from '~/core/types';
 const metadata: MetaData = { title: '设置 — 拾光树洞', description: '个性化你的树洞体验。' };
 ---
 
-<Layout metadata={metadata}><SettingsPage client:only="vue" /></Layout>
+<Layout metadata={metadata}><div style="min-height: 400px"><SettingsPage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {
