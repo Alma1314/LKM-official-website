@@ -3,7 +3,7 @@ import I18nKey from '~/core/i18n/i18nKey';
 import { i18n } from '~/core/i18n/translation';
 import Icon from "@iconify/svelte";
 import { url } from '~/core/utils/url-utils';
-import type { SearchResult } from "~/global";
+
 
 let keywordDesktop = $state("");
 let keywordMobile = $state("");
