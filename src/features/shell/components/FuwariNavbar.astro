@@ -16,6 +16,12 @@ interface Props {
 }
 
 const className = Astro.props.class;
+const navInnerClass = [
+  'bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none transition !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
 
 let links: NavBarLink[] =
   Astro.props.links ||
@@ -28,13 +34,8 @@ let links: NavBarLink[] =
 ---
 
 <div id="navbar" class="z-50 onload-animation">
-  <div class="absolute h-8 left-0 right-0 -top-8 bg-card-bg transition"></div>
-  <div
-    class:list={[
-      className,
-      'card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4',
-    ]}
-  >
+  <div class="absolute h-8 left-0 right-0 -top-8 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] transition"></div>
+  <div class={navInnerClass}>
     <a
       href={url('/')}
       class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95 justify-self-start"
@@ -82,7 +83,7 @@ let links: NavBarLink[] =
                 />
               </button>
               <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
-                <div class="card-base float-panel p-2">
+                <div class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel p-2">
                   {l.children!.map((child) => (
                     <a
                       aria-label={child.name}

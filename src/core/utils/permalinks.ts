@@ -1,31 +1,11 @@
 import slugify from 'limax';
-
 import { SITE, APP_BLOG } from '~/core/config';
+import { buildPermalink, BLOG_BASE, CATEGORY_BASE, TAG_BASE, trimSlash } from './paths';
+import type { BuildPermalinkOptions } from './paths';
 
-import { trim } from './utils';
+export { BLOG_BASE, CATEGORY_BASE, TAG_BASE };
 
-export const trimSlash = (s: string) => trim(trim(s, '/'));
-const createPath = (...params: string[]) => {
-  const paths = params
-    .map((el) => trimSlash(el))
-    .filter((el) => !!el)
-    .join('/');
-  return '/' + paths + (SITE.trailingSlash && paths ? '/' : '');
-};
-
-const BASE_PATHNAME = SITE.base || '/';
-
-export const cleanSlug = (text = '') =>
-  trimSlash(text)
-    .split('/')
-    .map((slug) => slugify(slug))
-    .join('/');
-
-export const BLOG_BASE = cleanSlug(APP_BLOG?.list?.pathname);
-export const CATEGORY_BASE = cleanSlug(APP_BLOG?.category?.pathname);
-export const TAG_BASE = cleanSlug(APP_BLOG?.tag?.pathname) || 'tag';
-
-export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${BLOG_BASE}/%slug%`);
+export const POST_PERMALINK_PATTERN = trimSlash((APP_BLOG?.post?.permalink as string) ?? `${BLOG_BASE}/%slug%`);
 
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));
@@ -37,74 +17,23 @@ export const getCanonical = (path = ''): string | URL => {
   return url;
 };
 
-export const getPermalink = (slug = '', type = 'page'): string => {
-  let permalink: string;
-
-  // 检测纯 hash 链接（如 '#team'）— 前置基础路径
-  if (slug.startsWith('#') || slug.startsWith('javascript:')) {
-    return slug;
-  }
-
-  // 检测带 hash 的 URL（如 '/#team'）— 正确处理 base + hash
-  const hashIndex = slug.indexOf('#');
-  if (hashIndex > 0) {
-    const pathPart = slug.substring(0, hashIndex);
-    const hashPart = slug.substring(hashIndex);
-    return definitivePermalink(createPath(pathPart)) + hashPart;
-  }
-
-  if (slug.startsWith('https://') || slug.startsWith('http://') || slug.startsWith('://')) {
-    return slug;
-  }
-
-  switch (type) {
-    case 'home':
-      permalink = getHomePermalink();
-      break;
-
-    case 'blog':
-      permalink = getBlogPermalink();
-      break;
-
-    case 'asset':
-      permalink = getAsset(slug);
-      break;
-
-    case 'category':
-      permalink = createPath(CATEGORY_BASE, trimSlash(slug));
-      break;
-
-    case 'tag':
-      permalink = createPath(TAG_BASE, trimSlash(slug));
-      break;
-
-    case 'post':
-      permalink = createPath(trimSlash(slug));
-      break;
-
-    case 'page':
-    default:
-      permalink = createPath(slug);
-      break;
-  }
-
-  return definitivePermalink(permalink);
+export const getPermalink = (slug = '', type: BuildPermalinkOptions['type'] = 'page'): string => {
+  return buildPermalink(slug, { type });
 };
 
-export const getHomePermalink = (): string => getPermalink('/');
+export const getHomePermalink = (): string => buildPermalink('/', { type: 'home' });
 
-export const getBlogPermalink = (): string => getPermalink(BLOG_BASE);
+export const getBlogPermalink = (): string => buildPermalink(BLOG_BASE, { type: 'blog' });
 
-export const getAsset = (path: string): string =>
-  '/' +
-  [BASE_PATHNAME, path]
-    .map((el) => trimSlash(el))
-    .filter((el) => !!el)
+export const getAsset = (path: string): string => buildPermalink(path, { type: 'asset' });
+
+export const cleanSlug = (text = '') =>
+  trimSlash(text)
+    .split('/')
+    .map((slug) => slugify(slug))
     .join('/');
 
-const definitivePermalink = (permalink: string): string => createPath(BASE_PATHNAME, permalink);
-
-type MenuHref = { type?: string; url?: string };
+type MenuHref = { type?: BuildPermalinkOptions['type']; url?: string };
 
 export const applyGetPermalinks = (menu: unknown = {}): unknown => {
   if (Array.isArray(menu)) {
@@ -136,11 +65,6 @@ export const applyGetPermalinks = (menu: unknown = {}): unknown => {
   return menu;
 };
 
-/**
- * 为 View Transition 生成合法且唯一的 name。
- * View Transition name 不允许 `/` 等字符，故把非字母数字替换为 `-`。
- * 列表项与详情页对同一 post 用相同 prefix + permalink，得到相同 name 以配对 morph。
- */
 export const transitionName = (prefix: string, permalink: string): string =>
   `${prefix}-${String(permalink)
     .replace(/[^a-zA-Z0-9]+/g, '-')

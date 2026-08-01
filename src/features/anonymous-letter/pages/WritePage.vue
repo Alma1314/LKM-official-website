@@ -257,8 +257,8 @@
           <h2 class="modal-title">投递成功</h2>
           <p class="modal-desc">{{ successMsg }}</p>
           <div class="modal-actions">
-            <a :href="`${base}/treehole`" class="btn-grad">🏠 返回广场</a>
-            <a :href="`${base}/treehole/mine`" class="chip">📬 我的信箱</a>
+            <a :href="buildUrl('/treehole')" class="btn-grad">🏠 返回广场</a>
+            <a :href="buildUrl('/treehole/mine')" class="chip">📬 我的信箱</a>
             <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
           </div>
         </div>
@@ -294,8 +294,7 @@ import {
 } from '../store/storage';
 import { randomCodename } from '../utils/codename';
 import { useApp } from '../store/app';
-
-const base = import.meta.env.BASE_URL || '/';
+import { buildUrl } from '~/core/utils/paths';
 
 const app = useApp();
 

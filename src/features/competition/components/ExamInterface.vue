@@ -70,6 +70,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { mockQuestions } from '../data/mock-competitions';
+import { buildUrl } from '~/core/utils/paths';
 
 const questions = ref(mockQuestions.slice(0, 8));
 const answers = ref<(number | undefined)[]>(new Array(questions.value.length).fill(undefined));
@@ -100,6 +101,6 @@ function submit() {
   const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
   clearInterval(timer);
   alert(`答卷已提交！正确 ${correct}/${questions.length}（${Math.round((correct / questions.length) * 100)}%）`);
-  window.location.href = import.meta.env.BASE_URL + 'competition';
+  window.location.href = buildUrl('/competition');
 }
 </script>

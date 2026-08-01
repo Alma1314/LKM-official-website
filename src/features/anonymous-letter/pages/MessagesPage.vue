@@ -91,8 +91,7 @@ import {
   clearConversation,
   deleteConversation,
 } from '../store/storage';
-
-const base = import.meta.env.BASE_URL || '/';
+import { buildUrl } from '~/core/utils/paths';
 
 const conversations = ref([]);
 const activeId = ref('');

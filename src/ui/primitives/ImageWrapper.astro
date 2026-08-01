@@ -1,5 +1,5 @@
 ---
-import path from 'node:path';
+import { getImageGlobBasePath } from '~/core/utils/paths';
 
 interface Props {
   id?: string;
@@ -28,7 +28,7 @@ if (isLocal) {
   const files = import.meta.glob('../../**', {
     import: 'default',
   });
-  let normalizedPath = path.normalize(path.join('../../', basePath, src)).replace(/\\/g, '/');
+  let normalizedPath = getImageGlobBasePath(basePath, src);
   const file = files[normalizedPath];
   if (!file) {
     console.error(`\n[ERROR] Image file not found: ${normalizedPath.replace('../../', 'src/')}`);

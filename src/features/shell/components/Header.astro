@@ -6,7 +6,8 @@ import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
 
 import { getHomePermalink } from '~/core/utils/permalinks';
-import { trimSlash, getAsset } from '~/core/utils/permalinks';
+import { trimSlash } from '~/core/utils/paths';
+import { getAsset } from '~/core/utils/permalinks';
 
 interface Link {
   text?: string;
@@ -68,7 +69,7 @@ const mobileLinks = toMobileLinks(links);
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
 >
-  <div class="absolute inset-0 bg-card-bg"></div>
+  <div class="absolute inset-0 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]"></div>
   <div
     class:list={[
       'relative text-default py-2.5 px-4 md:px-6 mx-auto w-full',

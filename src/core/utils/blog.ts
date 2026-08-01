@@ -3,7 +3,8 @@ import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { Post, Taxonomy } from '~/core/types';
 import { APP_BLOG } from '~/core/config';
-import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
+import { cleanSlug, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
+import { trimSlash } from './paths';
 
 const generatePermalink = async ({
   id,

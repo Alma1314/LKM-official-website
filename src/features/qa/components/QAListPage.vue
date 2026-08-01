@@ -16,11 +16,13 @@
           ></div>
         </button>
       </div>
-      <a :href="`${base}qa/ask`" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0">我要提问</a>
+      <a :href="buildUrl('/qa/ask')" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0"
+        >我要提问</a
+      >
     </div>
 
     <div class="space-y-3">
-      <a v-for="q in filteredQuestions" :key="q.id" :href="`${base}qa/${q.id}`" class="profile-card group block">
+      <a v-for="q in filteredQuestions" :key="q.id" :href="buildUrl(`/qa/${q.id}`)" class="profile-card group block">
         <div class="profile-inner p-4 flex flex-col gap-2">
           <div class="flex items-center gap-2">
             <span
@@ -51,8 +53,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { mockQuestions } from '../data/mock-questions';
-
-const base = import.meta.env.BASE_URL;
+import { buildUrl } from '~/core/utils/paths';
 
 const activeTab = ref('general');
 const tabs = [

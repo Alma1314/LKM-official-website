@@ -5,7 +5,8 @@ import ToggleTheme from '~/features/shell/common/components/ToggleTheme.astro';
 import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
 
 import { getHomePermalink } from '~/core/utils/permalinks';
-import { trimSlash, getAsset } from '~/core/utils/permalinks';
+import { trimSlash } from '~/core/utils/paths';
+import { getAsset } from '~/core/utils/permalinks';
 
 interface Link {
   text?: string;
@@ -51,7 +52,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
 >
-  <div class="absolute inset-0 bg-card-bg"></div>
+  <div class="absolute inset-0 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]"></div>
   <div
     class:list={[
       'relative text-default py-2.5 px-4 md:px-6 mx-auto w-full',
@@ -91,7 +92,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                     {text}{' '}
                     <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
                   </button>
-                  <ul class="dropdown-menu md:backdrop-blur-md rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-card-bg/95 md:min-w-[200px] drop-shadow-xl">
+                  <ul class="dropdown-menu md:backdrop-blur-md rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-[oklch(0.95_0.01_var(--hue))]/95 md:dark:bg-[oklch(0.23_0.015_var(--hue))]/95 md:min-w-[200px] drop-shadow-xl">
                     {links.map(({ text: text2, href: href2 }) => (
                       <li>
                         <a

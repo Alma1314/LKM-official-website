@@ -77,8 +77,7 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import { getCategory, getPaper } from '../store/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../store/storage';
 import { useApp } from '../store/app';
-
-const base = import.meta.env.BASE_URL || '/';
+import { buildUrl } from '~/core/utils/paths';
 
 const app = useApp();
 
@@ -109,8 +108,8 @@ const letterFontSize = computed(() => {
 });
 
 const replyFontSize = computed(() => {
-  const base = parseFloat(letterFontSize.value);
-  return (replyFontLarge.value ? base * 1.15 : base) + 'rem';
+  const baseSize = parseFloat(letterFontSize.value);
+  return (replyFontLarge.value ? baseSize * 1.15 : baseSize) + 'rem';
 });
 
 function pickRandom() {
