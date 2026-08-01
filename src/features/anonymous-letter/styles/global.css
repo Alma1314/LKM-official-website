@@ -187,16 +187,16 @@ body {
   font-weight: 600;
   letter-spacing: 0.5px;
   transition:
-    transform 0.2s,
-    box-shadow 0.2s,
-    background 0.2s;
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
 }
 .btn-grad:hover {
   background: var(--grad-soft);
   box-shadow: 0 4px 14px var(--glow);
 }
 .btn-grad:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 .btn-grad:disabled {
   opacity: 0.5;
@@ -215,7 +215,7 @@ body {
   border: 1px solid var(--card-border);
   color: var(--text-sub);
   cursor: pointer;
-  transition: all 0.25s;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease), background 0.25s var(--ease);
   white-space: nowrap;
 }
 .chip:hover {

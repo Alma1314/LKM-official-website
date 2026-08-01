@@ -669,7 +669,7 @@ function downloadShare() {
   background: transparent;
   cursor: pointer;
   font-size: 15px;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
   color: var(--text-main);
 }
 .tb-btn:hover {
@@ -749,7 +749,7 @@ function downloadShare() {
   cursor: pointer;
   border-radius: 8px;
   padding: 4px;
-  transition: all 0.15s;
+  transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
 }
 .emoji-item:hover {
   background: var(--grad-soft);
@@ -788,7 +788,7 @@ function downloadShare() {
   padding: 8px 4px;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
 }
 .cat-btn.active {
   background: var(--grad-soft);
@@ -809,7 +809,7 @@ function downloadShare() {
   padding: 10px 12px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
   color: var(--text-main);
   display: flex;
   flex-direction: column;
@@ -865,7 +865,7 @@ function downloadShare() {
   padding: 8px 14px;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
 }
 .tag-btn.active {
   background: var(--grad-soft);
@@ -881,7 +881,7 @@ function downloadShare() {
   background: transparent;
   cursor: pointer;
   font-size: 18px;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
   color: var(--text-main);
 }
 .sticker-btn.active {
@@ -902,7 +902,7 @@ function downloadShare() {
   color: var(--text-sub);
   font-size: 11px;
   font-weight: 700;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
 }
 .paper-btn.active {
   border-color: var(--blue);
@@ -1054,7 +1054,7 @@ function downloadShare() {
   padding: 4px 12px;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
 }
 .mini:hover {
   border-color: var(--blue);

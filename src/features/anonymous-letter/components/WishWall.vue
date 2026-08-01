@@ -192,7 +192,7 @@ function remove(w) {
   padding: 2px 10px;
   font-size: 11px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
 }
 .wish-acts .mini:hover {
   border-color: var(--accent);
