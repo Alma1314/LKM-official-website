@@ -13,7 +13,12 @@ import UserAvatarMenu from './user/UserAvatarMenu.vue';
 interface Props {
   class?: string;
   links?: NavBarLink[];
+  module?: 'official' | 'community';
 }
+
+const moduleType = Astro.props.module || 'community';
+const switchHref = moduleType === 'official' ? url('/community') : url('/official');
+const switchText = moduleType === 'official' ? '社区' : '官网';
 
 const className = Astro.props.class;
 const navInnerClass = [
@@ -36,15 +41,24 @@ let links: NavBarLink[] =
 <div id="navbar" class="z-50 onload-animation">
   <div class="absolute h-8 left-0 right-0 -top-8 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] transition"></div>
   <div class={navInnerClass}>
-    <a
-      href={url('/')}
-      class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95 justify-self-start"
-    >
-      <div class="flex flex-row text-primary items-center text-md">
-        <Icon name="material-symbols:home-outline-rounded" class="text-[1.75rem] mb-1 mr-2" />
-        {siteConfig.title}
-      </div>
-    </a>
+    <div class="flex items-center gap-1 justify-self-start">
+      <a
+        href={url('/')}
+        class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95"
+      >
+        <div class="flex flex-row text-primary items-center text-md">
+          <Icon name="material-symbols:home-outline-rounded" class="text-[1.75rem] mb-1 mr-2" />
+          {siteConfig.title}
+        </div>
+      </a>
+      <a
+        href={switchHref}
+        class="btn-plain scale-animation rounded-lg h-11 px-3 font-bold active:scale-95 flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
+      >
+        <Icon name="material-symbols:swap-horiz-rounded" class="text-[1.125rem]" />
+        {switchText}
+      </a>
+    </div>
     <div class="hidden md:flex" id="navbar-links">
       {
         links.map((l, idx) => {

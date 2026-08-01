@@ -3,8 +3,10 @@ import Layout from './BaseLayout.astro';
 import SiteNavbar from '~/features/shell-community/components/SiteNavbar.astro';
 import Footer from '~/features/shell-community/components/Footer.astro';
 
+import { navBarConfig } from '~/core/config';
 import { footerData } from '~/core/navigation';
-
+import { LinkPresets } from '~/core/constants/link-presets';
+import { LinkPreset, type NavBarLink } from '~/types/config';
 import type { MetaData } from '~/core/types';
 
 export interface Props {
@@ -12,10 +14,34 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
+
+// community 模块顶栏：不含原始"主页"和"七月团队"，替换为指向 community 的首页
+const baseLinks: NavBarLink[] = navBarConfig.links
+  .map((item: NavBarLink | LinkPreset): NavBarLink => {
+    if (typeof item === 'number') {
+      return LinkPresets[item];
+    }
+    return item;
+  })
+  .filter((item) => item.name !== '主页' && item.name !== '七月团队');
+
+const communityHome: NavBarLink = {
+  name: '主页',
+  url: '/community',
+  children: [
+    { name: '社区首页', url: '/community' },
+    { name: '板块广场', url: '/community/forum' },
+    { name: '专栏', url: '/community/columns' },
+    { name: '帮助/求助', url: '/community/qa' },
+    { name: '竞赛', url: '/community/competition' },
+  ],
+};
+
+const navbarLinks: NavBarLink[] = [communityHome, ...baseLinks];
 ---
 
 <Layout metadata={metadata}>
-  <SiteNavbar />
+  <SiteNavbar links={navbarLinks} />
   <main>
     <slot />
   </main>
