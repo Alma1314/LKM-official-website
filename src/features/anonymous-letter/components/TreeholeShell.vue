@@ -35,8 +35,12 @@
 
           <nav class="nav-links" aria-label="主导航">
             <a :href="buildUrl('/treehole')" class="nav-link" :class="{ active: activeNav === 'home' }">广场</a>
-            <a :href="buildUrl('/treehole/random')" class="nav-link" :class="{ active: activeNav === 'random' }">随机</a>
-            <a :href="buildUrl('/treehole/bottle')" class="nav-link" :class="{ active: activeNav === 'bottle' }">漂流瓶</a>
+            <a :href="buildUrl('/treehole/random')" class="nav-link" :class="{ active: activeNav === 'random' }"
+              >随机</a
+            >
+            <a :href="buildUrl('/treehole/bottle')" class="nav-link" :class="{ active: activeNav === 'bottle' }"
+              >漂流瓶</a
+            >
             <a :href="buildUrl('/treehole/wish')" class="nav-link" :class="{ active: activeNav === 'wish' }">许愿墙</a>
             <a :href="buildUrl('/treehole/rank')" class="nav-link" :class="{ active: activeNav === 'rank' }">榜单</a>
           </nav>
@@ -82,10 +86,16 @@
           <a :href="buildUrl('/treehole/mine')" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }"
             >&#x1F4EC; 我的信箱</a
           >
-          <a :href="buildUrl('/treehole/messages')" class="mobile-nav-link" :class="{ active: activeNav === 'messages' }"
+          <a
+            :href="buildUrl('/treehole/messages')"
+            class="mobile-nav-link"
+            :class="{ active: activeNav === 'messages' }"
             >&#x1F4AC; 私信</a
           >
-          <a :href="buildUrl('/treehole/settings')" class="mobile-nav-link" :class="{ active: activeNav === 'settings' }"
+          <a
+            :href="buildUrl('/treehole/settings')"
+            class="mobile-nav-link"
+            :class="{ active: activeNav === 'settings' }"
             >&#x2699;&#xFE0F; 设置</a
           >
         </nav>

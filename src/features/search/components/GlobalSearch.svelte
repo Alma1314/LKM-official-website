@@ -135,7 +135,7 @@
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       id="global-search-panel"
-      class="w-full max-w-xl max-h-[80vh] overflow-y-auto card-base rounded-2xl shadow-2xl p-3 mx-4"
+      class="w-full max-w-xl max-h-[80vh] overflow-y-auto bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-2xl shadow-2xl p-3 mx-4"
       onclick={(e) => e.stopPropagation()}
     >
       <div class="flex items-center gap-3 px-2 pb-3 border-b border-surface-3">

@@ -23,7 +23,10 @@
     <!-- 下拉菜单 -->
     <Teleport to="body">
       <div v-if="isOpen" class="fixed inset-0 z-40" @click="close" />
-      <div v-if="isOpen" class="absolute right-0 top-full mt-2 w-52 card-base float-panel py-1.5 z-50 shadow-2xl">
+      <div
+        v-if="isOpen"
+        class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel py-1.5 z-50 shadow-2xl"
+      >
         <div class="px-4 py-2 border-b border-surface-3 mb-1">
           <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
           <div class="text-xs text-text-muted">{{ userLevelText }}</div>

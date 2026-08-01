@@ -81,7 +81,9 @@
             <span class="text-xs px-2 py-0.5 rounded-full font-medium" :class="statusClass(file.status)">
               {{ statusLabel(file.status) }}
             </span>
-            <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium">查看</a>
+            <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium"
+              >查看</a
+            >
           </div>
         </div>
       </div>

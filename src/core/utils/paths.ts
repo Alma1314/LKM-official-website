@@ -22,25 +22,16 @@ export function buildUrl(path: string): string {
 
 const BASE_PATHNAME = SITE.base || '/';
 
-export const BLOG_BASE = trimSlash(
-  (APP_BLOG?.list?.pathname as string) ?? 'blog'
-);
-export const CATEGORY_BASE = trimSlash(
-  (APP_BLOG?.category?.pathname as string) ?? 'category'
-);
-export const TAG_BASE = trimSlash(
-  (APP_BLOG?.tag?.pathname as string) ?? 'tag'
-);
+export const BLOG_BASE = trimSlash((APP_BLOG?.list?.pathname as string) ?? 'blog');
+export const CATEGORY_BASE = trimSlash((APP_BLOG?.category?.pathname as string) ?? 'category');
+export const TAG_BASE = trimSlash((APP_BLOG?.tag?.pathname as string) ?? 'tag');
 
 export interface BuildPermalinkOptions {
   type?: 'page' | 'post' | 'category' | 'tag' | 'asset' | 'blog' | 'home';
   trailingSlash?: boolean;
 }
 
-export function buildPermalink(
-  slug: string,
-  options: BuildPermalinkOptions = {}
-): string {
+export function buildPermalink(slug: string, options: BuildPermalinkOptions = {}): string {
   const { type = 'page', trailingSlash } = options;
   const useTrailingSlash = trailingSlash ?? SITE.trailingSlash ?? false;
 
@@ -67,9 +58,7 @@ export function buildPermalink(
       path = BLOG_BASE;
       break;
     case 'asset': {
-      const parts = [BASE_PATHNAME, slug]
-        .map((el) => trimSlash(el))
-        .filter((el) => !!el);
+      const parts = [BASE_PATHNAME, slug].map((el) => trimSlash(el)).filter((el) => !!el);
       return '/' + parts.join('/');
     }
     case 'category':
@@ -87,9 +76,7 @@ export function buildPermalink(
       break;
   }
 
-  const segments = [BASE_PATHNAME, path]
-    .map((el) => trimSlash(el))
-    .filter((el) => !!el);
+  const segments = [BASE_PATHNAME, path].map((el) => trimSlash(el)).filter((el) => !!el);
   const result = '/' + segments.join('/');
 
   if (useTrailingSlash && result !== '/') {

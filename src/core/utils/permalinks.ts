@@ -1,19 +1,11 @@
 import slugify from 'limax';
 import { SITE, APP_BLOG } from '~/core/config';
-import {
-  buildPermalink,
-  BLOG_BASE,
-  CATEGORY_BASE,
-  TAG_BASE,
-  trimSlash,
-} from './paths';
+import { buildPermalink, BLOG_BASE, CATEGORY_BASE, TAG_BASE, trimSlash } from './paths';
 import type { BuildPermalinkOptions } from './paths';
 
 export { BLOG_BASE, CATEGORY_BASE, TAG_BASE };
 
-export const POST_PERMALINK_PATTERN = trimSlash(
-  (APP_BLOG?.post?.permalink as string) ?? `${BLOG_BASE}/%slug%`
-);
+export const POST_PERMALINK_PATTERN = trimSlash((APP_BLOG?.post?.permalink as string) ?? `${BLOG_BASE}/%slug%`);
 
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));

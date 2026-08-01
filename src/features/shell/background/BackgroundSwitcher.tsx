@@ -217,8 +217,10 @@ export default function BackgroundSwitcher() {
       {/* 背景 Canvas 层 */}
       <div style={{ pointerEvents: 'auto', position: 'absolute', inset: 0, overflow: 'hidden' }}>
         {heroVisible && ActiveComponent && (
-          <ReactErrorBoundary fallback={<div className="absolute inset-0 bg-card-bg" />}>
-            <Suspense fallback={<div className="absolute inset-0 bg-card-bg" />}>
+          <ReactErrorBoundary
+            fallback={<div className="absolute inset-0 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]" />}
+          >
+            <Suspense fallback={<div className="absolute inset-0 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]" />}>
               <ActiveComponent key={`${currentBg}-${isDark ? 'dark' : 'light'}`} className="" {...colorProps} />
             </Suspense>
           </ReactErrorBoundary>

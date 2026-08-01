@@ -85,7 +85,7 @@ $effect(() => {
 });
 </script>
 
-<div class="card-base px-8 py-6">
+<div class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none px-8 py-6">
     {#each groups as group}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">

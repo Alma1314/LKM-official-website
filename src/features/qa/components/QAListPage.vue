@@ -16,7 +16,9 @@
           ></div>
         </button>
       </div>
-      <a :href="buildUrl('/qa/ask')" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0">我要提问</a>
+      <a :href="buildUrl('/qa/ask')" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0"
+        >我要提问</a
+      >
     </div>
 
     <div class="space-y-3">
