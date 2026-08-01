@@ -12,7 +12,7 @@
 /* 暗色模式下全局文字颜色自动适配 */
 @layer base {
   .dark .text-deep-text {
-    color: oklch(0.85 0.01 var(--hue));
+    color: oklch(0.85 0.01 var(--hue, 250));
   }
 }
 
@@ -569,7 +569,7 @@
     left: calc(90% + 4px);
     font-size: 22px;
     font-family: ui-monospace, monospace;
-    color: oklch(0.3 0.01 var(--hue));
+    color: oklch(0.3 0.01 var(--hue, 250));
     white-space: nowrap;
   }
 
@@ -762,7 +762,7 @@
 
 /* ===== text-oklch-hue ===== */
 @utility text-oklch-hue {
-  color: oklch(0.35 0.01 var(--hue));
+  color: oklch(0.35 0.01 var(--hue, 250));
 }
 
 /* ===== 按钮组件（替代 daisyui btn） ===== */
