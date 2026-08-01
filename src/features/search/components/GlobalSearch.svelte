@@ -130,7 +130,7 @@
 {#if isOpen}
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div class="fixed inset-0 bg-black/40 dark:bg-black/70 z-[100] flex items-start justify-center pt-20" onclick={close}>
+  <div class="fixed inset-0 top-[72px] z-[100] flex items-start justify-center" onclick={close}>
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
