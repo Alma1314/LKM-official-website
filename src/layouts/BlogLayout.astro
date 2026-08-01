@@ -200,8 +200,7 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
     }
     .enable-banner #navbar-wrapper {
       height: calc(var(--banner-height-home) - 4.5rem);
-      transition: all 0.3s;
-      transition-duration: 300ms;
+      transition: height var(--duration-slow) var(--ease-out);
     }
     .enable-banner.is-home #sidebar-sticky {
       top: calc(1rem - var(--banner-height-extend));

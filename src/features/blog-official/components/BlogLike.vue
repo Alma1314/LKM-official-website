@@ -88,7 +88,7 @@ function spawnParticles() {
       border-radius: 50%;
       background: ${color};
       pointer-events: none;
-      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out);
       opacity: 1;
       transform: translate(-50%, -50%) translate(0, 0) scale(1);
     `;

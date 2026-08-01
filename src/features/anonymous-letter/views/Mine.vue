@@ -241,7 +241,11 @@ function reset() {
   padding: 16px;
   border-radius: 18px;
   cursor: default;
-  transition: all 0.2s;
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .item-head {
   display: flex;
@@ -300,7 +304,11 @@ function reset() {
   padding: 4px 12px;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .mini:hover {
   border-color: var(--accent);
@@ -335,7 +343,11 @@ function reset() {
   padding: 8px 18px;
   cursor: pointer;
   font-size: 13px;
-  transition: all 0.2s;
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   white-space: nowrap;
 }
 .btn-reset:hover {

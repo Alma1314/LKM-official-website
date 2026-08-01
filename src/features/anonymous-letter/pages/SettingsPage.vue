@@ -260,7 +260,11 @@ function toggleAudio() {
   padding: 6px 16px;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .theme-opt.active {
   background: var(--grad-soft);

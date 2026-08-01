@@ -12,7 +12,7 @@
 /* 暗色模式下全局文字颜色自动适配 */
 @layer base {
   .dark .text-deep-text {
-    color: oklch(0.85 0.01 var(--hue));
+    color: oklch(0.85 0.01 var(--hue, 250));
   }
 }
 
@@ -254,7 +254,9 @@
 .profile-card,
 .profile-card .profile-inner,
 .profile-card img {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
 }
 
 .profile-card:hover > .profile-inner {
@@ -304,11 +306,13 @@
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 250ms;
-  animation-timing-function: ease;
+  animation-timing-function: var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
+  ::view-transition-old(root) {
+    animation: 150ms ease-out both fade-out;
+  }
   ::view-transition-new(root) {
     animation: none;
   }
@@ -476,7 +480,10 @@
     background: var(--color-base-100);
     color: var(--color-primary);
     cursor: pointer;
-    transition: all 0.2s;
+    transition:
+      background 0.2s var(--ease),
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
   }
 
   .ct-arrow:hover {
@@ -569,7 +576,7 @@
     left: calc(90% + 4px);
     font-size: 22px;
     font-family: ui-monospace, monospace;
-    color: oklch(0.3 0.01 var(--hue));
+    color: oklch(0.3 0.01 var(--hue, 250));
     white-space: nowrap;
   }
 
@@ -750,28 +757,34 @@
   }
 
   .back-to-top-btn.hide {
-    transform: translateX(5rem) scale(0.9);
+    transform: translateX(5rem) scale(0.92);
     opacity: 0;
     pointer-events: none;
   }
 
   .back-to-top-btn:active {
-    transform: translateX(5rem) scale(0.9);
+    transform: scale(0.97);
   }
 }
 
 /* ===== text-oklch-hue ===== */
 @utility text-oklch-hue {
-  color: oklch(0.35 0.01 var(--hue));
+  color: oklch(0.35 0.01 var(--hue, 250));
 }
 
 /* ===== 按钮组件（替代 daisyui btn） ===== */
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center gap-2 font-medium rounded-[var(--radius-field)]
-           transition-all duration-200 no-underline select-none cursor-pointer
+           no-underline select-none cursor-pointer
            min-h-[2.5rem] px-4 text-sm leading-none
            active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2;
+    transition:
+      transform var(--duration-base) var(--ease-out),
+      background var(--duration-base) var(--ease),
+      color var(--duration-base) var(--ease),
+      filter var(--duration-base) var(--ease),
+      box-shadow var(--duration-base) var(--ease);
   }
   .btn-xs {
     @apply min-h-[1.5rem] px-2 text-xs;
