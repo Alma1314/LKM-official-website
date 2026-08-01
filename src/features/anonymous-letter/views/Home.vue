@@ -333,7 +333,11 @@ function go(to) {
   padding: 4px 12px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .mc-tag:hover {
   background: var(--grad-soft);

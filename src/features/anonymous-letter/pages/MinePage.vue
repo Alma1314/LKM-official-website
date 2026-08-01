@@ -224,7 +224,11 @@ function resetDraftsConfirm() {
   padding: 16px;
   border-radius: 18px;
   cursor: default;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .item-head {
   display: flex;
@@ -288,7 +292,11 @@ function resetDraftsConfirm() {
   padding: 4px 12px;
   font-size: 12px;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -342,7 +350,11 @@ function resetDraftsConfirm() {
   padding: 8px 18px;
   cursor: pointer;
   font-size: 13px;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   white-space: nowrap;
 }
 .btn-reset:hover {

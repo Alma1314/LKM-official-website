@@ -221,7 +221,11 @@ function onSameType() {
   padding: 6px 16px;
   cursor: pointer;
   font-size: 13px;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .lc-decrypt:hover {
   background: var(--grad-soft);
@@ -298,7 +302,11 @@ function onSameType() {
   padding: 5px 11px;
   font-size: 12px;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .lc-act:hover {
   transform: translateY(-2px);

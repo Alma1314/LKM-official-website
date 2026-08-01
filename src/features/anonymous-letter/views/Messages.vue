@@ -204,7 +204,11 @@ function scrollBottom() {
   padding: 10px;
   border-radius: 14px;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   border: 1px solid transparent;
 }
 .conv-item:hover {
@@ -287,7 +291,11 @@ function scrollBottom() {
   padding: 4px 12px;
   font-size: 12px;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .mini:hover {
   border-color: var(--accent);

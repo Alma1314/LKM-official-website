@@ -235,7 +235,11 @@ onUnmounted(() => {});
   color: var(--text-sub);
   background: transparent;
   cursor: pointer;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   flex-shrink: 0;
 }
 .nav-exit-btn:hover {
@@ -270,7 +274,11 @@ onUnmounted(() => {});
   font-size: 13px;
   color: var(--text-sub);
   text-decoration: none;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   font-weight: 500;
 }
 .nav-link:hover {
@@ -307,7 +315,11 @@ onUnmounted(() => {});
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   color: var(--text-sub);
 }
 .nav-icon-btn:hover {
@@ -362,7 +374,9 @@ onUnmounted(() => {});
 
 .slide-down-enter-active,
 .slide-down-leave-active {
-  transition: transform var(--duration-slow) var(--ease-out), opacity var(--duration-slow) var(--ease-out);
+  transition:
+    transform var(--duration-slow) var(--ease-out),
+    opacity var(--duration-slow) var(--ease-out);
 }
 .slide-down-enter-from,
 .slide-down-leave-to {

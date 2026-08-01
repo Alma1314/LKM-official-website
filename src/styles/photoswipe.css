@@ -1,6 +1,8 @@
 @reference "tailwindcss";
 .pswp__button {
-  transition: background var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   background: rgba(0, 0, 0, 0.4);
   @apply flex items-center justify-center w-12 h-12;
   &:hover {

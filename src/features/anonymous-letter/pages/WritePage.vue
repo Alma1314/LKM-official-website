@@ -635,7 +635,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   line-height: 1;
 }
 .tb-btn:hover,
@@ -768,7 +772,11 @@ onMounted(() => {
   font-size: 12px;
   color: var(--text-sub);
   text-align: left;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .cat-btn:hover {
   border-color: var(--blue);
@@ -797,7 +805,11 @@ onMounted(() => {
   background: transparent;
   cursor: pointer;
   text-align: left;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .privacy-btn:hover {
   border-color: var(--blue);
@@ -885,7 +897,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .sticker-btn:hover {
   border-color: var(--blue);
@@ -911,7 +927,11 @@ onMounted(() => {
   font-size: 12px;
   color: #333;
   font-weight: 600;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .paper-btn:hover {
@@ -1027,7 +1047,11 @@ onMounted(() => {
   color: var(--text-sub);
   font-size: 13px;
   font-family: inherit;
-  transition: background var(--duration-base) var(--ease), color var(--duration-base) var(--ease), border-color var(--duration-base) var(--ease), opacity var(--duration-base) var(--ease);
+  transition:
+    background var(--duration-base) var(--ease),
+    color var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    opacity var(--duration-base) var(--ease);
 }
 .btn-outline:hover {
   border-color: var(--blue);
