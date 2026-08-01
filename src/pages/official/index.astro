@@ -3,7 +3,7 @@ import Layout from '~/layouts/OfficialLayout.astro';
 
 import { getPermalink } from '~/core/utils/permalinks';
 
-import BackgroundSwitcher from '~/features/shell-official/background/BackgroundSwitcher.astro';
+
 import Hero from '~/features/homepage/widgets/Hero.astro';
 
 import avatar七月花 from '~/assets/images/member-optimized/七月花.webp';
@@ -31,22 +31,20 @@ const metadata = {
       {
         variant: 'primary',
         text: '博客',
-        href: getPermalink('/blog'),
+        href: getPermalink('/official/blog'),
         target: '_self',
         icon: 'tabler:arrow-right',
       },
       {
         variant: 'primary',
         text: '文档',
-        href: getPermalink('/blog'),
+        href: getPermalink('/official/blog'),
         target: '_self',
         icon: 'tabler:book',
       },
     ]}
   >
-    <Fragment slot="bg">
-      <BackgroundSwitcher />
-    </Fragment>
+
     <Fragment slot="title">
       <div class="flex flex-col gap-4">
         <div

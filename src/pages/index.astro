@@ -1,0 +1,78 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+import { getPermalink } from '~/core/utils/permalinks';
+
+import BackgroundSwitcher from '~/features/shell-official/background/BackgroundSwitcher.astro';
+import Hero from '~/features/homepage/widgets/Hero.astro';
+import ShellLightDarkSwitch from '~/features/shell-official/components/LightDarkSwitch.svelte';
+---
+
+<BaseLayout>
+  <div class="fixed top-4 right-16 z-50">
+    <ShellLightDarkSwitch client:load />
+  </div>
+
+  <!-- Hero 部件 -->
+  <div class="pointer-events-auto">
+    <Hero
+      id="intro"
+      actions={[
+      {
+        variant: 'primary',
+        text: '前往官网',
+        href: getPermalink('/official'),
+        target: '_self',
+        icon: 'tabler:book',
+      },
+      {
+        variant: 'primary',
+        text: '前往社区',
+        href: getPermalink('/community'),
+        target: '_self',
+        icon: 'tabler:book',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <BackgroundSwitcher />
+    </Fragment>
+    <Fragment slot="title">
+      <div class="flex flex-col gap-4">
+        <div
+          class="text-[#6C2AD8] dark:text-primary text-[40px] md:text-[56px] font-semibold leading-[1.07] tracking-[-0.005em] [text-shadow:0_0_1px_var(--color-primary-content)]"
+        >
+          理科迷！
+        </div>
+
+        <div
+          class="block mb-1 font-semibold tracking-[-0.005em] text-deep-text [text-shadow:0_0_1px_var(--color-base-content)]"
+        >
+          科技爱好者社区
+        </div>
+      </div>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <div class="inline-block bg-card-bg/30 backdrop-blur-md rounded-lg px-3 py-1 mb-2">
+        <span class="text-[17px] font-normal text-text-muted leading-relaxed"> 是由广大科技爱好者组成的社区 </span>
+      </div>
+
+      <!-- 小屏简短版 -->
+      <div class="sm:hidden bg-card-bg/30 backdrop-blur-md rounded-lg px-3 py-1.5">
+        <span class="text-[13px] text-text-muted leading-relaxed">
+          <strong class="font-semibold text-primary mr-1">Here!</strong>
+          打破专业门槛，让每一位科技爱好者都能在这里找到同频的伙伴。
+        </span>
+      </div>
+      <!-- 桌面完整版 -->
+      <div class="hidden sm:inline-block bg-card-bg/30 backdrop-blur-md rounded-lg px-3 py-1.5">
+        <span class="text-[14px] text-text-muted leading-relaxed">
+          <strong class="font-semibold text-primary mr-1">Here!</strong>
+          在这里，科学与技术都脱离了学术象牙塔的刻板与遥远，变成了每一位都能够去迸发，对于世界发问的好奇心。
+          触手可及，摆脱功利视视角，让更多人迸发对于知识的渴望，感受到理工科的美。我们打破专业门槛，让每一位热爱理性，崇尚科技的"爱好者"，也都能在这里找到同频的伙伴，共探万物运转的奥秘。
+        </span>
+      </div>
+    </Fragment>
+    </Hero>
+  </div>
+</BaseLayout>
