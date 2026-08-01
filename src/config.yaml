@@ -37,13 +37,13 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/blog/posts/%slug%'
+      permalink: '/official/blog/posts/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog'
+      pathname: 'official/blog'
       robots:
         index: true
 
@@ -95,63 +95,63 @@ fuwari:
   navbar:
     links:
       - name: 主页
-        url: /
+        url: /official
         children:
           - name: 简明介绍
-            url: /
+            url: /official
           - name: 团队成员
-            url: /#team
+            url: /official#team
           - name: 发展历程
-            url: /#timeline
+            url: /official#timeline
           - name: 最近更新
-            url: /#update
+            url: /official#update
           - name: 常见问题
-            url: /#faq
+            url: /official#faq
       - name: 博客
-        url: /blog
+        url: /official/blog
         children:
           - name: 博客列表
-            url: /blog
+            url: /official/blog
           - name: 所有分类
-            url: /blog/categories
+            url: /official/blog/categories
           - name: 文章归档
-            url: /blog/archive
+            url: /official/blog/archive
           - name: 关于博客
-            url: /blog/about
+            url: /official/blog/about
       - name: 七月团队
-        url: /team
+        url: /official/team
         children:
           - name: 管理团队
-            url: /team
+            url: /official/team
           - name: 项目团队
-            url: /project-team
+            url: /official/project-team
           - name: 关于我们
-            url: /blog/about
+            url: /official/blog/about
           - name: 服务
-            url: /services
+            url: /official/services
           - name: 赞助与支持
-            url: /pricing
+            url: /official/pricing
           - name: 联系我们
-            url: /contact
+            url: /official/contact
           - name: QQ社群
-            url: /communities
+            url: /official/communities
       - name: 资源
-        url: /forum
+        url: /community/forum
         children:
           - name: 板块广场
-            url: /forum
+            url: /community/forum
           - name: 专栏
-            url: /columns
+            url: /community/columns
           - name: 文件库
-            url: /files
+            url: /community/files
           - name: 帮助/求助
-            url: /qa
+            url: /official/qa
           - name: 项目大厅
-            url: /projects
+            url: /official/projects
           - name: 竞赛
-            url: /competition
+            url: /community/competition
           - name: 资助系统
-            url: /funding
+            url: /official/funding
           - name: 其他应用
             url: /apps
       - name: 我的

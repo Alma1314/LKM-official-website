@@ -114,9 +114,9 @@ function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
       const preset = presetFromString(link.preset);
       if (typeof preset === 'number') {
         const map: Record<number, { name: string; url: string; external?: boolean }> = {
-          [LinkPreset.Home]: { name: 'Home', url: '/' },
-          [LinkPreset.Archive]: { name: 'Archive', url: '/archive' },
-          [LinkPreset.About]: { name: 'About', url: '/blog/about' },
+          [LinkPreset.Home]: { name: 'Home', url: '/official' },
+          [LinkPreset.Archive]: { name: 'Archive', url: '/official/blog/archive' },
+          [LinkPreset.About]: { name: 'About', url: '/official/blog/about' },
         };
         const resolved = map[preset];
         if (resolved) return [{ ...resolved, external: false }];

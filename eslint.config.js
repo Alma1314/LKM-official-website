@@ -84,6 +84,8 @@ export default [
       '.claude',
       '.superpowers',
       'src/layouts/BlogLayout.astro',
+      'src/layouts/OfficialBlogLayout.astro',
+      'src/layouts/CommunityBlogLayout.astro',
     ],
   },
 ];

@@ -1,0 +1,32 @@
+---
+import CommunitySidebarLayout from '~/layouts/CommunitySidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+
+const pageTitle = 'LKM 社区';
+---
+
+<CommunitySidebarLayout
+  metadata={{ title: pageTitle }}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={Astro.url.pathname}
+>
+  <div class="space-y-8">
+    <h1 class="text-3xl font-bold">LKM 社区</h1>
+    <p class="text-lg text-deep-text/70">欢迎来到 LKM 社区，在这里交流技术、分享经验、共同成长。</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {
+        communitySidebarLinks.slice(1).map((link) => (
+          <a
+            href={link.href}
+            class="p-4 border border-surface-3 rounded-lg hover:bg-surface-2 transition-colors flex items-center gap-3"
+          >
+            <span class="text-primary text-xl">
+              <span class:list={[link.icon]} />
+            </span>
+            <span class="text-deep-text font-medium">{link.text}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</CommunitySidebarLayout>

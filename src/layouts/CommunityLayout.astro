@@ -1,0 +1,25 @@
+---
+import Layout from './BaseLayout.astro';
+import SiteNavbar from '~/features/shell-community/components/SiteNavbar.astro';
+import Footer from '~/features/shell-community/components/Footer.astro';
+
+import { footerData } from '~/core/navigation';
+
+import type { MetaData } from '~/core/types';
+
+export interface Props {
+  metadata?: MetaData;
+}
+
+const { metadata } = Astro.props;
+---
+
+<Layout metadata={metadata}>
+  <SiteNavbar />
+  <main>
+    <slot />
+  </main>
+  <slot name="footer">
+    <Footer {...footerData} />
+  </slot>
+</Layout>
