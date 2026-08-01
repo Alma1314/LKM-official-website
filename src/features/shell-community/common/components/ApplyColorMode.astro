@@ -1,0 +1,26 @@
+---
+import { UI } from '~/core/config';
+---
+
+<script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
+  // 统一的 applyTheme：仅负责将主题应用到 document.documentElement.classList
+  function applyTheme(theme) {
+    if (theme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', prefersDark);
+    } else {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+  }
+
+  // 页面绘制前设置初始主题，避免 FOUC
+  if (defaultTheme && defaultTheme.endsWith(':only')) {
+    applyTheme(defaultTheme.replace(':only', ''));
+  } else if (localStorage.theme === 'dark') {
+    applyTheme('dark');
+  } else if (localStorage.theme === 'light') {
+    applyTheme('light');
+  } else {
+    applyTheme(defaultTheme);
+  }
+</script>

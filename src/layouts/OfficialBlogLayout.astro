@@ -1,0 +1,218 @@
+---
+import '~/core/styles/tailwind.css';
+import '../styles/variables.css';
+import '../styles/main.css';
+import '../styles/markdown.css';
+import '../styles/markdown-extend.css';
+import '../styles/transition.css';
+import '../styles/scrollbar.css';
+import '../styles/photoswipe.css';
+import '../styles/expressive-code.css';
+
+import ConfigCarrier from '~/features/shell/common/components/ConfigCarrier.astro';
+import MobileNavPanel from '~/features/shell-official/components/MobileNavPanel.astro';
+import { navBarConfig, profileConfig, siteConfig } from '~/core/config';
+import { LinkPresets } from '~/core/constants/link-presets';
+import { LinkPreset, type NavBarLink } from '~/types/config';
+import {
+  AUTO_MODE,
+  BANNER_HEIGHT,
+  BANNER_HEIGHT_EXTEND,
+  DARK_MODE,
+  DEFAULT_THEME,
+  LIGHT_MODE,
+  PAGE_WIDTH,
+} from '~/core/constants/constants';
+import { defaultFavicons } from '~/core/constants/icon';
+import type { Favicon } from '~/types/config';
+import { pathsEqual, url } from '~/core/utils/url-utils';
+interface Props {
+  title?: string;
+  banner?: string;
+  description?: string;
+  lang?: string;
+  setOGTypeArticle?: boolean;
+  math?: boolean;
+}
+
+let { title, banner: _banner, description, lang, setOGTypeArticle } = Astro.props;
+
+// 给 body 元素添加 class 以决定 Banner 高度，仅用于首次页面加载
+// View Transitions 在页面过渡后更新 body，导致 Banner 高度变化延迟
+// 因此使用 astro:before-swap 事件在链接点击时立即更改高度
+const isHomePage = pathsEqual(Astro.url.pathname, url('/'));
+
+// 定义全局 CSS 变量
+// 为什么在 Layout 而非 GlobalStyles 中定义：https://github.com/withastro/astro/issues/6728#issuecomment-1502203757
+const configHue = siteConfig.themeColor.hue;
+
+// TODO 暂时不用文章封面作为 Banner
+void _banner;
+
+const enableBanner = siteConfig.banner.enable;
+
+const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
+  if (typeof item === 'number') {
+    return LinkPresets[item];
+  }
+  return item;
+});
+
+let pageTitle: string;
+if (title) {
+  pageTitle = `${title} - ${siteConfig.title}`;
+} else {
+  pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
+}
+
+const favicons: Favicon[] = siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
+
+// const siteLang = siteConfig.lang.replace('_', '-')
+if (!lang) {
+  lang = `${siteConfig.lang}`;
+}
+const siteLang = lang.replace('_', '-');
+
+const bannerOffsetByPosition = {
+  top: `${BANNER_HEIGHT_EXTEND}vh`,
+  center: `${BANNER_HEIGHT_EXTEND / 2}vh`,
+  bottom: '0',
+};
+const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'center'];
+---
+
+<!doctype html>
+<html lang={siteLang} class="bg-page-bg transition 2xl:text-[20px]" data-overlayscrollbars-initialize>
+  <head>
+    <title>{pageTitle}</title>
+
+    <meta charset="UTF-8" />
+    <meta name="description" content={description || pageTitle} />
+    <meta name="author" content={profileConfig.name} />
+
+    <meta property="og:site_name" content={siteConfig.title} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description || pageTitle} />
+    {setOGTypeArticle ? <meta property="og:type" content="article" /> : <meta property="og:type" content="website" />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description || pageTitle} />
+
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    {
+      favicons.map((favicon) => (
+        <link
+          rel="icon"
+          href={favicon.src.startsWith('/') ? url(favicon.src) : favicon.src}
+          sizes={favicon.sizes}
+          media={favicon.theme && `(prefers-color-scheme: ${favicon.theme})`}
+        />
+      ))
+    }
+
+    <!-- Set the theme before the page is rendered to avoid a flash -->
+    <script is:inline define:vars={{ DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, configHue }}
+    >
+      // 从 localStorage 加载主题
+      const theme = localStorage.getItem('theme') || DEFAULT_THEME;
+      switch (theme) {
+        case LIGHT_MODE:
+          document.documentElement.classList.remove('dark');
+          break;
+        case DARK_MODE:
+          document.documentElement.classList.add('dark');
+          break;
+        case AUTO_MODE:
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+      }
+
+      // 从 localStorage 加载色相
+      const hue = localStorage.getItem('hue') || configHue;
+      document.documentElement.style.setProperty('--hue', hue);
+
+      // calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
+      let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
+      offset = offset - (offset % 4);
+      document.documentElement.style.setProperty('--banner-height-extend', `${offset}px`);
+    </script>
+    <style
+      define:vars={{
+        configHue,
+        'page-width': `${PAGE_WIDTH}rem`,
+      }}
+    ></style>
+    <!-- defines global css variables. This will be applied to <html> <body> and some other elements idk why -->
+
+    <slot name="head" />
+
+    <link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`} />
+  </head>
+  <body
+    class="min-h-screen transition"
+    class:list={[{ 'lg:is-home': isHomePage, 'enable-banner': enableBanner }]}
+    data-overlayscrollbars-initialize
+  >
+    <ConfigCarrier />
+    <slot />
+
+    <slot name="body-end" />
+    <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={navbarLinks} />
+
+    <!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
+    <div id="page-height-extend" class="hidden h-[300vh]"></div>
+  </body>
+</html>
+
+<style
+  is:global
+  define:vars={{
+    bannerOffset,
+    'banner-height': `${BANNER_HEIGHT}vh`,
+  }}
+>
+  @layer components {
+    .enable-banner.is-home #banner-wrapper {
+      height: var(--banner-height-home);
+      transform: translateY(var(--banner-height-extend));
+    }
+    .enable-banner #banner-wrapper {
+      height: var(--banner-height-home);
+    }
+
+    .enable-banner.is-home #banner {
+      height: var(--banner-height-home);
+      transform: translateY(0);
+    }
+    .enable-banner #banner {
+      height: var(--banner-height-home);
+      transform: translateY(var(--bannerOffset));
+    }
+    .enable-banner.is-home #main-grid {
+      transform: translateY(var(--banner-height-extend));
+    }
+    .enable-banner #navbar-wrapper {
+      height: calc(var(--banner-height-home) - 4.5rem);
+      transition: all 0.3s;
+      transition-duration: 300ms;
+    }
+    .enable-banner.is-home #sidebar-sticky {
+      top: calc(1rem - var(--banner-height-extend));
+    }
+    .navbar-hidden {
+      opacity: 0;
+      transform: translateY(-4rem);
+    }
+  }
+</style>
+
+<script src="../core/scripts/blog-init.ts"></script>
+<script src="../core/scripts/blog-transitions.ts"></script>
+<script src="../core/scripts/blog-photoswipe.ts"></script>
