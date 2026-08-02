@@ -1,0 +1,18 @@
+---
+import CommunityLayout from '~/layouts/CommunityLayout.astro';
+import BlogApp from '~/features/blog-community/BlogApp.vue';
+
+export function getStaticPaths() {
+  // Return a single placeholder entry — the vue-router SPA handles
+  // all actual routing for /community/blog/series/:id/:filepath.
+  // Passing undefined for the rest param generates index.html at the
+  // base level, and the SPA reads Astro.url.pathname for the real path.
+  return [{ params: { id: '_', filepath: undefined } }];
+}
+
+const fullPath = Astro.url.pathname;
+---
+
+<CommunityLayout>
+  <BlogApp client:only="vue" initialPath={fullPath} />
+</CommunityLayout>

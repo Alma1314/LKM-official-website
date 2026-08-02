@@ -102,8 +102,8 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import BackupPanel from '../components/BackupPanel.vue';
-import { getCategory } from '../store/constants';
-import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../store/storage';
+import { getCategory } from '../stores/constants';
+import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../stores/storage';
 import { buildUrl } from '~/core/utils/paths';
 
 const tab = ref('letters');

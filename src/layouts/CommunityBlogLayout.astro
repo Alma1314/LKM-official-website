@@ -4,14 +4,16 @@ import '../styles/variables.css';
 import '../styles/main.css';
 import '../styles/markdown.css';
 import '../styles/markdown-extend.css';
+import 'katex/dist/katex.min.css';
 import '../styles/transition.css';
 import '../styles/scrollbar.css';
 import '../styles/photoswipe.css';
 import '../styles/expressive-code.css';
 
 import ConfigCarrier from '~/features/shell/common/components/ConfigCarrier.astro';
-import MobileNavPanel from '~/features/shell-community/components/MobileNavPanel.astro';
-import { navBarConfig, profileConfig, siteConfig } from '~/core/config';
+import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
+import { navBarConfig } from '~/core/config/fuwari-community';
+import { profileConfig, siteConfig } from '~/core/config';
 import { LinkPresets } from '~/core/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import {

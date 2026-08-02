@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { addReported } from '../store/storage';
+import { addReported } from '../stores/storage';
 
 const props = defineProps({
   modelValue: Boolean,

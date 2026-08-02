@@ -139,7 +139,7 @@ export const APP_BLOG: AppBlogConfig = {
   relatedPostsCount: blog.relatedPostsCount ?? 4,
   post: {
     isEnabled: blog.post?.isEnabled ?? true,
-    permalink: blog.post?.permalink ?? '/blog/%slug%',
+    permalink: blog.post?.permalink ?? '/official/article/posts/%slug%',
     robots: { index: blog.post?.robots?.index ?? true, follow: blog.post?.robots?.follow ?? true },
   },
   list: {

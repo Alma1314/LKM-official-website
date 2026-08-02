@@ -33,8 +33,8 @@
 import { ref, computed, onMounted } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { getCategory } from '../store/constants';
-import { getLetters } from '../store/storage';
+import { getCategory } from '../stores/constants';
+import { getLetters } from '../stores/storage';
 import { buildUrl } from '~/core/utils/paths';
 
 const range = ref('today');

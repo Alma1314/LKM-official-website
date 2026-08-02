@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useApp } from '../store/app';
+import { useApp } from '../stores/app';
 
 const { state, lowPerf } = useApp();
 const muted = computed(() => state.settings.muted);

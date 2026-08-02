@@ -1,5 +1,5 @@
 <script lang="ts">
-  import AuthGuard from '~/features/starhope/hooks/AuthGuard.svelte';
+  import AuthGuard from '~/features/starhope/components/AuthGuard.svelte';
   import StarHopeLoginRequired from '~/features/starhope/routes/StarHopeLoginRequired.svelte';
   import StarHopeDashboard from '~/features/starhope/routes/StarHopeDashboard.svelte';
   import StarHopeBank from '~/features/starhope/routes/StarHopeBank.svelte';

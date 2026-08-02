@@ -4,11 +4,11 @@ import { navBarConfig, siteConfig } from '~/core/config';
 import { LinkPresets } from '~/core/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import { url } from '~/core/utils/url-utils';
-import LightDarkSwitch from './LightDarkSwitch.svelte';
+import LightDarkSwitch from '~/features/shell/components/LightDarkSwitch.svelte';
 import { SearchGlobalSearch } from '~/features/search';
-import DisplaySettings from './widget/DisplaySettings.svelte';
+import DisplaySettings from '~/features/shell/components/widget/DisplaySettings.svelte';
 import { NotificationBell } from '~/features/notification';
-import UserAvatarMenu from './user/UserAvatarMenu.vue';
+import UserAvatarMenu from '~/features/shell/components/user/UserAvatarMenu.vue';
 
 interface Props {
   class?: string;

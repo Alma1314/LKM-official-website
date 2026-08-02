@@ -39,3 +39,8 @@ declare module 'virtual:config' {
   const config: Record<string, unknown>;
   export default config;
 }
+
+declare module 'virtual:config-community' {
+  const config: Record<string, unknown>;
+  export default config;
+}

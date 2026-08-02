@@ -61,8 +61,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { getCategory, getPaper, getTag } from '../store/constants';
-import { toggleFavorite, getFavorites } from '../store/storage';
+import { getCategory, getPaper, getTag } from '../stores/constants';
+import { toggleFavorite, getFavorites } from '../stores/storage';
 import ReportDialog from './ReportDialog.vue';
 
 const props = defineProps({ letter: { type: Object, required: true } });

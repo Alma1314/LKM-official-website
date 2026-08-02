@@ -51,8 +51,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import EmptyState from './EmptyState.vue';
-import * as store from '../store/storage';
-import { MOODS } from '../store/constants';
+import * as store from '../stores/storage';
+import { MOODS } from '../stores/constants';
 
 const months = ref([]);
 const month = ref('');

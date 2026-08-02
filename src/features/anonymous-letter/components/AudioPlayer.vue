@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { useApp } from '../store/app';
-import * as store from '../store/storage';
+import { useApp } from '../stores/app';
+import * as store from '../stores/storage';
 
 const { state, lowPerf } = useApp();
 const playing = ref(false);

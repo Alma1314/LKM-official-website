@@ -1,0 +1,15 @@
+---
+import ArchivePanel from '~/features/shell/components/ArchivePanel.svelte';
+import I18nKey from '~/core/i18n/i18nKey';
+import { i18n } from '~/core/i18n/translation';
+import MainGridLayout from '~/layouts/OfficialBlogMainGridLayout.astro';
+import { getSortedPostsList } from '~/core/utils/content-utils';
+
+const sortedPostsList = await getSortedPostsList();
+---
+
+<MainGridLayout title={i18n(I18nKey.archive)}>
+  <!-- client:only 组件的 props 类型无法跨文件边界推断 -->
+  <!-- @ts-expect-error -->
+  <ArchivePanel tags={[]} categories={[]} sortedPosts={sortedPostsList} client:only="svelte" />
+</MainGridLayout>

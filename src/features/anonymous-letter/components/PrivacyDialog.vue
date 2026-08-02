@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useApp } from '../store/app';
+import { useApp } from '../stores/app';
 const props = defineProps({ modelValue: Boolean });
 const emit = defineEmits(['update:modelValue']);
 const { acceptPrivacy } = useApp();

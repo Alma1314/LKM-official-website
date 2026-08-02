@@ -37,13 +37,13 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/official/blog/posts/%slug%'
+      permalink: '/official/article/posts/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'official/blog'
+      pathname: 'official/article'
       robots:
         index: true
 
@@ -108,16 +108,16 @@ fuwari:
           - name: 常见问题
             url: /official#faq
       - name: 文章
-        url: /official/blog
+        url: /official/article
         children:
           - name: 文章列表
-            url: /official/blog
+            url: /official/article
           - name: 所有分类
-            url: /official/blog/categories
+            url: /official/article/categories
           - name: 文章归档
-            url: /official/blog/archive
+            url: /official/article/archive
           - name: 关于文章
-            url: /official/blog/about
+            url: /official/article/about
       - name: 七月团队
         url: /official/team
         children:
@@ -126,7 +126,7 @@ fuwari:
           - name: 项目团队
             url: /official/project-team
           - name: 关于我们
-            url: /official/blog/about
+            url: /official/article/about
           - name: 服务
             url: /official/services
           - name: 赞助与支持

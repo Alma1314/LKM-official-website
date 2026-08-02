@@ -90,7 +90,7 @@ import {
   blockConversation,
   clearConversation,
   deleteConversation,
-} from '../store/storage';
+} from '../stores/storage';
 import { buildUrl } from '~/core/utils/paths';
 
 const conversations = ref([]);

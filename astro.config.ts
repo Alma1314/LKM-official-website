@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import astroExpressiveCode from 'astro-expressive-code';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
@@ -12,7 +13,6 @@ import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
-import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import lilypond from 'astro-lilypond';
@@ -55,7 +55,8 @@ export default defineConfig({
     sitemap(),
     astroExpressiveCode({
       themes: ['github-dark'],
-      plugins: [],
+      defaultProps: { showLineNumbers: false },
+      plugins: [pluginLineNumbers()],
     }),
     mdx(),
     vue(),
@@ -197,22 +198,20 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      compression({
-        algorithm: 'gzip',
-        ext: '.gz',
-      }),
-      compression({
-        algorithm: 'brotliCompress',
-        ext: '.br',
-      }),
       {
         name: 'virtual-config',
         resolveId(id) {
           if (id === 'virtual:config') return '\0virtual:config';
+          if (id === 'virtual:config-community') return '\0virtual:config-community';
         },
         load(id) {
           if (id === '\0virtual:config') {
             const raw = fs.readFileSync('src/config.yaml', 'utf-8');
+            const parsed = yaml.load(raw);
+            return `export default ${JSON.stringify(parsed)};`;
+          }
+          if (id === '\0virtual:config-community') {
+            const raw = fs.readFileSync('src/config.community.yaml', 'utf-8');
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }
@@ -266,7 +265,7 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      exclude: ['@iconify/svelte', 'virtual:config'],
+      exclude: ['@iconify/svelte', 'virtual:config', 'virtual:config-community'],
       include: ['react', 'react-dom', 'react-dom/client'],
     },
     css: {

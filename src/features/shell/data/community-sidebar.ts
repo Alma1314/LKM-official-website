@@ -4,7 +4,7 @@
  * 使用方式（在各页面 .astro 中）：
  *
  * import Layout from '~/layouts/SidebarLayout.astro';
- * import { communitySidebarLinks } from '~/features/shell/data/community-sidebar';
+ * import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
  *
  * <Layout
  *   metadata={{ title: '页面标题' }}
