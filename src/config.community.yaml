@@ -37,13 +37,13 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/official/blog/posts/%slug%'
+      permalink: '/official/article/posts/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'official/blog'
+      pathname: 'official/article'
       robots:
         index: true
 

@@ -16,8 +16,8 @@ export async function getStaticPaths() {
         data: allBlogPosts.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE),
         currentPage: i + 1,
         totalPages,
-        prev: i > 0 ? (i === 1 ? url('/blog') : url(`/blog/page/${i}`)) : undefined,
-        next: i < totalPages - 1 ? url(`/blog/page/${i + 2}`) : undefined,
+        prev: i > 0 ? (i === 1 ? url('/official/article') : url(`/official/article/page/${i}`)) : undefined,
+        next: i < totalPages - 1 ? url(`/official/article/page/${i + 2}`) : undefined,
       },
     },
   }));

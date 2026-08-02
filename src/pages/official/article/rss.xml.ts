@@ -43,7 +43,7 @@ export async function GET(context: APIContext) {
         title: data.title ?? '',
         pubDate: data.published ?? new Date(),
         description: data.description || '',
-        link: url(`/blog/posts/${getSlug(post)}/`),
+        link: url(`/official/article/posts/${getSlug(post)}/`),
         content: sanitizeHtml(parser.render(cleanedContent), {
           allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
           allowedAttributes: {

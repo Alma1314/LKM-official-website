@@ -37,13 +37,13 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/official/blog/posts/%slug%'
+      permalink: '/official/article/posts/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'official/blog'
+      pathname: 'official/article'
       robots:
         index: true
 
@@ -108,7 +108,7 @@ fuwari:
           - name: 常见问题
             url: /official#faq
       - name: 文章
-        url: /official/blog
+        url: /official/article
         children:
           - name: 文章列表
             url: /official/article
