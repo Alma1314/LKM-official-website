@@ -55,7 +55,8 @@ export default defineConfig({
     sitemap(),
     astroExpressiveCode({
       themes: ['github-dark'],
-      plugins: [pluginLineNumbers({ defaultProps: { showLineNumbers: false } })],
+      defaultProps: { showLineNumbers: false },
+      plugins: [pluginLineNumbers()],
     }),
     mdx(),
     vue(),

@@ -69,21 +69,21 @@
           <div class="grid grid-cols-2 gap-4 mb-4">
             <div>
               <label class="block text-sm font-medium mb-1 text-deep-text">批改模式</label>
-              <select bind:value={mode} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
+              <select id="practice-mode" bind:value={mode} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
                 <option value="realtime">实时批改（每道题立即出结果）</option>
                 <option value="batch">批量批改（全部做完后统一出分）</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium mb-1 text-deep-text">题目数量</label>
-              <input type="number" bind:value={questionCount} min="1" max={availableQuestions.length} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
+              <label for="practice-count" class="block text-sm font-medium mb-1 text-deep-text">题目数量</label>
+              <input id="practice-count" type="number" bind:value={questionCount} min="1" max={availableQuestions.length} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4 mb-6">
             <div>
-              <label class="block text-sm font-medium mb-1 text-deep-text">题型筛选</label>
-              <select bind:value={filterType} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
+              <label for="practice-filter-type" class="block text-sm font-medium mb-1 text-deep-text">题型筛选</label>
+              <select id="practice-filter-type" bind:value={filterType} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
                 <option value="">全部题型</option>
                 <option value="single">单选题</option>
                 <option value="multiple">多选题</option>
@@ -93,8 +93,8 @@
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium mb-1 text-deep-text">难度筛选</label>
-              <select bind:value={filterDifficulty} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
+              <label for="practice-filter-difficulty" class="block text-sm font-medium mb-1 text-deep-text">难度筛选</label>
+              <select id="practice-filter-difficulty" bind:value={filterDifficulty} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
                 <option value="0">全部难度</option>
                 {#each [1, 2, 3, 4, 5] as d}
                   <option value={d}>难度 {d} {'★'.repeat(d)}</option>

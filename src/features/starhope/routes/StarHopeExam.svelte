@@ -53,20 +53,20 @@
     <div class="card-base p-8">
       <div class="grid grid-cols-2 gap-6 mb-6">
         <div>
-          <label class="block text-sm font-medium mb-1 text-deep-text">题目数量</label>
-          <input type="number" bind:value={questionCount} min="5" max={availableQuestions.length} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
+          <label for="exam-count" class="block text-sm font-medium mb-1 text-deep-text">题目数量</label>
+          <input id="exam-count" type="number" bind:value={questionCount} min="5" max={availableQuestions.length} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1 text-deep-text">及格线 (%)</label>
-          <input type="number" bind:value={passingGrade} min="0" max="100" class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
+          <label for="exam-passing-grade" class="block text-sm font-medium mb-1 text-deep-text">及格线 (%)</label>
+          <input id="exam-passing-grade" type="number" bind:value={passingGrade} min="0" max="100" class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1 text-deep-text">时间限制（分钟）</label>
-          <input type="number" bind:value={timeLimit} min="5" max="180" class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
+          <label for="exam-time-limit" class="block text-sm font-medium mb-1 text-deep-text">时间限制（分钟）</label>
+          <input id="exam-time-limit" type="number" bind:value={timeLimit} min="5" max="180" class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm" />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1 text-deep-text">题型</label>
-          <select bind:value={filterType} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
+          <label for="exam-filter-type" class="block text-sm font-medium mb-1 text-deep-text">题型</label>
+          <select id="exam-filter-type" bind:value={filterType} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
             <option value="">随机混合</option>
             <option value="single">单选题</option>
             <option value="multiple">多选题</option>

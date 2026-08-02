@@ -25,6 +25,17 @@
   let folderId = $state<string | undefined>(question?.folderId);
   let tagInput = $state('');
 
+  $effect(() => {
+    type = question?.type ?? 'single';
+    content = question?.content ?? '';
+    options = question?.options ?? ['', '', '', ''];
+    answer = Array.isArray(question?.answer) ? question.answer.join(';') : (question?.answer ?? '');
+    analysis = question?.analysis ?? '';
+    tags = question?.tags ?? [];
+    difficulty = question?.difficulty ?? 3;
+    folderId = question?.folderId;
+  });
+
   let saving = $state(false);
   let error = $state('');
 
@@ -89,13 +100,14 @@
     role="dialog"
     aria-modal="true"
     aria-label={isNew ? '新建题目' : '编辑题目'}
+    tabindex="-1"
   >
     <div class="p-6">
       <h2 class="text-xl font-bold text-deep-text mb-6">{isNew ? '新建题目' : '编辑题目'}</h2>
 
       <!-- 题型选择 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">题型</label>
+        <label for="question-type" class="block text-sm font-medium mb-2 text-deep-text">题型</label>
         <div class="flex flex-wrap gap-2">
           {#each [
             { value: 'single' as const, label: '单选题' },
@@ -121,8 +133,9 @@
 
       <!-- 题目内容 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">题目内容（支持 Markdown）</label>
+        <label for="question-content" class="block text-sm font-medium mb-2 text-deep-text">题目内容（支持 Markdown）</label>
         <textarea
+          id="question-content"
           bind:value={content}
           rows={4}
           class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors resize-y"
@@ -133,11 +146,12 @@
       <!-- 选项（仅选择题） -->
       {#if type === 'single' || type === 'multiple'}
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-2 text-deep-text">选项</label>
+          <label for="question-option-0" class="block text-sm font-medium mb-2 text-deep-text">选项</label>
           {#each options as opt, i}
             <div class="flex items-center gap-2 mb-2">
               <span class="text-xs text-text-muted w-5">{String.fromCharCode(65 + i)}.</span>
               <input
+                id="question-option-{i}"
                 type="text"
                 bind:value={options[i]}
                 class="flex-1 rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
@@ -164,10 +178,11 @@
 
       <!-- 答案 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">
+        <label for="question-answer" class="block text-sm font-medium mb-2 text-deep-text">
           {type === 'multiple' ? '答案（多个用分号分隔，如 A;B;C）' : '答案'}
         </label>
         <input
+          id="question-answer"
           type="text"
           bind:value={answer}
           class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
@@ -177,8 +192,9 @@
 
       <!-- 解析 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">解析（选填）</label>
+        <label for="question-analysis" class="block text-sm font-medium mb-2 text-deep-text">解析（选填）</label>
         <textarea
+          id="question-analysis"
           bind:value={analysis}
           rows={2}
           class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors resize-y"
@@ -188,8 +204,9 @@
 
       <!-- 难度 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">难度: {'★'.repeat(difficulty)}{'☆'.repeat(5 - difficulty)}</label>
+        <label for="question-difficulty" class="block text-sm font-medium mb-2 text-deep-text">难度: {'★'.repeat(difficulty)}{'☆'.repeat(5 - difficulty)}</label>
         <input
+          id="question-difficulty"
           type="range"
           min="1"
           max="5"
@@ -200,7 +217,7 @@
 
       <!-- 标签 -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-deep-text">标签</label>
+        <label for="question-tag-input" class="block text-sm font-medium mb-2 text-deep-text">标签</label>
         <div class="flex flex-wrap gap-1 mb-2">
           {#each tags as tag}
             <span class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">
@@ -211,6 +228,7 @@
         </div>
         <div class="flex gap-2">
           <input
+            id="question-tag-input"
             type="text"
             bind:value={tagInput}
             onkeydown={(e) => e.key === 'Enter' && addTag()}
