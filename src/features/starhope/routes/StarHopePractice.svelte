@@ -68,7 +68,7 @@
 
           <div class="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label class="block text-sm font-medium mb-1 text-deep-text">批改模式</label>
+              <label for="practice-mode" class="block text-sm font-medium mb-1 text-deep-text">批改模式</label>
               <select id="practice-mode" bind:value={mode} class="w-full rounded-lg border border-surface-3 bg-page-bg px-3 py-2 text-sm">
                 <option value="realtime">实时批改（每道题立即出结果）</option>
                 <option value="batch">批量批改（全部做完后统一出分）</option>

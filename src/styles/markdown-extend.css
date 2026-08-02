@@ -1,4 +1,8 @@
 @reference "tailwindcss";
+.custom-md blockquote.admonition:before {
+  top: 0.15em;
+  bottom: 0.15em;
+}
 .custom-md blockquote.admonition .bdm-title {
   display: flex;
   align-items: center;

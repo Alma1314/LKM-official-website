@@ -53,7 +53,7 @@
 
   {#if selectedPlugin === 'lottery'}
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" role="presentation" onclick={(e) => { if (e.target === e.currentTarget) selectedPlugin = null; }}>
-      <div class="bg-card-bg rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-6" role="dialog" aria-modal="true" onclick={(e) => e.stopPropagation()}>
+      <div class="bg-card-bg rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-6" role="dialog" aria-modal="true" tabindex="-1" onclick={(e) => e.stopPropagation()}>
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-bold text-deep-text">🎰 抽奖与点名</h2>
           <button onclick={() => { selectedPlugin = null; }} class="text-text-muted hover:text-red-500 text-lg">&times;</button>

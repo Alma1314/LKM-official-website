@@ -11,18 +11,14 @@
 
   const isNew = $derived(question === null);
 
-  let type = $state<'single' | 'multiple' | 'true-false' | 'essay' | 'fill'>(
-    question?.type ?? 'single',
-  );
-  let content = $state(question?.content ?? '');
-  let options = $state<string[]>(
-    question?.options ?? ['', '', '', ''],
-  );
-  let answer = $state<string>(Array.isArray(question?.answer) ? question.answer.join(';') : (question?.answer ?? ''));
-  let analysis = $state(question?.analysis ?? '');
-  let tags = $state<string[]>(question?.tags ?? []);
-  let difficulty = $state<1 | 2 | 3 | 4 | 5>(question?.difficulty ?? 3);
-  let folderId = $state<string | undefined>(question?.folderId);
+  let type = $state<'single' | 'multiple' | 'true-false' | 'essay' | 'fill'>('single');
+  let content = $state('');
+  let options = $state<string[]>(['', '', '', '']);
+  let answer = $state('');
+  let analysis = $state('');
+  let tags = $state<string[]>([]);
+  let difficulty = $state<1 | 2 | 3 | 4 | 5>(3);
+  let folderId = $state<string | undefined>(undefined);
   let tagInput = $state('');
 
   $effect(() => {
