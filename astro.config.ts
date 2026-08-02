@@ -12,7 +12,6 @@ import react from '@astrojs/react';
 import svelte from '@astrojs/svelte';
 import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
-import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import lilypond from 'astro-lilypond';
@@ -197,14 +196,6 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      compression({
-        algorithm: 'gzip',
-        ext: '.gz',
-      }),
-      compression({
-        algorithm: 'brotliCompress',
-        ext: '.br',
-      }),
       {
         name: 'virtual-config',
         resolveId(id) {
