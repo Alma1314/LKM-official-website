@@ -71,3 +71,62 @@ export interface BlogCommentCreate {
   content: string;
   parent_id?: number | null;
 }
+
+/** 文章列表项 */
+export interface BlogArticleInfo {
+  slug: string;
+  title: string;
+  description: string | null;
+  cover_url: string | null;
+  category: string | null;
+  tags: string[];
+  published: string;
+  updated: string | null;
+  word_count: number;
+  reading_time: number;
+}
+
+/** 文章详情 */
+export interface BlogArticleDetail extends BlogArticleInfo {
+  content: string; // MDX 原文
+  prev_article: { slug: string; title: string } | null;
+  next_article: { slug: string; title: string } | null;
+}
+
+/** 分类信息 */
+export interface BlogCategoryInfo {
+  slug: string;
+  name: string;
+  article_count: number;
+}
+
+/** 标签信息 */
+export interface BlogTagInfo {
+  slug: string;
+  name: string;
+  article_count: number;
+}
+
+/** 搜索结果 */
+export interface BlogSearchResult {
+  slug: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  tags: string[];
+  published: string;
+}
+
+/** 关于页信息 */
+export interface BlogAboutInfo {
+  content: string;
+}
+
+/** 分页数据 */
+export interface PaginatedData<T> {
+  items: T[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}

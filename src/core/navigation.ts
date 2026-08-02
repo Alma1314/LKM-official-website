@@ -4,7 +4,7 @@ import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 export const teamTopTabs = [
   { text: '管理团队', href: getPermalink('/team') },
   { text: '项目团队', href: getPermalink('/project-team') },
-  { text: '关于我们', href: getPermalink('/official/article/about') },
+  { text: '关于我们', href: getPermalink('/blog/about') },
   { text: '服务', href: getPermalink('/services') },
   { text: '赞助与支持', href: getPermalink('/pricing') },
   { text: '联系我们', href: getPermalink('/contact') },
@@ -16,7 +16,7 @@ export const footerData = {
     {
       title: '社区',
       links: [
-        { text: '七月团队', href: getPermalink('/official/article/about') },
+        { text: '七月团队', href: getPermalink('/blog/about') },
         { text: '管理团队', href: getPermalink('/team') },
         { text: '发展历程', href: getPermalink('/#timeline') },
         { text: '博客', href: getBlogPermalink() },

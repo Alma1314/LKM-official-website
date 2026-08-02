@@ -15,7 +15,6 @@ import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import lilypond from 'astro-lilypond';
 import mermaid from 'astro-mermaid';
 import type { AstroIntegration } from 'astro';
 import { fileURLToPath } from 'node:url';
@@ -115,7 +114,6 @@ export default defineConfig({
       Logger: 1,
     }),
 
-    lilypond(),
     mermaid({
       theme: 'default',
       autoTheme: true,

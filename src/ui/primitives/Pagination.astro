@@ -52,8 +52,8 @@ if (r === page.totalPages - 2) pages.push(page.totalPages - 1);
 if (r < page.totalPages) pages.push(page.totalPages);
 
 const getPageUrl = (p: number) => {
-  if (p === 1) return url('/official/article');
-  return url(`/official/article/page/${p}`);
+  if (p === 1) return url('/blog');
+  return url(`/blog/page/${p}`);
 };
 ---
 

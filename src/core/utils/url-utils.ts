@@ -9,12 +9,12 @@ export function pathsEqual(path1: string, path2: string) {
 }
 
 export function getPostUrlBySlug(slug: string): string {
-  return buildUrl(`/official/article/posts/${slug}/`);
+  return buildUrl(`/blog/posts/${slug}/`);
 }
 
 export function getTagUrl(tag: string): string {
-  if (!tag) return buildUrl('/official/article/archive/');
-  return buildUrl(`/official/article/archive/?tag=${encodeURIComponent(tag.trim())}`);
+  if (!tag) return buildUrl('/blog/archive/');
+  return buildUrl(`/blog/archive/?tag=${encodeURIComponent(tag.trim())}`);
 }
 
 export function getCategoryUrl(category: string | null): string {
@@ -23,8 +23,8 @@ export function getCategoryUrl(category: string | null): string {
     category.trim() === '' ||
     category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
   )
-    return buildUrl('/official/article/archive/?uncategorized=true');
-  return buildUrl(`/official/article/archive/?category=${encodeURIComponent(category.trim())}`);
+    return buildUrl('/blog/archive/?uncategorized=true');
+  return buildUrl(`/blog/archive/?category=${encodeURIComponent(category.trim())}`);
 }
 
 export function getDir(path: string): string {

@@ -37,13 +37,13 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/official/article/posts/%slug%'
+      permalink: '/blog/posts/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'official/article'
+      pathname: 'blog'
       robots:
         index: true
 
@@ -126,7 +126,7 @@ fuwari:
           - name: 项目团队
             url: /official/project-team
           - name: 关于我们
-            url: /official/article/about
+            url: /blog/about
           - name: 服务
             url: /official/services
           - name: 赞助与支持

@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { useBlogApi } from './useBlogApi';
+import { useBlogApi } from '../api/useBlogApi';
 
 export function useBlogStar(seriesId: number) {
   const starred = ref(false);
