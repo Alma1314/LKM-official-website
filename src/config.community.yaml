@@ -108,16 +108,16 @@ fuwari:
           - name: 常见问题
             url: /official#faq
       - name: 博客
-        url: /official/article
+        url: /community/blog
         children:
-          - name: 文章列表
-            url: /official/article
+          - name: 博客列表
+            url: /community/blog
           - name: 所有分类
-            url: /official/article/categories
-          - name: 文章归档
-            url: /official/article/archive
-          - name: 关于文章
-            url: /official/article/about
+            url: /community/blog/categories
+          - name: 博客归档
+            url: /community/blog/archive
+          - name: 关于博客
+            url: /community/blog/about
       - name: 七月团队
         url: /official/team
         children:
