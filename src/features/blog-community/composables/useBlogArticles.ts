@@ -1,7 +1,6 @@
 import { ref, type Ref } from 'vue';
 import { useBlogApi } from './useBlogApi';
 import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
-import type { AppError } from '~/core/errors/error-codes';
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;
 
@@ -13,10 +12,7 @@ export function useBlogArticles() {
 
   const api = useBlogApi();
 
-  function extractArticles(
-    series: BlogSeriesInfo,
-    filepath: string,
-  ): BlogArticle {
+  function extractArticles(series: BlogSeriesInfo, filepath: string): BlogArticle {
     const parts = filepath.split('/');
     return {
       seriesId: series.id,
@@ -31,7 +27,7 @@ export function useBlogArticles() {
   function flattenFileTree(
     series: BlogSeriesInfo,
     nodes: import('../types/blog').FileTreeNode[],
-    prefix = '',
+    prefix = ''
   ): BlogArticle[] {
     const result: BlogArticle[] = [];
     for (const node of nodes) {

@@ -75,11 +75,7 @@ function fileLink(filepath: string) {
               </li>
             </ul>
           </div>
-          <router-link
-            v-else-if="isMarkdown(node.name)"
-            :to="fileLink(node.name)"
-            class="text-primary hover:underline"
-          >
+          <router-link v-else-if="isMarkdown(node.name)" :to="fileLink(node.name)" class="text-primary hover:underline">
             {{ node.name.replace(/\.(md|mdx)$/i, '') }}
           </router-link>
         </li>

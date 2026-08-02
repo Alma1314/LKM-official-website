@@ -23,12 +23,7 @@ onMounted(() => {
 
     <div v-else-if="error" class="text-center py-16">
       <p class="text-red-500 mb-4">{{ error }}</p>
-      <button
-        class="btn-plain rounded-lg px-4 py-2 bg-primary text-white"
-        @click="fetchAll"
-      >
-        重试
-      </button>
+      <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="fetchAll">重试</button>
     </div>
 
     <div v-else-if="articles.length === 0" class="text-center py-16 text-text-muted">

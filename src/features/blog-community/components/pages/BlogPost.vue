@@ -14,7 +14,13 @@ const props = defineProps<{
 }>();
 
 const { content, MDXComponent, loading: postLoading, error: postError, fetchAndCompile } = useBlogPost();
-const { comments, loading: commentsLoading, fetch: fetchComments, addComment, removeComment } = useBlogComments(props.seriesId);
+const {
+  comments,
+  loading: commentsLoading,
+  fetch: fetchComments,
+  addComment,
+  removeComment,
+} = useBlogComments(props.seriesId);
 const { starred, starCount, loading: starLoading, setStatus, toggle: toggleStar } = useBlogStar(props.seriesId);
 
 // Derive current user ID from auth state (persisted in localStorage)

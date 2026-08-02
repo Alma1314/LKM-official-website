@@ -34,9 +34,7 @@ const router = createRouter({
       component: () => import('./components/pages/BlogPost.vue'),
       props: (route) => ({
         seriesId: Number(route.params.id),
-        filepath: Array.isArray(route.params.filepath)
-          ? route.params.filepath.join('/')
-          : route.params.filepath,
+        filepath: Array.isArray(route.params.filepath) ? route.params.filepath.join('/') : route.params.filepath,
       }),
     },
   ],

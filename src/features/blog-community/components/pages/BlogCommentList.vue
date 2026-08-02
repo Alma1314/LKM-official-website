@@ -10,28 +10,19 @@ defineProps<{
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('zh-CN', {
-    year: 'numeric', month: 'long', day: 'numeric',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 }
 </script>
 
 <template>
   <div class="space-y-4">
-    <div
-      v-for="comment in comments"
-      :key="comment.id"
-      class="border-b border-border pb-4"
-    >
+    <div v-for="comment in comments" :key="comment.id" class="border-b border-border pb-4">
       <div class="flex items-start gap-3">
-        <img
-          v-if="comment.profile.avatar"
-          :src="comment.profile.avatar"
-          class="w-8 h-8 rounded-full"
-        />
-        <div
-          v-else
-          class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium"
-        >
+        <img v-if="comment.profile.avatar" :src="comment.profile.avatar" class="w-8 h-8 rounded-full" />
+        <div v-else class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium">
           {{ comment.profile.nickname?.[0] || '?' }}
         </div>
         <div class="flex-1">
@@ -41,12 +32,7 @@ function formatDate(iso: string) {
           </div>
           <p class="mt-1 text-sm">{{ comment.content }}</p>
           <div class="flex gap-3 mt-2">
-            <button
-              class="text-xs text-primary hover:underline"
-              @click="onReply(comment.id)"
-            >
-              回复
-            </button>
+            <button class="text-xs text-primary hover:underline" @click="onReply(comment.id)">回复</button>
             <button
               v-if="currentUserId === comment.user_id"
               class="text-xs text-red-500 hover:underline"

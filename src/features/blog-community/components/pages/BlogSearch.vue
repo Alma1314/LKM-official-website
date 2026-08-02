@@ -18,11 +18,7 @@ function doSearch() {
 const filteredArticles = computed(() => {
   if (!query.value.trim()) return articles.value;
   const q = query.value.toLowerCase();
-  return articles.value.filter(
-    (a) =>
-      a.filename.toLowerCase().includes(q) ||
-      a.seriesTitle.toLowerCase().includes(q)
-  );
+  return articles.value.filter((a) => a.filename.toLowerCase().includes(q) || a.seriesTitle.toLowerCase().includes(q));
 });
 </script>
 
@@ -47,13 +43,9 @@ const filteredArticles = computed(() => {
       </div>
     </div>
 
-    <div v-if="!searched" class="text-text-muted text-center py-8">
-      输入关键词搜索博客文章
-    </div>
+    <div v-if="!searched" class="text-text-muted text-center py-8">输入关键词搜索博客文章</div>
 
-    <div v-else-if="filteredArticles.length === 0" class="text-text-muted text-center py-8">
-      没有找到相关文章
-    </div>
+    <div v-else-if="filteredArticles.length === 0" class="text-text-muted text-center py-8">没有找到相关文章</div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <BlogArticleCard
