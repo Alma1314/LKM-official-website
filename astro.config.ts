@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import astroExpressiveCode from 'astro-expressive-code';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
@@ -54,7 +55,7 @@ export default defineConfig({
     sitemap(),
     astroExpressiveCode({
       themes: ['github-dark'],
-      plugins: [],
+      plugins: [pluginLineNumbers({ defaultProps: { showLineNumbers: false } })],
     }),
     mdx(),
     vue(),
