@@ -1,107 +1,105 @@
 <template>
-  <TreeholeShell active-nav="messages">
-    <div class="container">
-      <h1 class="page-title">💬 匿名回信</h1>
-      <p class="page-sub">全程匿名，双方都不暴露真实身份。</p>
+  <div class="messages">
+    <h1 class="page-title">💬 匿名回信</h1>
+    <p class="page-sub">全程匿名，双方都不暴露真实身份。</p>
 
-      <div class="msg-layout">
-        <!-- 会话列表 -->
-        <aside class="conv-list glass">
-          <div class="conv-head">
-            <span>对话 ({{ conversations.length }})</span>
+    <div class="msg-layout">
+      <!-- 会话列表 -->
+      <aside class="conv-list glass">
+        <div class="conv-head">
+          <span>对话 ({{ conversations.length }})</span>
+          <button class="chip" @click="clearAllRead" v-if="conversations.length">标记已读</button>
+        </div>
+        <div v-if="conversations.length" class="conv-items">
+          <div
+            v-for="c in conversations"
+            :key="c.id"
+            class="conv-item"
+            :class="{ active: activeId === c.id, blocked: c.blocked }"
+            @click="selectConv(c)"
+          >
+            <div class="conv-avatar">{{ c.peerCodename.charAt(0) }}</div>
+            <div class="conv-info">
+              <b>{{ c.peerCodename }}</b>
+              <small>{{ lastMsg(c) }}</small>
+            </div>
+            <span v-if="c.blocked" class="conv-blocked">已屏蔽</span>
           </div>
-          <div v-if="conversations.length" class="conv-items">
+        </div>
+        <EmptyState v-else title="还没有任何对话" sub="去随机树洞给陌生人写回信吧" />
+      </aside>
+
+      <!-- 对话面板 -->
+      <section class="chat glass" v-if="active">
+        <div class="chat-head">
+          <div class="chat-peer">
+            <div class="conv-avatar">{{ active.peerCodename.charAt(0) }}</div>
+            <div>
+              <b>{{ active.peerCodename }}</b>
+              <small>我的代号：{{ active.myCodename }}</small>
+            </div>
+          </div>
+          <div class="chat-acts">
+            <button class="mini" @click="blockConv" v-if="!active.blocked">屏蔽</button>
+            <button class="mini" @click="clearConv" v-if="active.messages.length">清空</button>
+            <button class="mini danger" @click="delConv">删除</button>
+          </div>
+        </div>
+
+        <div class="chat-body">
+          <div v-if="active.messages.length" class="bubbles">
             <div
-              v-for="c in conversations"
-              :key="c.id"
-              class="conv-item"
-              :class="{ active: activeId === c.id, blocked: c.blocked }"
-              @click="selectConv(c)"
+              v-for="(m, i) in active.messages"
+              :key="m.id || i"
+              class="bubble"
+              :class="[m.from === 'me' ? 'mine' : 'peer', { recalled: m.recalled }]"
             >
-              <div class="conv-avatar">{{ c.peerCodename.charAt(0) }}</div>
-              <div class="conv-info">
-                <b>{{ c.peerCodename }}</b>
-                <small>{{ lastMsg(c) }}</small>
-              </div>
-              <span v-if="c.blocked" class="conv-blocked">已屏蔽</span>
+              <template v-if="m.recalled">{{ m.text }}</template>
+              <template v-else>
+                <span class="bubble-text">{{ m.text }}</span>
+                <button v-if="m.from === 'me' && !m.recalled" class="bubble-recall" @click="recall(active.id, m)">
+                  撤回
+                </button>
+              </template>
             </div>
           </div>
-          <EmptyState v-else title="还没有任何对话" sub="去随机树洞给陌生人写回信吧" />
-        </aside>
+          <EmptyState v-else title="还没有消息" sub="写下第一句匿名问候吧～" />
+        </div>
 
-        <!-- 对话面板 -->
-        <section class="chat glass" v-if="active">
-          <div class="chat-head">
-            <div class="chat-peer">
-              <div class="conv-avatar">{{ active.peerCodename.charAt(0) }}</div>
-              <div>
-                <b>{{ active.peerCodename }}</b>
-                <small>我的代号：{{ active.myCodename }}</small>
-              </div>
-            </div>
-            <div class="chat-acts">
-              <button class="mini" @click="blockConv" v-if="!active.blocked">屏蔽</button>
-              <button class="mini" @click="clearConvConfirm" v-if="active.messages.length">清空</button>
-              <button class="mini danger" @click="delConvConfirm">删除</button>
-            </div>
-          </div>
+        <div class="chat-input" v-if="!active.blocked">
+          <textarea
+            v-model="text"
+            placeholder="匿名回复…"
+            @keyup.enter.exact="send"
+            rows="1"
+            :class="{ 'send-ripple': rippling }"
+            @animationend="rippling = false"
+          ></textarea>
+          <button class="btn-grad" :disabled="!text.trim()" @click="send">发送</button>
+        </div>
+        <div v-else class="chat-blocked">已屏蔽该陌生人，消息已停止。</div>
+      </section>
 
-          <div class="chat-body" ref="chatBody">
-            <div v-if="active.messages.length" class="bubbles">
-              <div
-                v-for="(m, i) in active.messages"
-                :key="m.id || i"
-                class="bubble"
-                :class="[m.from === 'me' ? 'mine' : 'peer', { recalled: m.recalled }]"
-              >
-                <template v-if="m.recalled">{{ m.text }}</template>
-                <template v-else>
-                  <span class="bubble-text">{{ m.text }}</span>
-                  <button v-if="m.from === 'me' && !m.recalled" class="bubble-recall" @click="recall(active.id, m)">
-                    撤回
-                  </button>
-                </template>
-              </div>
-            </div>
-            <EmptyState v-else title="还没有消息" sub="写下第一句匿名问候吧～" />
-          </div>
-
-          <div class="chat-input" v-if="!active.blocked">
-            <textarea v-model="text" placeholder="匿名回复…" @keyup.enter.exact="send" rows="1"></textarea>
-            <button class="btn-grad" :disabled="!text.trim()" @click="send">发送</button>
-          </div>
-          <div v-else class="chat-blocked">已屏蔽该陌生人，消息已停止。</div>
-        </section>
-
-        <EmptyState v-else class="chat-empty" title="选择左侧对话开始" />
-      </div>
+      <EmptyState v-else class="chat-empty" title="选择左侧对话开始" />
     </div>
-  </TreeholeShell>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
+import { ElMessage } from 'element-plus';
 import EmptyState from '../components/EmptyState.vue';
-import {
-  getReplies,
-  appendMessage,
-  recallMessage,
-  blockConversation,
-  clearConversation,
-  deleteConversation,
-} from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import * as store from '../stores/storage';
 
 const conversations = ref([]);
 const activeId = ref('');
 const text = ref('');
-const chatBody = ref(null);
+const rippling = ref(false);
 
 const active = computed(() => conversations.value.find((c) => c.id === activeId.value) || null);
 
 onMounted(() => {
-  conversations.value = getReplies();
+  conversations.value = store.getReplies();
   if (conversations.value.length) activeId.value = conversations.value[0].id;
 });
 
@@ -114,7 +112,6 @@ function lastMsg(c) {
 function selectConv(c) {
   activeId.value = c.id;
 }
-
 function send() {
   if (!text.value.trim() || !active.value) return;
   const msg = {
@@ -123,48 +120,42 @@ function send() {
     text: text.value.trim(),
     at: Date.now(),
   };
-  appendMessage(activeId.value, msg);
-  conversations.value = getReplies();
+  store.appendMessage(activeId.value, msg);
+  conversations.value = store.getReplies();
   text.value = '';
+  rippling.value = true;
   nextTick(scrollBottom);
 }
-
 function recall(convId, msg) {
-  recallMessage(convId, msg.id);
-  conversations.value = getReplies();
+  store.recallMessage(convId, msg.id);
+  conversations.value = store.getReplies();
+  ElMessage({ message: '已撤回', type: 'success', customClass: 'th-toast' });
 }
-
 function blockConv() {
-  if (confirm('确定屏蔽该陌生人？屏蔽后将无法收到新消息。')) {
-    blockConversation(activeId.value);
-    conversations.value = getReplies();
-  }
+  store.blockConversation(activeId.value);
+  conversations.value = store.getReplies();
+  ElMessage({ message: '已屏蔽该陌生人', type: 'success', customClass: 'th-toast' });
 }
-
-function clearConvConfirm() {
-  if (confirm('确定清空此对话的全部消息？')) {
-    clearConversation(activeId.value);
-    conversations.value = getReplies();
-  }
+function clearConv() {
+  store.clearConversation(activeId.value);
+  conversations.value = store.getReplies();
 }
-
-function delConvConfirm() {
-  if (confirm('确定删除此对话？')) {
-    deleteConversation(activeId.value);
-    conversations.value = getReplies();
-    activeId.value = conversations.value[0]?.id || '';
-  }
+function delConv() {
+  store.deleteConversation(activeId.value);
+  conversations.value = store.getReplies();
+  activeId.value = conversations.value[0]?.id || '';
 }
-
+function clearAllRead() {
+  store.clearInbox();
+  ElMessage({ message: '已标记全部已读', type: 'success', customClass: 'th-toast' });
+}
 function scrollBottom() {
-  const el = chatBody.value;
+  const el = document.querySelector('.chat-body');
   if (el) el.scrollTop = el.scrollHeight;
 }
 </script>
 
 <style scoped>
-/* ========== Messages 页面内容样式 ========== */
-
 .page-title {
   font-size: 26px;
   font-weight: 800;
@@ -175,12 +166,16 @@ function scrollBottom() {
   margin: 0 0 18px;
   font-size: 14px;
 }
-
 .msg-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 16px;
   align-items: start;
+}
+@media (max-width: 768px) {
+  .msg-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 .conv-list {
@@ -246,7 +241,6 @@ function scrollBottom() {
 .conv-info b {
   font-size: 13px;
   display: block;
-  color: var(--text-main);
 }
 .conv-info small {
   font-size: 11px;
@@ -289,7 +283,6 @@ function scrollBottom() {
   display: flex;
   gap: 6px;
 }
-
 .mini {
   border: 1px solid var(--card-border);
   background: rgba(255, 255, 255, 0.4);
@@ -330,7 +323,7 @@ function scrollBottom() {
   font-size: calc(14px * var(--font-scale));
   line-height: 1.6;
   word-break: break-word;
-  animation: floatUpAni 0.3s both;
+  animation: floatUp 0.3s both;
   position: relative;
 }
 .bubble.mine {
@@ -364,17 +357,6 @@ function scrollBottom() {
   cursor: pointer;
 }
 
-@keyframes floatUpAni {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .chat-input {
   display: flex;
   gap: 8px;
@@ -406,12 +388,7 @@ function scrollBottom() {
 .chat-empty {
   grid-column: 2;
 }
-
-/* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
-  .msg-layout {
-    grid-template-columns: 1fr;
-  }
   .chat-empty {
     grid-column: 1;
   }

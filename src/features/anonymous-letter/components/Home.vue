@@ -1,103 +1,100 @@
 <template>
-  <TreeholeShell active-nav="home">
-    <div class="container">
-      <!-- 首页 Hero：打字机 slogan + 每日治愈文案 -->
-      <section class="hero glass float-up">
-        <h1 class="hero-title">
-          <span class="grad-text typewriter">{{ typed }}</span
-          ><span class="caret">|</span>
-        </h1>
-        <p class="hero-sub">把心事交给风，把秘密留给树洞。</p>
-        <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
-        <div class="hero-acts">
-          <a :href="buildUrl('/treehole/write')" class="btn-grad">✍️ 写一封信</a>
-          <a :href="buildUrl('/treehole/random')" class="chip">🎲 随机树洞</a>
-        </div>
-      </section>
+  <div class="home">
+    <!-- 首页 Hero：打字机 slogan + 每日治愈文案 -->
+    <section class="hero glass float-up">
+      <h1 class="hero-title">
+        <span class="grad-text typewriter">{{ typed }}</span
+        ><span class="caret">|</span>
+      </h1>
+      <p class="hero-sub">把心事交给风，把秘密留给树洞。</p>
+      <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
+      <div class="hero-acts">
+        <button class="btn-grad" @click="go('/write')">✍️ 写一封信</button>
+        <button class="chip" @click="go('/random')">🎲 随机树洞</button>
+      </div>
+    </section>
 
-      <!-- 筛选栏：分类 + 排序 + 标签 -->
-      <section class="filters glass">
-        <div class="filter-row">
-          <span class="filter-label">分类</span>
-          <div class="chips">
-            <button class="chip" :class="{ active: activeCat === 'all' }" @click="setCat('all')">全部</button>
-            <button
-              v-for="c in categories"
-              :key="c.key"
-              class="chip"
-              :class="{ active: activeCat === c.key }"
-              @click="setCat(c.key)"
-            >
-              {{ c.emoji }} {{ c.label }}
-            </button>
-          </div>
-        </div>
-        <div class="filter-row">
-          <span class="filter-label">排序</span>
-          <div class="chips">
-            <button class="chip" :class="{ active: sort === 'new' }" @click="sort = 'new'">最新</button>
-            <button class="chip" :class="{ active: sort === 'hot' }" @click="sort = 'hot'">最热</button>
-            <button class="chip" :class="{ active: sort === 'random' }" @click="sort = 'random'">随机</button>
-          </div>
-        </div>
-        <div class="filter-row">
-          <span class="filter-label">标签</span>
-          <div class="chips">
-            <button class="chip" :class="{ active: activeTag === '' }" @click="setTag('')">全部</button>
-            <button
-              v-for="t in tags"
-              :key="t.key"
-              class="chip"
-              :class="{ active: activeTag === t.key }"
-              @click="setTag(t.key)"
-            >
-              {{ t.emoji }} {{ t.label }}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 瀑布流信件广场 -->
-      <section v-if="filtered.length" class="masonry">
-        <div v-for="l in filtered" :key="l.id" class="masonry-col">
-          <LetterCard :letter="l" @like="onLike" @fav="onFav" @same-type="onSameType" />
-        </div>
-      </section>
-      <EmptyState v-else title="这个分类还没有信件" sub="换个分类，或写下第一封匿名信吧～" />
-
-      <!-- 心情云标签墙 -->
-      <section class="mood-cloud glass">
-        <div class="mc-head">
-          <span>🏷️ 心情云标签墙</span>
-          <span class="mc-hint">点击标签筛选同心情信件</span>
-        </div>
-        <div class="mc-tags">
+    <!-- 筛选栏：分类 + 排序 -->
+    <section class="filters glass">
+      <div class="filter-row">
+        <span class="filter-label">分类</span>
+        <div class="chips">
+          <button class="chip" :class="{ active: activeCat === 'all' }" @click="setCat('all')">全部</button>
           <button
-            v-for="(cnt, m) in moodStats"
-            :key="m"
-            class="mc-tag"
-            :style="{ fontSize: 12 + Math.min(cnt, 8) + 'px' }"
-            @click="filterByMood(m)"
+            v-for="c in categories"
+            :key="c.key"
+            class="chip"
+            :class="{ active: activeCat === c.key }"
+            @click="setCat(c.key)"
           >
-            #{{ m }}
+            {{ c.emoji }} {{ c.label }}
           </button>
         </div>
-      </section>
-    </div>
-  </TreeholeShell>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">排序</span>
+        <div class="chips">
+          <button class="chip" :class="{ active: sort === 'new' }" @click="sort = 'new'">最新</button>
+          <button class="chip" :class="{ active: sort === 'hot' }" @click="sort = 'hot'">最热</button>
+          <button class="chip" :class="{ active: sort === 'random' }" @click="sort = 'random'">随机</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">标签</span>
+        <div class="chips">
+          <button class="chip" :class="{ active: activeTag === '' }" @click="setTag('')">全部</button>
+          <button
+            v-for="t in tags"
+            :key="t.key"
+            class="chip"
+            :class="{ active: activeTag === t.key }"
+            @click="setTag(t.key)"
+          >
+            {{ t.emoji }} {{ t.label }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 瀑布流信件广场 -->
+    <section v-if="filtered.length" class="masonry">
+      <div v-for="l in filtered" :key="l.id" class="masonry-col">
+        <LetterCard :letter="l" @like="onLike" @fav="onFav" @same-type="onSameType" />
+      </div>
+    </section>
+    <EmptyState v-else title="这个分类还没有信件" sub="换个分类，或写下第一封匿名信吧～" />
+
+    <!-- 心情云标签墙（折叠入口） -->
+    <section class="mood-cloud glass">
+      <div class="mc-head">
+        <span>🏷️ 心情云标签墙</span>
+        <span class="mc-hint">点击标签筛选同心情信件</span>
+      </div>
+      <div class="mc-tags">
+        <button
+          v-for="(cnt, m) in moodStats"
+          :key="m"
+          class="mc-tag"
+          :style="{ fontSize: 12 + Math.min(cnt, 8) + 'px' }"
+          @click="filterByMood(m)"
+        >
+          #{{ m }}
+        </button>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
-import { getLetters, getFavorites, toggleFavorite } from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import { getLetters, getFavorites, getFavGroups, saveFavGroups, toggleFavorite } from '../stores/storage';
 
+const router = useRouter();
 const categories = CATEGORIES;
-
 const tags = TAGS;
 
 const allLetters = ref([]);
@@ -122,30 +119,31 @@ function typeLoop() {
 
 function load() {
   const all = getLetters();
+  // 只展示已公开的信件
   allLetters.value = all.filter((l) => l.status === 'published' && l.privacy === 'public');
 }
-
 onMounted(() => {
   load();
   typeLoop();
 });
-
-// 跨标签页同步
-if (typeof window !== 'undefined') {
-  window.addEventListener('storage', load);
-}
+// 监听 storage 事件以支持跨标签页同步
+window.addEventListener('storage', load);
 
 const filtered = computed(() => {
   let list = allLetters.value.slice();
+  // 分类筛选
   if (activeCat.value !== 'all') {
     list = list.filter((l) => l.category === activeCat.value);
   }
+  // 心情筛选
   if (activeMood.value) {
     list = list.filter((l) => (l.moods || []).includes(activeMood.value));
   }
+  // 标签筛选
   if (activeTag.value) {
     list = list.filter((l) => (l.tags || []).includes(activeTag.value));
   }
+  // 排序
   if (sort.value === 'hot') {
     list.sort((a, b) => (b.likes || 0) + (b.favorites || 0) - ((a.likes || 0) + (a.favorites || 0)));
   } else if (sort.value === 'random') {
@@ -169,6 +167,10 @@ const moodStats = computed(() => {
   return map;
 });
 
+function reload() {
+  load();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function setCat(c) {
   activeCat.value = c;
   activeMood.value = '';
@@ -186,6 +188,7 @@ function onSameType(cat) {
 }
 
 function onLike(letter) {
+  // toggle local like
   letter.liked = !letter.liked;
   letter.likes = Math.max(0, (letter.likes || 0) + (letter.liked ? 1 : -1));
   load();
@@ -195,11 +198,18 @@ function onFav({ letter }) {
   letter.favorites = Math.max(0, (letter.favorites || 0) + (added ? 1 : -1));
   load();
 }
+
+function go(to) {
+  router.push(to);
+}
 </script>
 
 <style scoped>
-/* ========== Home 页面内容样式 ========== */
-
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 .hero {
   padding: 30px 26px;
   text-align: center;
@@ -238,9 +248,6 @@ function onFav({ letter }) {
   border-radius: 16px;
   margin-bottom: 18px;
   font-size: calc(14px * var(--font-scale));
-}
-:root.dark .hero-quote {
-  background: rgba(255, 255, 255, 0.06);
 }
 .quote-mark {
   color: var(--accent);
@@ -287,6 +294,16 @@ function onFav({ letter }) {
   display: inline-block;
   width: 100%;
 }
+@media (max-width: 1024px) {
+  .masonry {
+    columns: 2;
+  }
+}
+@media (max-width: 600px) {
+  .masonry {
+    columns: 1;
+  }
+}
 
 .mood-cloud {
   padding: 16px 18px;
@@ -322,35 +339,10 @@ function onFav({ letter }) {
     border-color var(--duration-base) var(--ease),
     opacity var(--duration-base) var(--ease);
 }
-:root.dark .mc-tag {
-  background: rgba(255, 255, 255, 0.08);
-}
 .mc-tag:hover {
   background: var(--grad-soft);
   color: var(--accent);
   border: 1px solid var(--blue);
   transform: translateY(-2px);
-}
-
-/* ---------- 响应式 ---------- */
-@media (max-width: 1024px) {
-  .masonry {
-    columns: 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero {
-    padding: 22px 16px;
-  }
-}
-
-@media (max-width: 600px) {
-  .masonry {
-    columns: 1;
-  }
-  .hero-title {
-    font-size: clamp(18px, 5vw, 24px);
-  }
 }
 </style>

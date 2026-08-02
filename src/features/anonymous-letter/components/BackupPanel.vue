@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import * as store from '../store/storage';
+import * as store from '../stores/storage';
 
 const fileInput = ref(null);
 const msg = ref('');

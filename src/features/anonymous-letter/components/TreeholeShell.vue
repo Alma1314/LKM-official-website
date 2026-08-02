@@ -135,7 +135,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import Particles from './Particles.vue';
-import { useApp } from '../store/app';
+import { useApp } from '../stores/app';
 import { buildUrl } from '~/core/utils/paths';
 
 defineProps<{

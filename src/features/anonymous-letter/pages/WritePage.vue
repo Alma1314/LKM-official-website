@@ -281,7 +281,7 @@ import {
   TAGS,
   EMOJIS,
   SENSITIVE_WORDS,
-} from '../store/constants';
+} from '../stores/constants';
 import {
   addLetter,
   updateLetter,
@@ -291,9 +291,9 @@ import {
   logPost,
   logMood,
   saveSketch,
-} from '../store/storage';
+} from '../stores/storage';
 import { randomCodename } from '../utils/codename';
-import { useApp } from '../store/app';
+import { useApp } from '../stores/app';
 import { buildUrl } from '~/core/utils/paths';
 
 const app = useApp();

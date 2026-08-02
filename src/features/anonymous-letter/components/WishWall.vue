@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getWishes, addWish, lightWish, saveWishes } from '../store/storage';
+import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
 
 const wishes = ref([]);
 const openMake = ref(false);

@@ -151,8 +151,8 @@
 import { ref } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import PrivacyDialog from '../components/PrivacyDialog.vue';
-import { useApp } from '../store/app';
-import * as store from '../store/storage';
+import { useApp } from '../stores/app';
+import * as store from '../stores/storage';
 import { buildUrl } from '~/core/utils/paths';
 
 const app = useApp();
