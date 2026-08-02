@@ -209,10 +209,16 @@ export default defineConfig({
         name: 'virtual-config',
         resolveId(id) {
           if (id === 'virtual:config') return '\0virtual:config';
+          if (id === 'virtual:config-community') return '\0virtual:config-community';
         },
         load(id) {
           if (id === '\0virtual:config') {
             const raw = fs.readFileSync('src/config.yaml', 'utf-8');
+            const parsed = yaml.load(raw);
+            return `export default ${JSON.stringify(parsed)};`;
+          }
+          if (id === '\0virtual:config-community') {
+            const raw = fs.readFileSync('src/config.community.yaml', 'utf-8');
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }
@@ -266,7 +272,7 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      exclude: ['@iconify/svelte', 'virtual:config'],
+      exclude: ['@iconify/svelte', 'virtual:config', 'virtual:config-community'],
       include: ['react', 'react-dom', 'react-dom/client'],
     },
     css: {

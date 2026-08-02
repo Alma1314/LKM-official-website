@@ -107,8 +107,8 @@ fuwari:
             url: /official#update
           - name: 常见问题
             url: /official#faq
-      - name: 文章
-        url: /official/blog
+      - name: 博客
+        url: /official/article
         children:
           - name: 文章列表
             url: /official/article
