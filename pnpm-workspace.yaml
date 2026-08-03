@@ -1,5 +1,3 @@
-packages:
-  - 'packages/*'
 
 allowBuilds:
   '@tsparticles/engine': true
