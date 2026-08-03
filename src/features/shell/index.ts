@@ -30,11 +30,11 @@ export { default as ShellCustomStyles } from './common/components/CustomStyles.a
 export { default as ShellBackToTop } from '~/ui/primitives/BackToTop.astro';
 export * from './common/shell-events';
 
-// Svelte components
-export { default as ShellSearch } from './components/Search.svelte';
-export { default as ShellLightDarkSwitch } from './components/LightDarkSwitch.svelte';
-export { default as ShellArchivePanel } from './components/ArchivePanel.svelte';
-export { default as ShellDisplaySettings } from './components/widget/DisplaySettings.svelte';
+// Vue components (migrated from Svelte)
+export { default as ShellSearch } from './components/Search.vue';
+export { default as ShellLightDarkSwitch } from './components/LightDarkSwitch.vue';
+export { default as ShellArchivePanel } from './components/ArchivePanel.vue';
+export { default as ShellDisplaySettings } from './components/widget/DisplaySettings.vue';
 
 // Vue components
 export { default as ShellUserAvatarMenu } from './components/user/UserAvatarMenu.vue';

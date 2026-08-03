@@ -1,3 +1,3 @@
-export { default as NotificationBell } from './components/NotificationBell.svelte';
+export { default as NotificationBell } from './components/NotificationBell.vue';
 
 export * from './data/mock-notifications';

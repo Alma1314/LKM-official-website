@@ -4,9 +4,9 @@ import { navBarConfig, siteConfig } from '~/core/config';
 import { LinkPresets } from '~/core/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import { url } from '~/core/utils/url-utils';
-import LightDarkSwitch from './LightDarkSwitch.svelte';
+import LightDarkSwitch from './LightDarkSwitch.vue';
 import { SearchGlobalSearch } from '~/features/search';
-import DisplaySettings from './widget/DisplaySettings.svelte';
+import DisplaySettings from './widget/DisplaySettings.vue';
 import { NotificationBell } from '~/features/notification';
 import UserAvatarMenu from './user/UserAvatarMenu.vue';
 
@@ -114,7 +114,7 @@ let links: NavBarLink[] =
           </button>
         )
       }
-      <LightDarkSwitch client:only="svelte" />
+      <LightDarkSwitch client:only="vue" />
       <NotificationBell client:idle />
       <UserAvatarMenu client:only="vue" base={url('/')} />
       <button
@@ -130,7 +130,7 @@ let links: NavBarLink[] =
         />
       </button>
     </div>
-    <DisplaySettings client:only="svelte" />
+    <DisplaySettings client:only="vue" />
   </div>
 </div>
 

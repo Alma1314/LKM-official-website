@@ -1,1 +1,1 @@
-export { default as SearchGlobalSearch } from './components/GlobalSearch.svelte';
+export { default as SearchGlobalSearch } from './components/GlobalSearch.vue';

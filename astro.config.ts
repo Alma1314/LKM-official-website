@@ -9,7 +9,6 @@ import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
-import svelte from '@astrojs/svelte';
 import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
@@ -55,7 +54,6 @@ export default defineConfig({
     react({
       include: ['**/*.tsx', '**/*.jsx'],
     }),
-    svelte(),
     icon({
       include: {
         tabler: ['*'],
@@ -203,7 +201,7 @@ export default defineConfig({
       },
     ],
     ssr: {
-      noExternal: ['@iconify/svelte'],
+      noExternal: [],
     },
     build: {
       rollupOptions: {
@@ -221,9 +219,6 @@ export default defineConfig({
             if (id.includes('node_modules/katex') || id.includes('node_modules/rehype-katex')) {
               return 'vendor-katex';
             }
-            if (id.includes('node_modules/svelte') || id.includes('node_modules/@iconify/svelte')) {
-              return 'vendor-svelte';
-            }
             if (id.includes('node_modules/vue') || id.includes('node_modules/@iconify/vue')) {
               return 'vendor-vue';
             }
@@ -232,7 +227,7 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      exclude: ['@iconify/svelte', 'virtual:config', 'virtual:config-community'],
+      exclude: ['virtual:config', 'virtual:config-community'],
       include: ['react', 'react-dom', 'react-dom/client'],
     },
     css: {
