@@ -39,9 +39,30 @@ const metadata = {
 </PageLayout>
 
 <script>
-  import { listDocuments, deleteDocument } from '@lkm/editor-persistence';
   import { buildUrl } from '~/lib/utils/paths';
-  import type { DocumentMeta } from '@lkm/rich-text-editor';
+
+  interface DocumentMeta {
+    id: string;
+    title: string;
+    lastModified: string;
+    status: 'draft' | 'published' | 'archived';
+    version: number;
+  }
+
+  const DOCS_KEY = 'lkm-admin-documents';
+
+  function listDocuments(): DocumentMeta[] {
+    try {
+      return JSON.parse(localStorage.getItem(DOCS_KEY) ?? '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function deleteDocument(id: string) {
+    const docs = listDocuments().filter((d) => d.id !== id);
+    localStorage.setItem(DOCS_KEY, JSON.stringify(docs));
+  }
 
   function renderList() {
     let docs: DocumentMeta[] = listDocuments();

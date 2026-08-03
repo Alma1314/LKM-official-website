@@ -2,7 +2,8 @@
 import { useColorMode } from '../vue/useColorMode';
 import BackgroundCanvas from '../vue/BackgroundCanvas.vue';
 import type { BackgroundFrame } from '../vue/useBackgroundCanvas';
-const props = defineProps<Record<string, any>>();
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+const props = defineProps<{}>();
 const mode = useColorMode();
 function draw(frame: BackgroundFrame) {
   const { ctx, width, height } = frame;
