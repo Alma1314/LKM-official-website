@@ -66,6 +66,10 @@ Astro 从 `static` 切换到 `server`：
 src/lib/api/
 ├── client.ts          # Axios 封装（SSR/CSR 自动切换，返回 Result<T>）
 ├── index.ts           # 统一导出
+├── graphql/           # GraphQL 客户端（urql）
+│   ├── client.ts      # urql Client 实例
+│   ├── exchanges/     # auth/error exchanges
+│   └── index.ts
 └── modules/           # 按业务模块划分
     ├── forum.ts / blog.ts / competition.ts / column.ts
     ├── qa.ts / project.ts / file-library.ts / treehole.ts
@@ -167,6 +171,7 @@ services:
 1. `pnpm run build` 构建成功
 2. `pnpm run check` 通过（astro check + ESLint + Prettier）
 3. `pnpm run test` 通过（前端 Vitest）
-4. `cd backend && python -m pytest tests/` 通过（后端 pytest，88 个测试）
+4. `cd backend && python -m pytest tests/` 通过（后端 pytest，含 GraphQL 测试）
 5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过
-6. 浏览器视觉检查：首页、博客、暗色模式、移动端菜单
+6. 浏览器验证：首页、论坛（含 GraphQL）、暗色模式、移动端菜单
+7. GraphQL 端点：`http://localhost:8000/graphql` → GraphiQL 可交互

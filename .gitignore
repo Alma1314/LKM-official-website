@@ -27,7 +27,7 @@ pnpm-debug.log*
 .astro
 
 # Python
-__pycache__/
+__pycache__
 *.pyc
 
 #ai
@@ -47,3 +47,4 @@ scripts/
 
 # reference material (astro templates, not committed)
 reference/astro-templates/
+backend/__pycache__/main.cpython-310.pyc

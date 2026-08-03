@@ -8,7 +8,7 @@ export default defineConfig({
       '@lkm/rich-text-editor': path.resolve(__dirname, 'packages/rich-text-editor/src'),
       '@lkm/editor-persistence': path.resolve(__dirname, 'packages/editor-persistence/src'),
       // Astro 的虚拟模块在 vitest 下不存在；用与 config.yaml 一致的 mock 顶替
-      'virtual:config': path.resolve(__dirname, 'src/core/config/__mocks__/virtual-config.ts'),
+      'virtual:config': path.resolve(__dirname, 'src/lib/config/__mocks__/virtual-config.ts'),
     },
   },
   test: {

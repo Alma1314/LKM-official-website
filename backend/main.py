@@ -14,6 +14,11 @@ from fastapi.responses import JSONResponse
 from app.core.response import ok
 from app.modules import admin, auth, blog, column, competition, files, forum, notifications, project, qa, team, treehole, users
 
+# === GraphQL ===
+from strawberry.fastapi import GraphQLRouter
+from app.graphql.schema import schema
+from app.graphql.context import get_context
+
 app = FastAPI(title="LKM Test API", version="2.0.0")
 
 app.add_middleware(
@@ -43,7 +48,11 @@ def health():
     return ok({"status": "ok", "version": "2.0.0"})
 
 
-# 注册路由
+# 注册 GraphQL 路由
+graphql_app = GraphQLRouter(schema, context_getter=get_context)
+app.include_router(graphql_app, prefix="/graphql")
+
+# 注册 REST 路由
 app.include_router(forum.router)
 app.include_router(blog.router)
 app.include_router(competition.router)

@@ -19,3 +19,6 @@ export { teamApi } from './modules/team';
 export { authApi } from './modules/auth';
 export { userApi } from './modules/user';
 export { notificationApi } from './modules/notification';
+
+// GraphQL 客户端
+export { graphqlClient, graphql } from './graphql';
