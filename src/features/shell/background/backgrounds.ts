@@ -5,7 +5,7 @@ export type ThemeMode = 'dark' | 'light' | 'both';
 export interface BackgroundMeta {
   id: string;
   name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   load: () => Promise<{ default: any }>;
   icon: string;
@@ -18,71 +18,119 @@ export interface BackgroundMeta {
 }
 
 export type BackgroundId =
-  | 'aurora' | 'binary-matrix' | 'constellation-field' | 'data-rain' | 'dna-spark'
-  | 'dna-spark-3d' | 'dreamy-halo' | 'fluid-smoke-flow' | 'orbit-cluster'
-  | 'particles' | 'quantum-web' | 'text-particles';
+  | 'aurora'
+  | 'binary-matrix'
+  | 'constellation-field'
+  | 'data-rain'
+  | 'dna-spark'
+  | 'dna-spark-3d'
+  | 'dreamy-halo'
+  | 'fluid-smoke-flow'
+  | 'orbit-cluster'
+  | 'particles'
+  | 'quantum-web'
+  | 'text-particles';
 
 export const DEFAULT_BACKGROUND: BackgroundId = 'aurora';
 
 export const BACKGROUNDS: BackgroundMeta[] = [
   {
-    id: 'aurora', name: '极光', icon: '🌈', theme: 'both', preload: true,
+    id: 'aurora',
+    name: '极光',
+    icon: '🌈',
+    theme: 'both',
+    preload: true,
     load: () => import('./lib-vue/AuroraBackground.vue').then((m) => ({ default: m.default })),
-    darkProps: { rippleColor: '#818cf8' }, lightProps: { rippleColor: '#a5f3fc' },
+    darkProps: { rippleColor: '#818cf8' },
+    lightProps: { rippleColor: '#a5f3fc' },
   },
   {
-    id: 'binary-matrix', name: '数字雨', icon: '🔢', theme: 'dark',
+    id: 'binary-matrix',
+    name: '数字雨',
+    icon: '🔢',
+    theme: 'dark',
     load: () => import('./lib-vue/BinaryMatrixBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { color: 'rgba(0,255,65,0.8)', rippleColor: 'rgba(0,255,65,0.5)' },
   },
   {
-    id: 'constellation-field', name: '星座', icon: '✨', theme: 'both',
+    id: 'constellation-field',
+    name: '星座',
+    icon: '✨',
+    theme: 'both',
     load: () => import('./lib-vue/ConstellationFieldBackground.vue').then((m) => ({ default: m.default })),
-    darkProps: { particleColor: '#5e6ad2', connectionColor: '#818cf8' }, lightProps: { particleColor: '#0bcaf5', connectionColor: '#20cdf4' },
+    darkProps: { particleColor: '#5e6ad2', connectionColor: '#818cf8' },
+    lightProps: { particleColor: '#0bcaf5', connectionColor: '#20cdf4' },
   },
   {
-    id: 'data-rain', name: '数据雨', icon: '💧', theme: 'dark',
+    id: 'data-rain',
+    name: '数据雨',
+    icon: '💧',
+    theme: 'dark',
     load: () => import('./lib-vue/DataRainBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { color: 'rgba(0,255,65,0.8)', rippleColor: 'rgba(0,255,65,0.5)' },
   },
   {
-    id: 'dna-spark', name: 'DNA火花', icon: '🧬', theme: 'dark',
+    id: 'dna-spark',
+    name: 'DNA火花',
+    icon: '🧬',
+    theme: 'dark',
     load: () => import('./lib-vue/DNASparkBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { sparkColor: '#5e6ad2', strandColor: '#818cf8' },
   },
   {
-    id: 'dna-spark-3d', name: 'DNA 3D', icon: '🧬', theme: 'dark',
+    id: 'dna-spark-3d',
+    name: 'DNA 3D',
+    icon: '🧬',
+    theme: 'dark',
     load: () => import('./lib-vue/DNASparkBackground3D.vue').then((m) => ({ default: m.default })),
     darkProps: { sparkColor: '#5e6ad2', strandColor: '#818cf8' },
   },
   {
-    id: 'dreamy-halo', name: '梦幻光晕', icon: '💫', theme: 'light',
+    id: 'dreamy-halo',
+    name: '梦幻光晕',
+    icon: '💫',
+    theme: 'light',
     load: () => import('./lib-vue/DreamyHaloBackground.vue').then((m) => ({ default: m.default })),
     lightProps: { baseHue: 40, saturation: 80, lightness: 55 },
   },
   {
-    id: 'fluid-smoke-flow', name: '烟雾流动', icon: '💨', theme: 'dark',
+    id: 'fluid-smoke-flow',
+    name: '烟雾流动',
+    icon: '💨',
+    theme: 'dark',
     load: () => import('./lib-vue/FluidSmokeFlowBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { particleColor: '#5e6ad2' },
   },
   {
-    id: 'orbit-cluster', name: '轨道集群', icon: '🪐', theme: 'dark',
+    id: 'orbit-cluster',
+    name: '轨道集群',
+    icon: '🪐',
+    theme: 'dark',
     load: () => import('./lib-vue/OrbitClusterBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { color: '#5e6ad2' },
   },
   {
-    id: 'particles', name: '粒子', icon: '⚛', theme: 'both',
+    id: 'particles',
+    name: '粒子',
+    icon: '⚛',
+    theme: 'both',
     load: () => import('./lib-vue/ParticlesBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { particleColor: '#5e6ad2', connectionColor: '#818cf8', rippleColor: '#818cf8' },
     lightProps: { particleColor: '#07c8f9', connectionColor: '#52d0ef', rippleColor: '#52d0ef' },
   },
   {
-    id: 'quantum-web', name: '量子网', icon: '🕸', theme: 'dark',
+    id: 'quantum-web',
+    name: '量子网',
+    icon: '🕸',
+    theme: 'dark',
     load: () => import('./lib-vue/QuantumWebBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { quantumColor: '#5e6ad2', normalColor: '#818cf8' },
   },
   {
-    id: 'text-particles', name: '文字粒子', icon: '🔤', theme: 'both',
+    id: 'text-particles',
+    name: '文字粒子',
+    icon: '🔤',
+    theme: 'both',
     load: () => import('./lib-vue/TextParticlesBackground.vue').then((m) => ({ default: m.default })),
     darkProps: { color: 'rgba(255,255,255,0.9)', text: '理科迷', fontSize: 300 },
     lightProps: { color: '#aadcf8', text: '理科迷', fontSize: 300 },

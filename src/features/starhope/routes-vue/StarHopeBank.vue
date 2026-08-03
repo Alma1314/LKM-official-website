@@ -2,7 +2,10 @@
 import { onMounted } from 'vue';
 import { useQuestionBankStore } from '../stores-vue/question-bank';
 const bank = useQuestionBankStore();
-onMounted(async () => { await bank.loadQuestions(); await bank.loadFolders(); });
+onMounted(async () => {
+  await bank.loadQuestions();
+  await bank.loadFolders();
+});
 </script>
 
 <template>

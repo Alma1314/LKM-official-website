@@ -23,12 +23,17 @@ export function usePracticeStore() {
   const auth = useAuthStore();
 
   const totalQuestions = computed(() => questions.value.length);
-  const progress = computed(() => totalQuestions.value === 0 ? 0 : currentIndex.value / totalQuestions.value);
-  const answeredCount = computed(() => currentSession.value ? Object.keys(currentSession.value.answers).length : 0);
+  const progress = computed(() => (totalQuestions.value === 0 ? 0 : currentIndex.value / totalQuestions.value));
+  const answeredCount = computed(() => (currentSession.value ? Object.keys(currentSession.value.answers).length : 0));
   const isLastQuestion = computed(() => currentIndex.value >= totalQuestions.value - 1);
   const isFirstQuestion = computed(() => currentIndex.value <= 0);
 
-  function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
 
   function startTimer() {
     stopTimer();
@@ -40,16 +45,25 @@ export function usePracticeStore() {
     }, 1000);
   }
 
-  function loadCurrentQuestion() { currentQuestion.value = questions.value[currentIndex.value] ?? null; }
+  function loadCurrentQuestion() {
+    currentQuestion.value = questions.value[currentIndex.value] ?? null;
+  }
 
   async function startPractice(config: PracticeConfig) {
     if (!auth.isLoggedIn.value) return;
     questions.value = (await db.questions.bulkGet(config.questionIds)) as Question[];
     questions.value = questions.value.filter(Boolean);
     const session: PracticeSession = {
-      id: crypto.randomUUID(), userId: auth.userId.value!, type: config.type, mode: config.mode,
-      questionIds: questions.value.map((q) => q.id), answers: {}, status: 'ongoing',
-      startedAt: new Date().toISOString(), timeLimit: config.timeLimit, passingGrade: config.passingGrade,
+      id: crypto.randomUUID(),
+      userId: auth.userId.value!,
+      type: config.type,
+      mode: config.mode,
+      questionIds: questions.value.map((q) => q.id),
+      answers: {},
+      status: 'ongoing',
+      startedAt: new Date().toISOString(),
+      timeLimit: config.timeLimit,
+      passingGrade: config.passingGrade,
     };
     await db.practiceSessions.put(session);
     currentSession.value = session;
@@ -82,7 +96,8 @@ export function usePracticeStore() {
     const correctAnswer = currentQuestion.value.answer;
     let correct = false;
     if (Array.isArray(correctAnswer) && Array.isArray(userAnswer)) {
-      const s1 = [...correctAnswer].sort(), s2 = [...userAnswer].sort();
+      const s1 = [...correctAnswer].sort(),
+        s2 = [...userAnswer].sort();
       correct = s1.length === s2.length && s1.every((v, i) => v === s2[i]);
     } else if (typeof correctAnswer === 'string' && typeof userAnswer === 'string') {
       correct = correctAnswer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
@@ -91,9 +106,24 @@ export function usePracticeStore() {
     currentSession.value.results[currentQuestion.value.id] = { correct };
   }
 
-  function goToQuestion(index: number) { if (index >= 0 && index < totalQuestions.value) { currentIndex.value = index; loadCurrentQuestion(); } }
-  function nextQuestion() { if (!isLastQuestion.value) { currentIndex.value++; loadCurrentQuestion(); } }
-  function prevQuestion() { if (!isFirstQuestion.value) { currentIndex.value--; loadCurrentQuestion(); } }
+  function goToQuestion(index: number) {
+    if (index >= 0 && index < totalQuestions.value) {
+      currentIndex.value = index;
+      loadCurrentQuestion();
+    }
+  }
+  function nextQuestion() {
+    if (!isLastQuestion.value) {
+      currentIndex.value++;
+      loadCurrentQuestion();
+    }
+  }
+  function prevQuestion() {
+    if (!isFirstQuestion.value) {
+      currentIndex.value--;
+      loadCurrentQuestion();
+    }
+  }
 
   async function submitExam() {
     if (!currentSession.value) return;
@@ -103,7 +133,8 @@ export function usePracticeStore() {
         if (!ua) continue;
         let correct = false;
         if (Array.isArray(q.answer) && Array.isArray(ua)) {
-          const s1 = [...q.answer].sort(), s2 = [...ua].sort();
+          const s1 = [...q.answer].sort(),
+            s2 = [...ua].sort();
           correct = s1.length === s2.length && s1.every((v, i) => v === s2[i]);
         } else if (typeof q.answer === 'string' && typeof ua === 'string') {
           correct = q.answer.trim().toLowerCase() === ua.trim().toLowerCase();
@@ -151,9 +182,14 @@ export function usePracticeStore() {
   async function loadWrongQuestions(): Promise<Question[]> {
     if (!auth.isLoggedIn.value) return [];
     const all = await db.practiceSessions.where('userId').equals(auth.userId.value!).toArray();
-const sessions = all.filter((s: PracticeSession) => s.results && s.status === 'completed');
+    const sessions = all.filter((s: PracticeSession) => s.results && s.status === 'completed');
     const wrongIds = new Set<string>();
-    for (const s of sessions) { if (!s.results) continue; for (const [id, r] of Object.entries(s.results)) { if (!r.correct) wrongIds.add(id); } }
+    for (const s of sessions) {
+      if (!s.results) continue;
+      for (const [id, r] of Object.entries(s.results)) {
+        if (!r.correct) wrongIds.add(id);
+      }
+    }
     const qs = (await db.questions.bulkGet([...wrongIds])) as Question[];
     return qs.filter(Boolean);
   }
@@ -167,8 +203,30 @@ const sessions = all.filter((s: PracticeSession) => s.results && s.status === 'c
     elapsedSeconds.value = 0;
   }
 
-  return { currentSession, currentQuestion, currentIndex, questions, elapsedSeconds, error,
-    totalQuestions, progress, answeredCount, isLastQuestion, isFirstQuestion,
-    startPractice, resumeSession, setAnswer, goToQuestion, nextQuestion, prevQuestion,
-    submitExam, pauseSession, getSessionResult, getPassed, loadSessions, loadWrongQuestions, reset };
+  return {
+    currentSession,
+    currentQuestion,
+    currentIndex,
+    questions,
+    elapsedSeconds,
+    error,
+    totalQuestions,
+    progress,
+    answeredCount,
+    isLastQuestion,
+    isFirstQuestion,
+    startPractice,
+    resumeSession,
+    setAnswer,
+    goToQuestion,
+    nextQuestion,
+    prevQuestion,
+    submitExam,
+    pauseSession,
+    getSessionResult,
+    getPassed,
+    loadSessions,
+    loadWrongQuestions,
+    reset,
+  };
 }

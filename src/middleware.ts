@@ -28,9 +28,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     // 构建转发请求
-    const body = ['GET', 'HEAD'].includes(context.request.method)
-      ? undefined
-      : await context.request.text();
+    const body = ['GET', 'HEAD'].includes(context.request.method) ? undefined : await context.request.text();
 
     const response = await fetch(targetUrl.toString(), {
       method: context.request.method,
@@ -43,7 +41,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       status: response.status,
       headers: response.headers,
     });
-  } catch (error) {
+  } catch {
     return new Response(JSON.stringify({ error: { code: 'PROXY_ERROR', message: '后端服务不可用' } }), {
       status: 502,
       headers: { 'Content-Type': 'application/json' },

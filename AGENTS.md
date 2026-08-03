@@ -8,14 +8,14 @@ LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（�
 
 ## 快速参考
 
-| 命令 | 用途 |
-|---|---|
-| `pnpm run dev` | 启动开发服务器（localhost:4321） |
-| `pnpm run build` | 生产构建 |
-| `pnpm run preview` | 本地预览生产构建 |
-| `pnpm run check` | 运行 astro check + ESLint + Prettier |
-| `pnpm run fix` | 自动修复 ESLint + Prettier 问题 |
-| `pnpm run test` | 运行 vitest 测试 |
+| 命令               | 用途                                 |
+| ------------------ | ------------------------------------ |
+| `pnpm run dev`     | 启动开发服务器（localhost:4321）     |
+| `pnpm run build`   | 生产构建                             |
+| `pnpm run preview` | 本地预览生产构建                     |
+| `pnpm run check`   | 运行 astro check + ESLint + Prettier |
+| `pnpm run fix`     | 自动修复 ESLint + Prettier 问题      |
+| `pnpm run test`    | 运行 vitest 测试                     |
 
 **启动测试后端：** `cd backend && python -m uvicorn main:app --reload --port 8000`
 
@@ -53,6 +53,7 @@ lkm-official-website/
 ### Astro server 模式 + Vue/React
 
 Astro 从 `static` 切换到 `server`：
+
 - Astro SSR 负责页面路由和模板渲染
 - `src/middleware.ts` 反向代理 `/api/*` 到 FastAPI（内网 `localhost:8000`）
 - Vue 3 为主交互框架（Shell 组件、StarHope 模块、社区平台）
@@ -75,12 +76,12 @@ src/lib/api/
 
 ### 页面分级
 
-| 类型 | 策略 | 示例 |
-|---|---|---|
-| A 类（公共内容）| SSR 实时注入数据 | 论坛、竞赛、专栏、问答 |
-| B 类（认证页面）| SSR 转发 Cookie | 用户主页、通知、仪表盘 |
-| C 类（纯静态）| 无数据依赖 | 首页、404、登录表单 |
-| D 类（博客）| 客户端 MDX | blog/[slug]（@mdx-js/mdx evaluate） |
+| 类型             | 策略             | 示例                                |
+| ---------------- | ---------------- | ----------------------------------- |
+| A 类（公共内容） | SSR 实时注入数据 | 论坛、竞赛、专栏、问答              |
+| B 类（认证页面） | SSR 转发 Cookie  | 用户主页、通知、仪表盘              |
+| C 类（纯静态）   | 无数据依赖       | 首页、404、登录表单                 |
+| D 类（博客）     | 客户端 MDX       | blog/[slug]（@mdx-js/mdx evaluate） |
 
 ## 路径别名
 
@@ -94,6 +95,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 ## Tailwind CSS v4
 
 配置以 CSS 优先：
+
 - 入口文件 `src/styles/tailwind.css`
 - 主题令牌：`@theme { --color-primary: var(--primary); ... }`
 - 暗色模式：类名 `.dark` 切换
@@ -110,6 +112,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 ## CSS 策略
 
 **优先级：**
+
 1. Tailwind utility classes — 首选
 2. 全局 CSS `@layer components` — 用于可复用复合类
 3. CSS Modules — 仅在复杂布局时使用
@@ -125,6 +128,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 ## Icon 管理
 
 所有 icon 通过 `astro-icon` 本地 bundle：
+
 - `astro.config.ts` 中 `icon.include` 配置了 tabler/mdi/fa6 等
 - Vue 组件使用 `@iconify/vue` 的 `<Icon>`
 - **禁止运行时 Iconify API 调用**
@@ -132,13 +136,16 @@ import { getPermalink } from '~/lib/utils/permalinks';
 ## 性能规范
 
 ### Vue `client:only` 组件
+
 - 必须包裹带 `min-height` 的容器，防止 CLS
 
 ### Vendor 拆分策略
+
 - `vendor-react`（React/ReactDOM）、`vendor-vue`、`vendor-three`、`vendor-katex`
 - 非全局重量级依赖（overlayscrollbars/photoswipe）独立拆分
 
 ### CSS 加载
+
 - 全局样式 preconnect 已添加到 `BaseLayout.astro`
 - 所有页面使用布局自动继承 preconnect
 
@@ -147,10 +154,10 @@ import { getPermalink } from '~/lib/utils/permalinks';
 ```yaml
 # docker-compose.yml
 services:
-  astro:     # Node.js SSR 服务（端口 80）
-  fastapi:   # Python 后端（端口 8000，仅内网）
-  postgres:  # PostgreSQL 16
-  redis:     # Redis 7
+  astro: # Node.js SSR 服务（端口 80）
+  fastapi: # Python 后端（端口 8000，仅内网）
+  postgres: # PostgreSQL 16
+  redis: # Redis 7
 ```
 
 ## 验证检查清单

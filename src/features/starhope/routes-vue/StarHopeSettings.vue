@@ -6,15 +6,19 @@ const exportStatus = ref('');
 
 async function exportData() {
   try {
-    const questions = await db.questions.toArray() as Question[];
+    const questions = (await db.questions.toArray()) as Question[];
     const json = JSON.stringify({ questions, exportedAt: new Date().toISOString() }, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = `starhope-backup-${new Date().toISOString().slice(0,10)}.json`;
-    a.click(); URL.revokeObjectURL(url);
+    a.href = url;
+    a.download = `starhope-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
     exportStatus.value = '导出成功';
-  } catch { exportStatus.value = '导出失败'; }
+  } catch {
+    exportStatus.value = '导出失败';
+  }
 }
 </script>
 

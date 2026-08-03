@@ -91,18 +91,12 @@ onUnmounted(() => {
     >
       <div class="flex items-center justify-between px-3 py-2 border-b border-surface-3 mb-1">
         <span class="font-semibold text-sm text-deep-text">通知</span>
-        <button
-          v-if="unreadCount > 0"
-          class="text-xs text-primary hover:underline"
-          @click="markAllAsRead"
-        >
+        <button v-if="unreadCount > 0" class="text-xs text-primary hover:underline" @click="markAllAsRead">
           全部已读
         </button>
       </div>
 
-      <div v-if="notifications.length === 0" class="px-3 py-6 text-center text-sm text-text-muted">
-        暂无通知
-      </div>
+      <div v-if="notifications.length === 0" class="px-3 py-6 text-center text-sm text-text-muted">暂无通知</div>
       <button
         v-for="n in notifications"
         :key="n.id"

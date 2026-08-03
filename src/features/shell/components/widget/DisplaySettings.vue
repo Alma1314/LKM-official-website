@@ -20,15 +20,10 @@ watch(hue, (val) => {
 </script>
 
 <template>
-  <div
-    id="display-setting"
-    class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-4"
-  >
+  <div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-4">
     <div class="flex flex-row gap-2 mb-3 items-center justify-between">
       <div
-        class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3
-          before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
-          before:absolute before:-left-3 before:top-[0.33rem]"
+        class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)] before:absolute before:-left-3 before:top-[0.33rem]"
       >
         {{ i18n(I18nKey.themeColor) }}
         <button
@@ -45,8 +40,7 @@ watch(hue, (val) => {
       <div class="flex gap-1">
         <div
           id="hueValue"
-          class="transition bg-[var(--btn-regular-bg)] w-10 h-7 rounded-md flex justify-center
-            font-bold text-sm items-center text-[var(--btn-content)]"
+          class="transition bg-[var(--btn-regular-bg)] w-10 h-7 rounded-md flex justify-center font-bold text-sm items-center text-[var(--btn-content)]"
         >
           {{ hue }}
         </div>

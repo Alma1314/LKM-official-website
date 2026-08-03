@@ -8,7 +8,9 @@ const bank = useQuestionBankStore();
 const practice = usePracticeStore();
 const nav = useNavigationStore();
 
-onMounted(async () => { await bank.loadQuestions(); });
+onMounted(async () => {
+  await bank.loadQuestions();
+});
 
 async function start(questionIds: string[]) {
   await practice.startPractice({ questionIds, mode: 'realtime', type: 'practice' });

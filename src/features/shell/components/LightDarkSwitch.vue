@@ -4,11 +4,7 @@ import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
 import I18nKey from '~/lib/i18n/i18nKey';
 import { i18n } from '~/lib/i18n/translation';
 import { Icon } from '@iconify/vue';
-import {
-  applyThemeToDocument,
-  getStoredTheme,
-  setTheme,
-} from '~/lib/utils/setting-utils';
+import { applyThemeToDocument, getStoredTheme, setTheme } from '~/lib/utils/setting-utils';
 import type { LIGHT_DARK_MODE } from '~/types/config';
 
 const seq: LIGHT_DARK_MODE[] = [LIGHT_MODE, DARK_MODE, AUTO_MODE];
@@ -65,10 +61,7 @@ function hidePanel() {
       </div>
     </button>
 
-    <div
-      id="light-dark-panel"
-      class="hidden lg:block absolute transition float-panel-closed top-11 -right-2 pt-5"
-    >
+    <div id="light-dark-panel" class="hidden lg:block absolute transition float-panel-closed top-11 -right-2 pt-5">
       <div
         class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel p-2"
       >

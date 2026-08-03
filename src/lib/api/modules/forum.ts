@@ -37,11 +37,9 @@ export interface PaginatedResponse<T> {
 }
 
 export const forumApi = {
-  getPosts: (page = 1, limit = 20) =>
-    get<PaginatedResponse<Post>>('/api/forum/posts', { page, limit }),
+  getPosts: (page = 1, limit = 20) => get<PaginatedResponse<Post>>('/api/forum/posts', { page, limit }),
 
-  getPost: (id: string) =>
-    get<Post>(`/api/forum/posts/${id}`),
+  getPost: (id: string) => get<Post>(`/api/forum/posts/${id}`),
 
   getComments: (postId: string, page = 1) =>
     get<PaginatedResponse<Comment>>(`/api/forum/posts/${postId}/comments`, { page }),
@@ -49,9 +47,7 @@ export const forumApi = {
   createPost: (data: { title: string; content: string; categoryId: string; tags?: string[] }) =>
     post<Post>('/api/forum/posts', data),
 
-  likePost: (id: string) =>
-    post<void>(`/api/forum/posts/${id}/like`),
+  likePost: (id: string) => post<void>(`/api/forum/posts/${id}/like`),
 
-  deletePost: (id: string) =>
-    del<void>(`/api/forum/posts/${id}`),
+  deletePost: (id: string) => del<void>(`/api/forum/posts/${id}`),
 };

@@ -20,9 +20,7 @@ export interface PaginatedResponse<T> {
 }
 
 export const blogApi = {
-  getPosts: (page = 1, limit = 20) =>
-    get<PaginatedResponse<BlogPost>>('/api/blog/posts', { page, limit }),
+  getPosts: (page = 1, limit = 20) => get<PaginatedResponse<BlogPost>>('/api/blog/posts', { page, limit }),
 
-  getPostBySlug: (slug: string) =>
-    get<BlogPost>(`/api/blog/posts/${slug}`),
+  getPostBySlug: (slug: string) => get<BlogPost>(`/api/blog/posts/${slug}`),
 };

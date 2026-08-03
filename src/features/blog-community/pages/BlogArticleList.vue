@@ -63,22 +63,26 @@ onMounted(() => fetchPage(1));
         <p v-if="article.description" class="text-gray-600 mb-3">{{ article.description }}</p>
         <div class="flex items-center gap-4 text-sm text-gray-500">
           <span>{{ new Date(article.published).toLocaleDateString('zh-CN') }}</span>
-          <span v-if="article.category" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{{ article.category }}</span>
+          <span v-if="article.category" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{{
+            article.category
+          }}</span>
           <span>{{ article.word_count }} 字</span>
           <span>{{ article.reading_time }} 分钟</span>
         </div>
       </article>
     </div>
     <div v-if="totalPages > 1" class="flex justify-center gap-2 mt-8">
-      <button :disabled="!hasPrev" @click="goPage(page - 1)" class="px-4 py-2 border rounded disabled:opacity-30">上一页</button>
+      <button :disabled="!hasPrev" @click="goPage(page - 1)" class="px-4 py-2 border rounded disabled:opacity-30">
+        上一页
+      </button>
       <span v-for="p in totalPages" :key="p">
-        <button
-          @click="goPage(p)"
-          :class="p === page ? 'bg-blue-600 text-white' : 'border'"
-          class="px-3 py-2 rounded"
-        >{{ p }}</button>
+        <button @click="goPage(p)" :class="p === page ? 'bg-blue-600 text-white' : 'border'" class="px-3 py-2 rounded">
+          {{ p }}
+        </button>
       </span>
-      <button :disabled="!hasNext" @click="goPage(page + 1)" class="px-4 py-2 border rounded disabled:opacity-30">下一页</button>
+      <button :disabled="!hasNext" @click="goPage(page + 1)" class="px-4 py-2 border rounded disabled:opacity-30">
+        下一页
+      </button>
     </div>
   </div>
 </template>

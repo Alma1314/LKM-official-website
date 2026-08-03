@@ -20,7 +20,7 @@ const { MDXComponent, fetchAndCompile } = useBlogPost();
 const { comments, fetch: fetchComments, addComment, removeComment } = useBlogComments(0);
 const { starred, starCount, setStatus, toggle } = useBlogStar(0);
 
-const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '');
+const shareUrl = computed(() => (typeof window !== 'undefined' ? window.location.href : ''));
 
 async function copyShareLink() {
   if (typeof navigator !== 'undefined') {
@@ -57,8 +57,12 @@ onMounted(async () => {
     </div>
     <img v-if="article.cover_url" :src="article.cover_url" :alt="article.title" class="w-full rounded-lg mb-8" />
     <div class="flex gap-2 mb-8">
-      <span v-if="article.category" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">{{ article.category }}</span>
-      <span v-for="tag in article.tags" :key="tag" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">{{ tag }}</span>
+      <span v-if="article.category" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">{{
+        article.category
+      }}</span>
+      <span v-for="tag in article.tags" :key="tag" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">{{
+        tag
+      }}</span>
     </div>
 
     <!-- MDX content rendered client-side -->
@@ -77,13 +81,15 @@ onMounted(async () => {
         v-if="article.prev_article"
         :to="`/blog/posts/${article.prev_article.slug}`"
         class="text-blue-600 hover:underline"
-      >← {{ article.prev_article.title }}</router-link>
+        >← {{ article.prev_article.title }}</router-link
+      >
       <span v-else></span>
       <router-link
         v-if="article.next_article"
         :to="`/blog/posts/${article.next_article.slug}`"
         class="text-blue-600 hover:underline"
-      >{{ article.next_article.title }} →</router-link>
+        >{{ article.next_article.title }} →</router-link
+      >
       <span v-else></span>
     </nav>
   </article>

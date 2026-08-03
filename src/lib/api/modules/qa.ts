@@ -31,11 +31,9 @@ export interface PaginatedResponse<T> {
 }
 
 export const qaApi = {
-  getQuestions: (page = 1, limit = 20) =>
-    get<PaginatedResponse<Question>>('/api/qa/questions', { page, limit }),
+  getQuestions: (page = 1, limit = 20) => get<PaginatedResponse<Question>>('/api/qa/questions', { page, limit }),
 
-  getQuestion: (id: string) =>
-    get<Question>(`/api/qa/questions/${id}`),
+  getQuestion: (id: string) => get<Question>(`/api/qa/questions/${id}`),
 
   getAnswers: (questionId: string, page = 1) =>
     get<PaginatedResponse<Answer>>(`/api/qa/questions/${questionId}/answers`, { page }),

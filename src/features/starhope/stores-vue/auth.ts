@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import type { AuthContextType, DemoUser } from '~/types/auth';
 
 // 全局桥接：由 AuthProvider（Vue）在挂载时注入

@@ -52,11 +52,18 @@ export function useAiStore() {
 
   async function createAgent(data: Omit<AiAgent, 'id' | 'userId' | 'createdAt'>) {
     try {
-      const agent: AiAgent = { ...data, id: crypto.randomUUID(), userId: auth.userId.value!, createdAt: new Date().toISOString() };
+      const agent: AiAgent = {
+        ...data,
+        id: crypto.randomUUID(),
+        userId: auth.userId.value!,
+        createdAt: new Date().toISOString(),
+      };
       await db.aiAgents.put(agent);
       await loadAgents();
       return agent;
-    } catch (e) { error.value = '创建 AI 助手失败'; }
+    } catch {
+      error.value = '创建 AI 助手失败';
+    }
   }
 
   async function updateAgent(id: string, data: Partial<AiAgent>) {
@@ -74,35 +81,65 @@ export function useAiStore() {
     }
   }
 
-  function selectAgent(id: string) { currentAgentId.value = id; loadMessages(); }
+  function selectAgent(id: string) {
+    currentAgentId.value = id;
+    loadMessages();
+  }
 
   async function loadMessages() {
-    if (!currentAgentId.value) { messages.value = []; return; }
+    if (!currentAgentId.value) {
+      messages.value = [];
+      return;
+    }
     messages.value = await db.aiMessages.where('agentId').equals(currentAgentId.value).sortBy('timestamp');
   }
 
   async function sendMessage(content: string, attachments?: { name: string; data: string; type: string }[]) {
     if (!currentAgentId.value || !auth.isLoggedIn.value) return;
-    const userMsg: AiMessage = { id: crypto.randomUUID(), agentId: currentAgentId.value, role: 'user', content, attachments, timestamp: new Date().toISOString() };
+    const userMsg: AiMessage = {
+      id: crypto.randomUUID(),
+      agentId: currentAgentId.value,
+      role: 'user',
+      content,
+      attachments,
+      timestamp: new Date().toISOString(),
+    };
     await db.aiMessages.put(userMsg);
     messages.value = [...messages.value, userMsg];
     isGenerating.value = true;
     streamContent.value = '';
     const agent = currentAgent.value;
-    if (!agent) { isGenerating.value = false; return; }
+    if (!agent) {
+      isGenerating.value = false;
+      return;
+    }
     try {
       const response = await mockAiResponse(agent, content);
       streamContent.value = response;
-      const assistantMsg: AiMessage = { id: crypto.randomUUID(), agentId: currentAgentId.value, role: 'assistant', content: response, timestamp: new Date().toISOString() };
+      const assistantMsg: AiMessage = {
+        id: crypto.randomUUID(),
+        agentId: currentAgentId.value,
+        role: 'assistant',
+        content: response,
+        timestamp: new Date().toISOString(),
+      };
       await db.aiMessages.put(assistantMsg);
       messages.value = [...messages.value, assistantMsg];
       streamContent.value = '';
     } catch (e) {
-      const errorMsg: AiMessage = { id: crypto.randomUUID(), agentId: currentAgentId.value, role: 'assistant', content: `错误: ${e instanceof Error ? e.message : '未知错误'}`, timestamp: new Date().toISOString() };
+      const errorMsg: AiMessage = {
+        id: crypto.randomUUID(),
+        agentId: currentAgentId.value,
+        role: 'assistant',
+        content: `错误: ${e instanceof Error ? e.message : '未知错误'}`,
+        timestamp: new Date().toISOString(),
+      };
       await db.aiMessages.put(errorMsg);
       messages.value = [...messages.value, errorMsg];
       streamContent.value = '';
-    } finally { isGenerating.value = false; }
+    } finally {
+      isGenerating.value = false;
+    }
   }
 
   function clearConversation() {
@@ -116,6 +153,21 @@ export function useAiStore() {
     return `作为你的**${agent.name}**，关于"${userMessage.slice(0, 30)}"这个问题：\n\n这是一个很好的学习问题。建议从基础概念入手，逐步深入理解。\n\n> 💡 你可以继续追问具体细节。`;
   }
 
-  return { agents, currentAgentId, messages, isGenerating, streamContent, error, currentAgent,
-    loadAgents, createAgent, updateAgent, deleteAgent, selectAgent, loadMessages, sendMessage, clearConversation };
+  return {
+    agents,
+    currentAgentId,
+    messages,
+    isGenerating,
+    streamContent,
+    error,
+    currentAgent,
+    loadAgents,
+    createAgent,
+    updateAgent,
+    deleteAgent,
+    selectAgent,
+    loadMessages,
+    sendMessage,
+    clearConversation,
+  };
 }

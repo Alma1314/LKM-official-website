@@ -18,7 +18,9 @@ export function useQuestionBankStore() {
     let list = questions.value;
     if (searchQuery.value) {
       const q = searchQuery.value.toLowerCase();
-      list = list.filter(item => item.content.toLowerCase().includes(q) || item.tags.some(t => t.toLowerCase().includes(q)));
+      list = list.filter(
+        (item) => item.content.toLowerCase().includes(q) || item.tags.some((t) => t.toLowerCase().includes(q))
+      );
     }
     return list;
   });
@@ -37,7 +39,13 @@ export function useQuestionBankStore() {
   }
 
   async function createQuestion(data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) {
-    const q: Question = { ...data, id: crypto.randomUUID(), userId: auth.userId.value!, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    const q: Question = {
+      ...data,
+      id: crypto.randomUUID(),
+      userId: auth.userId.value!,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
     await db.questions.put(q);
     await loadQuestions();
     return q;
@@ -55,7 +63,13 @@ export function useQuestionBankStore() {
   }
 
   async function createFolder(name: string, parentId: string | null = null) {
-    const folder: Folder = { id: crypto.randomUUID(), userId: auth.userId.value!, name, parentId, sort: folders.value.length };
+    const folder: Folder = {
+      id: crypto.randomUUID(),
+      userId: auth.userId.value!,
+      name,
+      parentId,
+      sort: folders.value.length,
+    };
     await db.folders.put(folder);
     await loadFolders();
     return folder;
@@ -71,22 +85,50 @@ export function useQuestionBankStore() {
 
   function toggleSelect(id: string) {
     const next = new Set(selectedIds.value);
-    if (next.has(id)) next.delete(id); else next.add(id);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
     selectedIds.value = next;
   }
 
-  function selectAll() { selectedIds.value = new Set(filteredQuestions.value.map(q => q.id)); }
-  function clearSelection() { selectedIds.value = new Set(); }
+  function selectAll() {
+    selectedIds.value = new Set(filteredQuestions.value.map((q) => q.id));
+  }
+  function clearSelection() {
+    selectedIds.value = new Set();
+  }
 
   function applySort() {
     switch (sortKey.value) {
-      case 'createdAt': questions.value.sort((a, b) => b.createdAt.localeCompare(a.createdAt)); break;
-      case 'difficulty': questions.value.sort((a, b) => b.difficulty - a.difficulty); break;
-      case 'type': questions.value.sort((a, b) => a.type.localeCompare(b.type)); break;
+      case 'createdAt':
+        questions.value.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        break;
+      case 'difficulty':
+        questions.value.sort((a, b) => b.difficulty - a.difficulty);
+        break;
+      case 'type':
+        questions.value.sort((a, b) => a.type.localeCompare(b.type));
+        break;
     }
   }
 
-  return { questions, folders, currentFolderId, selectedIds, sortKey, searchQuery, error, filteredQuestions,
-    loadQuestions, loadFolders, createQuestion, updateQuestion, deleteQuestions,
-    createFolder, deleteFolder, toggleSelect, selectAll, clearSelection };
+  return {
+    questions,
+    folders,
+    currentFolderId,
+    selectedIds,
+    sortKey,
+    searchQuery,
+    error,
+    filteredQuestions,
+    loadQuestions,
+    loadFolders,
+    createQuestion,
+    updateQuestion,
+    deleteQuestions,
+    createFolder,
+    deleteFolder,
+    toggleSelect,
+    selectAll,
+    clearSelection,
+  };
 }

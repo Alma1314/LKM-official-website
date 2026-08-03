@@ -12,7 +12,11 @@ const { canvasRef } = useBackgroundCanvas({ draw: props.draw, init: props.init, 
 </script>
 
 <template>
-  <canvas ref="canvasRef" :class="`fixed inset-0 pointer-events-auto ${props.className ?? ''}`"
-    style="z-index: 0; width: 100vw; height: 100vh" aria-hidden="true" />
+  <canvas
+    ref="canvasRef"
+    :class="`fixed inset-0 pointer-events-auto ${props.className ?? ''}`"
+    style="z-index: 0; width: 100vw; height: 100vh"
+    aria-hidden="true"
+  />
   <slot />
 </template>

@@ -17,9 +17,7 @@ export interface PaginatedResponse<T> {
 }
 
 export const notificationApi = {
-  getNotifications: (page = 1) =>
-    get<PaginatedResponse<Notification>>('/api/notifications', { page }),
+  getNotifications: (page = 1) => get<PaginatedResponse<Notification>>('/api/notifications', { page }),
 
-  getUnreadCount: () =>
-    get<{ count: number }>('/api/notifications/unread-count'),
+  getUnreadCount: () => get<{ count: number }>('/api/notifications/unread-count'),
 };

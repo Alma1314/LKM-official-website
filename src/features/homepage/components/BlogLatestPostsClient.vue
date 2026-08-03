@@ -25,10 +25,17 @@ onMounted(async () => {
       :href="`/blog/posts/${article.slug}`"
       class="border rounded-lg p-4 hover:shadow-md transition-shadow"
     >
-      <img v-if="article.cover_url" :src="article.cover_url" :alt="article.title" class="w-full h-40 object-cover rounded mb-3" />
+      <img
+        v-if="article.cover_url"
+        :src="article.cover_url"
+        :alt="article.title"
+        class="w-full h-40 object-cover rounded mb-3"
+      />
       <h3 class="font-semibold mb-1">{{ article.title }}</h3>
       <p v-if="article.description" class="text-sm text-gray-600 line-clamp-2">{{ article.description }}</p>
-      <span class="text-xs text-gray-400 mt-2 block">{{ new Date(article.published).toLocaleDateString('zh-CN') }}</span>
+      <span class="text-xs text-gray-400 mt-2 block">{{
+        new Date(article.published).toLocaleDateString('zh-CN')
+      }}</span>
     </a>
   </div>
 </template>

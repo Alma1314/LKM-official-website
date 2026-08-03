@@ -7,10 +7,14 @@ export function useColorMode() {
   let observer: MutationObserver | null = null;
 
   onMounted(() => {
-    observer = new MutationObserver(() => { mode.value = isDark() ? 'dark' : 'light'; });
+    observer = new MutationObserver(() => {
+      mode.value = isDark() ? 'dark' : 'light';
+    });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   });
-  onBeforeUnmount(() => { observer?.disconnect(); });
+  onBeforeUnmount(() => {
+    observer?.disconnect();
+  });
 
   return mode;
 }

@@ -16,18 +16,14 @@ export interface UserInfo {
 }
 
 export const authApi = {
-  login: (data: { email: string; password: string }) =>
-    post<AuthTokens>('/api/auth/login', data),
+  login: (data: { email: string; password: string }) => post<AuthTokens>('/api/auth/login', data),
 
   register: (data: { username: string; email: string; password: string }) =>
     post<AuthTokens>('/api/auth/register', data),
 
-  logout: () =>
-    post<void>('/api/auth/logout'),
+  logout: () => post<void>('/api/auth/logout'),
 
-  refreshToken: (refreshToken: string) =>
-    post<AuthTokens>('/api/auth/refresh', { refreshToken }),
+  refreshToken: (refreshToken: string) => post<AuthTokens>('/api/auth/refresh', { refreshToken }),
 
-  getMe: () =>
-    get<UserInfo>('/api/auth/me'),
+  getMe: () => get<UserInfo>('/api/auth/me'),
 };

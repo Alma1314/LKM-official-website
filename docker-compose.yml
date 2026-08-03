@@ -2,7 +2,7 @@ services:
   astro:
     build: .
     ports:
-      - "80:4321"
+      - '80:4321'
     environment:
       - NODE_ENV=production
       - API_URL=http://fastapi:8000
@@ -14,7 +14,7 @@ services:
   fastapi:
     build: ./backend
     expose:
-      - "8000"
+      - '8000'
     environment:
       - DATABASE_URL=postgresql://lkm:${DB_PASSWORD}@postgres:5432/lkm
       - REDIS_URL=redis://redis:6379
@@ -36,7 +36,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=lkm
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U lkm -d lkm"]
+      test: ['CMD-SHELL', 'pg_isready -U lkm -d lkm']
       interval: 5s
       timeout: 5s
       retries: 5

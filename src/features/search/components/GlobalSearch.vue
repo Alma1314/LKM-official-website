@@ -12,19 +12,71 @@ interface SearchResultItem {
 }
 
 const mockData: SearchResultItem[] = [
-  { type: 'post', title: '量子力学入门：波函数坍缩', desc: '作者：七月O · 12 点赞 · 34 评论', url: buildUrl('/forum/post/post-1'), tag: '物理学' },
-  { type: 'post', title: '数学建模竞赛经验分享', desc: '作者：七月花 · 28 点赞 · 56 评论', url: buildUrl('/forum/post/post-3'), tag: '数学' },
-  { type: 'post', title: 'Python 数据分析入门教程', desc: '作者：七月墨染 · 45 点赞 · 23 评论', url: buildUrl('/forum/post/post-5'), tag: '信息科学' },
-  { type: 'file', title: '天体物理数据集（2026版）.zip', desc: '上传者：七月O · 128 MB · 下载 230 次', url: buildUrl('/files/file-1'), tag: '文件' },
-  { type: 'file', title: '线性代数习题集.pdf', desc: '上传者：七月墨染 · 5.2 MB · 下载 89 次', url: buildUrl('/files/file-3'), tag: '文件' },
-  { type: 'user', title: '七月O', desc: '中国科学院国家天文台博士 · 引力波与黑洞物理', url: buildUrl('/user/qiyue-o'), tag: '用户' },
-  { type: 'user', title: '七月花', desc: '有理想的博士 · 科学教育倡导者', url: buildUrl('/user/qiyue-hua'), tag: '用户' },
-  { type: 'user', title: '七月墨染', desc: '双非物理，卧薪尝胆三千日', url: buildUrl('/user/qiyue-moran'), tag: '用户' },
+  {
+    type: 'post',
+    title: '量子力学入门：波函数坍缩',
+    desc: '作者：七月O · 12 点赞 · 34 评论',
+    url: buildUrl('/forum/post/post-1'),
+    tag: '物理学',
+  },
+  {
+    type: 'post',
+    title: '数学建模竞赛经验分享',
+    desc: '作者：七月花 · 28 点赞 · 56 评论',
+    url: buildUrl('/forum/post/post-3'),
+    tag: '数学',
+  },
+  {
+    type: 'post',
+    title: 'Python 数据分析入门教程',
+    desc: '作者：七月墨染 · 45 点赞 · 23 评论',
+    url: buildUrl('/forum/post/post-5'),
+    tag: '信息科学',
+  },
+  {
+    type: 'file',
+    title: '天体物理数据集（2026版）.zip',
+    desc: '上传者：七月O · 128 MB · 下载 230 次',
+    url: buildUrl('/files/file-1'),
+    tag: '文件',
+  },
+  {
+    type: 'file',
+    title: '线性代数习题集.pdf',
+    desc: '上传者：七月墨染 · 5.2 MB · 下载 89 次',
+    url: buildUrl('/files/file-3'),
+    tag: '文件',
+  },
+  {
+    type: 'user',
+    title: '七月O',
+    desc: '中国科学院国家天文台博士 · 引力波与黑洞物理',
+    url: buildUrl('/user/qiyue-o'),
+    tag: '用户',
+  },
+  {
+    type: 'user',
+    title: '七月花',
+    desc: '有理想的博士 · 科学教育倡导者',
+    url: buildUrl('/user/qiyue-hua'),
+    tag: '用户',
+  },
+  {
+    type: 'user',
+    title: '七月墨染',
+    desc: '双非物理，卧薪尝胆三千日',
+    url: buildUrl('/user/qiyue-moran'),
+    tag: '用户',
+  },
 ];
 
 const keyword = ref('');
 const isOpen = ref(false);
-const results = ref({ posts: [] as SearchResultItem[], files: [] as SearchResultItem[], users: [] as SearchResultItem[] });
+const results = ref({
+  posts: [] as SearchResultItem[],
+  files: [] as SearchResultItem[],
+  users: [] as SearchResultItem[],
+});
 
 const totalCount = computed(() => results.value.posts.length + results.value.files.length + results.value.users.length);
 
@@ -55,9 +107,7 @@ function doSearch(kw: string) {
     }
     const lower = kw.toLowerCase();
     const filtered = mockData.filter(
-      (item) =>
-        item.title.toLowerCase().includes(lower) ||
-        item.desc.toLowerCase().includes(lower),
+      (item) => item.title.toLowerCase().includes(lower) || item.desc.toLowerCase().includes(lower)
     );
     results.value = {
       posts: filtered.filter((r) => r.type === 'post'),
@@ -97,15 +147,16 @@ onUnmounted(() => {
   <!-- 桌面端搜索框 -->
   <div
     id="global-search-btn"
-    class="hidden lg:flex transition-all items-center h-11 mr-2 rounded-lg
-      bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
-      dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10 cursor-pointer"
+    class="hidden lg:flex transition-all items-center h-11 mr-2 rounded-lg bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06] dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10 cursor-pointer"
     @click="toggle"
     @keydown.enter="toggle"
     role="button"
     tabindex="0"
   >
-    <Icon icon="material-symbols:search" class="text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30" />
+    <Icon
+      icon="material-symbols:search"
+      class="text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"
+    />
     <span class="text-sm text-black/30 dark:text-white/30 px-3 w-40 select-none">搜索</span>
   </div>
 
@@ -120,11 +171,7 @@ onUnmounted(() => {
   </button>
 
   <!-- 搜索面板 -->
-  <div
-    v-if="isOpen"
-    class="fixed inset-0 top-[72px] z-[100] flex items-start justify-center"
-    @click="close"
-  >
+  <div v-if="isOpen" class="fixed inset-0 top-[72px] z-[100] flex items-start justify-center" @click="close">
     <div
       id="global-search-panel"
       class="w-full max-w-xl max-h-[80vh] overflow-y-auto bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-2xl shadow-2xl p-3 mx-4"
@@ -147,7 +194,8 @@ onUnmounted(() => {
         输入关键词搜索社区内容
       </div>
       <div v-else-if="totalCount === 0" class="px-3 py-8 text-center text-sm text-text-muted">
-        未找到与 "<span class="text-deep-text">{{ keyword }}</span>" 相关的内容
+        未找到与 "<span class="text-deep-text">{{ keyword }}</span
+        >" 相关的内容
       </div>
       <div v-else class="space-y-4 pt-2">
         <div v-if="results.posts.length > 0">

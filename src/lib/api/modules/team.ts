@@ -11,6 +11,5 @@ export interface TeamMember {
 }
 
 export const teamApi = {
-  getMembers: () =>
-    get<TeamMember[]>('/api/team/members'),
+  getMembers: () => get<TeamMember[]>('/api/team/members'),
 };

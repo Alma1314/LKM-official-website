@@ -46,7 +46,9 @@ onMounted(async () => {
           class="flex items-center justify-between border-b pb-3 hover:text-blue-600 transition-colors"
         >
           <span>{{ article.title }}</span>
-          <span class="text-sm text-gray-500">{{ new Date(article.published).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' }) }}</span>
+          <span class="text-sm text-gray-500">{{
+            new Date(article.published).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })
+          }}</span>
         </router-link>
       </div>
     </div>

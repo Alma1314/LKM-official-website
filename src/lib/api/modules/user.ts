@@ -13,6 +13,5 @@ export interface UserProfile {
 }
 
 export const userApi = {
-  getProfile: (username: string) =>
-    get<UserProfile>(`/api/users/${username}`),
+  getProfile: (username: string) => get<UserProfile>(`/api/users/${username}`),
 };

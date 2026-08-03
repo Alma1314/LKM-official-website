@@ -19,9 +19,7 @@ export interface PaginatedResponse<T> {
 }
 
 export const fileLibraryApi = {
-  getFiles: (page = 1, limit = 20) =>
-    get<PaginatedResponse<FileEntry>>('/api/files', { page, limit }),
+  getFiles: (page = 1, limit = 20) => get<PaginatedResponse<FileEntry>>('/api/files', { page, limit }),
 
-  getFile: (id: string) =>
-    get<FileEntry>(`/api/files/${id}`),
+  getFile: (id: string) => get<FileEntry>(`/api/files/${id}`),
 };

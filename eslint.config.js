@@ -86,6 +86,7 @@ export default [
       'src/layouts/BlogLayout.astro',
       'src/layouts/OfficialBlogLayout.astro',
       'src/layouts/CommunityBlogLayout.astro',
+      'scripts/mock-server.mjs',
     ],
   },
 ];
