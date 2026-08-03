@@ -8,11 +8,7 @@ const props = defineProps<{
   className?: string;
 }>();
 
-const { canvasRef } = useBackgroundCanvas({
-  draw: props.draw,
-  init: props.init,
-  interactions: props.interactions,
-});
+const { canvasRef } = useBackgroundCanvas({ draw: props.draw, init: props.init, interactions: props.interactions });
 </script>
 
 <template>

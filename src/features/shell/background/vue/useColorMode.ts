@@ -4,22 +4,13 @@ const isDark = () => typeof document !== 'undefined' && document.documentElement
 
 export function useColorMode() {
   const mode = ref<'light' | 'dark'>(isDark() ? 'dark' : 'light');
-
   let observer: MutationObserver | null = null;
 
   onMounted(() => {
-    observer = new MutationObserver(() => {
-      mode.value = isDark() ? 'dark' : 'light';
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
+    observer = new MutationObserver(() => { mode.value = isDark() ? 'dark' : 'light'; });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   });
-
-  onBeforeUnmount(() => {
-    observer?.disconnect();
-  });
+  onBeforeUnmount(() => { observer?.disconnect(); });
 
   return mode;
 }
