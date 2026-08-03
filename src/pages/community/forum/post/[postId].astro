@@ -1,7 +1,7 @@
 ---
 import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getPostById, getPostsByCategory, mockPosts } from '~/features/forum/data/mock-posts';
+import { getPostById, getPostsByCategory } from '~/features/forum/data/mock-posts';
 import { getCategoryBySlug } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import PostInteractions from '~/features/forum/components/PostInteractions.vue';
@@ -10,9 +10,8 @@ import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/core/utils/permalinks';
 import sanitizeHtml from 'sanitize-html';
 
-export function getStaticPaths() {
-  return mockPosts.map((p) => ({ params: { postId: p.id } }));
-}
+// server 模式：params 从 URL 直接解析，无需 getStaticPaths
+// 后端就绪后切换为：const post = await forumApi.getPost(postId)
 
 const { postId } = Astro.params;
 const post = getPostById(postId || '');

@@ -1,15 +1,13 @@
 ---
 import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getColumnBySlug, getArticleById, getArticlesByColumnId, mockColumnArticles } from '~/features/column';
+import { getColumnBySlug, getArticleById, getArticlesByColumnId } from '~/features/column';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/core/utils/permalinks';
 import sanitizeHtml from 'sanitize-html';
 
-export function getStaticPaths() {
-  return mockColumnArticles.map((a) => ({ params: { slug: a.columnSlug, articleId: a.id } }));
-}
-
+// server 模式：params 从 URL 直接解析
+// 后端就绪后切换为 API 调用获取专栏和文章数据
 const { slug, articleId } = Astro.params;
 const column = getColumnBySlug(slug || '');
 const article = getArticleById(articleId || '');

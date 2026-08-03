@@ -1,13 +1,11 @@
 ---
 import Layout from '~/layouts/CommunityLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getFileById, mockFiles } from '~/features/file-library/data/mock-files';
+import { getFileById } from '~/features/file-library/data/mock-files';
 import { getPermalink } from '~/core/utils/permalinks';
 
-export function getStaticPaths() {
-  return mockFiles.map((f) => ({ params: { fileId: f.id } }));
-}
-
+// server 模式：params 从 URL 直接解析
+// 后端就绪后切换为：const file = await fileLibraryApi.getFile(fileId)
 const { fileId } = Astro.params;
 const file = getFileById(fileId || '');
 

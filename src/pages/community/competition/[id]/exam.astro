@@ -1,11 +1,8 @@
 ---
 import ExamInterface from '~/features/competition/components/ExamInterface.vue';
-import { mockCompetitions } from '~/features/competition/data/mock-competitions';
 
-export function getStaticPaths() {
-  return mockCompetitions.filter((c) => c.status === 'ongoing').map((c) => ({ params: { id: c.id } }));
-}
-
+// server 模式：params 从 URL 直接解析，无需 getStaticPaths
+// 考试接口完全由 Vue 组件 client:only 处理
 const { id: _id } = Astro.params;
 ---
 

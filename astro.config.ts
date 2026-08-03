@@ -5,7 +5,6 @@ import sitemap from '@astrojs/sitemap';
 import astroExpressiveCode from 'astro-expressive-code';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
@@ -15,10 +14,6 @@ import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import mermaid from 'astro-mermaid';
-import type { AstroIntegration } from 'astro';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
 import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
@@ -35,20 +30,18 @@ import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonit
 import { responsiveTablesRehypePlugin } from './src/core/utils/frontmatter.js';
 import fs from 'node:fs';
 import yaml from 'js-yaml';
-
-const hasExternalScripts = false;
-const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
-  hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 export default defineConfig({
   devToolbar: {
     enabled: false,
   },
 
-  site: 'https://LKM-AHZ.github.io',
-  base: '/LKM-official-website',
+  site: 'https://lkm.app',
+  base: '/',
 
-  output: 'static',
+  output: 'server',
 
   integrations: [
     sitemap(),
@@ -84,12 +77,6 @@ export default defineConfig({
       },
     }),
 
-    ...whenExternalScripts(() =>
-      partytown({
-        config: { forward: ['dataLayer.push'] },
-      })
-    ),
-
     Unfonts({
       google: {
         families: [
@@ -106,30 +93,16 @@ export default defineConfig({
     }),
 
     compress({
-      CSS: false,
+      CSS: true,
       HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
-      Image: false,
-      JavaScript: false,
-      SVG: false,
+      Image: true,
+      JavaScript: true,
+      SVG: true,
       Logger: 1,
-    }),
-
-    mermaid({
-      theme: 'default',
-      autoTheme: true,
     }),
   ],
 
   image: {
-    // Astro 默认的 Sharp 服务处理本地图片。
-    //
-    // 大多数远程 CDN 图片（Unsplash、Cloudinary、Imgix 等）由
-    // src/components/common/Image.astro 通过 `unpic` 路由，它会用 CDN 端
-    // 的查询参数重写 URL 并直接从提供商提供 — Astro 从不下载它们，因此无需列出。
-    //
-    // `domains` 只对落入 Astro 原生 <Image /> 的远程 URL 有效
-    // （即 Unpic 无法检测的提供商，如 Pixabay）。
-    // 列出的条目被授权由 Sharp 处理。
     domains: ['cdn.pixabay.com'],
   },
 
@@ -219,7 +192,7 @@ export default defineConfig({
         name: 'exclude-yaml',
         resolveId(id) {
           if (id.endsWith('.yaml') || id.endsWith('.yml')) {
-            return false; // prevent YAML from being resolved as a module
+            return false;
           }
         },
         load(id) {
@@ -229,9 +202,6 @@ export default defineConfig({
         },
       },
     ],
-    // 预构建优化：将重依赖预列入 include，避免懒构建导致的并发竞态。
-    // Windows + pnpm 下 Vite 的 deps 原子重命名可能失败，预列关键依赖让
-    // 它们在首次启动时一次性构建完成。
     ssr: {
       noExternal: ['@iconify/svelte'],
     },
@@ -243,7 +213,6 @@ export default defineConfig({
               return 'vendor-react';
             }
             if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
-              // 仅 blog 页面使用，让其独立 chunk，避免非 blog 页加载无用代码
               return;
             }
             if (id.includes('node_modules/three')) {

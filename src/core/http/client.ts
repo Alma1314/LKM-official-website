@@ -1,10 +1,13 @@
-// axios 封装 — 所有 HTTP 请求统一入口
+// HTTP 客户端封装 — 所有 API 请求统一入口
+//
+// 支持两种运行环境：
+//  - SSR（Astro 服务端）：fetch FastAPI 内网地址（Docker 内部 / localhost）
+//  - 客户端（浏览器）：fetch 同域 /api/*（无跨域），携带 Cookie
 //
 // 原则：
 //  1. 所有请求返回 Result<T, AppError>，不抛异常
-//  2. 拦截器统一将 AxiosError 转为 AppError
+//  2. SSR 和 CSR 自动切换 base URL
 //  3. 错误消息不含敏感信息（token/key 等）
-//  4. 支持全局 baseURL、默认超时、请求头
 
 import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
@@ -12,17 +15,38 @@ import { AppError, ErrorCode } from '../errors/error-codes';
 import { ok, err } from '../errors/result';
 import type { Result } from '../errors/result';
 
+/** SSR 时使用内网地址直连 FastAPI，客户端时使用同域 /api */
+function getApiBase(): string {
+  // SSR: Astro 服务端，使用环境变量或默认内网地址
+  if (typeof window === 'undefined') {
+    return import.meta.env.API_URL || 'http://localhost:8000';
+  }
+  // 客户端：同域 /api，无跨域
+  return '';
+}
+
 let _instance: AxiosInstance | null = null;
+let _lastBaseURL = '';
 
 function isAxiosError(e: unknown): e is AxiosError {
   return axios.isAxiosError(e);
 }
 
 function getInstance(): AxiosInstance {
+  const baseURL = getApiBase();
+
+  // baseURL 变化时重建实例（SSR/CSR 切换场景）
+  if (_instance && _lastBaseURL !== baseURL) {
+    _instance = null;
+  }
+
   if (!_instance) {
+    _lastBaseURL = baseURL;
     _instance = axios.create({
+      baseURL: baseURL || undefined,
       timeout: 15_000,
       headers: { 'Content-Type': 'application/json' },
+      withCredentials: true, // 自动携带同域 Cookie
     });
 
     _instance.interceptors.response.use(
@@ -43,7 +67,6 @@ function getInstance(): AxiosInstance {
         const status = error.response.status;
         const code = status >= 500 ? ErrorCode.HTTP_SERVER_ERROR : ErrorCode.HTTP_CLIENT_ERROR;
 
-        // 错误体截断，避免泄露敏感信息
         let detail = '';
         try {
           const data = error.response.data as unknown;
@@ -60,12 +83,9 @@ function getInstance(): AxiosInstance {
   return _instance;
 }
 
-/** 配置全局 axios 实例（baseURL、默认 headers 等） */
+/** 配置全局 axios 实例（timeout 等） */
 export function configure(config: { baseURL?: string; timeout?: number }): void {
   const instance = getInstance();
-  if (config.baseURL !== undefined) {
-    instance.defaults.baseURL = config.baseURL;
-  }
   if (config.timeout !== undefined) {
     instance.defaults.timeout = config.timeout;
   }

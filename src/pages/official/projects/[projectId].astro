@@ -4,10 +4,8 @@ import { mockProjects } from '~/features/project-hub/data/mock-projects';
 import { communitySidebarLinks } from '~/features/shell-official/data/community-sidebar';
 import { getPermalink } from '~/core/utils/permalinks';
 
-export function getStaticPaths() {
-  return mockProjects.map((p) => ({ params: { projectId: p.id } }));
-}
-
+// server 模式：params 从 URL 直接解析
+// 后端就绪后切换为：const proj = await projectApi.getProject(projectId)
 const { projectId } = Astro.params;
 const proj = mockProjects.find((p) => p.id === projectId);
 
