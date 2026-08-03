@@ -64,7 +64,7 @@ Astro 从 `static` 切换到 `server`：
 
 ```
 src/lib/api/
-├── client.ts          # 基础 fetch 封装（SSR/CSR 自动切换）
+├── client.ts          # Axios 封装（SSR/CSR 自动切换，返回 Result<T>）
 ├── index.ts           # 统一导出
 └── modules/           # 按业务模块划分
     ├── forum.ts / blog.ts / competition.ts / column.ts
@@ -166,6 +166,7 @@ services:
 
 1. `pnpm run build` 构建成功
 2. `pnpm run check` 通过（astro check + ESLint + Prettier）
-3. `pnpm run test` 通过
-4. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过
-5. 浏览器视觉检查：首页、博客、暗色模式、移动端菜单
+3. `pnpm run test` 通过（前端 Vitest）
+4. `cd backend && python -m pytest tests/` 通过（后端 pytest，88 个测试）
+5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过
+6. 浏览器视觉检查：首页、博客、暗色模式、移动端菜单

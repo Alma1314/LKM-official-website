@@ -5,7 +5,7 @@
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org)
 
-**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 构建的纯静态站点，部署于 GitHub Pages。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
+**理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 + Vue 3 构建，Astro SSR server 模式，部署于 GitHub Pages。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
 
 ---
 
@@ -235,39 +235,65 @@ git push
 /
 ├── .github/workflows/          # CI/CD (GitHub Actions)
 ├── public/                     # 静态资源
+├── backend/                    # FastAPI 测试后端 (Python)
+│   ├── main.py                 # 入口文件
+│   ├── app/                    # 模块化后端代码
+│   │   ├── core/               # 响应格式 + 分页工具
+│   │   ├── data/               # Mock 数据
+│   │   ├── schemas/            # Pydantic 模型
+│   │   └── modules/            # 13 个 API 路由模块
+│   └── tests/                  # pytest 测试 (88 个)
 ├── src/
 │   ├── assets/images/
 │   │   ├── member/             # 原始头像图片
 │   │   └── member-optimized/   # 优化后的 WebP 头像
-│   ├── core/                   # 核心基础设施
-│   │   ├── config/             # 站点配置
+│   ├── lib/                    # 共享库
+│   │   ├── api/                # 统一数据访问层 (Axios + Result<T>)
+│   │   ├── config/             # 站点配置读取
 │   │   ├── constants/          # 常量定义
+│   │   ├── errors/             # 错误处理 (Result<T> 模式)
+│   │   ├── http/               # HTTP 客户端
 │   │   ├── i18n/               # 国际化（中/英/日/韩等）
-│   │   ├── types/              # TypeScript 类型定义
 │   │   ├── utils/              # 工具函数
-│   │   ├── styles/             # 全局 CSS
-│   │   └── plugins/            # Remark/Rehype 插件
-│   ├── features/               # 业务功能模块
-│   │   ├── blog/               # 博客组件
-│   │   ├── content/            # 内容组件
-│   │   ├── editor/             # 富文本编辑器
-│   │   ├── team/               # 团队页面组件
-│   │   ├── homepage/           # 首页组件
-│   │   ├── shell/              # 顶栏/页脚/背景/通用 UI
+│   │   ├── markdown-plugins/   # Remark/Rehype 插件
+│   │   └── db/                 # 本地数据库 schema
+│   ├── features/               # 业务功能模块 (26 个)
+│   │   ├── admin/              # 管理后台
+│   │   ├── anonymous-letter/   # 匿名树洞
 │   │   ├── auth/               # 登录认证
-│   │   └── docs/               # 文档库
-│   ├── ui/                     # UI 组件
-│   │   ├── primitives/         # 基础组件
-│   │   └── patterns/           # 模式组件
+│   │   ├── blog-community/     # 社区博客
+│   │   ├── column/             # 专栏系统
+│   │   ├── competition/        # 竞赛系统
+│   │   ├── content/            # 内容组件
+│   │   ├── contribution/       # 贡献/积分
+│   │   ├── dashboard/          # 首页仪表盘
+│   │   ├── editor/             # 富文本编辑器
+│   │   ├── file-library/       # 文件库
+│   │   ├── forum/              # 论坛
+│   │   ├── funding/            # 资助系统
+│   │   ├── homepage/           # 首页组件
+│   │   ├── notification/       # 消息通知
+│   │   ├── profile/            # 个人主页
+│   │   ├── project-hub/        # 项目广场
+│   │   ├── qa/                 # 问答系统
+│   │   ├── search/             # 全局搜索
+│   │   ├── shell/              # 顶栏/页脚/背景/通用 UI
+│   │   ├── shell-community/    # 社区站壳
+│   │   ├── shell-official/     # 官方站壳
+│   │   ├── starhope/           # StarHope AI 学习助手
+│   │   └── team/               # 团队页面组件
 │   ├── layouts/                # 页面布局
 │   ├── pages/                  # 文件路由
-│   ├── content/                # 内容（posts/、docs/）
-│   └── config.yaml             # 站点主配置
+│   ├── styles/                 # 全局样式 (tailwind.css)
+│   ├── types/                  # TypeScript 类型声明
+│   ├── content/                # 内容（posts/）
+│   ├── data/                   # 配置文件（config.yaml 等）
+│   └── middleware.ts           # Astro 中间件（反向代理 /api/* → FastAPI）
 ├── AGENTS.md                   # AI Agent 指令
 ├── CLAUDE.md                   # Claude Code 配置
 ├── CODING_STANDARDS.md         # 代码规范
 ├── LICENSE.md                  # MIT 许可证
-├── astro.config.ts             # Astro 配置
+├── astro.config.ts             # Astro 配置（server 模式 + Vue/React 集成）
 └── tsconfig.json               # TypeScript 配置
 ```
 
@@ -400,11 +426,9 @@ node scripts/optimize-avatars.mjs
 ## 架构概览
 
 ```
-core/           配置、类型、工具函数、CSS、插件
+lib/            共享库（api/config/errors/http/utils 等）
   ↓
-features/       业务功能模块（blog/team/editor/homepage/shell/auth/docs）
-  ↓
-ui/             UI 组件（primitives/patterns）
+features/       业务功能模块（26 个）
   ↓
 layouts/        页面布局（BaseLayout/PageLayout/SidebarLayout/MarkdownLayout/BlogLayout）
   ↓
@@ -413,11 +437,11 @@ pages/          文件路由页面
 
 ## 特性
 
-- **Astro v7** 纯静态生成
+- **Astro v7** SSR server 模式
 - **Tailwind CSS v4** 暗色模式 + 自定义主题
-- **12 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、星云等，自适应深浅主题
+- **12 种可切换动态背景** — 极光、数字雨、星座、DNA（2D/3D）、梦幻光晕、粒子等，自适应深浅主题
 - **富文本编辑器** — 基于 Tiptap 3 的 MDX 双向编辑器，支持 AI 助手、版本历史、评论、自动保存
-- **多框架支持** — React 19 + Vue 3 + Svelte 5 按需引入
+- **多框架支持** — React 19 + Vue 3 按需引入
 - **View Transitions** SPA 风格页面切换
 - **博客系统** — MD/MDX、分类/标签、分页、KaTeX 公式
 - **SEO 完整** — Sitemap、RSS、Open Graph、Twitter Card
@@ -425,6 +449,7 @@ pages/          文件路由页面
 - **Pagefind 全文搜索** — 客户端离线搜索
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
+- **FastAPI 测试后端** — 模块化 mock 后端，88 个 pytest 测试，统一响应格式
 
 ## 致谢 · 开源项目
 
@@ -437,7 +462,6 @@ pages/          文件路由页面
 | [Tailwind CSS](https://tailwindcss.com)                           | MIT        | 样式系统         |
 | [React](https://react.dev)                                        | MIT        | UI 组件          |
 | [Vue.js](https://vuejs.org)                                       | MIT        | UI 组件          |
-| [Svelte](https://svelte.dev)                                      | MIT        | UI 组件          |
 | [Element Plus](https://element-plus.org)                          | MIT        | UI 组件库        |
 | [Tiptap](https://tiptap.dev)                                      | MIT        | 富文本编辑器引擎 |
 | [Three.js](https://threejs.org)                                   | MIT        | 3D 图形渲染      |

@@ -102,8 +102,8 @@ pnpm run build   # 3. 确认生产构建成功
 | 场景                   | 使用框架 | 说明                  |
 | ---------------------- | -------- | --------------------- |
 | 静态页面和内容组件     | `.astro` | 默认选择              |
-| 需要状态管理的交互组件 | React    | 通过 `@astrojs/react` |
-| 已有 Vue 组件复用      | Vue      | 通过 `@astrojs/vue`   |
+| 主要交互组件（社区平台）| Vue 3    | 通过 `@astrojs/vue`   |
+| 富文本编辑器           | React 19 | 通过 `@astrojs/react` |
 
 ```astro
 {/* 推荐：使用 Astro 语法 */}
@@ -122,7 +122,7 @@ const items = ['A', 'B', 'C'];
 ## 组件规范
 
 - 使用 TypeScript 类型定义
-- Props 接口继承自 `~/core/types`
+- Props 使用 TypeScript 接口
 - 使用 `class:list` 进行条件样式绑定
 - 接收 `className` 覆写时使用 `twMerge()` 合并
 - 布局组合使用具名插槽（named slots）
@@ -159,10 +159,10 @@ import { siteConfig } from '~/core/config';
 
 ## 站点配置
 
-站点元数据集中在 `src/config.yaml` 中管理，通过 `~/core/config` 导入：
+站点元数据集中在 `src/data/config.yaml` 中管理，通过 `~/lib/config` 导入：
 
 ```typescript
-import { siteConfig, navBarConfig, profileConfig } from '~/core/config';
+import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
 ```
 
 | 字段        | 说明                                          |
@@ -262,7 +262,6 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 - 全局使用的框架和图标库加入对应 vendor chunk：
   - `react` / `react-dom` → `vendor-react`
   - `vue` / `@iconify/vue` → `vendor-vue`
-  - `svelte` / `@iconify/svelte` → `vendor-svelte`
   - `three` → `vendor-three`，`katex` / `rehype-katex` → `vendor-katex`
 - 页面级小众依赖（overlayscrollbars、photoswipe）保持独立异步加载
 - 新增全局框架依赖时需同步更新 `manualChunks`
