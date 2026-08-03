@@ -1,0 +1,95 @@
+---
+import type { Form as Props } from '~/types/core';
+import Button from './Button.astro';
+
+const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
+---
+
+<form id="contact-form" method="POST" action="#">
+  <div id="form-message" class="hidden mb-4"></div>
+  {
+    inputs &&
+      inputs.map(
+        ({ type, name, label = '', autocomplete = 'on', placeholder = '' }) =>
+          name && (
+            <div class="mb-6">
+              {label && (
+                <label class="label" for={name}>
+                  <span class="label-text">{label}</span>
+                </label>
+              )}
+              <input
+                type={(type ?? 'text') as never}
+                name={name}
+                id={name}
+                autocomplete={autocomplete}
+                placeholder={placeholder}
+                class="input input-bordered w-full"
+              />
+            </div>
+          )
+      )
+  }
+
+  {
+    textarea && (
+      <div class="mb-6">
+        {textarea.label && (
+          <label class="label" for="textarea">
+            <span class="label-text">{textarea.label}</span>
+          </label>
+        )}
+        <textarea
+          id="textarea"
+          name={textarea.name ? textarea.name : 'message'}
+          rows={textarea.rows ? textarea.rows : 4}
+          placeholder={textarea.placeholder}
+          class="textarea textarea-bordered w-full"
+        />
+      </div>
+    )
+  }
+
+  {
+    disclaimer && (
+      <div class="mt-3">
+        <label class="label cursor-pointer justify-start gap-2">
+          <input type="checkbox" id="disclaimer" name="disclaimer" class="checkbox" />
+          <span class="label-text">{disclaimer.label}</span>
+        </label>
+      </div>
+    )
+  }
+
+  {
+    button && (
+      <div class="mt-10 grid">
+        <Button variant="primary" type="submit">
+          {button}
+        </Button>
+      </div>
+    )
+  }
+
+  {
+    description && (
+      <div class="mt-3 text-center">
+        <p class="text-[12px] text-text-muted">{description}</p>
+      </div>
+    )
+  }
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', function (this: HTMLFormElement, e: SubmitEvent) {
+      e.preventDefault();
+      const msg = document.getElementById('form-message');
+      if (msg) {
+        msg.className = 'mb-4 alert alert-warning';
+        msg.textContent = '此表单为静态展示，暂不支持在线提交。请通过其他方式联系我们。';
+      }
+    });
+  }
+</script>

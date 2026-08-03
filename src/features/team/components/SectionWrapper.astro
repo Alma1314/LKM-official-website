@@ -1,6 +1,6 @@
 ---
-import { Headline, WidgetWrapper } from '~/ui/primitives';
-import type { Widget, Headline as HeadlineType } from '~/core/types';
+import { Headline, WidgetWrapper } from '~/components/primitives';
+import type { Widget, Headline as HeadlineType } from '~/types/core';
 
 interface Props extends Widget, Pick<HeadlineType, 'title' | 'subtitle' | 'tagline'> {
   classes?: Record<string, string | Record<string, string>>;

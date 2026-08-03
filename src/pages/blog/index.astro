@@ -1,0 +1,8 @@
+---
+import Layout from '~/layouts/CommunityLayout.astro';
+import BlogApp from '~/features/blog-community/BlogApp.vue';
+---
+
+<Layout>
+  <BlogApp initialPath="/blog" client:only="vue" />
+</Layout>

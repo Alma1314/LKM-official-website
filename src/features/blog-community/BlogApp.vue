@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { createRouter, createWebHistory } from 'vue-router';
-import BlogHome from './components/pages/BlogHome.vue';
-import BlogSeries from './components/pages/BlogSeries.vue';
+import BlogHome from './pages/BlogArticleList.vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
 
-// Provide auth context so child components can use useAuth()
 useAuthProvider();
 
 const props = defineProps<{ initialPath: string }>();
@@ -13,34 +11,59 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/community/blog',
+      path: '/blog',
       name: 'blog-home',
       component: BlogHome,
     },
     {
-      path: '/community/blog/search',
-      name: 'blog-search',
-      component: () => import('./components/pages/BlogSearch.vue'),
+      path: '/blog/posts/:slug',
+      name: 'blog-post',
+      component: () => import('./pages/BlogArticleDetail.vue'),
+      props: (route) => ({ slug: route.params.slug as string }),
     },
     {
-      path: '/community/blog/series/:id',
+      path: '/blog/categories',
+      name: 'blog-categories',
+      component: () => import('./pages/BlogCategories.vue'),
+    },
+    {
+      path: '/blog/tags',
+      name: 'blog-tags',
+      component: () => import('./pages/BlogTags.vue'),
+    },
+    {
+      path: '/blog/archive',
+      name: 'blog-archive',
+      component: () => import('./pages/BlogArchive.vue'),
+    },
+    {
+      path: '/blog/search',
+      name: 'blog-search',
+      component: () => import('./pages/BlogSearch.vue'),
+    },
+    {
+      path: '/blog/series/:id',
       name: 'blog-series',
-      component: BlogSeries,
+      component: () => import('./pages/BlogSeries.vue'),
       props: (route) => ({ seriesId: Number(route.params.id) }),
     },
     {
-      path: '/community/blog/series/:id/:filepath(.*)',
-      name: 'blog-post',
-      component: () => import('./components/pages/BlogPost.vue'),
+      path: '/blog/series/:id/:filepath(.*)',
+      name: 'blog-series-post',
+      component: () => import('./pages/BlogPost.vue'),
       props: (route) => ({
         seriesId: Number(route.params.id),
         filepath: Array.isArray(route.params.filepath) ? route.params.filepath.join('/') : route.params.filepath,
       }),
     },
+    {
+      path: '/blog/about',
+      name: 'blog-about',
+      component: () => import('./pages/BlogAbout.vue'),
+    },
   ],
 });
 
-// Set initial route from the catch-all Astro page
 router.replace(props.initialPath);
 </script>
 

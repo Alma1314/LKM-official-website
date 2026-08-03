@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 defineProps<{ base?: string }>();
 

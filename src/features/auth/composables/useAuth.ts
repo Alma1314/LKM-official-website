@@ -9,7 +9,7 @@ import type {
   DemoUser,
 } from '~/types/auth';
 import { findAccount, checkPassword, VALIDATE_CODE } from '../data/demo-accounts';
-import { AppError, ErrorCode, ok, err } from '~/core/errors';
+import { AppError, ErrorCode, ok, err } from '~/lib/errors';
 
 const AUTH_KEY = Symbol('auth');
 

@@ -1,14 +1,12 @@
 ---
 import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getColumnBySlug, getArticlesByColumnId, mockColumns } from '~/features/column';
+import { getColumnBySlug, getArticlesByColumnId } from '~/features/column';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
-export function getStaticPaths() {
-  return mockColumns.map((c) => ({ params: { slug: c.slug } }));
-}
-
+// server 模式：params 从 URL 直接解析
+// 后端就绪后切换为：const column = await columnApi.getColumnBySlug(slug)
 const { slug } = Astro.params;
 const column = getColumnBySlug(slug || '');
 

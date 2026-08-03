@@ -15,6 +15,7 @@ export { default as Note } from './components/Note.astro';
 export { default as Announcement } from './components/Announcement.astro';
 export { default as ClockTimeline } from './components/ClockTimeline.astro';
 export { default as BlogLatestPosts } from './components/BlogLatestPosts.astro';
+export { default as BlogLatestPostsClient } from './components/BlogLatestPostsClient.vue';
 export { default as Section } from './components/Section.astro';
 
 export { default as Timeline } from './components/Timeline.astro';

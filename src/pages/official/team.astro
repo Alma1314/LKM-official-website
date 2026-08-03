@@ -1,5 +1,5 @@
 ---
-import type { ImageMetadata } from '~/core/types';
+import type { ImageMetadata } from '~/types/core';
 import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import Section from '~/features/homepage/components/Section.astro';
 import MemberCard from '~/features/team/components/MemberCard.astro';
@@ -18,7 +18,7 @@ import {
   alumniMembers,
 } from '~/features/team/data/members';
 
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {

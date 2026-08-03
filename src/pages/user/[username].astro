@@ -1,12 +1,11 @@
 ---
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
-import { getUserByUsername, mockUsers, ProfilePage } from '~/features/profile';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getUserByUsername, ProfilePage } from '~/features/profile';
+import { getPermalink } from '~/lib/utils/permalinks';
 
-export function getStaticPaths() {
-  return mockUsers.map((u) => ({ params: { username: u.username } }));
-}
-
+// server 模式：params 从 URL 直接解析
+// SSR 时可转发客户端 Cookie 给 FastAPI 获取用户数据
+// 后端就绪后切换为：const user = await userApi.getProfile(username)
 const { username } = Astro.params;
 const user = getUserByUsername(username || '');
 

@@ -1,15 +1,14 @@
 ---
 import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getCategoryBySlug, getChildCategories, forumCategories } from '~/features/forum/data/categories';
-import { getPostsByCategory, type MockPost } from '~/features/forum/data/mock-posts';
+import { getCategoryBySlug, getChildCategories } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
-export function getStaticPaths() {
-  return forumCategories.map((c) => ({ params: { categorySlug: c.slug } }));
-}
+// SSR：每次请求实时获取（后端就绪后切换为 API 调用）
+// const { ok: result } = await forumApi.getPosts(1);
+// const posts = result.data?.items ?? [];
 
 const { categorySlug } = Astro.params;
 const category = getCategoryBySlug(categorySlug || '');
@@ -20,24 +19,24 @@ if (!category) {
 
 const isParent = !category.parentId;
 const children = isParent ? getChildCategories(category.id) : [];
+
+// 当前：使用 mock 数据（后端就绪后切换为 API）
+const { getPostsByCategory } = await import('~/features/forum/data/mock-posts');
+
 const allCategoryIds = isParent ? [category.id, ...children.map((c) => c.id)] : [category.id];
 
-// 获取所有相关帖子
-let allPosts: MockPost[] = [];
+let allPosts: ReturnType<typeof getPostsByCategory> = [];
 for (const cid of allCategoryIds) {
   allPosts = allPosts.concat(getPostsByCategory(cid));
 }
 
-// 排序：置顶优先，然后按时间
 allPosts.sort((a, b) => {
   if (a.isPinned && !b.isPinned) return -1;
   if (!a.isPinned && b.isPinned) return 1;
   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 });
 
-// 如果是父分类，展示其子分类列表
 const childCategories = isParent ? children : [];
-// 如果是子分类，显示对应的标签过滤数据
 const categoryLabel = category.name;
 const metadata = { title: `${categoryLabel} —— 理科迷` };
 ---
@@ -97,12 +96,6 @@ const metadata = { title: `${categoryLabel} —— 理科迷` };
         </div>
       )
     }
-
-    <!-- Tab 切换 -->
-    <div class="hidden">
-      <!-- 预留给后续 CategoryTabs 的动态 client:only 版本 -->
-      <!-- 当前纯静态展示：按最新/精华/最热 切换通过 query param ？ -->
-    </div>
 
     <!-- 帖子列表 -->
     <div class="space-y-3">

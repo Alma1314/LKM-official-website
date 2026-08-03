@@ -5,9 +5,9 @@ import ToggleTheme from '~/features/shell/common/components/ToggleTheme.astro';
 import ToggleMenu from '~/features/shell/common/components/ToggleMenu.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
 
-import { getHomePermalink } from '~/core/utils/permalinks';
-import { trimSlash } from '~/core/utils/paths';
-import { getAsset } from '~/core/utils/permalinks';
+import { getHomePermalink } from '~/lib/utils/permalinks';
+import { trimSlash } from '~/lib/utils/paths';
+import { getAsset } from '~/lib/utils/permalinks';
 
 interface Link {
   text?: string;

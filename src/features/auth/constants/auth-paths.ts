@@ -1,4 +1,4 @@
-import { buildAuthUrl } from '~/core/utils/paths';
+import { buildAuthUrl } from '~/lib/utils/paths';
 
 declare global {
   interface Window {

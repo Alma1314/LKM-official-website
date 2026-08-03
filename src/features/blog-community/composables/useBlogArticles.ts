@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import { useBlogApi } from './useBlogApi';
+import { useBlogApi } from '../api/useBlogApi';
 import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;

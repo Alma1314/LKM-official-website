@@ -1,6 +1,6 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 const metadata = {
   title: '文档管理 — LKM',
@@ -40,7 +40,7 @@ const metadata = {
 
 <script>
   import { listDocuments, deleteDocument } from '@lkm/editor-persistence';
-  import { buildUrl } from '~/core/utils/paths';
+  import { buildUrl } from '~/lib/utils/paths';
   import type { DocumentMeta } from '@lkm/rich-text-editor';
 
   function renderList() {

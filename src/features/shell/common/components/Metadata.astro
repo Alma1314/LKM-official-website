@@ -4,11 +4,11 @@ import { SEO } from 'astro-seo';
 
 import type { SEOProps } from 'astro-seo';
 
-import { SITE, METADATA, I18N } from '~/core/config';
-import type { MetaData, MetaDataOpenGraph } from '~/core/types';
-import { getCanonical } from '~/core/utils/permalinks';
+import { SITE, METADATA, I18N } from '~/lib/config';
+import type { MetaData, MetaDataOpenGraph } from '~/types/core';
+import { getCanonical } from '~/lib/utils/permalinks';
 
-import { adaptOpenGraphImages } from '~/core/utils/images';
+import { adaptOpenGraphImages } from '~/lib/utils/images';
 
 export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;

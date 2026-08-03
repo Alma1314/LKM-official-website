@@ -35,7 +35,7 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { getCategory } from '../stores/constants';
 import { getLetters } from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const range = ref('today');
 const letters = ref([]);

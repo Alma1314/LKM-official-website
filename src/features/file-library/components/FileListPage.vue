@@ -183,7 +183,7 @@ import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import { mockFiles } from '../data/mock-files';
 import { forumCategories } from '../../forum/data/categories';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const viewMode = ref<'list' | 'grid'>('list');
 const filterCategory = ref('');

@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { mockQuestions } from '../data/mock-competitions';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const questions = ref(mockQuestions.slice(0, 8));
 const answers = ref<(number | undefined)[]>(new Array(questions.value.length).fill(undefined));

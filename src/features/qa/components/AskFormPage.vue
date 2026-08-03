@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const activeTab = ref('general');
 const tabs = [

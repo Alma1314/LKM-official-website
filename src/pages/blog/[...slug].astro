@@ -1,0 +1,10 @@
+---
+import Layout from '~/layouts/CommunityLayout.astro';
+import BlogApp from '~/features/blog-community/BlogApp.vue';
+
+const initialPath = Astro.url.pathname + Astro.url.search;
+---
+
+<Layout>
+  <BlogApp initialPath={initialPath} client:only="vue" />
+</Layout>

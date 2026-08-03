@@ -26,6 +26,10 @@ pnpm-debug.log*
 
 .astro
 
+# Python
+__pycache__/
+*.pyc
+
 #ai
 .claude
 .codex

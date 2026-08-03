@@ -1,7 +1,7 @@
-export { authStore, setStarHopeAuthContext } from './stores/auth.svelte';
-export { questionBankStore } from './stores/question-bank.svelte';
-export { practiceStore } from './stores/practice.svelte';
-export { navigationStore, navigation } from './stores/navigation.svelte';
-export { aiStore } from './stores/ai.svelte';
-export { db } from './stores/db.svelte';
+export { setStarHopeAuthContext, useAuthStore } from './stores-vue/auth';
+export { useQuestionBankStore } from './stores-vue/question-bank';
+export { usePracticeStore } from './stores-vue/practice';
+export { useNavigationStore, navigation } from './stores-vue/navigation';
+export { useAiStore } from './stores-vue/ai';
+export { db } from './stores-vue/db';
 export type { Question, Folder, PracticeSession, AiAgent, AiMessage } from './types';
