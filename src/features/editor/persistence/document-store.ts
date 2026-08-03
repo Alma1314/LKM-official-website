@@ -12,13 +12,7 @@ export class AppError extends Error {
   }
 }
 
-import type {
-  DocumentData,
-  DocumentMeta,
-  DocumentSummary,
-  AutosavePayload,
-  AutosaveResponse,
-} from '../engine/types';
+import type { DocumentData, DocumentMeta, DocumentSummary, AutosavePayload, AutosaveResponse } from '../engine/types';
 
 const DRAFTS_KEY = 'lkm-editor-drafts';
 const DRAFTS_INDEX_KEY = 'lkm-editor-drafts-index';
