@@ -44,3 +44,7 @@ declare module 'virtual:config-community' {
   const config: Record<string, unknown>;
   export default config;
 }
+
+declare module '~/scripts/blog-init.js';
+declare module '~/scripts/blog-transitions.js';
+declare module '~/scripts/blog-photoswipe.js';
