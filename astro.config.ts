@@ -9,6 +9,7 @@ import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
+import node from '@astrojs/node';
 import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
@@ -41,6 +42,7 @@ export default defineConfig({
   base: '/',
 
   output: 'server',
+  adapter: node({ mode: 'standalone' }),
 
   integrations: [
     sitemap(),
