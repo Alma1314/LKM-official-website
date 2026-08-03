@@ -15,7 +15,7 @@
  * </Layout>
  */
 
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 export interface CommunitySidebarLink {
   text: string;

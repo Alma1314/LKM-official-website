@@ -3,9 +3,9 @@ import Layout from './BaseLayout.astro';
 import SiteNavbar from '~/features/shell/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
-import { footerData } from '~/core/navigation';
+import { footerData } from '~/lib/navigation';
 
-import type { MetaData } from '~/core/types';
+import type { MetaData } from '~/types/core';
 
 export interface Props {
   metadata?: MetaData;

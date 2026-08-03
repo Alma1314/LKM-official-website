@@ -9,4 +9,4 @@
 
 ---
 
-See [AGENTS.md](./AGENTS.md) for all project documentation and AI agent instructions, including architecture, monorepo structure, content collections, component patterns, and validation checklist.
+See [AGENTS.md](./AGENTS.md) for all project documentation and AI agent instructions.

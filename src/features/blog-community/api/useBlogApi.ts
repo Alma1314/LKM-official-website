@@ -1,7 +1,7 @@
-import { get, post, del } from '~/core/http/client';
-import { ok, err } from '~/core/errors/result';
-import type { Result } from '~/core/errors/result';
-import type { AppError } from '~/core/errors/error-codes';
+import { get, post, del } from '~/lib/http/client';
+import { ok, err } from '~/lib/errors/result';
+import type { Result } from '~/lib/errors/result';
+import type { AppError } from '~/lib/errors/error-codes';
 import type {
   ApiResponse,
   ListData,

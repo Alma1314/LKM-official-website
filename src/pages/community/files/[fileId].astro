@@ -2,7 +2,7 @@
 import Layout from '~/layouts/CommunityLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getFileById } from '~/features/file-library/data/mock-files';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 // server 模式：params 从 URL 直接解析
 // 后端就绪后切换为：const file = await fileLibraryApi.getFile(fileId)

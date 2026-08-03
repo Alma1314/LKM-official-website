@@ -1,7 +1,7 @@
 ---
 import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 import { getUserByUsername, ProfilePage } from '~/features/profile';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 // server 模式：params 从 URL 直接解析
 // SSR 时可转发客户端 Cookie 给 FastAPI 获取用户数据

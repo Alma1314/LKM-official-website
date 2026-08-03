@@ -3,11 +3,11 @@ import Layout from './BaseLayout.astro';
 import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
-import { navBarConfig } from '~/core/config';
-import { footerData } from '~/core/navigation';
-import { LinkPresets } from '~/core/constants/link-presets';
+import { navBarConfig } from '~/lib/config';
+import { footerData } from '~/lib/navigation';
+import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
-import type { MetaData } from '~/core/types';
+import type { MetaData } from '~/types/core';
 
 export interface Props {
   metadata?: MetaData;

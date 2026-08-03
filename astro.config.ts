@@ -15,18 +15,18 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
-import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
-import { remarkExcerpt } from './src/core/plugins/remark-excerpt.js';
+import { remarkReadingTime } from './src/lib/markdown-plugins/remark-reading-time.mjs';
+import { remarkExcerpt } from './src/lib/markdown-plugins/remark-excerpt.js';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
 import remarkDirective from 'remark-directive';
 import remarkSectionize from 'remark-sectionize';
-import { parseDirectiveNode } from './src/core/plugins/remark-directive-rehype.js';
+import { parseDirectiveNode } from './src/lib/markdown-plugins/remark-directive-rehype.js';
 import rehypeSlug from 'rehype-slug';
 import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
-import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
-import { responsiveTablesRehypePlugin } from './src/core/utils/frontmatter.js';
+import { GithubCardComponent } from './src/lib/markdown-plugins/rehype-component-github-card.mjs';
+import { AdmonitionComponent } from './src/lib/markdown-plugins/rehype-component-admonition.mjs';
+import { responsiveTablesRehypePlugin } from './src/lib/utils/frontmatter.js';
 import fs from 'node:fs';
 import yaml from 'js-yaml';
 import { fileURLToPath } from 'node:url';
@@ -175,12 +175,12 @@ export default defineConfig({
         },
         load(id) {
           if (id === '\0virtual:config') {
-            const raw = fs.readFileSync('src/config.yaml', 'utf-8');
+            const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }
           if (id === '\0virtual:config-community') {
-            const raw = fs.readFileSync('src/config.community.yaml', 'utf-8');
+            const raw = fs.readFileSync('src/data/config.community.yaml', 'utf-8');
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }

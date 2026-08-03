@@ -3,7 +3,7 @@ import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { getRootCategories, getChildCategories } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 const metadata = { title: '板块广场 —— 理科迷' };
 const rootCategories = getRootCategories();

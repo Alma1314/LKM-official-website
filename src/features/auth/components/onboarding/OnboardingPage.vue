@@ -88,7 +88,7 @@ import IdentityTags from './IdentityTags.vue';
 import FollowRecommend from './FollowRecommend.vue';
 import AnswerQuiz from './AnswerQuiz.vue';
 import NewbieTasks from './NewbieTasks.vue';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 interface StepConfig {
   label: string;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watchEffect, onMounted } from 'vue';
-import I18nKey from '~/core/i18n/i18nKey';
-import { i18n } from '~/core/i18n/translation';
+import I18nKey from '~/lib/i18n/i18nKey';
+import { i18n } from '~/lib/i18n/translation';
 import { Icon } from '@iconify/vue';
-import { url } from '~/core/utils/url-utils';
+import { url } from '~/lib/utils/url-utils';
 
 interface SearchResult {
   url: string;

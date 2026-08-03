@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { getCategoryBySlug, getChildCategories, forumCategories } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 // SSR：每次请求实时获取（后端就绪后切换为 API 调用）
 // const { ok: result } = await forumApi.getPosts(1);

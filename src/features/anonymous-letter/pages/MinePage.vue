@@ -104,7 +104,7 @@ import EmptyState from '../components/EmptyState.vue';
 import BackupPanel from '../components/BackupPanel.vue';
 import { getCategory } from '../stores/constants';
 import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const tab = ref('letters');
 const letters = ref([]);

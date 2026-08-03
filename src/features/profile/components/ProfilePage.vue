@@ -146,7 +146,7 @@
 import { ref, computed } from 'vue';
 import { type MockUser, TITLE_MAP } from '../data/mock-users';
 import { mockPosts } from '../../forum/data/mock-posts';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const props = defineProps<{ user: MockUser }>();
 

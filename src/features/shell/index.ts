@@ -27,7 +27,7 @@ export { default as ShellApplyColorMode } from './common/components/ApplyColorMo
 export { default as ShellConfigCarrier } from './common/components/ConfigCarrier.astro';
 export { default as ShellGlobalStyles } from './common/components/GlobalStyles.astro';
 export { default as ShellCustomStyles } from './common/components/CustomStyles.astro';
-export { default as ShellBackToTop } from '~/ui/primitives/BackToTop.astro';
+export { default as ShellBackToTop } from '~/components/primitives/BackToTop.astro';
 export * from './common/shell-events';
 
 // Vue components (migrated from Svelte)

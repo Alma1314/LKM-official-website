@@ -12,9 +12,9 @@ import '../styles/expressive-code.css';
 
 import ConfigCarrier from '~/features/shell/common/components/ConfigCarrier.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
-import { navBarConfig } from '~/core/config/fuwari-community';
-import { profileConfig, siteConfig } from '~/core/config';
-import { LinkPresets } from '~/core/constants/link-presets';
+import { navBarConfig } from '~/lib/config/fuwari-community';
+import { profileConfig, siteConfig } from '~/lib/config';
+import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import {
   AUTO_MODE,
@@ -24,10 +24,10 @@ import {
   DEFAULT_THEME,
   LIGHT_MODE,
   PAGE_WIDTH,
-} from '~/core/constants/constants';
-import { defaultFavicons } from '~/core/constants/icon';
+} from '~/lib/constants/constants';
+import { defaultFavicons } from '~/lib/constants/icon';
 import type { Favicon } from '~/types/config';
-import { pathsEqual, url } from '~/core/utils/url-utils';
+import { pathsEqual, url } from '~/lib/utils/url-utils';
 interface Props {
   title?: string;
   banner?: string;

@@ -3,8 +3,8 @@ import '~/core/styles/tailwind.css';
 import '../styles/main.css';
 import '../styles/variables.css';
 
-import { I18N } from '~/core/config';
-import { siteConfig } from '~/core/config';
+import { I18N } from '~/lib/config';
+import { siteConfig } from '~/lib/config';
 import LoginModal from '~/features/auth/components/login/LoginModal.vue';
 import CommonMeta from '~/features/shell/common/components/CommonMeta.astro';
 import Favicons from '~/features/shell/components/Favicons.astro';
@@ -16,14 +16,14 @@ import Analytics from '~/features/shell/common/components/Analytics.astro';
 import SecurityHeaders from '~/features/shell/common/components/SecurityHeaders.astro';
 import BasicScripts from '~/features/shell/common/components/BasicScripts.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
-import { navBarConfig } from '~/core/config';
-import { LinkPresets } from '~/core/constants/link-presets';
+import { navBarConfig } from '~/lib/config';
+import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 
 // 注释下面这行以禁用 View Transitions
 import { ClientRouter } from 'astro:transitions';
 
-import type { MetaData as MetaDataType } from '~/core/types';
+import type { MetaData as MetaDataType } from '~/types/core';
 
 export interface Props {
   metadata?: MetaDataType;

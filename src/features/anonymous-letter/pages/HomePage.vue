@@ -94,7 +94,7 @@ import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
 import { getLetters, getFavorites, toggleFavorite } from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const categories = CATEGORIES;
 

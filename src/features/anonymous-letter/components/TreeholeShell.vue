@@ -136,7 +136,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import Particles from './Particles.vue';
 import { useApp } from '../stores/app';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 defineProps<{
   activeNav?: string;

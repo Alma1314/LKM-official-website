@@ -7,7 +7,7 @@ import { communitySidebarLinks } from '~/features/shell-community/data/community
 import PostInteractions from '~/features/forum/components/PostInteractions.vue';
 import CommentSection from '~/features/forum/components/CommentSection.vue';
 import PostCard from '~/features/forum/components/PostCard.astro';
-import { getPermalink } from '~/core/utils/permalinks';
+import { getPermalink } from '~/lib/utils/permalinks';
 import sanitizeHtml from 'sanitize-html';
 
 // server 模式：params 从 URL 直接解析，无需 getStaticPaths

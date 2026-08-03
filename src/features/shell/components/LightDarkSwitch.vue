@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from 'vue';
-import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/core/constants/constants';
-import I18nKey from '~/core/i18n/i18nKey';
-import { i18n } from '~/core/i18n/translation';
+import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
+import I18nKey from '~/lib/i18n/i18nKey';
+import { i18n } from '~/lib/i18n/translation';
 import { Icon } from '@iconify/vue';
 import {
   applyThemeToDocument,
   getStoredTheme,
   setTheme,
-} from '~/core/utils/setting-utils';
+} from '~/lib/utils/setting-utils';
 import type { LIGHT_DARK_MODE } from '~/types/config';
 
 const seq: LIGHT_DARK_MODE[] = [LIGHT_MODE, DARK_MODE, AUTO_MODE];

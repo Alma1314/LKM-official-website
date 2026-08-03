@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import I18nKey from '~/core/i18n/i18nKey';
-import { i18n } from '~/core/i18n/translation';
+import I18nKey from '~/lib/i18n/i18nKey';
+import { i18n } from '~/lib/i18n/translation';
 import { Icon } from '@iconify/vue';
-import { getDefaultHue, getHue, setHue } from '~/core/utils/setting-utils';
+import { getDefaultHue, getHue, setHue } from '~/lib/utils/setting-utils';
 
 const hue = ref(typeof window !== 'undefined' ? getHue() : 250);
 const defaultHue = typeof window !== 'undefined' ? getDefaultHue() : 250;

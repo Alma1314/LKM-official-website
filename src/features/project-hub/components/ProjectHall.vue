@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { mockProjects } from '../data/mock-projects';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const activeTab = ref('recruiting');
 const filteredProjects = computed(() =>

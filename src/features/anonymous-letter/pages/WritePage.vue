@@ -294,7 +294,7 @@ import {
 } from '../stores/storage';
 import { randomCodename } from '../utils/codename';
 import { useApp } from '../stores/app';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const app = useApp();
 

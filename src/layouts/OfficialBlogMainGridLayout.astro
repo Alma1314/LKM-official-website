@@ -1,13 +1,13 @@
 ---
-import { BackToTop, ImageWrapper } from '~/ui/primitives';
+import { BackToTop, ImageWrapper } from '~/components/primitives';
 import Footer from '~/features/shell/components/FuwariFooter.astro';
 import SideBar from '~/features/shell/components/BlogSidePanel.astro';
 import type { MarkdownHeading } from 'astro';
 import { Icon } from 'astro-icon/components';
 import TOC from '~/features/shell/components/TOC.astro';
 import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
-import { siteConfig } from '~/core/config';
-import { BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT } from '~/core/constants/constants';
+import { siteConfig } from '~/lib/config';
+import { BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT } from '~/lib/constants/constants';
 import Layout from './OfficialBlogLayout.astro';
 
 interface Props {

@@ -91,7 +91,7 @@ import {
   clearConversation,
   deleteConversation,
 } from '../stores/storage';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const conversations = ref([]);
 const activeId = ref('');

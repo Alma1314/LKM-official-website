@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { mockCompetitions } from '../data/mock-competitions';
-import { buildUrl } from '~/core/utils/paths';
+import { buildUrl } from '~/lib/utils/paths';
 
 const groupedCompetitions = computed(() => {
   const order = { ongoing: 0, upcoming: 1, ended: 2 };
