@@ -1,0 +1,37 @@
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkMdx from 'remark-mdx';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkFrontmatter from 'remark-frontmatter';
+import yaml from 'js-yaml';
+import type { Root } from 'mdast';
+import type { ParsedMdx } from './types';
+
+const parser = unified()
+  .use(remarkParse)
+  .use(remarkFrontmatter, ['yaml'])
+  .use(remarkGfm)
+  .use(remarkMath, { singleDollarTextMath: true })
+  .use(remarkMdx);
+
+export function parseMdxString(mdx: string): ParsedMdx {
+  const root = parser.parse(mdx) as Root;
+  let frontmatter: Record<string, unknown> = {};
+
+  // 从树中提取并移除 YAML frontmatter
+  const firstChild = root.children[0];
+  if (firstChild?.type === 'yaml') {
+    try {
+      const parsed = yaml.load(firstChild.value) as Record<string, unknown> | undefined;
+      if (parsed && typeof parsed === 'object') {
+        frontmatter = parsed;
+      }
+    } catch (err) {
+      console.warn('[parse-mdx] YAML 解析失败:', err);
+    }
+    root.children = root.children.slice(1);
+  }
+
+  return { frontmatter, root };
+}
