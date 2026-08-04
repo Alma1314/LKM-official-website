@@ -275,9 +275,9 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ## Git 规范
 
-| 规则     | 说明                                                              |
-| -------- | ----------------------------------------------------------------- |
-| 主分支   | `main`（所有 push 和 PR 的目标）                                  |
-| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`.claude/` |
-| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`               |
-| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）           |
+| 规则     | 说明                                                                                    |
+| -------- | --------------------------------------------------------------------------------------- |
+| 主分支   | `main`（所有 push 和 PR 的目标）                                                        |
+| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`/scripts/`、`docs/`、`.claude/` |
+| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`                                     |
+| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）                                 |
