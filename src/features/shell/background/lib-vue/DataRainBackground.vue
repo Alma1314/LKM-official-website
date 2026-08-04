@@ -5,7 +5,6 @@ import BackgroundCanvas from '../vue/BackgroundCanvas.vue';
 import type { BackgroundFrame } from '../vue/useBackgroundCanvas';
 import { parseColor, buildRgba } from '../lib/colorUtils';
 
-
 interface Column {
   x: number;
   originalX: number;
