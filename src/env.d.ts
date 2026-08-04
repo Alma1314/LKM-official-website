@@ -45,6 +45,6 @@ declare module 'virtual:config-community' {
   export default config;
 }
 
-declare module '~/scripts/blog-init.js';
-declare module '~/scripts/blog-transitions.js';
-declare module '~/scripts/blog-photoswipe.js';
+declare module '~/scripts/blog-init.ts';
+declare module '~/scripts/blog-transitions.ts';
+declare module '~/scripts/blog-photoswipe.ts';
