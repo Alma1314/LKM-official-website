@@ -43,7 +43,8 @@ __pycache__
 tool/
 tools/
 reports/
-scripts/
+/scripts/
+!src/scripts/
 
 # reference material (astro templates, not committed)
 reference/astro-templates/
