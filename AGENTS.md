@@ -30,6 +30,7 @@ lkm-official-website/
 │   ├── layouts/          # 页面布局（BaseLayout/BlogLayout/SidebarLayout 等）
 │   ├── components/       # 通用 UI 组件（primitives/patterns）
 │   ├── features/         # 业务功能模块（24 个）
+│   ├── scripts/          # 客户端脚本（blog-init/transitions/photoswipe）
 │   ├── lib/              # 共享库（api/config/constants/errors/http/i18n/markdown-plugins/utils）
 │   ├── assets/           # 静态资源（astro:assets 处理）
 │   ├── styles/           # 全局 CSS（tailwind.css + markdown 样式）

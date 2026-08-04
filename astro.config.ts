@@ -33,13 +33,20 @@ import yaml from 'js-yaml';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+function loadConfigYaml() {
+  const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
+  return yaml.load(raw) as Record<string, unknown>;
+}
+const configYaml = loadConfigYaml();
+const siteConfig = (configYaml as Record<string, Record<string, unknown>>).site as Record<string, string>;
+
 export default defineConfig({
   devToolbar: {
     enabled: false,
   },
 
-  site: 'https://lkm.app',
-  base: '/',
+  site: siteConfig.site as string,
+  base: (siteConfig.base as string) || '/',
 
   output: 'server',
   adapter: node({ mode: 'standalone' }),

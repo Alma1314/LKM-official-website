@@ -257,6 +257,7 @@ git push
 │   │   ├── utils/              # 工具函数
 │   │   ├── markdown-plugins/   # Remark/Rehype 插件
 │   │   └── db/                 # 本地数据库 schema
+│   ├── scripts/                # 客户端脚本（blog-init/transitions/photoswipe）
 │   ├── features/               # 业务功能模块 (26 个)
 │   │   ├── admin/              # 管理后台
 │   │   ├── anonymous-letter/   # 匿名树洞
