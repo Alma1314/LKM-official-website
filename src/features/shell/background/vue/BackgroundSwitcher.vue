@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
     <div style="pointer-events: auto; position: absolute; inset: 0; overflow: hidden">
       <ErrorBoundary>
         <Suspense>
-          <component :is="ActiveComponent" :key="bgKey" class="" v-bind="colorProps" />
+          <component :is="ActiveComponent" :key="bgKey" v-bind="colorProps" />
           <template #fallback><div class="fixed inset-0 bg-page-bg" style="z-index: 0" /></template>
         </Suspense>
       </ErrorBoundary>
