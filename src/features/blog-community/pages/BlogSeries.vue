@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { BlogSeriesDetail } from '../types/blog';
 
 const props = defineProps<{
   seriesId: number;
 }>();
 
-const api = useBlogApi();
 const series = ref<BlogSeriesDetail | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
@@ -15,7 +14,7 @@ const error = ref<string | null>(null);
 async function load() {
   loading.value = true;
   error.value = null;
-  const result = await api.getSeriesDetail(props.seriesId);
+  const result = await blogApi.getSeriesDetail(props.seriesId);
   if (result.isErr()) {
     error.value = result.error.message;
     loading.value = false;

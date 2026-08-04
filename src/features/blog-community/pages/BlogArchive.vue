@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { BlogArticleInfo } from '../types/blog';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const api = useBlogApi();
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(false);
 
@@ -24,7 +23,7 @@ const groupedByYear = computed(() => {
 
 onMounted(async () => {
   loading.value = true;
-  const result = await api.listArticles(1);
+  const result = await blogApi.listArticles(1);
   if (result.isOk()) {
     articles.value = result.value.items;
   }

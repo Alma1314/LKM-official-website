@@ -1,3 +1,3 @@
 export { useEditorPersistence } from './useEditorPersistence';
-export { useAutoSave } from './autosave';
-export { setupKeyboardAutoScroll } from './mobileEditor';
+export { useAutoSave } from './useAutosave';
+export { setupKeyboardAutoScroll, isMobile, setupTouchGestures } from './useMobileEditor';

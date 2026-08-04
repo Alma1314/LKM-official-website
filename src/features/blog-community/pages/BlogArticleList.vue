@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { BlogArticleInfo } from '../types/blog';
 
-const api = useBlogApi();
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -17,7 +16,7 @@ const hasNext = computed(() => page.value < totalPages.value);
 async function fetchPage(p: number) {
   loading.value = true;
   error.value = null;
-  const result = await api.listArticles(p);
+  const result = await blogApi.listArticles(p);
   if (result.isErr()) {
     error.value = result.error.message;
   } else {

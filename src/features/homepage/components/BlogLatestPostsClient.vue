@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useBlogApi } from '~/features/blog-community/api/useBlogApi';
+import { blogApi } from '~/features/blog-community/api/blogApi';
 import type { BlogArticleInfo } from '~/features/blog-community/types/blog';
 
-const api = useBlogApi();
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(true);
 
 onMounted(async () => {
-  const result = await api.listArticles(1);
+  const result = await blogApi.listArticles(1);
   if (result.isOk()) {
     articles.value = result.value.items.slice(0, 6);
   }

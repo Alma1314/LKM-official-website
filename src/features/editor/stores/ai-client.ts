@@ -9,6 +9,16 @@
 //  5. Error messages never include the key or the full raw response body
 // ---------------------------------------------------------------------------
 
+// ---- 架构说明 ----------------------------------------------------------------
+// 本模块直接使用 fetch() 而非通过 ~/lib/http/client 的 axios 封装，原因：
+//  1. AI 端点由用户自行配置（外部 OpenAI 兼容 API），非本项目 FastAPI
+//  2. 需要 AbortController 细粒度控制（超时 + 调用方取消信号合并）
+//  3. 响应格式为 OpenAI Chat Completions（不同于项目 REST/GraphQL 的 JSON:API）
+//  4. axios 不支持 stream/SSE，后续可能需要流式响应
+//
+// 分层架构中这是有意为之的例外，非违规。
+// -----------------------------------------------------------------------------
+
 import { ok, err } from 'neverthrow';
 import type { Result } from 'neverthrow';
 

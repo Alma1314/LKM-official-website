@@ -1,12 +1,10 @@
 import { ref } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 
 export function useBlogStar(seriesId: number) {
   const starred = ref(false);
   const starCount = ref(0);
   const loading = ref(false);
-
-  const api = useBlogApi();
 
   function setStatus(status: { starred: boolean; star_count: number }) {
     starred.value = status.starred;
@@ -15,7 +13,7 @@ export function useBlogStar(seriesId: number) {
 
   async function toggle() {
     loading.value = true;
-    const result = await api.toggleStar(seriesId);
+    const result = await blogApi.toggleStar(seriesId);
     if (result.isOk()) {
       setStatus(result.value);
     }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
 import FullscreenButton from '../toolbar/FullscreenButton';
 import CommentPanel from '../panels/CommentPanel';
-import { setupKeyboardAutoScroll } from '../../hooks/mobileEditor';
+import { setupKeyboardAutoScroll } from '../../hooks/useMobileEditor';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '../../engine/extensions/index';
 import { useEditorPersistence } from '../../hooks/useEditorPersistence';
