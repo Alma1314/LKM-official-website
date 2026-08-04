@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # ── 前端构建 ──
   build:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +24,6 @@ jobs:
           node-version: 24
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build:packages
       - run: |
           pnpm run build
           ls -la
@@ -33,6 +33,7 @@ jobs:
         with:
           path: ./dist
 
+  # ── 前端检查（类型 + ESLint + Prettier） ──
   check:
     runs-on: ubuntu-latest
     steps:
@@ -43,11 +44,24 @@ jobs:
           node-version: 24
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build:packages
       - run: pnpm run check
 
+  # ── 前端单元测试（Vitest） ──
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test
+
+  # ── 部署到 GitHub Pages ──
   deploy:
-    needs: [build, check]
+    needs: [build, check, test-frontend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:

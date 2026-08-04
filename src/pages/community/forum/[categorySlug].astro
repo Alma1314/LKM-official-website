@@ -5,10 +5,9 @@ import { getCategoryBySlug, getChildCategories } from '~/features/forum/data/cat
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
-
-// SSR：每次请求实时获取（后端就绪后切换为 API 调用）
-// const { ok: result } = await forumApi.getPosts(1);
-// const posts = result.data?.items ?? [];
+import { graphqlClient } from '~/lib/api/graphql';
+import { PostListQuery } from '~/features/forum/graphql';
+import type { GqlPost } from '~/features/forum/graphql';
 
 const { categorySlug } = Astro.params;
 const category = getCategoryBySlug(categorySlug || '');
@@ -20,16 +19,19 @@ if (!category) {
 const isParent = !category.parentId;
 const children = isParent ? getChildCategories(category.id) : [];
 
-// 当前：使用 mock 数据（后端就绪后切换为 API）
-const { getPostsByCategory } = await import('~/features/forum/data/mock-posts');
-
+// 从后端 GraphQL 获取帖子数据
 const allCategoryIds = isParent ? [category.id, ...children.map((c) => c.id)] : [category.id];
 
-let allPosts: ReturnType<typeof getPostsByCategory> = [];
+// 逐个分类查询帖子（每个分类分页查询第一批）
+let allPosts: GqlPost[] = [];
 for (const cid of allCategoryIds) {
-  allPosts = allPosts.concat(getPostsByCategory(cid));
+  const result = await graphqlClient.query(PostListQuery, { categoryId: cid, page: 1, pageSize: 100 }).toPromise();
+  if (result.data?.posts?.items) {
+    allPosts = allPosts.concat(result.data.posts.items);
+  }
 }
 
+// 排序：置顶优先，其次按创建时间降序
 allPosts.sort((a, b) => {
   if (a.isPinned && !b.isPinned) return -1;
   if (!a.isPinned && b.isPinned) return 1;

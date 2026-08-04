@@ -35,8 +35,8 @@ describe('buildUrl', () => {
 
 describe('buildPermalink', () => {
   it('returns root for home type', () => {
-    // SITE.trailingSlash = false by default → no trailing slash
-    expect(buildPermalink('/', { type: 'home' })).toBe('/LKM-official-website');
+    // home 类型拼接 BASE_PATHNAME + 'official'
+    expect(buildPermalink('/', { type: 'home' })).toBe('/LKM-official-website/official');
   });
 
   it('returns blog path for blog type', () => {

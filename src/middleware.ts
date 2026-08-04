@@ -1,6 +1,6 @@
-// Astro 中间件 — 反向代理 /api/* 到 FastAPI
+// Astro 中间件 — 反向代理 /api/* 和 /graphql 到 FastAPI
 //
-// SSR 时 Astro 服务端拦截 /api/* 请求，
+// SSR 时 Astro 服务端拦截 /api/* 和 /graphql 请求，
 // 转发到内网 FastAPI（Docker 内部 / localhost），
 // 并转发客户端 Cookie 实现同域认证。
 
@@ -9,8 +9,9 @@ import { defineMiddleware } from 'astro:middleware';
 const API_TARGET = import.meta.env.API_URL || 'http://localhost:8000';
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  // 仅代理 /api/ 路径
-  if (!context.url.pathname.startsWith('/api/')) {
+  // 代理 /api/ 和 /graphql 路径
+  const { pathname } = context.url;
+  if (!pathname.startsWith('/api/') && !pathname.startsWith('/graphql')) {
     return next();
   }
 

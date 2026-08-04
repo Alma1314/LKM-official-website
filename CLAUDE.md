@@ -10,7 +10,8 @@
 ## 后端
 
 启动测试后端：`cd backend && python -m uvicorn main:app --reload --port 8000`
-运行后端测试：`cd backend && python -m pytest tests/ -v`（88 个测试）
+运行后端测试：`cd backend && python -m pytest tests/ -v`（含 GraphQL 测试）
+GraphQL 端点：`http://localhost:8000/graphql`（Strawberry + FastAPI）
 
 ---
 

@@ -6,3 +6,4 @@ export { default as ForumCreatePostDialog } from './components/CreatePostDialog.
 
 export * from './data/categories';
 export * from './data/mock-posts';
+export * from './graphql';

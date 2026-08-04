@@ -74,9 +74,7 @@ export function useBackgroundCanvas({
   maxDpr = DEFAULT_MAX_DPR,
 }: UseBackgroundCanvasOptions) {
   const canvasRef = ref<HTMLCanvasElement | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let frameRef: BackgroundFrame | null = null,
-    rafId: number | null = null,
+  let rafId: number | null = null,
     startTime = 0,
     pausedElapsed = 0;
   let lastActualDrawTime = 0,
@@ -109,7 +107,6 @@ export function useBackgroundCanvas({
       delta: 0,
       sinceLastResize: 0,
     };
-    frameRef = frame;
     let isVisible = !document.hidden,
       isInViewport = true,
       pausedStart: number | null = null;
@@ -273,7 +270,6 @@ export function useBackgroundCanvas({
       }
       initCleanup?.();
       initCleanup = undefined;
-      void (frameRef = null);
     };
   }
 

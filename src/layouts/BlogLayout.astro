@@ -1,5 +1,5 @@
 ---
-import '~/core/styles/tailwind.css';
+import '~/styles/tailwind.css';
 import '../styles/variables.css';
 import '../styles/main.css';
 import '../styles/markdown.css';
@@ -213,6 +213,12 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
   }
 </style>
 
-<script src="../core/scripts/blog-init.ts"></script>
-<script src="../core/scripts/blog-transitions.ts"></script>
-<script src="../core/scripts/blog-photoswipe.ts"></script>
+<script>
+  import '~/scripts/blog-init.ts';
+</script>
+<script>
+  import '~/scripts/blog-transitions.ts';
+</script>
+<script>
+  import '~/scripts/blog-photoswipe.ts';
+</script>
