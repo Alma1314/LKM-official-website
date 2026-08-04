@@ -1,5 +1,7 @@
+// API
+export { blogApi } from './api/blogApi';
+
 // Composables
-export { useBlogApi } from './api/useBlogApi';
 export { useBlogArticles } from './composables/useBlogArticles';
 export { useBlogPost } from './composables/useBlogPost';
 export { useBlogComments } from './composables/useBlogComments';

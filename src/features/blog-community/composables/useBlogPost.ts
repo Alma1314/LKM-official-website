@@ -1,7 +1,7 @@
 import { ref, shallowRef, Fragment, type Component } from 'vue';
 import { evaluate } from '@mdx-js/mdx';
 import * as runtime from '@mdx-js/vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { GitFileContent } from '../types/blog';
 
 export function useBlogPost() {
@@ -10,13 +10,11 @@ export function useBlogPost() {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const api = useBlogApi();
-
   async function fetchAndCompile(seriesId: number, filepath: string) {
     loading.value = true;
     error.value = null;
 
-    const fileResult = await api.getFileContent(seriesId, filepath);
+    const fileResult = await blogApi.getFileContent(seriesId, filepath);
     if (fileResult.isErr()) {
       error.value = fileResult.error.message;
       loading.value = false;

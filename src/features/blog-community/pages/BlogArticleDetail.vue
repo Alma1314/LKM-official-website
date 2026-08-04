@@ -3,14 +3,13 @@ import { ref, onMounted, computed } from 'vue';
 import { useBlogPost } from '../composables/useBlogPost';
 import { useBlogComments } from '../composables/useBlogComments';
 import { useBlogStar } from '../composables/useBlogStar';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import BlogCommentList from './BlogCommentList.vue';
 import BlogCommentForm from './BlogCommentForm.vue';
 import BlogStarButton from './BlogStarButton.vue';
 import type { BlogArticleDetail } from '../types/blog';
 
 const props = defineProps<{ slug: string }>();
-const api = useBlogApi();
 
 const article = ref<BlogArticleDetail | null>(null);
 const loading = ref(false);
@@ -31,7 +30,7 @@ async function copyShareLink() {
 
 onMounted(async () => {
   loading.value = true;
-  const result = await api.getArticleDetail(props.slug);
+  const result = await blogApi.getArticleDetail(props.slug);
   if (result.isErr()) {
     error.value = result.error.message;
     loading.value = false;

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 
-const api = useBlogApi();
 const content = ref('');
 const loading = ref(false);
 
 onMounted(async () => {
   loading.value = true;
-  const result = await api.getAbout();
+  const result = await blogApi.getAbout();
   if (result.isOk()) {
     content.value = result.value.content;
   }

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useAutoSave } from './autosave';
+import { useAutoSave } from './useAutosave';
 import { importMdx } from '../engine/mdx/index';
 import { exportMdx } from '../engine/mdx/index';
 import type { PersistenceAdapter } from '../engine/types';

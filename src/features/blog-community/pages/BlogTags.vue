@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { BlogTagInfo } from '../types/blog';
 
-const api = useBlogApi();
 const tags = ref<BlogTagInfo[]>([]);
 const loading = ref(false);
 
 onMounted(async () => {
   loading.value = true;
-  const result = await api.listTags();
+  const result = await blogApi.listTags();
   if (result.isOk()) {
     tags.value = result.value.items;
   }

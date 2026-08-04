@@ -5,8 +5,7 @@ import { getCategoryBySlug, getChildCategories } from '~/features/forum/data/cat
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
-import { graphqlClient } from '~/lib/api/graphql';
-import { PostListQuery } from '~/features/forum/graphql';
+import { forumApi } from '~/lib/api';
 import type { GqlPost } from '~/features/forum/graphql';
 
 const { categorySlug } = Astro.params;
@@ -19,13 +18,12 @@ if (!category) {
 const isParent = !category.parentId;
 const children = isParent ? getChildCategories(category.id) : [];
 
-// 从后端 GraphQL 获取帖子数据
+// 通过 forumApi 获取帖子数据（统一数据访问层）
 const allCategoryIds = isParent ? [category.id, ...children.map((c) => c.id)] : [category.id];
 
-// 逐个分类查询帖子（每个分类分页查询第一批）
 let allPosts: GqlPost[] = [];
 for (const cid of allCategoryIds) {
-  const result = await graphqlClient.query(PostListQuery, { categoryId: cid, page: 1, pageSize: 100 }).toPromise();
+  const result = await forumApi.listPostsByCategory(cid);
   if (result.data?.posts?.items) {
     allPosts = allPosts.concat(result.data.posts.items);
   }

@@ -8,14 +8,13 @@ import CommentSection from '~/features/forum/components/CommentSection.vue';
 import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
 import sanitizeHtml from 'sanitize-html';
-import { graphqlClient } from '~/lib/api/graphql';
-import { PostDetailQuery, PostListQuery } from '~/features/forum/graphql';
+import { forumApi } from '~/lib/api';
 import type { GqlPost } from '~/features/forum/graphql';
 
 const { postId } = Astro.params;
 
-// 从后端 GraphQL 获取帖子详情
-const postResult = await graphqlClient.query(PostDetailQuery, { id: postId || '' }).toPromise();
+// 通过 forumApi 获取帖子详情（统一数据访问层）
+const postResult = await forumApi.getPostDetail(postId || '');
 const post = postResult.data?.post;
 
 if (!post) {
@@ -24,13 +23,9 @@ if (!post) {
 
 const category = getCategoryBySlug(post.categoryId);
 
-// 获取相关帖子（同板块其他帖子）
-const relatedResult = await graphqlClient
-  .query(PostListQuery, { categoryId: post.categoryId, page: 1, pageSize: 4 })
-  .toPromise();
-const relatedPosts = (relatedResult.data?.posts?.items ?? [])
-  .filter((p: { id: string }) => p.id !== post.id)
-  .slice(0, 3);
+// 通过 forumApi 获取相关帖子
+const relatedResult = await forumApi.listRelatedPosts(post.categoryId, post.id);
+const relatedPosts = relatedResult.data?.posts?.items ?? [];
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', {

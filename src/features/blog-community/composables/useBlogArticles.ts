@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import { useBlogApi } from '../api/useBlogApi';
+import { blogApi } from '../api/blogApi';
 import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;
@@ -9,8 +9,6 @@ export function useBlogArticles() {
   const seriesList: Ref<BlogSeriesInfo[]> = ref([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
-
-  const api = useBlogApi();
 
   function extractArticles(series: BlogSeriesInfo, filepath: string): BlogArticle {
     const parts = filepath.split('/');
@@ -45,7 +43,7 @@ export function useBlogArticles() {
     loading.value = true;
     error.value = null;
 
-    const listResult = await api.listSeries();
+    const listResult = await blogApi.listSeries();
     if (listResult.isErr()) {
       error.value = `获取博客系列失败：${listResult.error.message}`;
       loading.value = false;
@@ -58,7 +56,7 @@ export function useBlogArticles() {
     const allArticles: BlogArticle[] = [];
 
     for (const series of seriesData) {
-      const detailResult = await api.getSeriesDetail(series.id);
+      const detailResult = await blogApi.getSeriesDetail(series.id);
       if (detailResult.isErr()) continue;
       if (!detailResult.value.file_tree) continue;
 

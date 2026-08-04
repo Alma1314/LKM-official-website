@@ -1,4 +1,6 @@
 import { get, post, del } from '../../http/client';
+import { graphqlClient } from '../graphql/client';
+import { PostListQuery, PostDetailQuery } from '../../../features/forum/graphql';
 
 export interface Post {
   id: string;
@@ -50,4 +52,20 @@ export const forumApi = {
   likePost: (id: string) => post<void>(`/api/forum/posts/${id}/like`),
 
   deletePost: (id: string) => del<void>(`/api/forum/posts/${id}`),
+
+  // ---- GraphQL ----
+  listPostsByCategory: (categoryId: string, page = 1, pageSize = 100) =>
+    graphqlClient.query(PostListQuery, { categoryId, page, pageSize }).toPromise(),
+
+  getPostDetail: (id: string) => graphqlClient.query(PostDetailQuery, { id }).toPromise(),
+
+  listRelatedPosts: async (categoryId: string, excludeId: string, limit = 3) => {
+    const result = await graphqlClient.query(PostListQuery, { categoryId, page: 1, pageSize: limit + 1 }).toPromise();
+    if (result.data?.posts?.items) {
+      result.data.posts.items = result.data.posts.items
+        .filter((p: { id: string }) => p.id !== excludeId)
+        .slice(0, limit);
+    }
+    return result;
+  },
 };
