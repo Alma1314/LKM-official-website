@@ -5,7 +5,6 @@ site:
   trailingSlash: false
   googleSiteVerificationId: null
 
-# Default SEO metadata
 metadata:
   title:
     default: 理科迷
@@ -70,7 +69,6 @@ analytics:
 ui:
   theme: 'system'
 
-# Fuwari blog theme configuration
 fuwari:
   site:
     title: 理科迷

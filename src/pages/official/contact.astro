@@ -10,13 +10,9 @@ const metadata = {
   title: '联系我们',
 };
 
-const sidebarLinks = [
-  { text: '发送消息', href: getPermalink('/contact#form'), icon: 'tabler:send' },
-  { text: '联系方式', href: getPermalink('/contact#support'), icon: 'tabler:phone' },
-];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/contact')}>
+<Layout metadata={metadata} currentPath={getPermalink('/contact')}>
   <!-- 首屏 -->
   <HeroText title="期待听到你的声音！" />
 

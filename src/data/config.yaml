@@ -5,7 +5,6 @@ site:
   trailingSlash: false
   googleSiteVerificationId: null
 
-# Default SEO metadata
 metadata:
   title:
     default: 理科迷
@@ -70,7 +69,6 @@ analytics:
 ui:
   theme: 'system'
 
-# Fuwari blog theme configuration
 fuwari:
   site:
     title: 理科迷
@@ -125,6 +123,8 @@ fuwari:
             url: /official/team
           - name: 项目团队
             url: /official/project-team
+          - name: QQ社群
+            url: /official/communities
           - name: 关于我们
             url: /blog/about
           - name: 服务
@@ -133,8 +133,7 @@ fuwari:
             url: /official/pricing
           - name: 联系我们
             url: /official/contact
-          - name: QQ社群
-            url: /official/communities
+
       - name: 资源
         url: /community/forum
         children:

@@ -10,13 +10,9 @@ const metadata = {
   title: '赞助与支持',
 };
 
-const sidebarLinks = [
-  { text: '支持方式', href: getPermalink('/pricing#support'), icon: 'tabler:heart' },
-  { text: '常见问题', href: getPermalink('/pricing#faq'), icon: 'tabler:help-circle' },
-];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/pricing')}>
+<Layout metadata={metadata} currentPath={getPermalink('/pricing')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技传播走得更远"
