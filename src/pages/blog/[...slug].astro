@@ -2,7 +2,8 @@
 import Layout from '~/layouts/CommunityLayout.astro';
 import BlogApp from '~/features/blog-community/BlogApp.vue';
 
-const initialPath = Astro.url.pathname + Astro.url.search;
+const basePath = new URL(import.meta.env.BASE_URL, 'http://x').pathname.replace(/\/$/, '');
+const initialPath = (Astro.url.pathname + Astro.url.search).replace(basePath, '') || '/';
 ---
 
 <Layout>
