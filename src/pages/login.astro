@@ -6,5 +6,11 @@ const metadata = { title: '登录' };
 ---
 
 <PageLayout metadata={metadata}>
-  <LoginPage client:only="vue" />
+  <div class="min-h-[calc(100vh-10rem)] flex items-center justify-center px-4">
+    <div class="w-full max-w-md">
+      <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8">
+        <LoginPage client:only="vue" />
+      </div>
+    </div>
+  </div>
 </PageLayout>

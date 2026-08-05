@@ -34,8 +34,8 @@
     <p class="font-semibold text-lg">普通账户注册成功</p>
     <p class="text-sm text-text-muted">现在可以设置 2FA 和通行密钥增强安全性</p>
     <div class="flex gap-3 justify-center">
-      <button type="button" class="btn btn-ghost btn-sm" @click="props.onComplete(false)">跳过</button>
-      <button type="button" class="btn btn-primary btn-sm" @click="props.onComplete(true)">去设置 2FA</button>
+      <button type="button" class="btn btn-ghost btn-sm" @click="emit('complete', false)">跳过</button>
+      <button type="button" class="btn btn-primary btn-sm" @click="emit('complete', true)">去设置 2FA</button>
     </div>
   </div>
 
@@ -109,9 +109,9 @@
 import { ref } from 'vue';
 import type { RegisterData } from '~/types/auth';
 
-const props = defineProps<{
-  onRegister: (type: 'normal', data: RegisterData) => { success: boolean; error?: string };
-  onComplete: (withGuide: boolean) => void;
+const emit = defineEmits<{
+  (e: 'register', type: 'normal', data: RegisterData): void;
+  (e: 'complete', withGuide: boolean): void;
 }>();
 
 const step = ref<'form' | 'verify' | 'done'>('form');
@@ -145,15 +145,11 @@ function handleVerify() {
     submitError.value = '验证码错误（模拟码：000000）';
     return;
   }
-  const result = props.onRegister('normal', {
+  emit('register', 'normal', {
     username: username.value.trim(),
     email: useEmail.value ? email.value.trim() : undefined,
     phone: !useEmail.value ? phone.value.trim() : undefined,
   });
-  if (!result.success) {
-    submitError.value = result.error || '注册失败';
-    return;
-  }
   step.value = 'done';
 }
 </script>

@@ -31,8 +31,11 @@ import { ref } from 'vue';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 import type { LoginMethod, DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
+}>();
+
 const props = defineProps<{
-  onLogin: (method: LoginMethod, credentials: Record<string, string>) => Promise<void>;
   identifiedAccount: DemoUser;
 }>();
 
@@ -51,7 +54,7 @@ async function handleSubmit() {
   }
   passwordError.value = '';
   loading.value = true;
-  await props.onLogin('password', { username: props.identifiedAccount.username, password: password.value });
+  emit('login', 'password', { username: props.identifiedAccount.username, password: password.value });
   loading.value = false;
 }
 </script>

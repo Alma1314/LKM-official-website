@@ -1,10 +1,6 @@
 // src/features/editor/index.ts
-// 薄适配层：组装 editor 包 + persistence 包，导出给 Astro 页面使用
-import { EditorMount, type PersistenceAdapter } from '@lkm/rich-text-editor';
-import { createLocalPersistence } from '@lkm/editor-persistence';
+// 编辑器模块入口 — 直接使用本地 DocumentEditor 组件 + 本地持久化
 
-const persistence = createLocalPersistence();
-
-// 封装后的 EditorMount，页面直接使用
-export { EditorMount, persistence };
-export type { PersistenceAdapter };
+export { default as DocumentEditor } from './components/core/DocumentEditor';
+export { createLocalPersistence } from './persistence/index';
+export type { DocumentData, PersistenceAdapter } from './engine/types';

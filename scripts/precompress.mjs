@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { glob } from 'tinyglobby';
 import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
 
-const DIST = 'dist/client';
+const DIST = 'dist';
 
 const compressible = /\.(html|css|js|xml|txt|json|svg|ico)$/i;
 const skipOver = 2_000; // skip files < 2KB

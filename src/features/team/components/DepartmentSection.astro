@@ -1,5 +1,5 @@
 ---
-import Section from '~/features/homepage/widgets/Section.astro';
+import SectionWrapper from './SectionWrapper.astro';
 
 export interface Props {
   id: string;
@@ -13,7 +13,7 @@ export interface Props {
 const { id, title, borderColor, desc, noGrid = false } = Astro.props;
 ---
 
-<Section id={id}>
+<SectionWrapper id={id}>
   <div class="max-w-7xl mx-auto">
     <h3 class="text-xl font-bold mb-5 text-center">
       <span class="border-b-2 pb-1" style={`border-color: ${borderColor}`}>{title}</span>
@@ -35,4 +35,4 @@ const { id, title, borderColor, desc, noGrid = false } = Astro.props;
       )
     }
   </div>
-</Section>
+</SectionWrapper>

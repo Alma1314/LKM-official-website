@@ -1,4 +1,4 @@
-import type { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/core/constants/constants';
+import type { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
 
 export type SiteConfig = {
   title: string;

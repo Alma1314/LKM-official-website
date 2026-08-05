@@ -1,28 +1,26 @@
 ---
-import { UI } from '~/core/config';
-
-// TODO: This code is temporary
+import { UI } from '~/lib/config';
 ---
 
 <script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
+  // 统一的 applyTheme：仅负责将主题应用到 document.documentElement.classList
   function applyTheme(theme) {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    const matches = document.querySelectorAll('[data-aw-toggle-color-scheme] > input');
-    if (matches && matches.length) {
-      matches.forEach((elem) => {
-        elem.checked = theme !== 'dark';
-      });
+    if (theme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', prefersDark);
+    } else {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
     }
   }
 
-  if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
+  // 页面绘制前设置初始主题，避免 FOUC
+  if (defaultTheme && defaultTheme.endsWith(':only')) {
     applyTheme(defaultTheme.replace(':only', ''));
-  } else if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
+  } else if (localStorage.theme === 'dark') {
     applyTheme('dark');
-  } else {
+  } else if (localStorage.theme === 'light') {
     applyTheme('light');
+  } else {
+    applyTheme(defaultTheme);
   }
 </script>

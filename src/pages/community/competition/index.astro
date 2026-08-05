@@ -1,0 +1,15 @@
+---
+import Layout from '~/layouts/CommunitySidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import CompetitionHall from '~/features/competition/components/CompetitionHall.vue';
+import { getPermalink } from '~/lib/utils/permalinks';
+
+const metadata = { title: '竞赛 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/competition')}>
+  <div class="space-y-6">
+    <h1 class="text-3xl font-bold text-deep-text">竞赛大厅</h1>
+    <div style="min-height: 400px"><CompetitionHall client:only="vue" /></div>
+  </div>
+</Layout>

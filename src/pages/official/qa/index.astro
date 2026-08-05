@@ -1,0 +1,15 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-official/data/community-sidebar';
+import QAListPage from '~/features/qa/components/QAListPage.vue';
+import { getPermalink } from '~/lib/utils/permalinks';
+
+const metadata = { title: '帮助/求助 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/qa')}>
+  <div class="space-y-6">
+    <h1 class="text-3xl font-bold text-deep-text">帮助/求助</h1>
+    <div style="min-height: 400px"><QAListPage client:only="vue" /></div>
+  </div>
+</Layout>

@@ -2,64 +2,74 @@ import { defineConfig } from 'astro/config';
 
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
+import astroExpressiveCode from 'astro-expressive-code';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
-import svelte from '@astrojs/svelte';
-import Unfonts from 'unplugin-fonts/astro';
 import node from '@astrojs/node';
+import Unfonts from 'unplugin-fonts/astro';
 import tailwindcss from '@tailwindcss/vite';
-import compression from 'vite-plugin-compression';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import lilypond from 'astro-lilypond';
-import mermaid from 'astro-mermaid';
-import type { AstroIntegration } from 'astro';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
 
-import { remarkReadingTime } from './src/core/plugins/remark-reading-time.mjs';
-import { remarkExcerpt } from './src/core/plugins/remark-excerpt.js';
+import { remarkReadingTime } from './src/lib/markdown-plugins/remark-reading-time.mjs';
+import { remarkExcerpt } from './src/lib/markdown-plugins/remark-excerpt.js';
 import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
 import remarkDirective from 'remark-directive';
 import remarkSectionize from 'remark-sectionize';
-import { parseDirectiveNode } from './src/core/plugins/remark-directive-rehype.js';
+import { parseDirectiveNode } from './src/lib/markdown-plugins/remark-directive-rehype.js';
 import rehypeSlug from 'rehype-slug';
 import rehypeComponents from 'rehype-components';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { GithubCardComponent } from './src/core/plugins/rehype-component-github-card.mjs';
-import { AdmonitionComponent } from './src/core/plugins/rehype-component-admonition.mjs';
+import { GithubCardComponent } from './src/lib/markdown-plugins/rehype-component-github-card.mjs';
+import { AdmonitionComponent } from './src/lib/markdown-plugins/rehype-component-admonition.mjs';
+import { responsiveTablesRehypePlugin } from './src/lib/utils/frontmatter.js';
 import fs from 'node:fs';
 import yaml from 'js-yaml';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const hasExternalScripts = false;
-const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
-  hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
+function loadConfigYaml() {
+  const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
+  return yaml.load(raw) as Record<string, unknown>;
+}
+const configYaml = loadConfigYaml();
+const siteConfig = (configYaml as Record<string, Record<string, unknown>>).site as Record<string, string>;
 
 export default defineConfig({
   devToolbar: {
     enabled: false,
   },
 
-  site: 'https://LKM-AHZ.github.io',
-  base: '/LKM-official-website',
+  site: siteConfig.site as string,
+  base: (siteConfig.base as string) || '/',
 
-  output: 'static',
+  output: 'server',
   adapter: node({ mode: 'standalone' }),
 
   integrations: [
     sitemap(),
+    astroExpressiveCode({
+      themes: ['github-dark'],
+      defaultProps: { showLineNumbers: false },
+      plugins: [pluginLineNumbers()],
+    }),
     mdx(),
     vue(),
     react({
       include: ['**/*.tsx', '**/*.jsx'],
     }),
-    svelte(),
     icon({
       include: {
         tabler: ['*'],
+        'material-symbols': ['*'],
+        'fa6-brands': ['creative-commons', 'github'],
+        'fa6-regular': ['address-card'],
+        'fa6-solid': ['arrow-rotate-left', 'arrow-up-right-from-square', 'chevron-right'],
         'flat-color-icons': [
           'template',
           'gallery',
@@ -73,12 +83,6 @@ export default defineConfig({
         ],
       },
     }),
-
-    ...whenExternalScripts(() =>
-      partytown({
-        config: { forward: ['dataLayer.push'] },
-      })
-    ),
 
     Unfonts({
       google: {
@@ -96,31 +100,16 @@ export default defineConfig({
     }),
 
     compress({
-      CSS: false,
+      CSS: true,
       HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
-      Image: false,
-      JavaScript: false,
-      SVG: false,
+      Image: true,
+      JavaScript: true,
+      SVG: true,
       Logger: 1,
-    }),
-
-    lilypond(),
-    mermaid({
-      theme: 'default',
-      autoTheme: true,
     }),
   ],
 
   image: {
-    // Astro 默认的 Sharp 服务处理本地图片。
-    //
-    // 大多数远程 CDN 图片（Unsplash、Cloudinary、Imgix 等）由
-    // src/components/common/Image.astro 通过 `unpic` 路由，它会用 CDN 端
-    // 的查询参数重写 URL 并直接从提供商提供 — Astro 从不下载它们，因此无需列出。
-    //
-    // `domains` 只对落入 Astro 原生 <Image /> 的远程 URL 有效
-    // （即 Unpic 无法检测的提供商，如 Pixabay）。
-    // 列出的条目被授权由 Sharp 处理。
     domains: ['cdn.pixabay.com'],
   },
 
@@ -136,6 +125,7 @@ export default defineConfig({
         parseDirectiveNode as unknown as RemarkPlugin,
       ],
       rehypePlugins: [
+        responsiveTablesRehypePlugin,
         rehypeKatex,
         rehypeSlug,
         [
@@ -186,22 +176,20 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      compression({
-        algorithm: 'gzip',
-        ext: '.gz',
-      }),
-      compression({
-        algorithm: 'brotliCompress',
-        ext: '.br',
-      }),
       {
         name: 'virtual-config',
         resolveId(id) {
           if (id === 'virtual:config') return '\0virtual:config';
+          if (id === 'virtual:config-community') return '\0virtual:config-community';
         },
         load(id) {
           if (id === '\0virtual:config') {
-            const raw = fs.readFileSync('src/config.yaml', 'utf-8');
+            const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
+            const parsed = yaml.load(raw);
+            return `export default ${JSON.stringify(parsed)};`;
+          }
+          if (id === '\0virtual:config-community') {
+            const raw = fs.readFileSync('src/data/config.community.yaml', 'utf-8');
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }
@@ -211,7 +199,7 @@ export default defineConfig({
         name: 'exclude-yaml',
         resolveId(id) {
           if (id.endsWith('.yaml') || id.endsWith('.yml')) {
-            return false; // prevent YAML from being resolved as a module
+            return false;
           }
         },
         load(id) {
@@ -221,11 +209,8 @@ export default defineConfig({
         },
       },
     ],
-    // 预构建优化：将重依赖预列入 include，避免懒构建导致的并发竞态。
-    // Windows + pnpm 下 Vite 的 deps 原子重命名可能失败，预列关键依赖让
-    // 它们在首次启动时一次性构建完成。
     ssr: {
-      noExternal: ['@iconify/svelte'],
+      noExternal: [],
     },
     build: {
       rollupOptions: {
@@ -235,7 +220,7 @@ export default defineConfig({
               return 'vendor-react';
             }
             if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
-              return 'vendor-ui';
+              return;
             }
             if (id.includes('node_modules/three')) {
               return 'vendor-three';
@@ -243,22 +228,24 @@ export default defineConfig({
             if (id.includes('node_modules/katex') || id.includes('node_modules/rehype-katex')) {
               return 'vendor-katex';
             }
-            if (id.includes('node_modules/svelte') || id.includes('node_modules/@iconify/svelte')) {
-              return 'vendor-svelte';
+            if (id.includes('node_modules/vue') || id.includes('node_modules/@iconify/vue')) {
+              return 'vendor-vue';
             }
           },
         },
       },
     },
     optimizeDeps: {
-      exclude: ['@iconify/svelte', 'virtual:config'],
+      exclude: ['virtual:config', 'virtual:config-community'],
       include: ['react', 'react-dom', 'react-dom/client'],
     },
     css: {
       transformer: 'postcss',
     },
     resolve: {
-      alias: {},
+      alias: {
+        '~': path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'src'),
+      },
     },
   },
 });

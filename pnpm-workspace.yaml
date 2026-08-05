@@ -1,7 +1,7 @@
-packages:
-  - 'packages/*'
-
 allowBuilds:
   '@tsparticles/engine': true
   esbuild: false
   sharp: false
+
+patchedDependencies:
+  tsup@8.5.1: patches/tsup@8.5.1.patch

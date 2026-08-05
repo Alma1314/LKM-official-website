@@ -1,9 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
-import type { MockPost } from '../data/mock-posts';
+import type { GqlPost } from '~/features/forum/graphql';
+import { getPermalink } from '~/lib/utils/permalinks';
 
 export interface Props {
-  post: MockPost;
+  post: GqlPost;
 }
 
 const { post } = Astro.props;
@@ -26,9 +27,10 @@ function formatCount(n: number): string {
 }
 
 const timeStr = formatTime(post.createdAt);
+const authorName = post.author?.displayName ?? '匿名用户';
 ---
 
-<a href={`/forum/post/${post.id}`} class="profile-card group block">
+<a href={getPermalink(`/forum/post/${post.id}`)} class="profile-card group block">
   <div class="profile-inner p-4 flex flex-col gap-2.5">
     <!-- 置顶 / 精华 标记 -->
     <div class="flex items-center gap-2">
@@ -72,7 +74,7 @@ const timeStr = formatTime(post.createdAt);
     <!-- 底部信息 -->
     <div class="flex items-center justify-between text-xs text-text-muted/60 pt-2 border-t border-surface-3">
       <div class="flex items-center gap-3">
-        <span>{post.authorName}</span>
+        <span>{authorName}</span>
         <span>{timeStr}</span>
       </div>
       <div class="flex items-center gap-3">

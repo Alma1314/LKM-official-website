@@ -1,5 +1,5 @@
 ---
-import Section from '~/features/homepage/widgets/Section.astro';
+import SectionWrapper from './SectionWrapper.astro';
 
 export interface Props {
   title: string;
@@ -10,7 +10,7 @@ export interface Props {
 const { title, intro, id } = Astro.props;
 ---
 
-<Section id={id}>
+<SectionWrapper id={id}>
   <div class="max-w-7xl mx-auto">
     <h3 class="text-xl font-bold mb-2 text-center">
       <span class="border-b-2 border-primary pb-1">{title}</span>
@@ -26,4 +26,4 @@ const { title, intro, id } = Astro.props;
       <slot />
     </div>
   </div>
-</Section>
+</SectionWrapper>

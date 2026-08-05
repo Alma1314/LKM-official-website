@@ -1,23 +1,17 @@
 ---
-import Headline from '~/ui/primitives/Headline.astro';
-import WidgetWrapper from '~/ui/primitives/WidgetWrapper.astro';
-import type { Features as Props } from '~/core/types';
+import { Headline, WidgetWrapper } from '~/components/primitives';
+import type { Features as Props } from '~/types/core';
 
 const {
   title = await Astro.slots.render('title'),
   subtitle = await Astro.slots.render('subtitle'),
   tagline = await Astro.slots.render('tagline'),
-  items: _items = [],
-  columns: _columns = 3,
-  defaultIcon: _defaultIcon,
 
   id,
   isDark = false,
   classes = {},
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
-
-export { _items, _columns, _defaultIcon };
 ---
 
 <WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>

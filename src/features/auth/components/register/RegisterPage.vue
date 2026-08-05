@@ -33,7 +33,7 @@
     <!-- Guide step -->
     <div v-else-if="showGuide" class="relative w-full max-w-md">
       <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8">
-        <RegisterGuide :onComplete="() => (showGuide = false)" :onSkip="() => (showGuide = false)" />
+        <RegisterGuide @complete="() => (showGuide = false)" @skip="() => (showGuide = false)" />
       </div>
     </div>
 
@@ -56,8 +56,8 @@
           >
         </div>
 
-        <LocalRegister v-if="regType === 'local'" :onRegister="handleRegister" />
-        <NormalRegister v-if="regType === 'normal'" :onRegister="handleRegister" :onComplete="handleComplete" />
+        <LocalRegister v-if="regType === 'local'" @register="handleRegister" />
+        <NormalRegister v-if="regType === 'normal'" @register="handleRegister" @complete="handleComplete" />
         <div v-if="regType === 'github'" class="space-y-4 text-center">
           <p class="text-sm text-text-muted">GitHub OAuth 注册（模拟）</p>
           <button type="button" class="btn btn-outline w-full gap-2" @click="handleGithubRegister">

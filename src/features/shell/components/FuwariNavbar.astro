@@ -1,13 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { navBarConfig, siteConfig } from '~/core/config';
-import { LinkPresets } from '~/core/constants/link-presets';
+import { navBarConfig, siteConfig } from '~/lib/config';
+import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
-import { url } from '~/core/utils/url-utils';
-import LightDarkSwitch from './LightDarkSwitch.svelte';
-import GlobalSearch from '../../search/components/GlobalSearch.svelte';
-import DisplaySettings from './widget/DisplaySettings.svelte';
-import NotificationBell from '../../notification/components/NotificationBell.svelte';
+import { url } from '~/lib/utils/url-utils';
+import LightDarkSwitch from './LightDarkSwitch.vue';
+import { SearchGlobalSearch } from '~/features/search';
+import DisplaySettings from './widget/DisplaySettings.vue';
+import { NotificationBell } from '~/features/notification';
 import UserAvatarMenu from './user/UserAvatarMenu.vue';
 
 interface Props {
@@ -16,6 +16,12 @@ interface Props {
 }
 
 const className = Astro.props.class;
+const navInnerClass = [
+  'bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none transition !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
 
 let links: NavBarLink[] =
   Astro.props.links ||
@@ -28,13 +34,8 @@ let links: NavBarLink[] =
 ---
 
 <div id="navbar" class="z-50 onload-animation">
-  <div class="absolute h-8 left-0 right-0 -top-8 bg-card-bg transition"></div>
-  <div
-    class:list={[
-      className,
-      'card-base !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[1fr_auto_1fr] items-center px-4',
-    ]}
-  >
+  <div class="absolute h-8 left-0 right-0 -top-8 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] transition"></div>
+  <div class={navInnerClass}>
     <a
       href={url('/')}
       class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95 justify-self-start"
@@ -60,7 +61,7 @@ let links: NavBarLink[] =
                 {l.external && (
                   <Icon
                     name="fa6-solid:arrow-up-right-from-square"
-                    class="text-[0.875rem] -translate-y-[1px] text-black/[0.2] dark:text-white/[0.2]"
+                    class="text-[0.875rem] -translate-y-[1px] text-black dark:text-white"
                   />
                 )}
               </a>
@@ -82,7 +83,7 @@ let links: NavBarLink[] =
                 />
               </button>
               <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
-                <div class="card-base float-panel p-2">
+                <div class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel p-2">
                   {l.children!.map((child) => (
                     <a
                       aria-label={child.name}
@@ -101,7 +102,7 @@ let links: NavBarLink[] =
       }
     </div>
     <div class="flex justify-self-end items-center">
-      <GlobalSearch client:load />
+      <SearchGlobalSearch client:idle />
       {
         !siteConfig.themeColor.fixed && (
           <button
@@ -113,9 +114,9 @@ let links: NavBarLink[] =
           </button>
         )
       }
-      <LightDarkSwitch client:only="svelte" />
-      <NotificationBell client:load />
-      <UserAvatarMenu client:only="vue" />
+      <LightDarkSwitch client:only="vue" />
+      <NotificationBell client:idle />
+      <UserAvatarMenu client:only="vue" base={url('/')} />
       <button
         aria-label="Menu"
         name="Nav Menu"
@@ -129,10 +130,11 @@ let links: NavBarLink[] =
         />
       </button>
     </div>
-    <DisplaySettings client:only="svelte" />
+    <DisplaySettings client:only="vue" />
   </div>
 </div>
 
+<!-- Extracted reference: src/features/shell/scripts/navbar.ts (navbar scripts) -->
 <script is:inline>
   function bindNavbarButtons() {
     // ── display-setting 面板 ──
@@ -163,8 +165,7 @@ let links: NavBarLink[] =
         document.getElementById('display-setting')?.classList.add('float-panel-closed');
         document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
         document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
-        const panel = window.__mobileNavPanel?.['mobile-nav-fuwari'];
-        panel?.toggle();
+        document.getElementById('mobile-nav-fuwari')?.dispatchEvent(new CustomEvent('mobile-nav:toggle'));
       });
     }
 
@@ -236,12 +237,12 @@ let links: NavBarLink[] =
         await pagefind.options({ excerptLength: 20 });
         window.pagefind = pagefind;
         document.dispatchEvent(new CustomEvent('pagefindready'));
-        console.log('Pagefind loaded and initialized successfully, event dispatched.');
+        // Pagefind loaded successfully
     } catch (error) {
         console.error('Failed to load Pagefind:', error);
         window.pagefind = { search: function() { return Promise.resolve({ results: [] }); }, options: function() { return Promise.resolve(); } };
         document.dispatchEvent(new CustomEvent('pagefindloaderror'));
-        console.log('Pagefind load error, event dispatched.');
+        // Pagefind fallback activated
     }
 }
 if (document.readyState === 'loading') {

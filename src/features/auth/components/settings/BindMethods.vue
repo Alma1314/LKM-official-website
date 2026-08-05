@@ -86,9 +86,12 @@
 import { ref, computed } from 'vue';
 import type { DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'update', user: DemoUser): void;
+}>();
+
 const props = defineProps<{
   user: DemoUser;
-  onUpdate: (user: DemoUser) => void;
 }>();
 
 const methods = computed(() => [
@@ -154,7 +157,7 @@ function handleVerify() {
   } else {
     successMsg.value = '绑定成功';
   }
-  props.onUpdate(updated);
+  emit('update', updated);
   showBind.value = null;
 }
 
@@ -176,7 +179,7 @@ function handleUnbind(method: string) {
     updated.hasPasskey = false;
     updated.bindings = updated.bindings.filter((b) => b !== 'passkey');
   }
-  props.onUpdate(updated);
+  emit('update', updated);
   successMsg.value = '解绑成功';
 }
 </script>

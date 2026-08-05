@@ -75,9 +75,12 @@
 import { ref } from 'vue';
 import type { DemoUser } from '~/types/auth';
 
+const emit = defineEmits<{
+  (e: 'update', user: DemoUser): void;
+}>();
+
 const props = defineProps<{
   user: DemoUser;
-  onUpdate: (user: DemoUser) => void;
 }>();
 
 const DUMMY_RECOVERY_CODES = ['AAAA-BBBB-CCCC', 'DDDD-EEEE-FFFF', 'GGGG-HHHH-IIII', 'JJJJ-KKKK-LLLL'];
@@ -106,7 +109,7 @@ function handleVerify() {
 
 function handleConfirm() {
   if (!savedCodes.value) return;
-  props.onUpdate({ ...props.user, has2FA: true });
+  emit('update', { ...props.user, has2FA: true });
   show.value = false;
 }
 
@@ -116,6 +119,6 @@ function handleDisable() {
     updated.level = 'normal';
     alert('关闭 2FA 后，管理员账户已自动降级为普通账户');
   }
-  props.onUpdate(updated);
+  emit('update', updated);
 }
 </script>

@@ -18,7 +18,7 @@
             <span v-else class="text-sm text-text-muted">即将开始</span>
             <a
               v-if="comp.status === 'ongoing'"
-              :href="`/competition/${comp.id}/exam`"
+              :href="buildUrl(`/competition/${comp.id}/exam`)"
               class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold"
               >进入答题</a
             >
@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { mockCompetitions } from '../data/mock-competitions';
+import { buildUrl } from '~/lib/utils/paths';
 
 const groupedCompetitions = computed(() => {
   const order = { ongoing: 0, upcoming: 1, ended: 2 };

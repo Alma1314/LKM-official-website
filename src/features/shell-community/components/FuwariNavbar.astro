@@ -1,0 +1,267 @@
+---
+import { Icon } from 'astro-icon/components';
+import { navBarConfig } from '~/lib/config/fuwari-community';
+import { siteConfig } from '~/lib/config';
+import { LinkPresets } from '~/lib/constants/link-presets';
+import { LinkPreset, type NavBarLink } from '~/types/config';
+import { url } from '~/lib/utils/url-utils';
+import LightDarkSwitch from '~/features/shell/components/LightDarkSwitch.vue';
+import { SearchGlobalSearch } from '~/features/search';
+import DisplaySettings from '~/features/shell/components/widget/DisplaySettings.vue';
+import { NotificationBell } from '~/features/notification';
+import UserAvatarMenu from '~/features/shell/components/user/UserAvatarMenu.vue';
+
+interface Props {
+  class?: string;
+  links?: NavBarLink[];
+  module?: 'official' | 'community';
+}
+
+const moduleType = Astro.props.module || 'community';
+const switchHref = moduleType === 'official' ? url('/community') : url('/official');
+const switchText = moduleType === 'official' ? '社区' : '官网';
+
+const className = Astro.props.class;
+const navInnerClass = [
+  'bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none transition !overflow-visible h-[4.5rem] !rounded-t-none grid grid-cols-[0.6fr_auto_1fr] items-center px-4',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+let links: NavBarLink[] =
+  Astro.props.links ||
+  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
+    if (typeof item === 'number') {
+      return LinkPresets[item];
+    }
+    return item;
+  });
+---
+
+<div id="navbar" class="z-50 onload-animation">
+  <div class="absolute h-8 left-0 right-0 -top-8 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] transition"></div>
+  <div class={navInnerClass}>
+    <div class="flex items-center gap-1 justify-self-start">
+      <a href={url('/')} class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95">
+        <div class="flex flex-row text-primary items-center text-md">
+          <Icon name="material-symbols:home-outline-rounded" class="text-[1.75rem] mb-1 mr-2" />
+          {siteConfig.title}
+        </div>
+      </a>
+      <a
+        href={switchHref}
+        class="btn-plain scale-animation rounded-lg h-11 px-3 font-bold active:scale-95 flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
+      >
+        <Icon name="material-symbols:swap-horiz-rounded" class="text-[1.125rem]" />
+        {switchText}
+      </a>
+    </div>
+    <div class="hidden md:flex" id="navbar-links">
+      {
+        links.map((l, idx) => {
+          const hasChildren = l.children && l.children.length > 0;
+          if (!hasChildren) {
+            return (
+              <a
+                aria-label={l.name}
+                href={l.external ? l.url : url(l.url)}
+                target={l.external ? '_blank' : null}
+                class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
+              >
+                {l.name}
+                {l.external && (
+                  <Icon
+                    name="fa6-solid:arrow-up-right-from-square"
+                    class="text-[0.875rem] -translate-y-[1px] text-black/[0.2] dark:text-white/[0.2]"
+                  />
+                )}
+              </a>
+            );
+          }
+          return (
+            <div class="relative dropdown" data-nav-dropdown={idx}>
+              <button
+                type="button"
+                aria-label={l.name}
+                class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1"
+                data-dropdown-trigger
+              >
+                {l.name}
+                <Icon
+                  name="material-symbols:keyboard-arrow-down-rounded"
+                  class="text-[1rem] text-black/[0.3] dark:text-white/[0.3] transition-transform"
+                  data-dropdown-arrow
+                />
+              </button>
+              <div class="absolute left-0 top-full pt-2 hidden z-50" data-dropdown-menu>
+                <div class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel p-2">
+                  {l.children!.map((child) => (
+                    <a
+                      aria-label={child.name}
+                      href={child.external ? child.url : url(child.url)}
+                      target={child.external ? '_blank' : null}
+                      class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
+                    >
+                      {child.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+    <div class="flex justify-self-end items-center">
+      <SearchGlobalSearch client:idle />
+      {
+        !siteConfig.themeColor.fixed && (
+          <button
+            aria-label="Display Settings"
+            class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90"
+            id="display-settings-switch"
+          >
+            <Icon name="material-symbols:palette-outline" class="text-[1.25rem]" />
+          </button>
+        )
+      }
+      <LightDarkSwitch client:only="vue" />
+      <NotificationBell client:idle />
+      <UserAvatarMenu client:only="vue" base={url('/')} />
+      <button
+        aria-label="Menu"
+        name="Nav Menu"
+        class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden group"
+        id="nav-menu-switch"
+      >
+        <Icon
+          name="material-symbols:menu-rounded"
+          class="text-[1.25rem] transition-transform duration-300"
+          data-menu-icon
+        />
+      </button>
+    </div>
+    <DisplaySettings client:only="vue" />
+  </div>
+</div>
+
+<!-- Extracted reference: src/features/shell/scripts/navbar.ts (navbar scripts) -->
+<script is:inline>
+  function bindNavbarButtons() {
+    // ── display-setting 面板 ──
+    const settingBtn = document.getElementById('display-settings-switch');
+    if (settingBtn) {
+      settingBtn.addEventListener('click', function dsHandler(e) {
+        e.stopPropagation();
+        const panel = document.getElementById('display-setting');
+        if (!panel) return;
+        const willOpen = panel.classList.contains('float-panel-closed');
+        // 先关闭所有，再决定展开
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        if (willOpen) {
+          panel.classList.remove('float-panel-closed');
+        } else {
+          panel.classList.add('float-panel-closed');
+        }
+      });
+    }
+
+    // ── nav-menu 面板（移动端） ──
+    const menuBtn = document.getElementById('nav-menu-switch');
+    const menuIcon = menuBtn?.querySelector('[data-menu-icon]');
+    if (menuBtn?.id) {
+      menuBtn.addEventListener('click', function nmHandler(e) {
+        e.stopPropagation();
+        document.getElementById('display-setting')?.classList.add('float-panel-closed');
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        document.getElementById('mobile-nav-fuwari')?.dispatchEvent(new CustomEvent('mobile-nav:toggle'));
+      });
+    }
+
+    // ── navbar dropdown ──
+    document.querySelectorAll('[data-nav-dropdown]').forEach((dropdown) => {
+      const trigger = dropdown.querySelector('[data-dropdown-trigger]');
+      const menu = dropdown.querySelector('[data-dropdown-menu]');
+      const arrow = dropdown.querySelector('[data-dropdown-arrow]');
+      if (!trigger || !menu) return;
+
+      trigger.addEventListener('click', function ddHandler(e) {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('hidden');
+        // 关闭其他所有弹出
+        document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+        document.getElementById('display-setting')?.classList.add('float-panel-closed');
+        if (!isOpen) {
+          menu.classList.remove('hidden');
+          if (arrow) arrow.classList.add('rotate-180');
+        }
+      });
+    });
+
+    // 监听面板状态切换图标
+    const panelRoot = document.getElementById('mobile-nav-fuwari');
+    const panelEl = panelRoot?.querySelector('[data-nav-panel]');
+    if (panelEl && menuIcon) {
+      const observer = new MutationObserver(() => {
+        const isOpen = !panelEl.classList.contains('translate-x-full');
+        if (isOpen) {
+          menuIcon.setAttribute('name', 'material-symbols:close');
+        } else {
+          menuIcon.setAttribute('name', 'material-symbols:menu-rounded');
+        }
+      });
+      observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
+  // ── 全局：点击外部收起所有面板（document 上只需绑定一次） ──
+  if (!window.__navbar_outside) {
+    window.__navbar_outside = true;
+    document.addEventListener('click', () => {
+      document.getElementById('display-setting')?.classList.add('float-panel-closed');
+      document.querySelectorAll('[data-dropdown-menu]').forEach((m) => m.classList.add('hidden'));
+      document.querySelectorAll('[data-dropdown-arrow]').forEach((a) => a.classList.remove('rotate-180'));
+    });
+  }
+
+  // 首次加载绑定
+  bindNavbarButtons();
+  // View Transitions 导航后重新绑定
+  document.addEventListener('astro:after-swap', bindNavbarButtons);
+</script>
+
+{
+  import.meta.env.PROD && (
+    <script
+      is:inline
+      define:vars={{ scriptUrl: url('/pagefind/pagefind.js') }}
+      set:html={`async function loadPagefind() {
+    try {
+        var response = await fetch('${url('/pagefind/pagefind.js')}', { method: 'HEAD' });
+        if (!response.ok) {
+            throw new Error('Pagefind script not found: ' + response.status);
+        }
+        var pagefind = await import('${url('/pagefind/pagefind.js')}');
+        await pagefind.options({ excerptLength: 20 });
+        window.pagefind = pagefind;
+        document.dispatchEvent(new CustomEvent('pagefindready'));
+        // Pagefind loaded successfully
+    } catch (error) {
+        console.error('Failed to load Pagefind:', error);
+        window.pagefind = { search: function() { return Promise.resolve({ results: [] }); }, options: function() { return Promise.resolve(); } };
+        document.dispatchEvent(new CustomEvent('pagefindloaderror'));
+        // Pagefind fallback activated
+    }
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadPagefind);
+} else {
+    loadPagefind();
+}`}
+    />
+  )
+}

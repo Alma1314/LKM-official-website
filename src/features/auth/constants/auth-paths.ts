@@ -1,3 +1,5 @@
+import { buildAuthUrl } from '~/lib/utils/paths';
+
 declare global {
   interface Window {
     __BASE_URL__: string;
@@ -12,7 +14,5 @@ export function getBaseUrl(): string {
 }
 
 export function getAuthPath(path: string): string {
-  const base = getBaseUrl();
-  if (!path) return base.replace(/\/$/, '') || '/';
-  return base.endsWith('/') ? base + path : base + '/' + path;
+  return buildAuthUrl(getBaseUrl(), path);
 }

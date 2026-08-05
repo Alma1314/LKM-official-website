@@ -3,8 +3,9 @@
     <!-- 未登录 -->
     <a
       v-if="!isLoggedIn"
-      href="/login"
+      :href="buildUrl('/login')"
       class="btn-plain scale-animation rounded-lg h-11 px-4 font-bold active:scale-95 flex items-center gap-1.5 text-sm text-primary hover:bg-primary/10 transition-colors"
+      @click.prevent="openLogin"
     >
       <Icon icon="material-symbols:login-rounded" class="text-[1.25rem]" />
       <span class="hidden sm:inline">登录</span>
@@ -22,14 +23,17 @@
     <!-- 下拉菜单 -->
     <Teleport to="body">
       <div v-if="isOpen" class="fixed inset-0 z-40" @click="close" />
-      <div v-if="isOpen" class="absolute right-0 top-full mt-2 w-52 card-base float-panel py-1.5 z-50 shadow-2xl">
+      <div
+        v-if="isOpen"
+        class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none float-panel py-1.5 z-50 shadow-2xl"
+      >
         <div class="px-4 py-2 border-b border-surface-3 mb-1">
           <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
           <div class="text-xs text-text-muted">{{ userLevelText }}</div>
         </div>
 
         <a
-          href="/profile"
+          :href="buildUrl('/profile')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -37,7 +41,7 @@
           个人中心
         </a>
         <a
-          href="/contribution"
+          :href="buildUrl('/contribution')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -45,7 +49,7 @@
           贡献系统
         </a>
         <a
-          href="/account"
+          :href="buildUrl('/account')"
           class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
           @click="close"
         >
@@ -70,6 +74,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
+import { buildUrl } from '~/lib/utils/paths';
+
+defineProps<{ base?: string }>();
 
 const isOpen = ref(false);
 const isLoggedIn = ref(false);
@@ -88,6 +95,10 @@ const userLevelText = computed(() => {
       return '普通用户';
   }
 });
+
+function openLogin() {
+  window.dispatchEvent(new CustomEvent('open-login-modal'));
+}
 
 function toggle() {
   isOpen.value = !isOpen.value;

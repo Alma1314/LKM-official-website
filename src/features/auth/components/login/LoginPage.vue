@@ -1,15 +1,13 @@
 <template>
-  <div class="relative min-h-[calc(100vh-12rem)] flex items-center justify-center px-4">
-    <div class="absolute inset-0 bg-card-bg/70 backdrop-blur-sm"></div>
-
+  <div>
     <!-- 2FA flow -->
-    <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full max-w-md">
-      <TwoFactorVerify :onSuccess="handle2FASuccess" :onError="handle2FAError" />
+    <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full">
+      <TwoFactorVerify @success="handle2FASuccess" @error="handle2FAError" />
     </div>
 
     <!-- Logged in -->
-    <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8 text-center">
+    <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full">
+      <div class="text-center">
         <div class="mb-4 flex justify-center">
           <svg
             class="w-14 h-14 text-success"
@@ -53,14 +51,15 @@
         </div>
         <div class="flex gap-3 justify-center">
           <a :href="getAuthPath('account')" class="btn btn-ghost btn-sm">账户设置</a>
-          <a :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
+          <a v-if="redirectParam" :href="redirectUrl" class="btn btn-primary btn-sm">返回目标页面</a>
+          <a v-else :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
         </div>
       </div>
     </div>
 
     <!-- Login form -->
-    <div v-else class="relative w-full max-w-md">
-      <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8">
+    <div v-else class="relative w-full">
+      <div>
         <div class="text-center mb-6">
           <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-deep-text">登录</h1>
           <p class="text-sm text-text-muted">登录理科迷账号，访问社区资源与文档</p>
@@ -119,19 +118,15 @@
             >
           </div>
 
-          <PasswordLogin
-            v-if="activeTab === 'password'"
-            :onLogin="handleLogin"
-            :identifiedAccount="identifiedAccount"
-          />
-          <SmsLogin v-if="activeTab === 'sms'" :onLogin="handleLogin" :identifiedAccount="identifiedAccount" />
-          <GithubLogin v-if="activeTab === 'github'" :onLogin="handleLogin" />
+          <PasswordLogin v-if="activeTab === 'password'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
+          <SmsLogin v-if="activeTab === 'sms'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
+          <GithubLogin v-if="activeTab === 'github'" @login="handleLogin" />
           <MagicLinkLogin
             v-if="activeTab === 'magic-link'"
-            :onLogin="handleLogin"
+            @login="handleLogin"
             :identifiedAccount="identifiedAccount"
           />
-          <PasskeyLogin v-if="activeTab === 'passkey'" :onLogin="handleLogin" />
+          <PasskeyLogin v-if="activeTab === 'passkey'" @login="handleLogin" />
         </template>
       </div>
     </div>
@@ -139,9 +134,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
-import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import { getAuthPath, getBaseUrl } from '~/features/auth/constants/auth-paths';
 import { findAccount } from '~/features/auth/data/demo-accounts';
 import PasswordLogin from './PasswordLogin.vue';
 import SmsLogin from './SmsLogin.vue';
@@ -153,6 +148,19 @@ import type { LoginMethod, DemoUser } from '~/types/auth';
 
 // Self-contained provider
 const { state, login } = useAuthProvider();
+
+// 读取 redirect 参数，登录成功后跳转
+const redirectParam = ref('');
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search);
+  redirectParam.value = params.get('redirect') || '';
+});
+
+const redirectUrl = computed(() => {
+  if (!redirectParam.value) return getAuthPath('');
+  const base = getBaseUrl().replace(/\/$/, '');
+  return base + redirectParam.value;
+});
 
 interface Tab {
   key: LoginMethod;
@@ -249,8 +257,8 @@ async function handleLogin(method: LoginMethod, credentials: Record<string, stri
   error.value = null;
   success.value = null;
   const result = login(method, credentials, identifiedAccount.value ?? undefined);
-  if (!result.success) {
-    error.value = result.error || '登录失败';
+  if (!result.ok) {
+    error.value = result.error?.message || '登录失败';
   }
 }
 

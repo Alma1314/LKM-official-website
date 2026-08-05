@@ -1,8 +1,8 @@
 ---
-import I18nKey from '~/core/i18n/i18nKey';
-import { i18n } from '~/core/i18n/translation';
-import { getCategoryList } from '~/core/utils/content-utils';
-import ButtonLink from '~/ui/primitives/ButtonLink.astro';
+import I18nKey from '~/lib/i18n/i18nKey';
+import { i18n } from '~/lib/i18n/translation';
+import { getCategoryList } from '~/lib/utils/content-utils';
+import { ButtonLink } from '~/components/primitives';
 import WidgetLayout from './WidgetLayout.astro';
 
 const categories = await getCategoryList();

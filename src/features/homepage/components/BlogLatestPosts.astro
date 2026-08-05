@@ -1,0 +1,10 @@
+---
+import BlogLatestPostsClient from './BlogLatestPostsClient.vue';
+---
+
+<div id="blog-latest-posts" class="my-8">
+  <h2 class="text-2xl font-bold mb-6">最新文章</h2>
+  <BlogLatestPostsClient client:only="vue">
+    <p class="text-gray-500">加载中...</p>
+  </BlogLatestPostsClient>
+</div>

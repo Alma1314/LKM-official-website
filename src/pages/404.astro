@@ -1,23 +1,23 @@
 ---
 import Layout from '~/layouts/BaseLayout.astro';
-import Button from '~/ui/primitives/Button.astro';
-import { getHomePermalink } from '~/core/utils/permalinks';
+import { Button } from '~/components/primitives';
+import { getHomePermalink } from '~/lib/utils/permalinks';
 
 const title = `页面未找到`;
 ---
 
 <Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
+  <main class="flex items-center h-full p-16">
     <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
       <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
+        <h1 class="mb-8 font-bold text-9xl">
           <span class="sr-only">错误</span>
           <span class="text-primary">404</span>
-        </h2>
+        </h1>
         <p class="text-[28px] font-semibold">抱歉，找不到此页面。</p>
         <p class="mt-4 mb-8 text-[17px] text-text-muted">别担心，返回首页还能找到更多精彩内容。</p>
-        <Button variant="primary" href={getHomePermalink()}>返回首页</Button>
+        <Button variant="primary" href={getHomePermalink()} aria-label="返回首页">返回首页</Button>
       </div>
     </div>
-  </section>
+  </main>
 </Layout>

@@ -1,5 +1,5 @@
 ---
-import { ANALYTICS } from '~/core/config';
+import { ANALYTICS } from '~/lib/config';
 
 const id = ANALYTICS?.vendors?.googleAnalytics?.id ? String(ANALYTICS.vendors.googleAnalytics.id) : '';
 const partytown = !!(ANALYTICS?.vendors?.googleAnalytics as Record<string, unknown> | undefined)?.partytown;

@@ -1,10 +1,11 @@
 ---
-import '~/core/styles/tailwind.css';
+import '~/styles/tailwind.css';
 import '../styles/main.css';
 import '../styles/variables.css';
 
-import { I18N } from '~/core/config';
-import { siteConfig } from '~/core/config';
+import { I18N } from '~/lib/config';
+import { siteConfig } from '~/lib/config';
+import LoginModal from '~/features/auth/components/login/LoginModal.vue';
 import CommonMeta from '~/features/shell/common/components/CommonMeta.astro';
 import Favicons from '~/features/shell/components/Favicons.astro';
 import CustomStyles from '~/features/shell/common/components/CustomStyles.astro';
@@ -12,16 +13,17 @@ import ApplyColorMode from '~/features/shell/common/components/ApplyColorMode.as
 import Metadata from '~/features/shell/common/components/Metadata.astro';
 import SiteVerification from '~/features/shell/common/components/SiteVerification.astro';
 import Analytics from '~/features/shell/common/components/Analytics.astro';
+import SecurityHeaders from '~/features/shell/common/components/SecurityHeaders.astro';
 import BasicScripts from '~/features/shell/common/components/BasicScripts.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
-import { navBarConfig } from '~/core/config';
-import { LinkPresets } from '~/core/constants/link-presets';
+import { navBarConfig } from '~/lib/config';
+import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 
 // 注释下面这行以禁用 View Transitions
 import { ClientRouter } from 'astro:transitions';
 
-import type { MetaData as MetaDataType } from '~/core/types';
+import type { MetaData as MetaDataType } from '~/types/core';
 
 export interface Props {
   metadata?: MetaDataType;
@@ -50,6 +52,7 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
         document.documentElement.style.setProperty('--hue', hue);
       })();
     </script>
+    <SecurityHeaders />
     <Favicons />
     <CustomStyles />
     <ApplyColorMode />
@@ -57,7 +60,14 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
     <SiteVerification />
     <Analytics />
 
+    <!-- 字体预连接：减少 Google Fonts DNS/TLS 延迟 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" />
+    <!-- Iconify API 预连接 -->
+    <link rel="preconnect" href="https://api.iconify.design" />
+    <link rel="preconnect" href="https://api.simplesvg.com" />
+    <link rel="preconnect" href="https://api.unisvg.com" />
 
     <!-- 注释下面这行以禁用 View Transitions -->
     <ClientRouter fallback="swap" />
@@ -73,5 +83,52 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
     <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={navbarLinks} />
 
     <BasicScripts />
+
+    <!-- 登录浮层 -->
+    <div
+      id="login-modal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-login-close></div>
+      <div id="login-modal-content" class="relative z-10 w-full max-w-md mx-4">
+        <LoginModal client:only="vue" />
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        const modal = document.getElementById('login-modal');
+        if (!modal) return;
+
+        function open() {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-login-close]').forEach(function (el) {
+          el.addEventListener('click', close);
+        });
+
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) close();
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+        });
+
+        window.addEventListener('open-login-modal', open);
+        window.addEventListener('close-login-modal', close);
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,19 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import WritePage from '~/features/anonymous-letter/pages/WritePage.vue';
+import '~/features/anonymous-letter/styles/global.css';
+import type { MetaData } from '~/types/core';
+const metadata: MetaData = { title: '写信 — 拾光树洞', description: '写下你的心事、表白、吐槽或悄悄话。' };
+---
+
+<Layout metadata={metadata}><div style="min-height: 400px"><WritePage client:only="vue" /></div></Layout>
+
+<script is:inline>
+  (function () {
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    const hue = localStorage.getItem('hue');
+    if (hue) document.documentElement.style.setProperty('--hue', hue);
+  })();
+</script>

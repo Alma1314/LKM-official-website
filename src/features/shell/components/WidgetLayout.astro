@@ -1,7 +1,8 @@
 ---
+import { twMerge } from 'tailwind-merge';
 import { Icon } from 'astro-icon/components';
-import I18nKey from '~/core/i18n/i18nKey';
-import { i18n } from '~/core/i18n/translation';
+import I18nKey from '~/lib/i18n/i18nKey';
+import { i18n } from '~/lib/i18n/translation';
 
 interface Props {
   id: string;
@@ -15,7 +16,16 @@ const { id, name, isCollapsed, collapsedHeight, style } = Astro.props;
 const className = Astro.props.class;
 ---
 
-<widget-layout data-id={id} data-is-collapsed={String(isCollapsed)} class={'pb-4 card-base ' + className} style={style}>
+<widget-layout
+  data-id={id}
+  data-is-collapsed={String(isCollapsed)}
+  class={twMerge(
+    'pb-4',
+    'bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-sm dark:shadow-none',
+    className
+  )}
+  style={style}
+>
   <div
     class="font-bold transition text-lg text-text-muted-900 dark:text-text-muted-100 relative ml-8 mt-4 mb-2
         before:w-1 before:h-4 before:rounded-md before:bg-primary

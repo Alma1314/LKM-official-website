@@ -1,8 +1,6 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
-import { EditorMount, persistence } from '~/features/editor';
-
-export const prerender = false;
+import { getPermalink } from '~/lib/utils/permalinks';
 
 const metadata = {
   title: '编辑文档 — LKM',
@@ -13,7 +11,7 @@ const metadata = {
 <PageLayout metadata={metadata}>
   <div class="section-container max-w-4xl mx-auto py-8 px-4">
     <div class="mb-4 flex items-center gap-3">
-      <a href="/admin/documents" class="btn btn-ghost btn-sm gap-1">
+      <a href={getPermalink('/admin/documents')} class="btn btn-ghost btn-sm gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -30,14 +28,24 @@ const metadata = {
         返回列表
       </a>
     </div>
-    <EditorMount client:only="react" adapter={persistence}>
-      <div
-        slot="fallback"
-        class="flex items-center justify-center min-h-[60vh] border border-surface-3 rounded-lg bg-card-bg"
-      >
-        <span class="loading loading-spinner loading-md mr-2"></span>
-        <span class="text-deep-text/50">正在加载编辑器……</span>
+    <div id="editor-root" class="min-h-[60vh]">
+      <div class="flex items-center justify-center min-h-[60vh]">
+        <span class="loading loading-spinner loading-md"></span>
+        <span class="ml-2 text-deep-text/50">正在加载编辑器……</span>
       </div>
-    </EditorMount>
+    </div>
   </div>
 </PageLayout>
+
+<script>
+  import { createRoot } from 'react-dom/client';
+  import { createElement } from 'react';
+  import EditorMount from '~/features/editor/components/core/EditorMount';
+  import { createLocalPersistence } from '~/features/editor/persistence/index';
+
+  const rootEl = document.getElementById('editor-root');
+  if (rootEl) {
+    const root = createRoot(rootEl);
+    root.render(createElement(EditorMount, { adapter: createLocalPersistence() }));
+  }
+</script>

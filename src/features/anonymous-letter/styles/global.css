@@ -1,0 +1,406 @@
+/* =============================================================
+   拾光树洞 · 全局样式
+   直接复用主站 CSS 变量，不自行定义颜色体系
+   主站通过 :root.dark 切换主题，树洞自动跟随
+   ============================================================= */
+
+/* 确保 --hue 有初始值（与主站 tailwind.css 一致） */
+@property --hue {
+  syntax: '<number>';
+  initial-value: 250;
+  inherits: true;
+}
+
+:root {
+  --font-scale: 1;
+
+  /* ── 桥接主站变量到树洞命名 ── */
+  --accent: var(--primary);
+  --accent-2: oklch(0.6 0.12 calc(var(--hue) + 40));
+  --blue: var(--accent);
+  --lav: var(--accent-2);
+  --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --grad-soft: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    color-mix(in srgb, var(--accent-2) 16%, transparent)
+  );
+  --line-grad: linear-gradient(90deg, var(--accent), var(--accent-2));
+  --accent-grad: var(--grad);
+
+  --bg-1: var(--base-100);
+  --bg-2: var(--base-200);
+  --bg-3: var(--base-300);
+  --bg-4: var(--page-bg);
+  --text-main: var(--base-content);
+  --text-sub: var(--text-muted);
+  --line: var(--line-divider);
+  --card-bg: var(--card-bg);
+  --card-border: var(--line-divider);
+  --card-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  --nav-bg: color-mix(in srgb, var(--base-100) 92%, transparent);
+  --mask: rgba(0, 0, 0, 0.18);
+  --danger: var(--error);
+  --glow: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+:root.dark {
+  --card-shadow: none;
+  --mask: rgba(0, 0, 0, 0.55);
+  --nav-bg: color-mix(in srgb, var(--base-100) 92%, transparent);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', 'Helvetica Neue', system-ui, sans-serif;
+  color: var(--text-main);
+  font-size: calc(15px * var(--font-scale));
+  line-height: 1.7;
+  background: var(--bg-1);
+  overflow-x: hidden;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+  min-height: 100vh;
+}
+
+/* 角落装饰 */
+.corner-deco {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.corner-deco.tl {
+  top: -90px;
+  left: -90px;
+  width: 260px;
+  height: 260px;
+  background: var(--grad-soft);
+  border-radius: 0 0 100% 0;
+}
+.corner-deco.br {
+  bottom: -110px;
+  right: -110px;
+  width: 320px;
+  height: 320px;
+  background: var(--grad-soft);
+  border-radius: 100% 0 0 0;
+}
+.corner-deco.tr {
+  top: -70px;
+  right: -70px;
+  width: 200px;
+  height: 200px;
+  background: var(--grad-soft);
+  border-radius: 0 0 0 100%;
+}
+
+.mini-deco {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.5;
+  color: var(--accent);
+}
+.mini-deco svg {
+  display: block;
+}
+
+.bg-flow {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(40% 55% at 12% 8%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
+    radial-gradient(45% 50% at 90% 12%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 70%);
+  background-color: var(--bg-1);
+  animation: bgShift 24s ease-in-out infinite alternate;
+  transition: background-color 0.4s ease;
+}
+@keyframes bgShift {
+  0% {
+    background-position:
+      0% 0%,
+      100% 0%;
+  }
+  100% {
+    background-position:
+      8% 6%,
+      92% 10%;
+  }
+}
+
+/* 玻璃卡片 */
+.glass {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s;
+}
+.glass::after {
+  content: none;
+}
+.glass-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px var(--glow);
+  border-color: var(--accent);
+}
+
+:root {
+  --radius: 20px;
+  --radius-sm: 14px;
+  --radius-xs: 10px;
+  --radius-pill: 999px;
+}
+
+.grad-divider {
+  height: 1px;
+  width: 100%;
+  background: var(--line-grad);
+  border-radius: 1px;
+  opacity: 0.7;
+  margin: 14px 0;
+}
+
+/* 渐变按钮 */
+.btn-grad {
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  color: var(--accent);
+  background: transparent;
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
+}
+.btn-grad:hover {
+  background: var(--grad-soft);
+  box-shadow: 0 4px 14px var(--glow);
+}
+.btn-grad:active {
+  transform: scale(0.97);
+}
+.btn-grad:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 标签 chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: calc(12px * var(--font-scale));
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-sub);
+  cursor: pointer;
+  transition:
+    border-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    background 0.25s var(--ease);
+  white-space: nowrap;
+}
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.chip.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--grad-soft);
+}
+
+/* 动画 */
+@keyframes floatUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.float-up {
+  animation: floatUp 0.55s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+@keyframes spinGlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-top-color: var(--accent);
+  animation: spinGlow 0.9s linear infinite;
+  box-shadow: 0 0 16px var(--glow);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-grad);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.grad-text {
+  background: var(--line-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 爱心点赞爆炸 */
+@keyframes heartBurst {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.heart-burst {
+  animation: heartBurst 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.heart-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.heart-particles span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 12px;
+  animation: heartFly 0.7s ease-out forwards;
+}
+@keyframes heartFly {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1);
+  }
+}
+
+@keyframes sendRipple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.send-ripple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent-grad);
+  animation: sendRipple 0.6s ease-out;
+}
+
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--text-sub);
+  text-align: center;
+  gap: 14px;
+}
+.empty-wrap svg {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: calc(14px * var(--font-scale));
+  }
+  .container {
+    padding: 0 14px;
+  }
+}
+
+/* 高对比度模式 */
+html.high-contrast {
+  --text-main: #1a1410 !important;
+  --text-sub: #5a4d44 !important;
+  --card-bg: #ffffff !important;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+  --glow: rgba(0, 0, 0, 0.2) !important;
+  filter: contrast(1.12) saturate(0.92);
+}
+:root.dark.high-contrast {
+  --text-main: #ffffff !important;
+  --text-sub: #c9c2e8 !important;
+  --card-bg: #181726 !important;
+  filter: contrast(1.12) saturate(1.05);
+}
+
+/* 低性能模式 */
+html.low-perf *,
+html.low-perf *::before,
+html.low-perf *::after {
+  animation: none !important;
+  transition: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.low-perf .bg-flow {
+  display: none;
+}
+html.low-perf .particles {
+  display: none;
+}

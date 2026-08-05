@@ -22,7 +22,7 @@
       <p class="text-xs text-success text-center">模拟验证码：000000</p>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
       <button type="submit" class="btn btn-primary w-full">验证</button>
-      <button type="button" class="btn btn-ghost w-full btn-sm" @click="props.onBack()">返回</button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="emit('back')">返回</button>
     </form>
 
     <!-- Recovery code -->
@@ -39,12 +39,7 @@
       </div>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
       <button type="submit" class="btn btn-primary w-full">验证</button>
-      <button
-        v-if="props.level === 'admin'"
-        type="button"
-        class="btn btn-ghost w-full btn-sm"
-        @click="props.onSuccess()"
-      >
+      <button v-if="props.level === 'admin'" type="button" class="btn btn-ghost w-full btn-sm" @click="emit('success')">
         联系其他管理员协助（模拟）
       </button>
     </form>
@@ -67,7 +62,7 @@
       </div>
       <p class="font-semibold">恢复成功</p>
       <p class="text-sm text-text-muted">请重新设置 2FA</p>
-      <button type="button" class="btn btn-primary btn-sm" @click="props.onSuccess()">完成</button>
+      <button type="button" class="btn btn-primary btn-sm" @click="emit('success')">完成</button>
     </div>
   </div>
 </template>
@@ -75,10 +70,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const emit = defineEmits<{
+  (e: 'success'): void;
+  (e: 'back'): void;
+}>();
+
 const props = defineProps<{
   level: 'normal' | 'admin';
-  onSuccess: () => void;
-  onBack: () => void;
 }>();
 
 const DUMMY_RECOVERY_CODES = ['AAAA-BBBB-CCCC', 'DDDD-EEEE-FFFF'];

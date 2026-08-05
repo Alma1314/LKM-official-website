@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { recommendCategories, recommendAuthors } from '../../data/onboarding-tags';
+import { recommendCategories, recommendAuthors } from '~/features/auth/data/onboarding-tags';
 
 const activeTab = ref<'category' | 'author'>('category');
 const selectedIds = ref<string[]>([]);

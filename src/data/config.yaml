@@ -1,0 +1,181 @@
+site:
+  name: 理科迷
+  site: 'https://LKM-AHZ.github.io'
+  base: '/LKM-official-website'
+  trailingSlash: false
+  googleSiteVerificationId: null
+
+# Default SEO metadata
+metadata:
+  title:
+    default: 理科迷
+    template: '%s — LKM'
+  description: '理科迷 (LKM) — 创立于 2014 年的科技爱好者社区。覆盖数学、物理、化学、生物、信息技术等多个学科，由普罗大众组成，让科学回归每一个人。'
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: LKM
+    images:
+      - url: '~/assets/images/default.png'
+        width: 1200
+        height: 628
+    type: website
+  twitter:
+    handle: '@lkm'
+    site: '@lkm'
+    cardType: summary_large_image
+
+i18n:
+  language: zh-cn
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 6
+
+    post:
+      isEnabled: true
+      permalink: '/blog/posts/%slug%'
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'blog'
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'category'
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      pathname: 'tag'
+      robots:
+        index: false
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null
+
+ui:
+  theme: 'system'
+
+# Fuwari blog theme configuration
+fuwari:
+  site:
+    title: 理科迷
+    subtitle: 科技爱好者社区
+    lang: zh_CN
+    themeColor:
+      hue: 250
+      fixed: false
+    banner:
+      enable: false
+      src: assets/images/demo-banner.png
+      position: center
+      credit:
+        enable: false
+        text: ''
+        url: ''
+    toc:
+      enable: true
+      depth: 2
+    favicon: []
+
+  navbar:
+    links:
+      - name: 主页
+        url: /official
+        children:
+          - name: 简明介绍
+            url: /official
+          - name: 团队成员
+            url: /official#team
+          - name: 发展历程
+            url: /official#timeline
+          - name: 最近更新
+            url: /official#update
+          - name: 常见问题
+            url: /official#faq
+      - name: 文章
+        url: /blog
+        children:
+          - name: 文章列表
+            url: /blog
+          - name: 所有分类
+            url: /blog/categories
+          - name: 文章归档
+            url: /blog/archive
+          - name: 关于文章
+            url: /blog/about
+      - name: 七月团队
+        url: /official/team
+        children:
+          - name: 管理团队
+            url: /official/team
+          - name: 项目团队
+            url: /official/project-team
+          - name: 关于我们
+            url: /blog/about
+          - name: 服务
+            url: /official/services
+          - name: 赞助与支持
+            url: /official/pricing
+          - name: 联系我们
+            url: /official/contact
+          - name: QQ社群
+            url: /official/communities
+      - name: 资源
+        url: /community/forum
+        children:
+          - name: 板块广场
+            url: /community/forum
+          - name: 专栏
+            url: /community/columns
+          - name: 文件库
+            url: /community/files
+          - name: 帮助/求助
+            url: /official/qa
+          - name: 项目大厅
+            url: /official/projects
+          - name: 竞赛
+            url: /community/competition
+          - name: 资助系统
+            url: /official/funding
+          - name: 其他应用
+            url: /apps
+      - name: 我的
+        url: /profile
+        children:
+          - name: 个人主页
+            url: /user/qiyue-hua
+          - name: 贡献系统
+            url: /contribution
+          - name: 设置
+            url: /account
+  profile:
+    avatar: assets/images/lkm-logo.jpg
+    name: 理科迷LKM
+    bio: 创立于 2014 年的科技爱好者社区
+    links:
+      - name: GitHub
+        icon: fa6-brands:github
+        url: https://github.com/LKM-AHZ
+
+  license:
+    enable: true
+    name: CC BY-NC-SA 4.0
+    url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+  expressiveCode:
+    theme: github-dark

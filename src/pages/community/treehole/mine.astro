@@ -1,0 +1,19 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import MinePage from '~/features/anonymous-letter/pages/MinePage.vue';
+import '~/features/anonymous-letter/styles/global.css';
+import type { MetaData } from '~/types/core';
+const metadata: MetaData = { title: '我的树洞 — 拾光树洞', description: '查看你发布的所有信件、收藏与草稿。' };
+---
+
+<Layout metadata={metadata}><div style="min-height: 400px"><MinePage client:only="vue" /></div></Layout>
+
+<script is:inline>
+  (function () {
+    const theme = localStorage.theme;
+    const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    const hue = localStorage.getItem('hue');
+    if (hue) document.documentElement.style.setProperty('--hue', hue);
+  })();
+</script>

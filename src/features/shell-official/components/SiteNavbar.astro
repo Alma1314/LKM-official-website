@@ -1,0 +1,18 @@
+---
+import type { NavBarLink } from '~/types/config';
+import FuwariNavbar from './FuwariNavbar.astro';
+
+interface Props {
+  id?: string;
+  class?: string;
+  links?: NavBarLink[];
+}
+
+const { id, class: className, links } = Astro.props;
+const baseClasses = 'sticky top-0 z-50 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))]';
+const mergedClass = [baseClasses, className].filter(Boolean).join(' ');
+---
+
+<div id={id || 'navbar-wrapper'} class={mergedClass}>
+  <FuwariNavbar links={links} module="official" />
+</div>

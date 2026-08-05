@@ -1,7 +1,6 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "strictNullChecks": true,
     "allowJs": true,
     "paths": {
@@ -14,10 +13,11 @@
       "@lkm/editor-persistence": ["./packages/editor-persistence/dist"]
     }
   },
-  "include": [".astro/types.d.ts", "**/*"],
+  "include": [".astro/types.d.ts", "src/**/*", "packages/*/src/**/*", "scripts/**/*"],
   "exclude": [
     "dist/",
     "reference/",
+    "anonymous-treehole/",
     "packages/*/dist",
     "packages/*/src",
     "packages/*/__tests__",

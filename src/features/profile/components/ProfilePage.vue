@@ -84,7 +84,7 @@
         <div v-if="activeTab === 'posts'" class="space-y-3">
           <div v-for="(post, i) in userPosts" :key="i" class="border-b border-surface-3 pb-3 last:border-0 last:pb-0">
             <a
-              :href="`/forum/post/${post.id}`"
+              :href="buildUrl(`/forum/post/${post.id}`)"
               class="text-deep-text font-medium hover:text-primary transition-colors line-clamp-1"
               >{{ post.title }}</a
             >
@@ -109,7 +109,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <a
-                :href="`/projects/${proj.id}`"
+                :href="buildUrl(`/projects/${proj.id}`)"
                 class="text-deep-text font-medium hover:text-primary transition-colors line-clamp-1"
                 >{{ proj.name }}</a
               >
@@ -122,7 +122,7 @@
         <div v-if="activeTab === 'columns'" class="space-y-3">
           <div v-if="!user.hasColumnAccess" class="text-center py-8">
             <p class="text-sm text-text-muted mb-2">尚未开通专栏功能</p>
-            <a href="/register/onboarding" class="text-primary text-sm font-medium hover:underline"
+            <a :href="buildUrl('/register/onboarding')" class="text-primary text-sm font-medium hover:underline"
               >通过答题解锁专栏 →</a
             >
           </div>
@@ -146,6 +146,7 @@
 import { ref, computed } from 'vue';
 import { type MockUser, TITLE_MAP } from '../data/mock-users';
 import { mockPosts } from '../../forum/data/mock-posts';
+import { buildUrl } from '~/lib/utils/paths';
 
 const props = defineProps<{ user: MockUser }>();
 
@@ -177,7 +178,7 @@ const userColumns = computed(() => {
   if (!props.user.hasColumnAccess) return [];
   return Array.from({ length: Math.min(props.user.columnArticleCount, 5) }, (_, i) => ({
     title: `${props.user.displayName}的专栏文章 #${i + 1}`,
-    url: `/columns/${props.user.username}/article-${i + 1}`,
+    url: buildUrl(`/columns/${props.user.username}/article-${i + 1}`),
     createdAt: new Date(2026, 6, 20 - i).toISOString(),
     viewCount: Math.floor(Math.random() * 500) + 100,
     likeCount: Math.floor(Math.random() * 50) + 10,
