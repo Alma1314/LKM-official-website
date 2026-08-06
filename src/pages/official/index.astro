@@ -183,7 +183,7 @@ const metadata = {
       <h2 class="text-2xl font-bold text-deep-text text-center mb-2">探索板块</h2>
       <p class="text-sm text-text-muted text-center mb-6">发现你感兴趣的内容</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href={getPermalink('/forum/basic-science')} class="profile-card group">
+        <a href={getPermalink('/community/forum/basic-science')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -207,7 +207,7 @@ const metadata = {
             <p class="text-xs text-text-muted">1.2k 成员 · 今日 45 帖</p>
           </div>
         </a>
-        <a href={getPermalink('/forum/applied-science')} class="profile-card group">
+        <a href={getPermalink('/community/forum/applied-science')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -229,7 +229,7 @@ const metadata = {
             <p class="text-xs text-text-muted">890 成员 · 今日 32 帖</p>
           </div>
         </a>
-        <a href={getPermalink('/forum/hobby')} class="profile-card group">
+        <a href={getPermalink('/community/forum/hobby')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -254,7 +254,7 @@ const metadata = {
             <p class="text-xs text-text-muted">520 成员 · 今日 28 帖</p>
           </div>
         </a>
-        <a href={getPermalink('/columns')} class="profile-card group">
+        <a href={getPermalink('/blog')} class="profile-card group">
           <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
             <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
               ><svg
@@ -290,7 +290,7 @@ const metadata = {
           { name: '七月郁离', desc: '群务组组长，群务无小事，用心皆风景', avatar: avatar七月郁离 },
           { name: '七月有枝', desc: '前活动策划组组员，且停且忘且随风，且行且看且从容', avatar: avatar七月有枝 },
         ].map((m) => (
-          <a href={getPermalink('/team')} class="profile-card ">
+          <a href={getPermalink('/official/team')} class="profile-card ">
             <div class="profile-inner p-4 sm:p-5 flex flex-row items-center gap-3 sm:flex-col sm:items-center text-left sm:text-center rounded-lg">
               <img
                 src={m.avatar.src}
@@ -309,7 +309,7 @@ const metadata = {
           </a>
         ))
       }
-      <a href={getPermalink('/team')} class="profile-card">
+      <a href={getPermalink('/official/team')} class="profile-card">
         <div
           class="profile-inner p-4 sm:p-5 flex flex-col items-center justify-center text-center gap-3 min-h-full rounded-lg"
         >

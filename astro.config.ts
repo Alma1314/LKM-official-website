@@ -208,6 +208,14 @@ export default defineConfig({
           }
         },
       },
+      {
+        name: 'wgsl-raw',
+        transform(code, id) {
+          if (id.endsWith('.wgsl')) {
+            return `export default ${JSON.stringify(code)};`;
+          }
+        },
+      },
     ],
     ssr: {
       noExternal: [],
