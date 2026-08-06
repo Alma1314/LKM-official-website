@@ -2,11 +2,12 @@
 
 from datetime import datetime
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 
 from app.core.pagination import paginate
 from app.core.response import ErrCode, api_error, ok, paginated
 from app.data.blog import BLOG_COMMENTS, BLOG_POSTS
+from app.schemas.blog import CreateBlogCommentRequest
 
 router = APIRouter(prefix="/api/blog", tags=["blog"])
 
@@ -22,7 +23,7 @@ def get_post(slug: str):
     for p in BLOG_POSTS:
         if p["slug"] == slug:
             return ok(p)
-    raise api_error(ErrCode.FORUM_POST_NOT_FOUND, "文章不存在")
+    raise api_error(ErrCode.BLOG_POST_NOT_FOUND, "文章不存在")
 
 
 @router.post("/posts/{slug}/like")
@@ -30,7 +31,7 @@ def like_post(slug: str):
     for p in BLOG_POSTS:
         if p["slug"] == slug:
             return ok({"is_liked": True})
-    raise api_error(ErrCode.FORUM_POST_NOT_FOUND, "文章不存在")
+    raise api_error(ErrCode.BLOG_POST_NOT_FOUND, "文章不存在")
 
 
 @router.get("/posts/{slug}/comments")
@@ -41,13 +42,17 @@ def get_comments(slug: str, page: int = 1, page_size: int = 20):
 
 
 @router.post("/posts/{slug}/comments")
-async def create_comment(slug: str, request: Request):
-    body = await request.json()
+async def create_comment(slug: str, body: CreateBlogCommentRequest):
+    # 验证 slug 存在
+    post_exists = any(p["slug"] == slug for p in BLOG_POSTS)
+    if not post_exists:
+        raise api_error(ErrCode.BLOG_POST_NOT_FOUND, "文章不存在")
     comment = {
         "id": f"blog-comment-{len(BLOG_COMMENTS) + 1}",
         "post_slug": slug,
         "author_name": "当前用户",
-        "content": body.get("content", ""),
+        "content": body.content,
+        "like_count": 0,
         "created_at": datetime.now().isoformat(),
     }
     BLOG_COMMENTS.append(comment)
