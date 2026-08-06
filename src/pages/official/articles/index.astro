@@ -16,10 +16,16 @@ interface ArticleItem {
   comments: number;
 }
 
-const { data: articles, error } = await ssrFetch<ArticleItem[]>('/api/articles?page=1&page_size=50', {
-  fallback: [],
+interface ArticleListData {
+  items: ArticleItem[];
+  total: number;
+}
+
+const { data: listData, error } = await ssrFetch<ArticleListData>('/api/articles?page=1&page_size=50', {
+  fallback: { items: [], total: 0 },
 });
 logSsrError('文章列表', error);
+const articles = listData?.items ?? [];
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
