@@ -5,7 +5,6 @@ site:
   trailingSlash: false
   googleSiteVerificationId: null
 
-# Default SEO metadata
 metadata:
   title:
     default: 理科迷
@@ -70,7 +69,6 @@ analytics:
 ui:
   theme: 'system'
 
-# Fuwari blog theme configuration
 fuwari:
   site:
     title: 理科迷
@@ -108,16 +106,16 @@ fuwari:
           - name: 常见问题
             url: /official#faq
       - name: 文章
-        url: /blog
+        url: /official/articles
         children:
           - name: 文章列表
-            url: /blog
+            url: /official/articles
           - name: 所有分类
-            url: /blog/categories
+            url: /official/articles
           - name: 文章归档
-            url: /blog/archive
+            url: /official/articles
           - name: 关于文章
-            url: /blog/about
+            url: /official/articles
       - name: 七月团队
         url: /official/team
         children:
@@ -125,6 +123,8 @@ fuwari:
             url: /official/team
           - name: 项目团队
             url: /official/project-team
+          - name: QQ社群
+            url: /official/communities
           - name: 关于我们
             url: /blog/about
           - name: 服务
@@ -133,8 +133,7 @@ fuwari:
             url: /official/pricing
           - name: 联系我们
             url: /official/contact
-          - name: QQ社群
-            url: /official/communities
+
       - name: 资源
         url: /community/forum
         children:

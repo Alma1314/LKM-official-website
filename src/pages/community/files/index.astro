@@ -1,11 +1,12 @@
 ---
-import Layout from '~/layouts/CommunityLayout.astro';
+import CommunitySidebarLayout from '~/layouts/CommunitySidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import FileListPage from '~/features/file-library/components/FileListPage.vue';
 
 const metadata = { title: '文件库 —— 理科迷' };
 ---
 
-<Layout metadata={metadata}>
+<CommunitySidebarLayout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={Astro.url.pathname}>
   <div class="space-y-6">
     <div>
       <h1 class="text-3xl font-bold text-deep-text">文件库</h1>
@@ -13,4 +14,4 @@ const metadata = { title: '文件库 —— 理科迷' };
     </div>
     <div style="min-height: 400px"><FileListPage client:only="vue" /></div>
   </div>
-</Layout>
+</CommunitySidebarLayout>

@@ -8,7 +8,9 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "pnpm run \"/dev:(frontend|backend)/\"",
+    "dev:backend": "cd backend && uv run uvicorn main:app --reload --port 8000",
+    "dev:frontend": "astro dev",
     "dev:clean": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\" && astro dev",
     "start": "astro dev",
     "build": "astro build && (pagefind --site dist || true) && node scripts/precompress.mjs",
@@ -22,6 +24,7 @@
     "fix:eslint": "eslint --fix .",
     "fix:prettier": "prettier -w .",
     "test": "vitest run",
+    "test:backend": "cd backend && uv run pytest tests/ -v",
     "test:watch": "vitest",
     "test:unit": "vitest run",
     "test:security": "vitest run --project security",

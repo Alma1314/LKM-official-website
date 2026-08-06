@@ -1,1 +1,0 @@
-strawberry-graphql[fastapi]>=0.279.0

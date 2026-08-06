@@ -1,0 +1,89 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
+
+interface ArticleItem {
+  slug: string;
+  title: string;
+  description: string;
+  cover: string;
+  category: string;
+  published: string;
+  views: number;
+  likes: number;
+  comments: number;
+}
+
+interface ArticleListData {
+  items: ArticleItem[];
+  total: number;
+}
+
+const { data: listData, error } = await ssrFetch<ArticleListData>('/api/articles?page=1&page_size=50', {
+  fallback: { items: [], total: 0 },
+});
+logSsrError('文章列表', error);
+const articles = listData?.items ?? [];
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const categoryLabels: Record<string, string> = {
+  announcement: '公告',
+  architecture: '架构',
+  security: '安全',
+  engineering: '工程',
+  ai: 'AI',
+  community: '社区',
+  culture: '文化',
+};
+
+const metadata = { title: '官方文章 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+  <div class="space-y-6">
+    <h1 class="text-3xl font-bold text-deep-text">官方文章</h1>
+
+    <div class="space-y-4">
+      {
+        articles?.map((a) => (
+          <a
+            href={getPermalink(`/official/articles/${a.slug}`)}
+            class="block bg-card-bg border border-surface-3 rounded-xl p-5 hover:shadow-md transition-shadow"
+          >
+            <div class="flex gap-5">
+              <img src={a.cover} alt={a.title} class="w-48 h-28 object-cover rounded-lg shrink-0" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  {a.category && (
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                      {categoryLabels[a.category] || a.category}
+                    </span>
+                  )}
+                </div>
+                <h3 class="text-lg font-semibold text-deep-text mb-1">{a.title}</h3>
+                <p class="text-sm text-text-muted line-clamp-2 mb-2">{a.description}</p>
+                <div class="flex items-center gap-4 text-xs text-text-muted">
+                  <span>{formatDate(a.published)}</span>
+                  <span>{a.views} 阅读</span>
+                  <span>{a.likes} 赞</span>
+                  <span>{a.comments} 评论</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+
+      {
+        (!articles || articles.length === 0) && (
+          <p class="text-text-muted text-center py-8">{error ? `加载失败：${error}` : '暂无文章'}</p>
+        )
+      }
+    </div>
+  </div>
+</Layout>
