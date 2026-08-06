@@ -4,14 +4,61 @@
    异步回读（选择、父节点、标志、残差）。
    ---------------------------------------------------------------- */
 
-import { $, canvas } from "./dom.js";
-import { CELL_M, GH, GW, MOBILE, N, PHYS, TER_MIN } from "../config.js";
-import { bgDown, bgFinal, bgFork, bgJacAB, bgJacBA, bgReset, bgResid, bgResolve, bgSelect, bgSky, bgSplat, bgTerrain, bgUp, bgUpReset, bgUpResolve, bgUpSelect, BLOOM_LEVELS, bloomView, ctx, device, flagsBuf, flagsStage, indirectBuf, listBuf, parentBuf, parentStage, plDown, plDownFirst, plFinal, plFork, plJac, plReset, plResid, plResolve, plSelect, plSky, plSplat, plTerrain, plUp, plUpResolve, plUpSelect, resBuf, resStage, sceneView, selBuf, selStage } from "./gpu.js";
-import { bolt, rt, ui } from "./state.js";
-import { fractalDim } from "../sim/fractal.js";
-import { onStrike, tracePath } from "../sim/bolt.js";
-import { updatePhase } from "../sim/clock.js";
-import { writeRenU, writeSimU } from "./uniforms.js";
+import { $, canvas } from './dom.js';
+import { CELL_M, GH, GW, MOBILE, N, PHYS, TER_MIN } from '../config.js';
+import {
+  bgDown,
+  bgFinal,
+  bgFork,
+  bgJacAB,
+  bgJacBA,
+  bgReset,
+  bgResid,
+  bgResolve,
+  bgSelect,
+  bgSky,
+  bgSplat,
+  bgTerrain,
+  bgUp,
+  bgUpReset,
+  bgUpResolve,
+  bgUpSelect,
+  BLOOM_LEVELS,
+  bloomView,
+  ctx,
+  device,
+  flagsBuf,
+  flagsStage,
+  indirectBuf,
+  listBuf,
+  parentBuf,
+  parentStage,
+  plDown,
+  plDownFirst,
+  plFinal,
+  plFork,
+  plJac,
+  plReset,
+  plResid,
+  plResolve,
+  plSelect,
+  plSky,
+  plSplat,
+  plTerrain,
+  plUp,
+  plUpResolve,
+  plUpSelect,
+  resBuf,
+  resStage,
+  sceneView,
+  selBuf,
+  selStage,
+} from './gpu.js';
+import { bolt, rt, ui } from './state.js';
+import { fractalDim } from '../sim/fractal.js';
+import { onStrike, tracePath } from '../sim/bolt.js';
+import { updatePhase } from '../sim/clock.js';
+import { writeRenU, writeSimU } from './uniforms.js';
 
 export function frame(tms) {
   requestAnimationFrame(frame);
@@ -27,11 +74,7 @@ export function frame(tms) {
   const enc = device.createCommandEncoder();
   enc.copyBufferToBuffer(listBuf, 0, indirectBuf, 4, 4); // 实例数量
 
-  if (
-    (bolt.phase === "grow" || bolt.phase === "regrow") &&
-    !ui.paused &&
-    bolt.growSteps > 0
-  ) {
+  if ((bolt.phase === 'grow' || bolt.phase === 'regrow') && !ui.paused && bolt.growSteps > 0) {
     const p = enc.beginComputePass();
     const wx = Math.ceil(GW / 8),
       wy = Math.ceil(GH / 8);
@@ -93,9 +136,9 @@ export function frame(tms) {
     colorAttachments: [
       {
         view: sceneView,
-        loadOp: "clear",
+        loadOp: 'clear',
         clearValue: { r: 0, g: 0, b: 0, a: 1 },
-        storeOp: "store",
+        storeOp: 'store',
       },
     ],
   });
@@ -117,7 +160,7 @@ export function frame(tms) {
           view,
           loadOp: load,
           clearValue: { r: 0, g: 0, b: 0, a: 1 },
-          storeOp: "store",
+          storeOp: 'store',
         },
       ],
     });
@@ -126,24 +169,13 @@ export function frame(tms) {
     r.draw(3);
     r.end();
   };
-  for (let i = 0; i < BLOOM_LEVELS; i++)
-    post(
-      bloomView[i],
-      "clear",
-      i === 0 ? plDownFirst : plDown,
-      bgDown[i],
-    );
-  for (let i = BLOOM_LEVELS - 1; i > 0; i--)
-    post(bloomView[i - 1], "load", plUp, bgUp[i]);
-  post(ctx.getCurrentTexture().createView(), "clear", plFinal, bgFinal);
+  for (let i = 0; i < BLOOM_LEVELS; i++) post(bloomView[i], 'clear', i === 0 ? plDownFirst : plDown, bgDown[i]);
+  for (let i = BLOOM_LEVELS - 1; i > 0; i--) post(bloomView[i - 1], 'load', plUp, bgUp[i]);
+  post(ctx.getCurrentTexture().createView(), 'clear', plFinal, bgFinal);
 
   let pollSel = false,
     pollPar = false;
-  if (
-    (bolt.phase === "grow" || bolt.phase === "regrow") &&
-    !rt.selPending &&
-    !ui.paused
-  ) {
+  if ((bolt.phase === 'grow' || bolt.phase === 'regrow') && !rt.selPending && !ui.paused) {
     enc.copyBufferToBuffer(selBuf, 0, selStage, 0, 32);
     pollSel = true;
   }
@@ -165,7 +197,7 @@ export function frame(tms) {
     rt.pngFlag = false;
     canvas.toBlob((b) => {
       if (!b) return;
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = URL.createObjectURL(b);
       a.download = `discharge_${Date.now()}.png`;
       a.click();
@@ -182,37 +214,24 @@ export function frame(tms) {
         rt.selPending = false;
         const dCells = a[6] - bolt.deepY;
         const dT = bolt.tReal - bolt.deepT;
-        if (
-          (bolt.phase === "grow" || bolt.phase === "regrow") &&
-          dT > 1e-7
-        ) {
+        if ((bolt.phase === 'grow' || bolt.phase === 'regrow') && dT > 1e-7) {
           const v = (Math.max(0, dCells) * CELL_M) / dT; // 实测先端速度
           bolt.tipV = bolt.tipV * 0.6 + v * 0.4;
-          const vT =
-            bolt.phase === "regrow" ? PHYS.V_DSTEP : PHYS.V_LEADER;
+          const vT = bolt.phase === 'regrow' ? PHYS.V_DSTEP : PHYS.V_LEADER;
           bolt.stepGain = Math.min(
             24,
-            Math.max(
-              1.5,
-              bolt.tipV > 1e3
-                ? bolt.stepGain * Math.pow(vT / bolt.tipV, 0.5)
-                : bolt.stepGain * 1.15,
-            ),
+            Math.max(1.5, bolt.tipV > 1e3 ? bolt.stepGain * Math.pow(vT / bolt.tipV, 0.5) : bolt.stepGain * 1.15)
           ); // 先端停滞：加大力度
-          $("rTip").textContent = (bolt.tipV / 1e5).toFixed(1) + " 万米/秒";
+          $('rTip').textContent = (bolt.tipV / 1e5).toFixed(1) + ' 万米/秒';
         }
         bolt.deepT = bolt.tReal;
         bolt.deepY = Math.max(bolt.deepY, a[6]);
         /* 击穿距离：d_s ~ 18 * I0^0.65 米 —— 一旦进入该范围，地面便会响应 */
         const I0eff = ui.I0 * (ui.positive ? 2.2 : 1);
         const dS = 18 * Math.pow(I0eff, 0.65);
-        if (
-          !bolt.upOn &&
-          (TER_MIN - bolt.deepY) * CELL_M < dS &&
-          bolt.phase === "grow"
-        ) {
+        if (!bolt.upOn && (TER_MIN - bolt.deepY) * CELL_M < dS && bolt.phase === 'grow') {
           bolt.upOn = true;
-          $("rPhase").textContent = "先导连接中";
+          $('rPhase').textContent = '先导连接中';
         }
         if (a[3] === 1) onStrike(a[4], a[5]);
       })
@@ -229,16 +248,11 @@ export function frame(tms) {
         resStage.unmap();
         rt.resPending = false;
         /* 反转 ordf：最高位被置位表示这是一个正浮点数 */
-        rt.residNow = new Float32Array(
-          new Uint32Array([b & 0x80000000 ? b ^ 0x80000000 : ~b >>> 0])
-            .buffer,
-        )[0];
+        rt.residNow = new Float32Array(new Uint32Array([b & 0x80000000 ? b ^ 0x80000000 : ~b >>> 0]).buffer)[0];
         /* 控制器：残差停滞时增加迭代，稳定时降低迭代 */
         if (rt.residNow > 4e-3) rt.jacIters = Math.min(32, rt.jacIters + 4);
-        else if (rt.residNow < 8e-4)
-          rt.jacIters = Math.max(MOBILE ? 6 : 8, rt.jacIters - 2);
-        $("rRes").textContent =
-          rt.residNow.toExponential(1) + " · " + rt.jacIters + " 次";
+        else if (rt.residNow < 8e-4) rt.jacIters = Math.max(MOBILE ? 6 : 8, rt.jacIters - 2);
+        $('rRes').textContent = rt.residNow.toExponential(1) + ' · ' + rt.jacIters + ' 次';
       })
       .catch(() => {
         rt.resPending = false;
@@ -263,9 +277,7 @@ export function frame(tms) {
     parentStage
       .mapAsync(GPUMapMode.READ)
       .then(() => {
-        const parents = new Uint32Array(
-          parentStage.getMappedRange().slice(0),
-        );
+        const parents = new Uint32Array(parentStage.getMappedRange().slice(0));
         parentStage.unmap();
         rt.parentPending = false;
         tracePath(parents);
@@ -278,26 +290,15 @@ export function frame(tms) {
   /* ---------------- 抬头显示 ---------------- */
   if (++rt.frameNo % 3 === 0) {
     const tr = bolt.tReal;
-    $("rTime").textContent =
-      tr < 1e-3
-        ? (tr * 1e6).toFixed(0) + " 微秒"
-        : tr < 1
-          ? (tr * 1e3).toFixed(1) + " 毫秒"
-          : tr.toFixed(2) + " 秒";
-    $("rSlow").textContent =
-      "×" + Math.round(bolt.slomoNow).toLocaleString();
-    $("rAmp").textContent =
-      bolt.env.curKA >= 10
-        ? bolt.env.curKA.toFixed(0) + " kA"
-        : bolt.env.curKA.toFixed(2) + " kA";
+    $('rTime').textContent =
+      tr < 1e-3 ? (tr * 1e6).toFixed(0) + ' 微秒' : tr < 1 ? (tr * 1e3).toFixed(1) + ' 毫秒' : tr.toFixed(2) + ' 秒';
+    $('rSlow').textContent = '×' + Math.round(bolt.slomoNow).toLocaleString();
+    $('rAmp').textContent =
+      bolt.env.curKA >= 10 ? bolt.env.curKA.toFixed(0) + ' kA' : bolt.env.curKA.toFixed(2) + ' kA';
     if (bolt.thunderPerf > 0) {
       const rem = bolt.thunderPerf - performance.now() / 1000;
-      $("rThun").textContent =
-        rem > 0
-          ? "−" + rem.toFixed(1) + " 秒"
-          : rem > -4
-            ? (bolt.thunderDist / 1000).toFixed(1) + " 千米"
-            : "—";
+      $('rThun').textContent =
+        rem > 0 ? '−' + rem.toFixed(1) + ' 秒' : rem > -4 ? (bolt.thunderDist / 1000).toFixed(1) + ' 千米' : '—';
     }
   }
 }

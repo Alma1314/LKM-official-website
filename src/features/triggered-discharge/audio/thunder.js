@@ -4,7 +4,7 @@
    隆隆声的时长就是闪电本身的几何形状。
    ---------------------------------------------------------------- */
 
-import { SND_C } from "../config.js";
+import { SND_C } from '../config.js';
 
 export let AC = null,
   master = null;
@@ -40,7 +40,7 @@ export function thunder(peakKA, segs) {
     const s = AC.createBufferSource();
     s.buffer = buf;
     const f = AC.createBiquadFilter();
-    f.type = "bandpass";
+    f.type = 'bandpass';
     f.frequency.value = freq;
     f.Q.value = q;
     const g = AC.createGain();
@@ -59,14 +59,7 @@ export function thunder(peakKA, segs) {
   const v0 = Math.min(1, peakKA / 30) * Math.min(1, 1600 / near.d);
   const hf0 = 1 / (1 + near.d / 1400);
   const tNear = t0 + Math.max(0.02, near.d / SND_C);
-  shot(
-    noiseBuffer(0.5, false),
-    700 + 1900 * hf0,
-    0.8,
-    0.55 * v0 * hf0,
-    0.16,
-    tNear,
-  );
+  shot(noiseBuffer(0.5, false), 700 + 1900 * hf0, 0.8, 0.55 * v0 * hf0, 0.16, tNear);
 
   /* 隆隆声：每一个被采样的通道段都按自己的时钟到达。
      隆隆声的持续时间是 (far - near)/343 —— 闪电的几何形状，此刻被听到。
@@ -84,7 +77,7 @@ export function thunder(peakKA, segs) {
       0.6,
       0.75 * v * hi * (0.6 + Math.random() * 0.8),
       0.5 + Math.random() * 0.5,
-      at,
+      at
     );
   }
 
@@ -95,14 +88,12 @@ export function thunder(peakKA, segs) {
   const s2 = AC.createBufferSource();
   s2.buffer = noiseBuffer(dur, true);
   const f2 = AC.createBiquadFilter();
-  f2.type = "lowpass";
+  f2.type = 'lowpass';
   f2.frequency.value = 95;
   const g2 = AC.createGain();
   const steps = 26,
     curve = new Float32Array(steps);
-  for (let i = 0; i < steps; i++)
-    curve[i] =
-      0.4 * v0 * Math.exp(-i / (steps * 0.45)) * (0.4 + Math.random());
+  for (let i = 0; i < steps; i++) curve[i] = 0.4 * v0 * Math.exp(-i / (steps * 0.45)) * (0.4 + Math.random());
   curve[steps - 1] = 0.0001;
   g2.gain.setValueCurveAtTime(curve, tNear + 0.1, dur - 0.2);
   s2.connect(f2);

@@ -2,9 +2,9 @@
    在冻结的通道上做二维盒计数。
    ---------------------------------------------------------------- */
 
-import { $ } from "../core/dom.js";
-import { GH, GW, N } from "../config.js";
-import { bolt } from "../core/state.js";
+import { $ } from '../core/dom.js';
+import { GH, GW, N } from '../config.js';
+import { bolt } from '../core/state.js';
 
 export function fractalDim(fl) {
   const sizes = [2, 4, 8, 16];
@@ -38,5 +38,5 @@ export function fractalDim(fl) {
     den += (li[i] - mx) ** 2;
   }
   bolt.dim2 = num / den;
-  $("rDim").textContent = bolt.dim2.toFixed(2);
+  $('rDim').textContent = bolt.dim2.toFixed(2);
 }

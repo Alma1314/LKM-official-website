@@ -6,7 +6,7 @@
    `rt`   每帧运行时标志（进行中的回读等）
    ---------------------------------------------------------------- */
 
-import { GW, JACOBI_ITERS, PHYS } from "../config.js";
+import { GW, JACOBI_ITERS, PHYS } from '../config.js';
 
 export const ui = {
   eta: 2.0,
@@ -21,8 +21,8 @@ export const ui = {
 };
 
 export const bolt = {
-  phase: "grow",
-  label: "STEPPED LEADER",
+  phase: 'grow',
+  label: 'STEPPED LEADER',
   tReal: 0,
   phaseTR: 0,
   phaseTV: 0,
@@ -66,16 +66,16 @@ export const bolt = {
    这样每个模块读写的是同一份副本（无法对导入的绑定进行赋值）。
    ---------------------------------------------------------------- */
 export const rt = {
-  selPending: false,      // 选择缓冲区回读进行中
-  parentPending: false,   // 父节点缓冲区回读进行中
-  needParents: false,     // 发生回击，拉取父节点指针
-  flagsPending: false,    // 标志回读进行中（分形维数）
-  needFractal: false,     // 通道已冻结，测量维数 D
-  needFork: false,        // 箭式-梯级先导这一帧需要分叉
-  resPending: false,      // 残差探针回读进行中
+  selPending: false, // 选择缓冲区回读进行中
+  parentPending: false, // 父节点缓冲区回读进行中
+  needParents: false, // 发生回击，拉取父节点指针
+  flagsPending: false, // 标志回读进行中（分形维数）
+  needFractal: false, // 通道已冻结，测量维数 D
+  needFork: false, // 箭式-梯级先导这一帧需要分叉
+  resPending: false, // 残差探针回读进行中
   jacIters: JACOBI_ITERS, // 自适应雅可比迭代预算，由 residNow 调控
-  residNow: 0,            // 最近一次测得的场残差
-  lastT: 0,               // 上一次 requestAnimationFrame 的时间戳，毫秒
+  residNow: 0, // 最近一次测得的场残差
+  lastT: 0, // 上一次 requestAnimationFrame 的时间戳，毫秒
   frameNo: 0,
-  pngFlag: false,         // 本帧之后抓取帧缓冲区
+  pngFlag: false, // 本帧之后抓取帧缓冲区
 };

@@ -12,14 +12,10 @@ const metadata: MetaData = {
 
 <Layout metadata={metadata}>
   <!-- 全屏覆盖：独立运行环境，不受页面布局影响 -->
-  <div
-    id="td-root"
-    style="position:fixed; inset:0; z-index:9999; background:#030408; overflow:hidden;"
-  >
+  <div id="td-root" style="position:fixed; inset:0; z-index:9999; background:#030408; overflow:hidden;">
     <canvas
       id="td-gpu"
-      style="position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; z-index:1;"
-    ></canvas>
+      style="position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; z-index:1;"></canvas>
 
     <!-- WebGPU 不可用时的回退提示 -->
     <div
@@ -52,84 +48,64 @@ const metadata: MetaData = {
           class="td-readout"
           style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.05); border-radius:6px; overflow:hidden; margin-bottom:14px;"
         >
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">阶段</b
-            ><span
-              class="td-phase"
-              id="td-rPhase"
-              style="font-size:13px; font-weight:600; color:#b09aff;">充能中</span
-            >
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >阶段</b
+            ><span class="td-phase" id="td-rPhase" style="font-size:13px; font-weight:600; color:#b09aff;">充能中</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">真实时间</b
-            ><span
-              id="td-rTime"
-              style="font-size:13px; font-weight:600;">0 µs</span
-            >
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >真实时间</b
+            ><span id="td-rTime" style="font-size:13px; font-weight:600;">0 µs</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">慢动作</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >慢动作</b
             ><span id="td-rSlow" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">电流</b
-            ><span
-              id="td-rAmp"
-              style="font-size:13px; font-weight:600;">0 kA</span
-            >
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >电流</b
+            ><span id="td-rAmp" style="font-size:13px; font-weight:600;">0 kA</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">回击</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >回击</b
             ><span id="td-rStroke" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">通道长度</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >通道长度</b
             ><span id="td-rLen" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">分形维数</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >分形维数</b
             ><span id="td-rDim" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">尖端速度</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >尖端速度</b
             ><span id="td-rTip" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">场残差</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >场残差</b
             ><span id="td-rRes" style="font-size:13px; font-weight:600;">—</span>
           </div>
-          <div
-            class="td-cell"
-            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
-          >
-            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">雷声</b
+          <div class="td-cell" style="background:rgba(4,5,12,0.9); padding:8px 10px;">
+            <b
+              style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;"
+              >雷声</b
             ><span id="td-rThun" style="font-size:13px; font-weight:600;">—</span>
           </div>
         </div>
@@ -159,11 +135,11 @@ const metadata: MetaData = {
           class="td-note"
           style="color:#7d76a0; font-size:10px; line-height:1.6; margin:10px 0 2px; padding:10px; background:rgba(255,255,255,0.015); border-radius:6px; border:1px solid rgba(255,255,255,0.03);"
         >
-          生长概率 p ∝ E<sup style="color:#b09aff; font-weight:600;">η</sup
-          ><em style="color:#b09aff; font-style:normal; font-weight:600;">η ≈ 2</em>
-          能复现真实闪电的分支稀疏度（η = 1
-          会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为
-          c/3（MTLE 模型，λ = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。
+          生长概率 p ∝ E<sup style="color:#b09aff; font-weight:600;">η</sup><em
+            style="color:#b09aff; font-style:normal; font-weight:600;">η ≈ 2</em
+          >
+          能复现真实闪电的分支稀疏度（η = 1 会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为 c/3（MTLE 模型，λ
+          = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。
         </p>
 
         <!-- 峰值电流 -->
@@ -255,37 +231,40 @@ const metadata: MetaData = {
         </div>
 
         <!-- 按钮 -->
-        <div
-          class="td-btns"
-          style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:14px;"
-        >
+        <div class="td-btns" style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:14px;">
           <button
             id="td-bNew"
-            style="grid-column:1/-1; font:inherit; font-size:11px; font-weight:600; letter-spacing:0.1em; color:#fff; background:rgba(176,154,255,0.14); border:1px solid rgba(176,154,255,0.3); border-radius:6px; padding:11px; cursor:pointer;">新闪电</button
+            style="grid-column:1/-1; font:inherit; font-size:11px; font-weight:600; letter-spacing:0.1em; color:#fff; background:rgba(176,154,255,0.14); border:1px solid rgba(176,154,255,0.3); border-radius:6px; padding:11px; cursor:pointer;"
+            >新闪电</button
           >
           <button
             id="td-bPause"
             aria-pressed="false"
-            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">暂停</button
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;"
+            >暂停</button
           >
           <button
             id="td-bSnd"
             aria-pressed="false"
-            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">声音关</button
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;"
+            >声音关</button
           >
           <button
             id="td-bPng"
-            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">保存截图</button
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;"
+            >保存截图</button
           >
           <button
             id="td-bPol"
             aria-pressed="false"
-            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">极性 −CG</button
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;"
+            >极性 −CG</button
           >
           <button
             id="td-bStorm"
             aria-pressed="false"
-            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">正常模式</button
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;"
+            >正常模式</button
           >
         </div>
       </div>
