@@ -20,7 +20,10 @@ interface FetchOptions {
  * @param options 超时和 fallback 配置
  * @returns { data: T | null, error: string | null }
  */
-export async function ssrFetch<T>(path: string, options: FetchOptions): Promise<{ data: T | null; error: string | null }> {
+export async function ssrFetch<T>(
+  path: string,
+  options: FetchOptions
+): Promise<{ data: T | null; error: string | null }> {
   const { timeout = SSR_TIMEOUT_MS, fallback } = options;
 
   const controller = new AbortController();
@@ -34,7 +37,7 @@ export async function ssrFetch<T>(path: string, options: FetchOptions): Promise<
 
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      return { data: fallback as T, error: (body as Record<string, unknown>).msg as string || `HTTP ${res.status}` };
+      return { data: fallback as T, error: ((body as Record<string, unknown>).msg as string) || `HTTP ${res.status}` };
     }
 
     const json = await res.json();
@@ -44,7 +47,8 @@ export async function ssrFetch<T>(path: string, options: FetchOptions): Promise<
 
     return { data: fallback as T, error: (json.msg as string) || '未知错误' };
   } catch (err: unknown) {
-    const message = err instanceof Error && err.name === 'AbortError' ? '请求超时' : (err instanceof Error ? err.message : '网络错误');
+    const message =
+      err instanceof Error && err.name === 'AbortError' ? '请求超时' : err instanceof Error ? err.message : '网络错误';
     return { data: fallback as T, error: message };
   } finally {
     clearTimeout(timer);

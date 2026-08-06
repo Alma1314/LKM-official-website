@@ -35,7 +35,7 @@ if (error || !article) {
       <p class="text-text-muted mb-4">${error || '文章不存在'}</p>
       <a href="${getPermalink('/official/articles')}" class="text-primary hover:underline">返回文章列表</a>
     </div>`,
-    { status: 404, headers: { 'Content-Type': 'text/html' } },
+    { status: 404, headers: { 'Content-Type': 'text/html' } }
   );
 }
 
@@ -56,7 +56,11 @@ const categoryLabels: Record<string, string> = {
 const metadata = { title: `${article.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/official/articles/${slug}`)}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink(`/official/articles/${slug}`)}
+>
   <div class="space-y-6">
     <!-- 返回链接 -->
     <a href={getPermalink('/official/articles')} class="text-sm text-text-muted hover:text-primary transition-colors">
@@ -85,11 +89,7 @@ const metadata = { title: `${article.title} —— 理科迷` };
     </div>
 
     <!-- 封面 -->
-    {
-      article.cover && (
-        <img src={article.cover} alt={article.title} class="w-full rounded-xl object-cover max-h-96" />
-      )
-    }
+    {article.cover && <img src={article.cover} alt={article.title} class="w-full rounded-xl object-cover max-h-96" />}
 
     <!-- 文章内容 -->
     <article class="bg-card-bg border border-surface-3 rounded-xl p-6 prose prose-slate max-w-none">

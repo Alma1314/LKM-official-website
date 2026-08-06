@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink, getAsset } from './utils/permalinks';
 
 /** 管理团队 / 关于 / 服务等页面的共享顶部导航 Tab */
 export const teamTopTabs = [

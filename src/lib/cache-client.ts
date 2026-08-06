@@ -50,7 +50,7 @@ export function cacheClear(): void {
 export async function fetchWithCache<T>(
   url: string,
   cacheKey: string,
-  ttlMs: number = DEFAULT_TTL_MS,
+  ttlMs: number = DEFAULT_TTL_MS
 ): Promise<{ data: T | null; fromCache: boolean; error: string | null }> {
   // 先检查缓存（如果有直接返回，同时后台更新）
   const cached = cacheGet<T>(cacheKey);

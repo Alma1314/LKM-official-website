@@ -22,7 +22,7 @@ onMounted(async () => {
     const { data, fromCache } = await fetchWithCache<OfficialArticle[]>(
       `${API_BASE}/api/articles?page=1&page_size=6`,
       CACHE_KEY,
-      CACHE_TTL,
+      CACHE_TTL
     );
     if (data) {
       articles.value = data;
