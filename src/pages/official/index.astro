@@ -4,7 +4,7 @@ import Layout from '~/layouts/OfficialLayout.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
 
 import Hero from '~/features/homepage/components/Hero.astro';
-import BlogLatestPosts from '~/features/homepage/components/BlogLatestPosts.astro';
+import BlogLatestPostsClient from '~/features/homepage/components/BlogLatestPostsClient.vue';
 
 import avatar七月花 from '~/assets/images/member-optimized/七月花.webp';
 import avatar七月O from '~/assets/images/member-optimized/七月O.webp';
@@ -456,9 +456,9 @@ const metadata = {
   </Section>
 
   <Section id="update" title="最近更新" classes={{ container: '' }}>
-    <BlogLatestPosts client:only="vue">
+    <BlogLatestPostsClient client:only="vue">
       <p class="text-gray-500">加载中...</p>
-    </BlogLatestPosts>
+    </BlogLatestPostsClient>
   </Section>
 
   <!-- 常见问题部件 -->
