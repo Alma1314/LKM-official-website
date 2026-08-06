@@ -5,7 +5,7 @@ const props = defineProps<{
   article: BlogArticle;
 }>();
 
-const targetPath = `/community/blog/series/${props.article.seriesId}/${props.article.filepath}`;
+const targetPath = `/blog/series/${props.article.seriesId}/${props.article.filepath}`;
 const displayTitle = props.article.filename.replace(/\.(md|mdx)$/i, '');
 </script>
 

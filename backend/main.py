@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.core.response import ok
-from app.modules import admin, auth, blog, column, competition, files, forum, notifications, project, qa, team, treehole, users
+from app.modules import admin, articles, auth, blog, column, competition, files, forum, notifications, project, qa, team, treehole, users
 
 # === GraphQL ===
 from strawberry.fastapi import GraphQLRouter
@@ -53,6 +53,7 @@ graphql_app = GraphQLRouter(schema, context_getter=get_context)
 app.include_router(graphql_app, prefix="/graphql")
 
 # 注册 REST 路由
+app.include_router(articles.router)
 app.include_router(forum.router)
 app.include_router(blog.router)
 app.include_router(competition.router)

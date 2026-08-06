@@ -31,7 +31,7 @@ function isMarkdown(name: string) {
 }
 
 function fileLink(filepath: string) {
-  return `/community/blog/series/${props.seriesId}/${filepath}`;
+  return `/blog/series/${props.seriesId}/${filepath}`;
 }
 </script>
 
