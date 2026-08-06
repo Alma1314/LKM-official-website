@@ -9,9 +9,13 @@
 
 ## 后端
 
-启动测试后端：`cd backend && python -m uvicorn main:app --reload --port 8000`
-运行后端测试：`cd backend && python -m pytest tests/ -v`（含 GraphQL 测试）
+启动测试后端：`pnpm run dev:backend`（uvicorn + uv，端口 8000）
+一键启动前后端：`pnpm run dev`（并行启动 Astro + FastAPI）
+运行后端测试：`pnpm run test:backend`（含 GraphQL 测试，共 96 个）
 GraphQL 端点：`http://localhost:8000/graphql`（Strawberry + FastAPI）
+
+后端使用 uv 虚拟环境管理，首次使用需 `cd backend && uv sync` 安装依赖。
+Python 版本要求：>= 3.12
 
 ---
 

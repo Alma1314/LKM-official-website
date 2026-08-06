@@ -16,8 +16,11 @@ LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（�
 | `pnpm run check`   | 运行 astro check + ESLint + Prettier |
 | `pnpm run fix`     | 自动修复 ESLint + Prettier 问题      |
 | `pnpm run test`    | 运行 vitest 测试                     |
+| `pnpm run test:backend` | 运行后端测试（含 GraphQL 测试） |
 
-**启动测试后端：** `cd backend && python -m uvicorn main:app --reload --port 8000`
+**启动测试后端：** `pnpm run dev:backend`
+**一键启动前后端：** `pnpm run dev`（并行 Astro + FastAPI）
+**后端使用 uv 管理：** Python >= 3.12，首次 `cd backend && uv sync`
 
 **Node.js 要求：** >= 24.0.0
 
@@ -172,7 +175,7 @@ services:
 1. `pnpm run build` 构建成功
 2. `pnpm run check` 通过（astro check + ESLint + Prettier）
 3. `pnpm run test` 通过（前端 Vitest）
-4. `cd backend && python -m pytest tests/` 通过（后端 pytest，含 GraphQL 测试）
+4. `pnpm run test:backend` 通过（后端 pytest，含 GraphQL 测试）
 5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过
 6. 浏览器验证：首页、论坛（含 GraphQL）、暗色模式、移动端菜单
 7. GraphQL 端点：`http://localhost:8000/graphql` → GraphiQL 可交互
