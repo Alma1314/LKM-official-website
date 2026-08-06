@@ -2,6 +2,7 @@
 import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 
 interface ArticleDetail {
   slug: string;
@@ -20,30 +21,19 @@ interface ArticleDetail {
   keywords: string[];
 }
 
-const API_BASE = 'http://localhost:8000';
 const { slug } = Astro.params;
 
-let article: ArticleDetail | null = null;
-let error: string | null = null;
-
-try {
-  const res = await fetch(`${API_BASE}/api/articles/${slug}`);
-  const json = await res.json();
-  if (json.code === 0) {
-    article = json.data;
-  } else {
-    error = json.msg || '文章不存在';
-  }
-} catch {
-  error = '无法连接到服务器';
-}
+const { data: article, error } = await ssrFetch<ArticleDetail>(`/api/articles/${slug}`, {
+  fallback: null,
+});
+logSsrError(`文章详情 ${slug}`, error);
 
 if (error || !article) {
   return new Response(
     `<div class="max-w-2xl mx-auto py-20 text-center">
       <h1 class="text-2xl font-bold text-deep-text mb-2">文章未找到</h1>
       <p class="text-text-muted mb-4">${error || '文章不存在'}</p>
-      <a href="${getPermalink('/articles')}" class="text-primary hover:underline">返回文章列表</a>
+      <a href="${getPermalink('/official/articles')}" class="text-primary hover:underline">返回文章列表</a>
     </div>`,
     { status: 404, headers: { 'Content-Type': 'text/html' } },
   );
@@ -66,10 +56,10 @@ const categoryLabels: Record<string, string> = {
 const metadata = { title: `${article.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/articles/${slug}`)}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/official/articles/${slug}`)}>
   <div class="space-y-6">
     <!-- 返回链接 -->
-    <a href={getPermalink('/articles')} class="text-sm text-text-muted hover:text-primary transition-colors">
+    <a href={getPermalink('/official/articles')} class="text-sm text-text-muted hover:text-primary transition-colors">
       &larr; 返回文章列表
     </a>
 
@@ -108,7 +98,7 @@ const metadata = { title: `${article.title} —— 理科迷` };
 
     <!-- 关键词 -->
     {
-      article.keywords.length > 0 && (
+      article.keywords?.length > 0 && (
         <div class="flex flex-wrap gap-2">
           {article.keywords.map((kw) => (
             <span class="text-xs px-2 py-1 rounded-full bg-surface-3 text-text-muted">{kw}</span>

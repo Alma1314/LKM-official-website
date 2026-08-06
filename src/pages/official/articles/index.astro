@@ -2,6 +2,7 @@
 import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 
 interface ArticleItem {
   slug: string;
@@ -15,20 +16,10 @@ interface ArticleItem {
   comments: number;
 }
 
-const API_BASE = 'http://localhost:8000';
-
-async function fetchArticles(): Promise<{ items: ArticleItem[]; total: number }> {
-  try {
-    const res = await fetch(`${API_BASE}/api/articles?page=1&page_size=50`);
-    const json = await res.json();
-    if (json.code === 0) return json.data;
-    return { items: [], total: 0 };
-  } catch {
-    return { items: [], total: 0 };
-  }
-}
-
-const { items: articles } = await fetchArticles();
+const { data: articles, error } = await ssrFetch<ArticleItem[]>('/api/articles?page=1&page_size=50', {
+  fallback: [],
+});
+logSsrError('文章列表', error);
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -47,15 +38,15 @@ const categoryLabels: Record<string, string> = {
 const metadata = { title: '官方文章 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/articles')}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">官方文章</h1>
 
     <div class="space-y-4">
       {
-        articles.map((a) => (
+        articles?.map((a) => (
           <a
-            href={getPermalink(`/articles/${a.slug}`)}
+            href={getPermalink(`/official/articles/${a.slug}`)}
             class="block bg-card-bg border border-surface-3 rounded-xl p-5 hover:shadow-md transition-shadow"
           >
             <div class="flex gap-5">
@@ -89,8 +80,8 @@ const metadata = { title: '官方文章 —— 理科迷' };
       }
 
       {
-        articles.length === 0 && (
-          <p class="text-text-muted text-center py-8">暂无文章</p>
+        (!articles || articles.length === 0) && (
+          <p class="text-text-muted text-center py-8">{error ? `加载失败：${error}` : '暂无文章'}</p>
         )
       }
     </div>

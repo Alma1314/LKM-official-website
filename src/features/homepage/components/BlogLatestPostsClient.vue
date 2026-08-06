@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { fetchWithCache } from '~/lib/cache-client';
 
 interface OfficialArticle {
   slug: string;
@@ -11,14 +12,23 @@ interface OfficialArticle {
 
 const articles = ref<OfficialArticle[]>([]);
 const loading = ref(true);
+const API_BASE = 'http://localhost:8000';
+
+const CACHE_KEY = 'articles:latest';
+const CACHE_TTL = 5 * 60 * 1000; // 5 分钟
 
 onMounted(async () => {
   try {
-    const res = await fetch('/api/articles?page=1&page_size=6');
-    const json = await res.json();
-    if (json.code === 0) {
-      articles.value = json.data.items;
+    const { data, fromCache } = await fetchWithCache<OfficialArticle[]>(
+      `${API_BASE}/api/articles?page=1&page_size=6`,
+      CACHE_KEY,
+      CACHE_TTL,
+    );
+    if (data) {
+      articles.value = data;
     }
+    // SWR: 缓存命中已立即返回，后台已在静默更新
+    void fromCache; // 标记使用
   } finally {
     loading.value = false;
   }
@@ -31,7 +41,7 @@ onMounted(async () => {
     <a
       v-for="article in articles"
       :key="article.slug"
-      :href="`/official/articles/${article.slug}`"
+      :href="`${(window as any).__BASE_URL__ || ''}official/articles/${article.slug}`"
       class="border rounded-lg p-4 hover:shadow-md transition-shadow"
     >
       <img
