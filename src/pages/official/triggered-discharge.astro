@@ -1,0 +1,323 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import type { MetaData } from '~/types/core';
+import { buildUrl } from '~/lib/utils/paths';
+
+const metadata: MetaData = {
+  title: '触发击穿 — 2D 介电击穿模拟',
+  description:
+    '实时 GPU 闪电模拟：Laplace 场求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、体积渲染、泛光与程序化雷声。',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- 全屏覆盖：独立运行环境，不受页面布局影响 -->
+  <div
+    id="td-root"
+    style="position:fixed; inset:0; z-index:9999; background:#030408; overflow:hidden;"
+  >
+    <canvas
+      id="td-gpu"
+      style="position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; z-index:1;"
+    ></canvas>
+
+    <!-- WebGPU 不可用时的回退提示 -->
+    <div
+      id="td-nogpu"
+      style="display:none; position:fixed; inset:0; place-items:center; background:#030408; z-index:100; text-align:center; color:#7d76a0; letter-spacing:0.06em; line-height:2.2; font-size:13px; font-family:Inter,PingFang SC,Microsoft YaHei,ui-sans-serif,system-ui,sans-serif;"
+    >
+      <div>
+        <b style="color:#b09aff; font-size:15px;">WEBGPU 不可用</b><br /><br />
+        本模拟在 GPU 上每帧求解二维 Laplace 场方程。<br />
+        请使用 Chrome、Edge 或 Brave 113+（或 Safari 18+），并启用 WebGPU。
+      </div>
+    </div>
+
+    <!-- 控制面板 -->
+    <details
+      id="td-panel"
+      open
+      style="position:fixed; top:16px; left:16px; width:min(278px, calc(100vw - 32px)); max-height:calc(100vh - 32px); overflow-y:auto; z-index:10; background:rgba(6,8,16,0.78); backdrop-filter:blur(20px) saturate(1.4); -webkit-backdrop-filter:blur(20px) saturate(1.4); border:1px solid rgba(140,120,240,0.18); border-radius:8px; user-select:none; box-shadow:0 4px 24px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03); color:#e8e0ff; font:12px/1.5 Inter,PingFang SC,Microsoft YaHei,ui-sans-serif,system-ui,sans-serif; letter-spacing:0.02em; scrollbar-width:thin; scrollbar-color:rgba(176,154,255,0.25) transparent;"
+    >
+      <summary
+        style="list-style:none; cursor:pointer; padding:12px 16px; display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-radius:8px;"
+      >
+        <span style="letter-spacing:0.1em; font-weight:700; font-size:13px;">触发击穿</span>
+        <span style="letter-spacing:0.08em; color:#7d76a0; font-size:10px;">2D DBM · MTLE</span>
+      </summary>
+
+      <div style="padding:0 16px 16px;">
+        <!-- 遥测网格 -->
+        <div
+          class="td-readout"
+          style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.05); border-radius:6px; overflow:hidden; margin-bottom:14px;"
+        >
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">阶段</b
+            ><span
+              class="td-phase"
+              id="td-rPhase"
+              style="font-size:13px; font-weight:600; color:#b09aff;">充能中</span
+            >
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">真实时间</b
+            ><span
+              id="td-rTime"
+              style="font-size:13px; font-weight:600;">0 µs</span
+            >
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">慢动作</b
+            ><span id="td-rSlow" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">电流</b
+            ><span
+              id="td-rAmp"
+              style="font-size:13px; font-weight:600;">0 kA</span
+            >
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">回击</b
+            ><span id="td-rStroke" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">通道长度</b
+            ><span id="td-rLen" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">分形维数</b
+            ><span id="td-rDim" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">尖端速度</b
+            ><span id="td-rTip" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">场残差</b
+            ><span id="td-rRes" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+          <div
+            class="td-cell"
+            style="background:rgba(4,5,12,0.9); padding:8px 10px;"
+          >
+            <b style="display:block; font-weight:500; font-size:9px; letter-spacing:0.08em; color:#7d76a0; margin-bottom:2px;">雷声</b
+            ><span id="td-rThun" style="font-size:13px; font-weight:600;">—</span>
+          </div>
+        </div>
+
+        <!-- 分支指数滑块 -->
+        <div style="margin:12px 0 4px;">
+          <label
+            style="display:flex; justify-content:space-between; align-items:center; letter-spacing:0.06em; font-size:10px; font-weight:500; color:#7d76a0; margin-bottom:6px;"
+          >
+            <span>η · 分支指数</span>
+            <output
+              id="td-oEta"
+              style="color:#b09aff; font-variant-numeric:tabular-nums; font-weight:600; font-size:11px;">2.00</output
+            >
+          </label>
+          <input
+            type="range"
+            id="td-eta"
+            min="1"
+            max="4"
+            step="0.05"
+            value="2"
+            style="width:100%; height:20px; appearance:none; background:transparent; cursor:ew-resize;"
+          />
+        </div>
+        <p
+          class="td-note"
+          style="color:#7d76a0; font-size:10px; line-height:1.6; margin:10px 0 2px; padding:10px; background:rgba(255,255,255,0.015); border-radius:6px; border:1px solid rgba(255,255,255,0.03);"
+        >
+          生长概率 p ∝ E<sup style="color:#b09aff; font-weight:600;">η</sup
+          ><em style="color:#b09aff; font-style:normal; font-weight:600;">η ≈ 2</em>
+          能复现真实闪电的分支稀疏度（η = 1
+          会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为
+          c/3（MTLE 模型，λ = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。
+        </p>
+
+        <!-- 峰值电流 -->
+        <div style="margin:12px 0 4px;">
+          <label
+            style="display:flex; justify-content:space-between; align-items:center; letter-spacing:0.06em; font-size:10px; font-weight:500; color:#7d76a0; margin-bottom:6px;"
+          >
+            <span>峰值电流 · kA</span>
+            <output
+              id="td-oCur"
+              style="color:#b09aff; font-variant-numeric:tabular-nums; font-weight:600; font-size:11px;">30</output
+            >
+          </label>
+          <input
+            type="range"
+            id="td-cur"
+            min="10"
+            max="120"
+            step="1"
+            value="30"
+            style="width:100%; height:20px; appearance:none; background:transparent; cursor:ew-resize;"
+          />
+        </div>
+
+        <!-- 时间倍率 -->
+        <div style="margin:12px 0 4px;">
+          <label
+            style="display:flex; justify-content:space-between; align-items:center; letter-spacing:0.06em; font-size:10px; font-weight:500; color:#7d76a0; margin-bottom:6px;"
+          >
+            <span>时间倍率 · ×</span>
+            <output
+              id="td-oDil"
+              style="color:#b09aff; font-variant-numeric:tabular-nums; font-weight:600; font-size:11px;">1.0</output
+            >
+          </label>
+          <input
+            type="range"
+            id="td-dil"
+            min="0.25"
+            max="4"
+            step="0.05"
+            value="1"
+            style="width:100%; height:20px; appearance:none; background:transparent; cursor:ew-resize;"
+          />
+        </div>
+
+        <!-- 曝光 -->
+        <div style="margin:12px 0 4px;">
+          <label
+            style="display:flex; justify-content:space-between; align-items:center; letter-spacing:0.06em; font-size:10px; font-weight:500; color:#7d76a0; margin-bottom:6px;"
+          >
+            <span>曝光</span>
+            <output
+              id="td-oExp"
+              style="color:#b09aff; font-variant-numeric:tabular-nums; font-weight:600; font-size:11px;">1.20</output
+            >
+          </label>
+          <input
+            type="range"
+            id="td-exp"
+            min="0.4"
+            max="2.6"
+            step="0.05"
+            value="1.2"
+            style="width:100%; height:20px; appearance:none; background:transparent; cursor:ew-resize;"
+          />
+        </div>
+
+        <!-- 泛光 -->
+        <div style="margin:12px 0 4px;">
+          <label
+            style="display:flex; justify-content:space-between; align-items:center; letter-spacing:0.06em; font-size:10px; font-weight:500; color:#7d76a0; margin-bottom:6px;"
+          >
+            <span>泛光</span>
+            <output
+              id="td-oBlm"
+              style="color:#b09aff; font-variant-numeric:tabular-nums; font-weight:600; font-size:11px;">0.70</output
+            >
+          </label>
+          <input
+            type="range"
+            id="td-blm"
+            min="0"
+            max="1.6"
+            step="0.05"
+            value="0.7"
+            style="width:100%; height:20px; appearance:none; background:transparent; cursor:ew-resize;"
+          />
+        </div>
+
+        <!-- 按钮 -->
+        <div
+          class="td-btns"
+          style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:14px;"
+        >
+          <button
+            id="td-bNew"
+            style="grid-column:1/-1; font:inherit; font-size:11px; font-weight:600; letter-spacing:0.1em; color:#fff; background:rgba(176,154,255,0.14); border:1px solid rgba(176,154,255,0.3); border-radius:6px; padding:11px; cursor:pointer;">新闪电</button
+          >
+          <button
+            id="td-bPause"
+            aria-pressed="false"
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">暂停</button
+          >
+          <button
+            id="td-bSnd"
+            aria-pressed="false"
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">声音关</button
+          >
+          <button
+            id="td-bPng"
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">保存截图</button
+          >
+          <button
+            id="td-bPol"
+            aria-pressed="false"
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">极性 −CG</button
+          >
+          <button
+            id="td-bStorm"
+            aria-pressed="false"
+            style="font:inherit; font-size:10px; font-weight:600; letter-spacing:0.06em; color:#e8e0ff; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:9px 6px; cursor:pointer;">正常模式</button
+          >
+        </div>
+      </div>
+    </details>
+
+    <!-- 覆盖层 -->
+    <div
+      id="td-hint"
+      style="position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:5; color:rgba(125,118,160,0.45); letter-spacing:0.12em; font-size:11px; font-weight:500; pointer-events:none; font-family:Inter,PingFang SC,Microsoft YaHei,ui-sans-serif,system-ui,sans-serif;"
+    >
+      点击任意位置触发闪电
+    </div>
+    <div
+      id="td-sig"
+      style="position:fixed; bottom:20px; right:20px; z-index:5; color:rgba(125,118,160,0.35); letter-spacing:0.12em; font-size:10px; font-weight:500; font-family:Inter,PingFang SC,Microsoft YaHei,ui-sans-serif,system-ui,sans-serif;"
+    >
+      运行时模拟 — 真实物理，不走捷径
+    </div>
+
+    <!-- 返回按钮 -->
+    <div style="position:fixed; top:16px; right:16px; z-index:20;">
+      <a
+        href={buildUrl('/official')}
+        style="display:inline-block; background:rgba(6,8,16,0.78); backdrop-filter:blur(20px); border:1px solid rgba(140,120,240,0.18); border-radius:6px; padding:8px 14px; color:#e8e0ff; font:12px/1.5 Inter,PingFang SC,Microsoft YaHei,ui-sans-serif,system-ui,sans-serif; letter-spacing:0.06em; text-decoration:none;"
+      >
+        返回
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<!-- Vite 会处理内联模块导入，自动打包为正确的客户端资源路径 -->
+<script>
+  import('../../features/triggered-discharge/entry.js');
+</script>
