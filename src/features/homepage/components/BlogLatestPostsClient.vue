@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { blogApi } from '~/features/blog-community/api/blogApi';
-import type { BlogArticleInfo } from '~/features/blog-community/types/blog';
 
-const articles = ref<BlogArticleInfo[]>([]);
+interface OfficialArticle {
+  slug: string;
+  title: string;
+  description: string;
+  cover: string;
+  published: string;
+}
+
+const articles = ref<OfficialArticle[]>([]);
 const loading = ref(true);
 
 onMounted(async () => {
-  const result = await blogApi.listArticles(1);
-  if (result.isOk()) {
-    articles.value = result.value.items.slice(0, 6);
+  try {
+    const res = await fetch('/api/articles?page=1&page_size=6');
+    const json = await res.json();
+    if (json.code === 0) {
+      articles.value = json.data.items;
+    }
+  } finally {
+    loading.value = false;
   }
-  loading.value = false;
 });
 </script>
 
@@ -21,12 +31,12 @@ onMounted(async () => {
     <a
       v-for="article in articles"
       :key="article.slug"
-      :href="`/blog/posts/${article.slug}`"
+      :href="`/official/articles/${article.slug}`"
       class="border rounded-lg p-4 hover:shadow-md transition-shadow"
     >
       <img
-        v-if="article.cover_url"
-        :src="article.cover_url"
+        v-if="article.cover"
+        :src="article.cover"
         :alt="article.title"
         class="w-full h-40 object-cover rounded mb-3"
       />
