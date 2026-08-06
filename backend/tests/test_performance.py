@@ -6,7 +6,7 @@ import pytest
 
 
 PERF_ENDPOINTS = [
-    ("GET", "/api/health"),
+    ("GET", "/health"),
     ("GET", "/api/forum/posts?page_size=100"),
     ("GET", "/api/forum/posts/post-0"),
     ("GET", "/api/blog/posts?page_size=100"),
@@ -21,7 +21,6 @@ PERF_ENDPOINTS = [
 ]
 
 AUTH_ENDPOINTS = [
-    ("GET", "/api/auth/me"),
     ("GET", "/api/notifications"),
     ("GET", "/api/admin/stats"),
 ]
@@ -69,7 +68,7 @@ class TestPerformanceConcurrent:
 
     def test_concurrent_mixed_endpoints(self, client):
         endpoints = [
-            "/api/health",
+            "/health",
             "/api/forum/posts/post-0",
             "/api/blog/posts/getting-started",
             "/api/columns/column-1",

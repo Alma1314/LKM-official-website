@@ -3,7 +3,7 @@
 
 class TestHealth:
     def test_health_returns_ok(self, client):
-        response = client.get("/api/health")
+        response = client.get("/health")
         assert response.status_code == 200
         body = response.json()
         assert body["code"] == 0
