@@ -8,15 +8,15 @@ LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（�
 
 ## 快速参考
 
-| 命令               | 用途                                 |
-| ------------------ | ------------------------------------ |
-| `pnpm run dev`     | 启动开发服务器（localhost:4321）     |
-| `pnpm run build`   | 生产构建                             |
-| `pnpm run preview` | 本地预览生产构建                     |
-| `pnpm run check`   | 运行 astro check + ESLint + Prettier |
-| `pnpm run fix`     | 自动修复 ESLint + Prettier 问题      |
-| `pnpm run test`    | 运行 vitest 测试                     |
-| `pnpm run test:backend` | 运行后端测试（含 GraphQL 测试） |
+| 命令                    | 用途                                 |
+| ----------------------- | ------------------------------------ |
+| `pnpm run dev`          | 启动开发服务器（localhost:4321）     |
+| `pnpm run build`        | 生产构建                             |
+| `pnpm run preview`      | 本地预览生产构建                     |
+| `pnpm run check`        | 运行 astro check + ESLint + Prettier |
+| `pnpm run fix`          | 自动修复 ESLint + Prettier 问题      |
+| `pnpm run test`         | 运行 vitest 测试                     |
+| `pnpm run test:backend` | 运行后端测试（含 GraphQL 测试）      |
 
 **启动测试后端：** `pnpm run dev:backend`
 **一键启动前后端：** `pnpm run dev`（并行 Astro + FastAPI）

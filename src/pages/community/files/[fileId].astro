@@ -59,11 +59,7 @@ function _statusColor(status: string): string {
 const metadata = { title: `${file.originalName} —— 理科迷` };
 ---
 
-<CommunitySidebarLayout
-  metadata={metadata}
-  sidebarLinks={communitySidebarLinks}
-  currentPath={Astro.url.pathname}
->
+<CommunitySidebarLayout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={Astro.url.pathname}>
   <div class="space-y-6">
     <!-- 面包屑 -->
     <div class="flex items-center gap-2 text-sm text-text-muted/60">
