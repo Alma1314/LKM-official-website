@@ -56,19 +56,19 @@ const metadata = {
 };
 
 const sidebarLinks = [
-  { text: '创始人', href: getPermalink('/team#founder'), icon: 'tabler:star' },
-  { text: '总务部', href: getPermalink('/team#general'), icon: 'tabler:building-skyscraper' },
-  { text: '群务部', href: getPermalink('/team#affairs'), icon: 'tabler:users-group' },
-  { text: '活动策划部', href: getPermalink('/team#events'), icon: 'tabler:calendar-event' },
-  { text: '新闻办', href: getPermalink('/team#news'), icon: 'tabler:news' },
-  { text: '顾问团', href: getPermalink('/team#advisors'), icon: 'tabler:user-check' },
-  { text: '专业委员会', href: getPermalink('/team#professional'), icon: 'tabler:certificate' },
-  { text: '技术委员会', href: getPermalink('/team#tech'), icon: 'tabler:code' },
-  { text: '已离开成员', href: getPermalink('/team#alumni'), icon: 'tabler:user-x' },
+  { text: '创始人', href: getPermalink('/official/team#founder'), icon: 'tabler:star' },
+  { text: '总务部', href: getPermalink('/official/team#general'), icon: 'tabler:building-skyscraper' },
+  { text: '群务部', href: getPermalink('/official/team#affairs'), icon: 'tabler:users-group' },
+  { text: '活动策划部', href: getPermalink('/official/team#events'), icon: 'tabler:calendar-event' },
+  { text: '新闻办', href: getPermalink('/official/team#news'), icon: 'tabler:news' },
+  { text: '顾问团', href: getPermalink('/official/team#advisors'), icon: 'tabler:user-check' },
+  { text: '专业委员会', href: getPermalink('/official/team#professional'), icon: 'tabler:certificate' },
+  { text: '技术委员会', href: getPermalink('/official/team#tech'), icon: 'tabler:code' },
+  { text: '已离开成员', href: getPermalink('/official/team#alumni'), icon: 'tabler:user-x' },
 ];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/team')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/team')}>
   <!-- 创始人 -->
   <Section title="创始人" subtitle="理科迷的起点，一切从这里开始" id="founder">
     <div class="max-w-2xl mx-auto">

@@ -11,18 +11,18 @@ const metadata = {
 };
 
 const sidebarLinks = [
-  { text: '内容创作', href: getPermalink('/services#content'), icon: 'tabler:pencil' },
-  { text: '社区活动', href: getPermalink('/services#events'), icon: 'tabler:confetti' },
-  { text: '知识平台', href: getPermalink('/services#platform'), icon: 'tabler:database' },
+  { text: '内容创作', href: getPermalink('/official/services#content'), icon: 'tabler:pencil' },
+  { text: '社区活动', href: getPermalink('/official/services#events'), icon: 'tabler:confetti' },
+  { text: '知识平台', href: getPermalink('/official/services#platform'), icon: 'tabler:database' },
 ];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/services')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/services')}>
   <!-- 首屏 -->
   <HeroText
     title="让科技回归每一个人"
     subtitle="理科迷提供多种形式让科学与技术传播，以及社区服务，从学术专业讨论到科普内容，我们致力于打破知识壁垒，打破信息差，让更多人感受到科技的魅力，理性的美。"
-    callToAction={{ text: '加入我们', href: getPermalink('/contact'), variant: 'primary' }}
+    callToAction={{ text: '加入我们', href: getPermalink('/official/contact'), variant: 'primary' }}
   />
 
   <!-- 内容创作 -->
@@ -142,7 +142,7 @@ const sidebarLinks = [
       {
         variant: 'primary',
         text: '联系我们',
-        href: getPermalink('/contact'),
+        href: getPermalink('/official/contact'),
       },
     ]}
     subtitle="无论你是想加入社区、投稿创作作品，还是提出合作建议，我们都非常欢迎。"

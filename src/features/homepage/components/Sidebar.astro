@@ -44,7 +44,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       groups.map(({ text, href, icon }) => {
         const isActive = (() => {
           const linkUrl = new URL(href, 'https://example.com');
-          if (linkUrl.hash) return currentPath === href;
+          if (linkUrl.hash) return currentPath === linkUrl.pathname;
           return currentPath === href || currentPath.startsWith(href + '#');
         })();
 

@@ -11,20 +11,20 @@ const metadata = {
 };
 
 const sidebarLinks = [
-  { text: '爱好者总群', href: getPermalink('/communities#general'), icon: 'tabler:users' },
-  { text: '年级分段分群', href: getPermalink('/communities#grades'), icon: 'tabler:school' },
-  { text: '群体分类分群', href: getPermalink('/communities#groups'), icon: 'tabler:category' },
-  { text: '自然/基础学科', href: getPermalink('/communities#basic'), icon: 'tabler:atom' },
-  { text: '应用科学', href: getPermalink('/communities#applied'), icon: 'tabler:robot' },
-  { text: '兴趣板块社团', href: getPermalink('/communities#hobby'), icon: 'tabler:palette' },
-  { text: '常驻活动', href: getPermalink('/communities#events'), icon: 'tabler:calendar-star' },
-  { text: '原始老群', href: getPermalink('/communities#legacy'), icon: 'tabler:archive' },
+  { text: '爱好者总群', href: getPermalink('/official/communities#general'), icon: 'tabler:users' },
+  { text: '年级分段分群', href: getPermalink('/official/communities#grades'), icon: 'tabler:school' },
+  { text: '群体分类分群', href: getPermalink('/official/communities#groups'), icon: 'tabler:category' },
+  { text: '自然/基础学科', href: getPermalink('/official/communities#basic'), icon: 'tabler:atom' },
+  { text: '应用科学', href: getPermalink('/official/communities#applied'), icon: 'tabler:robot' },
+  { text: '兴趣板块社团', href: getPermalink('/official/communities#hobby'), icon: 'tabler:palette' },
+  { text: '常驻活动', href: getPermalink('/official/communities#events'), icon: 'tabler:calendar-star' },
+  { text: '原始老群', href: getPermalink('/official/communities#legacy'), icon: 'tabler:archive' },
 ];
 
 const sectionIds = ['general', 'grades', 'groups', 'basic', 'applied', 'hobby', 'events', 'legacy'];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/communities')}>
+<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/communities')}>
   {
     communityCategories.map((cat, i) => (
       <CommunitySection id={sectionIds[i]} title={cat.label} intro={cat.intro}>
