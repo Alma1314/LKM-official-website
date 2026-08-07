@@ -21,10 +21,10 @@ describe('useRegisterFlow', () => {
     vi.spyOn(api.authApi, 'getMe').mockResolvedValue(ok({ id: 1, username: 'alma', account_level: 'local' }));
 
     const flow = useRegisterFlow();
-    flow.type.value = 'local';
-    flow.username.value = 'alma';
-    flow.password.value = 'pass123';
-    flow.confirm.value = 'pass123';
+    flow.type = 'local';
+    flow.username = 'alma';
+    flow.password = 'pass123';
+    flow.confirm = 'pass123';
     await flow.submit();
     // 断言 authApi.registerLocal 收到用户输入的 password（而非随机值）
     expect(api.authApi.registerLocal).toHaveBeenCalledWith('alma', 'pass123');
@@ -36,15 +36,15 @@ describe('useRegisterFlow', () => {
       ok({ message: 'ok', txn_id: 'txn-1', email_sent: true, phone_sent: false })
     );
     const flow = useRegisterFlow();
-    flow.type.value = 'normal';
-    flow.username.value = 'alma';
-    flow.password.value = 'pass123';
-    flow.confirm.value = 'pass123';
-    flow.contact.value = 'alma@example.com';
-    flow.useEmail.value = true;
+    flow.type = 'normal';
+    flow.username = 'alma';
+    flow.password = 'pass123';
+    flow.confirm = 'pass123';
+    flow.contact = 'alma@example.com';
+    flow.useEmail = true;
     await flow.submit();
-    expect(flow.stage.value).toBe('verify');
-    expect(flow.txnId.value).toBe('txn-1');
+    expect(flow.stage).toBe('verify');
+    expect(flow.txnId).toBe('txn-1');
     expect(api.authApi.registerNormal).toHaveBeenCalledWith('alma', 'pass123', 'alma@example.com', null);
   });
 });

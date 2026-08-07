@@ -171,10 +171,10 @@ const flow = useOnboardingFlow({ redirect: props.redirect ?? null, onDone: navig
 const stepRefs = ref<Record<number, Record<string, unknown>>>({});
 
 function setStepRef(el: Record<string, unknown> | null): void {
-  if (el) stepRefs.value[flow.step.value] = el;
+  if (el) stepRefs.value[flow.step] = el;
 }
 
-const currentConfig = computed(() => steps.find((s) => s.number === flow.step.value) ?? steps[0]);
+const currentConfig = computed(() => steps.find((s) => s.number === flow.step) ?? steps[0]);
 
 const stepNote = computed(() => {
   if (currentConfig.value.optional) return '此步骤可跳过';
@@ -183,14 +183,14 @@ const stepNote = computed(() => {
 });
 
 const canProceed = computed(() => {
-  const ref = stepRefs.value[flow.step.value];
+  const ref = stepRefs.value[flow.step];
   if (currentConfig.value.optional) return true;
   if (ref && typeof ref.isComplete === 'function') return !!ref.isComplete();
   return true;
 });
 
 async function collectData(): Promise<Record<string, unknown>> {
-  const ref = stepRefs.value[flow.step.value];
+  const ref = stepRefs.value[flow.step];
   if (ref && typeof ref.getData === 'function') {
     const d = ref.getData();
     return typeof d === 'object' && d !== null ? (d as Record<string, unknown>) : {};
@@ -199,9 +199,9 @@ async function collectData(): Promise<Record<string, unknown>> {
 }
 
 async function next(): Promise<void> {
-  if (flow.step.value < 4) {
+  if (flow.step < 4) {
     const data = await collectData();
-    const ok = await flow.saveStep(flow.step.value, data);
+    const ok = await flow.saveStep(flow.step, data);
     if (!ok) return;
     flow.goNext();
     return;
@@ -227,13 +227,13 @@ onMounted(async () => {
     return;
   }
   await flow.load();
-  if (flow.completed.value) {
+  if (flow.completed) {
     navigate(resolveSafeRedirect(props.redirect ?? null));
   }
 });
 
 function dotClass(number: number): string {
-  if (number < flow.step.value || number === flow.step.value) return 'bg-primary text-on-primary';
+  if (number < flow.step || number === flow.step) return 'bg-primary text-on-primary';
   return 'bg-surface-3 text-text-muted';
 }
 </script>

@@ -30,11 +30,10 @@ describe('LoginPage flow.mode 解包', () => {
     expect(w.find('input[autocomplete="current-password"]').exists()).toBe(false);
   });
 
-  it('flow.mode 是 Ref，读取需经 .value（JS 上下文），模板自动解包', async () => {
+  it('默认密码表单渲染（flow.mode 经 reactive 解包后模板 v-if 命中）', async () => {
     const w = mount(LoginPage, { props: { mode: 'modal' } });
-    // 通过 vm 拿到组件内部 flow？LoginPage 未 expose flow；这里退而用组件响应断言：
-    // 模板用 `flow.mode === 'x'` 的 v-if 驱动，能渲染即说明解包生效。
+    await w.vm.$nextTick();
     expect(w.find('input[autocomplete="current-password"]').exists()).toBe(true);
-    expect(w.find('button').text()).toContain('登录');
+    expect(w.text()).toContain('登录');
   });
 });

@@ -55,7 +55,7 @@
 
       <!-- 验证码登录 -->
       <form v-else-if="flow.mode === 'code'" class="space-y-4" @submit.prevent="flow.submitCode()">
-        <AuthField label="用户名 / 邮箱 / 手机号" placeholder="请输入接收验证码的账号" v-model="flow.account" />
+        <AuthField label="邮箱 / 手机号" placeholder="请输入接收验证码的账号" v-model="flow.account" />
         <div>
           <VerificationCodeField id="login-code" v-model="flow.code" :error="flow.error ?? undefined" />
         </div>

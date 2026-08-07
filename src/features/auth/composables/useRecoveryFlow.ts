@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
 
 export type RecoveryStage = 'account' | 'verify' | 'reset' | 'done';
@@ -8,15 +8,15 @@ export interface RecoveryFlowOptions {
 }
 
 export interface RecoveryFlow {
-  // state
-  stage: Ref<RecoveryStage>;
-  account: Ref<string>;
-  txnId: Ref<string>;
-  code: Ref<string>;
-  newPassword: Ref<string>;
-  confirm: Ref<string>;
-  loading: Ref<boolean>;
-  error: Ref<string | null>;
+  // state —— reactive 包裹的 ref 已解包
+  stage: RecoveryStage;
+  account: string;
+  txnId: string;
+  code: string;
+  newPassword: string;
+  confirm: string;
+  loading: boolean;
+  error: string | null;
   // methods
   stepRequest: () => Promise<void>;
   stepVerify: () => Promise<void>;
@@ -108,7 +108,8 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
     error.value = null;
   }
 
-  return {
+  // reactive 包裹使 ref 解包（与 useLoginFlow/useRegisterFlow 一致），模板里即值类型
+  return reactive({
     stage,
     account,
     txnId,
@@ -121,5 +122,5 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
     stepVerify,
     stepReset,
     reset,
-  };
+  });
 }

@@ -18,8 +18,8 @@ describe('useOnboardingFlow', () => {
     );
     const flow = useOnboardingFlow();
     await flow.saveStep(1, { grade: 'math' });
-    expect(flow.step.value).toBe(1);
-    expect(flow.dataByStep.value[1]).toEqual({ grade: 'math' });
+    expect(flow.step).toBe(1);
+    expect(flow.dataByStep[1]).toEqual({ grade: 'math' });
   });
 
   it('load 恢复未完成步骤', async () => {
@@ -29,7 +29,7 @@ describe('useOnboardingFlow', () => {
     );
     const flow = useOnboardingFlow();
     await flow.load();
-    expect(flow.step.value).toBe(3);
+    expect(flow.step).toBe(3);
   });
 
   it('skipAll 调用 skip 并跳转到 onDone', async () => {
@@ -38,7 +38,7 @@ describe('useOnboardingFlow', () => {
     const onDone = vi.fn();
     const flow = useOnboardingFlow({ redirect: '/official', onDone });
     await flow.skipAll();
-    expect(flow.completed.value).toBe(true);
+    expect(flow.completed).toBe(true);
     expect(onDone).toHaveBeenCalledWith('/official');
   });
 
@@ -46,7 +46,7 @@ describe('useOnboardingFlow', () => {
     const onDone = vi.fn();
     const flow = useOnboardingFlow({ redirect: '/official', onDone });
     flow.markDone();
-    expect(flow.completed.value).toBe(true);
+    expect(flow.completed).toBe(true);
     expect(onDone).toHaveBeenCalledWith('/official');
   });
 });

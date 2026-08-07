@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
 
@@ -10,12 +10,12 @@ export interface OnboardingFlowOptions {
 }
 
 export interface OnboardingFlow {
-  // state（ref：模板自动解包；JS 读取用 .value）
-  step: Ref<OnboardingStepNumber>;
-  completed: Ref<boolean>;
-  loading: Ref<boolean>;
-  error: Ref<string | null>;
-  dataByStep: Ref<Record<number, Record<string, unknown>>>;
+  // state —— reactive 包裹的 ref 已解包，模板/JS 直接 flow.step=…
+  step: OnboardingStepNumber;
+  completed: boolean;
+  loading: boolean;
+  error: string | null;
+  dataByStep: Record<number, Record<string, unknown>>;
   // methods
   load: () => Promise<void>;
   saveStep: (step: number, data: Record<string, unknown>) => Promise<boolean>;
@@ -146,7 +146,8 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
     finish();
   }
 
-  return {
+  // reactive 包裹使 ref 解包（与各 flow 一致），模板里即值类型，消除 TS2367 误报
+  return reactive({
     step,
     completed,
     loading,
@@ -158,5 +159,5 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
     goNext,
     goPrev,
     markDone,
-  };
+  });
 }
