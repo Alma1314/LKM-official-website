@@ -127,7 +127,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^7.0.3",
-    "@vitejs/plugin-vue": "^6.0.8",
     "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^10.0.1",
     "@iconify-json/flat-color-icons": "^1.2.3",
@@ -147,6 +146,7 @@
     "@types/three": "^0.185.1",
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.65.0",
+    "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/ui": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
     "astro-compress": "^2.4.1",
