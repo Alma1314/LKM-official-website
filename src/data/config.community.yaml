@@ -153,10 +153,10 @@ fuwari:
           - name: 其他应用
             url: /apps
       - name: 我的
-        url: /profile
+        url: /account
         children:
           - name: 个人主页
-            url: /user/qiyue-hua
+            url: /account
           - name: 贡献系统
             url: /contribution
           - name: 设置
