@@ -61,7 +61,12 @@ def get_user_by_username(username: str, db: Session = Depends(get_session)):
     if not user:
         raise BizError(ErrCode.USER_NOT_FOUND)
     p = user.profile
-    info = ProfileInfo(nickname=p.nickname if p else None, avatar=p.avatar if p else None, role=p.role if p else "member")
+    info = ProfileInfo(
+        nickname=p.nickname if p else None,
+        avatar=p.avatar if p else None,
+        role=p.role if p else "member",
+        account_level=user.account_level if user.account_level else "local",
+    )
     return info.model_dump()
 
 
@@ -72,7 +77,12 @@ def get_user(user_id: int, db: Session = Depends(get_session)):
     if not user:
         raise BizError(ErrCode.USER_NOT_FOUND)
     p = user.profile
-    info = ProfileInfo(nickname=p.nickname if p else None, avatar=p.avatar if p else None, role=p.role if p else "member")
+    info = ProfileInfo(
+        nickname=p.nickname if p else None,
+        avatar=p.avatar if p else None,
+        role=p.role if p else "member",
+        account_level=user.account_level if user.account_level else "local",
+    )
     return info.model_dump()
 
 

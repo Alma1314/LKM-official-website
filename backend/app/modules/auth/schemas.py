@@ -14,6 +14,7 @@ class ProfileInfo(BaseModel):
     nickname: str | None = None
     avatar: str | None = None
     role: ProfileRole = ProfileRole.MEMBER
+    account_level: str = "local"
 
 
 class ProfileUpdate(BaseModel):

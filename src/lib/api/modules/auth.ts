@@ -109,5 +109,5 @@ export const authApi = {
 
   // ── 根据用户名获取用户信息 ──
   getUserByUsername: (username: string) =>
-    get<UserInfo>(`/api/auth/user/by-username/${encodeURIComponent(username)}`),
+    get<ProfileInfo>(`/api/auth/user/by-username/${encodeURIComponent(username)}`),
 };

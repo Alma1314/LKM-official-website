@@ -1,20 +1,20 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center gap-4">
-      <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
-        {{ avatarLetter }}
-      </div>
-      <div>
-        <div class="text-lg font-semibold">{{ user?.nickname || user?.username }}</div>
-        <div class="text-sm text-text-muted">@{{ user?.username }}</div>
-        <span class="badge badge-sm mt-1" :class="levelBadgeClass">{{ levelLabel }}</span>
-      </div>
-    </div>
-
     <div v-if="loading" class="text-center py-8 text-text-muted">加载中...</div>
 
     <template v-else-if="user">
+      <!-- Header -->
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
+          {{ avatarLetter }}
+        </div>
+        <div>
+          <div class="text-lg font-semibold">{{ user.nickname || user.username }}</div>
+          <div class="text-sm text-text-muted">@{{ user.username }}</div>
+          <span class="badge badge-sm mt-1" :class="levelBadgeClass">{{ levelLabel }}</span>
+        </div>
+      </div>
+
       <!-- Stats -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div class="rounded-lg bg-page-bg p-4 text-center">
@@ -44,8 +44,12 @@
       </div>
     </template>
 
-    <div v-else class="text-center py-8 text-text-muted">
-      用户不存在
+    <div v-else class="text-center py-12 space-y-3">
+      <div class="w-16 h-16 mx-auto rounded-full bg-surface-2 flex items-center justify-center text-2xl text-text-muted">
+        {{ props.username?.charAt(0).toUpperCase() || '?' }}
+      </div>
+      <div class="text-lg font-semibold text-text-muted">@{{ props.username }}</div>
+      <div class="text-sm text-text-muted">用户不存在或数据加载失败</div>
     </div>
   </div>
 </template>
@@ -78,8 +82,11 @@ onMounted(async () => {
   result.match(
     (data) => {
       user.value = {
-        ...data,
+        id: 0,
         username: props.username,
+        nickname: data.nickname ?? null,
+        avatar: data.avatar ?? null,
+        role: data.role,
         account_level: data.account_level || 'local',
       } as User;
     },
