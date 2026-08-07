@@ -3,24 +3,26 @@ import MainGridLayout from '~/layouts/BlogMainGridLayout.astro';
 import { getUserByUsername, ProfilePage } from '~/features/profile';
 import { getPermalink } from '~/lib/utils/permalinks';
 
-// server 模式：params 从 URL 直接解析
-// SSR 时可转发客户端 Cookie 给 FastAPI 获取用户数据
-// 后端就绪后切换为：const user = await userApi.getProfile(username)
 const { username } = Astro.params;
-const user = getUserByUsername(username || '');
 
-if (!user) {
-  return Astro.redirect(getPermalink('/'));
-}
+// 先从 mock 数据查找，找不到则允许渲染（客户端 Vue 组件会从 Pinia store 获取真实数据）
+const user = getUserByUsername(username || '');
+const isMockUser = !!user;
+const displayName = user?.displayName || username;
+const bio = user?.bio || '';
 ---
 
-<MainGridLayout title={user.displayName} description={user.bio}>
+<MainGridLayout title={displayName} description={bio}>
   <Fragment slot="head">
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
   <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
     <div class="card-base z-10 px-9 py-6 relative w-full">
-      <ProfilePage client:load user={user} />
+      {isMockUser ? (
+        <ProfilePage client:load user={user} />
+      ) : (
+        <UserProfile client:only="vue" username={username} />
+      )}
     </div>
   </div>
 </MainGridLayout>

@@ -54,6 +54,17 @@ def get_me(cur: CurrentUser = Depends(get_current_user)):
     return {"id": cur.id, "username": cur.username, "account_level": cur.account_level}
 
 
+@router.get("/user/by-username/{username}", response_model=ApiResp[ProfileInfo])
+@respond
+def get_user_by_username(username: str, db: Session = Depends(get_session)):
+    user = db.query(UserModel).filter(UserModel.username == username).first()
+    if not user:
+        raise BizError(ErrCode.USER_NOT_FOUND)
+    p = user.profile
+    info = ProfileInfo(nickname=p.nickname if p else None, avatar=p.avatar if p else None, role=p.role if p else "member")
+    return info.model_dump()
+
+
 @router.get("/{user_id}", response_model=ApiResp[ProfileInfo])
 @respond
 def get_user(user_id: int, db: Session = Depends(get_session)):

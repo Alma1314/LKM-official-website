@@ -82,21 +82,6 @@
           </div>
         </div>
 
-        <!-- Bindings (占位) -->
-        <div v-if="false && state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <BindMethods :user="state.user" @update="handleUpdate" />
-        </div>
-
-        <!-- 2FA (占位) -->
-        <div v-if="false && state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <TwoFactorSetup :user="state.user" @update="handleUpdate" />
-        </div>
-
-        <!-- Passkey (占位) -->
-        <div v-if="false && state.user" class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
-          <PasskeySetup :user="state.user" @update="handleUpdate" />
-        </div>
-
         <div class="flex gap-3 justify-between">
           <a :href="getAuthPath('account/recovery')" class="btn btn-ghost btn-sm">密码找回</a>
           <button type="button" class="btn btn-ghost btn-sm text-error" @click="handleLogout">退出登录</button>

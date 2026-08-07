@@ -42,7 +42,7 @@ export function useQuestionBankStore() {
     const q: Question = {
       ...data,
       id: crypto.randomUUID(),
-      userId: auth.userId.value!,
+      userId: String(auth.userId.value!),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -65,7 +65,7 @@ export function useQuestionBankStore() {
   async function createFolder(name: string, parentId: string | null = null) {
     const folder: Folder = {
       id: crypto.randomUUID(),
-      userId: auth.userId.value!,
+      userId: String(auth.userId.value!),
       name,
       parentId,
       sort: folders.value.length,
