@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import type { BlogArticleInfo } from '../types/blog';
 
 const articles = ref<BlogArticleInfo[]>([]);

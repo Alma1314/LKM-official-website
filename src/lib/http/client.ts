@@ -49,6 +49,139 @@ function getInstance(): AxiosInstance {
       withCredentials: true, // 自动携带同域 Cookie
     });
 
+    // Token 管理 — 从 localStorage 读取 Pinia 持久化的 token
+    function getAccessToken(): string | null {
+      try {
+        const saved = localStorage.getItem('lkm-auth-store');
+        if (saved) {
+          const data = JSON.parse(saved);
+          return data._token ?? null;
+        }
+      } catch {
+        // ignore
+      }
+      return null;
+    }
+
+    // Request interceptor: 自动附加 JWT（只给需要认证的端点且有有效 token 时附加）
+    _instance.interceptors.request.use((config) => {
+      const token = getAccessToken();
+      if (!token) return config;
+      // only attach to authenticated endpoints
+      const url = config.url || '';
+      const needsAuth =
+        (url.startsWith('/api/auth/') && !url.startsWith('/api/auth/login') && !url.startsWith('/api/auth/reg')) ||
+        url.startsWith('/graphql');
+      if (needsAuth && config.headers) {
+        (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+      }
+      return config;
+    });
+
+    // --- 401 刷新队列（解决并发 401）---
+    let isRefreshing = false;
+    let failedQueue: Array<{ resolve: (v: unknown) => void; reject: (e: unknown) => void }> = [];
+
+    function processQueue(error: unknown, token: string | null = null) {
+      failedQueue.forEach((p) => {
+        if (error) p.reject(error);
+        else p.resolve(token);
+      });
+      failedQueue = [];
+    }
+
+    // --- JWT 自动刷新拦截器（先注册 = 后执行 reject，确保拿到原始 AxiosError）---
+    _instance.interceptors.response.use(
+      (res) => res,
+      async (error: unknown) => {
+        if (!isAxiosError(error) || error.response?.status !== 401) {
+          return Promise.reject(error);
+        }
+
+        const url = error.config?.url || '';
+
+        if (!error.config || (error.config as unknown as Record<string, unknown>)._retry) {
+          // If _retry already set and still 401, token/refresh both invalid — clear and reject silently
+          if (
+            (error.config as unknown as Record<string, unknown>)._retry &&
+            !url.startsWith('/api/auth/login') &&
+            !url.startsWith('/api/auth/reg')
+          ) {
+            try {
+              localStorage.removeItem('lkm-auth-store');
+            } catch {
+              /* ignore */
+            }
+          }
+          return Promise.reject(error);
+        }
+
+        const isRefreshRequest = url === '/api/auth/refresh';
+        if (isRefreshRequest) {
+          try {
+            localStorage.removeItem('lkm-auth-store');
+          } catch {
+            /* ignore */
+          }
+          return Promise.reject(error);
+        }
+
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          }).then((token) => {
+            if (token) {
+              (error.config!.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+              return _instance!.request(error.config!);
+            }
+            return Promise.reject(error);
+          });
+        }
+
+        (error.config as unknown as Record<string, unknown>)._retry = true;
+        isRefreshing = true;
+
+        try {
+          const saved = localStorage.getItem('lkm-auth-store');
+          if (saved) {
+            const data = JSON.parse(saved);
+            const refreshToken = data._refreshToken;
+            if (refreshToken) {
+              const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, {
+                _retry: true,
+              } as Record<string, unknown>);
+              const apiResp = res.data as { data?: { access_token: string; refresh_token: string } };
+              if (apiResp?.data?.access_token) {
+                const store = JSON.parse(localStorage.getItem('lkm-auth-store') || '{}');
+                store._token = apiResp.data.access_token;
+                store._refreshToken = apiResp.data.refresh_token;
+                localStorage.setItem('lkm-auth-store', JSON.stringify(store));
+
+                (error.config!.headers as Record<string, string>)['Authorization'] =
+                  `Bearer ${apiResp.data.access_token}`;
+                processQueue(null, apiResp.data.access_token);
+                isRefreshing = false;
+                return _instance!.request(error.config!);
+              }
+            }
+          }
+        } catch {
+          // ignore
+        }
+
+        // Refresh failed — clear storage and reject
+        try {
+          localStorage.removeItem('lkm-auth-store');
+        } catch {
+          /* ignore */
+        }
+        processQueue(error, null);
+        isRefreshing = false;
+        return Promise.reject(error);
+      }
+    );
+
+    // --- 通用错误拦截器（后注册 = 先执行 reject，但 401 已被上面的 JWT 拦截器处理）---
     _instance.interceptors.response.use(
       (res) => res,
       (error: unknown) => {
@@ -95,6 +228,11 @@ export function configure(config: { baseURL?: string; timeout?: number }): void 
 export async function request<T>(config: AxiosRequestConfig): Promise<Result<T, AppError>> {
   try {
     const res = await getInstance().request<T>(config);
+    // unpack {code, msg, data} → return inner data
+    const body = res.data as Record<string, unknown> | null;
+    if (body && typeof body === 'object' && 'code' in body && 'data' in body) {
+      return ok(body.data as T);
+    }
     return ok(res.data);
   } catch (e) {
     if (e instanceof AppError) return err(e);

@@ -35,7 +35,7 @@ export function useAiStore() {
   async function createDefaultAgent() {
     const agent: AiAgent = {
       id: crypto.randomUUID(),
-      userId: auth.userId.value!,
+      userId: String(auth.userId.value!),
       name: '通用助手',
       systemPrompt: '你是一个有用的学习助手。请用中文回答。',
       service: 'openai',
@@ -55,7 +55,7 @@ export function useAiStore() {
       const agent: AiAgent = {
         ...data,
         id: crypto.randomUUID(),
-        userId: auth.userId.value!,
+        userId: String(auth.userId.value!),
         createdAt: new Date().toISOString(),
       };
       await db.aiAgents.put(agent);

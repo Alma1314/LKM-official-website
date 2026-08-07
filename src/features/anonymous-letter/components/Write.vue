@@ -331,7 +331,7 @@ const sealOn = ref(false);
 const sealUntil = ref(null);
 const recording = ref(false);
 let mediaRec = null;
-let recTimer = null;
+let _recTimer = null;
 
 // 编辑草稿 / 未公开信件带入
 const editingId = ref('');
@@ -391,7 +391,9 @@ function clearText() {
   content.value = '';
   ta.value?.focus();
 }
-function onInput() {}
+function onInput() {
+  /* input handled by v-model */
+}
 
 function insertEmoji() {
   emojiOpen.value = !emojiOpen.value;
@@ -490,8 +492,10 @@ function toggleVoice() {
 }
 function stopVoice() {
   try {
-    mediaRec && mediaRec.stop();
-  } catch {}
+    mediaRec?.stop();
+  } catch {
+    /* empty */
+  }
   recording.value = false;
 }
 

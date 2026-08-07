@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import type { BlogCommentInfo, BlogCommentCreate } from '../types/blog';
 
 export function useBlogComments(seriesId: number) {

@@ -30,6 +30,7 @@ export async function ssrFetch<T>(
   const timer = setTimeout(() => controller.abort(), timeout);
 
   try {
+    // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${API_BASE}${path}`, {
       signal: controller.signal,
       headers: { 'Content-Type': 'application/json' },

@@ -1,17 +1,3 @@
-import { get } from '../../http/client';
-
-export interface UserProfile {
-  id: string;
-  username: string;
-  displayName: string;
-  avatar?: string;
-  bio: string;
-  joinDate: string;
-  postCount: number;
-  followerCount: number;
-  followingCount: number;
-}
-
-export const userApi = {
-  getProfile: (username: string) => get<UserProfile>(`/api/users/${username}`),
-};
+// user.ts 现在仅作为 auth.ts 的补充，复杂的用户操作走 authApi
+// 保留此文件用于可能的未来扩展
+export { authApi as userApi } from './auth';

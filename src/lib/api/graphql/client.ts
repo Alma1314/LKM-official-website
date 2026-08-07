@@ -8,10 +8,15 @@ import { errorExchange } from './exchanges/error';
 function getGraphqlUrl(): string {
   if (import.meta.env.PUBLIC_GRAPHQL_URL) return import.meta.env.PUBLIC_GRAPHQL_URL;
 
-  const base = (typeof window !== 'undefined' && window.__BASE_URL__) || import.meta.env.BASE_URL || '/';
-  // 去掉末尾斜杠后拼接 /graphql
+  // SSR: 使用完整的内网 URL
+  if (typeof window === 'undefined') {
+    return (import.meta.env.API_URL || 'http://localhost:8000') + '/graphql';
+  }
+
+  // CSR: 完整 URL（urql 内部用 new URL() 解析，必须有 origin）
+  const base = window.__BASE_URL__ || import.meta.env.BASE_URL || '/';
   const cleanBase = base.replace(/\/$/, '');
-  return `${cleanBase}/graphql`;
+  return `${window.location.origin}${cleanBase}/graphql`;
 }
 
 /**

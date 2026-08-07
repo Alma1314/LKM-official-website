@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import type { BlogTagInfo } from '../types/blog';
 
 const tags = ref<BlogTagInfo[]>([]);

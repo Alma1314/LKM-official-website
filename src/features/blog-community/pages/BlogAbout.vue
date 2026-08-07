@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 
 const content = ref('');
 const loading = ref(false);

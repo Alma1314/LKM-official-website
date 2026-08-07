@@ -8,7 +8,7 @@
 //  - 每个模块的 API 返回 Result<T, AppError>
 
 export { forumApi } from './modules/forum';
-export { blogApi } from './modules/blog';
+export { blogApi, blogPostApi } from './modules/blog';
 export { competitionApi } from './modules/competition';
 export { columnApi } from './modules/column';
 export { qaApi } from './modules/qa';
@@ -22,3 +22,9 @@ export { notificationApi } from './modules/notification';
 
 // GraphQL 客户端
 export { graphqlClient, graphql } from './graphql';
+
+// 统一 fetch wrapper（用于 SSE/AbortController 场景）
+export { apiFetch } from './fetch';
+
+// Blog 类型
+export type * from './modules/blog-types';

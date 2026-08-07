@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = defineProps<{
+const _props = defineProps<{
   replyTo: string;
   isLoggedIn: boolean;
   submitting: boolean;

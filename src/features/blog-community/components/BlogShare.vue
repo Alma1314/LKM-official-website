@@ -141,11 +141,6 @@ function shareToWechat() {
   showWechatQR.value = true;
 }
 
-function closeWechatModal() {
-  showWechatQR.value = false;
-  wechatDialog.value?.close();
-}
-
 function encodeURL(value: string) {
   return encodeURIComponent(value);
 }

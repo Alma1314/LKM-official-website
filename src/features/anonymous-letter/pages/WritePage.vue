@@ -497,7 +497,7 @@ function submitLetter() {
         : '你的信件已投入树洞，快去看看大家的回应吧～';
 
     showSuccess.value = true;
-  } catch (e) {
+  } catch {
     alert('投稿失败，请重试');
   } finally {
     submitting.value = false;

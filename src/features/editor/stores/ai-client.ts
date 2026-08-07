@@ -9,17 +9,12 @@
 //  5. Error messages never include the key or the full raw response body
 // ---------------------------------------------------------------------------
 
-// ---- 架构说明 ----------------------------------------------------------------
-// 本模块直接使用 fetch() 而非通过 ~/lib/http/client 的 axios 封装，原因：
-//  1. AI 端点由用户自行配置（外部 OpenAI 兼容 API），非本项目 FastAPI
-//  2. 需要 AbortController 细粒度控制（超时 + 调用方取消信号合并）
-//  3. 响应格式为 OpenAI Chat Completions（不同于项目 REST/GraphQL 的 JSON:API）
-//  4. axios 不支持 stream/SSE，后续可能需要流式响应
-//
-// 分层架构中这是有意为之的例外，非违规。
-// -----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// AI Client 使用 ~/lib/api 的 apiFetch wrapper（支持 AbortController/SSE）
+// ---------------------------------------------------------------------------
 
 import { ok, err } from 'neverthrow';
+import { apiFetch } from '~/lib/api';
 import type { Result } from 'neverthrow';
 
 // ---- Types -----------------------------------------------------------------
@@ -56,7 +51,6 @@ const PROMPT_TEMPLATES: Record<string, string> = {
 
 const DEFAULT_MODEL = 'gpt-3.5-turbo';
 const MAX_RESPONSE_BYTES = 262144; // 256 KiB
-const REQUEST_TIMEOUT_MS = 15000;
 
 /** Allowed protocols for the endpoint URL */
 const ALLOWED_PROTOCOLS = new Set(['https:']);
@@ -170,58 +164,32 @@ export async function requestAiCompletion(
     prompt = input.prompt;
   }
 
-  // ---- 3. Merged AbortController (caller signal + 15 s timeout) -----------
-  const internalController = new AbortController();
-  const timeoutId = setTimeout(() => internalController.abort(), REQUEST_TIMEOUT_MS);
-
-  // If caller provided a signal, forward its abort to our internal controller
-  if (options?.signal) {
-    if (options.signal.aborted) {
-      clearTimeout(timeoutId);
-      return err('请求已被取消');
-    }
-    options.signal.addEventListener(
-      'abort',
-      () => {
-        internalController.abort();
-      },
-      { once: true }
-    );
-  }
-
-  // ---- 4. Fetch ------------------------------------------------------------
+  // ---- 3. Fetch (via unified apiFetch wrapper, handles timeout + abort) -----
   const url = `${endpoint.replace(/\/$/, '')}/v1/chat/completions`;
 
-  let response: Response;
-  try {
-    response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          {
-            role: 'system',
-            content: '你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。',
-          },
-          { role: 'user', content: prompt },
-        ],
-        max_tokens: 2048,
-        temperature: 0.7,
-      }),
-      signal: internalController.signal,
-    });
-  } catch (catchErr) {
-    clearTimeout(timeoutId);
+  const fetchResult = await apiFetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        {
+          role: 'system',
+          content: '你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。',
+        },
+        { role: 'user', content: prompt },
+      ],
+      max_tokens: 2048,
+      temperature: 0.7,
+    }),
+    signal: options?.signal,
+  });
 
-    if (catchErr instanceof DOMException && catchErr.name === 'AbortError') {
-      return err('请求超时或已取消');
-    }
-
-    const message = catchErr instanceof Error ? catchErr.message : String(catchErr);
+  if (fetchResult.isErr()) {
+    const message = fetchResult.error.message;
     // Never echo back anything that might contain secrets
     if (message.includes(apiKey) && apiKey.length > 4) {
       return err('网络请求失败');
@@ -229,7 +197,7 @@ export async function requestAiCompletion(
     return err(`网络请求失败：${message.slice(0, 120)}`);
   }
 
-  clearTimeout(timeoutId);
+  const response = fetchResult.value;
 
   // ---- 5. Validate response metadata --------------------------------------
   const contentType = response.headers.get('content-type') ?? '';

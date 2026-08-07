@@ -4,6 +4,7 @@ import globals from 'globals';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import typescriptParser from '@typescript-eslint/parser';
+import vueParser from 'vue-eslint-parser';
 
 export default [
   js.configs.recommended,
@@ -25,6 +26,27 @@ export default [
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
+    },
+  },
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
@@ -55,6 +77,7 @@ export default [
         'error',
         {
           argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
           destructuredArrayIgnorePattern: '^_',
         },
       ],
@@ -70,6 +93,18 @@ export default [
     rules: {
       'prefer-rest-params': 'off',
       'no-var': 'off',
+    },
+  },
+  {
+    files: ['src/**/*.{ts,tsx,vue,astro}'],
+    rules: {
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'fetch',
+          message: '请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。',
+        },
+      ],
     },
   },
   {

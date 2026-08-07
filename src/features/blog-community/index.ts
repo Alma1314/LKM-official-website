@@ -1,5 +1,5 @@
 // API
-export { blogApi } from './api/blogApi';
+export { blogApi } from '~/lib/api';
 
 // Composables
 export { useBlogArticles } from './composables/useBlogArticles';

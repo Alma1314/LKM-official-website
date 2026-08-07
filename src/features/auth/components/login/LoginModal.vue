@@ -1,7 +1,6 @@
 <template>
   <div
-    class="relative rounded-2xl bg-[var(--card-bg)] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8"
-    style="position: relative"
+    class="relative rounded-2xl bg-white dark:bg-[oklch(0.23_0.015_var(--hue,250))] shadow-2xl border border-[var(--surface-3)] p-6 sm:p-8"
   >
     <button
       type="button"
@@ -19,6 +18,6 @@
 import LoginPage from './LoginPage.vue';
 
 function close() {
-  window.dispatchEvent(new CustomEvent('close-login-modal'));
+  window.dispatchEvent(new CustomEvent('close-auth-modal'));
 }
 </script>

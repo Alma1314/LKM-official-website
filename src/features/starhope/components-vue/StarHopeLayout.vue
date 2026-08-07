@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores-vue/auth';
-import { useNavigationStore, type StarHopeRoute } from '../stores-vue/navigation';
+import { useNavigationStore } from '../stores-vue/navigation';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
 const { navItems, currentRoute, navigate } = useNavigationStore();
@@ -35,7 +35,7 @@ const { currentUser } = useAuthStore();
           </div>
           <div class="text-sm">
             <div class="font-medium text-deep-text">{{ currentUser.username }}</div>
-            <div class="text-xs text-text-muted">{{ currentUser.level }}</div>
+            <div class="text-xs text-text-muted">{{ currentUser.account_level }}</div>
           </div>
         </div>
         <a

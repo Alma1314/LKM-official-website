@@ -71,9 +71,9 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
   try {
     let searchResults: SearchResult[] = [];
 
-    if (import.meta.env.PROD && pagefindLoaded.value && (window as any).pagefind) {
-      const response = await (window as any).pagefind.search(keyword);
-      searchResults = await Promise.all(response.results.map((item: any) => item.data()));
+    if (import.meta.env.PROD && pagefindLoaded.value && (window as Record<string, unknown>).pagefind) {
+      const response = await (window as Record<string, unknown>).pagefind.search(keyword);
+      searchResults = await Promise.all(response.results.map((item: Record<string, unknown>) => item.data()));
     } else if (import.meta.env.DEV) {
       searchResults = fakeResult;
     } else {
@@ -97,8 +97,8 @@ function initPagefind() {
   initialized.value = true;
   pagefindLoaded.value =
     typeof window !== 'undefined' &&
-    !!(window as any).pagefind &&
-    typeof (window as any).pagefind.search === 'function';
+    !!(window as Record<string, unknown>).pagefind &&
+    typeof (window as Record<string, unknown>).pagefind.search === 'function';
 }
 
 onMounted(() => {

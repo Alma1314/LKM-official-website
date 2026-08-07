@@ -6,14 +6,14 @@ import { useNavigationStore } from '../stores-vue/navigation';
 
 const bank = useQuestionBankStore();
 const practice = usePracticeStore();
-const nav = useNavigationStore();
+const _nav = useNavigationStore();
 
 onMounted(async () => {
   await bank.loadQuestions();
 });
 
-async function start(questionIds: string[]) {
-  await practice.startPractice({ questionIds, mode: 'realtime', type: 'practice' });
+async function _start(_questionIds: string[]) {
+  await practice.startPractice({ questionIds: _questionIds, mode: 'realtime', type: 'practice' });
 }
 </script>
 

@@ -138,7 +138,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { ElMessage } from 'element-plus';
 import PrivacyDialog from '../components/PrivacyDialog.vue';
 import { useApp } from '../stores/app';
 import * as store from '../stores/storage';

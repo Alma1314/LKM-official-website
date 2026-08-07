@@ -5,7 +5,7 @@ import '../styles/variables.css';
 
 import { I18N } from '~/lib/config';
 import { siteConfig } from '~/lib/config';
-import LoginModal from '~/features/auth/components/login/LoginModal.vue';
+import AuthModal from '~/features/auth/components/AuthModal.vue';
 import CommonMeta from '~/features/shell/common/components/CommonMeta.astro';
 import Favicons from '~/features/shell/components/Favicons.astro';
 import CustomStyles from '~/features/shell/common/components/CustomStyles.astro';
@@ -84,22 +84,22 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
 
     <BasicScripts />
 
-    <!-- 登录浮层 -->
+    <!-- 通用 Auth 浮层（登录 / 注册 / 密码找回） -->
     <div
-      id="login-modal"
+      id="auth-modal"
       class="fixed inset-0 z-[100] hidden items-center justify-center"
       role="dialog"
       aria-modal="true"
     >
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-login-close></div>
-      <div id="login-modal-content" class="relative z-10 w-full max-w-md mx-4">
-        <LoginModal client:only="vue" />
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-auth-close></div>
+      <div id="auth-modal-content" class="relative z-10 w-full max-w-md mx-4">
+        <AuthModal client:only="vue" />
       </div>
     </div>
 
     <script is:inline>
       (function () {
-        const modal = document.getElementById('login-modal');
+        const modal = document.getElementById('auth-modal');
         if (!modal) return;
 
         function open() {
@@ -114,7 +114,7 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
           document.body.style.overflow = '';
         }
 
-        document.querySelectorAll('[data-login-close]').forEach(function (el) {
+        document.querySelectorAll('[data-auth-close]').forEach(function (el) {
           el.addEventListener('click', close);
         });
 
@@ -126,8 +126,8 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
           if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
         });
 
-        window.addEventListener('open-login-modal', open);
-        window.addEventListener('close-login-modal', close);
+        window.addEventListener('open-auth-modal', open);
+        window.addEventListener('close-auth-modal', close);
       })();
     </script>
   </body>

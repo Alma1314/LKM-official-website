@@ -73,8 +73,54 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { gradeOptions, majorOptions, interestOptions } from '~/features/auth/data/onboarding-tags';
 import { Icon } from '@iconify/vue';
+
+interface TagOption {
+  value: string;
+  label: string;
+  icon?: string;
+}
+
+const gradeOptions: TagOption[] = [
+  { value: 'junior_high', label: '初中' },
+  { value: 'senior_high', label: '高中' },
+  { value: 'university', label: '大学' },
+  { value: 'graduate', label: '研究生' },
+  { value: 'working', label: '已工作' },
+];
+
+const majorOptions: TagOption[] = [
+  { value: 'math', label: '数学', icon: 'tabler:math' },
+  { value: 'physics', label: '物理学', icon: 'tabler:atom' },
+  { value: 'chemistry', label: '化学', icon: 'tabler:flask' },
+  { value: 'biology', label: '生命科学', icon: 'tabler:microscope' },
+  { value: 'astronomy', label: '天文学', icon: 'tabler:telescope' },
+  { value: 'earth_science', label: '地球科学', icon: 'tabler:globe' },
+  { value: 'cs', label: '信息科学', icon: 'tabler:code' },
+  { value: 'ee', label: '电子电气', icon: 'tabler:bolt' },
+  { value: 'engineering', label: '工程学', icon: 'tabler:tools' },
+  { value: 'medicine', label: '医学', icon: 'tabler:heartbeat' },
+  { value: 'social_science', label: '社会科学', icon: 'tabler:users' },
+  { value: 'literature', label: '文学', icon: 'tabler:book' },
+];
+
+const interestOptions: TagOption[] = [
+  { value: 'research', label: '科研' },
+  { value: 'programming', label: '编程' },
+  { value: 'reading', label: '阅读' },
+  { value: 'writing', label: '写作' },
+  { value: 'experiment', label: '实验' },
+  { value: 'teaching', label: '教学' },
+  { value: 'debate', label: '辩论' },
+  { value: 'competition', label: '竞赛' },
+  { value: 'astronomy_hobby', label: '天文观测' },
+  { value: 'model', label: '模型制作' },
+  { value: 'game', label: '游戏' },
+  { value: 'music', label: '音乐' },
+  { value: 'sci_fi', label: '科幻' },
+  { value: 'cooking', label: '料理' },
+  { value: 'chess', label: '棋牌' },
+];
 
 const selectedGrade = ref('');
 const selectedMajors = ref<string[]>([]);

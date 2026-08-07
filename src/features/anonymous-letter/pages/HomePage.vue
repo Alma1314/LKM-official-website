@@ -93,7 +93,7 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
-import { getLetters, getFavorites, toggleFavorite } from '../stores/storage';
+import { getLetters, toggleFavorite } from '../stores/storage';
 import { buildUrl } from '~/lib/utils/paths';
 
 const categories = CATEGORIES;

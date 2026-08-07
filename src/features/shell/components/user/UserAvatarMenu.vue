@@ -72,16 +72,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { buildUrl } from '~/lib/utils/paths';
+import { useAuthStore } from '~/stores/auth';
 
 defineProps<{ base?: string }>();
 
+const store = useAuthStore();
 const isOpen = ref(false);
-const isLoggedIn = ref(false);
-const username = ref('');
-const userLevel = ref<'local' | 'normal' | 'admin'>('normal');
+const isLoggedIn = computed(() => store.isLoggedIn);
+const username = computed(() => store.username);
+const userLevel = computed<'local' | 'normal' | 'admin'>(() => store.user?.account_level ?? 'local');
 
 const avatarLetter = computed(() => (username.value ? username.value.charAt(0).toUpperCase() : '?'));
 
@@ -97,7 +99,7 @@ const userLevelText = computed(() => {
 });
 
 function openLogin() {
-  window.dispatchEvent(new CustomEvent('open-login-modal'));
+  window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { view: 'login' } }));
 }
 
 function toggle() {
@@ -110,39 +112,10 @@ function close() {
 
 function handleLogout() {
   isOpen.value = false;
-  isLoggedIn.value = false;
-  localStorage.removeItem('lkm-auth');
-}
-
-// 从 localStorage 读取 mock 登录状态
-function checkAuth() {
-  try {
-    const saved = localStorage.getItem('lkm-auth');
-    if (saved) {
-      const data = JSON.parse(saved);
-      isLoggedIn.value = true;
-      username.value = data.username || '用户';
-      userLevel.value = data.level || 'normal';
-    }
-  } catch {
-    // ignore
-  }
-}
-
-// 演示：点击登录按钮时写入 localStorage
-// 正式集成时会由 useAuth composable 来管理这个状态
-function onStorageChange(e: StorageEvent) {
-  if (e.key === 'lkm-auth') {
-    checkAuth();
-  }
+  store.logout();
 }
 
 onMounted(() => {
-  checkAuth();
-  window.addEventListener('storage', onStorageChange);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('storage', onStorageChange);
+  store.restoreFromStorage();
 });
 </script>

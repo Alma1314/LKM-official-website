@@ -1,25 +1,47 @@
 """
-LKM 测试后端
+LKM 测试后端 — 对齐 LKM-service (https://github.com/LKM-AHZ/LKM-service)
 
-提供与前端对齐的 JSON 接口，所有数据为 mock 内存数据。
+基于 FastAPI + SQLAlchemy + SQLite，提供与生产服务一致的 API 接口。
 
-启动: cd backend && python -m uvicorn main:app --reload --port 8000
+启动: cd backend && uv run uvicorn main:app --reload --port 8000
 """
+
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.core.response import ok
-from app.modules import admin, articles, auth, blog, column, competition, files, forum, notifications, project, qa, team, treehole, users
+from app.core.response import BizError
+from app.db.session import init_db
+# New LKM-service-aligned modules
+from app.modules.auth.router import router as auth_router
+from app.modules.blog.router import router as blog_router
+from app.modules.boards.router import router as boards_router
+from app.modules.columns.router import router as columns_router
+from app.modules.health.router import router as health_router
+
+# Legacy modules (保持向后兼容)
+from app.modules import admin as _admin, articles as _articles
+from app.modules import blog_legacy as _old_blog, column_legacy as _old_column
+from app.modules import competition as _competition, files as _files
+from app.modules import forum as _forum, notifications as _notifications, project as _project
+from app.modules import qa as _qa, team as _team, treehole as _treehole, users as _users
 
 # === GraphQL ===
 from strawberry.fastapi import GraphQLRouter
 from app.graphql.schema import schema
 from app.graphql.context import get_context
 
-app = FastAPI(title="LKM Test API", version="2.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+
+app = FastAPI(title="LKM Test API", version="2.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,38 +54,42 @@ app.add_middleware(
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
-    """确保 HTTPException 的 detail 直接作为响应体（不包裹在 {'detail': ...} 中）"""
+    """确保 BizError / HTTPException 的 detail dict 直接作为响应体（不包裹在 {'detail': ...} 中）"""
     if isinstance(exc.detail, dict):
         return JSONResponse(status_code=exc.status_code, content=exc.detail)
     return JSONResponse(status_code=exc.status_code, content={"code": exc.status_code, "msg": str(exc.detail)})
 
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(status_code=500, content={"code": 9999, "msg": "内部错误"})
+@app.get("/")
+def root():
+    return {"message": "OK"}
 
 
-@app.get("/api/health")
-def health():
-    return ok({"status": "ok", "version": "2.0.0"})
+# Register REST routers
+# Root
+app.include_router(health_router)
 
+# New LKM-service-aligned modules (prefix already set in each router)
+app.include_router(auth_router, prefix="/api/auth")  # /api/auth/*
+app.include_router(boards_router)      # /boards/*
+app.include_router(columns_router)     # /columns/*
+app.include_router(blog_router)        # /blog/*
 
-# 注册 GraphQL 路由
+# Legacy modules with /api/ prefix for backward compatibility
+app.include_router(_articles.router)   # /api/articles
+app.include_router(_forum.router)      # /api/forum
+app.include_router(_old_blog.router)   # /api/blog
+app.include_router(_competition.router)# /api/competitions
+app.include_router(_old_column.router) # /api/columns
+app.include_router(_qa.router)         # /api/qa
+app.include_router(_project.router)    # /api/projects
+app.include_router(_files.router)      # /api/files
+app.include_router(_treehole.router)   # /api/treehole
+app.include_router(_team.router)       # /api/team
+app.include_router(_users.router)      # /api/users
+app.include_router(_notifications.router)  # /api/notifications
+app.include_router(_admin.router)      # /api/admin
+
+# GraphQL
 graphql_app = GraphQLRouter(schema, context_getter=get_context)
 app.include_router(graphql_app, prefix="/graphql")
-
-# 注册 REST 路由
-app.include_router(articles.router)
-app.include_router(forum.router)
-app.include_router(blog.router)
-app.include_router(competition.router)
-app.include_router(column.router)
-app.include_router(qa.router)
-app.include_router(project.router)
-app.include_router(files.router)
-app.include_router(treehole.router)
-app.include_router(team.router)
-app.include_router(users.router)
-app.include_router(notifications.router)
-app.include_router(auth.router)
-app.include_router(admin.router)

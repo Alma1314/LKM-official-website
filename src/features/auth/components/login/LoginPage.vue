@@ -30,7 +30,7 @@
           账户等级：
           <span class="badge badge-sm ml-1" :class="levelBadgeClass">{{ levelLabel }}</span>
         </p>
-        <div v-if="state.user.level === 'local'" class="alert alert-info mb-4 text-left text-sm">
+        <div v-if="state.user?.account_level === 'local'" class="alert alert-info mb-4 text-left text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="stroke-current shrink-0 h-5 w-5"
@@ -92,7 +92,9 @@
           <button type="submit" class="btn btn-primary w-full">继续</button>
           <p class="text-center text-[13px] text-text-muted">
             没有账号？
-            <a :href="getAuthPath('register')" class="text-primary font-semibold hover:underline">立即注册</a>
+            <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">
+              立即注册
+            </button>
           </p>
         </form>
 
@@ -102,7 +104,6 @@
             <div class="text-sm">
               <span class="text-text-muted">登录为 </span>
               <span class="font-semibold">{{ identifiedAccount.username }}</span>
-              <span class="badge badge-xs ml-1.5" :class="identifiedBadgeClass">{{ identifiedLevelLabel }}</span>
             </div>
             <button type="button" class="btn btn-ghost btn-xs" @click="handleBack">切换账号</button>
           </div>
@@ -137,14 +138,13 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
 import { getAuthPath, getBaseUrl } from '~/features/auth/constants/auth-paths';
-import { findAccount } from '~/features/auth/data/demo-accounts';
 import PasswordLogin from './PasswordLogin.vue';
 import SmsLogin from './SmsLogin.vue';
 import GithubLogin from './GithubLogin.vue';
 import MagicLinkLogin from './MagicLinkLogin.vue';
 import PasskeyLogin from './PasskeyLogin.vue';
 import TwoFactorVerify from './TwoFactorVerify.vue';
-import type { LoginMethod, DemoUser } from '~/types/auth';
+import type { LoginMethod } from '~/types/auth';
 
 // Self-contained provider
 const { state, login } = useAuthProvider();
@@ -178,49 +178,22 @@ const ALL_TABS: Tab[] = [
 const error = ref<string | null>(null);
 const success = ref<string | null>(null);
 const identifier = ref('');
-const identifiedAccount = ref<DemoUser | null>(null);
+const identifiedAccount = ref<{ id: number; username: string; account_level: string } | null>(null);
 const identifierError = ref('');
 const activeTab = ref<LoginMethod>('password');
 const availableTabs = ref<Tab[]>(ALL_TABS);
 
 const levelBadgeClass = computed(() => {
-  const level = state.user?.level;
+  const level = state.user?.account_level;
   return level === 'admin' ? 'badge-error' : level === 'normal' ? 'badge-primary' : 'badge-ghost';
 });
 const levelLabel = computed(() => {
-  const level = state.user?.level;
+  const level = state.user?.account_level;
   return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
 });
-const identifiedBadgeClass = computed(() => {
-  const level = identifiedAccount.value?.level;
-  return level === 'admin' ? 'badge-error' : level === 'normal' ? 'badge-primary' : 'badge-ghost';
-});
-const identifiedLevelLabel = computed(() => {
-  const level = identifiedAccount.value?.level;
-  return level === 'admin' ? '管理员' : level === 'normal' ? '普通' : '本地';
-});
-
-function getAvailableTabs(account: DemoUser): Tab[] {
-  const tabs: Tab[] = [...ALL_TABS];
-  if (account.level === 'local') {
-    return tabs.filter((t) => t.key === 'password');
-  }
-  return tabs.filter((t) => {
-    switch (t.key) {
-      case 'password':
-        return true;
-      case 'sms':
-        return account.bindings.includes('email') || account.bindings.includes('phone');
-      case 'github':
-        return account.hasGithub;
-      case 'magic-link':
-        return account.level === 'normal' && account.bindings.includes('email');
-      case 'passkey':
-        return account.hasPasskey;
-      default:
-        return false;
-    }
-  });
+function getAvailableTabs(_account: { id: number; username: string; account_level: string }): Tab[] {
+  // All login methods are available for all users
+  return [...ALL_TABS];
 }
 
 function handleBack() {
@@ -238,13 +211,13 @@ function handleIdentify() {
     identifierError.value = '请输入用户名、邮箱或手机号';
     return;
   }
-  const acc = findAccount(identifier.value);
-  if (!acc) {
-    identifierError.value = '未找到关联账号，请检查输入';
-    return;
-  }
-  identifiedAccount.value = acc;
-  const tabs = getAvailableTabs(acc);
+  // Directly proceed to login method selection without mock account lookup
+  identifiedAccount.value = {
+    id: 0,
+    username: identifier.value.trim(),
+    account_level: 'normal',
+  };
+  const tabs = getAvailableTabs(identifiedAccount.value);
   availableTabs.value = tabs;
   activeTab.value = tabs[0].key;
 }
@@ -256,8 +229,8 @@ watch(activeTab, () => {
 async function handleLogin(method: LoginMethod, credentials: Record<string, string>): Promise<void> {
   error.value = null;
   success.value = null;
-  const result = login(method, credentials, identifiedAccount.value ?? undefined);
-  if (!result.ok) {
+  const result = await login(method, credentials, identifiedAccount.value ?? undefined);
+  if (result.isErr()) {
     error.value = result.error?.message || '登录失败';
   }
 }
@@ -267,5 +240,12 @@ function handle2FASuccess(msg: string) {
 }
 function handle2FAError(msg: string) {
   error.value = msg;
+}
+
+function switchToRegister() {
+  window.dispatchEvent(new CustomEvent('close-auth-modal'));
+  setTimeout(() => {
+    window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { view: 'register' } }));
+  }, 150);
 }
 </script>

@@ -1,36 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useBlogPost } from '../composables/useBlogPost';
-import { useBlogComments } from '../composables/useBlogComments';
-import { useBlogStar } from '../composables/useBlogStar';
-import { blogApi } from '../api/blogApi';
-import BlogCommentList from './BlogCommentList.vue';
-import BlogCommentForm from './BlogCommentForm.vue';
-import BlogStarButton from './BlogStarButton.vue';
+import { blogApi } from '~/lib/api';
 import type { BlogArticleDetail } from '../types/blog';
 
-const props = defineProps<{ slug: string }>();
+const _props = defineProps<{ slug: string }>();
 
 const article = ref<BlogArticleDetail | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-const { MDXComponent, fetchAndCompile } = useBlogPost();
-const { comments, fetch: fetchComments, addComment, removeComment } = useBlogComments(0);
-const { starred, starCount, setStatus, toggle } = useBlogStar(0);
-
-const shareUrl = computed(() => (typeof window !== 'undefined' ? window.location.href : ''));
-
-async function copyShareLink() {
-  if (typeof navigator !== 'undefined') {
-    await navigator.clipboard.writeText(shareUrl.value);
-    alert('链接已复制');
-  }
-}
+const { MDXComponent: _MDXComponent, fetchAndCompile } = useBlogPost();
 
 onMounted(async () => {
   loading.value = true;
-  const result = await blogApi.getArticleDetail(props.slug);
+  const result = await blogApi.getArticleDetail(_props.slug);
   if (result.isErr()) {
     error.value = result.error.message;
     loading.value = false;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import type { BlogArticleInfo } from '../types/blog';
 import { useRoute } from 'vue-router';
 
@@ -8,8 +8,8 @@ const route = useRoute();
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(false);
 
-const filterTag = computed(() => (route.query.tag as string) || '');
-const filterCategory = computed(() => (route.query.category as string) || '');
+const _filterTag = computed(() => (route.query.tag as string) || '');
+const _filterCategory = computed(() => (route.query.category as string) || '');
 
 const groupedByYear = computed(() => {
   const groups: Record<string, BlogArticleInfo[]> = {};

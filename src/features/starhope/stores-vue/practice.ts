@@ -55,7 +55,7 @@ export function usePracticeStore() {
     questions.value = questions.value.filter(Boolean);
     const session: PracticeSession = {
       id: crypto.randomUUID(),
-      userId: auth.userId.value!,
+      userId: String(auth.userId.value!),
       type: config.type,
       mode: config.mode,
       questionIds: questions.value.map((q) => q.id),
