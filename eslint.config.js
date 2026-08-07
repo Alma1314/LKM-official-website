@@ -102,8 +102,7 @@ export default [
         'error',
         {
           name: 'fetch',
-          message:
-            '请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。',
+          message: '请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。',
         },
       ],
     },

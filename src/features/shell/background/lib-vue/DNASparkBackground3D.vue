@@ -98,7 +98,8 @@ const mode = useColorMode();
 const sparkColor = props.sparkColor || (mode.value === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)');
 const _strandColor = props.strandColor || (mode.value === 'dark' ? 'rgba(64,224,208,0.6)' : 'rgba(0,0,0,0.2)');
 const _particleColor = props.particleColor || (mode.value === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)');
-const _connectionColor = props.connectionColor || (mode.value === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)');
+const _connectionColor =
+  props.connectionColor || (mode.value === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)');
 const _rippleColor = props.rippleColor || (mode.value === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.08)');
 
 const { containerRef, size, isVisible, backgroundPerformance, mouseRef } = useCanvasViewport();

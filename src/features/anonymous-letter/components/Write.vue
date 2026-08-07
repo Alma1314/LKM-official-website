@@ -391,7 +391,9 @@ function clearText() {
   content.value = '';
   ta.value?.focus();
 }
-function onInput() { /* input handled by v-model */ }
+function onInput() {
+  /* input handled by v-model */
+}
 
 function insertEmoji() {
   emojiOpen.value = !emojiOpen.value;
@@ -491,7 +493,9 @@ function toggleVoice() {
 function stopVoice() {
   try {
     mediaRec?.stop();
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
   recording.value = false;
 }
 

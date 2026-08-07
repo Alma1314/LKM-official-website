@@ -20,38 +20,40 @@ import type { Result } from '../errors/result';
 const DEFAULT_TIMEOUT_MS = 15_000;
 
 function getApiBase(): string {
-	if (typeof window === 'undefined') {
-		return (import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string || 'http://localhost:8000';
-	}
-	return '';
+  if (typeof window === 'undefined') {
+    return (
+      ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || 'http://localhost:8000'
+    );
+  }
+  return '';
 }
 
 function createTimeoutSignal(timeoutMs: number): { signal: AbortSignal; clear: () => void } {
-	const controller = new AbortController();
-	const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-	return {
-		signal: controller.signal,
-		clear: () => clearTimeout(timeoutId),
-	};
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  return {
+    signal: controller.signal,
+    clear: () => clearTimeout(timeoutId),
+  };
 }
 
 /**
  * 合并多个 AbortSignal：任一触发则合并后的 signal 触发
  */
 function mergeAbortSignals(signals: AbortSignal[]): AbortSignal {
-	const controller = new AbortController();
-	const onAbort = () => {
-		controller.abort();
-		signals.forEach((s) => s.removeEventListener('abort', onAbort));
-	};
-	signals.forEach((s) => {
-		if (s.aborted) {
-			controller.abort();
-			return;
-		}
-		s.addEventListener('abort', onAbort, { once: true });
-	});
-	return controller.signal;
+  const controller = new AbortController();
+  const onAbort = () => {
+    controller.abort();
+    signals.forEach((s) => s.removeEventListener('abort', onAbort));
+  };
+  signals.forEach((s) => {
+    if (s.aborted) {
+      controller.abort();
+      return;
+    }
+    s.addEventListener('abort', onAbort, { once: true });
+  });
+  return controller.signal;
 }
 
 /**
@@ -61,39 +63,37 @@ function mergeAbortSignals(signals: AbortSignal[]): AbortSignal {
  * 调用方通过 init.signal 传入自定义 AbortController（会与内部 timeout 合并）。
  */
 export async function apiFetch(
-	url: string,
-	init?: RequestInit & { timeout?: number },
+  url: string,
+  init?: RequestInit & { timeout?: number }
 ): Promise<Result<Response, AppError>> {
-	const base = getApiBase();
-	const fullUrl = base ? `${base.replace(/\/$/, '')}${url}` : url;
-	const timeout = init?.timeout ?? DEFAULT_TIMEOUT_MS;
+  const base = getApiBase();
+  const fullUrl = base ? `${base.replace(/\/$/, '')}${url}` : url;
+  const timeout = init?.timeout ?? DEFAULT_TIMEOUT_MS;
 
-	const timeoutCtl = createTimeoutSignal(timeout);
-	const externalSignal = init?.signal;
-	const mergedSignal = externalSignal
-		? mergeAbortSignals([timeoutCtl.signal, externalSignal])
-		: timeoutCtl.signal;
+  const timeoutCtl = createTimeoutSignal(timeout);
+  const externalSignal = init?.signal;
+  const mergedSignal = externalSignal ? mergeAbortSignals([timeoutCtl.signal, externalSignal]) : timeoutCtl.signal;
 
-	const { signal: _sig, timeout: _to, ...restInit } = init || {};
-	void _sig;
-	void _to;
+  const { signal: _sig, timeout: _to, ...restInit } = init || {};
+  void _sig;
+  void _to;
 
-	try {
-		// eslint-disable-next-line no-restricted-globals
-		const response = await fetch(fullUrl, {
-			...restInit,
-			signal: mergedSignal,
-		});
-		timeoutCtl.clear();
-		return ok(response);
-	} catch (e: unknown) {
-		timeoutCtl.clear();
+  try {
+    // eslint-disable-next-line no-restricted-globals
+    const response = await fetch(fullUrl, {
+      ...restInit,
+      signal: mergedSignal,
+    });
+    timeoutCtl.clear();
+    return ok(response);
+  } catch (e: unknown) {
+    timeoutCtl.clear();
 
-		if (e instanceof DOMException && e.name === 'AbortError') {
-			return err(new AppError(ErrorCode.HTTP_TIMEOUT, '请求超时或已取消'));
-		}
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      return err(new AppError(ErrorCode.HTTP_TIMEOUT, '请求超时或已取消'));
+    }
 
-		const message = e instanceof Error ? e.message : String(e);
-		return err(new AppError(ErrorCode.NETWORK_ERROR, `网络请求失败：${message.slice(0, 300)}`));
-	}
+    const message = e instanceof Error ? e.message : String(e);
+    return err(new AppError(ErrorCode.NETWORK_ERROR, `网络请求失败：${message.slice(0, 300)}`));
+  }
 }

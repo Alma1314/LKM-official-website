@@ -47,13 +47,17 @@ function start() {
     filter.connect(gain);
     gain.connect(ctx.destination);
     node.start(0);
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
 }
 function stop() {
   try {
     node?.stop();
     ctx?.close();
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
   node = null;
   ctx = null;
 }

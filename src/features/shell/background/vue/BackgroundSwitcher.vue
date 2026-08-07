@@ -46,7 +46,9 @@ const activeEntry = computed(
 );
 const ActiveComponent = computed(() => getLazyComponent(activeEntry.value.id, activeEntry.value.load));
 const colorProps = computed(() =>
-  isDark.value ? (activeEntry.value as Record<string, unknown>).darkProps : (activeEntry.value as Record<string, unknown>).lightProps
+  isDark.value
+    ? (activeEntry.value as Record<string, unknown>).darkProps
+    : (activeEntry.value as Record<string, unknown>).lightProps
 );
 const bgKey = computed(() => `${currentBg.value}-${isDark.value ? 'dark' : 'light'}`);
 

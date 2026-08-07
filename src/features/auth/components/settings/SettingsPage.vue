@@ -12,7 +12,9 @@
         <!-- Avatar + nickname -->
         <div class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6">
           <div class="flex items-center gap-5">
-            <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
+            <div
+              class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0"
+            >
               {{ avatarLetter }}
             </div>
             <div class="flex-1">
@@ -97,7 +99,6 @@ import { useAuthProvider } from '~/features/auth/composables/useAuth';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 import ProtectedRoute from '~/features/auth/components/settings/ProtectedRoute.vue';
 
-
 const { state, updateUser, logout } = useAuthProvider();
 
 const message = ref('');
@@ -105,9 +106,7 @@ const saving = ref(false);
 const editNickname = ref(state.user?.nickname || '');
 const editError = ref('');
 
-const avatarLetter = computed(() =>
-  (state.user?.nickname || state.user?.username || '?').charAt(0).toUpperCase()
-);
+const avatarLetter = computed(() => (state.user?.nickname || state.user?.username || '?').charAt(0).toUpperCase());
 
 const levelBadgeClass = computed(() => {
   const level = state.user?.account_level;

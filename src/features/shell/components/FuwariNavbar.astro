@@ -228,17 +228,18 @@ let links: NavBarLink[] =
       const data = JSON.parse(saved);
       const username = data.user?.username;
       if (!username) return;
-      document.querySelectorAll('a').forEach(a => {
+      document.querySelectorAll('a').forEach((a) => {
         if ((a.textContent || '').trim() === '个人主页') {
           const base = window.__BASE_URL__ || '/';
           a.setAttribute('href', base.replace(/\/$/, '') + `/user/${username}`);
         }
       });
-    } catch { /* empty */ }
+    } catch {
+      /* empty */
+    }
   }
   updateProfileLink();
   document.addEventListener('astro:after-swap', updateProfileLink);
-
 </script>
 
 {

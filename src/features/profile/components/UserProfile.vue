@@ -5,7 +5,9 @@
     <template v-else-if="user">
       <!-- Header -->
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
+        <div
+          class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0"
+        >
           {{ avatarLetter }}
         </div>
         <div>
@@ -45,7 +47,9 @@
     </template>
 
     <div v-else class="text-center py-12 space-y-3">
-      <div class="w-16 h-16 mx-auto rounded-full bg-surface-2 flex items-center justify-center text-2xl text-text-muted">
+      <div
+        class="w-16 h-16 mx-auto rounded-full bg-surface-2 flex items-center justify-center text-2xl text-text-muted"
+      >
         {{ props.username?.charAt(0).toUpperCase() || '?' }}
       </div>
       <div class="text-lg font-semibold text-text-muted">@{{ props.username }}</div>
@@ -64,9 +68,7 @@ const props = defineProps<{ username: string }>();
 const user = ref<User | null>(null);
 const loading = ref(true);
 
-const avatarLetter = computed(() =>
-  (user.value?.nickname || user.value?.username || '?').charAt(0).toUpperCase()
-);
+const avatarLetter = computed(() => (user.value?.nickname || user.value?.username || '?').charAt(0).toUpperCase());
 
 const levelBadgeClass = computed(() => {
   const level = user.value?.account_level;
