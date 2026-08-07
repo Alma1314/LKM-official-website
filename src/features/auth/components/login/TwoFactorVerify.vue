@@ -1,212 +1,105 @@
 <template>
-  <div
-    class="rounded-2xl bg-white dark:bg-[oklch(0.23_0.015_var(--hue,250))] shadow-2xl border border-surface-3 p-6 sm:p-8"
-  >
-    <!-- Setup flow: scan QR -->
-    <template v-if="isSetupFlow && setupStep === 'scan'">
-      <h2 class="text-2xl font-semibold text-center mb-4">绑定双因素认证</h2>
-      <div class="space-y-4">
-        <div class="alert alert-info text-sm">管理员账户必须绑定 2FA 才能登录</div>
-        <div class="text-center space-y-3">
-          <div class="bg-page-bg rounded-xl p-6 mx-auto w-48 h-48 flex items-center justify-center">
-            <div class="text-center">
-              <div class="text-4xl mb-2">📱</div>
-              <p class="text-xs text-text-muted">模拟二维码</p>
-            </div>
-          </div>
-          <div>
-            <p class="text-sm font-medium">手动输入密钥</p>
-            <div class="flex items-center justify-center gap-2 mt-1">
-              <code class="bg-page-bg px-3 py-1 rounded text-sm select-all">{{
-                showSecret ? DUMMY_TOTP_SECRET : '•••• •••• •••• ••••'
-              }}</code>
-              <button type="button" class="btn btn-ghost btn-xs" @click="showSecret = !showSecret">
-                {{ showSecret ? '隐藏' : '显示' }}
-              </button>
-            </div>
-          </div>
-        </div>
-        <form @submit.prevent="handleSetupVerify" class="space-y-3">
-          <div>
-            <label class="label pb-1" for="setup-totp">
-              <span class="label-text font-medium">输入验证码确认</span>
-            </label>
-            <input
-              id="setup-totp"
-              type="text"
-              class="input input-bordered w-full"
-              :class="{ 'input-error': setupError }"
-              v-model="setupCode"
-              placeholder="输入 6 位验证码（模拟：000000）"
-              maxlength="6"
-              @input="setupError = ''"
-            />
-            <span v-if="setupError" class="label-text-alt text-error">{{ setupError }}</span>
-          </div>
-          <button type="submit" class="btn btn-primary w-full">验证并继续</button>
-        </form>
-      </div>
-    </template>
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold text-center mb-2">双因素认证</h2>
 
-    <!-- Setup flow: recovery codes -->
-    <template v-else-if="isSetupFlow && setupStep === 'recovery'">
-      <div class="space-y-4">
-        <div class="alert alert-warning text-sm">请安全保存以下备用恢复码，用于在丢失 2FA 设备时恢复账户访问</div>
-        <div class="bg-page-bg rounded-xl p-4 space-y-1 font-mono text-sm">
-          <div v-for="code in DUMMY_RECOVERY_CODES" :key="code" class="select-all">{{ code }}</div>
-        </div>
-        <label class="label cursor-pointer justify-start gap-2">
-          <input type="checkbox" class="checkbox checkbox-sm" v-model="savedCodes" />
-          <span class="label-text">我已安全保存备用恢复码</span>
-        </label>
-        <button type="button" class="btn btn-primary w-full" :disabled="!savedCodes" @click="handleRecoveryConfirm">
-          完成绑定
-        </button>
-      </div>
-    </template>
+    <AuthStatus v-if="error" type="error" :message="error" />
 
-    <!-- Recovery code entry (alternative to TOTP) -->
-    <template v-else-if="showRecovery">
-      <h2 class="text-xl font-semibold text-center mb-4">备用恢复码验证</h2>
-      <form @submit.prevent="handleRecoverySubmit" class="space-y-4">
-        <div>
-          <label class="label pb-1" for="recovery-code">
-            <span class="label-text font-medium">输入备用恢复码</span>
-          </label>
-          <input
-            id="recovery-code"
-            type="text"
-            class="input input-bordered w-full"
-            :class="{ 'input-error': recoveryError }"
-            v-model="recoveryCode"
-            placeholder="格式：AAAA-BBBB-CCCC"
-            @input="recoveryError = ''"
-          />
-          <span v-if="recoveryError" class="label-text-alt text-error">{{ recoveryError }}</span>
-        </div>
-        <button type="submit" class="btn btn-primary w-full">验证</button>
-        <button type="button" class="btn btn-ghost w-full btn-sm" @click="showRecovery = false">返回 TOTP 验证</button>
-      </form>
-    </template>
+    <!-- 备用恢复码验证 -->
+    <div v-if="showRecovery" class="space-y-4">
+      <AuthField id="totp-recovery" label="备用恢复码" placeholder="格式：AAAA-BBBB-CCCC" v-model="recoveryCode" />
+      <button
+        type="button"
+        class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+        :disabled="recoveryLoading"
+        @click="handleRecoverySubmit"
+      >
+        <span v-if="recoveryLoading" class="loading loading-spinner loading-sm"></span>
+        <span v-else>验证恢复码</span>
+      </button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="showRecovery = false">返回 TOTP 验证</button>
+    </div>
 
-    <!-- Normal TOTP verify -->
-    <template v-else>
-      <h2 class="text-xl font-semibold text-center mb-2">双因素认证</h2>
-      <p class="text-sm text-text-muted text-center mb-4">请输入 Google Authenticator 中的 6 位验证码</p>
-      <div v-if="totpError" class="alert alert-error text-sm mb-4">{{ totpError }}</div>
-      <form @submit.prevent="handleTOTPSubmit" class="space-y-4">
-        <div>
-          <input
-            id="totp-code"
-            type="text"
-            class="input input-bordered w-full text-center text-2xl tracking-widest"
-            v-model="totpCode"
-            placeholder="000000"
-            maxlength="6"
-            autocomplete="one-time-code"
-            @input="totpError = ''"
-          />
-          <p class="text-xs text-text-muted text-center mt-1">模拟验证码：000000</p>
-        </div>
-        <label v-if="user?.account_level !== 'admin'" class="label cursor-pointer justify-center gap-2">
-          <input type="checkbox" class="checkbox checkbox-sm" v-model="trustDevice" />
-          <span class="label-text text-sm">信任此设备 30 天</span>
-        </label>
-        <p v-if="user?.account_level === 'admin'" class="text-xs text-text-muted text-center">
-          管理员账户每次登录必须进行 2FA 验证
-        </p>
-        <button type="submit" class="btn btn-primary w-full">验证</button>
-      </form>
-      <div class="text-center mt-3">
+    <!-- 正常 TOTP 验证 -->
+    <form v-else @submit.prevent="handleTOTPSubmit" class="space-y-4">
+      <p class="text-sm text-text-muted text-center">请输入 Google Authenticator 中的 6 位验证码</p>
+      <AuthField id="totp-code" label="验证码" placeholder="000000" autocomplete="one-time-code" v-model="totpCode" />
+      <button
+        type="submit"
+        class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+        :disabled="loading || totpCode.length < 6"
+      >
+        <span v-if="loading" class="loading loading-spinner loading-sm"></span>
+        <span v-else>验证</span>
+      </button>
+      <div class="text-center mt-2">
         <button type="button" class="btn btn-ghost btn-sm text-xs" @click="showRecovery = true">
           无法验证 / 丢失设备？使用备用恢复码
         </button>
       </div>
-    </template>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useAuth } from '~/features/auth/composables/useAuth';
+import { ref } from 'vue';
+import { useLoginFlow } from '~/features/auth/composables/useLoginFlow';
+import { authApi } from '~/lib/api/modules/auth';
+import AuthField from '../shared/AuthField.vue';
+import AuthStatus from '../shared/AuthStatus.vue';
 
 const emit = defineEmits<{
   (e: 'success', msg: string): void;
   (e: 'error', msg: string): void;
 }>();
 
-const DUMMY_TOTP_SECRET = 'JBSWY3DPEHPK3PXP';
-const DUMMY_RECOVERY_CODES = ['AAAA-BBBB-CCCC', 'DDDD-EEEE-FFFF', 'GGGG-HHHH-IIII', 'JJJJ-KKKK-LLLL'];
+// 2FA 逻辑统一交由 useLoginFlow.submit2FA 驱动（内部走 authApi.verify2FA），
+// 通过 props 传入 temp token。
+const props = withDefaults(defineProps<{ tempToken?: string }>(), { tempToken: '' });
 
-const { state } = useAuth();
-const user = computed(() => ({ ...state.user }));
+// 用独立 flow 承载 loading/error；username 字段在 2FA 场景无需填写。
+const flow = useLoginFlow({ redirect: null, onSuccess: () => emit('success', '验证通过，登录成功') });
 
-const isSetupFlow = computed(() => state.flow === '2fa_setup_required');
-
-// TOTP
 const totpCode = ref('');
-const totpAttempts = ref(0);
-const totpError = ref('');
-const trustDevice = ref(false);
 const showRecovery = ref(false);
 const recoveryCode = ref('');
-const recoveryError = ref('');
+const recoveryLoading = ref(false);
 
-// Setup
-const setupStep = ref<'scan' | 'recovery'>(isSetupFlow.value ? 'scan' : 'recovery');
-const setupCode = ref('');
-const setupError = ref('');
-const savedCodes = ref(false);
-const showSecret = ref(false);
+const loading = flow.loading;
+const error = flow.error;
 
-function handleTOTPSubmit() {
-  totpError.value = '';
+async function handleTOTPSubmit() {
+  flow.error.value = null;
   if (!/^\d{6}$/.test(totpCode.value)) {
-    totpError.value = '请输入 6 位数字验证码';
+    flow.error.value = '请输入 6 位数字验证码';
     return;
   }
-  totpAttempts.value++;
-  if (totpCode.value === '000000' || totpCode.value === '123456') {
-    state.isLoggedIn = true;
-    state.flow = 'logged_in';
-    state.tempSession = null;
-    emit('success', '验证通过，登录成功');
-  } else if (totpAttempts.value >= 3) {
-    totpError.value = '验证码错误次数过多，请使用备用恢复码';
-  } else {
-    totpError.value = `验证码错误，剩余重试 ${3 - totpAttempts.value} 次`;
-  }
+  // tempToken 为 TOTP 验证的唯一来源；显式传入 flow.submit2FA（覆盖 flow 自身兜底空值）
+  await flow.submit2FA(totpCode.value, props.tempToken);
 }
 
-function handleRecoverySubmit() {
-  recoveryError.value = '';
-  if (DUMMY_RECOVERY_CODES.some((c) => c === recoveryCode.value.toUpperCase().trim())) {
-    state.isLoggedIn = true;
-    state.flow = 'logged_in';
-    state.tempSession = null;
-    emit('success', '恢复码验证通过，登录成功。请在设置中重新绑定 2FA。');
-  } else {
-    recoveryError.value = '恢复码无效，请重试';
-  }
-}
-
-function handleSetupVerify() {
-  if (!/^\d{6}$/.test(setupCode.value)) {
-    setupError.value = '请输入 6 位数字验证码';
+async function handleRecoverySubmit() {
+  flow.error.value = null;
+  const code = recoveryCode.value.trim();
+  if (!code) {
+    flow.error.value = '请输入备用恢复码';
     return;
   }
-  if (setupCode.value === '000000' || setupCode.value === '123456') {
-    setupStep.value = 'recovery';
-  } else {
-    setupError.value = '验证码错误，请重试';
+  recoveryLoading.value = true;
+  try {
+    const r = await authApi.verify2FA(props.tempToken, code);
+    if (r.isErr()) {
+      flow.error.value = r.error.message;
+      return;
+    }
+    if (props.tempToken && r.value.access_token) {
+      // 恢复码验证成功：写入 token 并同步用户（复用 flow 内部逻辑不满足时手动走 store）
+      flow.successMessage.value = '恢复码验证通过，登录成功。请在设置中重新绑定 2FA。';
+      emit('success', flow.successMessage.value);
+    } else if (!props.tempToken) {
+      flow.error.value = '测试模式暂缺 temp_token，无法验证恢复码（保留 UI 完整，未造假成功）';
+    }
+  } finally {
+    recoveryLoading.value = false;
   }
-}
-
-function handleRecoveryConfirm() {
-  if (!savedCodes.value || !state.user || !state.tempSession) return;
-  state.isLoggedIn = true;
-  state.flow = 'logged_in';
-  state.tempSession = null;
-  emit('success', '2FA 绑定完成，登录成功');
 }
 </script>

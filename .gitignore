@@ -49,3 +49,6 @@ reports/
 # reference material (astro templates, not committed)
 reference/astro-templates/
 backend/__pycache__/main.cpython-310.pyc
+
+# Playwright test output
+test-results/

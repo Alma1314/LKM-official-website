@@ -1,100 +1,101 @@
 <template>
-  <!-- Logged in / success -->
-  <div v-if="state.flow === 'logged_in'" class="text-center">
-    <div class="mb-4 flex justify-center">
-      <svg
-        class="w-14 h-14 text-success"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-        <polyline points="22 4 12 14.01 9 11.01" />
-      </svg>
-    </div>
-    <h2 class="text-2xl font-semibold">注册成功，已自动登录</h2>
-    <p class="text-text-muted text-sm">
-      欢迎加入理科迷，<span class="font-semibold">{{ state.user?.username }}</span>
-    </p>
-    <div class="flex gap-3 justify-center mt-6">
-      <a :href="getAuthPath('account')" class="btn btn-ghost btn-sm">账户设置</a>
-      <a :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
-    </div>
-  </div>
+  <component
+    :is="mode === 'modal' ? 'div' : AuthShell"
+    :max-width="mode === 'modal' ? undefined : '440px'"
+    :class="mode === 'modal' ? 'w-full' : undefined"
+  >
+    <AuthCard title="注册" subtitle="创建理科迷账号" :test-mode="testMode" :mode="mode">
+      <!-- 状态提示 -->
+      <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
 
-  <!-- Guide step -->
-  <div v-else-if="showGuide">
-    <RegisterGuide @complete="() => (showGuide = false)" @skip="() => (showGuide = false)" />
-  </div>
+      <!-- Docker / done -->
+      <div v-if="flow.stage === 'done'" class="text-center space-y-4">
+        <div class="flex justify-center">
+          <svg
+            class="w-14 h-14 text-success"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <p class="text-xl font-semibold">注册成功</p>
+        <a :href="getAuthPath('')" class="btn btn-primary btn-sm w-full">返回首页</a>
+      </div>
 
-  <!-- Register form -->
-  <div v-else>
-    <div class="text-center mb-6">
-      <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-deep-text">注册</h1>
-      <p class="text-sm text-text-muted">创建理科迷账号</p>
-    </div>
+      <template v-else>
+        <!-- 注册方式切换 -->
+        <AuthSegmentedControl
+          :options="segmentedOptions"
+          :model-value="flow.type"
+          @update:model-value="flow.type = $event as RegisterType"
+          class="mb-6"
+        />
 
-    <div class="tabs tabs-bordered mb-6">
-      <a
-        v-for="tab in tabs"
-        :key="tab.key"
-        class="tab tab-bordered"
-        :class="{ 'tab-active': regType === tab.key }"
-        @click.prevent="regType = tab.key"
-        >{{ tab.label }}</a
-      >
-    </div>
+        <!-- 本地账户：纯字段子表单 -->
+        <LocalRegister v-if="flow.type === 'local'" :flow="flow" />
 
-    <LocalRegister v-if="regType === 'local'" />
-    <NormalRegister v-if="regType === 'normal'" @complete="handleComplete" />
-    <div v-if="regType === 'github'" class="space-y-4 text-center">
-      <p class="text-sm text-text-muted">GitHub OAuth 注册暂未接入</p>
-      <button type="button" class="btn btn-outline w-full gap-2" @click="handleGithubRegister">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-          />
-        </svg>
-        使用 GitHub 注册
-      </button>
-    </div>
+        <!-- 普通账户：纯字段子表单 -->
+        <NormalRegister v-else :flow="flow" />
 
-    <p class="text-center text-[13px] text-text-muted mt-5">
-      已有账号？
-      <button type="button" class="text-primary font-semibold hover:underline" @click="switchToLogin">立即登录</button>
-    </p>
-  </div>
+        <!-- GitHub 注册（简化，未接入） -->
+        <template v-if="flow.stage === 'form'">
+          <div class="my-6 flex items-center gap-3">
+            <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
+            <span class="text-xs text-text-muted">或者</span>
+            <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
+          </div>
+          <AuthMethodButton label="使用 GitHub 注册" :disabled="flow.loading" @click="handleGithub" />
+        </template>
+
+        <!-- 已有账号 -->
+        <p class="mt-6 text-center text-[13px] text-text-muted">
+          已有账号？
+          <button type="button" class="text-primary font-semibold hover:underline" @click="switchToLogin">
+            立即登录
+          </button>
+        </p>
+      </template>
+    </AuthCard>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useAuthProvider } from '~/features/auth/composables/useAuth';
+import { useRegisterFlow, type RegisterType } from '~/features/auth/composables/useRegisterFlow';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import AuthShell from '../shared/AuthShell.vue';
+import AuthCard from '../shared/AuthCard.vue';
+import AuthSegmentedControl from '../shared/AuthSegmentedControl.vue';
+import AuthStatus from '../shared/AuthStatus.vue';
+import AuthMethodButton from '../shared/AuthMethodButton.vue';
 import LocalRegister from './LocalRegister.vue';
 import NormalRegister from './NormalRegister.vue';
-import RegisterGuide from './RegisterGuide.vue';
 
-type RegType = 'local' | 'normal' | 'github';
+withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
 
-const { state } = useAuthProvider();
+const testMode = import.meta.env.PUBLIC_AUTH_TEST_MODE === 'true';
 
-const regType = ref<RegType>('normal');
-const showGuide = ref(false);
+const redirectRaw = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('redirect') : null;
 
-const tabs = [
-  { key: 'normal' as RegType, label: '普通账户' },
-  { key: 'local' as RegType, label: '本地账户' },
-  { key: 'github' as RegType, label: 'GitHub' },
+const flow = useRegisterFlow({
+  redirect: redirectRaw || '/',
+  onSuccess: (dst) => {
+    window.dispatchEvent(new CustomEvent('close-auth-modal'));
+    window.location.href = dst;
+  },
+});
+
+const segmentedOptions = [
+  { key: 'normal' as RegisterType, label: '普通账户' },
+  { key: 'local' as RegisterType, label: '本地账户' },
 ];
 
-function handleComplete(withGuide: boolean) {
-  showGuide.value = withGuide;
-}
-
-function handleGithubRegister() {
+function handleGithub() {
   alert('GitHub OAuth 注册暂未接入');
 }
 

@@ -201,8 +201,10 @@ pnpm install
 启动
 
 ```bash
-pnpm dev
+pnpm run dev
 ```
+
+`pnpm run dev` 会**并行启动 Astro（端口 4321）与 FastAPI 测试后端（端口 8000）**。
 
 浏览器访问 `http://localhost:4321/LKM-official-website`
 ---
@@ -217,18 +219,21 @@ git push
 
 ## 常用命令
 
-| 命令                      | 说明                         |
-| :------------------------ | :--------------------------- |
-| `pnpm run dev`            | 启动开发服务器               |
-| `pnpm run build`          | 生产构建到 `./dist/`         |
-| `pnpm run preview`        | 本地预览生产构建             |
-| `pnpm run check`          | 类型检查 + ESLint + Prettier |
-| `pnpm run fix`            | 自动修复 ESLint + Prettier   |
-| `pnpm run test:smoke`     | Playwright E2E 冒烟测试     |
-| `pnpm run test:a11y`     | Playwright 无障碍测试      |
-| `pnpm run check:seo`     | SEO 输出检查               |
-| `pnpm run check:links`   | 链接有效性检查             |
-| `pnpm run test`           | 运行 Vitest 测试             |
+| 命令                    | 说明                                                            |
+| :---------------------- | :-------------------------------------------------------------- |
+| `pnpm run dev`          | 启动开发服务器                                                  |
+| `pnpm run build`        | 生产构建到 `./dist/`                                            |
+| `pnpm run preview`      | 本地预览生产构建                                                |
+| `pnpm run check`        | 类型检查 + ESLint + Prettier                                    |
+| `pnpm run fix`          | 自动修复 ESLint + Prettier                                      |
+| `pnpm run test:smoke`   | Playwright E2E 冒烟测试                                         |
+| `pnpm run test:a11y`    | Playwright 无障碍测试                                           |
+| `pnpm run check:seo`    | SEO 输出检查                                                    |
+| `pnpm run check:links`  | 链接有效性检查                                                  |
+| `pnpm run test`         | 运行 Vitest 测试                                                |
+| `pnpm run test:auth`    | 运行认证前端 Vitest 测试（`vitest run src/features/auth`）      |
+| `pnpm run test:backend` | 运行后端 pytest 测试（`cd backend && uv run pytest tests/ -v`） |
+| `pnpm run dev:backend`  | 启动测试后端（uvicorn + uv，端口 8000）                         |
 
 ---
 
@@ -247,7 +252,7 @@ git push
 │   │   ├── graphql/            # GraphQL（Strawberry）
 │   │   ├── schemas/            # Pydantic 模型
 │   │   └── modules/            # API 路由（auth/blog/columns/boards/health）
-│   └── tests/                  # pytest 测试 (103 个)
+│   └── tests/                  # pytest 测试 (112 个)
 ├── src/
 │   ├── assets/images/          # 图片资源
 │   │   ├── member/             # 原始头像图片
@@ -301,75 +306,85 @@ git push
 
 ### 官方站点 (`/official`)
 
-| 路由             | 路径                              | 源文件                                        |
-| :--------------- | :-------------------------------- | :-------------------------------------------- |
-| 首页             | `/official`                       | `pages/official/index.astro`                  |
-| 管理团队         | `/official/team`                  | `pages/official/team.astro`                   |
-| 项目团队         | `/official/project-team`          | `pages/official/project-team.astro`           |
-| 关于             | `/official/articles`              | `pages/official/articles/`                    |
-| 服务             | `/official/services`              | `pages/official/services.astro`               |
-| 赞助与支持       | `/official/pricing`               | `pages/official/pricing.astro`                |
-| 联系我们         | `/official/contact`               | `pages/official/contact.astro`                |
-| QQ 社群          | `/official/communities`           | `pages/official/communities.astro`            |
-| 隐私政策         | `/official/privacy`               | `pages/official/privacy.md`                   |
-| 使用条款         | `/official/terms`                 | `pages/official/terms.md`                     |
+| 路由       | 路径                     | 源文件                              |
+| :--------- | :----------------------- | :---------------------------------- |
+| 首页       | `/official`              | `pages/official/index.astro`        |
+| 管理团队   | `/official/team`         | `pages/official/team.astro`         |
+| 项目团队   | `/official/project-team` | `pages/official/project-team.astro` |
+| 关于       | `/official/articles`     | `pages/official/articles/`          |
+| 服务       | `/official/services`     | `pages/official/services.astro`     |
+| 赞助与支持 | `/official/pricing`      | `pages/official/pricing.astro`      |
+| 联系我们   | `/official/contact`      | `pages/official/contact.astro`      |
+| QQ 社群    | `/official/communities`  | `pages/official/communities.astro`  |
+| 隐私政策   | `/official/privacy`      | `pages/official/privacy.md`         |
+| 使用条款   | `/official/terms`        | `pages/official/terms.md`           |
 
 ### 社区平台 (`/community`)
 
-| 路由             | 路径                              | 说明                |
-| :--------------- | :-------------------------------- | :------------------ |
-| 社区首页         | `/community`                      | 动态流 + 仪表盘     |
-| 论坛板块         | `/community/forum`                | 板块广场            |
-| 论坛详情         | `/community/forum/<slug>`         | 板块帖子列表        |
-| 帖子详情         | `/community/forum/post/<id>`      | 帖子正文 + 评论     |
-| 专栏列表         | `/community/columns`              | 专栏广场            |
-| 专栏详情         | `/community/columns/<slug>`       | 专栏文章列表        |
-| 专栏文章         | `/community/columns/<slug>/<id>`  | 文章详情            |
-| 文件库           | `/community/files`                | 文件列表            |
-| 文件详情         | `/community/files/<id>`           | 文件详情 + 下载     |
-| 竞赛大厅         | `/community/competition`          | 竞赛列表            |
-| 竞赛详情         | `/community/competition/<id>`     | 竞赛详情/报名       |
-| 竞赛答题         | `/community/competition/<id>/exam`| 答题界面            |
-| 题库中心         | `/community/competition/bank`     | 题库浏览            |
-| 匿名树洞         | `/community/treehole`             | 信件流              |
-| 树洞写信         | `/community/treehole/write`       | 写信页              |
-| 漂流瓶           | `/community/treehole/bottle`      | 捞漂流瓶            |
+| 路由     | 路径                               | 说明            |
+| :------- | :--------------------------------- | :-------------- |
+| 社区首页 | `/community`                       | 动态流 + 仪表盘 |
+| 论坛板块 | `/community/forum`                 | 板块广场        |
+| 论坛详情 | `/community/forum/<slug>`          | 板块帖子列表    |
+| 帖子详情 | `/community/forum/post/<id>`       | 帖子正文 + 评论 |
+| 专栏列表 | `/community/columns`               | 专栏广场        |
+| 专栏详情 | `/community/columns/<slug>`        | 专栏文章列表    |
+| 专栏文章 | `/community/columns/<slug>/<id>`   | 文章详情        |
+| 文件库   | `/community/files`                 | 文件列表        |
+| 文件详情 | `/community/files/<id>`            | 文件详情 + 下载 |
+| 竞赛大厅 | `/community/competition`           | 竞赛列表        |
+| 竞赛详情 | `/community/competition/<id>`      | 竞赛详情/报名   |
+| 竞赛答题 | `/community/competition/<id>/exam` | 答题界面        |
+| 题库中心 | `/community/competition/bank`      | 题库浏览        |
+| 匿名树洞 | `/community/treehole`              | 信件流          |
+| 树洞写信 | `/community/treehole/write`        | 写信页          |
+| 漂流瓶   | `/community/treehole/bottle`       | 捞漂流瓶        |
 
 ### 账号系统
 
-| 路由             | 路径                              | 说明                |
-| :--------------- | :-------------------------------- | :------------------ |
-| 登录             | `/login`                          | 5 种登录方式        |
-| 注册             | `/register`                       | 注册选择页          |
-| 注册引导         | `/register/onboarding`            | 4 步引导流程        |
-| 账号设置         | `/account`                        | 个人设置            |
-| 账号找回         | `/account/recovery`               | 密码找回            |
+| 路由     | 路径                   | 说明                                                   |
+| :------- | :--------------------- | :----------------------------------------------------- |
+| 登录     | `/login`               | 账户/邮箱/手机 + 密码、验证码、GitHub/Passkey/2FA/找回 |
+| 注册     | `/register`            | 本地账户或邮箱/手机验证码注册                          |
+| 注册引导 | `/register/onboarding` | 引导流程                                               |
+| 账号设置 | `/account`             | 个人设置（含 2FA/Passkey/账号绑定）                    |
+| 账号找回 | `/account/recovery`    | 密码找回（邮箱/手机/验证码）                           |
+
+### 认证与账号流程
+
+认证前端对接真实 FastAPI JWT 后端（无 mock 账号），单页依次支持：
+
+- **账户登录**：账户/邮箱/手机 + 密码、短信/邮箱验证码、邮箱 Magic Link
+- **高级认证**：GitHub、Passkey、2FA（二次验证）、密码找回、登录后引导（onboarding）与账号绑定
+- **测试模式**：可通过环境变量 `PUBLIC_AUTH_TEST_MODE` 开启测试模式；测试后端仅**模拟**高级认证（GitHub/Passkey/2FA/找回/绑定/onboarding），不接真实 OAuth/WebAuthn/邮件/短信/TOTP
+
+账号状态由 `src/stores/auth.ts`（`useAuthStore`）作为单一状态源，localStorage key `lkm-auth-store`。
 
 ### 其他
 
-| 路由             | 路径                              | 说明                |
-| :--------------- | :-------------------------------- | :------------------ |
-| 项目广场         | `/official/projects`              | 项目大厅            |
-| 项目详情         | `/official/projects/<id>`         | 项目详情            |
-| 求助系统         | `/official/qa`                    | 问答大厅            |
-| 求助提问         | `/official/qa/ask`                | 提问页              |
-| 求助详情         | `/official/qa/<id>`               | 问题详情            |
-| 贡献系统         | `/contribution`                   | 积分/成就/排行榜    |
-| 资助系统         | `/official/funding`               | 资助占位页          |
-| 管理后台         | `/admin`                          | 后台仪表盘          |
-| 用户管理         | `/admin/users`                    | 后台用户列表        |
-| 帖子管理         | `/admin/posts`                    | 后台帖子审核        |
-| 文件审核         | `/admin/files`                    | 后台文件审核        |
-| 板块管理         | `/admin/categories`               | 后台板块管理        |
-| 举报管理         | `/admin/reports`                  | 后台举报处理        |
-| 文档管理         | `/admin/documents`                | 后台文档编辑器      |
-| 匿名信大厅       | `/letters`                        | 匿名信列表          |
-| StarHope          | `/starhope`                       | AI 学习助手         |
-| 团队介绍         | `/apps`                           | 应用入口            |
-| 博客             | `/blog`                           | 博客列表            |
-| 博客文章         | `/blog/<slug>`                    | 博客文章            |
-| 404              | `/404`                            | 404 页面            |
-| RSS              | `/rss.xml`                        | RSS 订阅            |
+| 路由       | 路径                      | 说明             |
+| :--------- | :------------------------ | :--------------- |
+| 项目广场   | `/official/projects`      | 项目大厅         |
+| 项目详情   | `/official/projects/<id>` | 项目详情         |
+| 求助系统   | `/official/qa`            | 问答大厅         |
+| 求助提问   | `/official/qa/ask`        | 提问页           |
+| 求助详情   | `/official/qa/<id>`       | 问题详情         |
+| 贡献系统   | `/contribution`           | 积分/成就/排行榜 |
+| 资助系统   | `/official/funding`       | 资助占位页       |
+| 管理后台   | `/admin`                  | 后台仪表盘       |
+| 用户管理   | `/admin/users`            | 后台用户列表     |
+| 帖子管理   | `/admin/posts`            | 后台帖子审核     |
+| 文件审核   | `/admin/files`            | 后台文件审核     |
+| 板块管理   | `/admin/categories`       | 后台板块管理     |
+| 举报管理   | `/admin/reports`          | 后台举报处理     |
+| 文档管理   | `/admin/documents`        | 后台文档编辑器   |
+| 匿名信大厅 | `/letters`                | 匿名信列表       |
+| StarHope   | `/starhope`               | AI 学习助手      |
+| 团队介绍   | `/apps`                   | 应用入口         |
+| 博客       | `/blog`                   | 博客列表         |
+| 博客文章   | `/blog/<slug>`            | 博客文章         |
+| 404        | `/404`                    | 404 页面         |
+| RSS        | `/rss.xml`                | RSS 订阅         |
 
 ---
 
@@ -499,7 +514,7 @@ pages/          文件路由页面
 - **Pagefind 全文搜索** — 客户端离线搜索
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
-- **FastAPI 测试后端** — 模块化 mock 后端，103 个 pytest 测试，统一响应格式
+- **FastAPI 测试后端** — 模块化后端，112 个 pytest 测试，统一响应格式；高级认证为模拟实现，不接真实 OAuth/WebAuthn/邮件/短信/TOTP
 
 ## 致谢 · 开源项目
 

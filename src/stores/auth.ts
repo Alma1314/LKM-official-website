@@ -1,28 +1,20 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
-import { AppError, ErrorCode } from '~/lib/errors';
+import { AppError, ErrorCode } from '~/lib/errors/error-codes';
 import { ok, err } from '~/lib/errors/result';
 import type { Result } from '~/lib/errors/result';
 import type { UserInfo, MessageResponse } from '~/lib/api/modules/auth';
-
-type AuthFlow = 'idle' | 'logging_in' | '2fa_required' | '2fa_setup_required' | 'logged_in';
-
-interface TempSession {
-  userId: number;
-  method: string;
-  isRecovery?: boolean;
-}
+import type { SessionStatus } from '~/types/auth';
 
 export const useAuthStore = defineStore('auth', () => {
-  // ── State ──
+  // ── State（单一状态源：session 驱动） ──
   const user = ref<UserInfo | null>(null);
   const isLoggedIn = ref(false);
-  const flow = ref<AuthFlow>('idle');
-  const tempSession = ref<TempSession | null>(null);
-  const loginMethod = ref<string | null>(null);
+  const session = ref<SessionStatus>('anonymous');
   const _token = ref<string | null>(null);
   const _refreshToken = ref<string | null>(null);
+  const onboardingCompleted = ref(false);
 
   // ── Token 辅助函数 ──
   function setTokens(accessToken: string, refreshToken: string) {
@@ -48,26 +40,90 @@ export const useAuthStore = defineStore('auth', () => {
     if (result.isOk()) {
       user.value = result.value;
       isLoggedIn.value = true;
-      flow.value = 'logged_in';
+      session.value = 'authenticated';
     }
     return result;
   }
 
+  // ── 从 localStorage 恢复到内存 ──
+  function restoreFromStorage() {
+    try {
+      const saved = localStorage.getItem('lkm-auth-store');
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.user && data.isLoggedIn) {
+          user.value = data.user;
+          isLoggedIn.value = true;
+          _token.value = data._token ?? null;
+          _refreshToken.value = data._refreshToken ?? null;
+          onboardingCompleted.value = data.onboardingCompleted ?? false;
+        }
+      }
+    } catch {
+      localStorage.removeItem('lkm-auth-store');
+    }
+  }
+
+  // ── 恢复并校验：无 token→anonymous；有→restoring→fetchMe→authenticated / 原子清除 ──
+  async function restoreAndValidate(): Promise<Result<boolean, AppError>> {
+    restoreFromStorage();
+    if (!_token.value) {
+      session.value = 'anonymous';
+      return ok(false);
+    }
+    session.value = 'restoring';
+    const r = await fetchMe();
+    if (r.isOk()) {
+      session.value = 'authenticated';
+      return ok(true);
+    }
+    session.value = 'anonymous';
+    isLoggedIn.value = false;
+    user.value = null;
+    clearTokens();
+    localStorage.removeItem('lkm-auth-store');
+    return ok(false);
+  }
+
+  // ── 登录后同步用户信息 ──
+  async function fetchMeAfterLogin(_userId: number): Promise<Result<AuthSuccess, AppError>> {
+    const meResult = await fetchMe();
+    if (meResult.isOk()) {
+      isLoggedIn.value = true;
+      session.value = 'authenticated';
+      return ok({});
+    }
+    return err(meResult.error);
+  }
+
+  // ── 持久化到 localStorage ──
+  function persistToStorage() {
+    if (_token.value) {
+      localStorage.setItem(
+        'lkm-auth-store',
+        JSON.stringify({
+          user: user.value,
+          isLoggedIn: true,
+          _token: _token.value,
+          _refreshToken: _refreshToken.value,
+          onboardingCompleted: onboardingCompleted.value,
+        })
+      );
+    } else {
+      localStorage.removeItem('lkm-auth-store');
+    }
+  }
+
   // ── API: 密码登录 ──
   async function loginPassword(account: string, password: string): Promise<Result<AuthSuccess, AppError>> {
-    flow.value = 'logging_in';
-    loginMethod.value = 'password';
-
     const result = await authApi.loginPassword(account, password);
     if (result.isErr()) {
-      flow.value = 'idle';
+      session.value = 'anonymous';
       return err(result.error);
     }
 
     const data = result.value;
     if (data.requires_2fa || data.setup_required) {
-      flow.value = data.setup_required ? '2fa_setup_required' : '2fa_required';
-      tempSession.value = { userId: data.user_id, method: 'password' };
       return ok({ requires2FA: data.requires_2fa, requires2FASetup: data.setup_required });
     }
 
@@ -79,21 +135,8 @@ export const useAuthStore = defineStore('auth', () => {
     return fetchMeAfterLogin(data.user_id);
   }
 
-  // ── 登录后获取用户信息 ──
-  async function fetchMeAfterLogin(_userId: number): Promise<Result<AuthSuccess, AppError>> {
-    const meResult = await fetchMe();
-    if (meResult.isOk()) {
-      isLoggedIn.value = true;
-      flow.value = 'logged_in';
-      tempSession.value = null;
-      return ok({});
-    }
-    return err(meResult.error);
-  }
-
   // ── API: 注册本地账户 ──
   async function registerLocal(username: string, password: string): Promise<Result<AuthSuccess, AppError>> {
-    flow.value = 'logging_in';
     const result = await authApi.registerLocal(username, password);
     if (result.isErr()) return err(result.error);
     if (result.value.access_token) {
@@ -110,8 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
     email?: string,
     phone?: string
   ): Promise<Result<{ txn_id: string; email_sent: boolean; phone_sent: boolean }, AppError>> {
-    const result = await authApi.registerNormal(username, password, email ?? null, phone ?? null);
-    return result;
+    return authApi.registerNormal(username, password, email ?? null, phone ?? null);
   }
 
   // ── API: 验证并完成普通账户注册 ──
@@ -140,11 +182,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   // ── API: 短信/邮箱验证码登录（验证） ──
   async function loginCode(contact: string, code: string): Promise<Result<AuthSuccess, AppError>> {
-    flow.value = 'logging_in';
-    loginMethod.value = 'sms';
     const result = await authApi.loginCode(contact, code);
     if (result.isErr()) {
-      flow.value = 'idle';
+      session.value = 'anonymous';
       return err(result.error);
     }
     if (result.value.access_token) {
@@ -161,11 +201,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   // ── API: Magic Link 验证 ──
   async function verifyMagicLink(token: string): Promise<Result<AuthSuccess, AppError>> {
-    flow.value = 'logging_in';
-    loginMethod.value = 'magic-link';
     const result = await authApi.verifyMagicLink(token);
     if (result.isErr()) {
-      flow.value = 'idle';
+      session.value = 'anonymous';
       return err(result.error);
     }
     if (result.value.access_token) {
@@ -182,70 +220,33 @@ export const useAuthStore = defineStore('auth', () => {
     } catch {
       // 即使后端登出失败也清理本地状态
     }
-    resetState();
+    clearTokens();
+    isLoggedIn.value = false;
+    user.value = null;
+    session.value = 'anonymous';
+    localStorage.removeItem('lkm-auth-store');
   }
 
   // ── 更新用户 ──
   function updateUser(updated: UserInfo) {
     user.value = updated;
+    if (_token.value) persistToStorage();
   }
 
   // ── 重置状态 ──
   function resetState() {
     user.value = null;
     isLoggedIn.value = false;
-    flow.value = 'idle';
-    tempSession.value = null;
-    loginMethod.value = null;
+    session.value = 'anonymous';
     clearTokens();
   }
-
-  // ── 从 localStorage 恢复 ──
-  function restoreFromStorage() {
-    try {
-      const saved = localStorage.getItem('lkm-auth-store');
-      if (saved) {
-        const data = JSON.parse(saved);
-        if (data.user && data.isLoggedIn) {
-          user.value = data.user;
-          isLoggedIn.value = true;
-          flow.value = 'logged_in';
-          _token.value = data._token ?? null;
-          _refreshToken.value = data._refreshToken ?? null;
-        }
-      }
-    } catch {
-      localStorage.removeItem('lkm-auth-store');
-    }
-  }
-
-  // ── 持久化到 localStorage ──
-  function persistToStorage() {
-    if (_token.value) {
-      localStorage.setItem(
-        'lkm-auth-store',
-        JSON.stringify({
-          user: user.value,
-          isLoggedIn: true,
-          flow: flow.value,
-          _token: _token.value,
-          _refreshToken: _refreshToken.value,
-        })
-      );
-    } else {
-      localStorage.removeItem('lkm-auth-store');
-    }
-  }
-
-  restoreFromStorage();
 
   return {
     // State
     user,
     isLoggedIn,
-    flow,
-    tempSession,
-    loginMethod,
+    session,
+    onboardingCompleted,
     // Getters
     accountLevel,
     username,
@@ -263,7 +264,10 @@ export const useAuthStore = defineStore('auth', () => {
     updateUser,
     resetState,
     restoreFromStorage,
+    restoreAndValidate,
     persistToStorage,
+    setTokens,
+    clearTokens,
   };
 });
 

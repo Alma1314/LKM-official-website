@@ -68,7 +68,7 @@ GitHub Actions 配置了一个工作流文件：
 | -------- | -------------------------------------- | --------------------------------------------------------------- |
 | `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                                       |
 | `check`  | PR 到 main / Push 到 main              | `pnpm run check`（check:astro + check:eslint + check:prettier） |
-| `deploy` | Push 到 main（build + check 都通过后） | 构建部署至生产环境                                             |
+| `deploy` | Push 到 main（build + check 都通过后） | 构建部署至生产环境                                              |
 
 ### 部署
 
@@ -127,6 +127,13 @@ const items = ['A', 'B', 'C'];
 - 接收 `className` 覆写时使用 `twMerge()` 合并
 - 布局组合使用具名插槽（named slots）
 
+## 认证与状态规范
+
+- **token 与用户状态必须统一走 `useAuthStore` / HTTP 认证适配器（`configureHttpAuthSession`）**，前端禁止直接经 localStorage 伪造或读写 token。
+- **账号状态单一来源**：`src/stores/auth.ts`（`useAuthStore`）负责用户状态、token、localStorage 持久化（key `lkm-auth-store`）；组件通过 Flow composable（`useLoginFlow`/`useRegisterFlow`/`useRecoveryFlow`/`useOnboardingFlow`）或兼容桥 `useAuthProvider` 接入。
+- **测试后端仅模拟高级认证**：GitHub/Passkey/2FA/找回/绑定/onboarding 均为模拟实现（`simulation.py`，不接真实 OAuth/WebAuthn/邮件/短信/TOTP）。测试用 `PUBLIC_AUTH_TEST_MODE` 开启，后端模拟能力不应在文档中被描述为真实接入。
+- 测试后端/数据库文件（如 `backend/lkm_test*.db`）为测试产物，不提交。
+
 ## 路径别名
 
 使用 `~/` 替代 `src/`：
@@ -168,7 +175,7 @@ import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
 | 字段        | 说明                                          |
 | ----------- | --------------------------------------------- |
 | `site.name` | 站点名称（理科迷）                            |
-| `site.base` | 部署路径前缀（`/LKM-official-website`）                                  |
+| `site.base` | 部署路径前缀（`/LKM-official-website`）       |
 | `metadata`  | SEO 默认值（标题、描述、Open Graph、Twitter） |
 | `i18n`      | 国际化（语言 `zh-cn`、文字方向 `ltr`）        |
 | `apps.blog` | 博客开关、每页文章数、路径名                  |
@@ -275,9 +282,9 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ## Git 规范
 
-| 规则     | 说明                                                                                    |
-| -------- | --------------------------------------------------------------------------------------- |
-| 主分支   | `main`（所有 push 和 PR 的目标）                                                        |
-| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`/scripts/`、`docs/`、`.claude/` |
-| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`                                     |
-| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）                                 |
+| 规则     | 说明                                                                                                                       |
+| -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 主分支   | `main`（所有 push 和 PR 的目标）                                                                                           |
+| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`/scripts/`、`docs/`（仅本地，不提交）、`.claude/`、`.superpowers/` |
+| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`                                                                        |
+| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）                                                                    |

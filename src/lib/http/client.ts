@@ -28,6 +28,74 @@ function getApiBase(): string {
 let _instance: AxiosInstance | null = null;
 let _lastBaseURL = '';
 
+// ── 认证会话适配器：统一从这里读写 token，可被 configureHttpAuthSession 覆盖 ──
+export interface HttpAuthSessionAdapter {
+  getAccessToken(): string | null;
+  getRefreshToken(): string | null;
+  setTokens(a: string, r: string): void;
+  clear(): void;
+}
+
+let _adapter: HttpAuthSessionAdapter | null = null;
+
+const defaultAdapter: HttpAuthSessionAdapter = {
+  getAccessToken() {
+    try {
+      const saved = localStorage.getItem('lkm-auth-store');
+      if (saved) {
+        const data = JSON.parse(saved);
+        return data._token ?? null;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  },
+  getRefreshToken() {
+    try {
+      const saved = localStorage.getItem('lkm-auth-store');
+      if (saved) {
+        const data = JSON.parse(saved);
+        return data._refreshToken ?? null;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  },
+  setTokens(a, r) {
+    try {
+      const store = JSON.parse(localStorage.getItem('lkm-auth-store') || '{}');
+      store._token = a;
+      store._refreshToken = r;
+      localStorage.setItem('lkm-auth-store', JSON.stringify(store));
+    } catch {
+      // ignore
+    }
+  },
+  clear() {
+    try {
+      localStorage.removeItem('lkm-auth-store');
+    } catch {
+      /* ignore */
+    }
+  },
+};
+
+function getAdapter(): HttpAuthSessionAdapter {
+  return _adapter ?? defaultAdapter;
+}
+
+/** 配置全局认证会话适配器；传 null 恢复为默认 localStorage 行为。 */
+export function configureHttpAuthSession(ad: HttpAuthSessionAdapter | null): void {
+  _adapter = ad ?? defaultAdapter;
+}
+
+/** 只读访问令牌（GraphQL exchange 等无 axios 依赖的消费方用）。 */
+export function getHttpAccessToken(): string | null {
+  return getAdapter().getAccessToken();
+}
+
 function isAxiosError(e: unknown): e is AxiosError {
   return axios.isAxiosError(e);
 }
@@ -49,23 +117,9 @@ function getInstance(): AxiosInstance {
       withCredentials: true, // 自动携带同域 Cookie
     });
 
-    // Token 管理 — 从 localStorage 读取 Pinia 持久化的 token
-    function getAccessToken(): string | null {
-      try {
-        const saved = localStorage.getItem('lkm-auth-store');
-        if (saved) {
-          const data = JSON.parse(saved);
-          return data._token ?? null;
-        }
-      } catch {
-        // ignore
-      }
-      return null;
-    }
-
     // Request interceptor: 自动附加 JWT（只给需要认证的端点且有有效 token 时附加）
     _instance.interceptors.request.use((config) => {
-      const token = getAccessToken();
+      const token = getAdapter().getAccessToken();
       if (!token) return config;
       // only attach to authenticated endpoints
       const url = config.url || '';
@@ -107,22 +161,14 @@ function getInstance(): AxiosInstance {
             !url.startsWith('/api/auth/login') &&
             !url.startsWith('/api/auth/reg')
           ) {
-            try {
-              localStorage.removeItem('lkm-auth-store');
-            } catch {
-              /* ignore */
-            }
+            getAdapter().clear();
           }
           return Promise.reject(error);
         }
 
         const isRefreshRequest = url === '/api/auth/refresh';
         if (isRefreshRequest) {
-          try {
-            localStorage.removeItem('lkm-auth-store');
-          } catch {
-            /* ignore */
-          }
+          getAdapter().clear();
           return Promise.reject(error);
         }
 
@@ -142,27 +188,20 @@ function getInstance(): AxiosInstance {
         isRefreshing = true;
 
         try {
-          const saved = localStorage.getItem('lkm-auth-store');
-          if (saved) {
-            const data = JSON.parse(saved);
-            const refreshToken = data._refreshToken;
-            if (refreshToken) {
-              const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, {
-                _retry: true,
-              } as Record<string, unknown>);
-              const apiResp = res.data as { data?: { access_token: string; refresh_token: string } };
-              if (apiResp?.data?.access_token) {
-                const store = JSON.parse(localStorage.getItem('lkm-auth-store') || '{}');
-                store._token = apiResp.data.access_token;
-                store._refreshToken = apiResp.data.refresh_token;
-                localStorage.setItem('lkm-auth-store', JSON.stringify(store));
+          const refreshToken = getAdapter().getRefreshToken();
+          if (refreshToken) {
+            const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, {
+              _retry: true,
+            } as Record<string, unknown>);
+            const apiResp = res.data as { data?: { access_token: string; refresh_token: string } };
+            if (apiResp?.data?.access_token) {
+              getAdapter().setTokens(apiResp.data.access_token, apiResp.data.refresh_token);
 
-                (error.config!.headers as Record<string, string>)['Authorization'] =
-                  `Bearer ${apiResp.data.access_token}`;
-                processQueue(null, apiResp.data.access_token);
-                isRefreshing = false;
-                return _instance!.request(error.config!);
-              }
+              (error.config!.headers as Record<string, string>)['Authorization'] =
+                `Bearer ${apiResp.data.access_token}`;
+              processQueue(null, apiResp.data.access_token);
+              isRefreshing = false;
+              return _instance!.request(error.config!);
             }
           }
         } catch {
@@ -170,11 +209,7 @@ function getInstance(): AxiosInstance {
         }
 
         // Refresh failed — clear storage and reject
-        try {
-          localStorage.removeItem('lkm-auth-store');
-        } catch {
-          /* ignore */
-        }
+        getAdapter().clear();
         processQueue(error, null);
         isRefreshing = false;
         return Promise.reject(error);

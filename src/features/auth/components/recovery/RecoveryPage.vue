@@ -1,25 +1,21 @@
 <template>
-  <div>
-    <div class="text-center mb-6">
-      <h1 class="text-3xl font-semibold mb-2">密码找回</h1>
-      <p class="text-sm text-text-muted">重置您的登录密码</p>
-    </div>
-
-    <div v-if="errorMsg" class="alert alert-warning text-sm mb-4">{{ errorMsg }}</div>
-
-    <div v-else class="space-y-4 text-center">
-      <p class="text-sm text-text-muted">密码找回功能正在接入后端，暂不可用。</p>
-      <p class="text-xs text-text-muted">如有需要，请联系管理员协助重置密码。</p>
-    </div>
-
-    <button type="button" class="btn btn-ghost btn-sm w-full mt-4" @click="switchToLogin">返回登录</button>
-  </div>
+  <component
+    :is="mode === 'modal' ? 'div' : AuthShell"
+    :max-width="mode === 'modal' ? undefined : '440px'"
+    :class="mode === 'modal' ? 'w-full' : undefined"
+  >
+    <AuthCard title="密码找回" subtitle="重置您的登录密码" :mode="mode">
+      <RecoveryFlow @login="switchToLogin" />
+    </AuthCard>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import AuthShell from '../shared/AuthShell.vue';
+import AuthCard from '../shared/AuthCard.vue';
+import RecoveryFlow from './RecoveryFlow.vue';
 
-const errorMsg = ref('');
+withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
 
 function switchToLogin() {
   window.dispatchEvent(new CustomEvent('close-auth-modal'));
