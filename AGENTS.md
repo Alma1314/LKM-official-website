@@ -4,7 +4,7 @@
 
 LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（仅编辑器）和 **Tailwind CSS v4** 构建。后端为 **FastAPI (Python)**，前后端分离部署，通过 Astro 中间件反向代理 `/api/*` 到 FastAPI。
 
-**技术栈：** Astro v7 server | Vue 3 + Composition API | React（编辑器）| Tailwind CSS v4 | TypeScript | FastAPI | PostgreSQL | Redis
+**技术栈：** Astro v7 server | Vue 3 + Composition API | React（编辑器）| Tailwind CSS v4 | TypeScript | FastAPI | SQLite（开发）/ PostgreSQL（生产）
 
 ## 快速参考
 
@@ -32,7 +32,7 @@ lkm-official-website/
 │   ├── pages/            # 文件路由（Astro 约定）
 │   ├── layouts/          # 页面布局（BaseLayout/BlogLayout/SidebarLayout 等）
 │   ├── components/       # 通用 UI 组件（primitives/patterns）
-│   ├── features/         # 业务功能模块（24 个）
+│   ├── features/         # 业务功能模块（25 个）
 │   ├── scripts/          # 客户端脚本（blog-init/transitions/photoswipe）
 │   ├── lib/              # 共享库（api/config/constants/errors/http/i18n/markdown-plugins/utils）
 │   ├── assets/           # 静态资源（astro:assets 处理）
@@ -43,10 +43,16 @@ lkm-official-website/
 │   ├── content/          # 内容文件
 │   ├── middleware.ts     # 反向代理 /api/* → FastAPI
 │   └── content.config.ts # 内容集合配置
-├── packages/
-│   ├── rich-text-editor/ # 编辑器（React，TipTap 3，MDX）
-│   └── editor-persistence/ # 持久化适配器
 ├── backend/              # FastAPI 测试后端
+│   ├── main.py           # 入口，uvicorn 启动（端口 8000）
+│   ├── app/              # 模块化后端代码
+│   │   ├── core/         # 响应格式 + 错误处理
+│   │   ├── data/         # Mock 数据
+│   │   ├── db/           # SQLAlchemy session/models
+│   │   ├── graphql/      # GraphQL（Strawberry + SQLAlchemy）
+│   │   ├── schemas/      # Pydantic 模型
+│   │   └── modules/      # API 路由模块（auth/blog/columns/boards/health）
+│   └── tests/            # pytest 测试（103 个）
 ├── scripts/              # 构建/检查脚本
 ├── docker-compose.yml    # Docker 生产部署
 ├── Dockerfile            # Astro SSR 部署镜像
@@ -62,8 +68,8 @@ Astro 从 `static` 切换到 `server`：
 - Astro SSR 负责页面路由和模板渲染
 - `src/middleware.ts` 反向代理 `/api/*` 到 FastAPI（内网 `localhost:8000`）
 - Vue 3 为主交互框架（Shell 组件、StarHope 模块、社区平台）
-- React 仅用于编辑器后台（`packages/rich-text-editor`）
-- **已卸载 Svelte**（全部迁移到 Vue）
+- React 仅用于编辑器后台（TipTap 3 编辑器组件，内联在 `features/editor/`）
+- **已卸载 Svelte**（源码中无 `.svelte` 文件，全部迁移到 Vue）
 
 ### 统一数据访问层
 
@@ -78,6 +84,7 @@ src/lib/api/
 └── modules/           # 按业务模块划分
     ├── forum.ts / blog.ts / competition.ts / column.ts
     ├── qa.ts / project.ts / file-library.ts / treehole.ts
+    ├── funding.ts / contribution.ts / search.ts / dashboard.ts
     ├── team.ts / auth.ts / user.ts / notification.ts
 ```
 
@@ -187,7 +194,7 @@ services:
 1. `pnpm run build` 构建成功
 2. `pnpm run check` 通过（astro check + ESLint + Prettier）
 3. `pnpm run test` 通过（前端 Vitest）
-4. `pnpm run test:backend` 通过（后端 pytest，含 GraphQL 测试）
-5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过
-6. 浏览器验证：首页、论坛（含 GraphQL）、暗色模式、移动端菜单
+4. `pnpm run test:backend` 通过（后端 pytest，103 个测试）
+5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过（Playwright E2E）
+6. 浏览器验证：首页、论坛、暗色模式、移动端菜单
 7. GraphQL 端点：`http://localhost:8000/graphql` → GraphiQL 可交互

@@ -68,11 +68,11 @@ GitHub Actions 配置了一个工作流文件：
 | -------- | -------------------------------------- | --------------------------------------------------------------- |
 | `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                                       |
 | `check`  | PR 到 main / Push 到 main              | `pnpm run check`（check:astro + check:eslint + check:prettier） |
-| `deploy` | Push 到 main（build + check 都通过后） | 部署到 GitHub Pages                                             |
+| `deploy` | Push 到 main（build + check 都通过后） | 构建部署至生产环境                                             |
 
 ### 部署
 
-部署通过 `actions.yaml` 中的 `deploy` job 完成：Push 到 main 分支时（build + check 通过后）部署到 GitHub Pages。
+部署通过 `actions.yaml` 中的 `deploy` job 完成：Push 到 main 分支时（build + check 通过后）完成部署。
 
 ### 通过 CI 的门槛
 
@@ -133,7 +133,7 @@ const items = ['A', 'B', 'C'];
 
 ```typescript
 import Image from '~/ui/primitives/Image.astro';
-import { siteConfig } from '~/core/config';
+import { siteConfig } from '~/lib/config';
 ```
 
 ## 运行环境
@@ -168,7 +168,7 @@ import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
 | 字段        | 说明                                          |
 | ----------- | --------------------------------------------- |
 | `site.name` | 站点名称（理科迷）                            |
-| `site.base` | 部署路径前缀（`/LKM-official-website`）       |
+| `site.base` | 部署路径前缀（`/LKM-official-website`）                                  |
 | `metadata`  | SEO 默认值（标题、描述、Open Graph、Twitter） |
 | `i18n`      | 国际化（语言 `zh-cn`、文字方向 `ltr`）        |
 | `apps.blog` | 博客开关、每页文章数、路径名                  |
@@ -252,7 +252,7 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ### Vue `client:only` CLS 防护
 
-- 使用 `client:only` 指令的组件（Vue / Svelte）**必须包裹 `style="min-height: 400px"` 容器**
+- 使用 `client:only` 指令的组件（Vue）**必须包裹 `style="min-height: 400px"` 容器**
 - 防止组件挂载后内容注入造成 Cumulative Layout Shift
 - 例外：已使用全高布局（如 `MainGridLayout`、`SidebarLayout`）的页面，布局本身提供高度保障时可不额外包裹
 
