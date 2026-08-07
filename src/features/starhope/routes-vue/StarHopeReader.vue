@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-const uploadedFile = ref<File | null>(null);
-const fileText = ref('');
-const fileName = ref('');
+const _uploadedFile = ref<File | null>(null);
+const _fileText = ref('');
+const _fileName = ref('');
 </script>
 
 <template>

@@ -41,7 +41,7 @@ function onImport(e) {
     try {
       store.importAll(reader.result);
       msg.value = '导入成功，刷新页面后生效 ✅';
-    } catch (err) {
+    } catch {
       msg.value = '导入失败：文件格式不正确 ❌';
     }
   };

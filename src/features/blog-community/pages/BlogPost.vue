@@ -13,7 +13,7 @@ const props = defineProps<{
   filepath: string;
 }>();
 
-const { content, MDXComponent, loading: postLoading, error: postError, fetchAndCompile } = useBlogPost();
+const { MDXComponent, loading: postLoading, error: postError, fetchAndCompile } = useBlogPost();
 const {
   comments,
   loading: commentsLoading,
@@ -21,13 +21,13 @@ const {
   addComment,
   removeComment,
 } = useBlogComments(props.seriesId);
-const { starred, starCount, loading: starLoading, setStatus, toggle: toggleStar } = useBlogStar(props.seriesId);
+const { starred, starCount, loading: starLoading, toggle: toggleStar } = useBlogStar(props.seriesId);
 
 // Derive current user ID from auth state (persisted in localStorage)
-const auth = useAuth();
+const _auth = useAuth();
 const currentUserId = computed<number | null>(() => {
-  if (!auth.state.isLoggedIn || !auth.state.user) return null;
-  return Number(auth.state.user.id);
+  if (!_auth.state.isLoggedIn || !_auth.state.user) return null;
+  return Number(_auth.state.user.id);
 });
 
 const replyParentId = ref<number | null>(null);

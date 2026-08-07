@@ -191,7 +191,7 @@ const levelLabel = computed(() => {
   const level = state.user?.account_level;
   return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
 });
-function getAvailableTabs(account: { id: number; username: string; account_level: string }): Tab[] {
+function getAvailableTabs(_account: { id: number; username: string; account_level: string }): Tab[] {
   // All login methods are available for all users
   return [...ALL_TABS];
 }

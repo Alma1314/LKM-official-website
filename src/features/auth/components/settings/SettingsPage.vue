@@ -96,7 +96,7 @@ import { ref, computed } from 'vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 import ProtectedRoute from '~/features/auth/components/settings/ProtectedRoute.vue';
-import type { User } from '~/types/auth';
+
 
 const { state, updateUser, logout } = useAuthProvider();
 
@@ -117,12 +117,6 @@ const levelLabel = computed(() => {
   const level = state.user?.account_level;
   return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
 });
-
-function handleUpdate(user: User) {
-  updateUser(user);
-  message.value = '设置已更新';
-  setTimeout(() => (message.value = ''), 3000);
-}
 
 async function handleSaveNickname() {
   editError.value = '';

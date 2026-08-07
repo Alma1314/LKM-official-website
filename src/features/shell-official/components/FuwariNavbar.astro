@@ -245,7 +245,7 @@ let links: NavBarLink[] =
           a.setAttribute('href', base.replace(/\/$/, '') + `/user/${username}`);
         }
       });
-    } catch {}
+    } catch { /* empty */ }
   }
   updateProfileLink();
   document.addEventListener('astro:after-swap', updateProfileLink);

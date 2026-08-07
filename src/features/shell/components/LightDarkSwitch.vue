@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, onMounted } from 'vue';
 import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
 import I18nKey from '~/lib/i18n/i18nKey';
 import { i18n } from '~/lib/i18n/translation';

@@ -167,7 +167,6 @@ export async function requestAiCompletion(
   // ---- 3. Fetch (via unified apiFetch wrapper, handles timeout + abort) -----
   const url = `${endpoint.replace(/\/$/, '')}/v1/chat/completions`;
 
-  let response: Response;
   const fetchResult = await apiFetch(url, {
     method: 'POST',
     headers: {
@@ -198,7 +197,7 @@ export async function requestAiCompletion(
     return err(`网络请求失败：${message.slice(0, 120)}`);
   }
 
-  response = fetchResult.value;
+  const response = fetchResult.value;
 
   // ---- 5. Validate response metadata --------------------------------------
   const contentType = response.headers.get('content-type') ?? '';

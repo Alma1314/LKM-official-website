@@ -92,7 +92,7 @@ import { buildUrl } from '~/lib/utils/paths';
 
 interface StepConfig {
   label: string;
-  component: any;
+  component: Record<string, unknown>;
   optional: boolean;
   required: boolean;
   buttonText?: string;
@@ -106,9 +106,9 @@ const steps: StepConfig[] = [
 ];
 
 const currentStep = ref(0);
-const stepRefs = ref<Record<number, any>>({});
+const stepRefs = ref<Record<number, Record<string, unknown>>>({});
 
-function setStepRef(el: any) {
+function setStepRef(el: Record<string, unknown>) {
   if (el) {
     stepRefs.value[currentStep.value] = el;
   }
@@ -136,7 +136,7 @@ function prevStep() {
 
 function finish() {
   // 收集所有步骤数据
-  const allData: Record<string, any> = {};
+  const allData: Record<string, Record<string, unknown>> = {};
   for (const [i, ref] of Object.entries(stepRefs.value)) {
     if (ref && ref.getData) {
       allData[i] = ref.getData();

@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useApp } from '../stores/app';
 import * as store from '../stores/storage';
 
@@ -47,13 +47,13 @@ function start() {
     filter.connect(gain);
     gain.connect(ctx.destination);
     node.start(0);
-  } catch (e) {}
+  } catch { /* empty */ }
 }
 function stop() {
   try {
-    node && node.stop();
-    ctx && ctx.close();
-  } catch (e) {}
+    node?.stop();
+    ctx?.close();
+  } catch { /* empty */ }
   node = null;
   ctx = null;
 }

@@ -77,7 +77,6 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import { getCategory, getPaper } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
 import { useApp } from '../stores/app';
-import { buildUrl } from '~/lib/utils/paths';
 
 const app = useApp();
 

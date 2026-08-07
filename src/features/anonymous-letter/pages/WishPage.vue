@@ -75,7 +75,6 @@
 import { ref, onMounted } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
-import { buildUrl } from '~/lib/utils/paths';
 
 const wishes = ref([]);
 const makeDialogOpen = ref(false);

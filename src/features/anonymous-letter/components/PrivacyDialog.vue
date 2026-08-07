@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { useApp } from '../stores/app';
-const props = defineProps({ modelValue: Boolean });
+const _props = defineProps({ modelValue: Boolean });
 const emit = defineEmits(['update:modelValue']);
 const { acceptPrivacy } = useApp();
 

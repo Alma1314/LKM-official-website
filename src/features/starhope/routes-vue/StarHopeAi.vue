@@ -5,8 +5,8 @@ import type { AiAgent } from '~/features/starhope/types';
 
 const ai = useAiStore();
 const inputText = ref('');
-const showAgentEditor = ref(false);
-const editingAgent = ref<AiAgent | null>(null);
+const _showAgentEditor = ref(false);
+const _editingAgent = ref<AiAgent | null>(null);
 
 onMounted(() => {
   ai.loadAgents();

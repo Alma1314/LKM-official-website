@@ -73,7 +73,7 @@ export interface BlogInteractionsProps {
   mapping?: 'pathname' | 'url' | 'title' | 'og:title' | 'specific';
 }
 
-const props = withDefaults(defineProps<BlogInteractionsProps>(), {
+const _props = withDefaults(defineProps<BlogInteractionsProps>(), {
   excerpt: '',
   term: '',
   giscusRepo: '',

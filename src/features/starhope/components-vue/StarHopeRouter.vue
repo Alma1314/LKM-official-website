@@ -6,7 +6,7 @@ import { useNavigationStore } from '../stores-vue/navigation';
 
 const { currentRoute } = useNavigationStore();
 
-const routes: Record<string, any> = {
+const routes: Record<string, Record<string, unknown>> = {
   dashboard: defineAsyncComponent(() => import('../routes-vue/StarHopeDashboard.vue')),
   bank: defineAsyncComponent(() => import('../routes-vue/StarHopeBank.vue')),
   practice: defineAsyncComponent(() => import('../routes-vue/StarHopePractice.vue')),

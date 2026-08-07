@@ -15,7 +15,7 @@ function getIsDark() {
 }
 
 const lazyCache = new Map<string, ReturnType<typeof defineAsyncComponent>>();
-function getLazyComponent(id: string, load: () => Promise<any>) {
+function getLazyComponent(id: string, load: () => Promise<Record<string, unknown>>) {
   if (!lazyCache.has(id)) lazyCache.set(id, defineAsyncComponent(load));
   return lazyCache.get(id)!;
 }
@@ -46,7 +46,7 @@ const activeEntry = computed(
 );
 const ActiveComponent = computed(() => getLazyComponent(activeEntry.value.id, activeEntry.value.load));
 const colorProps = computed(() =>
-  isDark.value ? (activeEntry.value as any).darkProps : (activeEntry.value as any).lightProps
+  isDark.value ? (activeEntry.value as Record<string, unknown>).darkProps : (activeEntry.value as Record<string, unknown>).lightProps
 );
 const bgKey = computed(() => `${currentBg.value}-${isDark.value ? 'dark' : 'light'}`);
 

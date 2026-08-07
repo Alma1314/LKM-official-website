@@ -4,6 +4,7 @@ import globals from 'globals';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import typescriptParser from '@typescript-eslint/parser';
+import vueParser from 'vue-eslint-parser';
 
 export default [
   js.configs.recommended,
@@ -25,6 +26,27 @@ export default [
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
+    },
+  },
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
@@ -55,6 +77,7 @@ export default [
         'error',
         {
           argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
           destructuredArrayIgnorePattern: '^_',
         },
       ],

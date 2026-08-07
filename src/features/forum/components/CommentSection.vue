@@ -109,7 +109,7 @@ const comments = ref<Comment[]>([]);
 const likedComments = ref<Set<string>>(new Set());
 
 // We need to load mock data. In Astro with client:load, we inject via a data attribute.
-import { getCommentsByPostId, mockComments } from '../data/mock-posts';
+import { getCommentsByPostId } from '../data/mock-posts';
 
 // Load initial comments on mount
 comments.value = [...getCommentsByPostId(props.postId)];

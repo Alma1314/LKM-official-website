@@ -86,12 +86,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
-import { getLetters, getFavorites, getFavGroups, saveFavGroups, toggleFavorite } from '../stores/storage';
+import { getLetters, toggleFavorite } from '../stores/storage';
 
 const router = useRouter();
 const categories = CATEGORIES;
@@ -167,10 +167,6 @@ const moodStats = computed(() => {
   return map;
 });
 
-function reload() {
-  load();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
 function setCat(c) {
   activeCat.value = c;
   activeMood.value = '';

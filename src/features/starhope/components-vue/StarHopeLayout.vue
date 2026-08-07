@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores-vue/auth';
-import { useNavigationStore, type StarHopeRoute } from '../stores-vue/navigation';
+import { useNavigationStore } from '../stores-vue/navigation';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
 const { navItems, currentRoute, navigate } = useNavigationStore();
