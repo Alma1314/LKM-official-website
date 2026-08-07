@@ -41,7 +41,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   // ── API: 获取当前用户 ──
   async function fetchMe(): Promise<Result<UserInfo, AppError>> {
-    console.trace('[auth store] fetchMe() called');
     if (!_token.value) {
       return err(new AppError(ErrorCode.AUTH_ERROR, 'no token'));
     }

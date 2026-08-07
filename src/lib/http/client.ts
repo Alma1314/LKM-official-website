@@ -228,6 +228,11 @@ export function configure(config: { baseURL?: string; timeout?: number }): void 
 export async function request<T>(config: AxiosRequestConfig): Promise<Result<T, AppError>> {
   try {
     const res = await getInstance().request<T>(config);
+    // unpack {code, msg, data} → return inner data
+    const body = res.data as Record<string, unknown> | null;
+    if (body && typeof body === 'object' && 'code' in body && 'data' in body) {
+      return ok(body.data as T);
+    }
     return ok(res.data);
   } catch (e) {
     if (e instanceof AppError) return err(e);
