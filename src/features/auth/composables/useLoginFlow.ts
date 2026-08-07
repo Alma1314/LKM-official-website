@@ -1,4 +1,4 @@
-import { ref, toRef, type Ref } from 'vue';
+import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { authApi, type ChallengeData, type AuthTokenData } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
@@ -13,20 +13,20 @@ export interface LoginFlowOptions {
 }
 
 export interface LoginFlow {
-  // state
-  mode: Ref<LoginMode>;
-  account: Ref<string>;
-  password: Ref<string>;
-  code: Ref<string>;
-  txnId: Ref<string>;
-  tempToken: Ref<string>;
-  magicSent: Ref<boolean>;
-  loading: Ref<boolean>;
-  error: Ref<string | null>;
-  successMessage: Ref<string>;
-  codeSent: Ref<boolean>;
-  countdown: Ref<number>;
-  countdownRunning: Ref<boolean>;
+  // state —— 由 reactive 包裹的 ref 已解包，模板里可直接 flow.mode=… / flow.mode===…
+  mode: LoginMode;
+  account: string;
+  password: string;
+  code: string;
+  txnId: string;
+  tempToken: string;
+  magicSent: boolean;
+  loading: boolean;
+  error: null | string;
+  successMessage: string;
+  codeSent: boolean;
+  countdown: number;
+  countdownRunning: boolean;
   // methods
   submitPassword: () => Promise<void>;
   requestCode: () => Promise<void>;
@@ -291,7 +291,9 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     mode.value = 'password';
   }
 
-  return {
+  // 用 reactive 包裹返回：ref 在 reactive 内被解包，模板里 flow.mode/flow.account 等即值类型，
+  // 不再需要依赖 Vue 对普通对象嵌套 ref 的隐式解包，也消除 flow.mode === 'x' 的 TS2367 误报。
+  return reactive({
     mode,
     account,
     password,
@@ -316,5 +318,5 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     submit2FA,
     reset,
     errorMessageByCode,
-  };
+  });
 }

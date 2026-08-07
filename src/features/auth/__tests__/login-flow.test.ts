@@ -34,8 +34,8 @@ describe('useLoginFlow', () => {
     vi.spyOn(authModule.authApi, 'getMe').mockResolvedValue(ok({ id: 1, username: 'alma', account_level: 'local' }));
     const onSuccess = vi.fn();
     const flow = useLoginFlow({ redirect: null, onSuccess });
-    flow.account.value = 'alma';
-    flow.password.value = '123456';
+    flow.account = 'alma';
+    flow.password = '123456';
     await flow.submitPassword();
     expect(onSuccess).toHaveBeenCalled();
   });
@@ -45,13 +45,13 @@ describe('useLoginFlow', () => {
     const flow = useLoginFlow({ redirect: null });
     // 触发 requestCode 以启动倒计时（注入 mock 避免真实网络）
     vi.spyOn(authModule.authApi, 'requestLoginCode').mockResolvedValue(ok({ message: 'ok' }));
-    flow.account.value = 'alma';
+    flow.account = 'alma';
     await flow.requestCode();
-    expect(flow.countdownRunning.value).toBe(true);
-    expect(flow.countdown.value).toBe(60);
+    expect(flow.countdownRunning).toBe(true);
+    expect(flow.countdown).toBe(60);
     vi.advanceTimersByTime(3000);
-    expect(flow.countdown.value).toBe(57);
-    expect(flow.countdownRunning.value).toBe(true);
+    expect(flow.countdown).toBe(57);
+    expect(flow.countdownRunning).toBe(true);
     vi.useRealTimers();
   });
 
@@ -61,10 +61,10 @@ describe('useLoginFlow', () => {
     );
     const onSuccess = vi.fn();
     const flow = useLoginFlow({ redirect: null, onSuccess });
-    flow.account.value = 'x';
-    flow.password.value = 'y';
+    flow.account = 'x';
+    flow.password = 'y';
     await flow.submitPassword();
-    expect(flow.error.value).toBeTruthy();
+    expect(flow.error).toBeTruthy();
     expect(onSuccess).not.toHaveBeenCalled();
   });
 });

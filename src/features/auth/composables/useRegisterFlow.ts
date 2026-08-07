@@ -1,4 +1,4 @@
-import { ref, toRef, type Ref } from 'vue';
+import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
 import { useVerificationCountdown } from './useVerificationCountdown';
@@ -12,25 +12,25 @@ export interface RegisterFlowOptions {
 }
 
 export interface RegisterFlow {
-  // state
-  type: Ref<RegisterType>;
-  username: Ref<string>;
-  password: Ref<string>;
-  confirm: Ref<string>;
-  contact: Ref<string>;
-  useEmail: Ref<boolean>;
-  code: Ref<string>;
-  txnId: Ref<string>;
-  stage: Ref<RegisterStage>;
-  loading: Ref<boolean>;
-  error: Ref<string | null>;
-  countdown: Ref<number>;
-  countdownRunning: Ref<boolean>;
+  // state —— reactive 包裹的 ref 已解包，模板里直接 flow.username=…
+  type: RegisterType;
+  username: string;
+  password: string;
+  confirm: string;
+  contact: string;
+  useEmail: boolean;
+  code: string;
+  txnId: string;
+  stage: RegisterStage;
+  loading: boolean;
+  error: string | null;
+  countdown: number;
+  countdownRunning: boolean;
   // methods
   submit: () => Promise<void>;
   submitCode: () => Promise<void>;
   reset: () => void;
-  hasAgreedTerms: Ref<boolean>;
+  hasAgreedTerms: boolean;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -151,7 +151,8 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     countdownRunning.value = false;
   }
 
-  return {
+  // reactive 包裹使 ref 解包（与 useLoginFlow 一致），模板里即值类型，消除 TS2367 误报
+  return reactive({
     type,
     username,
     password,
@@ -169,5 +170,5 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     submitCode,
     reset,
     hasAgreedTerms,
-  };
+  });
 }
