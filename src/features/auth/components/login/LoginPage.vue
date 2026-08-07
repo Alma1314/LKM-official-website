@@ -92,7 +92,9 @@
           <button type="submit" class="btn btn-primary w-full">继续</button>
           <p class="text-center text-[13px] text-text-muted">
             没有账号？
-            <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">立即注册</button>
+            <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">
+              立即注册
+            </button>
           </p>
         </form>
 

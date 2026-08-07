@@ -73,12 +73,19 @@ export function useAuthProvider() {
 
   // ── 登录方法分流 ──
 
-  async function login(method: LoginMethod, credentials: Record<string, string>, _account?: User): Promise<LoginResult> {
+  async function login(
+    method: LoginMethod,
+    credentials: Record<string, string>,
+    _account?: User
+  ): Promise<LoginResult> {
     state.flow = 'logging_in';
     state.loginMethod = method;
 
     if (method === 'password') {
-      const result = await store.loginPassword(credentials.username || credentials.account || '', credentials.password || '');
+      const result = await store.loginPassword(
+        credentials.username || credentials.account || '',
+        credentials.password || ''
+      );
       if (result.isErr()) return err(result.error);
       return applyLoginResult(result.value);
     }
@@ -160,13 +167,26 @@ export function useAuthProvider() {
     state,
     // async functions require cast since AuthContextType declares sync return types.
     // Consumers (LoginPage etc.) will be updated to use await in Tasks 8-11.
-    login: login as unknown as (method: LoginMethod, credentials: Record<string, string>, account?: User) => LoginResult,
+    login: login as unknown as (
+      method: LoginMethod,
+      credentials: Record<string, string>,
+      account?: User
+    ) => LoginResult,
     register: register as unknown as (type: 'local' | 'normal', data: RegisterData) => RegisterResult,
     logout,
     updateUser,
     // Store delegates — cast to match interface type
-    registerNormal: store.registerNormal as unknown as (username: string, password: string, email?: string, phone?: string) => Promise<RegisterResult>,
-    verifyNormalRegister: store.verifyNormalRegister as unknown as (txnId: string, code: string, type: 'email' | 'phone') => Promise<LoginResult>,
+    registerNormal: store.registerNormal as unknown as (
+      username: string,
+      password: string,
+      email?: string,
+      phone?: string
+    ) => Promise<RegisterResult>,
+    verifyNormalRegister: store.verifyNormalRegister as unknown as (
+      txnId: string,
+      code: string,
+      type: 'email' | 'phone'
+    ) => Promise<LoginResult>,
     requestLoginCode: store.requestLoginCode,
     loginCode: store.loginCode as unknown as (contact: string, code: string) => LoginResult,
     requestMagicLink: store.requestMagicLink,

@@ -1,5 +1,7 @@
 <template>
-  <div class="rounded-2xl bg-white dark:bg-[oklch(0.23_0.015_var(--hue,250))] shadow-2xl border border-surface-3 p-6 sm:p-8">
+  <div
+    class="rounded-2xl bg-white dark:bg-[oklch(0.23_0.015_var(--hue,250))] shadow-2xl border border-surface-3 p-6 sm:p-8"
+  >
     <!-- Setup flow: scan QR -->
     <template v-if="isSetupFlow && setupStep === 'scan'">
       <h2 class="text-2xl font-semibold text-center mb-4">绑定双因素认证</h2>

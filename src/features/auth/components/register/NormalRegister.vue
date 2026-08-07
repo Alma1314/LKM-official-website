@@ -2,7 +2,9 @@
   <!-- Verify step -->
   <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
     <p class="text-sm text-text-muted text-center">验证码已发送至 {{ useEmail ? email : phone }}</p>
-    <p v-if="displayCode" class="text-sm text-success text-center">开发模式验证码：<code class="font-bold">{{ displayCode }}</code></p>
+    <p v-if="displayCode" class="text-sm text-success text-center">
+      开发模式验证码：<code class="font-bold">{{ displayCode }}</code>
+    </p>
     <input
       id="reg-verify"
       type="text"
@@ -142,13 +144,13 @@ async function handleSubmit() {
   const store = useAuthStore();
   // 生成一个随机密码以满足后端要求
   const randomPassword = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
   const result = await store.registerNormal(
     username.value.trim(),
     randomPassword,
     useEmail.value ? email.value.trim() : undefined,
-    !useEmail.value ? phone.value.trim() : undefined,
+    !useEmail.value ? phone.value.trim() : undefined
   );
   if (result.isErr()) {
     submitError.value = result.error.message;
@@ -162,11 +164,7 @@ async function handleSubmit() {
 async function handleVerify() {
   submitError.value = '';
   const store = useAuthStore();
-  const result = await store.verifyNormalRegister(
-    _txnId,
-    verifyCode.value,
-    useEmail.value ? 'email' : 'phone',
-  );
+  const result = await store.verifyNormalRegister(_txnId, verifyCode.value, useEmail.value ? 'email' : 'phone');
   if (result.isErr()) {
     submitError.value = result.error.message;
     return;

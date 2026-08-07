@@ -64,8 +64,7 @@ export const authApi = {
     get<TokenData>(`/api/auth/login/magic-link/verify?token=${encodeURIComponent(token)}`),
 
   // ── 注册本地账户 ──
-  registerLocal: (username: string, password: string) =>
-    post<TokenData>('/api/auth/reg/local', { username, password }),
+  registerLocal: (username: string, password: string) => post<TokenData>('/api/auth/reg/local', { username, password }),
 
   // ── 注册普通账户（发送验证码） ──
   registerNormal: (username: string, password: string, email: string | null, phone: string | null) =>
@@ -81,16 +80,14 @@ export const authApi = {
   },
 
   // ── 手机号注册（发送验证码） ──
-  registerPhone: (phone: string) =>
-    post<{ phone: string; message: string }>('/api/auth/reg/phone', { phone }),
+  registerPhone: (phone: string) => post<{ phone: string; message: string }>('/api/auth/reg/phone', { phone }),
 
   // ── 手机号注册（验证） ──
   registerPhoneVerify: (phone: string, code: string) =>
     post<TokenData>(`/api/auth/reg/phone/verify?phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`),
 
   // ── 邮箱注册（发送验证码） ──
-  registerEmail: (email: string) =>
-    post<{ email: string; message: string }>('/api/auth/reg/email', { email }),
+  registerEmail: (email: string) => post<{ email: string; message: string }>('/api/auth/reg/email', { email }),
 
   // ── 邮箱注册（验证） ──
   registerEmailVerify: (email: string, code: string) =>

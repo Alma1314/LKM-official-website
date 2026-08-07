@@ -55,10 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── API: 密码登录 ──
-  async function loginPassword(
-    account: string,
-    password: string
-  ): Promise<Result<AuthSuccess, AppError>> {
+  async function loginPassword(account: string, password: string): Promise<Result<AuthSuccess, AppError>> {
     flow.value = 'logging_in';
     loginMethod.value = 'password';
 
@@ -84,7 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 登录后获取用户信息 ──
-  async function fetchMeAfterLogin(userId: number): Promise<Result<AuthSuccess, AppError>> {
+  async function fetchMeAfterLogin(_userId: number): Promise<Result<AuthSuccess, AppError>> {
     const meResult = await fetchMe();
     if (meResult.isOk()) {
       isLoggedIn.value = true;
@@ -96,10 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── API: 注册本地账户 ──
-  async function registerLocal(
-    username: string,
-    password: string
-  ): Promise<Result<AuthSuccess, AppError>> {
+  async function registerLocal(username: string, password: string): Promise<Result<AuthSuccess, AppError>> {
     flow.value = 'logging_in';
     const result = await authApi.registerLocal(username, password);
     if (result.isErr()) return err(result.error);
@@ -127,7 +121,11 @@ export const useAuthStore = defineStore('auth', () => {
     code: string,
     type: 'email' | 'phone'
   ): Promise<Result<AuthSuccess, AppError>> {
-    const result = await authApi.registerNormalVerify(txnId, type === 'email' ? code : null, type === 'phone' ? code : null);
+    const result = await authApi.registerNormalVerify(
+      txnId,
+      type === 'email' ? code : null,
+      type === 'phone' ? code : null
+    );
     if (result.isErr()) return err(result.error);
     if (result.value.access_token) {
       setTokens(result.value.access_token, result.value.refresh_token);
@@ -225,13 +223,16 @@ export const useAuthStore = defineStore('auth', () => {
   // ── 持久化到 localStorage ──
   function persistToStorage() {
     if (_token.value) {
-      localStorage.setItem('lkm-auth-store', JSON.stringify({
-        user: user.value,
-        isLoggedIn: true,
-        flow: flow.value,
-        _token: _token.value,
-        _refreshToken: _refreshToken.value,
-      }));
+      localStorage.setItem(
+        'lkm-auth-store',
+        JSON.stringify({
+          user: user.value,
+          isLoggedIn: true,
+          flow: flow.value,
+          _token: _token.value,
+          _refreshToken: _refreshToken.value,
+        })
+      );
     } else {
       localStorage.removeItem('lkm-auth-store');
     }
@@ -241,13 +242,29 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     // State
-    user, isLoggedIn, flow, tempSession, loginMethod,
+    user,
+    isLoggedIn,
+    flow,
+    tempSession,
+    loginMethod,
     // Getters
-    accountLevel, username,
+    accountLevel,
+    username,
     // Actions
-    fetchMe, loginPassword, registerLocal, registerNormal, verifyNormalRegister,
-    requestLoginCode, loginCode, requestMagicLink, verifyMagicLink,
-    logout, updateUser, resetState, restoreFromStorage, persistToStorage,
+    fetchMe,
+    loginPassword,
+    registerLocal,
+    registerNormal,
+    verifyNormalRegister,
+    requestLoginCode,
+    loginCode,
+    requestMagicLink,
+    verifyMagicLink,
+    logout,
+    updateUser,
+    resetState,
+    restoreFromStorage,
+    persistToStorage,
   };
 });
 

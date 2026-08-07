@@ -16,11 +16,7 @@
         </span>
       </div>
       <div class="flex gap-1">
-        <button
-          type="button"
-          class="btn btn-ghost btn-xs"
-          disabled
-        >
+        <button type="button" class="btn btn-ghost btn-xs" disabled>
           {{ method.bound ? '解绑' : '绑定' }}
         </button>
       </div>

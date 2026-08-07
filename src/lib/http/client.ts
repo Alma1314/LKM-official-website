@@ -69,9 +69,8 @@ function getInstance(): AxiosInstance {
       if (!token) return config;
       // only attach to authenticated endpoints
       const url = config.url || '';
-      const needsAuth = (url.startsWith('/api/auth/') &&
-        !url.startsWith('/api/auth/login') &&
-        !url.startsWith('/api/auth/reg')) ||
+      const needsAuth =
+        (url.startsWith('/api/auth/') && !url.startsWith('/api/auth/login') && !url.startsWith('/api/auth/reg')) ||
         url.startsWith('/graphql');
       if (needsAuth && config.headers) {
         (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
@@ -101,17 +100,29 @@ function getInstance(): AxiosInstance {
 
         const url = error.config?.url || '';
 
-        if (!error.config || (error.config as any)._retry) {
+        if (!error.config || (error.config as Record<string, unknown>)._retry) {
           // If _retry already set and still 401, token/refresh both invalid — clear and reject silently
-          if ((error.config as any)._retry && !url.startsWith('/api/auth/login') && !url.startsWith('/api/auth/reg')) {
-            try { localStorage.removeItem('lkm-auth-store'); } catch { /* ignore */ }
+          if (
+            (error.config as Record<string, unknown>)._retry &&
+            !url.startsWith('/api/auth/login') &&
+            !url.startsWith('/api/auth/reg')
+          ) {
+            try {
+              localStorage.removeItem('lkm-auth-store');
+            } catch {
+              /* ignore */
+            }
           }
           return Promise.reject(error);
         }
 
         const isRefreshRequest = url === '/api/auth/refresh';
         if (isRefreshRequest) {
-          try { localStorage.removeItem('lkm-auth-store'); } catch { /* ignore */ }
+          try {
+            localStorage.removeItem('lkm-auth-store');
+          } catch {
+            /* ignore */
+          }
           return Promise.reject(error);
         }
 
@@ -127,7 +138,7 @@ function getInstance(): AxiosInstance {
           });
         }
 
-        (error.config as any)._retry = true;
+        (error.config as Record<string, unknown>)._retry = true;
         isRefreshing = true;
 
         try {
@@ -136,7 +147,9 @@ function getInstance(): AxiosInstance {
             const data = JSON.parse(saved);
             const refreshToken = data._refreshToken;
             if (refreshToken) {
-              const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, { _retry: true } as any);
+              const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, {
+                _retry: true,
+              } as Record<string, unknown>);
               const apiResp = res.data as { data?: { access_token: string; refresh_token: string } };
               if (apiResp?.data?.access_token) {
                 const store = JSON.parse(localStorage.getItem('lkm-auth-store') || '{}');
@@ -144,7 +157,8 @@ function getInstance(): AxiosInstance {
                 store._refreshToken = apiResp.data.refresh_token;
                 localStorage.setItem('lkm-auth-store', JSON.stringify(store));
 
-                (error.config!.headers as Record<string, string>)['Authorization'] = `Bearer ${apiResp.data.access_token}`;
+                (error.config!.headers as Record<string, string>)['Authorization'] =
+                  `Bearer ${apiResp.data.access_token}`;
                 processQueue(null, apiResp.data.access_token);
                 isRefreshing = false;
                 return _instance!.request(error.config!);
@@ -156,7 +170,11 @@ function getInstance(): AxiosInstance {
         }
 
         // Refresh failed — clear storage and reject
-        try { localStorage.removeItem('lkm-auth-store'); } catch { /* ignore */ }
+        try {
+          localStorage.removeItem('lkm-auth-store');
+        } catch {
+          /* ignore */
+        }
         processQueue(error, null);
         isRefreshing = false;
         return Promise.reject(error);
