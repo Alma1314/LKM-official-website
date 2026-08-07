@@ -70,7 +70,7 @@ def root():
 app.include_router(health_router)
 
 # New LKM-service-aligned modules (prefix already set in each router)
-app.include_router(auth_router)        # /auth/*
+app.include_router(auth_router, prefix="/api/auth")  # /api/auth/*
 app.include_router(boards_router)      # /boards/*
 app.include_router(columns_router)     # /columns/*
 app.include_router(blog_router)        # /blog/*

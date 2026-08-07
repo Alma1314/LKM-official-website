@@ -42,7 +42,7 @@ from app.modules.auth.security import (
     verify_password,
 )
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["auth"])
 
 
 # ── Me / Profile ──────────────────────────────────────────────
@@ -148,10 +148,12 @@ def register_normal(
         check_rate_limit(f"reg:email:{info.email}")
         code, _ = create_email_verification(info.email, "register")
         result["email_sent"] = True
+        result["email_code"] = code  # DEV only
     if info.phone:
         check_rate_limit(f"reg:phone:{info.phone}")
         code, _ = create_phone_verification(info.phone, "register")
         result["phone_sent"] = True
+        result["phone_code"] = code  # DEV only
     return result
 
 

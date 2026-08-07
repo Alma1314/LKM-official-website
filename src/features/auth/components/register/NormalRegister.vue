@@ -1,7 +1,8 @@
 <template>
   <!-- Verify step -->
   <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
-    <p class="text-sm text-text-muted text-center">验证码已发送至 {{ useEmail ? email : phone }}（模拟码：000000）</p>
+    <p class="text-sm text-text-muted text-center">验证码已发送至 {{ useEmail ? email : phone }}</p>
+    <p v-if="displayCode" class="text-sm text-success text-center">开发模式验证码：<code class="font-bold">{{ displayCode }}</code></p>
     <input
       id="reg-verify"
       type="text"
@@ -107,10 +108,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { RegisterData } from '~/types/auth';
+import { useAuthStore } from '~/stores/auth';
 
 const emit = defineEmits<{
-  (e: 'register', type: 'normal', data: RegisterData): void;
   (e: 'complete', withGuide: boolean): void;
 }>();
 
@@ -122,6 +122,8 @@ const useEmail = ref(true);
 const errors = ref<Record<string, string>>({});
 const submitError = ref('');
 const verifyCode = ref('');
+const displayCode = ref('');
+let _txnId = '';
 
 function validate(): boolean {
   const errs: Record<string, string> = {};
@@ -134,22 +136,41 @@ function validate(): boolean {
   return Object.keys(errs).length === 0;
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   submitError.value = '';
   if (!validate()) return;
+  const store = useAuthStore();
+  // 生成一个随机密码以满足后端要求
+  const randomPassword = Array.from(crypto.getRandomValues(new Uint8Array(16)))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+  const result = await store.registerNormal(
+    username.value.trim(),
+    randomPassword,
+    useEmail.value ? email.value.trim() : undefined,
+    !useEmail.value ? phone.value.trim() : undefined,
+  );
+  if (result.isErr()) {
+    submitError.value = result.error.message;
+    return;
+  }
+  _txnId = result.value.txn_id;
+  displayCode.value = result.value.email_code || result.value.phone_code || '';
   step.value = 'verify';
 }
 
-function handleVerify() {
-  if (verifyCode.value !== '000000') {
-    submitError.value = '验证码错误（模拟码：000000）';
+async function handleVerify() {
+  submitError.value = '';
+  const store = useAuthStore();
+  const result = await store.verifyNormalRegister(
+    _txnId,
+    verifyCode.value,
+    useEmail.value ? 'email' : 'phone',
+  );
+  if (result.isErr()) {
+    submitError.value = result.error.message;
     return;
   }
-  emit('register', 'normal', {
-    username: username.value.trim(),
-    email: useEmail.value ? email.value.trim() : undefined,
-    phone: !useEmail.value ? phone.value.trim() : undefined,
-  });
   step.value = 'done';
 }
 </script>

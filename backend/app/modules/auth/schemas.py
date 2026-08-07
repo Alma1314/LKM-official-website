@@ -74,6 +74,8 @@ class RegNormalResponse(BaseModel):
     txn_id: str
     email_sent: bool = False
     phone_sent: bool = False
+    email_code: str | None = None  # DEV only
+    phone_code: str | None = None  # DEV only
 
 
 class RegByPhoneResponse(BaseModel):

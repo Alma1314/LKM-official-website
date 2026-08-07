@@ -1,4 +1,5 @@
-import { reactive, provide, inject, watch } from 'vue';
+import { reactive, watch, provide, inject } from 'vue';
+import { useAuthStore } from '~/stores/auth';
 import type {
   AuthState,
   AuthContextType,
@@ -6,10 +7,10 @@ import type {
   LoginMethod,
   RegisterData,
   RegisterResult,
-  DemoUser,
+  User,
 } from '~/types/auth';
-import { findAccount, checkPassword, VALIDATE_CODE } from '../data/demo-accounts';
-import { AppError, ErrorCode, ok, err } from '~/lib/errors';
+import { AppError, ErrorCode } from '~/lib/errors';
+import { ok, err } from '~/lib/errors/result';
 
 const AUTH_KEY = Symbol('auth');
 
@@ -19,222 +20,159 @@ const initialState: AuthState = {
   flow: 'idle',
   tempSession: null,
   loginMethod: null,
-  passwordAttempts: 0,
-  lockedUntil: null,
-  trustedUntil: null,
 };
 
 export function useAuthProvider() {
+  const store = useAuthStore();
   const state = reactive<AuthState>({ ...initialState });
 
-  // 从 localStorage 恢复状态
-  try {
-    const saved = localStorage.getItem('lkm-auth-state');
-    if (saved) {
-      const parsed = JSON.parse(saved) as AuthState;
-      if (parsed.user && parsed.isLoggedIn) {
-        Object.assign(state, parsed);
-      }
-    }
-  } catch {
-    localStorage.removeItem('lkm-auth-state');
+  // 从 Pinia store 恢复持久化状态
+  store.restoreFromStorage();
+  if (store.isLoggedIn && store.user) {
+    state.isLoggedIn = true;
+    state.user = { ...store.user, account_level: store.user.account_level as 'local' | 'normal' | 'admin' };
+    state.flow = store.flow as AuthState['flow'];
   }
 
-  // 状态变更时同步到 localStorage
+  // 双向同步：reactive state -> Pinia store
   watch(
     () => ({ ...state }),
     (val) => {
       if (val.isLoggedIn && val.user) {
-        localStorage.setItem('lkm-auth-state', JSON.stringify(val));
+        store.user = { ...store.user, ...val.user };
+        store.isLoggedIn = true;
+        store.flow = val.flow as 'idle' | 'logging_in' | '2fa_required' | '2fa_setup_required' | 'logged_in';
+        store.persistToStorage();
       } else {
-        localStorage.removeItem('lkm-auth-state');
+        store.resetState();
+        store.persistToStorage();
       }
     },
     { deep: true }
   );
 
-  function login(method: LoginMethod, credentials: Record<string, string>, account?: DemoUser): LoginResult {
+  // ── 登录结果处理 ──
+
+  function applyLoginResult(success: { requires2FA?: boolean; requires2FASetup?: boolean }): LoginResult {
+    if (success.requires2FA) {
+      state.flow = '2fa_required';
+      state.tempSession = { userId: store.user?.id ?? 0, method: state.loginMethod! };
+      return ok({ requires2FA: true });
+    }
+    if (success.requires2FASetup) {
+      state.flow = '2fa_setup_required';
+      state.tempSession = { userId: store.user?.id ?? 0, method: state.loginMethod! };
+      return ok({ requires2FASetup: true });
+    }
+    state.isLoggedIn = true;
+    state.user = store.user as User;
+    state.flow = 'logged_in';
+    state.tempSession = null;
+    return ok({});
+  }
+
+  // ── 登录方法分流 ──
+
+  async function login(method: LoginMethod, credentials: Record<string, string>, _account?: User): Promise<LoginResult> {
     state.flow = 'logging_in';
     state.loginMethod = method;
 
-    // Check lock
-    if (state.lockedUntil && Date.now() < state.lockedUntil) {
-      const remaining = Math.ceil((state.lockedUntil - Date.now()) / 60000);
-      state.flow = 'idle';
-      return err(new AppError(ErrorCode.AUTH_ERROR, `账号已锁定，请 ${remaining} 分钟后重试`));
-    }
-
     if (method === 'password') {
-      const acc = findAccount(credentials.username || '');
-      if (!acc) {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '账号或密码错误'));
-      }
-      if (!checkPassword(acc, credentials.password || '')) {
-        state.passwordAttempts += 1;
-        const attempts = state.passwordAttempts;
-        const remaining = 5 - attempts;
-        if (remaining <= 0) {
-          state.lockedUntil = Date.now() + 15 * 60 * 1000;
-          state.flow = 'idle';
-          return err(new AppError(ErrorCode.AUTH_ERROR, '密码错误次数过多，账号已锁定 15 分钟'));
-        }
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, `账号或密码错误，剩余尝试次数：${remaining}`));
-      }
-      if (acc.level === 'local') {
-        state.isLoggedIn = true;
-        state.user = acc;
-        state.flow = 'logged_in';
-        state.tempSession = null;
-        state.passwordAttempts = 0;
-        state.lockedUntil = null;
-        return ok({});
-      }
-      if (acc.has2FA) {
-        state.flow = '2fa_required';
-        state.tempSession = { userId: acc.id, method };
-        return ok({ requires2FA: true });
-      }
-      if (acc.level === 'admin' && !acc.has2FA) {
-        state.flow = '2fa_setup_required';
-        state.tempSession = { userId: acc.id, method };
-        return ok({ requires2FASetup: true });
-      }
-      state.isLoggedIn = true;
-      state.user = acc;
-      state.flow = 'logged_in';
-      state.tempSession = null;
-      state.passwordAttempts = 0;
-      state.lockedUntil = null;
-      return ok({});
+      const result = await store.loginPassword(credentials.username || credentials.account || '', credentials.password || '');
+      if (result.isErr()) return err(result.error);
+      return applyLoginResult(result.value);
     }
 
     if (method === 'sms') {
-      if (!account || account.level === 'local') {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持验证码登录'));
-      }
-      if (credentials.code !== VALIDATE_CODE) {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '验证码错误，请重新输入'));
-      }
-      if (account.has2FA) {
-        state.flow = '2fa_required';
-        state.tempSession = { userId: account.id, method };
-        return ok({ requires2FA: true });
-      }
-      if (account.level === 'admin' && !account.has2FA) {
-        state.flow = '2fa_setup_required';
-        state.tempSession = { userId: account.id, method };
-        return ok({ requires2FASetup: true });
-      }
-      state.isLoggedIn = true;
-      state.user = account;
-      state.flow = 'logged_in';
-      state.tempSession = null;
-      state.passwordAttempts = 0;
-      state.lockedUntil = null;
-      return ok({});
+      const contact = credentials.phoneOrEmail || credentials.contact || '';
+      const result = await store.loginCode(contact, credentials.code || '');
+      if (result.isErr()) return err(result.error);
+      return applyLoginResult(result.value);
     }
 
     if (method === 'github') {
-      if (!account) {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '请先识别账户'));
-      }
-      if (account.has2FA) {
-        state.flow = '2fa_required';
-        state.tempSession = { userId: account.id, method };
-        return ok({ requires2FA: true });
-      }
-      state.isLoggedIn = true;
-      state.user = account;
-      state.flow = 'logged_in';
-      state.tempSession = null;
-      state.passwordAttempts = 0;
-      state.lockedUntil = null;
-      return ok({});
+      state.flow = 'idle';
+      return err(new AppError(ErrorCode.AUTH_ERROR, 'GitHub OAuth 登录尚未接入后端，请使用密码或验证码登录'));
     }
 
     if (method === 'magic-link') {
-      if (!account || account.level === 'local') {
+      const token = credentials.token || '';
+      if (!token) {
+        // 请求发送 magic link
+        const reqResult = await store.requestMagicLink(credentials.email || '');
+        if (reqResult.isErr()) {
+          state.flow = 'idle';
+          return err(reqResult.error);
+        }
         state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持 Magic Link 登录'));
+        return ok({});
       }
-      if (account.level === 'admin') {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '管理员账户不支持 Magic Link 登录，请使用其他方式'));
-      }
-      state.flow = '2fa_required';
-      state.tempSession = { userId: account.id, method };
-      return ok({ requires2FA: true });
+      const result = await store.verifyMagicLink(token);
+      if (result.isErr()) return err(result.error);
+      return applyLoginResult(result.value);
     }
 
     if (method === 'passkey') {
-      if (!account || account.level === 'local') {
-        state.flow = 'idle';
-        return err(new AppError(ErrorCode.AUTH_ERROR, '本地账户不支持 Passkey 登录'));
-      }
-      if (account.has2FA) {
-        state.flow = '2fa_required';
-        state.tempSession = { userId: account.id, method };
-        return ok({ requires2FA: true });
-      }
-      if (account.level === 'admin' && !account.has2FA) {
-        state.flow = '2fa_setup_required';
-        state.tempSession = { userId: account.id, method };
-        return ok({ requires2FASetup: true });
-      }
-      state.isLoggedIn = true;
-      state.user = account;
-      state.flow = 'logged_in';
-      state.tempSession = null;
-      state.passwordAttempts = 0;
-      state.lockedUntil = null;
-      return ok({});
+      state.flow = 'idle';
+      return err(new AppError(ErrorCode.AUTH_ERROR, 'Passkey 登录尚未接入后端，请使用其他方式'));
     }
 
     state.flow = 'idle';
     return err(new AppError(ErrorCode.AUTH_ERROR, '不支持的登录方式'));
   }
 
-  function register(type: 'local' | 'normal', data: RegisterData): RegisterResult {
-    const existing = findAccount(data.username);
-    if (existing) {
-      return err(new AppError(ErrorCode.VALIDATION_ERROR, '用户名已存在'));
+  // ── 注册 ──
+
+  async function register(type: 'local' | 'normal', data: RegisterData): Promise<RegisterResult> {
+    if (type === 'local') {
+      const result = await store.registerLocal(data.username, data.password || '');
+      if (result.isErr()) return err(result.error);
+      state.isLoggedIn = true;
+      state.user = store.user as User;
+      state.flow = 'logged_in';
+      state.tempSession = null;
+      return ok(undefined);
     }
-    const newUser: DemoUser = {
-      id: `user-${Date.now()}`,
-      username: data.username,
-      password: data.password || '',
-      level: type,
-      email: data.email || null,
-      phone: data.phone || null,
-      has2FA: false,
-      hasPasskey: false,
-      hasGithub: false,
-      bindings: [],
-    };
-    if (data.email) newUser.bindings.push('email');
-    if (data.phone) newUser.bindings.push('phone');
-    state.isLoggedIn = true;
-    state.user = newUser;
-    state.flow = 'logged_in';
-    state.tempSession = null;
-    return ok(undefined);
+
+    if (type === 'normal') {
+      const result = await store.registerNormal(data.username, data.password || '', data.email, data.phone);
+      if (result.isErr()) return err(result.error);
+      // 正常返回 txn_id，由 NormalRegister 组件处理后续 verify 步骤
+      return ok(undefined);
+    }
+    return err(new AppError(ErrorCode.VALIDATION_ERROR, '不支持的注册类型'));
   }
 
-  function logout() {
-    const trusted = state.trustedUntil;
-    Object.assign(state, { ...initialState, trustedUntil: trusted });
+  // ── 登出 ──
+
+  async function logout() {
+    await store.logout();
+    Object.assign(state, { ...initialState });
   }
 
-  function updateUser(user: DemoUser) {
+  function updateUser(user: User) {
     state.user = user;
+    store.updateUser(user);
+    store.persistToStorage();
   }
 
-  const ctx: AuthContextType = { state, login, register, logout, updateUser };
+  const ctx: AuthContextType = {
+    state,
+    // async functions require cast since AuthContextType declares sync return types.
+    // Consumers (LoginPage etc.) will be updated to use await in Tasks 8-11.
+    login: login as unknown as (method: LoginMethod, credentials: Record<string, string>, account?: User) => LoginResult,
+    register: register as unknown as (type: 'local' | 'normal', data: RegisterData) => RegisterResult,
+    logout,
+    updateUser,
+    // Store delegates — cast to match interface type
+    registerNormal: store.registerNormal as unknown as (username: string, password: string, email?: string, phone?: string) => Promise<RegisterResult>,
+    verifyNormalRegister: store.verifyNormalRegister as unknown as (txnId: string, code: string, type: 'email' | 'phone') => Promise<LoginResult>,
+    requestLoginCode: store.requestLoginCode,
+    loginCode: store.loginCode as unknown as (contact: string, code: string) => LoginResult,
+    requestMagicLink: store.requestMagicLink,
+    verifyMagicLink: store.verifyMagicLink as unknown as (token: string) => LoginResult,
+  };
+
   provide(AUTH_KEY, ctx);
 
   return ctx;

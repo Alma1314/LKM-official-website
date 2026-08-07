@@ -31,12 +31,12 @@
             </div>
           </div>
 
-          <div v-if="state.user?.level === 'local'" class="alert alert-info text-sm">
+          <div v-if="state.user?.account_level === 'local'" class="alert alert-info text-sm">
             <span>当前为本地账户，绑定邮箱或手机号可自动升级为普通账户，解锁全部功能。</span>
           </div>
 
           <button
-            v-if="state.user?.level === 'normal'"
+            v-if="state.user?.account_level === 'normal'"
             type="button"
             class="btn btn-ghost btn-sm"
             @click="handleUpgrade"
@@ -77,22 +77,22 @@ import ProtectedRoute from '~/features/auth/components/settings/ProtectedRoute.v
 import BindMethods from './BindMethods.vue';
 import TwoFactorSetup from './TwoFactorSetup.vue';
 import PasskeySetup from './PasskeySetup.vue';
-import type { DemoUser } from '~/types/auth';
+import type { User } from '~/types/auth';
 
 const { state, updateUser, logout } = useAuthProvider();
 
 const message = ref('');
 
 const levelBadgeClass = computed(() => {
-  const level = state.user?.level;
+  const level = state.user?.account_level;
   return level === 'admin' ? 'badge-error' : level === 'normal' ? 'badge-primary' : 'badge-ghost';
 });
 const levelLabel = computed(() => {
-  const level = state.user?.level;
+  const level = state.user?.account_level;
   return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
 });
 
-function handleUpdate(user: DemoUser) {
+function handleUpdate(user: User) {
   updateUser(user);
   message.value = '设置已更新';
   setTimeout(() => {
@@ -101,13 +101,15 @@ function handleUpdate(user: DemoUser) {
 }
 
 function handleUpgrade() {
-  if (state.user?.has2FA) {
-    handleUpdate({ ...state.user!, level: 'admin' });
+  if (state.user?.account_level === 'admin') {
+    message.value = '当前已是管理员账户';
+  } else if (state.user?.account_level === 'local') {
+    message.value = '请先完成邮箱或手机号绑定，升级为普通账户后再申请管理员';
   } else {
-    message.value = '请先开启 2FA 后再升级为管理员';
-    setTimeout(() => {
-      message.value = '';
-    }, 3000);
+    handleUpdate({ ...state.user!, account_level: 'admin' });
   }
+  setTimeout(() => {
+    message.value = '';
+  }, 3000);
 }
 </script>

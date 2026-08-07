@@ -45,14 +45,14 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import type { LoginMethod, DemoUser } from '~/types/auth';
+import type { LoginMethod } from '~/types/auth';
 
 const emit = defineEmits<{
   (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
 }>();
 
 const props = defineProps<{
-  identifiedAccount: DemoUser;
+  identifiedAccount: { email: string };
 }>();
 
 type Stage = 'input' | 'sent' | 'expired' | 'used';

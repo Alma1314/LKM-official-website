@@ -35,7 +35,7 @@ const { currentUser } = useAuthStore();
           </div>
           <div class="text-sm">
             <div class="font-medium text-deep-text">{{ currentUser.username }}</div>
-            <div class="text-xs text-text-muted">{{ currentUser.level }}</div>
+            <div class="text-xs text-text-muted">{{ currentUser.account_level }}</div>
           </div>
         </div>
         <a

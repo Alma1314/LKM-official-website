@@ -37,6 +37,7 @@ lkm-official-website/
 │   ├── lib/              # 共享库（api/config/constants/errors/http/i18n/markdown-plugins/utils）
 │   ├── assets/           # 静态资源（astro:assets 处理）
 │   ├── styles/           # 全局 CSS（tailwind.css + markdown 样式）
+│   ├── stores/           # Pinia 状态仓库（auth.ts 等）
 │   ├── types/            # TypeScript 类型声明
 │   ├── data/             # 配置文件（config.yaml 等）
 │   ├── content/          # 内容文件
@@ -67,8 +68,8 @@ Astro 从 `static` 切换到 `server`：
 ### 统一数据访问层
 
 ```
+src/lib/http/client.ts # Axios 封装（SSR/CSR 自动切换，返回 Result<T>），含 JWT 拦截器
 src/lib/api/
-├── client.ts          # Axios 封装（SSR/CSR 自动切换，返回 Result<T>）
 ├── index.ts           # 统一导出
 ├── graphql/           # GraphQL 客户端（urql）
 │   ├── client.ts      # urql Client 实例
@@ -81,6 +82,17 @@ src/lib/api/
 ```
 
 所有组件通过 `~/lib/api` 统一访问数据，不直接写 fetch 调用。
+
+### 认证系统
+
+认证为 **真实 FastAPI JWT 后端**，已移除旧的 mock demo-accounts：
+
+- **后端认证端点**：`/api/auth/*`（不再是 `/auth/*`）
+- **Pinia Store**：`src/stores/auth.ts`（`useAuthStore`）— 用户状态、token 管理、localStorage 持久化（key `lkm-auth-store`）
+- **Composable 桥接层**：`src/features/auth/composables/useAuth.ts` — `useAuthProvider()`/`useAuth()` 把组件调用桥接到 Pinia store
+- **HTTP 客户端**：`src/lib/http/client.ts` 的 axios 实例含 JWT request 拦截器（读 localStorage 附加 `Authorization: Bearer`）+ 401 自动刷新队列（并发安全，走 `POST /api/auth/refresh`）
+- **GraphQL 认证**：`src/lib/api/graphql/exchanges/auth.ts`（urql `authExchange`）为每个 operation 自动附加 Bearer 头
+- **类型**：`src/types/auth.d.ts` 定义真实 `User`/`AuthState`/`LoginMethod` 等，**不再有 `DemoUser`**
 
 ### 页面分级
 

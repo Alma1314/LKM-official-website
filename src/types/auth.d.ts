@@ -1,61 +1,55 @@
-export type AccountLevel = 'local' | 'normal' | 'admin';
+import type { AppError } from '~/lib/errors';
+import type { Result } from '~/lib/errors/result';
 
-export type LoginMethod = 'password' | 'sms' | 'github' | 'magic-link' | 'passkey';
+// ── 真实用户类型（对齐后端 UserInfo + profile） ──
 
-export type AuthFlow = 'idle' | 'logging_in' | '2fa_required' | '2fa_setup_required' | 'logged_in';
-
-export interface DemoUser {
-  id: string;
+export interface User {
+  id: number;
   username: string;
-  password: string;
-  level: AccountLevel;
-  email: string | null;
-  phone: string | null;
-  has2FA: boolean;
-  hasPasskey: boolean;
-  hasGithub: boolean;
-  bindings: string[];
+  account_level: 'local' | 'normal' | 'admin';
+  email?: string | null;
+  phone?: string | null;
+  nickname?: string | null;
+  avatar?: string | null;
+  role?: string;
 }
 
+export type AccountLevel = User['account_level'];
+export type LoginMethod = 'password' | 'sms' | 'github' | 'magic-link' | 'passkey';
+export type AuthFlow = 'idle' | 'logging_in' | '2fa_required' | '2fa_setup_required' | 'logged_in';
+
 export interface TempSession {
-  userId: string;
+  userId: number;
   method: LoginMethod;
-  /** 密码找回时使用 */
   isRecovery?: boolean;
 }
 
 export interface AuthState {
   isLoggedIn: boolean;
-  user: DemoUser | null;
+  user: User | null;
   flow: AuthFlow;
   tempSession: TempSession | null;
   loginMethod: LoginMethod | null;
-  /** 密码错误次数 */
-  passwordAttempts: number;
-  /** 账号锁定截止时间戳 */
-  lockedUntil: number | null;
-  /** 2FA 信任设备到期时间戳 */
-  trustedUntil: number | null;
 }
-
-export interface AuthContextType {
-  state: AuthState;
-  login: (method: LoginMethod, credentials: Record<string, string>, account?: DemoUser) => LoginResult;
-  register: (type: 'local' | 'normal', data: RegisterData) => RegisterResult;
-  logout: () => void;
-  updateUser: (user: DemoUser) => void;
-}
-
-import type { AppError } from '~/lib/errors';
 
 export interface AuthSuccess {
   requires2FA?: boolean;
   requires2FASetup?: boolean;
 }
 
-export type LoginResult = import('~/core/errors/result').Result<AuthSuccess, AppError>;
-
-export type RegisterResult = import('~/core/errors/result').Result<void, AppError>;
+export interface AuthContextType {
+  state: import('vue').Reactive<AuthState>;
+  login: (method: LoginMethod, credentials: Record<string, string>, account?: User) => LoginResult;
+  register: (type: 'local' | 'normal', data: RegisterData) => RegisterResult;
+  registerNormal?: (username: string, password: string, email?: string, phone?: string) => Promise<RegisterResult>;
+  verifyNormalRegister?: (txnId: string, code: string, type: 'email' | 'phone') => Promise<LoginResult>;
+  requestLoginCode?: (contact: string) => Promise<Result<import('~/lib/api/modules/auth').MessageResponse, AppError>>;
+  loginCode?: (contact: string, code: string) => LoginResult;
+  requestMagicLink?: (email: string) => Promise<Result<import('~/lib/api/modules/auth').MessageResponse, AppError>>;
+  verifyMagicLink?: (token: string) => LoginResult;
+  logout: () => void;
+  updateUser: (user: User) => void;
+}
 
 export interface RegisterData {
   username: string;
@@ -63,3 +57,6 @@ export interface RegisterData {
   email?: string;
   phone?: string;
 }
+
+export type LoginResult = Result<AuthSuccess, AppError>;
+export type RegisterResult = Result<void, AppError>;

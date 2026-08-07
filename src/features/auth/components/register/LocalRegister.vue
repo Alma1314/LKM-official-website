@@ -77,11 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
-import type { RegisterData } from '~/types/auth';
-
-const emit = defineEmits<{
-  (e: 'register', type: 'local', data: RegisterData): void;
-}>();
+import { useAuthStore } from '~/stores/auth';
 
 const username = ref('');
 const password = ref('');
@@ -101,10 +97,15 @@ function validate(): boolean {
   return Object.keys(errs).length === 0;
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   submitError.value = '';
   if (!validate()) return;
-  emit('register', 'local', { username: username.value.trim(), password: password.value });
+  const store = useAuthStore();
+  const result = await store.registerLocal(username.value.trim(), password.value);
+  if (result.isErr()) {
+    submitError.value = result.error.message;
+    return;
+  }
   submitted.value = true;
 }
 </script>

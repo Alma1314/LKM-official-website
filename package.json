@@ -96,6 +96,7 @@
     "neverthrow": "^8.2.0",
     "overlayscrollbars": "^2.16.0",
     "photoswipe": "^5.4.4",
+    "pinia": "^4.0.2",
     "qrcode": "^1.5.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

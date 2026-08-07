@@ -1,10 +1,15 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
-import RegisterPage from '~/features/auth/components/register/RegisterPage.vue';
 
 const metadata = { title: '注册' };
 ---
 
 <PageLayout metadata={metadata}>
-  <div style="min-height: 400px"><RegisterPage client:only="vue" /></div>
+  <div></div>
 </PageLayout>
+
+<script is:inline>
+  window.addEventListener('astro:page-load', () => {
+    window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { view: 'register' } }));
+  });
+</script>

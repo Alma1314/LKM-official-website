@@ -59,7 +59,9 @@ export default defineConfig({
       plugins: [pluginLineNumbers()],
     }),
     mdx(),
-    vue(),
+    vue({
+      appEntrypoint: '/src/vue-entry',
+    }),
     react({
       include: ['**/*.tsx', '**/*.jsx'],
     }),

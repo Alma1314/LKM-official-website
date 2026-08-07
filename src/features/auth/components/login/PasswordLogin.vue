@@ -16,7 +16,7 @@
       />
       <span v-if="passwordError" class="label-text-alt text-error">{{ passwordError }}</span>
     </div>
-    <div v-if="identifiedAccount.level !== 'local'" class="text-right">
+    <div v-if="identifiedAccount.account_level !== 'local'" class="text-right">
       <a :href="getAuthPath('account/recovery')" class="text-xs text-primary hover:underline">忘记密码？</a>
     </div>
     <button type="submit" class="btn btn-primary w-full" :disabled="loading">
@@ -29,14 +29,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
-import type { LoginMethod, DemoUser } from '~/types/auth';
+import type { LoginMethod } from '~/types/auth';
 
 const emit = defineEmits<{
   (e: 'login', method: LoginMethod, credentials: Record<string, string>): void;
 }>();
 
 const props = defineProps<{
-  identifiedAccount: DemoUser;
+  identifiedAccount: { username: string; account_level?: string };
 }>();
 
 const password = ref('');
