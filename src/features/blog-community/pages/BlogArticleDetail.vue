@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useBlogPost } from '../composables/useBlogPost';
 import { useBlogComments } from '../composables/useBlogComments';
 import { useBlogStar } from '../composables/useBlogStar';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import BlogCommentList from './BlogCommentList.vue';
 import BlogCommentForm from './BlogCommentForm.vue';
 import BlogStarButton from './BlogStarButton.vue';

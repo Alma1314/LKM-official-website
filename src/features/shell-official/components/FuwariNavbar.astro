@@ -259,6 +259,7 @@ let links: NavBarLink[] =
       define:vars={{ scriptUrl: url('/pagefind/pagefind.js') }}
       set:html={`async function loadPagefind() {
     try {
+        // eslint-disable-next-line no-restricted-globals
         var response = await fetch('${url('/pagefind/pagefind.js')}', { method: 'HEAD' });
         if (!response.ok) {
             throw new Error('Pagefind script not found: ' + response.status);

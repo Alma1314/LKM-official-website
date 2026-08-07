@@ -1,7 +1,7 @@
 import { ref, shallowRef, Fragment, type Component } from 'vue';
 import { evaluate } from '@mdx-js/mdx';
 import * as runtime from '@mdx-js/vue';
-import { blogApi } from '../api/blogApi';
+import { blogApi } from '~/lib/api';
 import type { GitFileContent } from '../types/blog';
 
 export function useBlogPost() {

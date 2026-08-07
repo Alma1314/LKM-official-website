@@ -106,4 +106,8 @@ export const authApi = {
   // ── 编辑用户资料 ──
   editProfile: (userId: number, info: { nickname?: string; avatar?: string }) =>
     put<ProfileInfo>(`/api/auth/${userId}/profile`, info),
+
+  // ── 根据用户名获取用户信息 ──
+  getUserByUsername: (username: string) =>
+    get<UserInfo>(`/api/auth/user/by-username/${encodeURIComponent(username)}`),
 };

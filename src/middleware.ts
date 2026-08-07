@@ -31,6 +31,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // 构建转发请求
     const body = ['GET', 'HEAD'].includes(context.request.method) ? undefined : await context.request.text();
 
+    // eslint-disable-next-line no-restricted-globals
     const response = await fetch(targetUrl.toString(), {
       method: context.request.method,
       headers,

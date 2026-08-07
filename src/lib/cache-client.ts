@@ -57,6 +57,7 @@ export async function fetchWithCache<T>(
 
   const doFetch = async (): Promise<{ data: T | null; error: string | null }> => {
     try {
+      // eslint-disable-next-line no-restricted-globals
       const res = await fetch(url);
       if (!res.ok) return { data: null, error: `HTTP ${res.status}` };
       const json = await res.json();

@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import type { User } from '~/types/auth';
+import { authApi } from '~/lib/api';
 
 const props = defineProps<{ username: string }>();
 
@@ -73,21 +74,19 @@ const levelLabel = computed(() => {
 });
 
 onMounted(async () => {
-  try {
-    const res = await fetch(`/api/auth/user/by-username/${props.username}`);
-    if (res.ok) {
-      const json = await res.json();
-      if (json.code === 0 && json.data) {
-        user.value = {
-          ...json.data,
-          username: props.username,
-          account_level: json.data.account_level || 'local',
-        };
-      }
+  const result = await authApi.getUserByUsername(props.username);
+  result.match(
+    (data) => {
+      user.value = {
+        ...data,
+        username: props.username,
+        account_level: data.account_level || 'local',
+      } as User;
+    },
+    () => {
+      // user stays null
     }
-  } catch {
-    // ignore
-  }
+  );
   loading.value = false;
 });
 </script>

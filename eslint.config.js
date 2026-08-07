@@ -73,6 +73,19 @@ export default [
     },
   },
   {
+    files: ['src/**/*.{ts,tsx,vue,astro}'],
+    rules: {
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'fetch',
+          message:
+            '请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。',
+        },
+      ],
+    },
+  },
+  {
     ignores: [
       'dist',
       'packages/*/dist',
