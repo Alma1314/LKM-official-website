@@ -86,11 +86,15 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 登录后同步用户信息 ──
+  // 关键：登录成功的持久化必须发生在 user/isLoggedIn/session 都就绪之后。
+  // 各登录接口会在 setTokens 后先 persist 一次（那时 user 尚空），故这里成功后再 persist，
+  // 确保 localStorage 写入完整会话，刷新/restoreFromStorage 才能恢复登录态。
   async function fetchMeAfterLogin(_userId: number): Promise<Result<AuthSuccess, AppError>> {
     const meResult = await fetchMe();
     if (meResult.isOk()) {
       isLoggedIn.value = true;
       session.value = 'authenticated';
+      persistToStorage();
       return ok({});
     }
     return err(meResult.error);

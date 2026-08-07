@@ -2,7 +2,6 @@ import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { authApi, type ChallengeData, type AuthTokenData } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
-import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
 import { useVerificationCountdown } from './useVerificationCountdown';
 
 export type LoginMode = 'password' | 'code' | 'github' | 'magic' | 'passkey' | '2fa';
@@ -24,6 +23,7 @@ export interface LoginFlow {
   loading: boolean;
   error: null | string;
   successMessage: string;
+  loggedIn: boolean;
   codeSent: boolean;
   countdown: number;
   countdownRunning: boolean;
@@ -50,7 +50,8 @@ export interface LoginFlow {
  */
 export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const store = useAuthStore();
-  const { redirect = null, onSuccess } = options;
+  // 登录成功后由 loggedIn 驱动成功卡片，不再跳转（redirect 字段保留作兼容，未使用）
+  const { onSuccess } = options;
 
   // ── State ──
   const mode = ref<LoginMode>('password');
@@ -63,6 +64,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const successMessage = ref('');
+  const loggedIn = ref(false);
   const codeSent = ref(false);
   const countdown = useVerificationCountdown(60);
   // toRef 保持与源 reactive 对象的响应式连接：模板读 flow.countdown / flow.countdownRunning 时
@@ -88,12 +90,12 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     error.value = errorMessageByCode(e);
   }
 
-  // 登录成功：清空错误、写成功提示、跳转
+  // 登录成功：清空错误、写成功提示、并置 loggedIn（停留在登录卡片显示成功，不自动跳转）
   function succeed(): void {
     error.value = null;
     successMessage.value = '登录成功';
-    const dst = resolveSafeRedirect(redirect);
-    if (typeof onSuccess === 'function') onSuccess(dst);
+    loggedIn.value = true;
+    if (typeof onSuccess === 'function') onSuccess('');
   }
 
   // ── 密码登录 ──
@@ -287,6 +289,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     loading.value = false;
     error.value = null;
     successMessage.value = '';
+    loggedIn.value = false;
     countdown.stop();
     mode.value = 'password';
   }
@@ -304,6 +307,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     loading,
     error,
     successMessage,
+    loggedIn,
     codeSent,
     countdown: toRef(countdown, 'countdown'),
     countdownRunning,

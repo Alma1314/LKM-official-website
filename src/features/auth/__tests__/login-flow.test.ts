@@ -27,7 +27,7 @@ describe('useVerificationCountdown', () => {
 });
 
 describe('useLoginFlow', () => {
-  it('密码登录成功触发 onSuccess', async () => {
+  it('密码登录成功：置 loggedIn 显示成功卡并触发 onSuccess（不跳转）', async () => {
     vi.spyOn(authModule.authApi, 'loginPassword').mockResolvedValue(
       ok({ access_token: 'a', refresh_token: 'r', user_id: 1, account_level: 'local' })
     );
@@ -37,6 +37,7 @@ describe('useLoginFlow', () => {
     flow.account = 'alma';
     flow.password = '123456';
     await flow.submitPassword();
+    expect(flow.loggedIn).toBe(true);
     expect(onSuccess).toHaveBeenCalled();
   });
 

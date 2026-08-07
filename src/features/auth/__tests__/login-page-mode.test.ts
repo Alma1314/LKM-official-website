@@ -4,6 +4,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import LoginPage from '../components/login/LoginPage.vue';
+import * as authModule from '~/lib/api/modules/auth';
+import { ok } from '~/lib/errors/result';
 
 beforeEach(() => {
   setActivePinia(createPinia());
@@ -35,5 +37,27 @@ describe('LoginPage flow.mode 解包', () => {
     await w.vm.$nextTick();
     expect(w.find('input[autocomplete="current-password"]').exists()).toBe(true);
     expect(w.text()).toContain('登录');
+  });
+
+  it('密码登录成功后显示「登录成功」卡片且不自动跳转', async () => {
+    vi.spyOn(authModule.authApi, 'loginPassword').mockResolvedValue(
+      ok({ access_token: 'a', refresh_token: 'r', user_id: 1, account_level: 'local' })
+    );
+    vi.spyOn(authModule.authApi, 'getMe').mockResolvedValue(ok({ id: 1, username: 'alma', account_level: 'local' }));
+    const w = mount(LoginPage, { props: { mode: 'modal' } });
+    await w.vm.$nextTick();
+    // 填入账号密码后提交（避开空值/校验差异）
+    const acct = w.find('input[autocomplete="username"]');
+    const pass = w.find('input[autocomplete="current-password"]');
+    await acct.setValue('alma');
+    await pass.setValue('123456');
+    await w.find('form').trigger('submit');
+    // 等 async submitPassword 完成并刷新 DOM
+    await w.vm.$nextTick();
+    await new Promise((r) => setTimeout(r, 20));
+    // 断言成功卡渲染：标题「登录成功」+ 欢迎文案，且不再有密码输入框/分段控件（未跳转）
+    expect(w.text()).toContain('登录成功');
+    expect(w.text()).toContain('欢迎回来');
+    expect(w.find('input[autocomplete="current-password"]').exists()).toBe(false);
   });
 });
