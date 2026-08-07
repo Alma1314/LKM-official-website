@@ -1,4 +1,4 @@
-import { get, post, put } from '../../http/client';
+import { get, post, put, patch, del } from '../../http/client';
 
 // ── 类型 ──
 
@@ -18,6 +18,9 @@ export interface TokenData {
   temp_token?: string;
 }
 
+/** 登录/续签成功后返回的令牌载荷（与 TokenData 同构）。 */
+export type AuthTokenData = TokenData;
+
 export interface ProfileInfo {
   nickname: string | null;
   avatar: string | null;
@@ -35,6 +38,42 @@ export interface RegNormalResponse {
 
 export interface MessageResponse {
   message: string;
+}
+
+export interface RecoveryRequestResponse {
+  message: string;
+  transaction_id: string;
+}
+
+export interface ChallengeData {
+  transaction_id: string;
+  expires_in: number;
+  test_code?: string | null;
+  test_continue_token?: string | null;
+}
+
+export interface SecurityState {
+  two_factor_enabled: boolean;
+  recovery_codes?: string[] | null;
+}
+
+export interface OnboardingState {
+  step: number;
+  completed: boolean;
+  data?: Record<string, unknown> | null;
+}
+
+export interface PasskeyData {
+  id: number;
+  credential_id: string;
+  name: string;
+  created_at: string;
+}
+
+export interface BindingState {
+  email?: string | null;
+  phone?: string | null;
+  github: boolean;
 }
 
 // ── Auth API ──
@@ -104,10 +143,52 @@ export const authApi = {
   getUserProfile: (userId: number) => get<ProfileInfo>(`/api/auth/${userId}`),
 
   // ── 编辑用户资料 ──
-  editProfile: (userId: number, info: { nickname?: string; avatar?: string }) =>
+  editProfile: (userId: number, info: { nickname?: string | null; avatar?: string | null }) =>
     put<ProfileInfo>(`/api/auth/${userId}/profile`, info),
 
   // ── 根据用户名获取用户信息 ──
   getUserByUsername: (username: string) =>
     get<ProfileInfo>(`/api/auth/user/by-username/${encodeURIComponent(username)}`),
+
+  // ── GitHub 模拟 ──
+  githubStart: (hint: string) => post<ChallengeData>('/api/auth/github/start', { hint }),
+  githubCallback: (token: string) => get<AuthTokenData>(`/api/auth/github/callback?token=${encodeURIComponent(token)}`),
+  // ── Passkey 登录 ──
+  loginPasskeyStart: () => post<ChallengeData>('/api/auth/login/passkey/start'),
+  loginPasskeyComplete: (txn: string) =>
+    post<AuthTokenData>('/api/auth/login/passkey/complete', { transaction_id: txn }),
+  // ── 2FA ──
+  verify2FA: (tempToken: string, code: string) =>
+    post<AuthTokenData>('/api/auth/login/2fa/verify', { temp_token: tempToken, code }),
+  start2FA: () => post<ChallengeData>('/api/auth/security/2fa/start'),
+  verify2FAEnable: (code: string) => post<SecurityState>('/api/auth/security/2fa/verify', { code }),
+  disable2FA: () => post<MessageResponse>('/api/auth/security/2fa/disable'),
+  getRecoveryCodes: () => get<SecurityState>('/api/auth/security/recovery-codes'),
+  // ── Passkey 管理 ──
+  listPasskeys: () => get<PasskeyData[]>('/api/auth/security/passkeys'),
+  createPasskey: (name: string) => post<PasskeyData>('/api/auth/security/passkeys', { name }),
+  renamePasskey: (id: number, name: string) => patch<PasskeyData>(`/api/auth/security/passkeys/${id}`, { name }),
+  deletePasskey: (id: number) => del<MessageResponse>(`/api/auth/security/passkeys/${id}`),
+  // ── 绑定方式 ──
+  getBindings: () => get<BindingState>('/api/auth/security/bindings'),
+  bindingRequest: (contact: string, type: 'email' | 'phone') =>
+    post<ChallengeData>('/api/auth/security/bindings/request', { contact, type }),
+  bindingConfirm: (txn: string, code: string, contact: string, type: 'email' | 'phone') =>
+    post<MessageResponse>('/api/auth/security/bindings/confirm', { transaction_id: txn, code, contact, type }),
+  unbind: (type: 'email' | 'phone' | 'github') =>
+    post<MessageResponse | BindingState>('/api/auth/security/bindings/unbind', { type }),
+  bindingsGithubStart: () => post<ChallengeData>('/api/auth/security/bindings/github/start'),
+  bindingsGithubCallback: (token: string) =>
+    get<BindingState>('/api/auth/security/bindings/github/callback?token=' + encodeURIComponent(token)),
+  // ── 找回密码 ──
+  recoveryRequest: (account: string) => post<RecoveryRequestResponse>('/api/auth/recovery/request', { account }),
+  recoveryVerify: (txn: string, code: string) =>
+    post<MessageResponse>('/api/auth/recovery/verify', { transaction_id: txn, code }),
+  recoveryReset: (txn: string, code: string, newPassword: string) =>
+    post<MessageResponse>('/api/auth/recovery/reset', { transaction_id: txn, code, new_password: newPassword }),
+  // ── Onboarding ──
+  getOnboarding: () => get<OnboardingState>('/api/auth/onboarding'),
+  setOnboardingStep: (step: number, data: Record<string, unknown>) =>
+    put<OnboardingState>(`/api/auth/onboarding/steps/${step}`, { data }),
+  skipOnboarding: () => post<OnboardingState>('/api/auth/onboarding/skip'),
 };

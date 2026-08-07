@@ -5,21 +5,27 @@ import os
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-# 使用独立测试数据库
-TEST_DB_PATH = os.path.join(os.path.dirname(__file__), "..", "lkm_test_pytest.db")
-
 
 @pytest.fixture(scope="session", autouse=True)
-def _init_test_db():
-    """每个 test session 开始时初始化独立测试数据库"""
+def _init_test_db(tmp_path_factory):
+    """每个 test session 开始时初始化临时测试数据库。
+
+    使用 tmp_path_factory 生成隔离的会话级临时 SQLite，绝不触碰仓库里
+    有人工修改的 lkm_test.db / lkm_test_pytest.db。必须先于任何
+    ``import app.db.session`` 设置 DATABASE_URL，否则 engine 会按默认库创建。
+    """
+    TEST_DB_PATH = tmp_path_factory.mktemp("data") / "test.db"
     os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB_PATH}"
 
-    from app.db.session import SessionLocal, engine, init_db
-    from app.db.models import Base
+    from app.db.auth_test_migrations import migrate
+    from app.modules.auth import simulation
 
-    # 清理旧库
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    # 建表 + 对 users 补齐新增列（幂等）
+    migrate()
+    # 重置进程内模拟状态，保证用例隔离
+    simulation.reset_mock_state()
+    yield
+    simulation.reset_mock_state()
 
 
 @pytest.fixture

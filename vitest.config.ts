@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitest/config';
+import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 export default defineConfig({
+  plugins: [vue()],
   resolve: {
     alias: {
       '~': path.resolve(__dirname, 'src'),
@@ -13,5 +15,8 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     exclude: ['dist/**', '.astro/**', 'coverage/**', 'node_modules/**', '**/node_modules/**'],
     environment: 'node',
+    // 仅对 auth 目录启用 DOM 环境（组件态测试基建）
+    environmentMatchGlobs: [['src/features/auth/**', 'happy-dom']],
+    setupFiles: ['src/features/auth/__tests__/setup.ts'],
   },
 });

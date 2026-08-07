@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <!-- 2FA flow -->
-    <div v-if="state.flow === '2fa_required' || state.flow === '2fa_setup_required'" class="relative w-full">
-      <TwoFactorVerify @success="handle2FASuccess" @error="handle2FAError" />
-    </div>
-
-    <!-- Logged in -->
-    <div v-else-if="state.flow === 'logged_in' && state.user" class="relative w-full">
-      <div class="text-center">
-        <div class="mb-4 flex justify-center">
+  <component
+    :is="mode === 'modal' ? 'div' : AuthShell"
+    :max-width="mode === 'modal' ? undefined : '440px'"
+    :class="mode === 'modal' ? 'w-full' : undefined"
+  >
+    <AuthCard
+      :title="flow.loggedIn ? '登录成功' : flow.mode === '2fa' ? '双因素认证' : '登录'"
+      subtitle="登录理科迷账号，访问社区资源与文档"
+      :test-mode="testMode"
+      :mode="mode"
+    >
+      <!-- 登录成功态：停留在登录卡片，不自动跳转 -->
+      <div v-if="flow.loggedIn" class="text-center space-y-4 py-4">
+        <div class="flex justify-center">
           <svg
             class="w-14 h-14 text-success"
             viewBox="0 0 24 24"
@@ -22,225 +26,176 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <h2 class="text-2xl font-semibold mb-2">登录成功</h2>
-        <p class="text-text-muted mb-1">
-          欢迎回来，<span class="font-semibold text-deep-text">{{ state.user.username }}</span>
+        <p class="text-sm text-text-muted">
+          欢迎回来，<span class="font-semibold text-deep-text">{{ flow.account || '用户' }}</span>
         </p>
-        <p class="text-xs text-text-muted mb-4">
-          账户等级：
-          <span class="badge badge-sm ml-1" :class="levelBadgeClass">{{ levelLabel }}</span>
-        </p>
-        <div v-if="state.user?.account_level === 'local'" class="alert alert-info mb-4 text-left text-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="stroke-current shrink-0 h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <span>
-            绑定邮箱或手机号即可解锁全部功能，
-            <a :href="getAuthPath('account')" class="font-semibold underline">前往设置 →</a>
-          </span>
-        </div>
-        <div class="flex gap-3 justify-center">
-          <a :href="getAuthPath('account')" class="btn btn-ghost btn-sm">账户设置</a>
-          <a v-if="redirectParam" :href="redirectUrl" class="btn btn-primary btn-sm">返回目标页面</a>
-          <a v-else :href="getAuthPath('')" class="btn btn-primary btn-sm">返回首页</a>
-        </div>
       </div>
-    </div>
 
-    <!-- Login form -->
-    <div v-else class="relative w-full">
-      <div>
-        <div class="text-center mb-6">
-          <h1 class="text-3xl md:text-4xl font-semibold leading-tight mb-2 text-deep-text">登录</h1>
-          <p class="text-sm text-text-muted">登录理科迷账号，访问社区资源与文档</p>
-        </div>
+      <!-- 未登录：登录方式切换等 -->
+      <template v-else>
+        <!-- 登录方式切换 -->
+        <AuthSegmentedControl
+          v-if="flow.mode === 'password' || flow.mode === 'code'"
+          :options="segmentedOptions"
+          :model-value="flow.mode"
+          @update:model-value="flow.mode = $event as LoginMode"
+          class="mb-6"
+        />
 
-        <div v-if="error" class="alert alert-error mb-4 text-sm">{{ error }}</div>
-        <div v-if="success" class="alert alert-success mb-4 text-sm">{{ success }}</div>
-        <div v-if="state.lockedUntil && Date.now() < state.lockedUntil" class="alert alert-error mb-4 text-sm">
-          账号已锁定 {{ Math.ceil((state.lockedUntil - Date.now()) / 60000) }} 分钟，请稍后再试
-        </div>
+        <!-- 状态提示 -->
+        <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
+        <AuthStatus v-else-if="flow.successMessage" type="success" class="mb-4" :message="flow.successMessage" />
 
-        <!-- Step 1: identifier -->
-        <form v-if="!identifiedAccount" @submit.prevent="handleIdentify" class="space-y-4">
-          <div>
-            <label class="label pb-1" for="identify-input">
-              <span class="label-text font-medium">用户名 / 邮箱 / 手机号</span>
-            </label>
-            <input
-              id="identify-input"
-              type="text"
-              class="input input-bordered w-full"
-              :class="{ 'input-error': identifierError }"
-              v-model="identifier"
-              placeholder="请先输入您的账号标识"
-              autocomplete="username"
-              @input="identifierError = ''"
-            />
-            <span v-if="identifierError" class="label-text-alt text-error">{{ identifierError }}</span>
+        <!-- 密码登录 -->
+        <form v-if="flow.mode === 'password'" class="space-y-4" @submit.prevent="flow.submitPassword()">
+          <AuthField
+            label="用户名 / 邮箱 / 手机号"
+            placeholder="请输入用户名、邮箱或手机号"
+            autocomplete="username"
+            v-model="flow.account"
+          />
+          <AuthField
+            label="密码"
+            type="password"
+            placeholder="请输入密码"
+            autocomplete="current-password"
+            v-model="flow.password"
+          />
+          <div class="flex justify-end">
+            <a :href="getAuthPath('account/recovery')" class="text-sm text-primary font-semibold hover:underline">
+              忘记密码？
+            </a>
           </div>
-          <button type="submit" class="btn btn-primary w-full">继续</button>
-          <p class="text-center text-[13px] text-text-muted">
-            没有账号？
-            <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">
-              立即注册
-            </button>
-          </p>
+          <button
+            type="submit"
+            class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+            :disabled="flow.loading"
+          >
+            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+            <span v-else>登录</span>
+          </button>
         </form>
 
-        <!-- Step 2: login methods -->
-        <template v-if="identifiedAccount">
-          <div class="flex items-center justify-between mb-4">
-            <div class="text-sm">
-              <span class="text-text-muted">登录为 </span>
-              <span class="font-semibold">{{ identifiedAccount.username }}</span>
-            </div>
-            <button type="button" class="btn btn-ghost btn-xs" @click="handleBack">切换账号</button>
+        <!-- 验证码登录 -->
+        <form v-else-if="flow.mode === 'code'" class="space-y-4" @submit.prevent="flow.submitCode()">
+          <AuthField label="邮箱 / 手机号" placeholder="请输入接收验证码的账号" v-model="flow.account" />
+          <div>
+            <VerificationCodeField id="login-code" v-model="flow.code" :error="flow.error ?? undefined" />
           </div>
+          <button
+            type="button"
+            class="btn btn-outline w-full"
+            :disabled="flow.countdownRunning || flow.loading"
+            @click="flow.requestCode()"
+          >
+            <span v-if="!flow.countdownRunning">获取验证码</span>
+            <span v-else>{{ flow.countdown }}s 后重新获取</span>
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+            :disabled="flow.loading || flow.code.length < 6"
+          >
+            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+            <span v-else>登录</span>
+          </button>
+        </form>
 
-          <div class="tabs tabs-bordered mb-6">
-            <a
-              v-for="tab in availableTabs"
-              :key="tab.key"
-              class="tab tab-bordered"
-              :class="{ 'tab-active': activeTab === tab.key }"
-              @click.prevent="activeTab = tab.key"
-              >{{ tab.label }}</a
-            >
+        <!-- 其他登录方式 -->
+        <template v-if="flow.mode === 'password' || flow.mode === 'code'">
+          <div class="my-6 flex items-center gap-3">
+            <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
+            <span class="text-xs text-text-muted">其他登录方式</span>
+            <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
           </div>
-
-          <PasswordLogin v-if="activeTab === 'password'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
-          <SmsLogin v-if="activeTab === 'sms'" @login="handleLogin" :identifiedAccount="identifiedAccount" />
-          <GithubLogin v-if="activeTab === 'github'" @login="handleLogin" />
-          <MagicLinkLogin
-            v-if="activeTab === 'magic-link'"
-            @login="handleLogin"
-            :identifiedAccount="identifiedAccount"
-          />
-          <PasskeyLogin v-if="activeTab === 'passkey'" @login="handleLogin" />
+          <div class="space-y-3">
+            <AuthMethodButton label="使用 GitHub 登录" @click="flow.startGithub()" :disabled="flow.loading" />
+            <AuthMethodButton label="Magic Link 登录" @click="flow.startMagic()" :disabled="flow.loading" />
+            <AuthMethodButton label="Passkey 通行密钥" @click="flow.startPasskey()" :disabled="flow.loading" />
+          </div>
         </template>
-      </div>
-    </div>
-  </div>
+
+        <!-- Magic 态：发送后提示 + 在当前设备继续 -->
+        <div v-else-if="flow.mode === 'magic'" class="space-y-4">
+          <AuthStatus v-if="flow.magicSent" type="info" message="Magic Link 已发送，请查收邮箱" />
+          <p class="text-sm text-text-muted">没有收到邮件？可重试发送，或换用其他登录方式。</p>
+          <button type="button" class="btn btn-outline w-full" :disabled="flow.loading" @click="flow.continueMagic()">
+            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+            <span v-else>在当前设备继续</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+        </div>
+
+        <!-- GitHub 态：模拟授权 -->
+        <div v-else-if="flow.mode === 'github'" class="space-y-4">
+          <AuthStatus v-if="!flow.loading" type="info" message="正在通过 GitHub 登录…" />
+          <button type="button" class="btn btn-outline w-full" :disabled="flow.loading" @click="flow.submitGithub()">
+            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+            <span v-else>完成模拟授权</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+        </div>
+
+        <!-- Passkey 态 -->
+        <div v-else-if="flow.mode === 'passkey'" class="space-y-4">
+          <AuthStatus v-if="!flow.loading" type="info" message="正在进行 Passkey 通行密钥验证…" />
+          <button type="button" class="btn btn-outline w-full" disabled>等待设备验证</button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+        </div>
+
+        <!-- 2FA 态 -->
+        <form v-else-if="flow.mode === '2fa'" class="space-y-4" @submit.prevent="flow.submit2FA(flow.code)">
+          <VerificationCodeField id="login-2fa" v-model="flow.code" :error="flow.error ?? undefined" />
+          <button
+            type="submit"
+            class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+            :disabled="flow.loading"
+          >
+            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+            <span v-else>验证</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+        </form>
+
+        <!-- 底部注册入口 -->
+        <p class="mt-6 text-center text-[13px] text-text-muted">
+          没有账号？
+          <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">
+            立即注册
+          </button>
+        </p>
+      </template>
+    </AuthCard>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import { useAuthProvider } from '~/features/auth/composables/useAuth';
-import { getAuthPath, getBaseUrl } from '~/features/auth/constants/auth-paths';
-import PasswordLogin from './PasswordLogin.vue';
-import SmsLogin from './SmsLogin.vue';
-import GithubLogin from './GithubLogin.vue';
-import MagicLinkLogin from './MagicLinkLogin.vue';
-import PasskeyLogin from './PasskeyLogin.vue';
-import TwoFactorVerify from './TwoFactorVerify.vue';
-import type { LoginMethod } from '~/types/auth';
+import { useLoginFlow, type LoginMode } from '~/features/auth/composables/useLoginFlow';
+import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import AuthShell from '../shared/AuthShell.vue';
+import AuthCard from '../shared/AuthCard.vue';
+import AuthSegmentedControl from '../shared/AuthSegmentedControl.vue';
+import AuthField from '../shared/AuthField.vue';
+import AuthStatus from '../shared/AuthStatus.vue';
+import AuthMethodButton from '../shared/AuthMethodButton.vue';
+import VerificationCodeField from '../shared/VerificationCodeField.vue';
 
-// Self-contained provider
-const { state, login } = useAuthProvider();
+withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
 
-// 读取 redirect 参数，登录成功后跳转
-const redirectParam = ref('');
-onMounted(() => {
-  const params = new URLSearchParams(window.location.search);
-  redirectParam.value = params.get('redirect') || '';
+const testMode = import.meta.env.PUBLIC_AUTH_TEST_MODE === 'true';
+
+const flow = useLoginFlow({
+  // 登录成功后在卡片内显示「登录成功」，不自动跳转（flow.loggedIn 驱动成功视图）
+  redirect: '',
+  onSuccess: () => {
+    // 不导航、不关闭：由 flow.loggedIn 切换到成功画面
+  },
 });
 
-const redirectUrl = computed(() => {
-  if (!redirectParam.value) return getAuthPath('');
-  const base = getBaseUrl().replace(/\/$/, '');
-  return base + redirectParam.value;
-});
-
-interface Tab {
-  key: LoginMethod;
-  label: string;
-}
-
-const ALL_TABS: Tab[] = [
+const segmentedOptions = [
   { key: 'password', label: '密码登录' },
-  { key: 'sms', label: '验证码登录' },
-  { key: 'github', label: 'Github 登录' },
-  { key: 'magic-link', label: 'Magic Link' },
-  { key: 'passkey', label: '通行密钥' },
+  { key: 'code', label: '验证码登录' },
 ];
-
-const error = ref<string | null>(null);
-const success = ref<string | null>(null);
-const identifier = ref('');
-const identifiedAccount = ref<{ id: number; username: string; account_level: string } | null>(null);
-const identifierError = ref('');
-const activeTab = ref<LoginMethod>('password');
-const availableTabs = ref<Tab[]>(ALL_TABS);
-
-const levelBadgeClass = computed(() => {
-  const level = state.user?.account_level;
-  return level === 'admin' ? 'badge-error' : level === 'normal' ? 'badge-primary' : 'badge-ghost';
-});
-const levelLabel = computed(() => {
-  const level = state.user?.account_level;
-  return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
-});
-function getAvailableTabs(_account: { id: number; username: string; account_level: string }): Tab[] {
-  // All login methods are available for all users
-  return [...ALL_TABS];
-}
-
-function handleBack() {
-  identifiedAccount.value = null;
-  identifier.value = '';
-  activeTab.value = 'password';
-  availableTabs.value = ALL_TABS;
-  error.value = null;
-}
-
-function handleIdentify() {
-  identifierError.value = '';
-  error.value = null;
-  if (!identifier.value.trim()) {
-    identifierError.value = '请输入用户名、邮箱或手机号';
-    return;
-  }
-  // Directly proceed to login method selection without mock account lookup
-  identifiedAccount.value = {
-    id: 0,
-    username: identifier.value.trim(),
-    account_level: 'normal',
-  };
-  const tabs = getAvailableTabs(identifiedAccount.value);
-  availableTabs.value = tabs;
-  activeTab.value = tabs[0].key;
-}
-
-watch(activeTab, () => {
-  error.value = null;
-});
-
-async function handleLogin(method: LoginMethod, credentials: Record<string, string>): Promise<void> {
-  error.value = null;
-  success.value = null;
-  const result = await login(method, credentials, identifiedAccount.value ?? undefined);
-  if (result.isErr()) {
-    error.value = result.error?.message || '登录失败';
-  }
-}
-
-function handle2FASuccess(msg: string) {
-  success.value = msg;
-}
-function handle2FAError(msg: string) {
-  error.value = msg;
-}
 
 function switchToRegister() {
   window.dispatchEvent(new CustomEvent('close-auth-modal'));

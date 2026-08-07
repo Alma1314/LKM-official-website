@@ -48,3 +48,10 @@ declare module 'virtual:config-community' {
 declare module '~/scripts/blog-init.ts';
 declare module '~/scripts/blog-transitions.ts';
 declare module '~/scripts/blog-photoswipe.ts';
+
+interface ImportMetaEnv {
+  readonly PUBLIC_AUTH_TEST_MODE?: string;
+}
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

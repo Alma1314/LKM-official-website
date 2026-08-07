@@ -84,51 +84,7 @@ const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | Lin
 
     <BasicScripts />
 
-    <!-- 通用 Auth 浮层（登录 / 注册 / 密码找回） -->
-    <div
-      id="auth-modal"
-      class="fixed inset-0 z-[100] hidden items-center justify-center"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-auth-close></div>
-      <div id="auth-modal-content" class="relative z-10 w-full max-w-md mx-4">
-        <AuthModal client:only="vue" />
-      </div>
-    </div>
-
-    <script is:inline>
-      (function () {
-        const modal = document.getElementById('auth-modal');
-        if (!modal) return;
-
-        function open() {
-          modal.classList.remove('hidden');
-          modal.classList.add('flex');
-          document.body.style.overflow = 'hidden';
-        }
-
-        function close() {
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-          document.body.style.overflow = '';
-        }
-
-        document.querySelectorAll('[data-auth-close]').forEach(function (el) {
-          el.addEventListener('click', close);
-        });
-
-        modal.addEventListener('click', function (e) {
-          if (e.target === modal) close();
-        });
-
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
-        });
-
-        window.addEventListener('open-auth-modal', open);
-        window.addEventListener('close-auth-modal', close);
-      })();
-    </script>
+    <!-- 通用 Auth 浮层（登录 / 注册 / 密码找回）：由 AuthModal 自管开合/遮罩/Escape/焦点/滚动 -->
+    <AuthModal client:only="vue" />
   </body>
 </html>

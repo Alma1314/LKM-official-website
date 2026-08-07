@@ -26,7 +26,7 @@ def get_session() -> Generator[Session, None, None]:
 
 
 def init_db():
-    """开发环境：自动建表"""
-    from app.db.models import Base
+    """开发环境：自动建表 / 幂等迁移"""
+    from app.db.auth_test_migrations import migrate
 
-    Base.metadata.create_all(bind=engine)
+    migrate()

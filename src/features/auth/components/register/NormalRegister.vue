@@ -1,174 +1,96 @@
 <template>
-  <!-- Verify step -->
-  <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
-    <p class="text-sm text-text-muted text-center">验证码已发送至 {{ useEmail ? email : phone }}</p>
-    <p v-if="displayCode" class="text-sm text-success text-center">
-      开发模式验证码：<code class="font-bold">{{ displayCode }}</code>
+  <!-- Form step -->
+  <form v-if="flow.stage === 'form'" @submit.prevent="flow.submit()" class="space-y-4">
+    <p class="text-sm text-text-muted text-center">
+      仅需用户名 + {{ flow.useEmail ? '邮箱' : '手机号' }}，验证后即可注册
     </p>
-    <input
-      id="reg-verify"
-      type="text"
-      class="input input-bordered w-full"
-      v-model="verifyCode"
-      placeholder="请输入 6 位验证码"
-      maxlength="6"
+    <AuthField
+      id="reg-normal-user"
+      label="用户名"
+      placeholder="请输入用户名（至少3位）"
+      autocomplete="username"
+      v-model="flow.username"
     />
-    <div v-if="submitError" class="alert alert-error text-sm">{{ submitError }}</div>
-    <button type="submit" class="btn btn-primary w-full">验证并完成注册</button>
-    <button type="button" class="btn btn-ghost w-full btn-sm" @click="step = 'form'">返回修改</button>
-  </form>
-
-  <!-- Done step -->
-  <div v-else-if="step === 'done'" class="text-center space-y-4">
-    <div class="flex justify-center">
-      <svg
-        class="w-14 h-14 text-success"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-        <polyline points="22 4 12 14.01 9 11.01" />
-      </svg>
-    </div>
-    <p class="font-semibold text-lg">普通账户注册成功</p>
-    <p class="text-sm text-text-muted">现在可以设置 2FA 和通行密钥增强安全性</p>
-    <div class="flex gap-3 justify-center">
-      <button type="button" class="btn btn-ghost btn-sm" @click="emit('complete', false)">跳过</button>
-      <button type="button" class="btn btn-primary btn-sm" @click="emit('complete', true)">去设置 2FA</button>
-    </div>
-  </div>
-
-  <!-- Form step (default) -->
-  <form v-else @submit.prevent="handleSubmit" class="space-y-4">
-    <p class="text-sm text-text-muted text-center">仅需用户名 + {{ useEmail ? '邮箱' : '手机号' }}，验证后即可注册</p>
-    <div>
-      <label class="label pb-1" for="reg-normal-user">
-        <span class="label-text font-medium">用户名</span>
-      </label>
-      <input
-        id="reg-normal-user"
-        type="text"
-        class="input input-bordered w-full"
-        :class="{ 'input-error': errors.username }"
-        v-model="username"
-        placeholder="请输入用户名（至少3位）"
-        @input="errors.username = ''"
-      />
-      <span v-if="errors.username" class="label-text-alt text-error">{{ errors.username }}</span>
-    </div>
+    <AuthField
+      id="reg-normal-password"
+      label="密码"
+      type="password"
+      placeholder="请输入密码（至少6位）"
+      autocomplete="new-password"
+      v-model="flow.password"
+    />
+    <AuthField
+      id="reg-normal-confirm"
+      label="确认密码"
+      type="password"
+      placeholder="再次输入密码（至少6位）"
+      autocomplete="new-password"
+      v-model="flow.confirm"
+    />
     <div class="flex gap-2">
-      <button type="button" class="btn btn-xs" :class="useEmail ? 'btn-primary' : 'btn-ghost'" @click="useEmail = true">
+      <button
+        type="button"
+        class="btn btn-xs"
+        :class="flow.useEmail ? 'btn-primary' : 'btn-ghost'"
+        @click="flow.useEmail = true"
+      >
         使用邮箱
       </button>
       <button
         type="button"
         class="btn btn-xs"
-        :class="!useEmail ? 'btn-primary' : 'btn-ghost'"
-        @click="useEmail = false"
+        :class="!flow.useEmail ? 'btn-primary' : 'btn-ghost'"
+        @click="flow.useEmail = false"
       >
         使用手机号
       </button>
     </div>
-    <div v-if="useEmail">
-      <label class="label pb-1" for="reg-normal-email">
-        <span class="label-text font-medium">邮箱</span>
-      </label>
-      <input
-        id="reg-normal-email"
-        type="email"
-        class="input input-bordered w-full"
-        :class="{ 'input-error': errors.email }"
-        v-model="email"
-        placeholder="请输入邮箱地址"
-        @input="errors.email = ''"
-      />
-      <span v-if="errors.email" class="label-text-alt text-error">{{ errors.email }}</span>
-    </div>
-    <div v-else>
-      <label class="label pb-1" for="reg-normal-phone">
-        <span class="label-text font-medium">手机号</span>
-      </label>
-      <input
-        id="reg-normal-phone"
-        type="tel"
-        class="input input-bordered w-full"
-        :class="{ 'input-error': errors.phone }"
-        v-model="phone"
-        placeholder="请输入手机号"
-        @input="errors.phone = ''"
-      />
-      <span v-if="errors.phone" class="label-text-alt text-error">{{ errors.phone }}</span>
-    </div>
-    <div v-if="submitError" class="alert alert-error text-sm">{{ submitError }}</div>
-    <button type="submit" class="btn btn-primary w-full">发送验证码</button>
+    <AuthField
+      :id="flow.useEmail ? 'reg-normal-email' : 'reg-normal-phone'"
+      :label="flow.useEmail ? '邮箱' : '手机号'"
+      :type="flow.useEmail ? 'email' : 'tel'"
+      :placeholder="flow.useEmail ? '请输入邮箱地址' : '请输入手机号'"
+      :autocomplete="flow.useEmail ? 'email' : 'tel'"
+      v-model="flow.contact"
+    />
+    <AuthStatus v-if="flow.error" type="error" :message="flow.error" />
+    <button
+      type="submit"
+      class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+      :disabled="flow.loading"
+    >
+      <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+      <span v-else>发送验证码</span>
+    </button>
+  </form>
+
+  <!-- Verify step -->
+  <form v-else-if="flow.stage === 'verify'" @submit.prevent="flow.submitCode()" class="space-y-4">
+    <p class="text-sm text-text-muted text-center">验证码已发送至 {{ flow.useEmail ? '邮箱' : '手机号' }}</p>
+    <AuthField
+      id="reg-verify"
+      label="验证码"
+      placeholder="请输入验证码"
+      autocomplete="one-time-code"
+      v-model="flow.code"
+    />
+    <AuthStatus v-if="flow.error" type="error" :message="flow.error" />
+    <button
+      type="submit"
+      class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+      :disabled="flow.loading || flow.code.length < 1"
+    >
+      <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+      <span v-else>验证并完成注册</span>
+    </button>
+    <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">返回修改</button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useAuthStore } from '~/stores/auth';
+import type { RegisterFlow } from '~/features/auth/composables/useRegisterFlow';
+import AuthField from '../shared/AuthField.vue';
+import AuthStatus from '../shared/AuthStatus.vue';
 
-const emit = defineEmits<{
-  (e: 'complete', withGuide: boolean): void;
-}>();
-
-const step = ref<'form' | 'verify' | 'done'>('form');
-const username = ref('');
-const email = ref('');
-const phone = ref('');
-const useEmail = ref(true);
-const errors = ref<Record<string, string>>({});
-const submitError = ref('');
-const verifyCode = ref('');
-const displayCode = ref('');
-let _txnId = '';
-
-function validate(): boolean {
-  const errs: Record<string, string> = {};
-  if (!username.value.trim()) errs.username = '请输入用户名';
-  else if (username.value.trim().length < 3) errs.username = '用户名至少 3 个字符';
-  if (useEmail.value && !email.value.trim()) errs.email = '请输入邮箱';
-  else if (useEmail.value && !email.value.includes('@')) errs.email = '请输入有效的邮箱地址';
-  if (!useEmail.value && !phone.value.trim()) errs.phone = '请输入手机号';
-  errors.value = errs;
-  return Object.keys(errs).length === 0;
-}
-
-async function handleSubmit() {
-  submitError.value = '';
-  if (!validate()) return;
-  const store = useAuthStore();
-  // 生成一个随机密码以满足后端要求
-  const randomPassword = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-  const result = await store.registerNormal(
-    username.value.trim(),
-    randomPassword,
-    useEmail.value ? email.value.trim() : undefined,
-    !useEmail.value ? phone.value.trim() : undefined
-  );
-  if (result.isErr()) {
-    submitError.value = result.error.message;
-    return;
-  }
-  _txnId = result.value.txn_id;
-  displayCode.value = result.value.email_code || result.value.phone_code || '';
-  step.value = 'verify';
-}
-
-async function handleVerify() {
-  submitError.value = '';
-  const store = useAuthStore();
-  const result = await store.verifyNormalRegister(_txnId, verifyCode.value, useEmail.value ? 'email' : 'phone');
-  if (result.isErr()) {
-    submitError.value = result.error.message;
-    return;
-  }
-  step.value = 'done';
-}
+defineProps<{ flow: RegisterFlow }>();
 </script>

@@ -68,11 +68,11 @@ GitHub Actions 配置了一个工作流文件：
 | -------- | -------------------------------------- | --------------------------------------------------------------- |
 | `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                                       |
 | `check`  | PR 到 main / Push 到 main              | `pnpm run check`（check:astro + check:eslint + check:prettier） |
-| `deploy` | Push 到 main（build + check 都通过后） | 部署到 GitHub Pages                                             |
+| `deploy` | Push 到 main（build + check 都通过后） | 构建部署至生产环境                                              |
 
 ### 部署
 
-部署通过 `actions.yaml` 中的 `deploy` job 完成：Push 到 main 分支时（build + check 通过后）部署到 GitHub Pages。
+部署通过 `actions.yaml` 中的 `deploy` job 完成：Push 到 main 分支时（build + check 通过后）完成部署。
 
 ### 通过 CI 的门槛
 
@@ -127,13 +127,20 @@ const items = ['A', 'B', 'C'];
 - 接收 `className` 覆写时使用 `twMerge()` 合并
 - 布局组合使用具名插槽（named slots）
 
+## 认证与状态规范
+
+- **token 与用户状态必须统一走 `useAuthStore` / HTTP 认证适配器（`configureHttpAuthSession`）**，前端禁止直接经 localStorage 伪造或读写 token。
+- **账号状态单一来源**：`src/stores/auth.ts`（`useAuthStore`）负责用户状态、token、localStorage 持久化（key `lkm-auth-store`）；组件通过 Flow composable（`useLoginFlow`/`useRegisterFlow`/`useRecoveryFlow`/`useOnboardingFlow`）或兼容桥 `useAuthProvider` 接入。
+- **测试后端仅模拟高级认证**：GitHub/Passkey/2FA/找回/绑定/onboarding 均为模拟实现（`simulation.py`，不接真实 OAuth/WebAuthn/邮件/短信/TOTP）。测试用 `PUBLIC_AUTH_TEST_MODE` 开启，后端模拟能力不应在文档中被描述为真实接入。
+- 测试后端/数据库文件（如 `backend/lkm_test*.db`）为测试产物，不提交。
+
 ## 路径别名
 
 使用 `~/` 替代 `src/`：
 
 ```typescript
 import Image from '~/ui/primitives/Image.astro';
-import { siteConfig } from '~/core/config';
+import { siteConfig } from '~/lib/config';
 ```
 
 ## 运行环境
@@ -252,7 +259,7 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ### Vue `client:only` CLS 防护
 
-- 使用 `client:only` 指令的组件（Vue / Svelte）**必须包裹 `style="min-height: 400px"` 容器**
+- 使用 `client:only` 指令的组件（Vue）**必须包裹 `style="min-height: 400px"` 容器**
 - 防止组件挂载后内容注入造成 Cumulative Layout Shift
 - 例外：已使用全高布局（如 `MainGridLayout`、`SidebarLayout`）的页面，布局本身提供高度保障时可不额外包裹
 
@@ -275,9 +282,9 @@ node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页�
 
 ## Git 规范
 
-| 规则     | 说明                                                                                    |
-| -------- | --------------------------------------------------------------------------------------- |
-| 主分支   | `main`（所有 push 和 PR 的目标）                                                        |
-| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`/scripts/`、`docs/`、`.claude/` |
-| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`                                     |
-| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）                                 |
+| 规则     | 说明                                                                                                                       |
+| -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 主分支   | `main`（所有 push 和 PR 的目标）                                                                                           |
+| 忽略文件 | `dist/`、`node_modules/`、`.astro/`、`.env`、`tools/`、`/scripts/`、`docs/`（仅本地，不提交）、`.claude/`、`.superpowers/` |
+| Commit   | 提交前必须通过 `pnpm run check` 和 `pnpm run build`                                                                        |
+| 换行符   | 统一 LF（`.editorconfig` + `git config core.autocrlf`）                                                                    |

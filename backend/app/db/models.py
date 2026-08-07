@@ -35,6 +35,16 @@ class User(Base):
 
     profile = relationship("Profile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     refresh_tokens = relationship("RefreshToken", back_populates="user", cascade="all, delete-orphan")
+
+    # ── 高级认证/注册流扩展字段（本任务新增） ──────────────
+    two_factor_enabled = sa.Column(sa.Boolean, nullable=False, default=False)
+    recovery_codes_json = sa.Column(sa.Text, nullable=True)
+    onboarding_step = sa.Column(sa.Integer, nullable=False, default=0)
+    onboarding_completed = sa.Column(sa.Boolean, nullable=False, default=False)
+    onboarding_data_json = sa.Column(sa.Text, nullable=True)
+
+    auth_identities = relationship("AuthIdentity", back_populates="user", cascade="all, delete-orphan")
+    passkeys = relationship("PasskeyCredential", back_populates="user", cascade="all, delete-orphan")
     column_applications = relationship(
         "ColumnApplication", back_populates="user",
         primaryjoin="User.id == foreign(ColumnApplication.user_id)",
@@ -70,6 +80,34 @@ class RefreshToken(Base):
     created_at = sa.Column(sa.Text, nullable=False, default=now_iso)
 
     user = relationship("User", back_populates="refresh_tokens")
+
+
+class AuthIdentity(Base):
+    """第三方 / 扩展认证身份绑定（OAuth openid / 平台 subject）"""
+
+    __tablename__ = "auth_identities"
+
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
+    provider = sa.Column(sa.String(30), nullable=False)
+    subject = sa.Column(sa.String(200), unique=True, nullable=False)
+    created_at = sa.Column(sa.Text, nullable=False, default=now_iso)
+
+    user = relationship("User", back_populates="auth_identities")
+
+
+class PasskeyCredential(Base):
+    """Passkey 公钥凭据存储（WebAuthn 模拟）"""
+
+    __tablename__ = "passkey_credentials"
+
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
+    credential_id = sa.Column(sa.String(200), unique=True, nullable=False)
+    name = sa.Column(sa.String(80), nullable=False, default="")
+    created_at = sa.Column(sa.Text, nullable=False, default=now_iso)
+
+    user = relationship("User", back_populates="passkeys")
 
 
 # ── Columns ───────────────────────────────────────────────────

@@ -110,9 +110,9 @@ function close() {
   isOpen.value = false;
 }
 
-function handleLogout() {
+async function handleLogout() {
   isOpen.value = false;
-  store.logout();
+  await store.logout();
 }
 
 onMounted(() => {

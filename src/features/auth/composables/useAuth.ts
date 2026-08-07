@@ -9,49 +9,50 @@ import type {
   RegisterResult,
   User,
 } from '~/types/auth';
-import { AppError, ErrorCode } from '~/lib/errors';
+import { AppError, ErrorCode } from '~/lib/errors/error-codes';
 import { ok, err } from '~/lib/errors/result';
+import type { UserInfo } from '~/lib/api/modules/auth';
 
 const AUTH_KEY = Symbol('auth');
 
-const initialState: AuthState = {
-  isLoggedIn: false,
-  user: null,
-  flow: 'idle',
-  tempSession: null,
-  loginMethod: null,
-};
+// 把 store 的 UserInfo 投影为 AuthState 的 User（保留额外字段，仅归一化 account_level）
+function toUser(u: UserInfo | null): User | null {
+  if (!u) return null;
+  const level = u.account_level as User['account_level'];
+  return {
+    ...u,
+    account_level: level === 'admin' || level === 'normal' ? level : 'local',
+  };
+}
 
 export function useAuthProvider() {
   const store = useAuthStore();
-  const state = reactive<AuthState>({ ...initialState });
 
-  // 从 Pinia store 恢复持久化状态
+  // 恢复持久化会话（幂等：无数据时维持 anonymous）
   store.restoreFromStorage();
-  if (store.isLoggedIn && store.user) {
-    state.isLoggedIn = true;
-    state.user = { ...store.user, account_level: store.user.account_level as 'local' | 'normal' | 'admin' };
-    state.flow = store.flow as AuthState['flow'];
-  }
 
-  // 双向同步：reactive state -> Pinia store
+  // state 是 store 单一状态源的响应式投影。
+  // flow/tempSession/loginMethod 仅作为迁移期 UI 过渡状态保留（2FA 流程），不作为正式状态源。
+  const state = reactive<AuthState>({
+    isLoggedIn: store.isLoggedIn,
+    user: toUser(store.user),
+    flow: 'idle',
+    tempSession: null,
+    loginMethod: null,
+    session: store.session,
+  });
+
+  // 单向同步 store -> state（store 是唯一状态源）
   watch(
-    () => ({ ...state }),
+    () => ({ isLoggedIn: store.isLoggedIn, user: toUser(store.user), session: store.session }),
     (val) => {
-      if (val.isLoggedIn && val.user) {
-        store.user = { ...store.user, ...val.user };
-        store.isLoggedIn = true;
-        store.flow = val.flow as 'idle' | 'logging_in' | '2fa_required' | '2fa_setup_required' | 'logged_in';
-        store.persistToStorage();
-      } else {
-        store.resetState();
-        store.persistToStorage();
-      }
-    },
-    { deep: true }
+      state.isLoggedIn = val.isLoggedIn;
+      state.user = val.user;
+      state.session = val.session;
+    }
   );
 
-  // ── 登录结果处理 ──
+  // ── 登录结果处理（2FA 过渡态存于本地 state，不污染 store 的 session）──
 
   function applyLoginResult(success: { requires2FA?: boolean; requires2FASetup?: boolean }): LoginResult {
     if (success.requires2FA) {
@@ -65,13 +66,13 @@ export function useAuthProvider() {
       return ok({ requires2FASetup: true });
     }
     state.isLoggedIn = true;
-    state.user = store.user as User;
+    state.user = toUser(store.user);
     state.flow = 'logged_in';
     state.tempSession = null;
     return ok({});
   }
 
-  // ── 登录方法分流 ──
+  // ── 登录方法分流（返回真实 Promise<Result>，无 unknown 强转）──
 
   async function login(
     method: LoginMethod,
@@ -86,14 +87,20 @@ export function useAuthProvider() {
         credentials.username || credentials.account || '',
         credentials.password || ''
       );
-      if (result.isErr()) return err(result.error);
+      if (result.isErr()) {
+        state.flow = 'idle';
+        return err(result.error);
+      }
       return applyLoginResult(result.value);
     }
 
     if (method === 'sms') {
       const contact = credentials.phoneOrEmail || credentials.contact || '';
       const result = await store.loginCode(contact, credentials.code || '');
-      if (result.isErr()) return err(result.error);
+      if (result.isErr()) {
+        state.flow = 'idle';
+        return err(result.error);
+      }
       return applyLoginResult(result.value);
     }
 
@@ -115,7 +122,10 @@ export function useAuthProvider() {
         return ok({});
       }
       const result = await store.verifyMagicLink(token);
-      if (result.isErr()) return err(result.error);
+      if (result.isErr()) {
+        state.flow = 'idle';
+        return err(result.error);
+      }
       return applyLoginResult(result.value);
     }
 
@@ -135,7 +145,7 @@ export function useAuthProvider() {
       const result = await store.registerLocal(data.username, data.password || '');
       if (result.isErr()) return err(result.error);
       state.isLoggedIn = true;
-      state.user = store.user as User;
+      state.user = toUser(store.user);
       state.flow = 'logged_in';
       state.tempSession = null;
       return ok(undefined);
@@ -152,45 +162,37 @@ export function useAuthProvider() {
 
   // ── 登出 ──
 
-  async function logout() {
+  async function logout(): Promise<void> {
     await store.logout();
-    Object.assign(state, { ...initialState });
+    state.isLoggedIn = false;
+    state.user = null;
+    state.session = 'anonymous';
+    state.flow = 'idle';
+    state.tempSession = null;
+    state.loginMethod = null;
   }
 
   function updateUser(user: User) {
     state.user = user;
     store.updateUser(user);
-    store.persistToStorage();
   }
 
   const ctx: AuthContextType = {
     state,
-    // async functions require cast since AuthContextType declares sync return types.
-    // Consumers (LoginPage etc.) will be updated to use await in Tasks 8-11.
-    login: login as unknown as (
-      method: LoginMethod,
-      credentials: Record<string, string>,
-      account?: User
-    ) => LoginResult,
-    register: register as unknown as (type: 'local' | 'normal', data: RegisterData) => RegisterResult,
+    login,
+    register,
     logout,
     updateUser,
-    // Store delegates — cast to match interface type
-    registerNormal: store.registerNormal as unknown as (
-      username: string,
-      password: string,
-      email?: string,
-      phone?: string
-    ) => Promise<RegisterResult>,
-    verifyNormalRegister: store.verifyNormalRegister as unknown as (
-      txnId: string,
-      code: string,
-      type: 'email' | 'phone'
-    ) => Promise<LoginResult>,
+    registerNormal: async (username, password, email?, phone?) => {
+      const r = await store.registerNormal(username ?? '', password ?? '', email, phone);
+      if (r.isErr()) return err(r.error);
+      return ok(undefined);
+    },
+    verifyNormalRegister: store.verifyNormalRegister,
     requestLoginCode: store.requestLoginCode,
-    loginCode: store.loginCode as unknown as (contact: string, code: string) => LoginResult,
+    loginCode: store.loginCode,
     requestMagicLink: store.requestMagicLink,
-    verifyMagicLink: store.verifyMagicLink as unknown as (token: string) => LoginResult,
+    verifyMagicLink: store.verifyMagicLink,
   };
 
   provide(AUTH_KEY, ctx);
