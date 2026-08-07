@@ -181,8 +181,7 @@ export const authApi = {
   bindingsGithubCallback: (token: string) =>
     get<BindingState>('/api/auth/security/bindings/github/callback?token=' + encodeURIComponent(token)),
   // ── 找回密码 ──
-  recoveryRequest: (account: string) =>
-    post<RecoveryRequestResponse>('/api/auth/recovery/request', { account }),
+  recoveryRequest: (account: string) => post<RecoveryRequestResponse>('/api/auth/recovery/request', { account }),
   recoveryVerify: (txn: string, code: string) =>
     post<MessageResponse>('/api/auth/recovery/verify', { transaction_id: txn, code }),
   recoveryReset: (txn: string, code: string, newPassword: string) =>
