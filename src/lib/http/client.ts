@@ -100,10 +100,10 @@ function getInstance(): AxiosInstance {
 
         const url = error.config?.url || '';
 
-        if (!error.config || (error.config as Record<string, unknown>)._retry) {
+        if (!error.config || (error.config as unknown as Record<string, unknown>)._retry) {
           // If _retry already set and still 401, token/refresh both invalid — clear and reject silently
           if (
-            (error.config as Record<string, unknown>)._retry &&
+            (error.config as unknown as Record<string, unknown>)._retry &&
             !url.startsWith('/api/auth/login') &&
             !url.startsWith('/api/auth/reg')
           ) {
@@ -138,7 +138,7 @@ function getInstance(): AxiosInstance {
           });
         }
 
-        (error.config as Record<string, unknown>)._retry = true;
+        (error.config as unknown as Record<string, unknown>)._retry = true;
         isRefreshing = true;
 
         try {

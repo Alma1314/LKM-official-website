@@ -17,7 +17,13 @@ const bio = user?.bio || '';
   </Fragment>
   <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
     <div class="card-base z-10 px-9 py-6 relative w-full">
-      {isMockUser ? <ProfilePage client:load user={user} /> : <UserProfile client:only="vue" username={username} />}
+      {
+        isMockUser ? (
+          <ProfilePage client:load user={user} />
+        ) : (
+          <UserProfile client:only="vue" username={username || ''} />
+        )
+      }
     </div>
   </div>
 </MainGridLayout>

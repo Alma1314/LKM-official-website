@@ -13,10 +13,14 @@ export const authExchange = mapExchange({
         const data = JSON.parse(saved);
         const token = data._token;
         if (token) {
+          const prevFetchOptions =
+            typeof operation.context.fetchOptions === 'function'
+              ? operation.context.fetchOptions()
+              : operation.context.fetchOptions;
           operation.context.fetchOptions = {
-            ...operation.context.fetchOptions,
+            ...prevFetchOptions,
             headers: {
-              ...(operation.context.fetchOptions?.headers as Record<string, string>),
+              ...((prevFetchOptions as RequestInit)?.headers as Record<string, string>),
               Authorization: `Bearer ${token}`,
             },
           };
