@@ -16,6 +16,19 @@ class ProfileInfo(BaseModel):
     avatar: str | None = None
     role: ProfileRole = ProfileRole.MEMBER
     account_level: str = "local"
+    bio: str | None = None
+    major: str | None = None
+    grade: str | None = None
+    interests: list[str] = []
+    ideals: str | None = None
+    points: int = 0
+    follower_count: int = 0
+    following_count: int = 0
+    post_count: int = 0
+    project_count: int = 0
+    column_article_count: int = 0
+    has_column_access: bool = False
+    title: str = "newbie"
 
 
 class ProfileUpdate(BaseModel):

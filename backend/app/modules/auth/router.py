@@ -11,6 +11,7 @@ from app.db.models import Profile as ProfileModel
 from app.db.models import AuthIdentity as AuthIdentityModel
 from app.db.models import PasskeyCredential as PasskeyCredentialModel
 from app.db.models import User as UserModel
+from app.db.models import ColumnPost as ColumnPostModel
 from app.db.session import get_session
 from app.modules.auth import simulation
 from app.modules.auth.deps import CurrentUser, get_current_user
@@ -94,14 +95,7 @@ def get_user_by_username(username: str, db: Session = Depends(get_session)):
     user = db.query(UserModel).filter(UserModel.username == username).first()
     if not user:
         raise BizError(ErrCode.USER_NOT_FOUND)
-    p = user.profile
-    info = ProfileInfo(
-        nickname=p.nickname if p else None,
-        avatar=p.avatar if p else None,
-        role=p.role if p else "member",
-        account_level=user.account_level if user.account_level else "local",
-    )
-    return info.model_dump()
+    return _build_profile_info(user, db)
 
 
 @router.get("/{user_id}", response_model=ApiResp[ProfileInfo])
@@ -110,14 +104,41 @@ def get_user(user_id: int, db: Session = Depends(get_session)):
     user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if not user:
         raise BizError(ErrCode.USER_NOT_FOUND)
+    return _build_profile_info(user, db)
+
+
+def _build_profile_info(user: UserModel, db: Session) -> dict:
+    """将 user 投影为统一 ProfileInfo 响应。专栏计数真实聚合，其余用仿真/默认。"""
     p = user.profile
-    info = ProfileInfo(
+    interests = []
+    if p and p.interests:
+        try:
+            interests = json.loads(p.interests)
+        except (ValueError, TypeError):
+            interests = []
+    column_article_count = (
+        db.query(ColumnPostModel).filter(ColumnPostModel.author_id == user.id).count()
+    )
+    return ProfileInfo(
         nickname=p.nickname if p else None,
         avatar=p.avatar if p else None,
         role=p.role if p else "member",
         account_level=user.account_level if user.account_level else "local",
-    )
-    return info.model_dump()
+        bio=p.bio if p else None,
+        major=p.major if p else None,
+        grade=p.grade if p else None,
+        interests=interests,
+        ideals=p.ideals if p else None,
+        points=user.points or 0,
+        follower_count=user.follower_count or 0,
+        following_count=user.following_count or 0,
+        # 发言/项目 本期以仿真默认占位（无持久化表）
+        post_count=0,
+        project_count=0,
+        column_article_count=column_article_count,
+        has_column_access=column_article_count > 0,
+        title=p.title if p and p.title else "newbie",
+    ).model_dump()
 
 
 @router.put("/{user_id}/profile", response_model=ApiResp[ProfileInfo])

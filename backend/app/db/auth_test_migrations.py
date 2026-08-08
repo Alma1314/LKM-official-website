@@ -14,15 +14,44 @@ from app.db.session import engine
 
 
 def migrate() -> None:
-    """建新表 + 对 users 补齐新增列（幂等）。"""
+    """建新表 + 对 users/profiles 补齐新增列（幂等）。"""
     # 全新库：create_all 会连同 users 及其新字段一起建出
     models.Base.metadata.create_all(bind=engine)
 
     insp = inspect(engine)
+
+    def _ensure_columns(table: str, plan: dict[str, str]) -> None:
+        if table not in insp.get_table_names():
+            return
+        cols = {c["name"] for c in insp.get_columns(table)}
+        for name, ddl in plan.items():
+            if name not in cols:
+                with engine.begin() as conn:
+                    conn.execute(sa.text(ddl))
+
+    _ensure_columns(
+        "users",
+        {
+            "points": "ALTER TABLE users ADD COLUMN points INTEGER NOT NULL DEFAULT 0",
+            "follower_count": "ALTER TABLE users ADD COLUMN follower_count INTEGER NOT NULL DEFAULT 0",
+            "following_count": "ALTER TABLE users ADD COLUMN following_count INTEGER NOT NULL DEFAULT 0",
+        },
+    )
+    _ensure_columns(
+        "profiles",
+        {
+            "bio": "ALTER TABLE profiles ADD COLUMN bio VARCHAR(200)",
+            "major": "ALTER TABLE profiles ADD COLUMN major VARCHAR(100)",
+            "grade": "ALTER TABLE profiles ADD COLUMN grade VARCHAR(50)",
+            "interests": "ALTER TABLE profiles ADD COLUMN interests TEXT",
+            "ideals": "ALTER TABLE profiles ADD COLUMN ideals VARCHAR(300)",
+            "title": "ALTER TABLE profiles ADD COLUMN title VARCHAR(50) NOT NULL DEFAULT 'newbie'",
+        },
+    )
+
+    # 原有 users 高级认证补列逻辑保留（two_factor_enabled 等 5 列）
     if "users" not in insp.get_table_names():
         return
-
-    # 旧库：仅在缺列时补 ALTER TABLE
     cols = {c["name"] for c in insp.get_columns("users")}
     for name, ddl in {
         "two_factor_enabled": "ALTER TABLE users ADD COLUMN two_factor_enabled BOOLEAN NOT NULL DEFAULT 0",

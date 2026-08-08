@@ -75,3 +75,24 @@ class TestAuth:
         body = response.json()
         assert body["code"] == 0
         assert body["data"]["username"] == "meuser"
+
+
+class TestProfileFields:
+    def test_by_username_returns_new_profile_fields(self, client):
+        client.post("/api/auth/reg/local", json={"username": "profield2", "password": "password123456"})
+        r = client.get("/api/auth/user/by-username/profield2")
+        assert r.status_code == 200
+        data = r.json()["data"]
+        for key in ("bio", "major", "grade", "interests", "ideals", "points", "follower_count", "following_count", "post_count", "project_count", "column_article_count", "has_column_access", "title"):
+            assert key in data, f"缺少字段 {key}"
+
+    def test_by_username_defaults(self, client):
+        client.post("/api/auth/reg/local", json={"username": "profield3", "password": "password123456"})
+        r = client.get("/api/auth/user/by-username/profield3")
+        data = r.json()["data"]
+        assert data["bio"] is None
+        assert data["interests"] == []
+        assert data["points"] == 0
+        assert data["follower_count"] == 0
+        assert data["post_count"] >= 0
+        assert data["title"] == "newbie"

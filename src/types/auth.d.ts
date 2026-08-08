@@ -12,6 +12,19 @@ export interface User {
   nickname?: string | null;
   avatar?: string | null;
   role?: string;
+  bio?: string | null;
+  major?: string | null;
+  grade?: string | null;
+  interests?: string[];
+  ideals?: string | null;
+  points?: number;
+  follower_count?: number;
+  following_count?: number;
+  post_count?: number;
+  project_count?: number;
+  column_article_count?: number;
+  has_column_access?: boolean;
+  title?: string;
 }
 
 export type AccountLevel = User['account_level'];

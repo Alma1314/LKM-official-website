@@ -55,6 +55,11 @@ class User(Base):
     blog_comments = relationship("BlogComment", back_populates="user")
     blog_stars = relationship("BlogStar", back_populates="user")
 
+    # ── 展示型计数列（本任务新增） ──────────────────────────
+    points = sa.Column(sa.Integer, nullable=False, default=0)
+    follower_count = sa.Column(sa.Integer, nullable=False, default=0)
+    following_count = sa.Column(sa.Integer, nullable=False, default=0)
+
 
 class Profile(Base):
     __tablename__ = "profiles"
@@ -63,6 +68,12 @@ class Profile(Base):
     nickname = sa.Column(sa.String(100), nullable=True)
     avatar = sa.Column(sa.Text, nullable=True)
     role = sa.Column(sa.String(20), nullable=False, default="member")
+    bio = sa.Column(sa.String(200), nullable=True)
+    major = sa.Column(sa.String(100), nullable=True)
+    grade = sa.Column(sa.String(50), nullable=True)
+    interests = sa.Column(sa.Text, nullable=True)  # JSON 数组字符串
+    ideals = sa.Column(sa.String(300), nullable=True)
+    title = sa.Column(sa.String(50), nullable=False, default="newbie")
 
     user = relationship("User", back_populates="profile")
 
