@@ -29,17 +29,17 @@ const clockYears = items.map((i) => shortYear(i.year));
               <div class="ct-card">
                 <div class="ct-card-body">
                   <div class="font-mono text-[28px] font-bold text-primary mb-2">{item.year}</div>
-                  <div class="text-[30px] font-semibold text-base-content border-b border-primary pb-2 mb-3">
+                  <div class="text-[30px] font-semibold text-neutral-800 dark:text-neutral-100 border-b border-primary pb-2 mb-3">
                     {item.title}
                   </div>
-                  <div class="text-[15px] leading-relaxed text-oklch-hue">{item.description}</div>
+                  <div class="text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-300">{item.description}</div>
                 </div>
                 {/* 移动端：卡片内文字右侧箭头 */}
                 <div class="ct-arrows ct-arrows-mobile">
-                  <button class="ct-arrow" data-ct-arrow="prev" aria-label="上一个">
+                  <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="prev" aria-label="上一个">
                     <Icon name="tabler:chevron-up" class="h-6 w-6" />
                   </button>
-                  <button class="ct-arrow" data-ct-arrow="next" aria-label="下一个">
+                  <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="next" aria-label="下一个">
                     <Icon name="tabler:chevron-down" class="h-6 w-6" />
                   </button>
                 </div>
@@ -50,10 +50,10 @@ const clockYears = items.map((i) => shortYear(i.year));
       </div>
       {/* 桌面端：卡片外部右侧箭头 */}
       <div class="ct-arrows ct-arrows-desktop">
-        <button class="ct-arrow" data-ct-arrow="prev" aria-label="上一个">
+        <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="prev" aria-label="上一个">
           <Icon name="tabler:chevron-up" class="h-6 w-6" />
         </button>
-        <button class="ct-arrow" data-ct-arrow="next" aria-label="下一个">
+        <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="next" aria-label="下一个">
           <Icon name="tabler:chevron-down" class="h-6 w-6" />
         </button>
       </div>
@@ -71,11 +71,11 @@ const clockYears = items.map((i) => shortYear(i.year));
           items.map((_item, i) => {
             const deg = i * step;
             return (
-              <div class="clock-tick cursor-pointer" style={`transform: rotate(${deg}deg)`}>
-                <div class="clock-tick-mark" data-ct-tick={i}>
-                  <span class="clock-tick-year">{clockYears[i]}</span>
-                </div>
-              </div>
+              <div class="clock-tick cursor-pointer flex items-center" style={`transform: rotate(${deg}deg)`}>
+  <div class="clock-tick-mark flex items-center justify-center text-neutral-600 dark:text-neutral-100" data-ct-tick={i}>
+    <span class="clock-tick-year text-neutral-600 dark:text-neutral-100 leading-none">{clockYears[i]}</span>
+  </div>
+</div>
             );
           })
         }
@@ -83,7 +83,6 @@ const clockYears = items.map((i) => shortYear(i.year));
     </div>
   </div>
 </div>
-
 <script>
   function initClockTimeline(root: HTMLElement) {
     const track = root.querySelector('[data-ct-cards-track]') as HTMLElement;
