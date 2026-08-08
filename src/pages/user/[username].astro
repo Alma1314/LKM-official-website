@@ -6,7 +6,7 @@ const { username } = Astro.params;
 const displayName = username || '';
 ---
 
-<MainGridLayout title={displayName} description="">
+<MainGridLayout username={username} title={displayName} description="">
   <Fragment slot="head">
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>

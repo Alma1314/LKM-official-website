@@ -84,6 +84,24 @@
               </form>
               <div v-if="editError" class="alert alert-error text-sm">{{ editError }}</div>
 
+              <!-- 联系方式 -->
+              <div class="border-t border-surface-3 pt-4">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="font-medium">联系方式</h4>
+                  <button type="button" class="btn btn-sm btn-ghost" @click="addLink">+ 添加</button>
+                </div>
+                <p class="text-xs text-text-muted mb-3">可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。</p>
+                <div v-for="(l, i) in editLinks" :key="i" class="flex flex-wrap gap-2 items-center mb-2">
+                  <input v-model="l.name" class="input input-bordered input-sm flex-1 min-w-[6rem]" placeholder="名称（如 QQ / GitHub）" />
+                  <input v-model="l.icon" class="input input-bordered input-sm w-36" placeholder="图标名（选填）" />
+                  <input v-model="l.url" class="input input-bordered input-sm flex-[2] min-w-[8rem]" placeholder="链接 / 账号（选填）" />
+                  <button type="button" class="btn btn-sm btn-ghost text-error" @click="removeLink(i)">删除</button>
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" :disabled="saving" @click="handleSaveLinks">
+                  保存联系方式
+                </button>
+              </div>
+
               <!-- 用户只读信息 -->
               <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-surface-3 pt-4">
                 <div>
@@ -171,7 +189,7 @@ import TwoFactorSetup from '~/features/auth/components/settings/TwoFactorSetup.v
 import PasskeySetup from '~/features/auth/components/settings/PasskeySetup.vue';
 import ConfirmDialog from '~/features/auth/components/settings/ConfirmDialog.vue';
 import type { User } from '~/types/auth';
-import { authApi } from '~/lib/api/modules/auth';
+import { authApi, type ContactLink } from '~/lib/api/modules/auth';
 
 const store = useAuthStore();
 
@@ -190,6 +208,9 @@ const activeSection = ref<SectionKey>('profile');
 const message = ref('');
 const saving = ref(false);
 const editNickname = ref(store.user?.nickname || '');
+const editLinks = ref<ContactLink[]>(
+  (store.user?.contact_links || []).map((l) => ({ name: l.name, icon: l.icon ?? '', url: l.url ?? '' }))
+);
 const editError = ref('');
 const confirmLogout = ref(false);
 
@@ -221,6 +242,36 @@ async function handleSaveNickname() {
       }
       store.updateUser({ ...store.user, nickname: r.value?.nickname ?? null });
       message.value = '资料已更新';
+      setTimeout(() => (message.value = ''), 3000);
+    }
+  } catch {
+    editError.value = '保存失败，请重试';
+  } finally {
+    saving.value = false;
+  }
+}
+
+function addLink() {
+  editLinks.value.push({ name: '', icon: '', url: '' });
+}
+function removeLink(index: number) {
+  editLinks.value.splice(index, 1);
+}
+async function handleSaveLinks() {
+  saving.value = true;
+  editError.value = '';
+  try {
+    if (store.user) {
+      const cleaned = editLinks.value
+        .filter((l) => l.name.trim())
+        .map((l) => ({ name: l.name.trim(), icon: l.icon?.trim() || undefined, url: l.url?.trim() || undefined }));
+      const r = await authApi.editProfile(store.user.id, { contact_links: cleaned });
+      if (r.isErr()) {
+        editError.value = r.error.message || '保存失败，请重试';
+        return;
+      }
+      store.updateUser({ ...store.user, contact_links: cleaned });
+      message.value = '联系方式已更新';
       setTimeout(() => (message.value = ''), 3000);
     }
   } catch {

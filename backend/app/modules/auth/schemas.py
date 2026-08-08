@@ -11,6 +11,12 @@ class ProfileRole(StrEnum):
     ADMIN = "admin"
 
 
+class ContactLink(BaseModel):
+    name: str
+    icon: str | None = None
+    url: str | None = None
+
+
 class ProfileInfo(BaseModel):
     nickname: str | None = None
     avatar: str | None = None
@@ -29,11 +35,13 @@ class ProfileInfo(BaseModel):
     column_article_count: int = 0
     has_column_access: bool = False
     title: str = "newbie"
+    contact_links: list[ContactLink] = []
 
 
 class ProfileUpdate(BaseModel):
     nickname: str | None = None
     avatar: str | None = None
+    contact_links: list[ContactLink] | None = None
 
 
 class UserRegLocal(BaseModel):

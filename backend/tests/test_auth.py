@@ -83,7 +83,7 @@ class TestProfileFields:
         r = client.get("/api/auth/user/by-username/profield2")
         assert r.status_code == 200
         data = r.json()["data"]
-        for key in ("bio", "major", "grade", "interests", "ideals", "points", "follower_count", "following_count", "post_count", "project_count", "column_article_count", "has_column_access", "title"):
+        for key in ("bio", "major", "grade", "interests", "ideals", "points", "follower_count", "following_count", "post_count", "project_count", "column_article_count", "has_column_access", "title", "contact_links"):
             assert key in data, f"缺少字段 {key}"
 
     def test_by_username_defaults(self, client):
@@ -96,3 +96,23 @@ class TestProfileFields:
         assert data["follower_count"] == 0
         assert data["post_count"] >= 0
         assert data["title"] == "newbie"
+        assert data["contact_links"] == []
+
+    def test_edit_profile_contact_links(self, client):
+        r = client.post(
+            "/api/auth/reg/local",
+            json={"username": "profield4", "password": "password123456"},
+        )
+        token = r.json()["data"]["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+        user_id = r.json()["data"]["user_id"]
+        r = client.put(
+            f"/api/auth/{user_id}/profile",
+            json={"contact_links": [{"name": "GitHub", "url": "https://github.com/x", "icon": "fa6-brands:github"}, {"name": "QQ", "url": "123456"}]},
+            headers=headers,
+        )
+        assert r.status_code == 200, r.text
+        links = r.json()["data"]["contact_links"]
+        assert links[0]["name"] == "GitHub"
+        assert links[0]["url"] == "https://github.com/x"
+        assert links[1]["name"] == "QQ"

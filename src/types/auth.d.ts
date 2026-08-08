@@ -25,6 +25,7 @@ export interface User {
   column_article_count?: number;
   has_column_access?: boolean;
   title?: string;
+  contact_links?: import('~/lib/api/modules/auth').ContactLink[];
 }
 
 export type AccountLevel = User['account_level'];

@@ -46,6 +46,7 @@ def migrate() -> None:
             "interests": "ALTER TABLE profiles ADD COLUMN interests TEXT",
             "ideals": "ALTER TABLE profiles ADD COLUMN ideals VARCHAR(300)",
             "title": "ALTER TABLE profiles ADD COLUMN title VARCHAR(50) NOT NULL DEFAULT 'newbie'",
+            "contact_links": "ALTER TABLE profiles ADD COLUMN contact_links TEXT",
         },
     )
 

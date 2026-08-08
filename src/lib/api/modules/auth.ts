@@ -21,6 +21,12 @@ export interface TokenData {
 /** 登录/续签成功后返回的令牌载荷（与 TokenData 同构）。 */
 export type AuthTokenData = TokenData;
 
+export interface ContactLink {
+  name: string;
+  icon?: string;
+  url?: string;
+}
+
 export interface ProfileInfo {
   nickname: string | null;
   avatar: string | null;
@@ -39,6 +45,7 @@ export interface ProfileInfo {
   column_article_count?: number;
   has_column_access?: boolean;
   title?: string;
+  contact_links?: ContactLink[];
 }
 
 export interface RegNormalResponse {
@@ -157,8 +164,10 @@ export const authApi = {
   getUserProfile: (userId: number) => get<ProfileInfo>(`/api/auth/${userId}`),
 
   // ── 编辑用户资料 ──
-  editProfile: (userId: number, info: { nickname?: string | null; avatar?: string | null }) =>
-    put<ProfileInfo>(`/api/auth/${userId}/profile`, info),
+  editProfile: (
+    userId: number,
+    info: { nickname?: string | null; avatar?: string | null; contact_links?: ContactLink[] }
+  ) => put<ProfileInfo>(`/api/auth/${userId}/profile`, info),
 
   // ── 根据用户名获取用户信息 ──
   getUserByUsername: (username: string) =>

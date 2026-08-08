@@ -10,7 +10,6 @@ export {
   ShellFuwariFooter,
   ShellLogo,
   ShellFavicons,
-  ShellProfile,
   ShellBlogSidePanel,
   ShellTOC,
   ShellWidgetLayout,

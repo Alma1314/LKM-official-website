@@ -116,6 +116,13 @@ def _build_profile_info(user: UserModel, db: Session) -> dict:
             interests = json.loads(p.interests)
         except (ValueError, TypeError):
             interests = []
+    contact_links = []
+    if p and p.contact_links:
+        try:
+            raw = json.loads(p.contact_links)
+            contact_links = raw if isinstance(raw, list) else []
+        except (ValueError, TypeError):
+            contact_links = []
     column_article_count = (
         db.query(ColumnPostModel).filter(ColumnPostModel.author_id == user.id).count()
     )
@@ -138,6 +145,7 @@ def _build_profile_info(user: UserModel, db: Session) -> dict:
         column_article_count=column_article_count,
         has_column_access=column_article_count > 0,
         title=p.title if p and p.title else "newbie",
+        contact_links=contact_links,
     ).model_dump()
 
 
@@ -154,12 +162,17 @@ def edit_profile(
     p = db.query(ProfileModel).filter(ProfileModel.user_id == user_id).first()
     if not p:
         raise BizError(ErrCode.USER_NOT_FOUND)
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    if not user:
+        raise BizError(ErrCode.USER_NOT_FOUND)
     if info.nickname is not None:
         p.nickname = info.nickname
     if info.avatar is not None:
         p.avatar = info.avatar
+    if info.contact_links is not None:
+        p.contact_links = json.dumps([cl.model_dump() for cl in info.contact_links])
     db.commit()
-    return ProfileInfo(nickname=p.nickname, avatar=p.avatar, role=p.role).model_dump()
+    return _build_profile_info(user, db)
 
 
 # ── Registration ──────────────────────────────────────────────

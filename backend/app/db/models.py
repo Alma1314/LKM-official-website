@@ -74,6 +74,7 @@ class Profile(Base):
     interests = sa.Column(sa.Text, nullable=True)  # JSON 数组字符串
     ideals = sa.Column(sa.String(300), nullable=True)
     title = sa.Column(sa.String(50), nullable=False, default="newbie")
+    contact_links = sa.Column(sa.Text, nullable=True)
 
     user = relationship("User", back_populates="profile")
 
