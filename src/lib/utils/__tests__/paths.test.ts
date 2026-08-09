@@ -35,8 +35,8 @@ describe('buildUrl', () => {
 
 describe('buildPermalink', () => {
   it('returns root for home type', () => {
-    // home 类型拼接 BASE_PATHNAME + 'official'
-    expect(buildPermalink('/', { type: 'home' })).toBe('/LKM-official-website/official');
+    // home 类型只拼接 BASE_PATHNAME（根路径），不再带 'official'
+    expect(buildPermalink('/', { type: 'home' })).toBe('/LKM-official-website');
   });
 
   it('returns blog path for blog type', () => {
