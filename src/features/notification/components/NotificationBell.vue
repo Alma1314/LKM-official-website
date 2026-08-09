@@ -95,9 +95,9 @@ onUnmounted(() => {
       <!-- 面板头部 -->
       <div class="flex items-center justify-between px-3 py-2 border-b border-black/5 dark:border-white/10 mb-1">
         <span class="font-semibold text-sm text-neutral-800 dark:text-neutral-100">通知</span>
-        <button 
-          v-if="unreadCount > 0" 
-          class="text-xs text-primary hover:underline font-medium transition-colors" 
+        <button
+          v-if="unreadCount > 0"
+          class="text-xs text-primary hover:underline font-medium transition-colors"
           @click="markAllAsRead"
         >
           全部已读
@@ -105,7 +105,10 @@ onUnmounted(() => {
       </div>
 
       <!-- 无通知状态 -->
-      <div v-if="notifications.length === 0" class="px-3 py-6 text-center text-sm text-neutral-400 dark:text-neutral-500">
+      <div
+        v-if="notifications.length === 0"
+        class="px-3 py-6 text-center text-sm text-neutral-400 dark:text-neutral-500"
+      >
         暂无通知
       </div>
 
@@ -121,8 +124,8 @@ onUnmounted(() => {
         <span
           class="shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
           :class="
-            n.isRead 
-              ? 'bg-neutral-100 dark:bg-white/10 text-neutral-400 dark:text-neutral-400' 
+            n.isRead
+              ? 'bg-neutral-100 dark:bg-white/10 text-neutral-400 dark:text-neutral-400'
               : 'bg-primary/10 text-primary'
           "
         >
@@ -131,7 +134,9 @@ onUnmounted(() => {
 
         <!-- 文本内容 -->
         <div class="flex-1 min-w-0">
-          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-100 truncate group-hover:text-primary transition-colors">
+          <div
+            class="text-sm font-medium text-neutral-800 dark:text-neutral-100 truncate group-hover:text-primary transition-colors"
+          >
             {{ n.title }}
           </div>
           <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-2 leading-relaxed">
