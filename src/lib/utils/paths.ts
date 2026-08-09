@@ -52,7 +52,7 @@ export function buildPermalink(slug: string, options: BuildPermalinkOptions = {}
   let path: string;
   switch (type) {
     case 'home':
-      path = 'official';
+      path = '';
       break;
     case 'blog':
       path = BLOG_BASE;

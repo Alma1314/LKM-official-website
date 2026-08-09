@@ -7,3 +7,5 @@ package-lock.json
 .superpowers
 reference
 .claude
+.pytest_cache
+.venv

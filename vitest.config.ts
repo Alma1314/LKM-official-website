@@ -12,11 +12,34 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['src/**/*.test.ts'],
-    exclude: ['dist/**', '.astro/**', 'coverage/**', 'node_modules/**', '**/node_modules/**'],
-    environment: 'node',
-    // 仅对 auth 目录启用 DOM 环境（组件态测试基建）
-    environmentMatchGlobs: [['src/features/auth/**', 'happy-dom']],
-    setupFiles: ['src/features/auth/__tests__/setup.ts'],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'node',
+          include: ['src/**/*.test.ts'],
+          exclude: [
+            'dist/**',
+            '.astro/**',
+            'coverage/**',
+            'node_modules/**',
+            '**/node_modules/**',
+            'src/features/auth/**',
+          ],
+          environment: 'node',
+        },
+      },
+      {
+        // 仅对 auth 目录启用 DOM 环境（组件态测试基建）
+        extends: true,
+        test: {
+          name: 'auth',
+          include: ['src/features/auth/**/*.test.ts'],
+          exclude: ['dist/**', '.astro/**', 'coverage/**', 'node_modules/**', '**/node_modules/**'],
+          environment: 'happy-dom',
+          setupFiles: ['src/features/auth/__tests__/setup.ts'],
+        },
+      },
+    ],
   },
 });
