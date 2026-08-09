@@ -9,119 +9,79 @@
 
 ---
 
-## 前言 · 新手指导 · 环境部署
+## 前言
 
-如果你有兴趣来参与理科迷的网站建设工作，在正式你的开发之旅前，我们首先建议开发工作在电脑端完成，这里以WINDOWS系统为例，你需要预备如下工具来完成对环境的部署：
-Git bash（以下简称git），pnpm，NodeJS 24+，以及一个稳定可靠的网络。
+就目前而言，理科迷（`LKM`）的官网是基于`github.io`的个人主页，目前为止，网站基于`Astro`架构搭建
 
-下载这些前置的官网为
+（`Astro`：[Astro](https://astro.build/)）
 
-Gitbash：[Git - Install for Windows](https://git-scm.com/install/windows)
+整体处于测试阶段，部分功能尚有不完善之地，还请谅解，在国内部署域名可能要再很长一段时间后才能实践，如果你有兴趣来参与网站建设，欢迎报名！加入技术委员会（QQ群`1104277319`）以更深入的交流！在正式你的开发之旅前，我们首先建议开发工作在电脑端完成，以下以`WINDOWS`系统为例。
 
-Pnpm：[安装 | pnpm](https://pnpm.io/zh/installation)
+总仓库地址（你目前所处网页）为： [https://github.com/LKM-AHZ/LKM-official-website](https://github.com/LKM-AHZ/LKM-official-website)
 
-NodeJS： [Node.js — Download Node.js®](https://nodejs.org/en/download)
+后端仓库地址：[LKM-AHZ/LKM-service: backend](https://github.com/LKM-AHZ/LKM-service)
 
-相关的安装教程可以在如CSDN或是B站上等找到教程，这里不做过多阐述。
+如果你是一名新手，我们也欢迎你的加入，在正式加入项目之前，你可以先熟悉一下项目架构后再考虑加入。
 
-环境部署步骤将在cmd端执行。
+当然，我们默认你已基本会使用`github`。
 
-准备好这些工具后，打开cmd，运行
+[**什么？！你连GitHub都不知道是啥？！**](https://www.bilibili.com/video/BV1m4GhzEER3/?spm_id_from=333.337.search-card.all.click&vd_source=0fd643b947c80b42ab465c4ed3101244)
 
-```bash
+## 新手指导 · 环境部署
+
+**oi！小登！**
+
+你需要准备如下工具来完成对开发环境的部署，当然~后续的所有操作将在`cmd`（命令提示符）中执行：
+
+`Git bash`（以下简称`git`），`pnpm，NodeJS 24+`，以及一个稳定可靠的网络。
+
+[Git bash](https://git-scm.com/install/windows)
+
+[Pnpm](https://pnpm.io/zh/installation)
+
+[NodeJS](https://pnpm.io/zh/installation)
+
+相关的安装教程可以在如`CSDN`或是`B站`上等找到教程
+
+安装好这些工具后，打开`cmd`，输入指令
+
+```cmd
 git clone https://github.com/LKM-AHZ/LKM-official-website.git
 ```
 
-克隆成功后，运行
+克隆完成后，进入项目所在的本地目录下
 
-```
+```cmd
 cd LKM-official-website
+```
+
+如果你不想让项目默认安装在C盘，在后续的操作中，请记得要输入参数` /d`来改变盘符。
+
+运行命令
+
+```cmd
 pnpm install
+```
+
+后在运行
+
+```cmd
 pnpm run dev
 ```
 
-pnpm run dev 同 pnpm dev
-
-目前为止，网站采用astro架构搭建，输入pnpm run dev命令后，此时会输出
+此时会输出
 
 ```bash
 $ astro dev
 ```
 
-浏览器访问 `http://localhost:4321/LKM-official-website`
+随后打开浏览器（默认为`Edge`）访问链接[理科迷 —— 科技爱好者](http://localhost:4321/LKM-official-website)
 
-如要更新数据
-
-确保在程序关闭的情况下
-
-在项目目录中依次输入
-
-```bash
-git pull
-pnpm install
-```
-
-不过值得注意的是，pnpm的下载也极容易受到网络干扰因素
-
-例如在输入pnpm install后等待一段时间后会输出红色字幕警告：如
-
-```bash
-[ERR_PNPM_META_FETCH_FAIL] GET https://registry.npmjs.org/......: The operation was aborted due to timeout
-```
-
-这个时候就要尝试切换镜像源了,在更换完镜像源后，切记输入清除缓存的指令
-
-```bash
-pnpm store prune
-```
-
-如果只是中途发生错误，并不需要更换镜像源的话，输入下面这串指令以清除缓存
-
-```bash
-pnpm clean –lockfile
-```
-
-你也可以检测一下网络延迟
-
-```bash
-npm ping
-```
-
-（不过这条貌似没什么用，即便它的响应在700ms内，该下载不上的还是下载不上）
-
-我们注意到，使用指令
-
-```bash
-set NODE_OPTIONS=--dns-result-order=ipv4first
-set PNPM_NETWORK_CONCURRENCY=4
-set PNPM_FETCH_TIMEOUT=60000
-```
-
-后，pnpm的下载明显要稳定很多，我们可以采用在后面加参数`--network-concurrency=1 --fetch-timeout=60000`的形式来尝试稳定下载！
-
-不过官网的下载速度一般很慢，我们可以改为采用镜像源的形式来加快下载进度，这里以淘宝的为例
-
-```bash
-pnpm config set registry https://registry.npmmirror.com
-pnpm store prune
-pnpm install --network-concurrency=2 --fetch-timeout=60000
-```
-
-在后续的更新中，如要同步别人所更新的内容
-
-依次输入
-
-```bash
-git stash
-git pull
-pnpm install --network-concurrency=2 --fetch-timeout=60000
-```
-
-即可完成更新
+即可看到目前的官网。
 
 ## 开发工具部署
 
-通常情况下我们选用VScode进行开发，安装完VScode后，你需要下载如下组件
+通常情况下我们选用[VScode](https://code.visualstudio.com/Download?_exp_download=fb315fc982)进行开发，安装完VScode后，你需要在`VScode`中的插件商店里下载如下组件
 
 `Nodejs（extensions for nodejs）`
 
@@ -135,87 +95,203 @@ pnpm install --network-concurrency=2 --fetch-timeout=60000
 
 `（默认位置为C盘）C:\Users\<你的用户名>\LKM-official-website`
 
-即可完成开发工具的部署。
+即可完成开发环境的部署。
 
-## 开发！启动！
+## 下载过程中易遇到的问题
 
-确保完成上述步骤后
+当然，你也可以直接用`cmd`的`code`命令来直接打开。
+
+对于`github`本身，用户可用`SSL`来解决大部分在`git clone`时遇到的网络波动的问题
+
+而对于`pnpm install`，这一步本身也极易受到网络干扰，
+
+例如在输入`pnpm install`后等待一段时间后会输出红色字幕警告：如
 
 ```bash
+[ERR_PNPM_META_FETCH_FAIL] GET https://registry.npmjs.org/......: The operation was aborted due to timeout
+```
+
+这个时候就要尝试切换镜像源了
+
+不过要注意
+
+在更换完镜像源后，切记输入清除缓存的指令以防干扰
+
+```cmd
+pnpm store prune
+```
+
+如果只是中途发生错误，并不需要更换镜像源的话，输入下面这串指令以清除缓存
+
+```cmd
+pnpm clean –lockfile
+```
+
+输入如下这串命令以检查网络延迟（不过这条貌似没什么用，即便它的响应在700ms内，该下载不上的还是下载不上）
+
+```cmd
+npm ping
+```
+
+我们注意到，使用指令
+
+```cmd
+set NODE_OPTIONS=--dns-result-order=ipv4first
+set PNPM_NETWORK_CONCURRENCY=4
+set PNPM_FETCH_TIMEOUT=60000
+```
+
+后，`pnpm`的下载明显要稳定很多
+
+我们可以通过在后面加参数`--network-concurrency=1 --fetch-timeout=60000`的形式的形式来稳定pnpm的下载，例如
+
+```cmd
+pnpm install --network-concurrency=1 --fetch-timeout=60000
+```
+
+不过官网的下载速度一般很慢，我们可以改为采用镜像源的形式来加快下载进度，输入如下这串指令来更换链接（默认此时在`LKM-official-website`的根目录中执行，这里我们采用淘宝的镜像源）
+
+```cmd
+pnpm config set registry https://registry.npmmirror.com
+pnpm store prune
+pnpm install --network-concurrency=2 --fetch-timeout=60000
+```
+
+## 关于后续的更新
+
+```cmd
+cd LKM-official-website
+```
+
+输入
+
+```cmd
+git stash
+```
+
+来保留你的更改，
+
+在后续的使用中，如要更新别人的内容，需要你手动完成，依次输入
+
+```cmd
+git stash
+git pull
+pnpm install --network-concurrency=2 --fetch-timeout=60000
+```
+
+如看到类似的输出
+
+```bash
+Already up to date
+```
+
+则说明更新完成
+
+## 启动开发平台
+
+确保完成上述步骤后，重新启用一个终端，输入
+
+```cmd
 cd LKM-official-website
 pnpm dev
 ```
 
-浏览器访问`http://localhost:4321/LKM-official-website/`
+浏览器访问[理科迷 —— 科技爱好者](http://localhost:4321/LKM-official-website/)
 
 `VScode`进入`LKM-official-website`文件夹即可启动开发平台。
 
-目前，`Astro`采用的是热更新的架构，这意味着你在修改源文件的同时修改能迅速反映到网页上。
+（记得勾选我完全信任）
+
+目前，`Astro`采用的是**热更新**的架构，这意味着你在修改源文件的同时修改能迅速反映到网页上。
+
+## 嘿！你需要基本熟悉一下目前的网站的基本架构！
+
+这里举两个例子
+
+例如要编写团队信息，具体的位置在
+
+`LKM-official-website\src\features\team\data\members.ts`
+
+中。
+
+如要编写起始页的信息，具体的位置在
+
+`LKM-official-website\src\pages\official\index.astro`
+
+中
+
+其余的请详见**项目结构**。
 
 ## 正式加入
 
-在做好要加入开发组（目前叫技术组）的准备后，你需要准备一个`github`账号和一个能用的邮箱，例如QQ邮箱，（确保你的账户有效且不会被盗，且保证我们能够与你取得联系），向有关部门提交申请后，如果通过，会发给你一封加入组织的邮件，首先你需要在本地中登录你的`github`账户，cmd进入`LKM-official-website`的目录下输入命令
+在做好要加入开发组（目前叫技术组）的准备后，你需要准备一个`github`账号和一个能用的邮箱，例如QQ邮箱，（**确保你的账户有效且不会被盗，且保证我们能够与你取得联系**），向有关部门提交申请后，如果通过，会发给你一封加入组织的邮件，首先你需要在本地中登录你的`github`账户，`cmd`在`LKM-official-website`目录下输入命令
 
-```bash
+```cmd
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 ```
 
-在`you@example.com`处填入你的`github`邮箱
-在`Your Name`处填入你的`github`昵称
+在`you@example.com`处填入你的`github`账户所绑定的邮箱
+在`Your Name`处填入你的`github`账户昵称
 
-其次，在你收到邮件并同意后，确保项目的管理者已经授予了你更改仓库的权限（即write权限），可以在个人主页 [repositories](https://github.com/settings/repositories) 处查看
+其次，在你收到邮件后，同意并加入到组织中，并确保项目的管理者已经授予了你更改仓库的权限（即`write`权限），可以在个人主页[repositories](https://github.com/settings/repositories)处查看。
 
 ## 上传你的改动
 
-确保你的改动已经在本地文件中保存完毕
+确保你的改动已经在本地文件中保存完毕，`VScode`的快捷键是`CTRL+S`
 
-输入如下命令以将你的改动上传至仓库
+在`cmd`终端中（默认为`LKM-official-website`目录下）输入如下命令以将你的改动上传至仓库
 
-如果你的终端此时被astro占据
-
-另起一个也无妨，依次运行
-
-`（默认在LKM-official-website目录下）`
-
-```bash
+```cmd
 git add .
 git commit -m "<请输入文本>"
 git push
 ```
 
-`在<请输入文本>处添加你对此次改动的命名`
+不过注意，也许你注意到了，在你上传完改动到仓库后，仓库大概率会显示
 
-以上传你的改动
+**Some checks were not successful**
 
-## 快速开始
+你可以在
 
-更新数据
+[Commits · LKM-AHZ/LKM-official-website](https://github.com/LKM-AHZ/LKM-official-website/commits/main/)
 
-```bash
-cd LKM-official-website
-git pull
-pnpm install
+中查看详情原因
+
+如果要让改动通过`pending`并显示为`success`
+
+首先你需要知道你改动的文件的路径，这里以src\pages\official\index.astro为例，**假设**你对这个文件做出了改动
+
+那么`cmd`输入如下指令即可。
+
+```cmd
+pnpm exec prettier --write src\pages\official\index.astro
+git add src\pages\official\index.astro
+git commit -m "请输入文本"
+git push
 ```
 
-启动
+在`请输入文本`处输入你对这次改动的命名
 
-```bash
-pnpm run dev
-```
+## 联系我们
 
-`pnpm run dev` 会**并行启动 Astro（端口 4321）与 FastAPI 测试后端（端口 8000）**。
+这套教程的维护由清汉负责，如对这套教程有建议者可通过QQ`1121840744`来联系我
 
-浏览器访问 `http://localhost:4321/LKM-official-website`
+项目骨干：笨笨狐狸 `3674887670`
+
+项目领导者：笨蛋千寻`1549258401`
+
+后端 & 前端 维护与开发人员（也算作是）：
+
+Bcent`1549258401`
+
+Lich|et`2869580566`
+
+Eptazocine`3070025462`
+
+**等**
+
 ---
-
-上传改动
-
-```bash
-git add .
-git commit -m "<请输入文本>"
-git push
-```
 
 ## 常用命令
 
