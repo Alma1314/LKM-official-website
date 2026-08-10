@@ -90,7 +90,7 @@
         id="recovery-new"
         label="新密码"
         type="password"
-        placeholder="请输入新密码（至少12位）"
+        placeholder="请输入新密码（至少6位）"
         autocomplete="new-password"
         v-model="flow.newPassword"
       />

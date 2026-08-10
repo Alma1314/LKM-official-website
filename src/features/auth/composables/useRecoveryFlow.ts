@@ -139,7 +139,7 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   // ── Step 3: 设置新密码（MFA 场景走完 verify-totp 后；非 MFA 场景由 verify 直接带新密码）──
   async function stepReset(): Promise<void> {
     error.value = null;
-    if (newPassword.value.length < 12) return fail('密码长度不能少于 12 位');
+    if (newPassword.value.length < 6) return fail('密码长度不能少于 6 位');
     if (newPassword.value !== confirm.value) return fail('两次输入的密码不一致');
     loading.value = true;
     try {
