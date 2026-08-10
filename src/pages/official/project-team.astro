@@ -11,7 +11,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 
 // 从后端拉取项目团队各分组成员数据（subGroupMaps 类型）
 const res = await teamApi.getSubGroups('projectSubGroups');
-const groups: TeamSubGroup[] = res.isOk() ? res.value?.items ?? [] : [];
+const groups: TeamSubGroup[] = res.isOk() ? (res.value?.items ?? []) : [];
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {
