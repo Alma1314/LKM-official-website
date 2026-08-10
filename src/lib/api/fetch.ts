@@ -2,7 +2,7 @@
 // 统一 fetch wrapper — 用于需要原生 fetch 能力的场景（SSE / AbortController / 流式响应）
 //
 // 设计：
-//  - SSR 时直连 FastAPI 内网地址
+//  - SSR 时直连真实后端地址（由 API_URL 指定）
 //  - CSR 时使用同域 /api
 //  - 所有请求返回 Result<Response, AppError>
 //  - 调用方自行处理 response.body（如 ReadableStream for SSE）
@@ -21,9 +21,7 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 
 function getApiBase(): string {
   if (typeof window === 'undefined') {
-    return (
-      ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || 'http://localhost:8000'
-    );
+    return ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) ?? '';
   }
   return '';
 }

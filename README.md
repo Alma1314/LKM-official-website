@@ -271,7 +271,7 @@ git commit -m "请输入文本"
 git push
 ```
 
-在`请输入文本`处输入你对这次改动的命名
+`pnpm run dev` 仅启动 **Astro（端口 4321）**。仓库不含后端，后端请求经 `API_URL` 代理到真实后端（见 `.env.example`），未配置则前端仅提供不依赖 API 的页面。
 
 ## 联系我们
 
@@ -306,8 +306,6 @@ Eptazocine`3070025462`
 | `pnpm run check:links`  | 链接有效性检查                                                  |
 | `pnpm run test`         | 运行 Vitest 测试                                                |
 | `pnpm run test:auth`    | 运行认证前端 Vitest 测试（`vitest run src/features/auth`）      |
-| `pnpm run test:backend` | 运行后端 pytest 测试（`cd backend && uv run pytest tests/ -v`） |
-| `pnpm run dev:backend`  | 启动测试后端（uvicorn + uv，端口 8000）                         |
 
 ---
 
@@ -317,16 +315,6 @@ Eptazocine`3070025462`
 /
 ├── .github/workflows/          # CI/CD (GitHub Actions)
 ├── public/                     # 静态资源
-├── backend/                    # FastAPI 测试后端 (Python)
-│   ├── main.py                 # 入口文件（uvicorn, port 8000）
-│   ├── app/                    # 模块化后端代码
-│   │   ├── core/               # 响应格式 + 错误处理
-│   │   ├── data/               # Mock 数据
-│   │   ├── db/                 # SQLAlchemy session/models
-│   │   ├── graphql/            # GraphQL（Strawberry）
-│   │   ├── schemas/            # Pydantic 模型
-│   │   └── modules/            # API 路由（auth/blog/columns/boards/health）
-│   └── tests/                  # pytest 测试 (112 个)
 ├── src/
 │   ├── assets/images/          # 图片资源
 │   │   ├── member/             # 原始头像图片
@@ -426,11 +414,11 @@ Eptazocine`3070025462`
 
 ### 认证与账号流程
 
-认证前端对接真实 FastAPI JWT 后端（无 mock 账号），单页依次支持：
+认证前端对接真实后端 JWT 认证（无 mock 账号），经 `API_URL` 指向真实后端，单页依次支持：
 
 - **账户登录**：账户/邮箱/手机 + 密码、短信/邮箱验证码、邮箱 Magic Link
 - **高级认证**：GitHub、Passkey、2FA（二次验证）、密码找回、登录后引导（onboarding）与账号绑定
-- **测试模式**：可通过环境变量 `PUBLIC_AUTH_TEST_MODE` 开启测试模式；测试后端仅**模拟**高级认证（GitHub/Passkey/2FA/找回/绑定/onboarding），不接真实 OAuth/WebAuthn/邮件/短信/TOTP
+- **测试模式**：可通过环境变量 `PUBLIC_AUTH_TEST_MODE` 开启前端测试 UI；后端真实能力由真实后端决定
 
 账号状态由 `src/stores/auth.ts`（`useAuthStore`）作为单一状态源，localStorage key `lkm-auth-store`。
 
@@ -588,7 +576,7 @@ pages/          文件路由页面
 - **Pagefind 全文搜索** — 客户端离线搜索
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
-- **FastAPI 测试后端** — 模块化后端，112 个 pytest 测试，统一响应格式；高级认证为模拟实现，不接真实 OAuth/WebAuthn/邮件/短信/TOTP
+- **前后端分离** — 本仓库仅前端，对接独立部署的真实后端（REST + GraphQL），经 `API_URL` 代理
 
 ## 致谢 · 开源项目
 

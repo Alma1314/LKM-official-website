@@ -3,45 +3,101 @@
     <div v-if="loading" class="text-center py-8 text-text-muted">加载中...</div>
 
     <template v-else-if="user">
-      <!-- Header -->
-      <div class="flex items-center gap-4">
+      <!-- 头部 -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div
-          class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0"
+          class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-2xl overflow-hidden"
         >
-          {{ avatarLetter }}
+          <img v-if="user.avatar" :src="user.avatar" :alt="displayName" class="w-full h-full object-cover" />
+          <span v-else>{{ avatarLetter }}</span>
         </div>
-        <div>
-          <div class="text-lg font-semibold">{{ user.nickname || user.username }}</div>
-          <div class="text-sm text-text-muted">@{{ user.username }}</div>
-          <span class="badge badge-sm mt-1" :class="levelBadgeClass">{{ levelLabel }}</span>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-2xl font-bold text-deep-text">{{ displayName }}</h1>
+            <span
+              class="text-sm px-2 py-0.5 rounded-full font-medium"
+              :style="{ color: titleInfo.color, background: `color-mix(in srgb, ${titleInfo.color} 15%, transparent)` }"
+            >
+              {{ titleInfo.name }}
+            </span>
+          </div>
+          <p class="text-sm text-text-muted mt-1">@{{ user.username }}</p>
+          <div class="flex items-center gap-4 mt-2 text-sm text-text-muted/60">
+            <span>{{ user.follower_count ?? 0 }} 关注者</span>
+            <span>{{ user.following_count ?? 0 }} 正在关注</span>
+            <span class="text-primary font-semibold">{{ (user.points ?? 0).toLocaleString() }} 积分</span>
+          </div>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">关注</button>
+          <button class="btn-ghost px-4 py-2 rounded-lg text-sm">私信</button>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div class="rounded-lg bg-page-bg p-4 text-center">
-          <div class="text-2xl font-bold text-primary">-</div>
-          <div class="text-xs text-text-muted mt-1">帖子</div>
-        </div>
-        <div class="rounded-lg bg-page-bg p-4 text-center">
-          <div class="text-2xl font-bold text-primary">-</div>
-          <div class="text-xs text-text-muted mt-1">项目</div>
-        </div>
-        <div class="rounded-lg bg-page-bg p-4 text-center">
-          <div class="text-2xl font-bold text-primary">-</div>
-          <div class="text-xs text-text-muted mt-1">专栏</div>
+      <!-- 个人资料 -->
+      <div class="border-t border-surface-3 pt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div>
+            <span class="text-text-muted/60">座右铭</span>
+            <p class="text-deep-text mt-0.5">{{ user.bio || '未填写' }}</p>
+          </div>
+          <div>
+            <span class="text-text-muted/60">专业方向</span>
+            <p class="text-deep-text mt-0.5">{{ user.major || '未填写' }}</p>
+          </div>
+          <div>
+            <span class="text-text-muted/60">年级</span>
+            <p class="text-deep-text mt-0.5">{{ user.grade || '未填写' }}</p>
+          </div>
+          <div>
+            <span class="text-text-muted/60">兴趣爱好</span>
+            <div v-if="user.interests && user.interests.length" class="flex flex-wrap gap-1 mt-1">
+              <span
+                v-for="i in user.interests"
+                :key="i"
+                class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted"
+                >{{ i }}</span
+              >
+            </div>
+            <p v-else class="text-deep-text mt-0.5 text-text-muted">未填写</p>
+          </div>
+          <div class="sm:col-span-2">
+            <span class="text-text-muted/60">理想</span>
+            <p class="text-deep-text mt-0.5">{{ user.ideals || '未填写' }}</p>
+          </div>
         </div>
       </div>
 
-      <!-- Info -->
-      <div class="rounded-xl border border-surface-3 p-5 space-y-3">
-        <div class="flex justify-between text-sm">
-          <span class="text-text-muted">账户等级</span>
-          <span class="badge badge-sm" :class="levelBadgeClass">{{ levelLabel }}</span>
+      <!-- Tab 区域 -->
+      <div class="border-t border-surface-3 pt-4">
+        <div class="flex border-b border-surface-3">
+          <button
+            v-for="tab in tabs"
+            :key="tab.key"
+            class="flex-1 px-4 py-3 text-sm font-medium transition-colors relative"
+            :class="activeTab === tab.key ? 'text-primary' : 'text-text-muted hover:text-deep-text'"
+            @click="activeTab = tab.key"
+          >
+            {{ tab.label }} ({{ tab.count }})
+            <div
+              v-if="activeTab === tab.key"
+              class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full"
+            ></div>
+          </button>
         </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-text-muted">角色</span>
-          <span>{{ user.role || 'member' }}</span>
+        <div class="pt-4">
+          <div v-if="activeTab === 'posts'" class="text-center py-8 text-sm text-text-muted">暂无发言</div>
+          <div v-if="activeTab === 'projects'" class="text-center py-8 text-sm text-text-muted">暂无项目</div>
+          <div v-if="activeTab === 'columns'" class="text-center py-8">
+            <p v-if="!user.has_column_access" class="text-sm text-text-muted mb-2">尚未开通专栏功能</p>
+            <a
+              v-if="!user.has_column_access"
+              :href="buildUrl('/register/onboarding')"
+              class="text-primary text-sm font-medium hover:underline"
+              >通过答题解锁专栏 →</a
+            >
+            <p v-else class="text-sm text-text-muted">暂无专栏文章</p>
+          </div>
         </div>
       </div>
     </template>
@@ -60,40 +116,35 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import type { User } from '~/types/auth';
+import type { ProfileInfo } from '~/lib/api/modules/auth';
 import { authApi } from '~/lib/api';
+import { buildUrl } from '~/lib/utils/paths';
+import { titleInfoOf, type TitleInfo } from '../titles';
 
 const props = defineProps<{ username: string }>();
 
-const user = ref<User | null>(null);
+const user = ref<ProfileInfo & { username: string } | null>(null);
 const loading = ref(true);
+const activeTab = ref('posts');
 
-const avatarLetter = computed(() => (user.value?.nickname || user.value?.username || '?').charAt(0).toUpperCase());
+const displayName = computed(() => user.value?.nickname || user.value?.username || props.username);
+const avatarLetter = computed(() => displayName.value.charAt(0).toUpperCase());
+const titleInfo = computed<TitleInfo>(() => titleInfoOf(user.value?.title));
 
-const levelBadgeClass = computed(() => {
-  const level = user.value?.account_level;
-  return level === 'admin' ? 'badge-error' : level === 'normal' ? 'badge-primary' : 'badge-ghost';
-});
-const levelLabel = computed(() => {
-  const level = user.value?.account_level;
-  return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
-});
+const tabs = computed(() => [
+  { key: 'posts', label: '发言', count: user.value?.post_count ?? 0 },
+  { key: 'projects', label: '项目', count: user.value?.project_count ?? 0 },
+  { key: 'columns', label: '专栏', count: user.value?.column_article_count ?? 0 },
+]);
 
 onMounted(async () => {
   const result = await authApi.getUserByUsername(props.username);
   result.match(
     (data) => {
-      user.value = {
-        id: 0,
-        username: props.username,
-        nickname: data.nickname ?? null,
-        avatar: data.avatar ?? null,
-        role: data.role,
-        account_level: data.account_level || 'local',
-      } as User;
+      user.value = { ...data, username: props.username };
     },
     () => {
-      // user stays null
+      // user stays null → not-found
     }
   );
   loading.value = false;

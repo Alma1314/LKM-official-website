@@ -1,7 +1,7 @@
 // HTTP 客户端封装 — 所有 API 请求统一入口
 //
 // 支持两种运行环境：
-//  - SSR（Astro 服务端）：fetch FastAPI 内网地址（Docker 内部 / localhost）
+//  - SSR（Astro 服务端）：fetch 真实后端（由 API_URL 指定）
 //  - 客户端（浏览器）：fetch 同域 /api/*（无跨域），携带 Cookie
 //
 // 原则：
@@ -15,11 +15,11 @@ import { AppError, ErrorCode } from '../errors/error-codes';
 import { ok, err } from '../errors/result';
 import type { Result } from '../errors/result';
 
-/** SSR 时使用内网地址直连 FastAPI，客户端时使用同域 /api */
+/** SSR 时使用真实后端直连地址，客户端时使用同域 /api */
 function getApiBase(): string {
-  // SSR: Astro 服务端，使用环境变量或默认内网地址
+  // SSR: Astro 服务端，使用 API_URL 环境变量指向真实后端
   if (typeof window === 'undefined') {
-    return import.meta.env.API_URL || 'http://localhost:8000';
+    return import.meta.env.API_URL ?? '';
   }
   // 客户端：同域 /api，无跨域
   return '';
