@@ -26,46 +26,46 @@
       class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] border border-black/5 dark:border-white/10 rounded-[var(--radius-large)] float-panel py-1.5 z-50 shadow-xl dark:shadow-2xl transition-all"
       @click.stop
     >
-        <div class="px-4 py-2 border-b border-surface-3 mb-1">
-          <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
-          <div class="text-xs text-text-muted">{{ userLevelText }}</div>
-        </div>
-
-        <a
-          :href="buildUrl('/profile')"
-          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
-          @click="close"
-        >
-          <Icon icon="material-symbols:person-outline" class="w-4 h-4" />
-          个人中心
-        </a>
-        <a
-          :href="buildUrl('/contribution')"
-          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
-          @click="close"
-        >
-          <Icon icon="material-symbols:stars-outline" class="w-4 h-4" />
-          贡献系统
-        </a>
-        <a
-          :href="buildUrl('/account')"
-          class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
-          @click="close"
-        >
-          <Icon icon="material-symbols:settings-outline" class="w-4 h-4" />
-          设置
-        </a>
-
-        <div class="border-t border-surface-3 mt-1 pt-1">
-          <button
-            class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 w-full transition-colors"
-            @click="handleLogout"
-          >
-            <Icon icon="material-symbols:logout-rounded" class="w-4 h-4" />
-            退出
-          </button>
-        </div>
+      <div class="px-4 py-2 border-b border-surface-3 mb-1">
+        <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
+        <div class="text-xs text-text-muted">{{ userLevelText }}</div>
       </div>
+
+      <a
+        :href="buildUrl('/profile')"
+        class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+        @click="close"
+      >
+        <Icon icon="material-symbols:person-outline" class="w-4 h-4" />
+        个人中心
+      </a>
+      <a
+        :href="buildUrl('/contribution')"
+        class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+        @click="close"
+      >
+        <Icon icon="material-symbols:stars-outline" class="w-4 h-4" />
+        贡献系统
+      </a>
+      <a
+        :href="buildUrl('/account')"
+        class="flex items-center gap-2.5 px-4 py-2 text-sm text-deep-text hover:bg-page-bg transition-colors"
+        @click="close"
+      >
+        <Icon icon="material-symbols:settings-outline" class="w-4 h-4" />
+        设置
+      </a>
+
+      <div class="border-t border-surface-3 mt-1 pt-1">
+        <button
+          class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 w-full transition-colors"
+          @click="handleLogout"
+        >
+          <Icon icon="material-symbols:logout-rounded" class="w-4 h-4" />
+          退出
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
