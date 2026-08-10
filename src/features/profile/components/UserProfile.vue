@@ -123,7 +123,7 @@ import { titleInfoOf, type TitleInfo } from '../titles';
 
 const props = defineProps<{ username: string }>();
 
-const user = ref<ProfileInfo & { username: string } | null>(null);
+const user = ref<(ProfileInfo & { username: string }) | null>(null);
 const loading = ref(true);
 const activeTab = ref('posts');
 

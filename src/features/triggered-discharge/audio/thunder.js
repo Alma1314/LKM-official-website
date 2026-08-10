@@ -27,7 +27,10 @@ export function ensureAudio() {
     AC.resume();
     return;
   }
-  AC = new (window.AudioContext || window.webkitAudioContext)();
+  /** @type {Window & { webkitAudioContext?: typeof AudioContext }} */
+  const w = window;
+  const ACtor = w.AudioContext || w.webkitAudioContext;
+  AC = new ACtor();
   master = AC.createGain();
   master.gain.value = 0.8;
   master.connect(AC.destination);

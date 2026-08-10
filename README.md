@@ -293,19 +293,19 @@ Eptazocine`3070025462`
 
 ## 常用命令
 
-| 命令                    | 说明                                                            |
-| :---------------------- | :-------------------------------------------------------------- |
-| `pnpm run dev`          | 启动开发服务器                                                  |
-| `pnpm run build`        | 生产构建到 `./dist/`                                            |
-| `pnpm run preview`      | 本地预览生产构建                                                |
-| `pnpm run check`        | 类型检查 + ESLint + Prettier                                    |
-| `pnpm run fix`          | 自动修复 ESLint + Prettier                                      |
-| `pnpm run test:smoke`   | Playwright E2E 冒烟测试                                         |
-| `pnpm run test:a11y`    | Playwright 无障碍测试                                           |
-| `pnpm run check:seo`    | SEO 输出检查                                                    |
-| `pnpm run check:links`  | 链接有效性检查                                                  |
-| `pnpm run test`         | 运行 Vitest 测试                                                |
-| `pnpm run test:auth`    | 运行认证前端 Vitest 测试（`vitest run src/features/auth`）      |
+| 命令                   | 说明                                                       |
+| :--------------------- | :--------------------------------------------------------- |
+| `pnpm run dev`         | 启动开发服务器                                             |
+| `pnpm run build`       | 生产构建到 `./dist/`                                       |
+| `pnpm run preview`     | 本地预览生产构建                                           |
+| `pnpm run check`       | 类型检查 + ESLint + Prettier                               |
+| `pnpm run fix`         | 自动修复 ESLint + Prettier                                 |
+| `pnpm run test:smoke`  | Playwright E2E 冒烟测试                                    |
+| `pnpm run test:a11y`   | Playwright 无障碍测试                                      |
+| `pnpm run check:seo`   | SEO 输出检查                                               |
+| `pnpm run check:links` | 链接有效性检查                                             |
+| `pnpm run test`        | 运行 Vitest 测试                                           |
+| `pnpm run test:auth`   | 运行认证前端 Vitest 测试（`vitest run src/features/auth`） |
 
 ---
 
@@ -418,7 +418,6 @@ Eptazocine`3070025462`
 
 - **账户登录**：账户/邮箱/手机 + 密码、短信/邮箱验证码、邮箱 Magic Link
 - **高级认证**：GitHub、Passkey、2FA（二次验证）、密码找回、登录后引导（onboarding）与账号绑定
-- **测试模式**：可通过环境变量 `PUBLIC_AUTH_TEST_MODE` 开启前端测试 UI；后端真实能力由真实后端决定
 
 账号状态由 `src/stores/auth.ts`（`useAuthStore`）作为单一状态源，localStorage key `lkm-auth-store`。
 

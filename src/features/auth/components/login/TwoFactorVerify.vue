@@ -86,7 +86,7 @@ async function handleRecoverySubmit() {
   }
   recoveryLoading.value = true;
   try {
-    const r = await authApi.verify2FA(props.tempToken, code);
+    const r = await authApi.verify2FA(props.tempToken, null, code);
     if (r.isErr()) {
       flow.error.value = r.error.message;
       return;

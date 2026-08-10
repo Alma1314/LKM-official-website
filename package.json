@@ -12,7 +12,7 @@
     "dev:frontend": "astro dev",
     "dev:clean": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\" && astro dev",
     "start": "astro dev",
-    "build": "astro build && (pagefind --site dist || true) && node scripts/precompress.mjs",
+    "build": "astro build && node scripts/precompress.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "pnpm run check:astro && pnpm run check:eslint && pnpm run check:prettier",
@@ -177,5 +177,5 @@
   "overrides": {
     "yaml": ">=2.8.3"
   },
-  "packageManager": "pnpm@11.18.0"
+  "packageManager": "pnpm@11.21.0"
 }

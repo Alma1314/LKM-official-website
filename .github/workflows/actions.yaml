@@ -27,11 +27,6 @@ jobs:
       - run: |
           pnpm run build
           ls -la
-      - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
 
   # ── 前端检查（类型 + ESLint + Prettier） ──
   check:
@@ -58,19 +53,3 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run test
-
-  # ── 部署到 GitHub Pages ──
-  deploy:
-    needs: [build, check, test-frontend]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

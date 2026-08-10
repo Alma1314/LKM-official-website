@@ -1,22 +1,41 @@
 <template>
   <div>
     <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
-    <AuthStatus v-else-if="flow.stage === 'verify'" type="info" class="mb-4" message="验证码已发送，请查收" />
+    <AuthStatus v-else-if="flow.successMessage" type="info" class="mb-4" :message="flow.successMessage" />
 
     <!-- Step 1: account -->
-    <form v-if="flow.stage === 'account'" @submit.prevent="flow.stepRequest()" class="space-y-4">
-      <p class="text-sm text-text-muted text-center">输入注册时使用的账号以接收验证码</p>
+    <form v-if="flow.stage === 'account'" @submit.prevent="flow.requestCode()" class="space-y-4">
+      <p class="text-sm text-text-muted text-center">输入注册时使用的邮箱或手机号以接收验证码</p>
+      <!-- 联系方式类型选择 -->
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          class="btn btn-sm"
+          :class="flow.contact === 'email' ? 'btn-primary' : 'btn-ghost'"
+          @click="flow.contact = 'email'"
+        >
+          使用邮箱
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm"
+          :class="flow.contact === 'phone' ? 'btn-primary' : 'btn-ghost'"
+          @click="flow.contact = 'phone'"
+        >
+          使用手机号
+        </button>
+      </div>
       <AuthField
         id="recovery-account"
-        label="账号"
-        placeholder="请输入用户名、邮箱或手机号"
-        autocomplete="username"
+        :label="flow.contact === 'phone' ? '手机号' : '邮箱'"
+        :placeholder="flow.contact === 'phone' ? '请输入手机号' : '请输入邮箱'"
+        :autocomplete="flow.contact === 'phone' ? 'tel' : 'email'"
         v-model="flow.account"
       />
       <button
         type="submit"
         class="btn btn-primary w-full active:scale-[0.98] transition-transform"
-        :disabled="flow.loading"
+        :disabled="flow.loading || !flow.isContactValid"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
         <span v-else>发送验证码</span>
@@ -24,7 +43,7 @@
     </form>
 
     <!-- Step 2: verify code -->
-    <form v-else-if="flow.stage === 'verify'" @submit.prevent="flow.stepVerify()" class="space-y-4">
+    <form v-else-if="flow.stage === 'verify'" @submit.prevent="flow.verifyCode()" class="space-y-4">
       <AuthField
         id="recovery-code"
         label="验证码"
@@ -35,13 +54,35 @@
       <button
         type="submit"
         class="btn btn-primary w-full active:scale-[0.98] transition-transform"
-        :disabled="flow.loading || flow.code.length < 1"
+        :disabled="flow.loading || flow.code.length < 6"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
         <span v-else>校验验证码</span>
       </button>
       <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">返回</button>
     </form>
+
+    <!-- Step 2.5: 2FA (MFA 场景) -->
+    <div v-else-if="flow.stage === '2fa'" class="space-y-4">
+      <p class="text-sm text-text-muted text-center">该账号开启了两步验证，请输入动态验证码</p>
+      <AuthField
+        id="recovery-totp"
+        label="动态验证码"
+        placeholder="6 位验证码"
+        inputmode="numeric"
+        v-model="totpCode"
+      />
+      <button
+        type="button"
+        class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+        :disabled="flow.loading || totpCode.length < 6"
+        @click="flow.submit2FA(totpCode)"
+      >
+        <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
+        <span v-else>验证</span>
+      </button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">恢复完成，重新开始</button>
+    </div>
 
     <!-- Step 3: reset password -->
     <form v-else-if="flow.stage === 'reset'" @submit.prevent="flow.stepReset()" class="space-y-4">
@@ -96,6 +137,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRecoveryFlow } from '~/features/auth/composables/useRecoveryFlow';
 import AuthField from '../shared/AuthField.vue';
 import AuthStatus from '../shared/AuthStatus.vue';
@@ -107,6 +149,8 @@ const flow = useRecoveryFlow({
     emit('login');
   },
 });
+
+const totpCode = ref('');
 
 defineExpose({ flow });
 </script>

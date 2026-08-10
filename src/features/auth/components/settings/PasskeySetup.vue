@@ -24,24 +24,14 @@
     <ul v-else class="space-y-2">
       <li v-for="pk in passkeys" :key="pk.id" class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3">
         <div class="flex-1 min-w-0">
-          <template v-if="renamingId === pk.id">
-            <form class="flex gap-2" @submit.prevent="rename">
-              <input v-model.trim="renameValue" type="text" class="input input-bordered input-sm w-full" />
-              <button type="submit" class="btn btn-primary btn-xs" :disabled="!renameValue">保存</button>
-              <button type="button" class="btn btn-ghost btn-xs" @click="renamingId = null">取消</button>
-            </form>
-          </template>
-          <div v-else>
-            <span class="font-medium block truncate">{{ pk.name }}</span>
-            <span class="text-xs text-text-muted">{{ pk.credential_id.slice(0, 12) }}…</span>
-          </div>
+          <span class="font-medium block truncate">{{ pk.device_name }}</span>
+          <span class="text-xs text-text-muted">{{ pk.credential_id.slice(0, 12) }}…</span>
         </div>
-        <div v-if="renamingId !== pk.id" class="flex gap-1 shrink-0">
-          <button type="button" class="btn btn-ghost btn-xs" @click="beginRename(pk)">重命名</button>
+        <div class="flex gap-1 shrink-0">
           <button
             type="button"
             class="btn btn-ghost btn-xs text-error"
-            :disabled="!!deletingId"
+            :disabled="deletingId === pk.id"
             @click="confirmDelete = pk.id"
           >
             删除
@@ -66,22 +56,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
-import type { PasskeyData } from '~/lib/api/modules/auth';
+import type { PasskeyCredential } from '~/lib/api/modules/auth';
 import type { User } from '~/types/auth';
 import AuthStatus from '../shared/AuthStatus.vue';
 import ConfirmDialog from './ConfirmDialog.vue';
+import { registerNew } from '../../lib/webauthn';
 
 defineProps<{
   user: User;
 }>();
 
-const passkeys = ref<PasskeyData[]>([]);
+const passkeys = ref<PasskeyCredential[]>([]);
 const loadingList = ref(false);
 const error = ref('');
 const newName = ref('');
 const creating = ref(false);
-const renamingId = ref<number | null>(null);
-const renameValue = ref('');
 const confirmDelete = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 
@@ -100,41 +89,37 @@ async function load() {
   }
 }
 
+// 创建通行密钥：begin → 浏览器 WebAuthn → registerComplete
 async function createPasskey() {
   error.value = '';
-  if (!newName.value) return;
+  const name = newName.value.trim();
+  if (!name) return;
   creating.value = true;
   try {
-    const r = await authApi.createPasskey(newName.value);
-    if (r.isErr()) {
-      error.value = r.error.message;
+    const begin = await authApi.passkeyRegisterBegin();
+    if (begin.isErr()) {
+      error.value = begin.error.message;
       return;
     }
-    passkeys.value = [...passkeys.value, r.value];
+    const serialized = await registerNew(begin.value.public_key);
+    const done = await authApi.passkeyRegisterComplete(
+      serialized.rawId,
+      begin.value.challenge_id,
+      serialized.response,
+      name
+    );
+    if (done.isErr()) {
+      error.value = done.error.message;
+      return;
+    }
+    // 重新拉取列表以获得后端分配的 id / created_at
+    await load();
     newName.value = '';
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : '创建通行密钥失败';
   } finally {
     creating.value = false;
   }
-}
-
-function beginRename(pk: PasskeyData) {
-  renamingId.value = pk.id;
-  renameValue.value = pk.name;
-}
-
-async function rename() {
-  error.value = '';
-  const id = renamingId.value;
-  if (id === null || !renameValue.value) return;
-  const r = await authApi.renamePasskey(id, renameValue.value);
-  if (r.isErr()) {
-    error.value = r.error.message;
-    return;
-  }
-  const idx = passkeys.value.findIndex((p) => p.id === id);
-  if (idx >= 0) passkeys.value[idx] = r.value;
-  renamingId.value = null;
-  renameValue.value = '';
 }
 
 async function doDelete(id: number) {

@@ -3,11 +3,11 @@ import { graphqlClient } from '../graphql/client';
 import { PostListQuery, PostDetailQuery } from '../../../features/forum/graphql';
 
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   excerpt: string;
   content: string;
-  authorId: string;
+  authorId: number;
   authorName: string;
   categoryId: string;
   tags: string[];
@@ -57,13 +57,13 @@ export const forumApi = {
   listPostsByCategory: (categoryId: string, page = 1, pageSize = 100) =>
     graphqlClient.query(PostListQuery, { categoryId, page, pageSize }).toPromise(),
 
-  getPostDetail: (id: string) => graphqlClient.query(PostDetailQuery, { id }).toPromise(),
+  getPostDetail: (id: number) => graphqlClient.query(PostDetailQuery, { id }).toPromise(),
 
-  listRelatedPosts: async (categoryId: string, excludeId: string, limit = 3) => {
+  listRelatedPosts: async (categoryId: string, excludeId: number, limit = 3) => {
     const result = await graphqlClient.query(PostListQuery, { categoryId, page: 1, pageSize: limit + 1 }).toPromise();
     if (result.data?.posts?.items) {
       result.data.posts.items = result.data.posts.items
-        .filter((p: { id: string }) => p.id !== excludeId)
+        .filter((p: { id: number }) => p.id !== excludeId)
         .slice(0, limit);
     }
     return result;

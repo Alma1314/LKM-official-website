@@ -7,7 +7,6 @@
     <AuthCard
       :title="flow.loggedIn ? '登录成功' : flow.mode === '2fa' ? '双因素认证' : '登录'"
       subtitle="登录理科迷账号，访问社区资源与文档"
-      :test-mode="testMode"
       :mode="mode"
     >
       <!-- 登录成功态：停留在登录卡片，不自动跳转 -->
@@ -126,12 +125,12 @@
           <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
         </div>
 
-        <!-- GitHub 态：模拟授权 -->
+        <!-- GitHub 态：正在跳转到真实授权页 -->
         <div v-else-if="flow.mode === 'github'" class="space-y-4">
-          <AuthStatus v-if="!flow.loading" type="info" message="正在通过 GitHub 登录…" />
-          <button type="button" class="btn btn-outline w-full" :disabled="flow.loading" @click="flow.submitGithub()">
-            <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-            <span v-else>完成模拟授权</span>
+          <AuthStatus v-if="!flow.loading" type="info" message="正在跳转到 GitHub 登录…" />
+          <button type="button" class="btn btn-outline w-full" disabled>
+            <span class="loading loading-spinner loading-sm"></span>
+            跳转中
           </button>
           <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
         </div>
@@ -181,8 +180,6 @@ import AuthMethodButton from '../shared/AuthMethodButton.vue';
 import VerificationCodeField from '../shared/VerificationCodeField.vue';
 
 withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
-
-const testMode = import.meta.env.PUBLIC_AUTH_TEST_MODE === 'true';
 
 const flow = useLoginFlow({
   // 登录成功后在卡片内显示「登录成功」，不自动跳转（flow.loggedIn 驱动成功视图）

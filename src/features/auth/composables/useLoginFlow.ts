@@ -1,8 +1,9 @@
 import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
-import { authApi, type ChallengeData, type AuthTokenData } from '~/lib/api/modules/auth';
+import { authApi } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
 import { useVerificationCountdown } from './useVerificationCountdown';
+import { authenticate } from '../lib/webauthn';
 
 export type LoginMode = 'password' | 'code' | 'github' | 'magic' | 'passkey' | '2fa';
 
@@ -32,7 +33,6 @@ export interface LoginFlow {
   requestCode: () => Promise<void>;
   submitCode: () => Promise<void>;
   startGithub: () => Promise<void>;
-  submitGithub: () => Promise<void>;
   startMagic: () => Promise<void>;
   continueMagic: () => Promise<void>;
   startPasskey: () => Promise<void>;
@@ -41,16 +41,23 @@ export interface LoginFlow {
   errorMessageByCode: (err: AppError) => string;
 }
 
+/** API_BASE：SSR 用 API_URL，浏览器同域。与 http/client 的 base 策略一致。 */
+function getApiBase(): string {
+  if (typeof window === 'undefined') {
+    return ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || '';
+  }
+  return '';
+}
+
 /**
  * 登录流程 Composable。
  *
- * 统一驱动密码 / 验证码 / GitHub(模拟) / Magic Link / Passkey / 2FA 登录，
- * 复用 AuthStore 已封装的 store 方法与 authApi 高级方法，本身不发明新网络能力。
- * 成功跳转统一走 resolveSafeRedirect。
+ * 统一驱动密码 / 验证码 / GitHub(302) / Magic Link / Passkey / 2FA 登录，
+ * 复用 AuthStore 已封装的 store 方法与 authApi 高级方法。
+ * Passkey 走真实 WebAuthn；GitHub 走整页跳转后端 302；2FA 用 store 暂存的 temp_token。
  */
 export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const store = useAuthStore();
-  // 登录成功后由 loggedIn 驱动成功卡片，不再跳转（redirect 字段保留作兼容，未使用）
   const { onSuccess } = options;
 
   // ── State ──
@@ -67,11 +74,8 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const loggedIn = ref(false);
   const codeSent = ref(false);
   const countdown = useVerificationCountdown(60);
-  // toRef 保持与源 reactive 对象的响应式连接：模板读 flow.countdown / flow.countdownRunning 时
-  // 会随 interval 递减实时更新（普通对象返回不会自动解包嵌套 ref，故需显式透出同一个响应式源）。
   const countdownRunning = toRef(countdown, 'running');
 
-  // ── 错误 → 中文 ──
   function errorMessageByCode(e: AppError): string {
     switch (e.code) {
       case ErrorCode.AUTH_ERROR:
@@ -90,7 +94,6 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     error.value = errorMessageByCode(e);
   }
 
-  // 登录成功：清空错误、写成功提示、并置 loggedIn（停留在登录卡片显示成功，不自动跳转）
   function succeed(): void {
     error.value = null;
     successMessage.value = '登录成功';
@@ -108,9 +111,13 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         setError(r.error);
         return;
       }
-      if (r.value.requires2FA) {
+      if (r.value.requires2FA || r.value.requires2FASetup) {
         mode.value = '2fa';
-        // store 的 loginPassword 未回传 temp_token；进入 2FA 时暂留，供后续 submit2FA 使用
+        // store 已在进入 2FA 时暂存 temp_token，取回填入 flow
+        tempToken.value = store.getPending2FA() ?? '';
+        if (r.value.requires2FASetup) {
+          successMessage.value = '账号首次登录需先完成 2FA 设置，请配合扫码';
+        }
         return;
       }
       succeed();
@@ -147,8 +154,9 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         setError(r.error);
         return;
       }
-      if (r.value.requires2FA) {
+      if (r.value.requires2FA || r.value.requires2FASetup) {
         mode.value = '2fa';
+        tempToken.value = store.getPending2FA() ?? '';
         return;
       }
       succeed();
@@ -157,43 +165,19 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     }
   }
 
-  // ── GitHub（模拟）──
+  // ── GitHub（整页跳转到后端授权 URL，走 302）──
   async function startGithub(): Promise<void> {
     error.value = null;
     loading.value = true;
-    mode.value = 'github';
     try {
-      const r = await authApi.githubStart('github-user');
-      if (r.isErr()) {
-        setError(r.error);
-        return;
-      }
-      const challenge: ChallengeData = r.value;
-      txnId.value = challenge.transaction_id;
-      // 测试模式后端回传 test_continue_token，作为模拟授权完成的令牌
-      if (challenge.test_continue_token) {
-        tempToken.value = challenge.test_continue_token;
-      }
-    } finally {
+      const base = getApiBase().replace(/\/$/, '');
+      const target = `${base}${authApi.githubLoginUrl()}`;
+      // 整页跳转：必须用 window.location（axios 会吞 302 并拿到 GitHub HTML）
+      window.location.assign(target);
+      // 跳转后本页将被卸载；此处不重置 loading，避免闪烁
+    } catch (e) {
       loading.value = false;
-    }
-  }
-
-  // 完成模拟 GitHub 授权
-  async function submitGithub(): Promise<void> {
-    error.value = null;
-    loading.value = true;
-    try {
-      const token = tempToken.value;
-      const r = await authApi.githubCallback(token);
-      if (r.isErr()) {
-        setError(r.error);
-        return;
-      }
-      applyTokenData(r.value);
-      succeed();
-    } finally {
-      loading.value = false;
+      setError(e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, '发起 GitHub 授权失败'));
     }
   }
 
@@ -201,7 +185,6 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   async function startMagic(): Promise<void> {
     error.value = null;
     loading.value = true;
-    mode.value = 'magic';
     try {
       const r = await store.requestMagicLink(account.value);
       if (r.isErr()) {
@@ -215,9 +198,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     }
   }
 
-  // 在当前设备点开邮件链接的等效动作。
-  // 测试后端无独立 magic 回调浏览器页，verifyMagicLink 需真实 token 才可跑通；
-  // 故在测试模式下直接校验 txnId 存在后触发成功跳转。具体取舍见 report。
+  // 校验 magic link 中的 token（通常由邮箱链接重定向到本站后携带 token 调用）。
   async function continueMagic(): Promise<void> {
     error.value = null;
     loading.value = true;
@@ -233,46 +214,78 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     }
   }
 
-  // ── Passkey ──
+  // ── Passkey（真实 WebAuthn 登录）──
   async function startPasskey(): Promise<void> {
     error.value = null;
     loading.value = true;
-    mode.value = 'passkey';
     try {
-      const r = await authApi.loginPasskeyStart();
-      if (r.isErr()) {
-        setError(r.error);
+      const begin = await authApi.passkeyLoginBegin();
+      if (begin.isErr()) {
+        setError(begin.error);
         return;
       }
-      txnId.value = r.value.transaction_id;
+      const serialized = await authenticate(begin.value.public_key);
+      const complete = await authApi.passkeyLoginComplete(
+        serialized.rawId,
+        begin.value.challenge_id,
+        serialized.response
+      );
+      if (complete.isErr()) {
+        setError(complete.error);
+        return;
+      }
+      const data = complete.value;
+      if (data.requires_2fa || data.setup_required) {
+        mode.value = '2fa';
+        store.holdPending2FA(data.temp_token ?? null);
+        tempToken.value = data.temp_token ?? '';
+        return;
+      }
+      await applyTokenData(data);
+      succeed();
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? new AppError(ErrorCode.AUTH_ERROR, e.message)
+          : new AppError(ErrorCode.AUTH_ERROR, '通行密钥登录失败')
+      );
     } finally {
       loading.value = false;
     }
   }
 
   // ── 2FA 验证 ──
-  // tempTokenArg 允许调用方（如 TwoFactorVerify 的 props.tempToken）传入独立来源，
-  // 未传时回落到 flow 自身 tempToken，保证 TOTP 验证始终唯一确定一个 temp token。
   async function submit2FA(verifyCode: string, tempTokenArg?: string): Promise<void> {
     error.value = null;
     loading.value = true;
     try {
-      const r = await authApi.verify2FA(tempTokenArg ?? tempToken.value, verifyCode);
+      const tt = tempTokenArg ?? tempToken.value;
+      if (!tt) {
+        setError(new AppError(ErrorCode.AUTH_ERROR, '缺少临时会话令牌，请重新登录'));
+        return;
+      }
+      const r = await authApi.verify2FA(tt, verifyCode);
       if (r.isErr()) {
         setError(r.error);
         return;
       }
-      applyTokenData(r.value);
+      const data = r.value;
+      if (data.access_token) {
+        store.setTokens(data.access_token, data.refresh_token ?? '');
+        await store.fetchMe();
+        store.clearPending2FA();
+      }
+      // 2FA 设置流程（purpose=recovery / admin setup）可能不立即发会话 token，
+      // 由上层 UI 另行引导；此处视为步骤完成。
       succeed();
     } finally {
       loading.value = false;
     }
   }
 
-  // 统一把 TokenData 写入 store（复用 setTokens + fetchMe 状态同步）
-  async function applyTokenData(data: AuthTokenData): Promise<void> {
+  async function applyTokenData(data: { access_token?: string | null; refresh_token?: string | null }): Promise<void> {
     if (data.access_token) {
-      store.setTokens(data.access_token, data.refresh_token);
+      store.setTokens(data.access_token, data.refresh_token ?? '');
       await store.fetchMe();
     }
   }
@@ -291,11 +304,10 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     successMessage.value = '';
     loggedIn.value = false;
     countdown.stop();
+    store.clearPending2FA();
     mode.value = 'password';
   }
 
-  // 用 reactive 包裹返回：ref 在 reactive 内被解包，模板里 flow.mode/flow.account 等即值类型，
-  // 不再需要依赖 Vue 对普通对象嵌套 ref 的隐式解包，也消除 flow.mode === 'x' 的 TS2367 误报。
   return reactive({
     mode,
     account,
@@ -315,7 +327,6 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     requestCode,
     submitCode,
     startGithub,
-    submitGithub,
     startMagic,
     continueMagic,
     startPasskey,

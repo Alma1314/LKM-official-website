@@ -13,7 +13,6 @@ import { heidlerJS, lumOfJS } from '../physics/heidler.js';
 import { newBolt, setPhase, startStroke } from './bolt.js';
 
 export function slomoNow() {
-  const _s = bolt.schedule[bolt.strokeIdx];
   switch (bolt.phase) {
     case 'grow':
       return ui.storm ? 34 : PHYS.SLOMO.grow;

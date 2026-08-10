@@ -1,94 +1,165 @@
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
 
-export type RecoveryStage = 'account' | 'verify' | 'reset' | 'done';
+export type RecoveryStage = 'account' | 'verify' | '2fa' | 'reset' | 'done';
+export type RecoveryContact = 'email' | 'phone' | 'magic';
 
 export interface RecoveryFlowOptions {
   onSuccess?: (msg: string) => void;
 }
 
 export interface RecoveryFlow {
-  // state —— reactive 包裹的 ref 已解包
   stage: RecoveryStage;
   account: string;
-  txnId: string;
+  contact: RecoveryContact;
   code: string;
+  txnId: string;
+  tempToken: string;
   newPassword: string;
   confirm: string;
   loading: boolean;
   error: string | null;
-  // methods
-  stepRequest: () => Promise<void>;
-  stepVerify: () => Promise<void>;
+  successMessage: string;
+  isContactValid: boolean;
+  requestCode: () => Promise<void>;
+  verifyCode: () => Promise<void>;
+  submit2FA: (totp: string) => Promise<void>;
   stepReset: () => Promise<void>;
   reset: () => void;
 }
 
 /**
- * 找回密码 Composable。
- *
- * 承载四步：account→verify→reset→done。均复用 authApi 的 recovery 系列方法
- * （recoveryRequest / recoveryVerify / recoveryReset）。request 步签发挑战并回传
- * transaction_id；verify 步凭 txn+code 仅校验验证码（不改密）；校验通过后进入
- * reset 步，reset 步凭同一 txn 消费挑战并真正重置密码，随后进入 done。
+ * 找回密码 Composable —— 对齐真实后端多步流程：
+ * account(填邮箱/手机) → 发码 → verify 验证码：
+ *   - 非 MFA 用户：verify 时后端直接完成重置（需 new_password）
+ *   - MFA 用户：返回 txn_id + temp_token → 2FA(TOTP) → verifyTotp → complete(new_password)
+ * 另支持 Magic Link 发送。
  */
 export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow {
   const { onSuccess } = options;
 
-  // ── State ──
   const stage = ref<RecoveryStage>('account');
   const account = ref('');
-  const txnId = ref('');
+  const contact = ref<RecoveryContact>('email');
   const code = ref('');
+  const txnId = ref('');
+  const tempToken = ref('');
   const newPassword = ref('');
   const confirm = ref('');
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const successMessage = ref('');
+
+  const isContactValid = computed(() => {
+    const v = account.value.trim();
+    if (!v) return false;
+    if (contact.value === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if (contact.value === 'phone') return /^[+\d][\s\d-]{4,}$/.test(v);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  });
 
   function fail(msg?: string): void {
     error.value = msg ?? '操作失败，请重试';
   }
 
-  // ── Step 1: 提交账号，请求验证码 ──
-  async function stepRequest(): Promise<void> {
+  // ── Step 1: 发送验证码 ──
+  async function requestCode(): Promise<void> {
     error.value = null;
-    if (!account.value.trim()) return fail('请输入注册时使用的账号');
+    const value = account.value.trim();
+    if (!value) return fail('请输入注册时使用的邮箱或手机号');
     loading.value = true;
     try {
-      const r = await authApi.recoveryRequest(account.value.trim());
-      if (r.isErr()) return fail(r.error.message);
-      // verify/reset 步均以后端签发的 transaction_id 关联挑战（与账号解耦）。
-      txnId.value = r.value.transaction_id;
+      if (contact.value === 'email') {
+        const r = await authApi.recoverEmail(value);
+        if (r.isErr()) return fail(r.error.message);
+      } else if (contact.value === 'phone') {
+        const r = await authApi.recoverPhone(value);
+        if (r.isErr()) return fail(r.error.message);
+      } else {
+        const r = await authApi.recoverMagicLink(value);
+        if (r.isErr()) return fail(r.error.message);
+      }
       stage.value = 'verify';
+      successMessage.value = '验证码已发送，请查收';
     } finally {
       loading.value = false;
     }
   }
 
-  // ── Step 2: 校验验证码，进入重置步 ──
-  async function stepVerify(): Promise<void> {
+  // ── Step 2: 校验验证码（可能触发 2FA 分流）──
+  async function verifyCode(): Promise<void> {
     error.value = null;
+    const value = account.value.trim();
     if (!code.value.trim()) return fail('请输入验证码');
     loading.value = true;
     try {
-      const r = await authApi.recoveryVerify(txnId.value, code.value.trim());
+      let r;
+      if (contact.value === 'email') {
+        r = await authApi.recoverEmailVerify(value, code.value.trim());
+      } else if (contact.value === 'phone') {
+        r = await authApi.recoverPhoneVerify(value, code.value.trim());
+      } else {
+        // magic link: token 已在邮件链接中，通常通过 URL callback 直接进入 verify。
+        r = await authApi.recoverMagicLinkVerify(code.value.trim());
+      }
       if (r.isErr()) return fail(r.error.message);
-      // 校验通过，进入设置新密码步（verify 仅校验验证码，不改密）
+
+      const data = r.value;
+      if (data.requires_2fa) {
+        // MFA 分流：暂存 txn + temp_token，进入 TOTP 验证
+        txnId.value = data.txn_id ?? '';
+        tempToken.value = data.temp_token ?? '';
+        stage.value = '2fa';
+        return;
+      }
+      // 非 MFA：后端在 verify 时已用 new_password 直接完成重置 → 进入密码重置确认步
       stage.value = 'reset';
     } finally {
       loading.value = false;
     }
   }
 
-  // ── Step 3: 重置密码 ← 真正改密 ──
+  // ── Step 2.5: MFA 时的 TOTP 验证 ──
+  async function submit2FA(totp: string): Promise<void> {
+    error.value = null;
+    if (!tempToken.value) return fail('缺少临时会话令牌，请重新发起找回');
+    if (!/^\d{6}$/.test(totp)) return fail('请输入 6 位动态验证码');
+    loading.value = true;
+    try {
+      const v = await authApi.verify2FA(tempToken.value, totp);
+      if (v.isErr()) return fail(v.error.message);
+      const vt = await authApi.recoverVerifyTotp(txnId.value, tempToken.value);
+      if (vt.isErr()) return fail(vt.error.message);
+      stage.value = 'reset';
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  // ── Step 3: 设置新密码（MFA 场景走完 verify-totp 后；非 MFA 场景由 verify 直接带新密码）──
   async function stepReset(): Promise<void> {
     error.value = null;
     if (newPassword.value.length < 6) return fail('密码长度不能少于 6 位');
     if (newPassword.value !== confirm.value) return fail('两次输入的密码不一致');
     loading.value = true;
     try {
-      const r = await authApi.recoveryReset(txnId.value, code.value.trim(), newPassword.value);
-      if (r.isErr()) return fail(r.error.message);
+      const value = account.value.trim();
+      if (!txnId.value) {
+        // 非 MFA：传给 verify 步作为新密码
+        let r;
+        if (contact.value === 'email') {
+          r = await authApi.recoverEmailVerify(value, code.value.trim(), newPassword.value);
+        } else if (contact.value === 'phone') {
+          r = await authApi.recoverPhoneVerify(value, code.value.trim(), newPassword.value);
+        } else {
+          r = await authApi.recoverMagicLinkVerify(code.value.trim(), newPassword.value);
+        }
+        if (r.isErr()) return fail(r.error.message);
+      } else {
+        // MFA：走 complete
+        const r = await authApi.recoverComplete(txnId.value, newPassword.value);
+        if (r.isErr()) return fail(r.error.message);
+      }
       stage.value = 'done';
       if (typeof onSuccess === 'function') onSuccess('密码已重置，请登录');
     } finally {
@@ -100,26 +171,32 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   function reset(): void {
     stage.value = 'account';
     account.value = '';
-    txnId.value = '';
     code.value = '';
+    txnId.value = '';
+    tempToken.value = '';
     newPassword.value = '';
     confirm.value = '';
     loading.value = false;
     error.value = null;
+    successMessage.value = '';
   }
 
-  // reactive 包裹使 ref 解包（与 useLoginFlow/useRegisterFlow 一致），模板里即值类型
   return reactive({
     stage,
     account,
-    txnId,
+    contact,
     code,
+    txnId,
+    tempToken,
     newPassword,
     confirm,
     loading,
     error,
-    stepRequest,
-    stepVerify,
+    successMessage,
+    isContactValid,
+    requestCode,
+    verifyCode,
+    submit2FA,
     stepReset,
     reset,
   });
