@@ -21,12 +21,11 @@
     </button>
 
     <!-- 下拉菜单 -->
-    <Teleport to="body">
-      <div v-if="isOpen" class="fixed inset-0 z-40" @click="close" />
-      <div
-        v-if="isOpen"
-        class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] py-1.5 z-50 shadow-xl dark:shadow-none"
-      >
+    <div
+      v-if="isOpen"
+      class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] border border-black/5 dark:border-white/10 rounded-[var(--radius-large)] float-panel py-1.5 z-50 shadow-xl dark:shadow-2xl transition-all"
+      @click.stop
+    >
         <div class="px-4 py-2 border-b border-surface-3 mb-1">
           <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
           <div class="text-xs text-text-muted">{{ userLevelText }}</div>
@@ -67,12 +66,11 @@
           </button>
         </div>
       </div>
-    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { buildUrl } from '~/lib/utils/paths';
 import { useAuthStore } from '~/stores/auth';
@@ -80,10 +78,15 @@ import { useAuthStore } from '~/stores/auth';
 defineProps<{ base?: string }>();
 
 const store = useAuthStore();
+const menuRef = ref<HTMLDivElement | null>(null);
 const isOpen = ref(false);
 const isLoggedIn = computed(() => store.isLoggedIn);
 const username = computed(() => store.username);
-const userLevel = computed<'local' | 'normal' | 'admin'>(() => store.user?.account_level ?? 'local');
+// UserInfo.account_level 是 string，需收窄为字面量联合（与 useAuth.ts 归一化一致）
+const userLevel = computed<'local' | 'normal' | 'admin'>(() => {
+  const level = store.user?.account_level;
+  return level === 'admin' || level === 'normal' ? level : 'local';
+});
 
 const avatarLetter = computed(() => (username.value ? username.value.charAt(0).toUpperCase() : '?'));
 
@@ -110,6 +113,13 @@ function close() {
   isOpen.value = false;
 }
 
+// 与其他下拉框一致：点击面板外部关闭
+function handleClickOutside(e: MouseEvent) {
+  if (menuRef.value && !menuRef.value.contains(e.target as Node)) {
+    isOpen.value = false;
+  }
+}
+
 async function handleLogout() {
   isOpen.value = false;
   await store.logout();
@@ -117,5 +127,10 @@ async function handleLogout() {
 
 onMounted(() => {
   store.restoreFromStorage();
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
 });
 </script>
