@@ -23,34 +23,65 @@ function makeUser(over: Record<string, unknown> = {}) {
 }
 
 describe('BindMethods', () => {
-  it('渲染邮箱绑定状态', async () => {
-    vi.spyOn(authApi, 'getBindings').mockResolvedValue(ok({ email: 'a@b.com', phone: null, github: false }) as never);
+  beforeEach(() => {
+    vi.spyOn(authApi, 'getSettings').mockResolvedValue(
+      ok({ email: null, phone: null, github: null, has_2fa: false }) as never
+    );
+  });
+
+  it('渲染绑定的邮箱', async () => {
+    vi.spyOn(authApi, 'getSettings').mockResolvedValue(
+      ok({ email: 'a@b.com', phone: null, github: null, has_2fa: false }) as never
+    );
+    const w = mount(BindMethods, {
+      props: { user: makeUser({ email: 'a@b.com' }) as never },
+    });
+    await flushPromises();
+    expect(w.text()).toContain('a@b.com');
+    expect(w.text()).toContain('已绑定');
+  });
+
+  it('未绑定时展示「绑定」按钮并可发起邮箱绑定', async () => {
+    const requestSpy = vi.spyOn(authApi, 'bindEmailRequest').mockResolvedValue(
+      ok({ message: 'code sent', record_id: 1 }) as never
+    );
     const w = mount(BindMethods, {
       props: { user: makeUser() as never },
     });
     await flushPromises();
-    expect(w.text()).toContain('a@b.com');
+    expect(w.text()).toContain('绑定');
+    // 邮箱行的「绑定」按钮：进入发送验证码步骤；此步不应发起网络请求
+    const bindBtn = w.find('[data-testid="bind-email"]');
+    expect(bindBtn.exists()).toBe(true);
+    await bindBtn.trigger('click');
+    await flushPromises();
+    expect(w.text()).toContain('发送验证码');
+    expect(w.text()).not.toContain('输入验证码');
+    expect(requestSpy).not.toHaveBeenCalled();
   });
 });
 
 describe('TwoFactorSetup', () => {
-  it('渲染已开启的 2FA 开关', async () => {
-    vi.spyOn(authApi, 'getRecoveryCodes').mockResolvedValue(
-      ok({ two_factor_enabled: true, recovery_codes: null }) as never
+  it('渲染双因素认证标题与未开启状态，可发起开启', async () => {
+    vi.spyOn(authApi, 'get2FAStatus').mockResolvedValue(ok({ enabled: false }) as never);
+    vi.spyOn(authApi, 'start2FA').mockResolvedValue(
+      ok({ secret: 'SECRET', qr_code_uri: 'otpauth://totp/LKM:alma?secret=SECRET' }) as never
     );
     const w = mount(TwoFactorSetup, {
       props: { user: makeUser() as never },
     });
     await flushPromises();
     expect(w.text()).toContain('双因素');
-    expect(w.text()).toContain('已开启');
+    expect(w.text()).toContain('未开启');
+    await w.find('button').trigger('click');
+    expect(w.text()).toContain('确认开启');
   });
 });
 
 describe('PasskeySetup', () => {
   it('渲染 passkey 列表', async () => {
     vi.spyOn(authApi, 'listPasskeys').mockResolvedValue(
-      ok([{ id: 1, credential_id: 'c', name: '我的钥匙', created_at: '2026-01-01' }]) as never
+      ok([{ id: 1, credential_id: 'c', device_name: '我的钥匙', created_at: '2026-01-01' }]) as never
     );
     const w = mount(PasskeySetup, {
       props: { user: makeUser() as never },
