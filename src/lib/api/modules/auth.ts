@@ -199,7 +199,8 @@ export const authApi = {
     get<TokenData>(`/api/v1/auth/login/magic-link/verify?token=${encodeURIComponent(token)}`),
 
   // ── 注册本地账户 ──
-  registerLocal: (username: string, password: string) => post<TokenData>('/api/v1/auth/reg/local', { username, password }),
+  registerLocal: (username: string, password: string) =>
+    post<TokenData>('/api/v1/auth/reg/local', { username, password }),
 
   // ── 注册普通账户（发送验证码） ──
   registerNormal: (username: string, password: string, email: string | null, phone: string | null) =>
@@ -219,14 +220,18 @@ export const authApi = {
 
   // ── 手机号注册（验证） ──
   registerPhoneVerify: (phone: string, code: string) =>
-    post<TokenData>(`/api/v1/auth/reg/phone/verify?phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`),
+    post<TokenData>(
+      `/api/v1/auth/reg/phone/verify?phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`
+    ),
 
   // ── 邮箱注册（发送验证码） ──
   registerEmail: (email: string) => post<{ email: string; message: string }>('/api/v1/auth/reg/email', { email }),
 
   // ── 邮箱注册（验证） ──
   registerEmailVerify: (email: string, code: string) =>
-    post<TokenData>(`/api/v1/auth/reg/email/verify?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`),
+    post<TokenData>(
+      `/api/v1/auth/reg/email/verify?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`
+    ),
 
   // ── 刷新 Token ──
   refreshToken: (refreshToken: string) =>
@@ -254,8 +259,7 @@ export const authApi = {
   start2FA: () => post<TOTPSetupBeginData>('/api/v1/auth/2fa/setup/begin'),
 
   /** 提交当前 TOTP 码完成设置，返回恢复码。 */
-  verify2FAEnable: (code: string) =>
-    post<TOTPSetupCompleteData>('/api/v1/auth/2fa/setup/complete', { code }),
+  verify2FAEnable: (code: string) => post<TOTPSetupCompleteData>('/api/v1/auth/2fa/setup/complete', { code }),
 
   /** 确认已保存恢复码。 */
   confirm2FA: () => post<TOTPConfirmData>('/api/v1/auth/2fa/setup/confirm'),
@@ -290,11 +294,7 @@ export const authApi = {
       device_name: deviceName,
     }),
   passkeyLoginBegin: () => post<PasskeyBeginOptions>('/api/v1/auth/passkey/login/begin'),
-  passkeyLoginComplete: (
-    rawId: string,
-    challengeId: string,
-    response: Record<string, unknown>
-  ) =>
+  passkeyLoginComplete: (rawId: string, challengeId: string, response: Record<string, unknown>) =>
     post<TokenData>('/api/v1/auth/passkey/login/complete', {
       rawId,
       challenge_id: challengeId,
@@ -348,12 +348,10 @@ export const authApi = {
 
   // ── 绑定邮箱 / 手机 ──
 
-  bindEmailRequest: (email: string) =>
-    post<BindCodeRequestData>('/api/v1/auth/settings/bind-email/request', { email }),
+  bindEmailRequest: (email: string) => post<BindCodeRequestData>('/api/v1/auth/settings/bind-email/request', { email }),
   bindEmailVerify: (email: string, code: string) =>
     post<BindCodeVerifyData>('/api/v1/auth/settings/bind-email/verify', { email, code }),
-  bindPhoneRequest: (phone: string) =>
-    post<BindCodeRequestData>('/api/v1/auth/settings/bind-phone/request', { phone }),
+  bindPhoneRequest: (phone: string) => post<BindCodeRequestData>('/api/v1/auth/settings/bind-phone/request', { phone }),
   bindPhoneVerify: (phone: string, code: string) =>
     post<BindCodeVerifyData>('/api/v1/auth/settings/bind-phone/verify', { phone, code }),
 

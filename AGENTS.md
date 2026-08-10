@@ -8,15 +8,15 @@ LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（�
 
 ## 快速参考
 
-| 命令                    | 用途                                               |
-| ----------------------- | -------------------------------------------------- |
-| `pnpm run dev`          | 启动开发服务器（localhost:4321）                   |
-| `pnpm run build`        | 生产构建                                           |
-| `pnpm run preview`      | 本地预览生产构建                                   |
-| `pnpm run check`        | 运行 astro check + ESLint + Prettier               |
-| `pnpm run fix`          | 自动修复 ESLint + Prettier 问题                    |
-| `pnpm run test`         | 运行 vitest 测试                                   |
-| `pnpm run test:auth`    | 运行认证前端测试（`vitest run src/features/auth`） |
+| 命令                 | 用途                                               |
+| -------------------- | -------------------------------------------------- |
+| `pnpm run dev`       | 启动开发服务器（localhost:4321）                   |
+| `pnpm run build`     | 生产构建                                           |
+| `pnpm run preview`   | 本地预览生产构建                                   |
+| `pnpm run check`     | 运行 astro check + ESLint + Prettier               |
+| `pnpm run fix`       | 自动修复 ESLint + Prettier 问题                    |
+| `pnpm run test`      | 运行 vitest 测试                                   |
+| `pnpm run test:auth` | 运行认证前端测试（`vitest run src/features/auth`） |
 
 **后端地址由 `API_URL` 环境变量驱动**（见 `.env.example`），本仓库不自带后端。SSR 直连、中间件转发、GraphQL 目标均读取它；部署前填入真实后端 URL。
 

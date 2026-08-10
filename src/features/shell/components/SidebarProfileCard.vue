@@ -56,7 +56,9 @@ import type { ContactLink } from '~/lib/api/modules/auth';
 
 const props = defineProps<{ username?: string }>();
 
-type UserCard = ({ nickname?: string | null; avatar?: string | null; contact_links?: ContactLink[] } & { username: string });
+type UserCard = { nickname?: string | null; avatar?: string | null; contact_links?: ContactLink[] } & {
+  username: string;
+};
 
 const user = ref<UserCard | null>(null);
 const avatarFailed = ref(false);
@@ -65,14 +67,10 @@ const hasUserMode = computed(() => !!props.username);
 
 // 通用卡默认值 = 理科迷卡
 const displayName = computed(() =>
-  hasUserMode.value && user.value
-    ? (user.value.nickname || user.value.username || '?')
-    : (profileConfig.name || '')
+  hasUserMode.value && user.value ? user.value.nickname || user.value.username || '?' : profileConfig.name || ''
 );
 const bio = computed(() => (hasUserMode.value ? '' : profileConfig.bio || ''));
-const links = computed(() =>
-  hasUserMode.value ? (user.value?.contact_links || []) : profileConfig.links
-);
+const links = computed(() => (hasUserMode.value ? user.value?.contact_links || [] : profileConfig.links));
 
 // 头像：http(s)/data: 直接用；否则 buildUrl 拼 base 前缀；空则空 → 首字
 const avatarSrc = computed(() => {

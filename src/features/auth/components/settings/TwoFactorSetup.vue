@@ -14,7 +14,12 @@
         <button v-if="!enabled && !enabling" type="button" class="btn btn-ghost btn-xs" @click="startEnable">
           开启
         </button>
-        <button v-else-if="enabled" type="button" class="btn btn-ghost btn-xs text-error" @click="disableDialogOpen = true">
+        <button
+          v-else-if="enabled"
+          type="button"
+          class="btn btn-ghost btn-xs text-error"
+          @click="disableDialogOpen = true"
+        >
           关闭
         </button>
       </div>
@@ -46,9 +51,7 @@
             <span v-if="verifying" class="loading loading-spinner loading-xs"></span>
             <template v-else>确认开启</template>
           </button>
-          <button type="button" class="btn btn-ghost btn-xs" :disabled="verifying" @click="cancelEnable">
-            取消
-          </button>
+          <button type="button" class="btn btn-ghost btn-xs" :disabled="verifying" @click="cancelEnable">取消</button>
         </div>
       </form>
     </div>
@@ -80,7 +83,12 @@
           <span v-if="verifyingDisable" class="loading loading-spinner loading-xs"></span>
           <template v-else>确认关闭</template>
         </button>
-        <button type="button" class="btn btn-ghost btn-xs" :disabled="verifyingDisable" @click="disableDialogOpen = false">
+        <button
+          type="button"
+          class="btn btn-ghost btn-xs"
+          :disabled="verifyingDisable"
+          @click="disableDialogOpen = false"
+        >
           取消
         </button>
       </div>

@@ -177,9 +177,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       // 跳转后本页将被卸载；此处不重置 loading，避免闪烁
     } catch (e) {
       loading.value = false;
-      setError(
-        e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, '发起 GitHub 授权失败')
-      );
+      setError(e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, '发起 GitHub 授权失败'));
     }
   }
 

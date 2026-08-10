@@ -26,7 +26,10 @@
           v-else-if="boundEmail"
           type="button"
           class="btn btn-ghost btn-xs text-error"
-          @click="unbinding = 'email'; unbindCode = ''"
+          @click="
+            unbinding = 'email';
+            unbindCode = '';
+          "
         >
           解绑
         </button>
@@ -79,7 +82,10 @@
           v-else-if="boundPhone"
           type="button"
           class="btn btn-ghost btn-xs text-error"
-          @click="unbinding = 'phone'; unbindCode = ''"
+          @click="
+            unbinding = 'phone';
+            unbindCode = '';
+          "
         >
           解绑
         </button>
@@ -119,7 +125,13 @@
       </div>
       <div class="flex items-center gap-2">
         <AuthStatus v-if="errors.github" type="error" :message="errors.github" class="text-xs" />
-        <button v-if="!boundGithub" type="button" class="btn btn-ghost btn-xs" :disabled="busy.github" @click="startGithubBind">
+        <button
+          v-if="!boundGithub"
+          type="button"
+          class="btn btn-ghost btn-xs"
+          :disabled="busy.github"
+          @click="startGithubBind"
+        >
           <span v-if="busy.github" class="loading loading-spinner loading-xs"></span>
           <template v-else>绑定</template>
         </button>
@@ -127,7 +139,10 @@
           v-else
           type="button"
           class="btn btn-ghost btn-xs text-error"
-          @click="unbinding = 'github'; unbindCode = ''"
+          @click="
+            unbinding = 'github';
+            unbindCode = '';
+          "
         >
           解绑
         </button>
@@ -135,11 +150,7 @@
     </div>
 
     <!-- 解绑 2FA 验证码输入 -->
-    <form
-      v-if="unbinding"
-      class="p-3 bg-page-bg rounded-lg flex gap-2 items-center"
-      @submit.prevent="doUnbind"
-    >
+    <form v-if="unbinding" class="p-3 bg-page-bg rounded-lg flex gap-2 items-center" @submit.prevent="doUnbind">
       <div class="flex-1">
         <input
           v-model.trim="unbindCode"
@@ -150,7 +161,16 @@
         />
       </div>
       <button type="submit" class="btn btn-error btn-sm" :disabled="has2FA && unbindCode.length < 6">确认解绑</button>
-      <button type="button" class="btn btn-ghost btn-xs" @click="unbinding = false; unbindCode = ''">取消</button>
+      <button
+        type="button"
+        class="btn btn-ghost btn-xs"
+        @click="
+          unbinding = false;
+          unbindCode = '';
+        "
+      >
+        取消
+      </button>
     </form>
   </div>
 </template>
@@ -180,7 +200,7 @@ const has2FA = ref(false);
 
 // 解绑用的当前 TOTP 码输入（2FA 已开启时要求）
 const unbinding = ref<false | 'email' | 'phone' | 'github'>(false);
-const unbindCode = ref('')
+const unbindCode = ref('');
 
 const pending = reactive<Record<BindType, StepState>>({ email: 'idle', phone: 'idle' });
 const submitting = reactive<Record<BindType, boolean>>({ email: false, phone: false });
@@ -229,9 +249,7 @@ async function onSubmit(type: BindType) {
     }
     const contact = type === 'email' ? email.value : phone.value;
     const r =
-      type === 'email'
-        ? await authApi.bindEmailVerify(contact, code)
-        : await authApi.bindPhoneVerify(contact, code);
+      type === 'email' ? await authApi.bindEmailVerify(contact, code) : await authApi.bindPhoneVerify(contact, code);
     if (r.isErr()) {
       errors[type] = r.error.message;
       return;

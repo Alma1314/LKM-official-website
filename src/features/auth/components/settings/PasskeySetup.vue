@@ -22,11 +22,7 @@
 
     <!-- 列表 -->
     <ul v-else class="space-y-2">
-      <li
-        v-for="pk in passkeys"
-        :key="pk.id"
-        class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3"
-      >
+      <li v-for="pk in passkeys" :key="pk.id" class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3">
         <div class="flex-1 min-w-0">
           <span class="font-medium block truncate">{{ pk.device_name }}</span>
           <span class="text-xs text-text-muted">{{ pk.credential_id.slice(0, 12) }}…</span>

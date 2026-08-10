@@ -80,9 +80,7 @@ function decodePublicKey<T extends JsonWebElement>(pk: T): T {
   return out;
 }
 
-export function toPublicKeyCredentialCreationOptions(
-  pk: Record<string, unknown>
-): PublicKeyCredentialCreationOptions {
+export function toPublicKeyCredentialCreationOptions(pk: Record<string, unknown>): PublicKeyCredentialCreationOptions {
   const opts = decodePublicKey(pk as JsonWebElement) as PublicKeyCredentialCreationOptions;
   // publicKey 本身需要顶层字段名与浏览器 API 对齐
   return {
@@ -98,9 +96,7 @@ export function toPublicKeyCredentialCreationOptions(
   };
 }
 
-export function toPublicKeyCredentialRequestOptions(
-  pk: Record<string, unknown>
-): PublicKeyCredentialRequestOptions {
+export function toPublicKeyCredentialRequestOptions(pk: Record<string, unknown>): PublicKeyCredentialRequestOptions {
   return decodePublicKey(pk as JsonWebElement) as PublicKeyCredentialRequestOptions;
 }
 
