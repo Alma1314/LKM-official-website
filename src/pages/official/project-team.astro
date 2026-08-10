@@ -4,9 +4,14 @@ import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import MemberCard from '~/features/team/components/MemberCard.astro';
 import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
 
-import { projectSubGroups } from '~/features/team/data/members';
+import { teamApi } from '~/lib/api';
+import type { TeamSubGroup } from '~/lib/api/modules/team';
 
 import { getPermalink } from '~/lib/utils/permalinks';
+
+// 从后端拉取项目团队各分组成员数据（subGroupMaps 类型）
+const res = await teamApi.getSubGroups('projectSubGroups');
+const groups: TeamSubGroup[] = res.isOk() ? res.value?.items ?? [] : [];
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {
@@ -47,13 +52,13 @@ const sidebarLinks = [
 ---
 
 <Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/project-team')}>
-  <!-- 教材项目组 -->
+  <!-- 项目小组 -->
   {
-    Object.entries(projectSubGroups).map(([, group]) => (
+    groups.map((group) => (
       <DepartmentSection
-        id={group.label === '教材项目组' ? 'textbooks' : 'science'}
+        id={group.key}
         title={group.label}
-        borderColor={group.label === '教材项目组' ? '#14b8a6' : '#a855f7'}
+        borderColor={group.key === 'textbooks' ? '#14b8a6' : '#a855f7'}
         desc={group.desc ?? ''}
       >
         {group.members.length > 0 ? (

@@ -5,20 +5,53 @@ import Section from '~/features/homepage/components/Section.astro';
 import MemberCard from '~/features/team/components/MemberCard.astro';
 import DepartmentSection from '~/features/team/components/DepartmentSection.astro';
 
-import {
-  founderMembers,
-  generalMembers,
-  affairsSubGroups,
-  eventsMembers,
-  newsMembers,
-  newsSubGroups,
-  advisorMembers,
-  techMembers,
-  professionalSubGroups,
-  alumniMembers,
-} from '~/features/team/data/members';
+import { teamApi } from '~/lib/api';
+import type { TeamMember, TeamSubGroup } from '~/lib/api/modules/team';
 
 import { getPermalink } from '~/lib/utils/permalinks';
+
+// ---- 从后端拉取成员数据 ----
+// 统一解包 Result：ok 返回 data，err 返回空数组（页面降级为空，不中断渲染）
+
+async function fetchMembers(type: string): Promise<TeamMember[]> {
+  const res = await teamApi.getMembers(type);
+  if (res.isOk()) return res.value?.items ?? [];
+  return [];
+}
+
+async function fetchSubGroups(type: string): Promise<TeamSubGroup[]> {
+  const res = await teamApi.getSubGroups(type);
+  if (res.isOk()) return res.value?.items ?? [];
+  return [];
+}
+
+// memberLists 各分组
+const [founderMembers, generalMembers, eventsMembers, newsMembers, advisorMembers, techMembers, alumniMembers] =
+  await Promise.all([
+    fetchMembers('founderMembers'),
+    fetchMembers('generalMembers'),
+    fetchMembers('eventsMembers'),
+    fetchMembers('newsMembers'),
+    fetchMembers('advisorMembers'),
+    fetchMembers('techMembers'),
+    fetchMembers('alumniMembers'),
+  ]);
+
+// subGroupMaps 各分组（后端返回数组，转为 key→group 的 Record 以适配模板遍历）
+function toGroups(items: TeamSubGroup[]): Record<string, TeamSubGroup> {
+  const map: Record<string, TeamSubGroup> = {};
+  for (const g of items) map[g.key] = g;
+  return map;
+}
+
+const [affairsSubGroups, newsSubGroups, professionalSubGroups] = await Promise.all([
+  fetchSubGroups('affairsSubGroups'),
+  fetchSubGroups('newsSubGroups'),
+  fetchSubGroups('professionalSubGroups'),
+]);
+const affairsSubGroupsMap = toGroups(affairsSubGroups);
+const newsSubGroupsMap = toGroups(newsSubGroups);
+const professionalSubGroupsMap = toGroups(professionalSubGroups);
 
 // 自动导入所有优化后的成员头像（WebP, 192px）
 const avatarModules = import.meta.glob('~/assets/images/member-optimized/*.webp', {
@@ -117,7 +150,7 @@ const sidebarLinks = [
     noGrid
   >
     {
-      Object.entries(affairsSubGroups).map(([, group]) => (
+      Object.entries(affairsSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
           <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -179,7 +212,7 @@ const sidebarLinks = [
       }
     </div>
     {
-      Object.entries(newsSubGroups).map(([, group]) => (
+      Object.entries(newsSubGroupsMap).map(([, group]) => (
         <div class="mt-8">
           <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[13px] text-text-muted leading-relaxed">
@@ -231,7 +264,7 @@ const sidebarLinks = [
     noGrid
   >
     {
-      Object.entries(professionalSubGroups).map(([, group]) => (
+      Object.entries(professionalSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
           <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
