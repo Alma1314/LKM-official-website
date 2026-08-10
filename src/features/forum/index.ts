@@ -5,5 +5,4 @@ export { default as ForumPostInteractions } from './components/PostInteractions.
 export { default as ForumCreatePostDialog } from './components/CreatePostDialog.vue';
 
 export * from './data/categories';
-export * from './data/mock-posts';
 export * from './graphql';

@@ -2,7 +2,7 @@ import { graphql } from '~/lib/api/graphql';
 import type { TypedDocumentNode } from '@urql/core';
 
 export interface GqlPost {
-  id: string;
+  id: number;
   title: string;
   excerpt: string;
   content: string;
@@ -17,7 +17,7 @@ export interface GqlPost {
   forwardCount: number;
   createdAt: string;
   author: {
-    id: string;
+    id: number;
     displayName: string;
     avatar: string;
     username: string;
@@ -82,4 +82,4 @@ export const PostDetailQuery = graphql(`
       }
     }
   }
-`) as TypedDocumentNode<{ post: GqlPost | null }, { id: string }>;
+`) as TypedDocumentNode<{ post: GqlPost | null }, { id: number }>;
