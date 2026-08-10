@@ -177,5 +177,5 @@
   "overrides": {
     "yaml": ">=2.8.3"
   },
-  "packageManager": "pnpm@11.18.0"
+  "packageManager": "pnpm@11.21.0"
 }
