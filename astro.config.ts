@@ -177,16 +177,12 @@ export default defineConfig({
 
   vite: {
     server: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:8000',
-          changeOrigin: true,
-        },
-        '/graphql': {
-          target: 'http://localhost:8000',
-          changeOrigin: true,
-        },
-      },
+      proxy: process.env.API_URL
+        ? {
+            '/api': { target: process.env.API_URL, changeOrigin: true },
+            '/graphql': { target: process.env.API_URL, changeOrigin: true },
+          }
+        : undefined,
     },
     // Pinia/Vue 在生产/SSR 构建中访问 __VUE_PROD_DEVTOOLS__，必须由 vite 注入，
     // 否则 createPinia 在 SSR 渲染时抛 ReferenceError，导致所有挂载 Pinia 的页面无法渲染。

@@ -16,7 +16,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-ENV API_URL=http://fastapi:8000
+# 真实后端地址由运行时环境注入（如 -e API_URL=https://api.lkm.app）
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules

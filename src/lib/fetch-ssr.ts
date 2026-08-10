@@ -5,7 +5,7 @@
  */
 
 const SSR_TIMEOUT_MS = 3000; // 3 秒超时
-const API_BASE = process.env.BACKEND_URL || 'http://localhost:8000';
+const API_BASE = process.env.API_URL ?? '';
 
 interface FetchOptions {
   /** 超时毫秒数，默认 SSR_TIMEOUT_MS */

@@ -22,8 +22,7 @@ async function tryRefreshToken(): Promise<boolean> {
   try {
     const base =
       typeof window === 'undefined'
-        ? ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) ||
-          'http://localhost:8000'
+        ? ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || ''
         : '';
     // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${base}/api/auth/refresh`, {

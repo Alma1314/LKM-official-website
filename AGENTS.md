@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（仅编辑器）和 **Tailwind CSS v4** 构建。后端为 **FastAPI (Python)**，前后端分离部署，通过 Astro 中间件反向代理 `/api/*` 到 FastAPI。
+LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（仅编辑器）和 **Tailwind CSS v4** 构建。仓库仅含前端，后端为**独立部署的真实服务**，通过 Astro 中间件反向代理 `/api/*` 与 `/graphql` 到由 `API_URL` 指定的真实后端。
 
 **技术栈：** Astro v7 server | Vue 3 + Composition API | React（编辑器）| Tailwind CSS v4 | TypeScript | FastAPI | SQLite（开发）/ PostgreSQL（生产）
 
@@ -17,11 +17,8 @@ LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（�
 | `pnpm run fix`          | 自动修复 ESLint + Prettier 问题                    |
 | `pnpm run test`         | 运行 vitest 测试                                   |
 | `pnpm run test:auth`    | 运行认证前端测试（`vitest run src/features/auth`） |
-| `pnpm run test:backend` | 运行后端测试（含 GraphQL 测试）                    |
 
-**启动测试后端：** `pnpm run dev:backend`
-**一键启动前后端：** `pnpm run dev`（并行 Astro + FastAPI）
-**后端使用 uv 管理：** Python >= 3.12，首次 `cd backend && uv sync`
+**后端地址由 `API_URL` 环境变量驱动**（见 `.env.example`），本仓库不自带后端。SSR 直连、中间件转发、GraphQL 目标均读取它；部署前填入真实后端 URL。
 
 **Node.js 要求：** >= 24.0.0
 
@@ -42,18 +39,8 @@ lkm-official-website/
 │   ├── types/            # TypeScript 类型声明
 │   ├── data/             # 配置文件（config.yaml 等）
 │   ├── content/          # 内容文件
-│   ├── middleware.ts     # 反向代理 /api/* → FastAPI
+│   ├── middleware.ts     # 反向代理 /api/* 与 /graphql → 真实后端
 │   └── content.config.ts # 内容集合配置
-├── backend/              # FastAPI 测试后端
-│   ├── main.py           # 入口，uvicorn 启动（端口 8000）
-│   ├── app/              # 模块化后端代码
-│   │   ├── core/         # 响应格式 + 错误处理
-│   │   ├── data/         # Mock 数据
-│   │   ├── db/           # SQLAlchemy session/models
-│   │   ├── graphql/      # GraphQL（Strawberry + SQLAlchemy）
-│   │   ├── schemas/      # Pydantic 模型
-│   │   └── modules/      # API 路由模块（auth/blog/columns/boards/health）
-│   └── tests/            # pytest 测试（112 个）
 ├── scripts/              # 构建/检查脚本
 ├── docker-compose.yml    # Docker 生产部署
 ├── Dockerfile            # Astro SSR 部署镜像
@@ -67,7 +54,7 @@ lkm-official-website/
 Astro 从 `static` 切换到 `server`：
 
 - Astro SSR 负责页面路由和模板渲染
-- `src/middleware.ts` 反向代理 `/api/*` 到 FastAPI（内网 `localhost:8000`）
+- `src/middleware.ts` 反向代理 `/api/*` 与 `/graphql` 到真实后端（目标由 `API_URL` 指定）
 - Vue 3 为主交互框架（Shell 组件、StarHope 模块、社区平台）
 - React 仅用于编辑器后台（TipTap 3 编辑器组件，内联在 `features/editor/`）
 - **已卸载 Svelte**（源码中无 `.svelte` 文件，全部迁移到 Vue）
@@ -93,14 +80,14 @@ src/lib/api/
 
 ### 认证系统
 
-认证为 **真实 FastAPI JWT 后端**，已移除旧的 mock demo-accounts。Pinia `useAuthStore` 是**单一状态源**，Flow composable 是接入层：
+认证为**真实后端 JWT 认证**，已移除旧的 mock demo-accounts。仓库不含后端代码，经 `API_URL` 对接真实服务。Pinia `useAuthStore` 是**单一状态源**，Flow composable 是接入层：
 
 - **后端认证端点**：`/api/auth/*`（不再是 `/auth/*`），含 login/register/refresh/logout/me
 - **Pinia Store**：`src/stores/auth.ts`（`useAuthStore`）— 用户状态、token 管理的单一状态源（`user`/`isLoggedIn`/`session`/`_token`/`_refreshToken`/`onboardingCompleted`），localStorage 持久化（key `lkm-auth-store`）
 - **Flow Composable**：`src/features/auth/composables/` 的 `useLoginFlow`/`useRegisterFlow`/`useRecoveryFlow`/`useOnboardingFlow` 负责登录/注册/找回/引导；`useAuthProvider()`/`useAuth()` 仍存在作兼容桥（投影 store 状态，管理 2FA 过渡态）
 - **HTTP 认证适配器**：`src/lib/http/client.ts` 的 `configureHttpAuthSession(getHttpAccessToken())` 统一读写 token，含 JWT request 拦截器（附加 `Authorization: Bearer`）+ 401 自动刷新队列（并发安全，走 `POST /api/auth/refresh`）
 - **GraphQL 认证**：`src/lib/api/graphql/exchanges/auth.ts`（urql `authExchange`）经 `getHttpAccessToken()` 为每个 operation 自动附加 Bearer 头
-- **测试模式与后端模拟**：`PUBLIC_AUTH_TEST_MODE`（`src/env.d.ts`、`.env.example`）；测试后端通过 `simulation.py` + 持久化模型模拟 GitHub (`POST /api/auth/github/start|callback`)、Passkey、2FA login/security + recovery-codes、账号绑定 (`POST /api/auth/security/bindings/unbind`)、找回 (`/api/auth/recovery/request|verify|reset`)、Onboarding (steps/skip)；不接真实 OAuth/WebAuthn/邮件/短信/TOTP
+- **测试模式**：`PUBLIC_AUTH_TEST_MODE`（`src/env.d.ts`、`.env.example`）为前端测试 UI 开关；后端真实能力（GitHub/Passkey/2FA/找回/绑定/onboarding 等）由真实后端决定
 - **共享 UI 原语**：`src/features/auth/components/shared/`（AuthShell/AuthCard/AuthField/AuthSegmentedControl/AuthMethodButton/AuthStatus/VerificationCodeField）
 - **类型**：`src/types/auth.d.ts` 定义真实 `User`/`AuthState`/`LoginMethod` 等，**不再有 `DemoUser`**
 
@@ -185,9 +172,8 @@ import { getPermalink } from '~/lib/utils/permalinks';
 # docker-compose.yml
 services:
   astro: # Node.js SSR 服务（端口 80）
-  fastapi: # Python 后端（端口 8000，仅内网）
-  postgres: # PostgreSQL 16
-  redis: # Redis 7
+    environment:
+      - API_URL=${API_URL} # 由部署环境注入真实后端地址
 ```
 
 ## 验证检查清单
@@ -198,7 +184,6 @@ services:
 2. `pnpm run check` 通过（astro check + ESLint + Prettier）
 3. `pnpm run test` 通过（前端 Vitest）
 4. `pnpm run test:auth` 通过（认证前端测试）
-5. `pnpm run test:backend` 通过（后端 pytest，112 个测试）
-6. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过（Playwright E2E）
-7. 浏览器验证：首页、论坛、暗色模式、移动端菜单
-8. GraphQL 端点：`http://localhost:8000/graphql` → GraphiQL 可交互
+5. `pnpm run test:smoke` 和 `pnpm run test:a11y` 通过（Playwright E2E）
+6. 浏览器验证：首页、论坛、暗色模式、移动端菜单
+7. GraphQL 端点：`{API_URL}/graphql` → GraphiQL 可交互（需真实后端就绪）

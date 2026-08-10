@@ -8,9 +8,9 @@ import { errorExchange } from './exchanges/error';
 function getGraphqlUrl(): string {
   if (import.meta.env.PUBLIC_GRAPHQL_URL) return import.meta.env.PUBLIC_GRAPHQL_URL;
 
-  // SSR: 使用完整的内网 URL
+  // SSR: 使用真实后端直连地址
   if (typeof window === 'undefined') {
-    return (import.meta.env.API_URL || 'http://localhost:8000') + '/graphql';
+    return (import.meta.env.API_URL ?? '') + '/graphql';
   }
 
   // CSR: 完整 URL（urql 内部用 new URL() 解析，必须有 origin）
@@ -22,8 +22,8 @@ function getGraphqlUrl(): string {
 /**
  * urql GraphQL 客户端 — SSR/CSR 共享实例
  *
- * SSR 时 fetch 到内网 FastAPI（由 Astro middleware 代理），
- * CSR 时同域 /graphql → Astro middleware → FastAPI。
+ * SSR 时 fetch 到真实后端（由 Astro middleware 代理），
+ * CSR 时同域 /graphql → Astro middleware → 真实后端。
  */
 export const graphqlClient = new Client({
   url: getGraphqlUrl(),

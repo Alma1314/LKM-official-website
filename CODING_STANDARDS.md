@@ -131,8 +131,7 @@ const items = ['A', 'B', 'C'];
 
 - **token 与用户状态必须统一走 `useAuthStore` / HTTP 认证适配器（`configureHttpAuthSession`）**，前端禁止直接经 localStorage 伪造或读写 token。
 - **账号状态单一来源**：`src/stores/auth.ts`（`useAuthStore`）负责用户状态、token、localStorage 持久化（key `lkm-auth-store`）；组件通过 Flow composable（`useLoginFlow`/`useRegisterFlow`/`useRecoveryFlow`/`useOnboardingFlow`）或兼容桥 `useAuthProvider` 接入。
-- **测试后端仅模拟高级认证**：GitHub/Passkey/2FA/找回/绑定/onboarding 均为模拟实现（`simulation.py`，不接真实 OAuth/WebAuthn/邮件/短信/TOTP）。测试用 `PUBLIC_AUTH_TEST_MODE` 开启，后端模拟能力不应在文档中被描述为真实接入。
-- 测试后端/数据库文件（如 `backend/lkm_test*.db`）为测试产物，不提交。
+- **认证对接真实后端**：仓库不含后端代码，前端经 `API_URL` 指向真实后端完成认证（OAuth/WebAuthn/2FA/找回/绑定/onboarding 能力由真实后端决定）。`PUBLIC_AUTH_TEST_MODE`（`src/env.d.ts`、`.env.example`）仅开启前端测试 UI，不应被描述为后端真实接入的开关。
 
 ## 路径别名
 
