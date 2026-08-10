@@ -4,7 +4,7 @@
     :max-width="mode === 'modal' ? undefined : '440px'"
     :class="mode === 'modal' ? 'w-full' : undefined"
   >
-    <AuthCard title="注册" subtitle="创建理科迷账号" :test-mode="testMode" :mode="mode">
+    <AuthCard title="注册" subtitle="创建理科迷账号" :mode="mode">
       <!-- 状态提示 -->
       <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
 
@@ -77,8 +77,6 @@ import LocalRegister from './LocalRegister.vue';
 import NormalRegister from './NormalRegister.vue';
 
 withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
-
-const testMode = import.meta.env.PUBLIC_AUTH_TEST_MODE === 'true';
 
 const redirectRaw = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('redirect') : null;
 

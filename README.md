@@ -418,7 +418,6 @@ Eptazocine`3070025462`
 
 - **账户登录**：账户/邮箱/手机 + 密码、短信/邮箱验证码、邮箱 Magic Link
 - **高级认证**：GitHub、Passkey、2FA（二次验证）、密码找回、登录后引导（onboarding）与账号绑定
-- **测试模式**：可通过环境变量 `PUBLIC_AUTH_TEST_MODE` 开启前端测试 UI；后端真实能力由真实后端决定
 
 账号状态由 `src/stores/auth.ts`（`useAuthStore`）作为单一状态源，localStorage key `lkm-auth-store`。
 

@@ -7,7 +7,6 @@
     <AuthCard
       :title="flow.loggedIn ? '登录成功' : flow.mode === '2fa' ? '双因素认证' : '登录'"
       subtitle="登录理科迷账号，访问社区资源与文档"
-      :test-mode="testMode"
       :mode="mode"
     >
       <!-- 登录成功态：停留在登录卡片，不自动跳转 -->
@@ -181,8 +180,6 @@ import AuthMethodButton from '../shared/AuthMethodButton.vue';
 import VerificationCodeField from '../shared/VerificationCodeField.vue';
 
 withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
-
-const testMode = import.meta.env.PUBLIC_AUTH_TEST_MODE === 'true';
 
 const flow = useLoginFlow({
   // 登录成功后在卡片内显示「登录成功」，不自动跳转（flow.loggedIn 驱动成功视图）
