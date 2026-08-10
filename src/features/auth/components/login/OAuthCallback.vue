@@ -16,19 +16,22 @@ import AuthStatus from '../shared/AuthStatus.vue';
 /**
  * OAuth 回调处理页。
  *
- * 后端在 GitHub OAuth 成功后（需后端将回调改为重定向，见后端缺口清单 1）携带如下参数跳转到
- * `settings.frontend_callback`（如 /login/success）：
- *   - token / refresh_token：会话令牌
+ * 后端在 GitHub OAuth 成功后重定向到 `settings.frontend_callback`（如 /login/success），
+ * 令牌放在 URL fragment（`#access_token=...`）中回传，避免进入 query/浏览器历史：
+ *   - access_token / refresh_token：会话令牌
  *   - temp_token：若需 2FA 或首次设置
  *   - requires_2fa / setup_required：布尔标记
  *
- * 读取后写入 auth store；若需 2FA 则持久化 temp_token 供后续验证。
+ * 读取 fragment 后写入 auth store；若需 2FA 则持久化 temp_token 供后续验证。
+ * 解析完随即清理 URL（含 hash），避免令牌留在地址栏/历史记录。
  */
 const store = useAuthStore();
 const error = ref<string | null>(null);
 
 onMounted(() => {
-  const params = new URLSearchParams(window.location.search);
+  // 令牌在 #fragment 中。去除开头的 # 后按 query 语法解析。
+  const raw = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
+  const params = new URLSearchParams(raw);
   const token = params.get('access_token');
   const refreshToken = params.get('refresh_token');
   const tempToken = params.get('temp_token');

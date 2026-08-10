@@ -35,6 +35,12 @@ declare module '*.yml?raw' {
   export default content;
 }
 
+// wgsl-raw 插件把 *.wgsl 转成 default 字符串
+declare module '*.wgsl' {
+  const code: string;
+  export default code;
+}
+
 declare module 'virtual:config' {
   const config: Record<string, unknown>;
   export default config;
