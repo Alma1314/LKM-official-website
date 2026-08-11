@@ -83,7 +83,7 @@
         <div class="setup-block">
           <label class="setup-label">匿名代号</label>
           <div class="nick-row">
-            <el-input v-model="codename" placeholder="留空随机分配" size="large" />
+            <n-input v-model="codename" placeholder="留空随机分配" size="large" />
             <button class="btn-grad ghost" @click="codename = randomCodename()">🎲 随机</button>
           </div>
         </div>
@@ -192,7 +192,7 @@
               <span class="knob"></span>
             </button>
           </div>
-          <el-date-picker
+          <n-date-picker
             v-if="scheduledOn"
             v-model="scheduledAt"
             type="datetime"
@@ -204,7 +204,7 @@
             <span>🔒 限时封存</span>
             <button class="switch" :class="{ on: sealOn }" @click="sealOn = !sealOn"><span class="knob"></span></button>
           </div>
-          <el-date-picker
+          <n-date-picker
             v-if="sealOn"
             v-model="sealUntil"
             type="datetime"
@@ -226,7 +226,7 @@
           <label class="setup-label">验证码（防刷）</label>
           <div class="captcha-row">
             <div class="captcha-code" @click="refreshCaptcha">{{ captcha }}</div>
-            <el-input v-model="captchaInput" placeholder="输入上方字符" size="large" />
+            <n-input v-model="captchaInput" placeholder="输入上方字符" size="large" />
           </div>
         </div>
 
@@ -241,7 +241,13 @@
     </div>
 
     <!-- 投稿成功弹窗 -->
-    <el-dialog v-model="successVisible" align-center width="min(420px, 92vw)" :show-close="false">
+    <n-modal
+      v-model:show="successVisible"
+      preset="card"
+      :show-icon="false"
+      :closable="false"
+      style="width: min(420px, 92vw)"
+    >
       <div class="success glass">
         <div class="success-ring">✓</div>
         <h2 class="grad-text">投递成功</h2>
@@ -251,10 +257,10 @@
           <button class="btn-grad" @click="afterSubmit">再写一封</button>
         </div>
       </div>
-    </el-dialog>
+    </n-modal>
 
     <!-- 分享图弹窗 -->
-    <el-dialog v-model="shareVisible" align-center width="min(380px, 92vw)">
+    <n-modal v-model:show="shareVisible" preset="card" :show-icon="false" style="width: min(380px, 92vw)">
       <div class="share-card" ref="shareRef" :style="{ background: paperBg }">
         <div class="share-head">🌙 拾光树洞</div>
         <div class="share-cat">{{ getCategory(category).emoji }} {{ getCategory(category).label }}</div>
@@ -264,14 +270,14 @@
       <template #footer>
         <button class="btn-grad" @click="downloadShare">💾 保存图片</button>
       </template>
-    </el-dialog>
+    </n-modal>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import { useMessage } from 'naive-ui';
 import {
   CATEGORIES,
   PRIVACY,
@@ -289,6 +295,7 @@ import { randomCodename } from '../utils/codename';
 
 const route = useRoute();
 const router = useRouter();
+const message = useMessage();
 const categories = CATEGORIES;
 const privacy = PRIVACY;
 const moods = MOODS;
@@ -433,7 +440,7 @@ function clearAll() {
 
 function saveDraft() {
   if (!content.value.trim()) {
-    ElMessage({ message: '内容为空，暂无可保存草稿', type: 'info', customClass: 'th-toast' });
+    message.info('内容为空，暂无可保存草稿');
     return;
   }
   store.saveDraft({
@@ -447,12 +454,12 @@ function saveDraft() {
     sticker: sticker.value,
     paper: paper.value,
     scheduledOn: scheduledOn.value,
-    scheduledAt: scheduledAt.value ? scheduledAt.value.getTime() : null,
+    scheduledAt: scheduledAt.value || null,
     sealOn: sealOn.value,
-    sealUntil: sealUntil.value ? sealUntil.value.getTime() : null,
+    sealUntil: sealUntil.value || null,
     updatedAt: Date.now(),
   });
-  ElMessage({ message: '草稿已保存到本地 💾', type: 'success', customClass: 'th-toast' });
+  message.success('草稿已保存到本地 💾');
 }
 
 // 语音转文字（Web Speech API，自动降级）
@@ -463,7 +470,7 @@ function toggleVoice() {
   }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    ElMessage({ message: '当前浏览器不支持语音输入', type: 'info', customClass: 'th-toast' });
+    message.info('当前浏览器不支持语音输入');
     return;
   }
   const rec = new SR();
@@ -480,7 +487,7 @@ function toggleVoice() {
   };
   rec.onerror = () => {
     recording.value = false;
-    ElMessage({ message: '语音识别结束', type: 'info', customClass: 'th-toast' });
+    message.info('语音识别结束');
   };
   try {
     rec.start();
@@ -545,16 +552,16 @@ function saveDoodle() {
   const dataUrl = c.toDataURL('image/png');
   store.saveSketch(dataUrl);
   content.value += '\n[手绘信纸已存入]';
-  ElMessage({ message: '涂鸦已存入信纸 🎨', type: 'success', customClass: 'th-toast' });
+  message.success('涂鸦已存入信纸 🎨');
 }
 
 function submit() {
   if (sensitiveHit.value.length) {
-    ElMessage({ message: '包含敏感词，请修改后提交', type: 'warning', customClass: 'th-toast' });
+    message.warning('包含敏感词，请修改后提交');
     return;
   }
   if (!store.canPost()) {
-    ElMessage({ message: '投稿过于频繁，请稍后再试', type: 'warning', customClass: 'th-toast' });
+    message.warning('投稿过于频繁，请稍后再试');
     return;
   }
   const finalContent = content.value.trim();
@@ -570,8 +577,8 @@ function submit() {
     privacy: privacyLevel.value,
     status: isScheduled ? 'scheduled' : 'published',
     scheduledPrivacy: isScheduled ? privacyLevel.value : null,
-    scheduledAt: isScheduled ? scheduledAt.value.getTime() : null,
-    sealUntil: sealOn.value && sealUntil.value ? sealUntil.value.getTime() : null,
+    scheduledAt: isScheduled ? scheduledAt.value : null,
+    sealUntil: sealOn.value && sealUntil.value ? sealUntil.value : null,
     codename: finalCode,
     moods: selectedMoods.value,
     tags: selectedTags.value,
@@ -625,7 +632,7 @@ function downloadShare() {
   a.download = '拾光树洞_分享.svg';
   a.click();
   URL.revokeObjectURL(url);
-  ElMessage({ message: '分享图已保存（SVG格式）', type: 'success', customClass: 'th-toast' });
+  message.success('分享图已保存（SVG格式）');
 }
 </script>
 
