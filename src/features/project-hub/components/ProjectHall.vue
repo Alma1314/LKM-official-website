@@ -533,7 +533,8 @@ const api = {
       if (error instanceof Error) {
         throw error;
       }
-      // 否则创建新的 Error，但不使用 cause 参数喵
+      // 否则创建新的 Error，并保留原始错误信息喵
+      console.error('API request failed:', error);
       throw new Error('请求失败，请稍后重试。');
     }
   },
