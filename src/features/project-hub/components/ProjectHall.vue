@@ -458,6 +458,8 @@
 import { ref, computed, reactive, watch, nextTick } from 'vue';
 import { mockProjects } from '../data/mock-projects';
 import { buildUrl } from '~/lib/utils/paths';
+// 导入项目规范的 HTTP 客户端喵！
+import { apiFetch } from '~/lib/api'; // 或者 import client from '~/lib/http/client'; 看项目实际用哪个
 
 // ============================================================
 // TypeScript 类型定义（喵，类型安全赛高！）
@@ -490,7 +492,7 @@ const isValidContact = (value: string): boolean => isValidPhone(value) || isVali
 const sanitizeInput = (value: string): string => value.replace(/<[^>]*>/g, '');
 
 // ============================================================
-// HTTP 请求封装（统一管理，省心喵～）
+// HTTP 请求封装（按照项目规范改用 apiFetch 喵～）
 // ============================================================
 /*
   根据 HTTP 状态码给用户看友好的错误提示。
@@ -511,19 +513,30 @@ const getErrorMessage = (status: number): string => {
   }
 };
 
+// 喵！按照项目规范，使用 apiFetch 替代原生 fetch
 const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      throw new Error(getErrorMessage(response.status));
+    try {
+      // 使用项目封装的 apiFetch，自动处理了拦截器、错误等
+      const response = await apiFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      
+      // apiFetch 可能已经处理了错误响应，这里根据项目实际情况调整喵
+      if (!response.ok) {
+        throw new Error(getErrorMessage(response.status));
+      }
+      
+      return response.json() as Promise<T>;
+    } catch (error) {
+      // 如果 apiFetch 已经抛出了友好的错误信息，直接使用
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('请求失败，请稍后重试。');
     }
-
-    return response.json() as Promise<T>;
   },
 };
 
@@ -540,6 +553,8 @@ const toast = {
   },
 };
 
+// ... 后面所有的代码完全不变喵！
+</script>
 // ============================================================
 // 标签切换（左右横跳喵～）
 // ============================================================
