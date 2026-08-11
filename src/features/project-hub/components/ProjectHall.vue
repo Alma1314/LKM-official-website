@@ -529,14 +529,15 @@ const api = {
       
       return response.json() as Promise<T>;
     } catch (error) {
+      // 如果 error 已经是 Error 实例，直接抛出喵
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('请求失败，请稍后重试。', { cause: error });
+      // 否则创建新的 Error，但不使用 cause 参数喵
+      throw new Error('请求失败，请稍后重试。');
     }
   },
 };
-
 // ============================================================
 // 消息提示（替代原生 alert，alert是坏文明）
 // ============================================================
