@@ -23,10 +23,7 @@
         @click="activeTab = tab.key"
       >
         {{ tab.label }}
-        <div
-          v-if="activeTab === tab.key"
-          class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full"
-        />
+        <div v-if="activeTab === tab.key" class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full" />
       </button>
 
       <div class="ml-auto flex gap-2">
@@ -76,10 +73,7 @@
           <p class="text-xs text-text-muted">{{ proj.initiatorName }} 发起</p>
           <div class="mt-1">
             <div class="h-1.5 rounded-full bg-surface-3">
-              <div
-                class="h-full rounded-full bg-primary transition-all"
-                :style="{ width: proj.progress + '%' }"
-              />
+              <div class="h-full rounded-full bg-primary transition-all" :style="{ width: proj.progress + '%' }" />
             </div>
           </div>
           <div class="flex items-center justify-between text-xs">
@@ -88,10 +82,7 @@
             </span>
             <span class="text-text-muted/60">进度 {{ proj.progress }}%</span>
           </div>
-          <div
-            v-if="proj.recruitingRoles.length"
-            class="flex flex-wrap gap-1"
-          >
+          <div v-if="proj.recruitingRoles.length" class="flex flex-wrap gap-1">
             <span
               v-for="r in proj.recruitingRoles"
               :key="r"
@@ -104,12 +95,7 @@
       </a>
     </div>
 
-    <div
-      v-if="filteredProjects.length === 0"
-      class="text-center py-12 text-sm text-text-muted"
-    >
-      暂无项目
-    </div>
+    <div v-if="filteredProjects.length === 0" class="text-center py-12 text-sm text-text-muted">暂无项目</div>
 
     <!-- ==================== 模态框1：发言 / 报名 ==================== -->
     <div
@@ -125,12 +111,7 @@
         aria-labelledby="apply-modal-title"
       >
         <div class="flex justify-between items-center mb-4">
-          <h2
-            id="apply-modal-title"
-            class="text-xl font-bold text-deep-text dark:text-white"
-          >
-            📢 发言 / 报名
-          </h2>
+          <h2 id="apply-modal-title" class="text-xl font-bold text-deep-text dark:text-white">📢 发言 / 报名</h2>
           <button
             aria-label="关闭对话框"
             class="text-text-muted hover:text-deep-text text-2xl leading-none"
@@ -140,15 +121,9 @@
           </button>
         </div>
 
-        <form
-          class="space-y-4"
-          @submit.prevent="handleApplySubmit"
-        >
+        <form class="space-y-4" @submit.prevent="handleApplySubmit">
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="apply-nickname"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-nickname">
               昵称 <span class="text-red-500">*</span>
             </label>
             <input
@@ -160,19 +135,13 @@
               placeholder="请输入你的昵称（2-20个字符）"
               @blur="validateApplyField('nickname')"
             />
-            <p
-              v-if="applyErrors.nickname"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="applyErrors.nickname" class="mt-1 text-xs text-red-500">
               {{ applyErrors.nickname }}
             </p>
           </div>
 
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="apply-progress"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-progress">
               当前项目进度 <span class="text-red-500">*</span>
             </label>
             <select
@@ -181,41 +150,21 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('progress')"
             >
-              <option value="">
-                请选择
-              </option>
-              <option value="idea">
-                只有想法
-              </option>
-              <option value="planning">
-                规划中
-              </option>
-              <option value="prototype">
-                已有原型
-              </option>
-              <option value="developing">
-                开发中
-              </option>
-              <option value="testing">
-                测试中
-              </option>
-              <option value="launched">
-                已上线
-              </option>
+              <option value="">请选择</option>
+              <option value="idea">只有想法</option>
+              <option value="planning">规划中</option>
+              <option value="prototype">已有原型</option>
+              <option value="developing">开发中</option>
+              <option value="testing">测试中</option>
+              <option value="launched">已上线</option>
             </select>
-            <p
-              v-if="applyErrors.progress"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="applyErrors.progress" class="mt-1 text-xs text-red-500">
               {{ applyErrors.progress }}
             </p>
           </div>
 
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="apply-group"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-group">
               加入项目组 <span class="text-red-500">*</span>
             </label>
             <select
@@ -224,26 +173,13 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('group')"
             >
-              <option value="">
-                请选择
-              </option>
-              <option value="quantum">
-                量子
-              </option>
-              <option value="knowledge-graph">
-                知识图谱
-              </option>
-              <option value="astronomy">
-                天体
-              </option>
-              <option value="science-video">
-                科普视频
-              </option>
+              <option value="">请选择</option>
+              <option value="quantum">量子</option>
+              <option value="knowledge-graph">知识图谱</option>
+              <option value="astronomy">天体</option>
+              <option value="science-video">科普视频</option>
             </select>
-            <p
-              v-if="applyErrors.group"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="applyErrors.group" class="mt-1 text-xs text-red-500">
               {{ applyErrors.group }}
             </p>
           </div>
@@ -255,10 +191,7 @@
               type="checkbox"
               class="w-4 h-4 text-primary rounded border-surface-3 focus:ring-primary"
             />
-            <label
-              for="apply-incubator"
-              class="text-sm font-medium text-deep-text dark:text-white"
-            >
+            <label for="apply-incubator" class="text-sm font-medium text-deep-text dark:text-white">
               申请进入七月孵化项目
             </label>
           </div>
@@ -267,10 +200,7 @@
             喵！产品规则：联系方式仅在勾选"申请孵化"时才需要填喵。
           -->
           <div v-if="applyForm.applyIncubator">
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="apply-contact"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-contact">
               联系方式 <span class="text-red-500">*</span>
             </label>
             <input
@@ -282,10 +212,7 @@
               placeholder="请输入手机号或邮箱"
               @blur="validateApplyField('contact')"
             />
-            <p
-              v-if="applyErrors.contact"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="applyErrors.contact" class="mt-1 text-xs text-red-500">
               {{ applyErrors.contact }}
             </p>
           </div>
@@ -324,12 +251,7 @@
         aria-labelledby="project-modal-title"
       >
         <div class="flex justify-between items-center mb-4">
-          <h2
-            id="project-modal-title"
-            class="text-xl font-bold text-deep-text dark:text-white"
-          >
-            ➕ 发起新项目
-          </h2>
+          <h2 id="project-modal-title" class="text-xl font-bold text-deep-text dark:text-white">➕ 发起新项目</h2>
           <button
             aria-label="关闭对话框"
             class="text-text-muted hover:text-deep-text text-2xl leading-none"
@@ -339,15 +261,9 @@
           </button>
         </div>
 
-        <form
-          class="space-y-4"
-          @submit.prevent="handleProjectSubmit"
-        >
+        <form class="space-y-4" @submit.prevent="handleProjectSubmit">
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="project-name"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-name">
               项目名称 <span class="text-red-500">*</span>
             </label>
             <input
@@ -359,19 +275,13 @@
               placeholder="请输入项目名称（不超过50个字符）"
               @blur="validateProjectField('name')"
             />
-            <p
-              v-if="projectErrors.name"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="projectErrors.name" class="mt-1 text-xs text-red-500">
               {{ projectErrors.name }}
             </p>
           </div>
 
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="project-description"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-description">
               项目简介 <span class="text-red-500">*</span>
             </label>
             <textarea
@@ -383,19 +293,13 @@
               placeholder="简要介绍项目背景和目标（不超过200个字符）"
               @blur="validateProjectField('description')"
             />
-            <p
-              v-if="projectErrors.description"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="projectErrors.description" class="mt-1 text-xs text-red-500">
               {{ projectErrors.description }}
             </p>
           </div>
 
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="project-roles"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-roles">
               需要招募的角色
             </label>
             <input
@@ -409,10 +313,7 @@
           </div>
 
           <div>
-            <label
-              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
-              for="project-contact"
-            >
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-contact">
               联系方式 <span class="text-red-500">*</span>
             </label>
             <input
@@ -424,10 +325,7 @@
               placeholder="请输入手机号或邮箱"
               @blur="validateProjectField('contact')"
             />
-            <p
-              v-if="projectErrors.contact"
-              class="mt-1 text-xs text-red-500"
-            >
+            <p v-if="projectErrors.contact" class="mt-1 text-xs text-red-500">
               {{ projectErrors.contact }}
             </p>
           </div>
@@ -513,7 +411,7 @@ const getErrorMessage = (status: number): string => {
   }
 };
 
-/// 喵！按照项目规范，使用 apiFetch 替代原生 fetch
+// 喵！按照项目规范，使用 apiFetch 替代原生 fetch
 const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
     try {
@@ -522,21 +420,31 @@ const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      
+
       if (!response.ok) {
         throw new Error(getErrorMessage(response.status));
       }
-      
+
       return response.json() as Promise<T>;
     } catch (error) {
-      // 如果 error 已经是 Error 实例，直接抛出喵
       if (error instanceof Error) {
         throw error;
       }
-      // 否则创建新的 Error，并将原始错误包装后作为 cause 喵
-      const wrappedError = error instanceof Error ? error : new Error(String(error));
-      throw new Error('请求失败，请稍后重试。', { cause: wrappedError });
+      throw new Error('请求失败，请稍后重试。', { cause: error });
     }
+  },
+};
+
+// ============================================================
+// 消息提示（替代原生 alert，alert是坏文明）
+// ============================================================
+const toast = {
+  success(message: string) {
+    // TODO: 以后可以换成漂漂亮亮的组件吗喵QAQ
+    alert(`✅ ${message}`);
+  },
+  error(message: string) {
+    alert(`❌ ${message}`);
   },
 };
 
@@ -556,9 +464,7 @@ const activeTab = ref('recruiting');
   这样不管是招募还是成果展示，最上面永远是重要的项目喵！
 */
 const filteredProjects = computed<Project[]>(() =>
-  mockProjects
-    .filter((p) => p.type === activeTab.value)
-    .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0)),
+  mockProjects.filter((p) => p.type === activeTab.value).sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
 );
 
 // ============================================================
@@ -809,7 +715,7 @@ watch(
       firstInput?.focus();
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 watch(
@@ -821,7 +727,7 @@ watch(
       firstInput?.focus();
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 </script>
 
