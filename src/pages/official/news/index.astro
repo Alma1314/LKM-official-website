@@ -1,0 +1,58 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import { NEWS_SECTIONS } from '~/features/official-articles/data/news-sections';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { logSsrError } from '~/lib/fetch-ssr';
+import { fetchArticleCategories } from '~/lib/api';
+
+const { categories, error } = await fetchArticleCategories();
+logSsrError('新闻资讯分类', error);
+
+const sections = NEWS_SECTIONS.map((section) => {
+  const matched = categories.find((c) => c.name === section.label);
+  const resolved: { label: string; slug: string; count: number } = {
+    label: section.label,
+    slug: matched?.slug ?? section.fallbackSlug,
+    count: matched?.article_count ?? 0,
+  };
+  return resolved;
+});
+
+const metadata = { title: '新闻资讯 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/news')}>
+  <div class="space-y-6">
+    <header>
+      <h1 class="text-3xl font-bold text-deep-text">新闻资讯</h1>
+      <p class="mt-2 text-text-muted">官方公告、科技新闻与科普内容</p>
+    </header>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        sections.map((section) => (
+          <a
+            href={getPermalink(`/official/news/${section.slug}`)}
+            class="block p-6 bg-card-bg rounded-lg border border-surface-3 hover:border-primary transition-all hover:shadow-lg group"
+          >
+            <div class="flex flex-col h-full">
+              <h2 class="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{section.label}</h2>
+              <p class="text-text-muted text-sm mt-auto">
+                {section.count > 0 ? `${section.count} 篇文章` : '点击查看该分类文章'}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    {
+      error && (
+        <div class="text-center py-12">
+          <p class="text-text-muted text-lg">加载失败：{error}</p>
+        </div>
+      )
+    }
+  </div>
+</Layout>

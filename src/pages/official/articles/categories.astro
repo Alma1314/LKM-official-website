@@ -1,0 +1,45 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { logSsrError } from '~/lib/fetch-ssr';
+import { fetchArticleCategories } from '~/lib/api';
+
+const { categories, error } = await fetchArticleCategories();
+logSsrError('所有分类', error);
+
+const metadata = { title: '所有分类 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+  <div class="space-y-6">
+    <header>
+      <h1 class="text-3xl font-bold text-deep-text">所有分类</h1>
+      <p class="mt-2 text-text-muted">浏览 {categories.length} 个分类中的所有文章</p>
+    </header>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        categories.map((cat) => (
+          <a
+            href={getPermalink(`/official/articles/category/${cat.slug}`)}
+            class="block p-6 bg-card-bg rounded-lg border border-surface-3 hover:border-primary transition-all hover:shadow-lg group"
+          >
+            <div class="flex flex-col h-full">
+              <h2 class="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{cat.name}</h2>
+              <p class="text-text-muted text-sm mt-auto">{cat.article_count} 篇文章</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    {
+      categories.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-text-muted text-lg">{error ? `加载失败：${error}` : '暂无分类'}</p>
+        </div>
+      )
+    }
+  </div>
+</Layout>

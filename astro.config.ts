@@ -177,6 +177,7 @@ export default defineConfig({
 
   vite: {
     server: {
+      allowedHosts: ['lkm.s12mc.xyz'],
       proxy: process.env.API_URL
         ? {
             '/api': { target: process.env.API_URL, changeOrigin: true },

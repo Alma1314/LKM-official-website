@@ -1,0 +1,105 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { logSsrError } from '~/lib/fetch-ssr';
+import { fetchAllArticles } from '~/lib/api';
+import type { OfficialArticle } from '~/lib/api';
+
+const { articles, error } = await fetchAllArticles();
+logSsrError('文章归档', error);
+
+interface MonthGroup {
+  month: number;
+  articles: OfficialArticle[];
+}
+
+interface YearGroup {
+  year: number;
+  months: MonthGroup[];
+}
+
+const groups: YearGroup[] = [];
+
+for (const article of articles) {
+  const date = new Date(article.published);
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  let yearGroup = groups.find((g) => g.year === year);
+  if (!yearGroup) {
+    yearGroup = { year, months: [] };
+    groups.push(yearGroup);
+  }
+
+  let monthGroup = yearGroup.months.find((m) => m.month === month);
+  if (!monthGroup) {
+    monthGroup = { month, articles: [] };
+    yearGroup.months.push(monthGroup);
+  }
+
+  monthGroup.articles.push(article);
+}
+
+groups.sort((a, b) => b.year - a.year);
+for (const group of groups) {
+  group.months.sort((a, b) => b.month - a.month);
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const metadata = { title: '文章归档 —— 理科迷' };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+  <div class="space-y-6">
+    <header>
+      <h1 class="text-3xl font-bold text-deep-text">文章归档</h1>
+      <p class="mt-2 text-text-muted">共 {articles.length} 篇文章，按时间归档</p>
+    </header>
+
+    {
+      error && articles.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-text-muted text-lg">加载失败：{error}</p>
+        </div>
+      )
+    }
+
+    {
+      groups.length === 0 && !error && (
+        <div class="text-center py-12">
+          <p class="text-text-muted text-lg">暂无文章</p>
+        </div>
+      )
+    }
+
+    {
+      groups.map((group) => (
+        <section>
+          <h2 class="text-2xl font-bold text-text-muted mb-4">{group.year}</h2>
+          {group.months.map((monthGroup) => (
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold text-deep-text mb-3">
+                {new Date(group.year, monthGroup.month, 1).toLocaleDateString('zh-CN', { month: 'long' })}
+              </h3>
+              <div class="space-y-3">
+                {monthGroup.articles.map((article) => (
+                  <a
+                    href={getPermalink(`/official/articles/${article.slug}`)}
+                    class="flex items-center justify-between gap-4 border-b border-surface-3 pb-3 hover:text-primary transition-colors group"
+                  >
+                    <span class="text-deep-text group-hover:text-primary transition-colors">{article.title}</span>
+                    <span class="text-sm text-text-muted shrink-0">{formatDate(article.published)}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+</Layout>
