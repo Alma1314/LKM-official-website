@@ -1,7 +1,7 @@
 site:
   name: 理科迷
   site: 'https://LKM-AHZ.github.io'
-  base: '/'
+  base: '/LKM-official-website'
   trailingSlash: false
   googleSiteVerificationId: null
 
