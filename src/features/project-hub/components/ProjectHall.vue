@@ -1,14 +1,15 @@
 <!--
   ProjectHall.vue
   项目大厅主组件（含全部子组件和工具模块）
-  
-  本喵的优化要点：
-  1. 完整的 TypeScript 类型定义（喵喵喵，是对的！）
-  2. 通用表单校验逻辑封装（不用到处复制粘贴啦～）
-  3. HTTP 请求统一封装，根据状态码映射错误信息（用户友好get！）
-  4. 用 toast 替代原生 alert（alert 太丑了喵！）
-  5. 增强可访问性（焦点管理、aria 属性、Esc 关闭，贴心喵，请付网站vip费呢喵）
-  6. 千寻姐看到我写这样的注释请不要杀了我喵！！
+
+  代码要点：
+  1. 完整的 TypeScript 类型定义
+  2. 通用表单校验逻辑封装
+  3. HTTP 请求统一封装，根据状态码映射错误信息
+  4. 用 toast 替代原生 alert
+  5. 增强可访问性（焦点管理、aria 属性、Esc 关闭）
+  6. 注释聚焦于解释业务决策和潜在风险，而非复述代码
+  7. 发言/报名表单新增项目组选择（量子 / 知识图谱 / 天体 / 科普视频）
 -->
 <template>
   <div class="space-y-6">
@@ -207,6 +208,43 @@
               class="mt-1 text-xs text-red-500"
             >
               {{ applyErrors.progress }}
+            </p>
+          </div>
+
+          <div>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="apply-group"
+            >
+              加入项目组 <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="apply-group"
+              v-model="applyForm.group"
+              class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
+              @change="validateApplyField('group')"
+            >
+              <option value="">
+                请选择
+              </option>
+              <option value="quantum">
+                量子
+              </option>
+              <option value="knowledge-graph">
+                知识图谱
+              </option>
+              <option value="astronomy">
+                天体
+              </option>
+              <option value="science-video">
+                科普视频
+              </option>
+            </select>
+            <p
+              v-if="applyErrors.group"
+              class="mt-1 text-xs text-red-500"
+            >
+              {{ applyErrors.group }}
             </p>
           </div>
 
@@ -533,6 +571,7 @@ const applyModalRootRef = ref<HTMLElement | null>(null);
 const applyForm = reactive({
   nickname: '',
   progress: '',
+  group: '',
   applyIncubator: false,
   contact: '',
 });
@@ -540,6 +579,7 @@ const applyForm = reactive({
 const applyErrors = reactive({
   nickname: '',
   progress: '',
+  group: '',
   contact: '',
 });
 
@@ -551,10 +591,12 @@ const resetApplyForm = () => {
   // 清空表单，避免下次打开还有上次的残留（喵，省内存，现在内存多贵你知道吗！）
   applyForm.nickname = '';
   applyForm.progress = '';
+  applyForm.group = '';
   applyForm.applyIncubator = false;
   applyForm.contact = '';
   applyErrors.nickname = '';
   applyErrors.progress = '';
+  applyErrors.group = '';
   applyErrors.contact = '';
 };
 
@@ -565,7 +607,7 @@ const closeApplyModal = () => {
 };
 
 // 逐个字段校验，用户离开输入框时就告诉他哪里错了喵～
-const validateApplyField = (field: 'nickname' | 'progress' | 'contact') => {
+const validateApplyField = (field: 'nickname' | 'progress' | 'group' | 'contact') => {
   switch (field) {
     case 'nickname': {
       const val = applyForm.nickname.trim();
@@ -584,6 +626,10 @@ const validateApplyField = (field: 'nickname' | 'progress' | 'contact') => {
     }
     case 'progress': {
       applyErrors.progress = applyForm.progress ? '' : '请选择当前项目进度';
+      break;
+    }
+    case 'group': {
+      applyErrors.group = applyForm.group ? '' : '请选择要加入的项目组';
       break;
     }
     case 'contact': {
@@ -609,8 +655,9 @@ const validateApplyField = (field: 'nickname' | 'progress' | 'contact') => {
 const validateApplyForm = (): boolean => {
   validateApplyField('nickname');
   validateApplyField('progress');
+  validateApplyField('group');
   validateApplyField('contact');
-  return !applyErrors.nickname && !applyErrors.progress && !applyErrors.contact;
+  return !applyErrors.nickname && !applyErrors.progress && !applyErrors.group && !applyErrors.contact;
 };
 
 const handleApplySubmit = async () => {
@@ -622,6 +669,7 @@ const handleApplySubmit = async () => {
     const payload = {
       nickname: sanitizeInput(applyForm.nickname.trim()),
       progress: applyForm.progress,
+      group: applyForm.group,
       applyIncubator: applyForm.applyIncubator,
       contact: sanitizeInput(applyForm.contact.trim()),
       source: 'project-hall',
@@ -780,7 +828,6 @@ watch(
   },
   { immediate: true },
 );
-</script>
 </script>
 
 <!-- ============================================================
