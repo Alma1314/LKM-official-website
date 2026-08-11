@@ -459,7 +459,7 @@ import { ref, computed, reactive, watch, nextTick } from 'vue';
 import { mockProjects } from '../data/mock-projects';
 import { buildUrl } from '~/lib/utils/paths';
 // 导入项目规范的 HTTP 客户端喵！
-import { apiFetch } from '~/lib/api'; // 或者 import client from '~/lib/http/client'; 看项目实际用哪个
+import { apiFetch } from '~/lib/api';
 
 // ============================================================
 // TypeScript 类型定义（喵，类型安全赛高！）
@@ -517,21 +517,18 @@ const getErrorMessage = (status: number): string => {
 const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
     try {
-      // 使用项目封装的 apiFetch，自动处理了拦截器、错误等
       const response = await apiFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       
-      // apiFetch 可能已经处理了错误响应，这里根据项目实际情况调整喵
       if (!response.ok) {
         throw new Error(getErrorMessage(response.status));
       }
       
       return response.json() as Promise<T>;
     } catch (error) {
-      // 如果 apiFetch 已经抛出了友好的错误信息，直接使用
       if (error instanceof Error) {
         throw error;
       }
@@ -553,8 +550,6 @@ const toast = {
   },
 };
 
-// ... 后面所有的代码完全不变喵！
-</script>
 // ============================================================
 // 标签切换（左右横跳喵～）
 // ============================================================
@@ -603,7 +598,6 @@ const openApplyModal = () => {
 };
 
 const resetApplyForm = () => {
-  // 清空表单，避免下次打开还有上次的残留（喵，省内存，现在内存多贵你知道吗！）
   applyForm.nickname = '';
   applyForm.progress = '';
   applyForm.group = '';
@@ -621,7 +615,6 @@ const closeApplyModal = () => {
   resetApplyForm();
 };
 
-// 逐个字段校验，用户离开输入框时就告诉他哪里错了喵～
 const validateApplyField = (field: 'nickname' | 'progress' | 'group' | 'contact') => {
   switch (field) {
     case 'nickname': {
@@ -648,7 +641,6 @@ const validateApplyField = (field: 'nickname' | 'progress' | 'group' | 'contact'
       break;
     }
     case 'contact': {
-      // 产品规则：只有申请孵化时才要填联系方式（喵，逻辑在这里！）
       if (!applyForm.applyIncubator) {
         applyErrors.contact = '';
         return;
@@ -663,10 +655,9 @@ const validateApplyField = (field: 'nickname' | 'progress' | 'group' | 'contact'
       }
       break;
     }
-  }//摸鱼喵，谁看到这个注释给我打钱喵，v我50喵，v千寻姐50喵，v狐狸1000000喵，因为狐狸辛苦喵
+  }
 };
 
-// 提交前整体校验，确保万无一失喵！
 const validateApplyForm = (): boolean => {
   validateApplyField('nickname');
   validateApplyField('progress');
@@ -676,7 +667,7 @@ const validateApplyForm = (): boolean => {
 };
 
 const handleApplySubmit = async () => {
-  if (isSubmittingApply.value) return; // 防止重复提交喵，管理员也不想看很多很多没用的申请喵
+  if (isSubmittingApply.value) return;
   if (!validateApplyForm()) return;
 
   isSubmittingApply.value = true;
@@ -793,7 +784,6 @@ const handleProjectSubmit = async () => {
 
   isSubmittingProject.value = true;
   try {
-    // 角色字段允许为空，后端会自己处理空数组（喵，前端不用操心太多，啦啦啦啦啦啦解放了）
     const roles = projectForm.roles
       .split(',')
       .map((s) => sanitizeInput(s.trim()))
@@ -826,7 +816,7 @@ watch(
     if (el) {
       await nextTick();
       const firstInput = el.querySelector<HTMLInputElement>('input[type="text"]');
-      firstInput?.focus(); // 喵，看这里！看这里！
+      firstInput?.focus();
     }
   },
   { immediate: true },
