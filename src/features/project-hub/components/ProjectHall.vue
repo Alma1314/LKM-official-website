@@ -125,7 +125,7 @@
 
         <form class="space-y-4" @submit.prevent="handleApplySubmit">
           <div>
-            <label class="block text-sm font-medium mb-1" for="apply-nickname">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-nickname">
               昵称 <span class="text-red-500">*</span>
             </label>
             <input
@@ -143,7 +143,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1" for="apply-progress">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-progress">
               当前项目进度 <span class="text-red-500">*</span>
             </label>
             <select
@@ -166,7 +166,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1" for="apply-group">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-group">
               加入项目组 <span class="text-red-500">*</span>
             </label>
             <select
@@ -193,11 +193,13 @@
               type="checkbox"
               class="w-4 h-4 text-primary rounded border-surface-3 focus:ring-primary"
             />
-            <label for="apply-incubator" class="text-sm font-medium"> 申请进入七月孵化项目 </label>
+            <label for="apply-incubator" class="text-sm font-medium text-deep-text dark:text-white">
+              申请进入七月孵化项目
+            </label>
           </div>
 
           <div v-if="applyForm.applyIncubator">
-            <label class="block text-sm font-medium mb-1" for="apply-contact">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-contact">
               联系方式 <span class="text-red-500">*</span>
             </label>
             <input
@@ -251,7 +253,7 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h2 id="project-modal-title" class="text-xl font-bold">➕ 发起新项目</h2>
+          <h2 id="project-modal-title" class="text-xl font-bold text-deep-text dark:text-white">➕ 发起新项目</h2>
           <button
             aria-label="关闭对话框"
             class="text-text-muted hover:text-deep-text text-2xl leading-none"
@@ -263,7 +265,7 @@
 
         <form class="space-y-4" @submit.prevent="handleProjectSubmit">
           <div>
-            <label class="block text-sm font-medium mb-1" for="project-name">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-name">
               项目名称 <span class="text-red-500">*</span>
             </label>
             <input
@@ -281,7 +283,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1" for="project-description">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-description">
               项目简介 <span class="text-red-500">*</span>
             </label>
             <textarea
@@ -299,7 +301,9 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1" for="project-roles"> 需要招募的角色 </label>
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-roles">
+              需要招募的角色
+            </label>
             <input
               id="project-roles"
               v-model="projectForm.roles"
@@ -311,7 +315,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1" for="project-contact">
+            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-contact">
               联系方式 <span class="text-red-500">*</span>
             </label>
             <input
@@ -408,13 +412,24 @@ const getErrorMessage = (status: number): string => {
 
 const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
-    const res = await apiFetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(getErrorMessage(res.status));
-    return res.json() as Promise<T>;
+    try {
+      const response = await apiFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(getErrorMessage(response.status));
+      }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('请求失败，请稍后重试。', { cause: error });
+    }
   },
 };
 
@@ -463,9 +478,7 @@ const tabs = [
 const activeTab = ref<'recruiting' | 'showcase'>('recruiting');
 
 const filteredProjects = computed<Project[]>(() =>
-  mockProjects
-    .filter((p): p is Project => p.type === activeTab.value)
-    .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
+  mockProjects.filter((p) => p.type === activeTab.value).sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
 );
 
 // ==================== 模态框1：发言 / 报名 ====================
@@ -606,18 +619,43 @@ const handleProjectSubmit = async (): Promise<void> => {
   }
 };
 
-// ==================== 焦点管理（无 any / 无 fetch / 无 unused） ====================
-watch(showApplyModal, async (v) => {
-  if (v) {
-    await nextTick();
-    applyModalRootRef.value?.querySelector('input')?.focus();
-  }
-});
+// ============================================================
+// 焦点管理：模态框打开时自动聚焦到第一个输入框（喵，用户体验最大喵，所以用户打钱！）
+// ============================================================
+watch(
+  () => applyModalRootRef.value,
+  async (el) => {
+    if (el) {
+      await nextTick();
+      const firstInput = el.querySelector<HTMLInputElement>('input[type="text"]');
+      firstInput?.focus();
+    }
+  },
+  { immediate: true }
+);
 
-watch(showProjectModal, async (v) => {
-  if (v) {
-    await nextTick();
-    projectModalRootRef.value?.querySelector('input')?.focus();
-  }
-});
+watch(
+  () => projectModalRootRef.value,
+  async (el) => {
+    if (el) {
+      await nextTick();
+      const firstInput = el.querySelector<HTMLInputElement>('input[type="text"]');
+      firstInput?.focus();
+    }
+  },
+  { immediate: true }
+);
 </script>
+
+<!-- ============================================================
+  维护喵：比卡(月见八千代) (1175142856@qq.com)
+  最后更新：2026-08-11凌晨四点....请项目组一定不要因为我实在是太菜了而开除我，球球了TAT
+  有问题欢迎随时联系我～ 喵！这是我在本项目组的第一份独立完成工作，
+  尤其感谢deepseek同志kimi同志通义千问同志对我的代码进行的深刻的改正
+  虽然真的是非常小的功能但是考虑到了一些复杂的东西，如果有前端的大活随时找我，后端难之，但也可以）
+  
+  备注：
+  - 置顶排序逻辑在 filteredProjects 中
+  - 联系方式校验仅在申请孵化时触发
+  - 当前使用 mock 数据，接入 API 后替换！辛苦后端同志了。在这里感谢一下
+  - Toast 用 alert 临时替代，后续劳烦统一替换？
