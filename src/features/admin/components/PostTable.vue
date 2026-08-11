@@ -81,10 +81,18 @@ onMounted(() => void load());
     <div class="flex items-center justify-between mt-4 text-sm text-text-muted">
       <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page <= 1" @click="goTo(page - 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page <= 1"
+          @click="goTo(page - 1)"
+        >
           上一页
         </button>
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page >= totalPages" @click="goTo(page + 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page >= totalPages"
+          @click="goTo(page + 1)"
+        >
           下一页
         </button>
       </div>

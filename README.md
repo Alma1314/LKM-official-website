@@ -588,7 +588,7 @@ pages/          文件路由页面
 | [Tailwind CSS](https://tailwindcss.com)                           | MIT        | 样式系统         |
 | [React](https://react.dev)                                        | MIT        | UI 组件          |
 | [Vue.js](https://vuejs.org)                                       | MIT        | UI 组件          |
-| [Naive UI](https://www.naiveui.com)                                | MIT        | UI 组件库        |
+| [Naive UI](https://www.naiveui.com)                               | MIT        | UI 组件库        |
 | [Tiptap](https://tiptap.dev)                                      | MIT        | 富文本编辑器引擎 |
 | [Three.js](https://threejs.org)                                   | MIT        | 3D 图形渲染      |
 | [KaTeX](https://katex.org)                                        | MIT        | 数学公式渲染     |

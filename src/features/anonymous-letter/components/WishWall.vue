@@ -20,14 +20,26 @@
       <div v-if="!wishes.length" class="wish-empty">还没有愿望，做第一个许愿的人吧～</div>
     </div>
 
-    <n-modal v-model:show="openMake" preset="card" :show-icon="false" title="写下你的愿望" style="width: min(420px, 92vw)">
+    <n-modal
+      v-model:show="openMake"
+      preset="card"
+      :show-icon="false"
+      title="写下你的愿望"
+      style="width: min(420px, 92vw)"
+    >
       <n-input v-model="text" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="把愿望交给星光…" />
       <template #footer>
         <button class="btn-grad" :disabled="!text.trim()" @click="make">🌟 点亮愿望</button>
       </template>
     </n-modal>
 
-    <n-modal v-model:show="openEditBox" preset="card" :show-icon="false" title="编辑愿望" style="width: min(420px, 92vw)">
+    <n-modal
+      v-model:show="openEditBox"
+      preset="card"
+      :show-icon="false"
+      title="编辑愿望"
+      style="width: min(420px, 92vw)"
+    >
       <n-input v-model="editText" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="修改你的愿望…" />
       <template #footer>
         <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">💾 保存</button>

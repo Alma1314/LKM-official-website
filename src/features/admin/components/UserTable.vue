@@ -64,12 +64,18 @@ onMounted(() => void load());
         type="text"
         placeholder="按用户名搜索"
         class="px-3 py-1.5 rounded-lg text-sm bg-page-bg border border-surface-3 focus:outline-none focus:border-primary"
-        @keyup.enter="page = 1; load()"
+        @keyup.enter="
+          page = 1;
+          load();
+        "
       />
       <button
         class="px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-on-primary"
         :disabled="loading"
-        @click="page = 1; load()"
+        @click="
+          page = 1;
+          load();
+        "
       >
         搜索
       </button>
@@ -130,10 +136,18 @@ onMounted(() => void load());
     <div class="flex items-center justify-between mt-4 text-sm text-text-muted">
       <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page <= 1" @click="goTo(page - 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page <= 1"
+          @click="goTo(page - 1)"
+        >
           上一页
         </button>
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page >= totalPages" @click="goTo(page + 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page >= totalPages"
+          @click="goTo(page + 1)"
+        >
           下一页
         </button>
       </div>

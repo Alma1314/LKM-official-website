@@ -260,12 +260,7 @@
     </n-modal>
 
     <!-- 分享图弹窗 -->
-    <n-modal
-      v-model:show="shareVisible"
-      preset="card"
-      :show-icon="false"
-      style="width: min(380px, 92vw)"
-    >
+    <n-modal v-model:show="shareVisible" preset="card" :show-icon="false" style="width: min(380px, 92vw)">
       <div class="share-card" ref="shareRef" :style="{ background: paperBg }">
         <div class="share-head">🌙 拾光树洞</div>
         <div class="share-cat">{{ getCategory(category).emoji }} {{ getCategory(category).label }}</div>

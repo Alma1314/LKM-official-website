@@ -74,7 +74,7 @@ onMounted(() => void load());
   <div>
     <div class="flex gap-2 mb-4">
       <button
-        v-for="f in (['all', 'pending', 'approved', 'rejected'] as const)"
+        v-for="f in ['all', 'pending', 'approved', 'rejected'] as const"
         :key="f"
         class="px-3 py-1.5 rounded-lg text-sm font-medium"
         :class="statusFilter === f ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted'"
@@ -127,10 +127,18 @@ onMounted(() => void load());
     <div class="flex items-center justify-between mt-4 text-sm text-text-muted">
       <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page <= 1" @click="goTo(page - 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page <= 1"
+          @click="goTo(page - 1)"
+        >
           上一页
         </button>
-        <button class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40" :disabled="page >= totalPages" @click="goTo(page + 1)">
+        <button
+          class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
+          :disabled="page >= totalPages"
+          @click="goTo(page + 1)"
+        >
           下一页
         </button>
       </div>

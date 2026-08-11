@@ -45,9 +45,7 @@ async function handleSubmit() {
         <NAlert v-if="error" type="error" :show-icon="false" class="mb-4">
           {{ error }}
         </NAlert>
-        <NAlert v-else-if="success" type="success" :show-icon="false" class="mb-4">
-          登录成功，正在进入后台…
-        </NAlert>
+        <NAlert v-else-if="success" type="success" :show-icon="false" class="mb-4"> 登录成功，正在进入后台… </NAlert>
 
         <NForm @submit.prevent="handleSubmit">
           <NFormItem label="用户名" class="mb-3">
@@ -70,9 +68,7 @@ async function handleSubmit() {
               show-password-on="click"
             />
           </NFormItem>
-          <NButton type="primary" attr-type="submit" block size="large" :loading="submitting">
-            登录
-          </NButton>
+          <NButton type="primary" attr-type="submit" block size="large" :loading="submitting"> 登录 </NButton>
         </NForm>
 
         <div class="mt-6 text-center">
