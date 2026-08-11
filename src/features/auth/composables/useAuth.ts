@@ -9,6 +9,7 @@ import type {
   RegisterResult,
   User,
 } from '~/types/auth';
+import { authApi } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
 import { ok, err } from '~/lib/errors/result';
 import type { UserInfo } from '~/lib/api/modules/auth';
@@ -105,8 +106,14 @@ export function useAuthProvider() {
     }
 
     if (method === 'github') {
-      state.flow = 'idle';
-      return err(new AppError(ErrorCode.AUTH_ERROR, 'GitHub OAuth 登录尚未接入后端，请使用密码或验证码登录'));
+      // 整页跳转到真实后端授权入口（302 到 GitHub）
+      const base = (
+        typeof window === 'undefined'
+          ? ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || ''
+          : ''
+      ).replace(/\/$/, '');
+      window.location.assign(`${base}${authApi.githubLoginUrl()}`);
+      return ok({});
     }
 
     if (method === 'magic-link') {
@@ -131,7 +138,8 @@ export function useAuthProvider() {
 
     if (method === 'passkey') {
       state.flow = 'idle';
-      return err(new AppError(ErrorCode.AUTH_ERROR, 'Passkey 登录尚未接入后端，请使用其他方式'));
+      // 完整 WebAuthn 流程由 useLoginFlow / 登录页承载；此处不让 Provider 误以为已登录
+      return err(new AppError(ErrorCode.AUTH_ERROR, '请使用登录页的「通行密钥」方式完成认证'));
     }
 
     state.flow = 'idle';

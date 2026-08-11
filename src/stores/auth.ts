@@ -15,6 +15,9 @@ export const useAuthStore = defineStore('auth', () => {
   const _token = ref<string | null>(null);
   const _refreshToken = ref<string | null>(null);
   const onboardingCompleted = ref(false);
+  // 2FA 过渡态：登录返回 requires_2fa/setup_required 时暂存后端签发的 temp_token，
+  // 供后续 TOTP/恢复码验证（TwoFactorVerify 等）使用。仅内存态，不持久化。
+  const _pendingTempToken = ref<string | null>(null);
 
   // ── Token 辅助函数 ──
   function setTokens(accessToken: string, refreshToken: string) {
@@ -128,6 +131,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     const data = result.value;
     if (data.requires_2fa || data.setup_required) {
+      // 暂存 temp_token，供后续 2FA 验证（submit2FA）使用
+      _pendingTempToken.value = data.temp_token ?? null;
       return ok({ requires2FA: data.requires_2fa, requires2FASetup: data.setup_required });
     }
 
@@ -191,6 +196,11 @@ export const useAuthStore = defineStore('auth', () => {
       session.value = 'anonymous';
       return err(result.error);
     }
+    if (result.value.requires_2fa || result.value.setup_required) {
+      // 暂存 temp_token，供后续 2FA 验证
+      _pendingTempToken.value = result.value.temp_token ?? null;
+      return ok({ requires2FA: result.value.requires_2fa, requires2FASetup: result.value.setup_required });
+    }
     if (result.value.access_token) {
       setTokens(result.value.access_token, result.value.refresh_token);
       persistToStorage();
@@ -237,12 +247,24 @@ export const useAuthStore = defineStore('auth', () => {
     if (_token.value) persistToStorage();
   }
 
+  // ── 2FA temp_token 过渡态 ──
+  function holdPending2FA(token: string | null): void {
+    _pendingTempToken.value = token;
+  }
+  function getPending2FA(): string | null {
+    return _pendingTempToken.value;
+  }
+  function clearPending2FA(): void {
+    _pendingTempToken.value = null;
+  }
+
   // ── 重置状态 ──
   function resetState() {
     user.value = null;
     isLoggedIn.value = false;
     session.value = 'anonymous';
     clearTokens();
+    clearPending2FA();
   }
 
   return {
@@ -272,6 +294,9 @@ export const useAuthStore = defineStore('auth', () => {
     persistToStorage,
     setTokens,
     clearTokens,
+    holdPending2FA,
+    getPending2FA,
+    clearPending2FA,
   };
 });
 

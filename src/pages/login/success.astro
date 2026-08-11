@@ -1,0 +1,12 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import OAuthCallback from '~/features/auth/components/login/OAuthCallback.vue';
+
+const metadata = { title: '登录完成' };
+---
+
+<PageLayout metadata={metadata}>
+  <div class="min-h-[60vh] flex items-center justify-center">
+    <OAuthCallback client:only="vue" />
+  </div>
+</PageLayout>

@@ -1,7 +1,7 @@
 site:
   name: 理科迷
   site: 'https://LKM-AHZ.github.io'
-  base: '/LKM-official-website'
+  # base: '/LKM-official-website'
   trailingSlash: false
   googleSiteVerificationId: null
 
@@ -93,18 +93,18 @@ fuwari:
   navbar:
     links:
       - name: 主页
-        url: /official
+        url: /
         children:
           - name: 简明介绍
-            url: /official
+            url: /
           - name: 团队成员
-            url: /official#team
+            url: /#team
           - name: 发展历程
-            url: /official#timeline
+            url: /#timeline
           - name: 最近更新
-            url: /official#update
+            url: /#update
           - name: 常见问题
-            url: /official#faq
+            url: /#faq
       - name: 文章
         url: /official/articles
         children:

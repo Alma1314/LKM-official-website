@@ -36,17 +36,17 @@ describe('useOnboardingFlow', () => {
     const authApi = await import('~/lib/api/modules/auth');
     vi.spyOn(authApi.authApi, 'skipOnboarding').mockResolvedValue(ok({ step: 4, completed: true, data: null }));
     const onDone = vi.fn();
-    const flow = useOnboardingFlow({ redirect: '/official', onDone });
+    const flow = useOnboardingFlow({ redirect: '/', onDone });
     await flow.skipAll();
     expect(flow.completed).toBe(true);
-    expect(onDone).toHaveBeenCalledWith('/official');
+    expect(onDone).toHaveBeenCalledWith('/');
   });
 
   it('markDone 置 completed 并触发 onDone 跳转', async () => {
     const onDone = vi.fn();
-    const flow = useOnboardingFlow({ redirect: '/official', onDone });
+    const flow = useOnboardingFlow({ redirect: '/', onDone });
     flow.markDone();
     expect(flow.completed).toBe(true);
-    expect(onDone).toHaveBeenCalledWith('/official');
+    expect(onDone).toHaveBeenCalledWith('/');
   });
 });

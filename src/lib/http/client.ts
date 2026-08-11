@@ -124,7 +124,9 @@ function getInstance(): AxiosInstance {
       // only attach to authenticated endpoints
       const url = config.url || '';
       const needsAuth =
-        (url.startsWith('/api/auth/') && !url.startsWith('/api/auth/login') && !url.startsWith('/api/auth/reg')) ||
+        (url.startsWith('/api/v1/auth/') &&
+          !url.startsWith('/api/v1/auth/login') &&
+          !url.startsWith('/api/v1/auth/reg')) ||
         url.startsWith('/graphql');
       if (needsAuth && config.headers) {
         (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
@@ -158,15 +160,15 @@ function getInstance(): AxiosInstance {
           // If _retry already set and still 401, token/refresh both invalid — clear and reject silently
           if (
             (error.config as unknown as Record<string, unknown>)._retry &&
-            !url.startsWith('/api/auth/login') &&
-            !url.startsWith('/api/auth/reg')
+            !url.startsWith('/api/v1/auth/login') &&
+            !url.startsWith('/api/v1/auth/reg')
           ) {
             getAdapter().clear();
           }
           return Promise.reject(error);
         }
 
-        const isRefreshRequest = url === '/api/auth/refresh';
+        const isRefreshRequest = url === '/api/v1/auth/refresh';
         if (isRefreshRequest) {
           getAdapter().clear();
           return Promise.reject(error);
@@ -190,7 +192,7 @@ function getInstance(): AxiosInstance {
         try {
           const refreshToken = getAdapter().getRefreshToken();
           if (refreshToken) {
-            const res = await _instance!.post('/api/auth/refresh', { refresh_token: refreshToken }, {
+            const res = await _instance!.post('/api/v1/auth/refresh', { refresh_token: refreshToken }, {
               _retry: true,
             } as Record<string, unknown>);
             const apiResp = res.data as { data?: { access_token: string; refresh_token: string } };

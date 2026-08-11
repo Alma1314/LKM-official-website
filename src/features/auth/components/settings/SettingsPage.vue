@@ -90,11 +90,21 @@
                   <h4 class="font-medium">联系方式</h4>
                   <button type="button" class="btn btn-sm btn-ghost" @click="addLink">+ 添加</button>
                 </div>
-                <p class="text-xs text-text-muted mb-3">可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。</p>
+                <p class="text-xs text-text-muted mb-3">
+                  可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。
+                </p>
                 <div v-for="(l, i) in editLinks" :key="i" class="flex flex-wrap gap-2 items-center mb-2">
-                  <input v-model="l.name" class="input input-bordered input-sm flex-1 min-w-[6rem]" placeholder="名称（如 QQ / GitHub）" />
+                  <input
+                    v-model="l.name"
+                    class="input input-bordered input-sm flex-1 min-w-[6rem]"
+                    placeholder="名称（如 QQ / GitHub）"
+                  />
                   <input v-model="l.icon" class="input input-bordered input-sm w-36" placeholder="图标名（选填）" />
-                  <input v-model="l.url" class="input input-bordered input-sm flex-[2] min-w-[8rem]" placeholder="链接 / 账号（选填）" />
+                  <input
+                    v-model="l.url"
+                    class="input input-bordered input-sm flex-[2] min-w-[8rem]"
+                    placeholder="链接 / 账号（选填）"
+                  />
                   <button type="button" class="btn btn-sm btn-ghost text-error" @click="removeLink(i)">删除</button>
                 </div>
                 <button type="button" class="btn btn-sm btn-primary" :disabled="saving" @click="handleSaveLinks">

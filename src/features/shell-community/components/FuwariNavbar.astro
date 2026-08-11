@@ -18,7 +18,7 @@ interface Props {
 }
 
 const moduleType = Astro.props.module || 'community';
-const switchHref = moduleType === 'official' ? url('/community') : url('/official');
+const switchHref = moduleType === 'official' ? url('/community') : url('/');
 const switchText = moduleType === 'official' ? '社区' : '官网';
 
 const className = Astro.props.class;

@@ -14,7 +14,7 @@ import type { GqlPost } from '~/features/forum/graphql';
 const { postId } = Astro.params;
 
 // 通过 forumApi 获取帖子详情（统一数据访问层）
-const postResult = await forumApi.getPostDetail(postId || '');
+const postResult = await forumApi.getPostDetail(Number(postId));
 const post = postResult.data?.post;
 
 if (!post) {
@@ -128,7 +128,7 @@ const authorName = post.author?.displayName ?? '匿名用户';
 
       <!-- 评论 -->
       <div id="comments" class="mt-8 pt-6 border-t border-surface-3">
-        <CommentSection client:visible postId={post.id} />
+        <CommentSection client:visible postId={String(post.id)} />
       </div>
     </article>
 

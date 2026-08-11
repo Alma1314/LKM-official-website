@@ -25,7 +25,7 @@ async function tryRefreshToken(): Promise<boolean> {
         ? ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || ''
         : '';
     // eslint-disable-next-line no-restricted-globals
-    const res = await fetch(`${base}/api/auth/refresh`, {
+    const res = await fetch(`${base}/api/v1/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: rt }),

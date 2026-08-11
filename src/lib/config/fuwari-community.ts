@@ -41,7 +41,7 @@ function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
       const preset = presetFromString(link.preset);
       if (typeof preset === 'number') {
         const map: Record<number, { name: string; url: string; external?: boolean }> = {
-          [LinkPreset.Home]: { name: 'Home', url: '/official' },
+          [LinkPreset.Home]: { name: 'Home', url: '/' },
           [LinkPreset.Archive]: { name: 'Archive', url: '/blog/archive' },
           [LinkPreset.About]: { name: 'About', url: '/blog/about' },
         };

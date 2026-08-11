@@ -131,7 +131,7 @@ const items = ['A', 'B', 'C'];
 
 - **token 与用户状态必须统一走 `useAuthStore` / HTTP 认证适配器（`configureHttpAuthSession`）**，前端禁止直接经 localStorage 伪造或读写 token。
 - **账号状态单一来源**：`src/stores/auth.ts`（`useAuthStore`）负责用户状态、token、localStorage 持久化（key `lkm-auth-store`）；组件通过 Flow composable（`useLoginFlow`/`useRegisterFlow`/`useRecoveryFlow`/`useOnboardingFlow`）或兼容桥 `useAuthProvider` 接入。
-- **认证对接真实后端**：仓库不含后端代码，前端经 `API_URL` 指向真实后端完成认证（OAuth/WebAuthn/2FA/找回/绑定/onboarding 能力由真实后端决定）。`PUBLIC_AUTH_TEST_MODE`（`src/env.d.ts`、`.env.example`）仅开启前端测试 UI，不应被描述为后端真实接入的开关。
+- **认证对接真实后端**：仓库不含后端代码，前端经 `API_URL` 指向真实后端完成认证（OAuth/WebAuthn/2FA/找回/绑定/onboarding 能力由真实后端决定）。
 
 ## 路径别名
 

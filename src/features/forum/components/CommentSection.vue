@@ -89,7 +89,7 @@
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
 
-const props = defineProps<{
+defineProps<{
   postId: string;
 }>();
 
@@ -103,16 +103,9 @@ interface Comment {
   createdAt: string;
 }
 
-// Load initial mock comments — in Astro this would come from server data
-// For now, we use the shared mock data via a simple import
+// 评论初始为空，待接入真实评论接口后加载
 const comments = ref<Comment[]>([]);
 const likedComments = ref<Set<string>>(new Set());
-
-// We need to load mock data. In Astro with client:load, we inject via a data attribute.
-import { getCommentsByPostId } from '../data/mock-posts';
-
-// Load initial comments on mount
-comments.value = [...getCommentsByPostId(props.postId)];
 
 const newComment = ref('');
 const replyToId = ref('');
