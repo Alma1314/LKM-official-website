@@ -1,7 +1,7 @@
 site:
   name: 理科迷
   site: 'https://LKM-AHZ.github.io'
-  # base: '/LKM-official-website'
+  base: '/LKM-official-website'
   trailingSlash: false
   googleSiteVerificationId: null
 
@@ -134,6 +134,78 @@ fuwari:
           - name: 联系我们
             url: /official/contact
 
+      - name: 资源
+        url: /community/forum
+        children:
+          - name: 板块广场
+            url: /community/forum
+          - name: 专栏
+            url: /community/columns
+          - name: 文件库
+            url: /community/files
+          - name: 帮助/求助
+            url: /official/qa
+          - name: 项目大厅
+            url: /official/projects
+          - name: 竞赛
+            url: /community/competition
+          - name: 资助系统
+            url: /official/funding
+          - name: 其他应用
+            url: /apps
+      - name: 我的
+        url: /account
+        children:
+          - name: 个人主页
+            url: /account
+          - name: 贡献系统
+            url: /contribution
+          - name: 设置
+            url: /account
+  # community 社区站点专用导航（与原 config.community.yaml 保持一致）
+  navbarCommunity:
+    links:
+      - name: 主页
+        url: /
+        children:
+          - name: 简明介绍
+            url: /
+          - name: 团队成员
+            url: /#team
+          - name: 发展历程
+            url: /#timeline
+          - name: 最近更新
+            url: /#update
+          - name: 常见问题
+            url: /#faq
+      - name: 博客
+        url: /community/blog
+        children:
+          - name: 博客列表
+            url: /community/blog
+          - name: 所有分类
+            url: /community/blog/categories
+          - name: 博客归档
+            url: /community/blog/archive
+          - name: 关于博客
+            url: /community/blog/about
+      - name: 七月团队
+        url: /official/team
+        children:
+          - name: 管理团队
+            url: /official/team
+          - name: 项目团队
+            url: /official/project-team
+          - name: 关于我们
+            url: /blog/about
+          - name: 服务
+            url: /official/services
+          - name: 赞助与支持
+            url: /official/pricing
+          - name: 联系我们
+            url: /official/contact
+          - name: QQ社群
+            url: /official/communities
       - name: 资源
         url: /community/forum
         children:
