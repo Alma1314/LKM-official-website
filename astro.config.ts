@@ -263,6 +263,11 @@ export default defineConfig({
     resolve: {
       alias: {
         '~': path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'src'),
+        // naive-ui 同时提供 CJS(lib/index.js) 与 ESM(es/index.mjs) 入口、且无 exports 字段，
+        // Vite 解析时可能回调到 CJS 入口，导致按命名导入报
+        // "Named export not found ... is a CommonJS module"。
+        // 强制固定到 ESM 入口，消除 double-package，保证全部命名导出可用。
+        'naive-ui': fileURLToPath(new URL('./node_modules/naive-ui/es/index.mjs', import.meta.url)),
       },
     },
   },
