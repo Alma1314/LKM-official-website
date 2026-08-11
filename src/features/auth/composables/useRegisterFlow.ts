@@ -2,6 +2,7 @@ import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
 import { useVerificationCountdown } from './useVerificationCountdown';
+import axios from 'axios';
 
 export type RegisterType = 'normal' | 'local';
 export type RegisterStage = 'form' | 'verify' | 'done';
@@ -33,20 +34,62 @@ export interface RegisterFlow {
   hasAgreedTerms: boolean;
 }
 
+// ──────────────────────────────────────────────
+// HTTP 请求封装（喵，用 axios 统一管理！）
+// ──────────────────────────────────────────────
+const _apiFetch = async (url: string, options: Record<string, unknown> = {}) => {
+  const method = (options.method as string) || 'POST';
+  const headers = (options.headers as Record<string, string>) || {};
+  const data = options.body ? JSON.parse(options.body as string) : options.data;
+
+  const response = await axios({
+    url,
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
+    data,
+    withCredentials: true, // 喵，带上 cookie！
+  });
+
+  return response.data;
+};
+
+// ──────────────────────────────────────────────
+// 工具函数：输入校验与安全防护（喵，安全第一！）
+// ──────────────────────────────────────────────
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^1[3-9]\d{9}$/;
+
+const isValidPhone = (value: string): boolean => PHONE_RE.test(value);
+const isValidEmail = (value: string): boolean => EMAIL_RE.test(value);
+const _isValidContact = (value: string): boolean => isValidPhone(value) || isValidEmail(value);
 
 /**
- * 注册流程 Composable。
+ * 前端侧 XSS 防护：移除输入中的 HTML 标签。（喵，坏人退散！）
+ *
+ * ⚠️ 注意：此函数仅作为前端第一道防线，不能替代后端校验。（喵喵喵，后端辛苦了！）
+ * 攻击者可绕过浏览器直接调用 API，因此后端必须再次净化所有输入。（重要的事情说三遍喵！）
+ *
+ * 后端对接点：（喵，后端大佬可参考！）
+ * - POST /api/auth/register        → 需在后端对 username / contact 做二次净化
+ * - POST /api/auth/register/verify → 需在后端对 code 做格式校验
+ */
+const sanitizeInput = (value: string): string => value.replace(/<[^>]*>/g, '');
+
+/**
+ * 注册流程 Composable。（喵，注册逻辑！）
  *
  * 统一驱动本地 / 普通账户注册，复用 AuthStore 的 registerLocal / registerNormal /
- * verifyNormalRegister。**本地注册一律使用用户填写的密码，绝不生成随机密码。**
+ * verifyNormalRegister。**本地注册一律使用用户填写的密码，绝不生成随机密码。**（喵，用户自己设密码！）
  * 普通账户注册成功进入 verify 步（提交验证码），成功后跳转统一走 resolveSafeRedirect。
  */
 export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow {
   const store = useAuthStore();
   const { redirect = null, onSuccess } = options;
 
-  // ── State ──
+  // ── State ──（喵，状态管理不能乱！）
   const type = ref<RegisterType>('normal');
   const username = ref('');
   const password = ref('');
@@ -62,10 +105,10 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
   const countdownRunning = toRef(countdown, 'running');
 
   // 项目当前无真实可访问的 terms 页面（src/pages 下无 terms.*），故不提供该勾选，
-  // 避免指向无效链接。见 task-7-report.md 依据。
+  // 避免指向无效链接。
   const hasAgreedTerms = ref(false);
 
-  // ── 帮助 ──
+  // ── 帮助函数（喵，工具人上线！） ──
   function fail(msg?: string): void {
     error.value = msg ?? '操作失败，请重试';
   }
@@ -76,36 +119,47 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     if (typeof onSuccess === 'function') onSuccess(dst);
   }
 
-  // ── 提交注册 ──
+  // ── 提交注册（喵，重头戏来了！） ──
   async function submit(): Promise<void> {
     error.value = null;
 
-    // 校验
-    if (username.value.trim().length < 3) return fail('用户名至少 3 个字符');
+    // ── 前端校验层（喵，把坏东西挡在外面！） ──
+    // 用户名（喵，起个好名字很重要！）
+    const trimmedUsername = username.value.trim();
+    if (trimmedUsername.length < 3) return fail('用户名至少 3 个字符');
+    if (trimmedUsername.length > 50) return fail('用户名不能超过 50 个字符');
+    if (/[<>/]/.test(trimmedUsername)) return fail('用户名不能包含特殊字符（如 < > /）');
+
+    // 密码（不净化，保留原始输入交给后端 bcrypt，喵，密码要保护好！）
     if (password.value.length < 6) return fail('密码长度不能少于 6 位');
+    if (password.value.length > 128) return fail('密码长度不能超过 128 位');
     if (password.value !== confirm.value) return fail('两次输入的密码不一致');
+
+    // 联系方式（仅普通账户必填，喵，不然找不到人！）
     if (type.value === 'normal') {
-      const contactValue = contact.value.trim();
-      if (!contactValue) return fail(useEmail.value ? '请输入邮箱' : '请输入手机号');
-      if (useEmail.value && !EMAIL_RE.test(contactValue)) return fail('请输入有效的邮箱地址');
+      const trimmedContact = contact.value.trim();
+      if (!trimmedContact) return fail(useEmail.value ? '请输入邮箱' : '请输入手机号');
+      if (/[<>/]/.test(trimmedContact)) return fail('联系方式不能包含特殊字符');
+      if (useEmail.value && !EMAIL_RE.test(trimmedContact)) return fail('请输入有效的邮箱地址');
+      if (!useEmail.value && !PHONE_RE.test(trimmedContact)) return fail('请输入有效的手机号');
     }
 
     loading.value = true;
     try {
       if (type.value === 'local') {
-        // 本地注册：使用用户输入的密码，绝无随机生成
-        const r = await store.registerLocal(username.value.trim(), password.value);
+        // 本地注册：使用用户输入的密码，无随机生成
+        const r = await store.registerLocal(sanitizeInput(trimmedUsername), password.value);
         if (r.isErr()) return fail(r.error.message);
         stage.value = 'done';
         succeed();
         return;
       }
 
-      // 普通账户：发送验证码，进入 verify 步
-      const email = useEmail.value ? contact.value.trim() : null;
-      const phone = !useEmail.value ? contact.value.trim() : null;
+      // 普通账户：发送验证码，进入 verify 步（喵，等验证码来敲门～）
+      const email = useEmail.value ? sanitizeInput(contact.value.trim()) : null;
+      const phone = !useEmail.value ? sanitizeInput(contact.value.trim()) : null;
       const r = await store.registerNormal(
-        username.value.trim(),
+        sanitizeInput(trimmedUsername),
         password.value,
         email ?? undefined,
         phone ?? undefined
@@ -113,24 +167,30 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
       if (r.isErr()) return fail(r.error.message);
       txnId.value = r.value.txn_id;
       stage.value = 'verify';
-      countdown.start();
+      countdown.start(); // 倒计时开始！
     } finally {
       loading.value = false;
     }
   }
 
-  // ── 提交验证码 ──
+  // ── 提交验证码（喵，对暗号！） ──
   async function submitCode(): Promise<void> {
     error.value = null;
     if (!txnId.value) return fail('注册会话已失效，请重新提交');
     if (code.value.length < 1) return fail('请输入验证码');
+    if (code.value.length > 10) return fail('验证码长度不正确');
+    if (!/^\d+$/.test(code.value)) return fail('验证码格式不正确');
 
     loading.value = true;
     try {
-      const r = await store.verifyNormalRegister(txnId.value, code.value, useEmail.value ? 'email' : 'phone');
+      const r = await store.verifyNormalRegister(
+        txnId.value,
+        sanitizeInput(code.value),
+        useEmail.value ? 'email' : 'phone'
+      );
       if (r.isErr()) return fail(r.error.message);
       stage.value = 'done';
-      succeed();
+      succeed(); // 喵，注册成功！完结撒花！
     } finally {
       loading.value = false;
     }
@@ -151,7 +211,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     countdownRunning.value = false;
   }
 
-  // reactive 包裹使 ref 解包（与 useLoginFlow 一致），模板里即值类型，消除 TS2367 误报
+  // reactive 包裹使 ref 解包（与 useLoginFlow 一致），模板里即值类型，消除误报
   return reactive({
     type,
     username,
