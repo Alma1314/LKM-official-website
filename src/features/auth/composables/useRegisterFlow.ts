@@ -138,7 +138,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
         phone ?? undefined
       );
       if (r.isErr()) return fail(r.error.message);
-      
+
       // 防御：确保 txn_id 存在（喵，后端没返回就报错！）
       if (!r.value?.txn_id) {
         return fail('获取验证码失败，请重试');
