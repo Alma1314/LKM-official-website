@@ -2,7 +2,6 @@ import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
 import { useVerificationCountdown } from './useVerificationCountdown';
-import axios from 'axios';
 
 export type RegisterType = 'normal' | 'local';
 export type RegisterStage = 'form' | 'verify' | 'done';
@@ -39,9 +38,6 @@ export interface RegisterFlow {
 // ──────────────────────────────────────────────
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^1[3-9]\d{9}$/;
-
-const isValidPhone = (value: string): boolean => PHONE_RE.test(value);
-const isValidEmail = (value: string): boolean => EMAIL_RE.test(value);
 
 /**
  * 前端侧 XSS 防护：移除输入中的 HTML 标签。（喵，坏人退散！）
@@ -92,7 +88,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
 
   function succeed(): void {
     error.value = null;
-    const dst = resolveSafeRedirect(redirect);
+    const dst = resolveSafeRedirect(redirect) || '/';
     if (typeof onSuccess === 'function') onSuccess(dst);
   }
 
@@ -142,6 +138,11 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
         phone ?? undefined
       );
       if (r.isErr()) return fail(r.error.message);
+      
+      // 防御：确保 txn_id 存在（喵，后端没返回就报错！）
+      if (!r.value?.txn_id) {
+        return fail('获取验证码失败，请重试');
+      }
       txnId.value = r.value.txn_id;
       stage.value = 'verify';
       countdown.start(); // 倒计时开始！
@@ -184,7 +185,10 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     txnId.value = '';
     loading.value = false;
     error.value = null;
-    countdown.stop();
+    // 防御：确保 stop 方法存在（喵，兼容不同实现！）
+    if (typeof countdown.stop === 'function') {
+      countdown.stop();
+    }
     countdownRunning.value = false;
   }
 
