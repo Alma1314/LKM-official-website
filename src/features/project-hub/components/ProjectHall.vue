@@ -533,22 +533,10 @@ const api = {
       if (error instanceof Error) {
         throw error;
       }
-      // 否则创建新的 Error，并保留原始错误信息喵
-      console.error('API request failed:', error);
-      throw new Error('请求失败，请稍后重试。');
+      // 否则创建新的 Error，并将原始错误包装后作为 cause 喵
+      const wrappedError = error instanceof Error ? error : new Error(String(error));
+      throw new Error('请求失败，请稍后重试。', { cause: wrappedError });
     }
-  },
-};
-// ============================================================
-// 消息提示（替代原生 alert，alert是坏文明）
-// ============================================================
-const toast = {
-  success(message: string) {
-    // TODO: 以后可以换成漂漂亮亮的组件吗喵QAQ
-    alert(`✅ ${message}`);
-  },
-  error(message: string) {
-    alert(`❌ ${message}`);
   },
 };
 
