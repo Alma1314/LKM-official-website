@@ -1,78 +1,11 @@
 ---
-import { AdminLayout, adminUsers } from '~/features/admin';
+import { AdminLayout } from '~/features/admin';
+import UserTable from '~/features/admin/components/UserTable.vue';
 ---
 
 <AdminLayout>
   <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-bold text-deep-text">用户管理</h1>
-    <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">添加用户</button>
   </div>
-  <div class="bg-card-bg border border-surface-3 rounded-xl overflow-hidden">
-    <table class="w-full text-sm">
-      <thead class="bg-surface-3/50">
-        <tr>
-          <th class="text-left px-4 py-3 font-medium text-text-muted">用户</th>
-          <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">角色</th>
-          <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">帖子</th>
-          <th class="text-left px-4 py-3 font-medium text-text-muted hidden lg:table-cell">积分</th>
-          <th class="text-left px-4 py-3 font-medium text-text-muted hidden sm:table-cell">状态</th>
-          <th class="text-left px-4 py-3 font-medium text-text-muted">操作</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-surface-3">
-        {
-          adminUsers.map((u) => (
-            <tr class="hover:bg-page-bg transition-colors">
-              <td class="px-4 py-3">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
-                    {u.displayName.charAt(0)}
-                  </div>
-                  <div>
-                    <>
-                      <div class="font-medium text-deep-text">{u.displayName}</div>
-                      <div class="text-xs text-text-muted/60">@{u.username}</div>
-                    </>
-                  </div>
-                </div>
-              </td>
-              <td class="px-4 py-3 hidden md:table-cell">
-                <span
-                  class="text-xs px-2 py-0.5 rounded-full font-medium"
-                  class:list={[
-                    { 'bg-purple-100 dark:bg-purple-950/30 text-purple-500': u.role === 'admin' },
-                    { 'bg-blue-100 dark:bg-blue-950/30 text-blue-500': u.role === 'moderator' },
-                    { 'bg-surface-3 text-text-muted': u.role === 'member' },
-                  ]}
-                >
-                  {u.role === 'admin' ? '管理员' : u.role === 'moderator' ? '版主' : '成员'}
-                </span>
-              </td>
-              <td class="px-4 py-3 hidden md:table-cell text-text-muted">{u.postCount}</td>
-              <td class="px-4 py-3 hidden lg:table-cell text-text-muted">{u.points.toLocaleString()}</td>
-              <td class="px-4 py-3 hidden sm:table-cell">
-                <span
-                  class="text-xs px-2 py-0.5 rounded-full font-medium"
-                  class:list={[
-                    { 'bg-green-100 dark:bg-green-950/30 text-green-500': !u.isBanned },
-                    { 'bg-red-100 dark:bg-red-950/30 text-red-500': u.isBanned },
-                  ]}
-                >
-                  {u.isBanned ? '已封禁' : '正常'}
-                </span>
-              </td>
-              <td class="px-4 py-3">
-                <div class="flex gap-1">
-                  <>
-                    <button class="text-xs text-primary hover:underline">编辑</button>
-                    <button class="text-xs text-red-500 hover:underline">{u.isBanned ? '解封' : '封禁'}</button>
-                  </>
-                </div>
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </div>
+  <UserTable client:only="vue" />
 </AdminLayout>
