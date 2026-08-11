@@ -35,28 +35,6 @@ export interface RegisterFlow {
 }
 
 // ──────────────────────────────────────────────
-// HTTP 请求封装（喵，用 axios 统一管理！）
-// ──────────────────────────────────────────────
-const _apiFetch = async (url: string, options: Record<string, unknown> = {}) => {
-  const method = (options.method as string) || 'POST';
-  const headers = (options.headers as Record<string, string>) || {};
-  const data = options.body ? JSON.parse(options.body as string) : options.data;
-
-  const response = await axios({
-    url,
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-    data,
-    withCredentials: true, // 喵，带上 cookie！
-  });
-
-  return response.data;
-};
-
-// ──────────────────────────────────────────────
 // 工具函数：输入校验与安全防护（喵，安全第一！）
 // ──────────────────────────────────────────────
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,7 +42,6 @@ const PHONE_RE = /^1[3-9]\d{9}$/;
 
 const isValidPhone = (value: string): boolean => PHONE_RE.test(value);
 const isValidEmail = (value: string): boolean => EMAIL_RE.test(value);
-const _isValidContact = (value: string): boolean => isValidPhone(value) || isValidEmail(value);
 
 /**
  * 前端侧 XSS 防护：移除输入中的 HTML 标签。（喵，坏人退散！）
@@ -196,7 +173,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     }
   }
 
-  // ── 重置 ──
+  // ── 重置（喵，回到起点重新来过～） ──
   function reset(): void {
     stage.value = 'form';
     username.value = '';
