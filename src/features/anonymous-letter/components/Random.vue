@@ -47,10 +47,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
+import { useMessage } from 'naive-ui';
 import { getCategory, getPaper } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
 
+const message = useMessage();
 const pool = ref([]);
 const current = ref(null);
 const picking = ref(false);
@@ -71,7 +72,7 @@ function draw() {
   setTimeout(() => {
     const list = pool.value;
     if (!list.length) {
-      ElMessage({ message: '暂时没有可抽取的公开信件', type: 'info', customClass: 'th-toast' });
+      message.info('暂时没有可抽取的公开信件');
       picking.value = false;
       return;
     }
@@ -91,7 +92,7 @@ function sendReply() {
     at: Date.now(),
   };
   appendMessage(conv.id, msg);
-  ElMessage({ message: '回信已匿名送达 💌', type: 'success', customClass: 'th-toast' });
+  message.success('回信已匿名送达 💌');
   replyText.value = '';
   current.value = null;
 }

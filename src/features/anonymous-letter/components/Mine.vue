@@ -98,7 +98,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { useDialog, useMessage } from 'naive-ui';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import BackupPanel from '../components/BackupPanel.vue';
@@ -106,6 +106,8 @@ import { getCategory } from '../stores/constants';
 import * as store from '../stores/storage';
 
 const router = useRouter();
+const message = useMessage();
+const dialog = useDialog();
 const tab = ref('letters');
 const letters = ref([]);
 const favs = ref([]);
@@ -146,17 +148,17 @@ function editLetter(l) {
   router.push({ name: 'write', query: { letterId: l.id } });
 }
 function removeLetter(l) {
-  ElMessageBox.confirm('确定删除这封信？', '确认删除', {
-    confirmButtonText: '删除',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
+  dialog.warning({
+    title: '确认删除',
+    content: '确定删除这封信？',
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: () => {
       store.deleteLetter(l.id);
       letters.value = store.getLetters();
-      ElMessage({ message: '已删除', type: 'success', customClass: 'th-toast' });
-    })
-    .catch(() => {});
+      message.success('已删除');
+    },
+  });
 }
 function onFav() {
   load();
@@ -170,17 +172,17 @@ function removeDraft(d) {
 }
 
 function reset() {
-  ElMessageBox.confirm('确定清空全部本地草稿？', '确认重置', {
-    confirmButtonText: '清空',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
+  dialog.warning({
+    title: '确认重置',
+    content: '确定清空全部本地草稿？',
+    positiveText: '清空',
+    negativeText: '取消',
+    onPositiveClick: () => {
       store.resetDrafts();
       drafts.value = [];
-      ElMessage({ message: '草稿已清空 🌿', type: 'success', customClass: 'th-toast' });
-    })
-    .catch(() => {});
+      message.success('草稿已清空 🌿');
+    },
+  });
 }
 </script>
 

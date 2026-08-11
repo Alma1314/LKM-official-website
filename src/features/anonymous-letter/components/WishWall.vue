@@ -20,27 +20,29 @@
       <div v-if="!wishes.length" class="wish-empty">还没有愿望，做第一个许愿的人吧～</div>
     </div>
 
-    <el-dialog v-model="openMake" title="写下你的愿望" align-center width="min(420px,92vw)">
-      <el-input v-model="text" type="textarea" :rows="3" placeholder="把愿望交给星光…" />
+    <n-modal v-model:show="openMake" preset="card" :show-icon="false" title="写下你的愿望" style="width: min(420px, 92vw)">
+      <n-input v-model="text" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="把愿望交给星光…" />
       <template #footer>
         <button class="btn-grad" :disabled="!text.trim()" @click="make">🌟 点亮愿望</button>
       </template>
-    </el-dialog>
+    </n-modal>
 
-    <el-dialog v-model="openEditBox" title="编辑愿望" align-center width="min(420px,92vw)">
-      <el-input v-model="editText" type="textarea" :rows="3" placeholder="修改你的愿望…" />
+    <n-modal v-model:show="openEditBox" preset="card" :show-icon="false" title="编辑愿望" style="width: min(420px, 92vw)">
+      <n-input v-model="editText" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="修改你的愿望…" />
       <template #footer>
         <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">💾 保存</button>
       </template>
-    </el-dialog>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { useDialog, useMessage } from 'naive-ui';
 import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
 
+const message = useMessage();
+const dialog = useDialog();
 const wishes = ref([]);
 const openMake = ref(false);
 const text = ref('');
@@ -91,7 +93,7 @@ function make() {
   wishes.value.unshift(w);
   text.value = '';
   openMake.value = false;
-  ElMessage({ message: '愿望已点亮 🌟', type: 'success', customClass: 'th-toast' });
+  message.success('愿望已点亮 🌟');
 }
 
 function openEdit(w) {
@@ -110,22 +112,22 @@ function saveEdit() {
   }
   wishes.value = list;
   openEditBox.value = false;
-  ElMessage({ message: '已更新 ✏️', type: 'success', customClass: 'th-toast' });
+  message.success('已更新 ✏️');
 }
 
 function remove(w) {
-  ElMessageBox.confirm('确定删除这个愿望吗？', '确认删除', {
-    confirmButtonText: '删除',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
+  dialog.warning({
+    title: '确认删除',
+    content: '确定删除这个愿望吗？',
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: () => {
       const list = getWishes().filter((x) => x.id !== w.id);
       saveWishes(list);
       wishes.value = list;
-      ElMessage({ message: '已删除', type: 'success', customClass: 'th-toast' });
-    })
-    .catch(() => {});
+      message.success('已删除');
+    },
+  });
 }
 </script>
 
