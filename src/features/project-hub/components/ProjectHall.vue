@@ -513,7 +513,7 @@ const getErrorMessage = (status: number): string => {
   }
 };
 
-// 喵！按照项目规范，使用 apiFetch 替代原生 fetch
+/// 喵！按照项目规范，使用 apiFetch 替代原生 fetch
 const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
     try {
@@ -532,7 +532,7 @@ const api = {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('请求失败，请稍后重试。');
+      throw new Error('请求失败，请稍后重试。', { cause: error });
     }
   },
 };
