@@ -81,144 +81,20 @@ const metadata = {
   </Hero>
 
   {/* ===== 如下板块将由清汉维护 ===== */}
-  <Section
-    id="external-resources"
-    title="资源网站"
-    subtitle="以下为站外公开学术 / 教育平台，目前处于维护阶段，该板块由我（清汉）维护，如有投稿请联系我"
-    classes={{ container: '' }}
-  >
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="https://iupac.org/" target="_blank" rel="noopener noreferrer" class="profile-card group">
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >IU</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">IUPAC</h3>
-            <p class="text-xs text-text-muted">国际纯粹与应用化学联合会</p>
-          </div>
-        </a>
-
-        <a href="https://www.chemsoc.org.cn/" target="_blank" rel="noopener noreferrer" class="profile-card group">
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >CC</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">中国化学会</h3>
-            <p class="text-xs text-text-muted">全国化学学术组织</p>
-          </div>
-        </a>
-
-        <a href="https://basic.smartedu.cn/" target="_blank" rel="noopener noreferrer" class="profile-card group">
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >教</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
-              国家中小学智慧教育平台
-            </h3>
-            <p class="text-xs text-text-muted">教育部官方 · 全学段课程</p>
-          </div>
-        </a>
-
-        <!-- Z-Library 总分按钮，先这么凑合着 -->
-        <details class="group profile-card open:border-amber-400/70">
-          <summary
-            class="list-none cursor-pointer p-5 flex flex-col items-center text-center gap-2 focus:outline-none select-none"
-          >
-            <!-- 小箭头 -->
-            <span
-              class="absolute top-3 right-3 text-amber-500 text-[10px] opacity-60 group-open:rotate-180 transition-transform"
-            >
-              ▼
-            </span>
-
-            <span
-              class="w-12 h-12 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-600 font-bold text-xl"
-            >
-              Z
-            </span>
-            <h3 class="font-semibold text-deep-text group-hover:text-amber-600 transition-colors">Z-Library</h3>
-            <p class="text-xs text-text-muted">世界上最大的公开且免费下载的电子图书馆之一 · 点击选择访问方式</p>
-          </summary>
-
-          <!-- 展开后的子按钮 -->
-          <div class="px-5 pb-5 pt-1 flex flex-col gap-3">
-            <a
-              href="https://zh.z-library.sk/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block rounded-lg px-4 py-2.5 text-sm font-medium text-center bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition-colors"
-            >
-              官网入口（你可能需要梯子以访问，该域名同en.z-library.sk）
-            </a>
-            <a
-              href="https://zh.101ml.by/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block rounded-lg px-4 py-2.5 text-sm font-medium text-center border border-dashed border-amber-400/50 text-amber-700 dark:text-amber-300 hover:bg-amber-500/10 transition-colors"
-            >
-              备用镜像站，因为zlib在大陆时不时会遭到封锁，镜像站的域名可能会频繁更换，各位且用且珍惜，如管理人员未能及时替换新的入口，请及时联系管理人员
-            </a>
-            <p class="text-[10px] text-text-muted text-center leading-relaxed">
-              注意，如z-lib.nl/zh这些并非是真正的Z-library官网！请用户仔细甄别！！！
-            </p>
-          </div>
-        </details>
-
-        <a
-          href="https://pubchem.ncbi.nlm.nih.gov/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="profile-card group"
-        >
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >P</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">NCBI PubChem</h3>
-            <p class="text-xs text-text-muted">化学物质、分子式、专利、生物活性数据</p>
-          </div>
-        </a>
-
-        <a href="https://www.iplant.cn/" target="_blank" rel="noopener noreferrer" class="profile-card group">
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >植</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">植物智</h3>
-            <p class="text-xs text-text-muted">植物百科、图库、中国植物志检索</p>
-          </div>
-        </a>
-
-        <a href="https://www.bipm.org/" target="_blank" rel="noopener noreferrer" class="profile-card group">
-          <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-            <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-              >B</span
-            >
-            <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">国际计量局 (BIPM)</h3>
-            <p class="text-xs text-text-muted">国际单位制 SI 定义与度量衡标准</p>
-          </div>
-
-          <a
-            href="https://gpe.wikipedia.org/wiki/Main_Page"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="profile-card group"
-          >
-            <div class="profile-inner p-5 flex flex-col items-center text-center gap-2">
-              <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
-                >W</span
-              >
-              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">维基百科Wikipedia</h3>
-              <p class="text-xs text-text-muted">也算作是词库！不过你需要魔法！</p>
-            </div>
-          </a>
-        </a>
-      </div>
+  <!-- 资源导航入口 -->
+  <Section id="resources-entry" classes={{ container: 'bg-card-bg' }}>
+    <div class="max-w-4xl mx-auto text-center">
+      <a href="/resources" class="profile-card group inline-block w-full sm:w-auto">
+        <div class="profile-inner p-8 flex flex-col items-center gap-4">
+          <span class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-2xl">📚</span>
+          <h3 class="text-xl font-bold text-deep-text group-hover:text-primary transition-colors">延伸资源网站</h3>
+          <p class="text-sm text-text-muted max-w-md">学术机构、科研工具、文献站点汇总（目前正在完善中）</p>
+          <span class="mt-2 inline-flex items-center gap-1 text-sm text-primary font-medium"> 前往资源页 → </span>
+        </div>
+      </a>
     </div>
   </Section>
-  {/* ===== 截止至此处 ===== */}
+  <!-- 截至此处 -->
 
   <!-- 推荐板块 -->
   <Section id="recommend" classes={{ container: '' }}>
