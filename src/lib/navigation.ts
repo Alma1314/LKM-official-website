@@ -8,7 +8,7 @@ export const footerData = {
         { text: '七月团队', href: getPermalink('/blog/about') },
         { text: '管理团队', href: getPermalink('/team') },
         { text: '发展历程', href: getPermalink('/#timeline') },
-        { text: '文章', href: getPermalink('/official/articles') },
+        { text: '寻求帮助', href: getPermalink('/official/articles') },
       ],
     },
     {

@@ -105,17 +105,26 @@ fuwari:
             url: /#update
           - name: 常见问题
             url: /#faq
-      - name: 文章
+      - name: 寻求帮助
         url: /official/articles
         children:
           - name: 文章列表
             url: /official/articles
           - name: 所有分类
-            url: /official/articles
+            url: /official/articles/categories
           - name: 文章归档
-            url: /official/articles
+            url: /official/articles/archive
           - name: 关于文章
-            url: /official/articles
+            url: /official/articles/about
+      - name: 新闻资讯
+        url: /official/news
+        children:
+          - name: 官方公告
+            url: /official/news/announcement
+          - name: 科技新闻
+            url: /official/news/news
+          - name: 科普相关
+            url: /official/news/science
       - name: 七月团队
         url: /official/team
         children:

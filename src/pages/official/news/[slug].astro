@@ -1,0 +1,35 @@
+---
+import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import ArticleList from '~/features/official-articles/components/ArticleList.astro';
+import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
+import { NEWS_SECTIONS } from '~/features/official-articles/data/news-sections';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { logSsrError } from '~/lib/fetch-ssr';
+import { fetchAllArticles, fetchArticleCategories } from '~/lib/api';
+
+const { slug } = Astro.params as { slug: string };
+
+const [{ articles, error }, { categories }] = await Promise.all([fetchAllArticles(), fetchArticleCategories()]);
+logSsrError(`新闻分类列表 ${slug}`, error);
+
+const category = categories.find((c) => c.slug === slug);
+const fallbackSection = NEWS_SECTIONS.find((s) => s.fallbackSlug === slug);
+const title = category?.name ?? fallbackSection?.label ?? slug;
+const filtered = articles.filter((a) => a.category === slug);
+
+const metadata = { title: `${title} —— 理科迷` };
+---
+
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/official/news/${slug}`)}>
+  <div class="space-y-6">
+    <div>
+      <a href={getPermalink('/official/news')} class="text-sm text-text-muted hover:text-primary transition-colors">
+        &larr; 返回新闻资讯
+      </a>
+      <h1 class="mt-3 text-3xl font-bold text-deep-text">{title}</h1>
+      <p class="mt-2 text-text-muted">{filtered.length} 篇文章</p>
+    </div>
+
+    <ArticleList articles={filtered} error={error} emptyText="该分类暂无文章" />
+  </div>
+</Layout>
