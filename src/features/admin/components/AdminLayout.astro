@@ -68,3 +68,27 @@ export interface AdminNavItem {
     </div>
   </div>
 </div>
+
+<script>
+  // 后台页面访问守卫：校验 cookie 会话，未登录/失效则跳登录页。
+  // 凭证在 httpOnly cookie（@respond 后端是最终防线），这里只做 UX 层软门禁。
+  import { apiFetch } from '~/lib/api/fetch';
+
+  (async () => {
+    // 已是登录页则不再拦截
+    if (window.location.pathname.startsWith('/admin/login')) return;
+
+    try {
+      const result = await apiFetch('/api/v1/admin/auth/me', { method: 'GET' });
+      // 401/403 = 未登录或后台权限不足 → 跳登录页
+      if (result.isOk() && (result.value.status === 401 || result.value.status === 403)) {
+        // 防重入：仅在未处于登录页时跳转一次
+        window.location.replace('/admin/login');
+      } else if (result.isErr()) {
+        // 网络/超时/5xx 时不强闯，避免打不开后台业务页；由具体请求各自报错。
+      }
+    } catch {
+      // 兜底
+    }
+  })();
+</script>

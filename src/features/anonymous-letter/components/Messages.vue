@@ -87,10 +87,11 @@
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue';
-import { ElMessage } from 'element-plus';
+import { useMessage } from 'naive-ui';
 import EmptyState from '../components/EmptyState.vue';
 import * as store from '../stores/storage';
 
+const message = useMessage();
 const conversations = ref([]);
 const activeId = ref('');
 const text = ref('');
@@ -129,12 +130,12 @@ function send() {
 function recall(convId, msg) {
   store.recallMessage(convId, msg.id);
   conversations.value = store.getReplies();
-  ElMessage({ message: '已撤回', type: 'success', customClass: 'th-toast' });
+  message.success('已撤回');
 }
 function blockConv() {
   store.blockConversation(activeId.value);
   conversations.value = store.getReplies();
-  ElMessage({ message: '已屏蔽该陌生人', type: 'success', customClass: 'th-toast' });
+  message.success('已屏蔽该陌生人');
 }
 function clearConv() {
   store.clearConversation(activeId.value);
@@ -147,7 +148,7 @@ function delConv() {
 }
 function clearAllRead() {
   store.clearInbox();
-  ElMessage({ message: '已标记全部已读', type: 'success', customClass: 'th-toast' });
+  message.success('已标记全部已读');
 }
 function scrollBottom() {
   const el = document.querySelector('.chat-body');

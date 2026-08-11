@@ -27,6 +27,25 @@ const projectConfig: Record<string, unknown> = {
       },
     },
   },
+  fuwari: {
+    navbar: {
+      links: [],
+    },
+    navbarCommunity: {
+      links: [
+        {
+          name: '主页',
+          url: '/',
+          children: [{ name: '简明介绍', url: '/' }],
+        },
+        {
+          name: '博客',
+          url: '/community/blog',
+          children: [{ name: '博客列表', url: '/community/blog' }],
+        },
+      ],
+    },
+  },
 };
 
 export default projectConfig;

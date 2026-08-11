@@ -1,11 +1,4 @@
 dist
 node_modules
 .github
-.changeset
 pnpm-lock.yaml
-package-lock.json
-.superpowers
-reference
-.claude
-.pytest_cache
-.venv

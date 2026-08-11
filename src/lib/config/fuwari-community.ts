@@ -1,8 +1,8 @@
 import type { NavBarConfig, NavBarLink } from '~/types/config';
 import { LinkPreset } from '~/types/config';
-import projectConfigRaw from 'virtual:config-community';
+import projectConfigRaw from 'virtual:config';
 
-// virtual:config-community 运行时数据无编译期类型 —— 在此唯一断言一次
+// virtual:config 运行时数据无编译期类型 —— 在此唯一断言一次
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const projectConfig = projectConfigRaw as Record<string, any>;
 
@@ -16,7 +16,7 @@ interface FuwariLinkItem {
 
 const cfg = projectConfig.fuwari as
   | {
-      navbar?: { links: FuwariLinkItem[] };
+      navbarCommunity?: { links: FuwariLinkItem[] };
     }
   | undefined;
 
@@ -33,7 +33,7 @@ function presetFromString(s: string): LinkPreset {
   }
 }
 
-const navCfg = cfg?.navbar ?? { links: [] };
+const navCfg = cfg?.navbarCommunity ?? { links: [] };
 
 function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
   return items.flatMap((link: FuwariLinkItem) => {

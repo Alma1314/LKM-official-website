@@ -1,11 +1,14 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
+import OfficialLayout from '~/layouts/OfficialLayout.astro';
 import Section from '~/features/homepage/components/Section.astro';
+import { getPermalink } from '~/lib/utils/permalinks';
 ---
 
-<BaseLayout metadata={{ title: '资源' }}>
+<OfficialLayout metadata={{ title: '资源' }}>
   <div class="max-w-6xl mx-auto py-12 px-4">
-    <a href="/" class="inline-flex items-center gap-1 text-sm text-primary hover:underline mb-6"> ← 返回首页 </a>
+    <a href={getPermalink('/')} class="inline-flex items-center gap-1 text-sm text-primary hover:underline mb-6">
+      ← 返回首页
+    </a>
 
     <h1 class="text-3xl font-bold text-deep-text text-center mb-2">延伸资源网站</h1>
     <p class="text-sm text-text-muted text-center mb-10">
@@ -150,6 +153,6 @@ import Section from '~/features/homepage/components/Section.astro';
       </div>
     </Section>
   </div>
-</BaseLayout>
+</OfficialLayout>
 
 <!-- 2026/8/11 资源网站板块独立  清汉 -->
