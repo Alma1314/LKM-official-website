@@ -6,7 +6,7 @@
  * and can be used by non-inline consumers.
  */
 
-export function applyTheme(defaultTheme: string) {
+export function applyTheme(defaultTheme: string): void {
   const stored = localStorage.getItem('theme');
   const theme = stored || defaultTheme;
   if (theme === 'dark') {
@@ -16,7 +16,7 @@ export function applyTheme(defaultTheme: string) {
   }
 }
 
-export function toggleTheme() {
+export function toggleTheme(): void {
   document.documentElement.classList.toggle('dark');
   const isDark = document.documentElement.classList.contains('dark');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');

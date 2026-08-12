@@ -33,7 +33,7 @@ import yaml from 'js-yaml';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-function loadConfigYaml() {
+function loadConfigYaml(): Record<string, unknown> {
   const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
   return yaml.load(raw) as Record<string, unknown>;
 }

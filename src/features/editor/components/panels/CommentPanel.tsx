@@ -21,7 +21,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
     refresh();
   }, [refresh]);
 
-  const handleAddReply = (threadId: string) => {
+  const handleAddReply = (threadId: string): void => {
     const text = replyInput[threadId]?.trim();
     if (text) {
       adapter.addReply?.(documentId, threadId, text);
@@ -30,17 +30,17 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
     }
   };
 
-  const handleResolve = (threadId: string) => {
+  const handleResolve = (threadId: string): void => {
     adapter.resolveThread?.(documentId, threadId);
     refresh();
   };
 
-  const handleReopen = (threadId: string) => {
+  const handleReopen = (threadId: string): void => {
     adapter.reopenThread?.(documentId, threadId);
     refresh();
   };
 
-  const handleDelete = (threadId: string) => {
+  const handleDelete = (threadId: string): void => {
     if (window.confirm('确定删除此评论？')) {
       adapter.deleteThread?.(documentId, threadId);
       refresh();

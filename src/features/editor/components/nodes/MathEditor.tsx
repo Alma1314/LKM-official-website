@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import type { ReactElement } from 'react';
 import katex from 'katex';
 
 interface MathEditorProps {
@@ -8,7 +9,7 @@ interface MathEditorProps {
   onCancel: () => void;
 }
 
-export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel }: MathEditorProps) {
+export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel }: MathEditorProps): ReactElement {
   const [latex, setLatex] = useState(initialLatex);
   const previewRef = useRef<HTMLSpanElement>(null);
 

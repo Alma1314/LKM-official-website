@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ReactElement } from 'react';
 
 interface PublishDialogProps {
   currentTitle: string;
@@ -6,7 +7,7 @@ interface PublishDialogProps {
   onCancel: () => void;
 }
 
-export default function PublishDialog({ currentTitle, onConfirm, onCancel }: PublishDialogProps) {
+export default function PublishDialog({ currentTitle, onConfirm, onCancel }: PublishDialogProps): ReactElement {
   const [title, setTitle] = useState(currentTitle || '');
   const [slug, setSlug] = useState(
     (currentTitle || 'untitled')
@@ -15,7 +16,7 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
       .replace(/^-|-$/g, '')
   );
 
-  const handleTitleChange = (value: string) => {
+  const handleTitleChange = (value: string): void => {
     setTitle(value);
     if (!slug || slug === 'untitled') {
       setSlug(

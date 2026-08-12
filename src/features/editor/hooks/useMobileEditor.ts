@@ -11,7 +11,7 @@ export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => voi
   let rafId: number | null = null;
 
   if (vv) {
-    const handleResize = () => {
+    const handleResize = (): void => {
       if (rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         const heightDiff = window.innerHeight - vv.height;
@@ -38,7 +38,7 @@ export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => voi
   }
 
   // Fallback: focus-based detection (old browsers without visualViewport)
-  const handleFocusIn = (e: FocusEvent) => {
+  const handleFocusIn = (e: FocusEvent): void => {
     const target = e.target as HTMLElement;
     if (!editorEl.contains(target)) return;
 
@@ -54,7 +54,7 @@ export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => voi
     }, 300);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (): void => {
     editorEl.style.paddingBottom = '';
   };
 
@@ -90,7 +90,7 @@ export function setupTouchGestures(
   let touchTarget: HTMLElement | null = null;
   let longPressTimer: ReturnType<typeof setTimeout> | null = null;
 
-  const onTouchStart = (e: TouchEvent) => {
+  const onTouchStart = (e: TouchEvent): void => {
     const touch = e.touches[0];
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
@@ -104,7 +104,7 @@ export function setupTouchGestures(
     }
   };
 
-  const onTouchEnd = (e: TouchEvent) => {
+  const onTouchEnd = (e: TouchEvent): void => {
     if (longPressTimer) {
       clearTimeout(longPressTimer);
       longPressTimer = null;

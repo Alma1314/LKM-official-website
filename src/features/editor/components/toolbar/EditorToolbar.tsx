@@ -688,7 +688,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
     if (!bar || window.innerWidth >= 768) return;
     let raf: number | null = null;
     let pending = false;
-    const scrollActive = () => {
+    const scrollActive = (): void => {
       if (!pending) return;
       pending = false;
       const activeBtn = bar.querySelector('.is-active') as HTMLElement | null;

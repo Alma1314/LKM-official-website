@@ -1,11 +1,27 @@
-import { useRef } from 'react';
+import { useRef, type RefObject } from 'react';
 import { useAutoSave } from './useAutosave';
 import { importMdx } from '../engine/mdx/index';
 import { exportMdx } from '../engine/mdx/index';
-import type { PersistenceAdapter } from '../engine/types';
+import type { PersistenceAdapter, SaveStatus, DocumentData } from '../engine/types';
 import type { ImportResult } from '../engine/mdx/import-mdx';
 
-export function useEditorPersistence(docId: string, adapter: PersistenceAdapter) {
+export function useEditorPersistence(
+  docId: string,
+  adapter: PersistenceAdapter
+): {
+  saveStatus: SaveStatus;
+  triggerSave: (content: Record<string, unknown>) => void;
+  loadDraft: () => Promise<DocumentData | null>;
+  flushImmediate: (content: Record<string, unknown>) => void;
+  importMdxContent: (mdx: string) => Promise<ImportResult>;
+  exportMdxContent: (
+    json: Record<string, unknown>,
+    frontmatter?: Record<string, unknown>
+  ) => Promise<string>;
+  sourceMdxRef: RefObject<string>;
+  frontmatterRef: RefObject<Record<string, unknown>>;
+  lastValidJsonRef: RefObject<Record<string, unknown> | null>;
+} {
   const frontmatterRef = useRef<Record<string, unknown>>({});
   const { saveStatus, triggerSave, loadDraft, flushImmediate } = useAutoSave(
     docId,

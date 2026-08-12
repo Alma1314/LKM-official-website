@@ -104,7 +104,7 @@ export async function deleteImageBlobs(srcList: string[]): Promise<void> {
 /** 从文档 editorJson 中收集所有图片 src（用于清理） */
 export function collectImageSrcs(editorJson: unknown): string[] {
   const result: string[] = [];
-  const walk = (value: unknown) => {
+  const walk = (value: unknown): void => {
     if (value === null || value === undefined) return;
     if (Array.isArray(value)) {
       value.forEach(walk);

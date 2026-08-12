@@ -27,12 +27,12 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
     }
   }, [documentId, adapter]);
 
-  const handleSelect = (version: number) => {
+  const handleSelect = (version: number): void => {
     const v = versions.find((ver) => ver.version === version);
     setSelectedVersion(v ?? null);
   };
 
-  const handleRestore = () => {
+  const handleRestore = (): void => {
     if (!selectedVersion) return;
     if (window.confirm(`确定恢复到版本 ${selectedVersion.version}？当前未保存的更改会丢失。`)) {
       onRestore(selectedVersion);

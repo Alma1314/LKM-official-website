@@ -45,12 +45,12 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
   useEffect(() => {
     editor.on('selectionUpdate', update);
     // Listen to scroll within the editor's parent for position updates
-    const scrollHandler = () => update();
+    const scrollHandler = (): void => update();
     const editorDom = editor.view.dom;
     const scrollParent = editorDom.closest('[class*="overflow"]') || window;
     scrollParent.addEventListener('scroll', scrollHandler, { passive: true });
 
-    const handleBlur = () => {
+    const handleBlur = (): void => {
       lastSelectionRef.current = null;
       blurTimerRef.current = setTimeout(() => setShow(false), 200);
     };

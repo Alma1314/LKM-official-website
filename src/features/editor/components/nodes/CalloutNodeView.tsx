@@ -35,7 +35,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
 
   useEffect(() => {
     if (!editing) return;
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (panelRef.current && !panelRef.current.contains(e.target as HTMLElement)) {
         setEditing(false);
       }

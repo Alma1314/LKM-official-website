@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { ReactElement } from 'react';
 import { EditorView, keymap, lineNumbers, highlightActiveLine } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
@@ -11,7 +12,7 @@ interface SourceEditorProps {
   onChange: (value: string) => void;
 }
 
-export default function SourceEditor({ value, onChange }: SourceEditorProps) {
+export default function SourceEditor({ value, onChange }: SourceEditorProps): ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const editorViewRef = useRef<EditorView | null>(null);
   const isInternalRef = useRef(false);

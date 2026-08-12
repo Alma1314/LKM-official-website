@@ -152,10 +152,10 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
   }
 }
 
-export default function PreviewPanel({ editor }: PreviewPanelProps) {
+export default function PreviewPanel({ editor }: PreviewPanelProps): React.ReactElement {
   const [, setTick] = useState(0);
   useEffect(() => {
-    const handler = () => setTick((t) => t + 1);
+    const handler = (): void => setTick((t) => t + 1);
     // 仅监听 content update，不监听 selectionUpdate（光标移动不改变预览内容）
     editor.on('update', handler);
     return () => {

@@ -53,7 +53,7 @@ const { items } = Astro.props;
 <script>
   const CORNER_RADIUS = 20;
 
-  function buildPath(dots: { x: number; y: number }[]) {
+  function buildPath(dots: { x: number; y: number }[]): string {
     if (dots.length < 2) return '';
     let d = `M ${dots[0].x},${dots[0].y}`;
     for (let i = 0; i < dots.length - 1; i++) {
@@ -71,7 +71,7 @@ const { items } = Astro.props;
     return d;
   }
 
-  function drawOne(wrap: Element, svg: SVGSVGElement, dotEls: NodeListOf<HTMLElement>, straight: boolean) {
+  function drawOne(wrap: Element, svg: SVGSVGElement, dotEls: NodeListOf<HTMLElement>, straight: boolean): void {
     const path = svg.querySelector('[data-tl-path]');
     if (!path) return;
     const wrapRect = wrap.getBoundingClientRect();
@@ -93,7 +93,7 @@ const { items } = Astro.props;
     }
   }
 
-  function drawTimeline(wrap: Element) {
+  function drawTimeline(wrap: Element): void {
     const list = wrap.querySelector('[data-tl-list]');
     if (!list) return;
     const svgDesktop = wrap.querySelector('[data-tl-svg-desktop]') as SVGSVGElement | null;
@@ -102,7 +102,7 @@ const { items } = Astro.props;
     if (svgMobile) drawOne(wrap, svgMobile, list.querySelectorAll('[data-tl-dot-mobile]'), true);
   }
 
-  function initTimelines() {
+  function initTimelines(): void {
     document.querySelectorAll('.tl-wrap').forEach((wrap) => {
       drawTimeline(wrap);
       new ResizeObserver(() => drawTimeline(wrap)).observe(wrap);

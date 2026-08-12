@@ -1,12 +1,13 @@
 import type { Editor } from '@tiptap/core';
+import type { ReactElement } from 'react';
 
 interface CommentBubbleButtonProps {
   editor: Editor;
   onClick: (from: number, to: number, text: string) => void;
 }
 
-export default function CommentBubbleButton({ editor, onClick }: CommentBubbleButtonProps) {
-  const handleComment = () => {
+export default function CommentBubbleButton({ editor, onClick }: CommentBubbleButtonProps): ReactElement {
+  const handleComment = (): void => {
     const { from, to } = editor.state.selection;
     const text = editor.state.doc.textBetween(from, to, ' ');
     if (text.trim()) {

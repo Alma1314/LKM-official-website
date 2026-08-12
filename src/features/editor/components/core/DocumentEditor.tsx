@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
+import type { ReactElement } from 'react';
 import FullscreenButton from '../toolbar/FullscreenButton';
 import CommentPanel from '../panels/CommentPanel';
 import { setupKeyboardAutoScroll } from '../../hooks/useMobileEditor';
@@ -39,7 +40,7 @@ function uploadImageToBlob(file: File): Promise<string> {
   return saveImageBlob(file);
 }
 
-export default function DocumentEditor({ documentId, adapter }: DocumentEditorProps) {
+export default function DocumentEditor({ documentId, adapter }: DocumentEditorProps): ReactElement {
   const [docId, setDocId] = useState(documentId === 'new' ? '' : documentId);
   const {
     saveStatus,
@@ -184,7 +185,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   useEffect(() => {
     if (!editor) return;
 
-    const handleTextInput = () => {
+    const handleTextInput = (): void => {
       const { $from } = editor.state.selection;
       const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
       const slashMatch = parentText.match(/\/(\w*)$/);
@@ -198,7 +199,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       }
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = (): void => {
       if (slashOpen) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { $from } = (editor.state as any).selection;

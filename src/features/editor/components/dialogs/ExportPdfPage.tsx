@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { ReactElement } from 'react';
 import { renderNode } from '../panels/PreviewPanel';
 import type { JSONContent } from '@tiptap/core';
 
@@ -7,7 +8,7 @@ interface ExportPdfPageProps {
   title?: string;
 }
 
-export default function ExportPdfPage({ content, title }: ExportPdfPageProps) {
+export default function ExportPdfPage({ content, title }: ExportPdfPageProps): ReactElement {
   const nodes = useMemo(() => content.map((n, i) => renderNode(n, i)), [content]);
 
   return (

@@ -9,7 +9,7 @@ export const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(I18N?.lang
 
 export const getFormattedDate = (date: Date | undefined): string => (date ? formatter.format(date) : '');
 
-export const trim = (str = '', ch?: string) => {
+export const trim = (str = '', ch?: string): string => {
   let start = 0,
     end = str.length || 0;
   while (start < end && str[start] === ch) ++start;
@@ -18,7 +18,7 @@ export const trim = (str = '', ch?: string) => {
 };
 
 // 根据数值大小将数字格式化为千 (K) 或百万 (M) 格式
-export const toUiAmount = (amount: number) => {
+export const toUiAmount = (amount: number): string | number => {
   if (!amount) return 0;
 
   let value: string;

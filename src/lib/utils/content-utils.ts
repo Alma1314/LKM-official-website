@@ -2,7 +2,7 @@
 // These functions now return empty data. The blog sidebar widgets (Tags.astro, Categories.astro)
 // display this data. If content is needed in the future, fetch from the blog API instead.
 
-export async function getSortedPosts() {
+export async function getSortedPosts(): Promise<never[]> {
   return [];
 }
 

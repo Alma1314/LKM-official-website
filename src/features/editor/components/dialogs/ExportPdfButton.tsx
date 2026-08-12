@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { createElement } from 'react';
+import type { ReactElement } from 'react';
 import ExportPdfPage from './ExportPdfPage';
 import type { Editor } from '@tiptap/core';
 
@@ -32,7 +33,7 @@ interface ExportPdfButtonProps {
   editor: Editor;
 }
 
-export default function ExportPdfButton({ editor }: ExportPdfButtonProps) {
+export default function ExportPdfButton({ editor }: ExportPdfButtonProps): ReactElement {
   return (
     <button
       type="button"

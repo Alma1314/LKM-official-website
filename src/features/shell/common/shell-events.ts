@@ -10,37 +10,37 @@ const SHELL_EVENTS = {
   CLOSE_AUTH_MODAL: 'close-auth-modal',
 } as const;
 
-export function dispatchMobileNavToggle() {
+export function dispatchMobileNavToggle(): void {
   window.dispatchEvent(new CustomEvent(SHELL_EVENTS.MOBILE_NAV_TOGGLE));
 }
 
-export function dispatchOpenLoginModal() {
+export function dispatchOpenLoginModal(): void {
   window.dispatchEvent(new CustomEvent(SHELL_EVENTS.OPEN_AUTH_MODAL, { detail: { view: 'login' } }));
 }
 
-export function dispatchOpenRegisterModal() {
+export function dispatchOpenRegisterModal(): void {
   window.dispatchEvent(new CustomEvent(SHELL_EVENTS.OPEN_AUTH_MODAL, { detail: { view: 'register' } }));
 }
 
-export function dispatchOpenRecoveryModal() {
+export function dispatchOpenRecoveryModal(): void {
   window.dispatchEvent(new CustomEvent(SHELL_EVENTS.OPEN_AUTH_MODAL, { detail: { view: 'recovery' } }));
 }
 
-export function dispatchCloseAuthModal() {
+export function dispatchCloseAuthModal(): void {
   window.dispatchEvent(new CustomEvent(SHELL_EVENTS.CLOSE_AUTH_MODAL));
 }
 
-export function onMobileNavOpen(handler: EventHandler) {
+export function onMobileNavOpen(handler: EventHandler): () => void {
   window.addEventListener(SHELL_EVENTS.MOBILE_NAV_OPEN, handler);
   return () => window.removeEventListener(SHELL_EVENTS.MOBILE_NAV_OPEN, handler);
 }
 
-export function onMobileNavClose(handler: EventHandler) {
+export function onMobileNavClose(handler: EventHandler): () => void {
   window.addEventListener(SHELL_EVENTS.MOBILE_NAV_CLOSE, handler);
   return () => window.removeEventListener(SHELL_EVENTS.MOBILE_NAV_CLOSE, handler);
 }
 
-export function onMobileNavToggle(handler: EventHandler) {
+export function onMobileNavToggle(handler: EventHandler): () => void {
   window.addEventListener(SHELL_EVENTS.MOBILE_NAV_TOGGLE, handler);
   return () => window.removeEventListener(SHELL_EVENTS.MOBILE_NAV_TOGGLE, handler);
 }

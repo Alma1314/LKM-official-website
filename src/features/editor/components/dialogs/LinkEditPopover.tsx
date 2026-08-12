@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import type { ReactElement } from 'react';
 import type { Editor } from '@tiptap/core';
 
 interface LinkEditPopoverProps {
@@ -6,7 +7,7 @@ interface LinkEditPopoverProps {
   onClose: () => void;
 }
 
-export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProps) {
+export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProps): ReactElement {
   const [href, setHref] = useState('');
   const [text, setText] = useState('');
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -22,7 +23,7 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
   }, [editor]);
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent): void {
       if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
         onClose();
       }
@@ -31,7 +32,7 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>): void => {
     e.preventDefault();
     if (href) {
       editor.chain().focus().extendMarkRange('link').setLink({ href }).run();
@@ -39,7 +40,7 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
     onClose();
   };
 
-  const handleRemove = () => {
+  const handleRemove = (): void => {
     editor.chain().focus().extendMarkRange('link').unsetLink().run();
     onClose();
   };

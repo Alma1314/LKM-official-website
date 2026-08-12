@@ -31,7 +31,12 @@ export function useAutoSave(
   adapter: PersistenceAdapter,
   debounceMs = 1000,
   getFrontmatter?: () => Record<string, unknown>
-) {
+): {
+  saveStatus: SaveStatus;
+  triggerSave: (content: Record<string, unknown>) => void;
+  loadDraft: () => Promise<DocumentData | null>;
+  flushImmediate: (content: Record<string, unknown>) => void;
+} {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const hasUnsavedRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -176,7 +181,7 @@ export function useAutoSave(
   );
 
   useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+    const onBeforeUnload = (e: BeforeUnloadEvent): void => {
       if (hasUnsavedRef.current) {
         e.preventDefault();
       }

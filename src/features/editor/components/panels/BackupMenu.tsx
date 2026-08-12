@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import type { ReactElement } from 'react';
 import type { PersistenceAdapter, BackupEntry } from '../../engine/types';
 
 interface BackupMenuProps {
   adapter: PersistenceAdapter;
 }
 
-export default function BackupMenu({ adapter }: BackupMenuProps) {
+export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
   const [open, setOpen] = useState(false);
   const [backups, setBackups] = useState<BackupEntry[]>([]);
   const [showBackups, setShowBackups] = useState(false);
@@ -13,7 +14,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
         setShowBackups(false);

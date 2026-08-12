@@ -26,7 +26,7 @@ function toUser(u: UserInfo | null): User | null {
   };
 }
 
-export function useAuthProvider() {
+export function useAuthProvider(): AuthContextType {
   const store = useAuthStore();
 
   // 恢复持久化会话（幂等：无数据时维持 anonymous）
@@ -180,7 +180,7 @@ export function useAuthProvider() {
     state.loginMethod = null;
   }
 
-  function updateUser(user: User) {
+  function updateUser(user: User): void {
     state.user = user;
     store.updateUser(user);
   }

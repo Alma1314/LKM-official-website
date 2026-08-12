@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import type { ReactElement } from 'react';
 
 interface InlineInputProps {
   placeholder?: string;
@@ -7,14 +8,14 @@ interface InlineInputProps {
   onCancel: () => void;
 }
 
-export default function InlineInput({ placeholder, defaultValue = '', onConfirm, onCancel }: InlineInputProps) {
+export default function InlineInput({ placeholder, defaultValue = '', onConfirm, onCancel }: InlineInputProps): ReactElement {
   const [value, setValue] = useState(defaultValue);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         onCancel();
       }
@@ -23,7 +24,7 @@ export default function InlineInput({ placeholder, defaultValue = '', onConfirm,
     return () => document.removeEventListener('mousedown', handler);
   }, [onCancel]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (value.trim()) {
       onConfirm(value.trim());
     } else {

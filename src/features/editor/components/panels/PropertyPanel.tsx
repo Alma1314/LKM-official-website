@@ -16,7 +16,7 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handler = () => {
+    const handler = (): void => {
       const { $from } = editor.state.selection;
       const node = $from.node($from.depth);
       if (node && EDITABLE_NODE_TYPES.includes(node.type.name)) {
@@ -39,7 +39,7 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
 
   if (!selectedNode) return null;
 
-  const handleUpdate = (key: string, value: unknown) => {
+  const handleUpdate = (key: string, value: unknown): void => {
     editor
       .chain()
       .focus()
@@ -48,7 +48,7 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
     setSelectedNode((prev) => (prev ? { ...prev, attrs: { ...prev.attrs, [key]: value } } : null));
   };
 
-  const handleNumberUpdate = (key: string, value: string) => {
+  const handleNumberUpdate = (key: string, value: string): void => {
     const num = Number(value);
     handleUpdate(key, Number.isNaN(num) ? undefined : num);
   };

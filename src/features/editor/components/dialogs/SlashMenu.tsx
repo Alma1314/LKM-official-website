@@ -18,7 +18,7 @@ interface SlashItem {
 }
 
 // 表格命令被组件内部引用做 submenu 识别；这里单独定义以保证引用稳定
-function tableCommand(editor: Editor) {
+function tableCommand(editor: Editor): void {
   editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
 }
 

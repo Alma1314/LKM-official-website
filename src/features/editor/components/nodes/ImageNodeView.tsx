@@ -31,7 +31,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
 
   useEffect(() => {
     if (!showToolbar) return;
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (toolbarRef.current && !toolbarRef.current.contains(e.target as HTMLElement)) {
         setShowToolbar(false);
         setInlineMode(null);

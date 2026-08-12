@@ -8,7 +8,7 @@ type ImageSrc = string | ImageMetadata | null | undefined;
 // 本地图片的延迟加载 glob。glob 只执行一次并缓存。
 let _localImages: Record<string, () => Promise<unknown>> | undefined;
 
-const loadLocalImages = () => {
+const loadLocalImages = (): Record<string, () => Promise<unknown>> => {
   if (_localImages) return _localImages;
   try {
     _localImages = import.meta.glob([
