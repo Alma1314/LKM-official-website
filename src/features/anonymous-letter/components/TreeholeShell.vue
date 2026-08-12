@@ -1,5 +1,8 @@
 <template>
-  <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
+  <NMessageProvider>
+    <NDialogProvider>
+      <NModalProvider>
+        <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
     <div class="app-root">
       <!-- 背景层 -->
       <div class="bg-flow" aria-hidden="true"></div>
@@ -129,11 +132,15 @@
         </a>
       </nav>
     </div>
-  </div>
+        </div>
+      </NModalProvider>
+    </NDialogProvider>
+  </NMessageProvider>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { NMessageProvider, NDialogProvider, NModalProvider } from 'naive-ui';
 import Particles from './Particles.vue';
 import { useApp } from '../stores/app';
 import { buildUrl } from '~/lib/utils/paths';

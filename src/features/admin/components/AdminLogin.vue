@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NForm, NFormItem, NInput, NButton, useMessage, NAlert } from 'naive-ui';
+import { NForm, NFormItem, NInput, NButton, NAlert } from 'naive-ui';
 import { useAdminAuthStore } from '~/stores/adminAuth';
 
 const auth = useAdminAuthStore();
-const message = useMessage();
 
 const username = ref('');
 const password = ref('');
@@ -22,7 +21,7 @@ async function handleSubmit() {
   try {
     await auth.login(username.value.trim(), password.value);
     success.value = true;
-    message.success('登录成功');
+    // 成功提示由下方 NAlert 呈现（不再用 useMessage，避免无 provider）
     // 稍作停留展示成功态后跳回后台首页
     window.setTimeout(() => {
       window.location.href = '/admin';
