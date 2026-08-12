@@ -2,6 +2,7 @@ import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 import InlineInput from './InlineInput';
+import { resolveImageSrc } from '../../persistence/image-store';
 
 interface ImageNodeViewProps {
   node: Node;
@@ -15,10 +16,22 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   const [inlineMode, setInlineMode] = useState<'url' | 'alt' | null>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const src = (node.attrs.src as string) ?? '';
+  // 实际可展示的 src：blob 引用需从 IndexedDB 解析为 ObjectURL
+  const [displaySrc, setDisplaySrc] = useState<string>('');
+
+  useEffect(() => {
+    let cancelled = false;
+    resolveImageSrc(src).then((resolved) => {
+      if (!cancelled) setDisplaySrc(resolved);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [src]);
 
   useEffect(() => {
     if (!showToolbar) return;
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (toolbarRef.current && !toolbarRef.current.contains(e.target as HTMLElement)) {
         setShowToolbar(false);
         setInlineMode(null);
@@ -42,7 +55,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   return (
     <div className={`relative inline-block group ${alignClasses[align] ?? ''}`} contentEditable={false} data-image-node>
       <img
-        src={src}
+        src={displaySrc}
         alt={alt}
         title={title || undefined}
         style={{

@@ -99,7 +99,7 @@ const clockYears = items.map((i) => shortYear(i.year));
   </div>
 </div>
 <script>
-  function initClockTimeline(root: HTMLElement) {
+  function initClockTimeline(root: HTMLElement): void {
     const track = root.querySelector('[data-ct-cards-track]') as HTMLElement;
     const clockCol = root.querySelector('[data-ct-clock-col]') as HTMLElement;
     const allPrevBtns = root.querySelectorAll('[data-ct-arrow="prev"]');
@@ -116,7 +116,7 @@ const clockYears = items.map((i) => shortYear(i.year));
       ? firstCard.getBoundingClientRect().height
       : (track.parentElement as HTMLElement).clientHeight;
 
-    function update() {
+    function update(): void {
       track.style.transform = `translate3d(0, -${currentIndex * cardHeight}px, 0)`;
 
       const pointer = clockCol.querySelector('.clock-pointer') as HTMLElement;

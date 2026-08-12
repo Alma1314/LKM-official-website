@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import type { ReactElement } from 'react';
 
-export default function FullscreenButton() {
+export default function FullscreenButton(): ReactElement {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const toggle = useCallback(() => {
@@ -12,7 +13,7 @@ export default function FullscreenButton() {
   }, [isFullscreen]);
 
   useEffect(() => {
-    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    const handler = (): void => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener('fullscreenchange', handler);
     return () => document.removeEventListener('fullscreenchange', handler);
   }, []);

@@ -79,13 +79,13 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
 </nav>
 
 <script>
-  function initSidebarScroll() {
+  function initSidebarScroll(): void {
     const sidebar = document.querySelector('[data-sidebar]');
     if (!sidebar) return;
 
     const links = sidebar.querySelectorAll('a[href]');
 
-    const handler = (e: Event) => {
+    const handler = (e: Event): void => {
       const link = (e.target as HTMLElement).closest('a[href]');
       if (!link) return;
 
@@ -107,7 +107,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       }
     };
 
-    function updateActive() {
+    function updateActive(): void {
       const currentHash = location.hash;
       links.forEach((a) => {
         const href = a.getAttribute('href');
@@ -128,7 +128,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     }
 
     let scrollTicking = false;
-    function onScroll() {
+    function onScroll(): void {
       if (!scrollTicking) {
         requestAnimationFrame(() => {
           const sections = [...links]
@@ -179,13 +179,13 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     updateActive();
   }
 
-  function initSidebarToggle() {
+  function initSidebarToggle(): void {
     const btn = document.getElementById('sidebar-toggle-btn');
     const sidebar = document.querySelector('[data-sidebar]');
     const main = document.querySelector('[data-main-content]') as HTMLElement | null;
     if (!btn || !sidebar) return;
 
-    function getSizes() {
+    function getSizes(): { collapsed: string; expanded: string } {
       const mq = window.matchMedia('(max-width: 767px)');
       return {
         collapsed: mq.matches ? '50px' : '67px',
@@ -193,7 +193,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       };
     }
 
-    function syncMainMargin() {
+    function syncMainMargin(): void {
       if (!main) return;
       const isExpanded = sidebar!.classList.contains('expanded');
       const { collapsed, expanded } = getSizes();

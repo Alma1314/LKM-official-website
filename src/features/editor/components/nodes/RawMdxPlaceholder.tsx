@@ -14,7 +14,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
   const sourceKind = (node.attrs.sourceKind as string) ?? 'flow';
   const truncatedSource = source.length > 200 ? source.slice(0, 200) + '…' : source;
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     const pos = getPos();
     if (pos !== undefined) {
       editor
@@ -25,7 +25,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
     }
   };
 
-  const handleCopy = async () => {
+  const handleCopy = async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(source);
     } catch (err) {

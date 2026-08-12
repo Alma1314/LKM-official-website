@@ -75,8 +75,23 @@ function convertInlineChildren(children: any[], ancestors: any[]): JSONContent[]
         break;
       }
       case 'inlineMath': {
+        // inlineMath 在 Tiptap 中是 Mark 而非节点：镜像编辑器的表示，
+        // 用文本 + inlineMath mark（与 SlashMenu/工具栏插入时的格式一致）
         const math = child as { value: string };
-        result.push({ type: 'inlineMath', attrs: { latex: math.value } });
+        const value = math.value ?? '';
+        result.push({
+          type: 'text',
+          text: value,
+          marks: [
+            ...(marksToTiptap(
+              ancestors.map((a) => ({
+                type: a.type as MarkContext['type'],
+                attrs: a.type === 'link' ? { href: (a as any).url } : undefined,
+              }))
+            ) ?? []),
+            { type: 'inlineMath', attrs: { latex: value } },
+          ],
+        });
         break;
       }
       default:
@@ -90,17 +105,40 @@ function convertInlineChildren(children: any[], ancestors: any[]): JSONContent[]
 function convertTable(node: Table): JSONContent {
   const tableContent: JSONContent[] = [];
   const rows = (node as any).children as any[];
-  for (const row of rows) {
+  rows.forEach((row, rowIndex) => {
     const cells = (row as any).children as any[];
     const rowContent: JSONContent[] = [];
     for (const cell of cells) {
-      rowContent.push({
-        type: 'tableCell',
-        content: cell.children.length > 0 ? convertBlockChildren(cell.children as any[]) : [{ type: 'paragraph' }],
-      });
+      // GFM 表首行即表头（remark-gfm 不区分 cell 类型，但 markdown 语法首行就是 header）
+      const cellType = rowIndex === 0 ? 'tableHeader' : 'tableCell';
+      const children = cell.children as any[];
+      const hasBlock = children.some((c) =>
+        [
+          'paragraph',
+          'heading',
+          'code',
+          'list',
+          'table',
+          'blockquote',
+          'math',
+          'thematicBreak',
+          'html',
+          'image',
+        ].includes(c.type)
+      );
+      let content: JSONContent[];
+      if (hasBlock) {
+        // 单元格含块级内容（罕见）时按块级转换
+        content = convertBlockChildren(children);
+      } else {
+        // 常规 GFM 单元格是纯内联内容（text/strong/emphasis/link 等），不能丢给块级转换器转成 rawMdx
+        const inline = convertInlineChildren(children, []);
+        content = inline.length > 0 ? [{ type: 'paragraph', content: inline }] : [{ type: 'paragraph' }];
+      }
+      rowContent.push({ type: cellType, content });
     }
     tableContent.push({ type: 'tableRow', content: rowContent });
-  }
+  });
   return { type: 'table', content: tableContent };
 }
 
@@ -119,10 +157,16 @@ function convertListItem(item: any): JSONContent {
 }
 
 function convertList(node: List): JSONContent {
+  const items = (node.children as any[]).map(convertListItem);
+  // GFM 任务列表 `- [x] 项` 的 listItem 带 checked，容器应为 taskList（与 Tiptap TaskList 一致）
+  const isTaskList = items.some((i) => i.type === 'taskItem');
+  if (isTaskList) {
+    return { type: 'taskList', content: items };
+  }
   return {
     type: node.ordered ? 'orderedList' : 'bulletList',
     attrs: node.ordered ? { start: node.start ?? 1 } : undefined,
-    content: (node.children as any[]).map(convertListItem),
+    content: items,
   };
 }
 
@@ -175,6 +219,7 @@ function convertBlockChildren(children: any[]): JSONContent[] {
         });
         break;
       }
+      // 注：inlineMath 是 Mark，行内公式由 convertInlineChildren 处理，块级不存在该节点。
       case 'image': {
         const img = child as { url: string; alt?: string; title?: string | null };
         result.push({

@@ -2,7 +2,7 @@
 // 全局响应式状态 (composable)
 // 主题跟随主站 .dark class，不自行管理 data-theme
 // =============================================================
-import { reactive, computed, watch } from 'vue';
+import { reactive, computed, watch, type ComputedRef } from 'vue';
 import * as store from './storage';
 import type { TreeholeSettings } from './storage';
 
@@ -10,7 +10,21 @@ interface AppState {
   settings: TreeholeSettings;
 }
 
-export function useApp() {
+export function useApp(): {
+  state: AppState;
+  isNight: ComputedRef<boolean>;
+  lowPerf: ComputedRef<boolean>;
+  highContrast: ComputedRef<boolean>;
+  toggleTheme: () => void;
+  setTheme: (t: 'day' | 'night') => void;
+  toggleMuted: () => void;
+  setFontScale: (s: 'small' | 'normal' | 'large') => void;
+  setAccent: (a: string, b: string) => void;
+  toggleLowPerf: () => void;
+  toggleHighContrast: () => void;
+  setRateLimit: (n: number) => void;
+  acceptPrivacy: () => void;
+} {
   const settings = store.getSettings();
   // 始终从主站 .dark class 同步初始主题，不被 localStorage 覆盖
   if (typeof document !== 'undefined') {

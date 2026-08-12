@@ -26,7 +26,17 @@ function readFallback(docId: string): unknown | null {
   return null;
 }
 
-export function useAutoSave(documentId: string, adapter: PersistenceAdapter, debounceMs = 1000) {
+export function useAutoSave(
+  documentId: string,
+  adapter: PersistenceAdapter,
+  debounceMs = 1000,
+  getFrontmatter?: () => Record<string, unknown>
+): {
+  saveStatus: SaveStatus;
+  triggerSave: (content: Record<string, unknown>) => void;
+  loadDraft: () => Promise<DocumentData | null>;
+  flushImmediate: (content: Record<string, unknown>) => void;
+} {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const hasUnsavedRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -67,7 +77,9 @@ export function useAutoSave(documentId: string, adapter: PersistenceAdapter, deb
         try {
           const json = content as { content?: Array<Record<string, unknown>> };
           const nodes = json.content ?? [];
-          const result = exportMdx(nodes, {});
+          // 使用文档的 frontmatter（导入时记录），避免自动保存丢失文档元信息
+          const frontmatter = getFrontmatter?.() ?? {};
+          const result = exportMdx(nodes, frontmatter);
           mdxContent = result.mdx;
         } catch (err) {
           console.warn('[autosave] MDX 导出失败:', err);
@@ -136,7 +148,7 @@ export function useAutoSave(documentId: string, adapter: PersistenceAdapter, deb
         setSaveStatus('error');
       }
     },
-    [documentId, adapter]
+    [documentId, adapter, getFrontmatter]
   );
 
   const triggerSave = useCallback(
@@ -169,7 +181,7 @@ export function useAutoSave(documentId: string, adapter: PersistenceAdapter, deb
   );
 
   useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+    const onBeforeUnload = (e: BeforeUnloadEvent): void => {
       if (hasUnsavedRef.current) {
         e.preventDefault();
       }

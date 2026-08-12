@@ -40,7 +40,7 @@ export const BlockMath = Node.create({
       dom.className = 'my-4 text-center select-none cursor-pointer';
       dom.contentEditable = 'false';
 
-      const render = (latex: string) => {
+      const render = (latex: string): void => {
         if (latex) {
           try {
             dom.innerHTML = katex.renderToString(latex, {

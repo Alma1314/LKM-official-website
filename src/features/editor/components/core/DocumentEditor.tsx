@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
+import type { ReactElement } from 'react';
 import FullscreenButton from '../toolbar/FullscreenButton';
 import CommentPanel from '../panels/CommentPanel';
 import { setupKeyboardAutoScroll } from '../../hooks/useMobileEditor';
@@ -32,17 +33,14 @@ interface DocumentEditorProps {
 }
 
 import { computeTextMetrics } from '../../engine/text-metrics';
+import { saveImageBlob } from '../../persistence/image-store';
 
-function readFileAsDataURL(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+/** 上传图片为 blob 引用，避免 base64 塞满 localStorage */
+function uploadImageToBlob(file: File): Promise<string> {
+  return saveImageBlob(file);
 }
 
-export default function DocumentEditor({ documentId, adapter }: DocumentEditorProps) {
+export default function DocumentEditor({ documentId, adapter }: DocumentEditorProps): ReactElement {
   const [docId, setDocId] = useState(documentId === 'new' ? '' : documentId);
   const {
     saveStatus,
@@ -116,14 +114,14 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           if (item.type.startsWith('image/')) {
             const file = item.getAsFile();
             if (file) {
-              readFileAsDataURL(file)
-                .then((dataUrl) => {
+              uploadImageToBlob(file)
+                .then((blobRef) => {
                   view.dispatch(
-                    view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: dataUrl }))
+                    view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: blobRef }))
                   );
                 })
                 .catch(() => {
-                  // 忽略文件读取错误（图片损坏等）
+                  // 忽略上传错误
                 });
               return true;
             }
@@ -167,14 +165,14 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         Array.from(files).forEach((file) => {
           if (file.type.startsWith('image/')) {
             handled = true;
-            readFileAsDataURL(file)
-              .then((dataUrl) => {
+            uploadImageToBlob(file)
+              .then((blobRef) => {
                 const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
                 const pos = coords?.pos ?? view.state.selection.from;
-                view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: dataUrl })));
+                view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: blobRef })));
               })
               .catch(() => {
-                // 忽略文件读取错误
+                // 忽略上传错误
               });
           }
         });
@@ -187,7 +185,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   useEffect(() => {
     if (!editor) return;
 
-    const handleTextInput = () => {
+    const handleTextInput = (): void => {
       const { $from } = editor.state.selection;
       const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
       const slashMatch = parentText.match(/\/(\w*)$/);
@@ -201,7 +199,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       }
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = (): void => {
       if (slashOpen) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { $from } = (editor.state as any).selection;

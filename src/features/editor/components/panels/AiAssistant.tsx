@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import type { ReactElement } from 'react';
 import type { Editor } from '@tiptap/core';
 import { setAiConfig, requestAiCompletion, validateAiEndpoint, PROMPT_TEMPLATES } from '../../stores/ai-client';
 
@@ -11,7 +12,7 @@ const OPERATIONS = Object.keys(PROMPT_TEMPLATES);
 
 const THIRD_PARTY_NOTICE = '注意：您的编辑器内容将被发送至第三方 AI 服务商处理。请勿在内容中包含个人敏感信息。';
 
-export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
+export default function AiAssistant({ editor, onClose }: AiAssistantProps): ReactElement {
   const [operation, setOperation] = useState('续写');
   const [customPrompt, setCustomPrompt] = useState('');
   const [result, setResult] = useState('');
@@ -76,21 +77,21 @@ export default function AiAssistant({ editor, onClose }: AiAssistantProps) {
     setLoading(false);
   }, [customPrompt, selectedText, operation, editor, apiEndpoint]);
 
-  const handleInsert = () => {
+  const handleInsert = (): void => {
     if (result) {
       editor.chain().focus().insertContent(result).run();
       setResult('');
     }
   };
 
-  const handleReplace = () => {
+  const handleReplace = (): void => {
     if (result) {
       editor.chain().focus().deleteSelection().insertContent(result).run();
       setResult('');
     }
   };
 
-  const handleSaveSettings = () => {
+  const handleSaveSettings = (): void => {
     // Validate endpoint before storing
     const validation = validateAiEndpoint(apiEndpoint);
     if (validation.isErr()) {

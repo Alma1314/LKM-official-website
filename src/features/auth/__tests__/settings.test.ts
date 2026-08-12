@@ -18,7 +18,14 @@ beforeEach(() => {
   document.body.innerHTML = '';
 });
 
-function makeUser(over: Record<string, unknown> = {}) {
+function makeUser(over: Record<string, unknown> = {}): {
+  id: number;
+  username: string;
+  account_level: string;
+  email: string | null;
+  phone: string | null;
+  [key: string]: unknown;
+} {
   return { id: 1, username: 'alma', account_level: 'normal', email: null, phone: null, ...over };
 }
 

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
 import type { Question, PracticeSession } from '~/features/starhope/types';
@@ -19,7 +19,32 @@ const elapsedSeconds = ref(0);
 let timerInterval: ReturnType<typeof setInterval> | null = null;
 const error = ref<string | null>(null);
 
-export function usePracticeStore() {
+export function usePracticeStore(): {
+  currentSession: Ref<PracticeSession | null>;
+  currentQuestion: Ref<Question | null>;
+  currentIndex: Ref<number>;
+  questions: Ref<Question[]>;
+  elapsedSeconds: Ref<number>;
+  error: Ref<string | null>;
+  totalQuestions: ComputedRef<number>;
+  progress: ComputedRef<number>;
+  answeredCount: ComputedRef<number>;
+  isLastQuestion: ComputedRef<boolean>;
+  isFirstQuestion: ComputedRef<boolean>;
+  startPractice: (config: PracticeConfig) => Promise<void>;
+  resumeSession: (sessionId: string) => Promise<void>;
+  setAnswer: (answer: string | string[]) => void;
+  goToQuestion: (index: number) => void;
+  nextQuestion: () => void;
+  prevQuestion: () => void;
+  submitExam: () => Promise<PracticeSession | undefined>;
+  pauseSession: () => Promise<void>;
+  getSessionResult: () => { total: number; correct: number; wrong: number; score: number } | null;
+  getPassed: () => boolean | null;
+  loadSessions: (type?: 'practice' | 'exam') => Promise<PracticeSession[]>;
+  loadWrongQuestions: () => Promise<Question[]>;
+  reset: () => void;
+} {
   const auth = useAuthStore();
 
   const totalQuestions = computed(() => questions.value.length);
@@ -28,14 +53,14 @@ export function usePracticeStore() {
   const isLastQuestion = computed(() => currentIndex.value >= totalQuestions.value - 1);
   const isFirstQuestion = computed(() => currentIndex.value <= 0);
 
-  function stopTimer() {
+  function stopTimer(): void {
     if (timerInterval) {
       clearInterval(timerInterval);
       timerInterval = null;
     }
   }
 
-  function startTimer() {
+  function startTimer(): void {
     stopTimer();
     timerInterval = setInterval(() => {
       elapsedSeconds.value++;
@@ -45,11 +70,11 @@ export function usePracticeStore() {
     }, 1000);
   }
 
-  function loadCurrentQuestion() {
+  function loadCurrentQuestion(): void {
     currentQuestion.value = questions.value[currentIndex.value] ?? null;
   }
 
-  async function startPractice(config: PracticeConfig) {
+  async function startPractice(config: PracticeConfig): Promise<void> {
     if (!auth.isLoggedIn.value) return;
     questions.value = (await db.questions.bulkGet(config.questionIds)) as Question[];
     questions.value = questions.value.filter(Boolean);
@@ -73,7 +98,7 @@ export function usePracticeStore() {
     startTimer();
   }
 
-  async function resumeSession(sessionId: string) {
+  async function resumeSession(sessionId: string): Promise<void> {
     const session = await db.practiceSessions.get(sessionId);
     if (!session) return;
     currentSession.value = session;
@@ -84,13 +109,13 @@ export function usePracticeStore() {
     startTimer();
   }
 
-  function setAnswer(answer: string | string[]) {
+  function setAnswer(answer: string | string[]): void {
     if (!currentSession.value || !currentQuestion.value) return;
     currentSession.value.answers[currentQuestion.value.id] = answer;
     if (currentSession.value.mode === 'realtime') gradeCurrent();
   }
 
-  function gradeCurrent() {
+  function gradeCurrent(): void {
     if (!currentSession.value || !currentQuestion.value) return;
     const userAnswer = currentSession.value.answers[currentQuestion.value.id];
     const correctAnswer = currentQuestion.value.answer;
@@ -106,26 +131,26 @@ export function usePracticeStore() {
     currentSession.value.results[currentQuestion.value.id] = { correct };
   }
 
-  function goToQuestion(index: number) {
+  function goToQuestion(index: number): void {
     if (index >= 0 && index < totalQuestions.value) {
       currentIndex.value = index;
       loadCurrentQuestion();
     }
   }
-  function nextQuestion() {
+  function nextQuestion(): void {
     if (!isLastQuestion.value) {
       currentIndex.value++;
       loadCurrentQuestion();
     }
   }
-  function prevQuestion() {
+  function prevQuestion(): void {
     if (!isFirstQuestion.value) {
       currentIndex.value--;
       loadCurrentQuestion();
     }
   }
 
-  async function submitExam() {
+  async function submitExam(): Promise<PracticeSession | undefined> {
     if (!currentSession.value) return;
     if (currentSession.value.mode === 'batch') {
       for (const q of questions.value) {
@@ -150,14 +175,14 @@ export function usePracticeStore() {
     return currentSession.value;
   }
 
-  async function pauseSession() {
+  async function pauseSession(): Promise<void> {
     if (!currentSession.value) return;
     currentSession.value.status = 'paused';
     await db.practiceSessions.put(currentSession.value);
     stopTimer();
   }
 
-  function getSessionResult() {
+  function getSessionResult(): { total: number; correct: number; wrong: number; score: number } | null {
     if (!currentSession.value?.results) return null;
     const results = currentSession.value.results;
     const total = Object.keys(results).length;
@@ -165,14 +190,14 @@ export function usePracticeStore() {
     return { total, correct, wrong: total - correct, score: total > 0 ? Math.round((correct / total) * 100) : 0 };
   }
 
-  function getPassed() {
+  function getPassed(): boolean | null {
     if (currentSession.value?.type !== 'exam') return null;
     const result = getSessionResult();
     if (!result || !currentSession.value?.passingGrade) return null;
     return result.score >= currentSession.value.passingGrade;
   }
 
-  async function loadSessions(type?: 'practice' | 'exam') {
+  async function loadSessions(type?: 'practice' | 'exam'): Promise<PracticeSession[]> {
     if (!auth.isLoggedIn.value) return [];
     let query = db.practiceSessions.where('userId').equals(auth.userId.value!);
     if (type) query = query.and((s: PracticeSession) => s.type === type);
@@ -194,7 +219,7 @@ export function usePracticeStore() {
     return qs.filter(Boolean);
   }
 
-  function reset() {
+  function reset(): void {
     stopTimer();
     currentSession.value = null;
     currentQuestion.value = null;

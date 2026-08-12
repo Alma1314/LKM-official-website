@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import type { ReactElement } from 'react';
 import type { Editor } from '@tiptap/core';
 import { handleExportPdf } from './ExportPdfButton';
 import { handleExportDocx } from './ExportDocxButton';
@@ -7,13 +8,13 @@ interface ExportMenuProps {
   editor: Editor;
 }
 
-export default function ExportMenu({ editor }: ExportMenuProps) {
+export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   // 点击外部关闭菜单
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const handler = (e: MouseEvent): void => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }

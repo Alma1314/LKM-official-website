@@ -1,4 +1,5 @@
 import type { Editor } from '@tiptap/core';
+import type { ReactElement } from 'react';
 
 export function handleExportDocx(editor: Editor): void {
   try {
@@ -38,7 +39,7 @@ interface ExportDocxButtonProps {
   editor: Editor;
 }
 
-export default function ExportDocxButton({ editor }: ExportDocxButtonProps) {
+export default function ExportDocxButton({ editor }: ExportDocxButtonProps): ReactElement {
   return (
     <button
       type="button"

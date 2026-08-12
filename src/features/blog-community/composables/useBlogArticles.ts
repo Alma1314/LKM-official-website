@@ -4,7 +4,13 @@ import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;
 
-export function useBlogArticles() {
+export function useBlogArticles(): {
+  articles: Ref<BlogArticle[]>;
+  seriesList: Ref<BlogSeriesInfo[]>;
+  loading: Ref<boolean>;
+  error: Ref<string | null>;
+  fetchAll: () => Promise<void>;
+} {
   const articles: Ref<BlogArticle[]> = ref([]);
   const seriesList: Ref<BlogSeriesInfo[]> = ref([]);
   const loading = ref(false);

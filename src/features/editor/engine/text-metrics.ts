@@ -19,7 +19,7 @@ const MAX_CACHE_SIZE = 20;
  */
 function extractText(doc: Record<string, unknown>): string {
   const parts: string[] = [];
-  const walk = (node: Record<string, unknown>) => {
+  const walk = (node: Record<string, unknown>): void => {
     if (node.type === 'text' && typeof node.text === 'string') {
       parts.push(node.text);
     }

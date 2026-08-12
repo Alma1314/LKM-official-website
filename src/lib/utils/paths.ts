@@ -3,7 +3,7 @@ import { trim } from './utils';
 
 // ── 内部 helpers ──
 
-export const trimSlash = (s: string) => trim(trim(s, '/'), '/');
+export const trimSlash = (s: string): string => trim(trim(s, '/'), '/');
 
 // ── 纯字符串拼接 ──
 

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
 import type { AiAgent, AiMessage } from '~/features/starhope/types';
@@ -10,12 +10,28 @@ const isGenerating = ref(false);
 const streamContent = ref('');
 const error = ref<string | null>(null);
 
-export function useAiStore() {
+export function useAiStore(): {
+  agents: Ref<AiAgent[]>;
+  currentAgentId: Ref<string | null>;
+  messages: Ref<AiMessage[]>;
+  isGenerating: Ref<boolean>;
+  streamContent: Ref<string>;
+  error: Ref<string | null>;
+  currentAgent: ComputedRef<AiAgent | null>;
+  loadAgents: () => Promise<void>;
+  createAgent: (data: Omit<AiAgent, 'id' | 'userId' | 'createdAt'>) => Promise<AiAgent | undefined>;
+  updateAgent: (id: string, data: Partial<AiAgent>) => Promise<void>;
+  deleteAgent: (id: string) => Promise<void>;
+  selectAgent: (id: string) => void;
+  loadMessages: () => Promise<void>;
+  sendMessage: (content: string, attachments?: { name: string; data: string; type: string }[]) => Promise<void>;
+  clearConversation: () => void;
+} {
   const auth = useAuthStore();
 
   const currentAgent = computed(() => agents.value.find((a) => a.id === currentAgentId.value) ?? null);
 
-  async function loadAgents() {
+  async function loadAgents(): Promise<void> {
     try {
       if (!auth.isLoggedIn.value) return;
       agents.value = await db.aiAgents.where('userId').equals(auth.userId.value!).toArray();
@@ -32,7 +48,7 @@ export function useAiStore() {
     }
   }
 
-  async function createDefaultAgent() {
+  async function createDefaultAgent(): Promise<AiAgent> {
     const agent: AiAgent = {
       id: crypto.randomUUID(),
       userId: String(auth.userId.value!),
@@ -50,7 +66,7 @@ export function useAiStore() {
     return agent;
   }
 
-  async function createAgent(data: Omit<AiAgent, 'id' | 'userId' | 'createdAt'>) {
+  async function createAgent(data: Omit<AiAgent, 'id' | 'userId' | 'createdAt'>): Promise<AiAgent | undefined> {
     try {
       const agent: AiAgent = {
         ...data,
@@ -66,12 +82,12 @@ export function useAiStore() {
     }
   }
 
-  async function updateAgent(id: string, data: Partial<AiAgent>) {
+  async function updateAgent(id: string, data: Partial<AiAgent>): Promise<void> {
     await db.aiAgents.update(id, data);
     await loadAgents();
   }
 
-  async function deleteAgent(id: string) {
+  async function deleteAgent(id: string): Promise<void> {
     await db.aiAgents.delete(id);
     await db.aiMessages.where('agentId').equals(id).delete();
     await loadAgents();
@@ -81,12 +97,12 @@ export function useAiStore() {
     }
   }
 
-  function selectAgent(id: string) {
+  function selectAgent(id: string): void {
     currentAgentId.value = id;
     loadMessages();
   }
 
-  async function loadMessages() {
+  async function loadMessages(): Promise<void> {
     if (!currentAgentId.value) {
       messages.value = [];
       return;
@@ -94,7 +110,10 @@ export function useAiStore() {
     messages.value = await db.aiMessages.where('agentId').equals(currentAgentId.value).sortBy('timestamp');
   }
 
-  async function sendMessage(content: string, attachments?: { name: string; data: string; type: string }[]) {
+  async function sendMessage(
+    content: string,
+    attachments?: { name: string; data: string; type: string }[]
+  ): Promise<void> {
     if (!currentAgentId.value || !auth.isLoggedIn.value) return;
     const userMsg: AiMessage = {
       id: crypto.randomUUID(),
@@ -142,7 +161,7 @@ export function useAiStore() {
     }
   }
 
-  function clearConversation() {
+  function clearConversation(): void {
     if (!currentAgentId.value) return;
     db.aiMessages.where('agentId').equals(currentAgentId.value).delete();
     messages.value = [];

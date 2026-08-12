@@ -1,7 +1,13 @@
-import { useState, useMemo, useRef, useEffect, memo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback, memo } from 'react';
 import type { ReactNode } from 'react';
 import type { Editor } from '@tiptap/core';
 import EditorToolbarButton from './EditorToolbarButton';
+import MathEditor from '../nodes/MathEditor';
+
+interface MathDraft {
+  isBlock: boolean;
+  initialLatex: string;
+}
 
 interface ToolbarItemDef {
   key: string;
@@ -659,7 +665,22 @@ interface EditorToolbarProps {
 
 export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
+  const [mathDraft, setMathDraft] = useState<MathDraft | null>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
+
+  // 公式按钮打开 MathEditor 模态，其余走 item.action
+  const dispatchAction = useCallback(
+    (item: ToolbarItemDef) => {
+      if (item.key === 'inlineMath') {
+        setMathDraft({ isBlock: false, initialLatex: 'x^2' });
+      } else if (item.key === 'blockMath') {
+        setMathDraft({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+      } else {
+        item.action(editor);
+      }
+    },
+    [editor]
+  );
 
   // 移动端：当前激活按钮变化时自动滚动到可视区域（rAF 防抖）
   useEffect(() => {
@@ -667,7 +688,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
     if (!bar || window.innerWidth >= 768) return;
     let raf: number | null = null;
     let pending = false;
-    const scrollActive = () => {
+    const scrollActive = (): void => {
       if (!pending) return;
       pending = false;
       const activeBtn = bar.querySelector('.is-active') as HTMLElement | null;
@@ -699,13 +720,13 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
                 label={item.label}
                 title={item.title}
                 isActive={item.isActive(editor)}
-                onClick={() => item.action(editor)}
+                onClick={() => dispatchAction(item)}
               />
             ))}
           </div>
         );
       }),
-    [editor]
+    [editor, dispatchAction]
   );
 
   const mobileContent = useMemo(
@@ -725,13 +746,13 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
                 label={item.label}
                 title={item.title}
                 isActive={item.isActive(editor)}
-                onClick={() => item.action(editor)}
+                onClick={() => dispatchAction(item)}
               />
             ))}
           </div>
         );
       }),
-    [editor]
+    [editor, dispatchAction]
   );
 
   const moreItems = useMemo(
@@ -747,13 +768,13 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
                 label={item.label}
                 title={item.title}
                 isActive={item.isActive(editor)}
-                onClick={() => item.action(editor)}
+                onClick={() => dispatchAction(item)}
               />
             ))}
           </div>
         </div>
       )),
-    [editor]
+    [editor, dispatchAction]
   );
 
   return (
@@ -791,6 +812,25 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           )}
         </div>
       </div>
+      {mathDraft && (
+        <MathEditor
+          initialLatex={mathDraft.initialLatex}
+          isBlock={mathDraft.isBlock}
+          onConfirm={(latex) => {
+            if (mathDraft.isBlock) {
+              editor.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
+            } else {
+              editor
+                .chain()
+                .focus()
+                .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
+                .run();
+            }
+            setMathDraft(null);
+          }}
+          onCancel={() => setMathDraft(null)}
+        />
+      )}
     </div>
   );
 });

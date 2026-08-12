@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 
 export type StarHopeRoute =
   'login' | 'dashboard' | 'bank' | 'practice' | 'exam' | 'wrong-book' | 'ai' | 'reader' | 'plugins' | 'settings';
@@ -23,8 +23,12 @@ const navItems: NavItem[] = [
 
 const currentRoute = ref<StarHopeRoute>('dashboard');
 
-export function useNavigationStore() {
-  function navigate(route: StarHopeRoute) {
+export function useNavigationStore(): {
+  navItems: NavItem[];
+  currentRoute: Ref<StarHopeRoute>;
+  navigate: (route: StarHopeRoute) => void;
+} {
+  function navigate(route: StarHopeRoute): void {
     currentRoute.value = route;
   }
 

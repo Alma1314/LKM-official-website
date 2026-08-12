@@ -14,7 +14,7 @@ import {
 import { siteConfig } from '~/lib/config';
 
 /* ---------- 点击外部关闭面板 ---------- */
-function setClickOutsideToClose(panel: string, ignores: string[]) {
+function setClickOutsideToClose(panel: string, ignores: string[]): void {
   document.addEventListener('click', (event) => {
     const panelDom = document.getElementById(panel);
     const tDom = event.target;
@@ -32,17 +32,17 @@ setClickOutsideToClose('display-setting', ['display-setting', 'display-settings-
 setClickOutsideToClose('search-panel', ['search-panel', 'search-bar', 'search-switch']);
 
 /* ---------- 主题与色相 ---------- */
-function loadTheme() {
+function loadTheme(): void {
   const theme = getStoredTheme();
   setTheme(theme);
 }
 
-function loadHue() {
+function loadHue(): void {
   setHue(getHue());
 }
 
 /* ---------- 自定义滚动条 ---------- */
-export function initCustomScrollbar() {
+export function initCustomScrollbar(): void {
   const bodyElement = document.querySelector('body');
   if (!bodyElement) return;
   OverlayScrollbars(
@@ -64,7 +64,7 @@ export function initCustomScrollbar() {
 
   const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
 
-  const processKatexElement = (element: HTMLElement) => {
+  const processKatexElement = (element: HTMLElement): void => {
     if (!element.parentNode) return;
     if (element.hasAttribute('data-scrollbar-initialized')) return;
 
@@ -109,7 +109,7 @@ export function initCustomScrollbar() {
 }
 
 /* ---------- Banner 显示 ---------- */
-export function showBanner() {
+export function showBanner(): void {
   if (!siteConfig.banner.enable) return;
   const banner = document.getElementById('banner');
   if (!banner) {
@@ -125,7 +125,7 @@ const toc = document.getElementById('toc-wrapper');
 const navbar = document.getElementById('navbar-wrapper');
 const bannerEnabled = !!document.getElementById('banner-wrapper');
 
-function handleScroll() {
+function handleScroll(): void {
   const bannerHeight = window.innerHeight * (BANNER_HEIGHT / 100);
 
   if (backToTopBtn) {
@@ -162,7 +162,7 @@ function handleScroll() {
 }
 window.addEventListener('scroll', handleScroll, { passive: true });
 
-function handleResize() {
+function handleResize(): void {
   let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
   offset = offset - (offset % 4);
   document.documentElement.style.setProperty('--banner-height-extend', `${offset}px`);
@@ -170,7 +170,7 @@ function handleResize() {
 window.addEventListener('resize', handleResize);
 
 /* ---------- 初始化 ---------- */
-function init() {
+function init(): void {
   loadTheme();
   loadHue();
   initCustomScrollbar();

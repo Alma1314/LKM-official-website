@@ -40,7 +40,7 @@ function createTimeoutSignal(timeoutMs: number): { signal: AbortSignal; clear: (
  */
 function mergeAbortSignals(signals: AbortSignal[]): AbortSignal {
   const controller = new AbortController();
-  const onAbort = () => {
+  const onAbort = (): void => {
     controller.abort();
     signals.forEach((s) => s.removeEventListener('abort', onAbort));
   };

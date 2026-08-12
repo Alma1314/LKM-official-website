@@ -8,7 +8,7 @@ import 'photoswipe/style.css';
 
 let lightbox: PhotoSwipeLightbox;
 
-function createPhotoSwipe() {
+function createPhotoSwipe(): void {
   lightbox = new PhotoSwipeLightbox({
     gallery: '.custom-md img, #post-cover img',
     pswpModule: () => import('photoswipe'),

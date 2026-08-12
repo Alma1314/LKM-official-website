@@ -59,15 +59,23 @@
   color: var(--rte-btn-color, #374151);
   cursor: pointer;
   transition:
-    background 0.15s,
-    color 0.15s;
+    transform var(--rte-dur-fast) var(--rte-ease-out),
+    background var(--rte-dur-fast) var(--rte-ease-out),
+    color var(--rte-dur-fast) var(--rte-ease-out);
   font-size: 0.875rem;
   line-height: 1;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.rte-toolbar-btn:hover {
-  background: var(--rte-btn-hover-bg, #e5e7eb);
-  color: var(--rte-btn-hover-color, #111827);
+.rte-toolbar-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rte-toolbar-btn:hover:not(:disabled) {
+    background: var(--rte-btn-hover-bg, #e5e7eb);
+    color: var(--rte-btn-hover-color, #111827);
+  }
 }
 
 .rte-toolbar-btn.is-active {
@@ -102,12 +110,21 @@
   font-size: 0.8125rem;
   line-height: 1.25rem;
   transition:
-    background 0.15s,
-    border-color 0.15s;
+    transform var(--rte-dur-fast) var(--rte-ease-out),
+    background var(--rte-dur-fast) var(--rte-ease-out),
+    border-color var(--rte-dur-fast) var(--rte-ease-out);
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
 }
 
-.rte-btn:hover {
-  background: var(--rte-btn-hover-bg, #f3f4f6);
+.rte-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rte-btn:hover:not(:disabled) {
+    background: var(--rte-btn-hover-bg, #f3f4f6);
+  }
 }
 
 .rte-btn--primary {
@@ -116,8 +133,10 @@
   border-color: var(--rte-primary, #2563eb);
 }
 
-.rte-btn--primary:hover {
-  background: var(--rte-primary-hover, #1d4ed8);
+@media (hover: hover) and (pointer: fine) {
+  .rte-btn--primary:hover:not(:disabled) {
+    background: var(--rte-primary-hover, #1d4ed8);
+  }
 }
 
 .rte-btn--ghost {
@@ -125,8 +144,10 @@
   border-color: transparent;
 }
 
-.rte-btn--ghost:hover {
-  background: var(--rte-btn-hover-bg, #f3f4f6);
+@media (hover: hover) and (pointer: fine) {
+  .rte-btn--ghost:hover {
+    background: var(--rte-btn-hover-bg, #f3f4f6);
+  }
 }
 
 .rte-btn--xs {
@@ -166,6 +187,7 @@
 
 /* ===== Bubble 菜单（浮动格式化菜单） ===== */
 .rte-bubble-menu {
+  position: absolute;
   display: flex;
   align-items: center;
   gap: 0.125rem;
@@ -174,6 +196,20 @@
   border-radius: 0.5rem;
   background: var(--rte-bubble-bg, #ffffff);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform-origin: center bottom;
+  /* 进入：从 0.95 + 透明入场，避免凭空出现 */
+  animation: rte-pop-in var(--rte-dur-menu) var(--rte-ease-out);
+}
+
+@keyframes rte-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ===== Slash 菜单 ===== */
@@ -187,6 +223,19 @@
   max-height: 320px;
   overflow-y: auto;
   min-width: 240px;
+  transform-origin: top center;
+  animation: rte-drop-in var(--rte-dur-menu) var(--rte-ease-out);
+}
+
+@keyframes rte-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .rte-slash-item {
@@ -196,13 +245,28 @@
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   font-size: 0.875rem;
-  transition: background 0.1s;
+  transition:
+    background var(--rte-dur-fast) var(--rte-ease-out),
+    transform var(--rte-dur-fast) var(--rte-ease-out);
   color: var(--rte-text, #374151);
+  border-radius: 0.375rem;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.rte-slash-item:hover,
 .rte-slash-item.is-selected {
   background: var(--rte-slash-hover, #f3f4f6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rte-slash-item:hover {
+    background: var(--rte-slash-hover, #f3f4f6);
+  }
+}
+
+@media (hover: none) {
+  .rte-slash-item:active {
+    transform: scale(0.98);
+  }
 }
 
 /* ===== 加载状态 ===== */
@@ -340,6 +404,16 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
+  animation: rte-fade-in var(--rte-dur-dialog) var(--rte-ease-out);
+}
+
+@keyframes rte-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .rte-dialog {
@@ -350,6 +424,20 @@
   min-width: 320px;
   max-width: 480px;
   width: 100%;
+  /* 模态框从中心缩放入场（非 trigger 锚定） */
+  transform-origin: center;
+  animation: rte-modal-in var(--rte-dur-dialog) var(--rte-ease-out);
+}
+
+@keyframes rte-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ===== 全屏按钮 ===== */
@@ -379,6 +467,8 @@
   border-radius: 0.5rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   padding: 0.5rem;
+  transform-origin: top center;
+  animation: rte-drop-in var(--rte-dur-menu) var(--rte-ease-out);
 }
 
 .rte-link-input {
@@ -410,10 +500,16 @@
   transition: background 0.1s;
 }
 
-.rte-table-cell:hover,
 .rte-table-cell.is-active {
   background: var(--rte-primary, #2563eb);
   border-color: var(--rte-primary, #2563eb);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rte-table-cell:hover {
+    background: var(--rte-primary, #2563eb);
+    border-color: var(--rte-primary, #2563eb);
+  }
 }
 
 /* ===== Callout / Alert 变体 ===== */
@@ -460,6 +556,8 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   min-width: 180px;
   padding: 0.25rem;
+  transform-origin: top right;
+  animation: rte-drop-in var(--rte-dur-menu) var(--rte-ease-out);
 }
 
 /* ===== 表单控件 ===== */
@@ -548,4 +646,28 @@
   --rte-slash-bg: #ffffff;
   --rte-slash-hover: #f3f4f6;
   --rte-prose-max-width: none;
+
+  /* 动效：统一的强缓动曲线与时长（enil-design 原则）
+     ease-out：UI 进入/反馈，响应快；长度 <300ms */
+  --rte-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --rte-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --rte-dur-fast: 160ms;
+  --rte-dur-menu: 200ms;
+  --rte-dur-dialog: 220ms;
+}
+
+/* ===== 减少动效偏好：保留淡入淡出/色彩，去掉位移/缩放 ===== */
+@media (prefers-reduced-motion: reduce) {
+  .rte-container *,
+  .rte-container *::before,
+  .rte-container *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rte-toolbar-btn:active:not(:disabled),
+  .rte-btn:active:not(:disabled),
+  .rte-slash-item:active {
+    transform: none;
+  }
 }

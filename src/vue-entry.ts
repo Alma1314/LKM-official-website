@@ -12,6 +12,6 @@ if (g.__VUE_PROD_DEVTOOLS__ === undefined) g.__VUE_PROD_DEVTOOLS__ = false;
 //  - 匿名信：TreeholeShell.vue（components/TreeholeShell.vue）
 //  - 后台登录：AdminLogin.vue 已改为不依赖 useMessage（用 NAlert 呈现成功态），无需 Provider
 
-export default (app: App) => {
+export default (app: App): void => {
   app.use(createPinia());
 };

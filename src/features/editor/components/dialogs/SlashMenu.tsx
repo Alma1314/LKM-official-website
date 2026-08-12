@@ -1,11 +1,25 @@
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import type { Editor } from '@tiptap/core';
+import TableInsertMenu from './TableInsertMenu';
+import MathEditor from '../nodes/MathEditor';
+
+interface MathDraft {
+  isBlock: boolean;
+  initialLatex: string;
+}
 
 interface SlashItem {
   label: string;
   description: string;
   icon: string;
   action: (editor: Editor) => void;
+  /** 特殊交互：选中后进入二级面板（例如表格尺寸选择）而非立即执行 */
+  submenu?: 'table' | 'inlineMath' | 'blockMath';
+}
+
+// 表格命令被组件内部引用做 submenu 识别；这里单独定义以保证引用稳定
+function tableCommand(editor: Editor): void {
+  editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
 }
 
 const ITEMS: SlashItem[] = [
@@ -76,32 +90,33 @@ const ITEMS: SlashItem[] = [
   },
   {
     label: '表格',
-    description: '插入 3×3 表格',
+    description: '插入表格',
     icon: '⊞',
-    action: (e) => {
-      e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
-    },
+    action: tableCommand,
+    submenu: 'table',
   },
   {
     label: '行内公式',
     description: '插入行内数学公式',
     icon: '𝑓',
     action: (e) => {
-      const latex = window.prompt('输入 LaTeX:') || 'x';
+      const latex = 'x^2';
       e.chain()
         .focus()
         .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
         .run();
     },
+    submenu: 'inlineMath',
   },
   {
     label: '块级公式',
     description: '插入块级数学公式',
     icon: '∑',
     action: (e) => {
-      const latex = window.prompt('输入 LaTeX:') || '\\sum_{i=1}^{n} x_i';
+      const latex = '\\sum_{i=1}^{n} x_i';
       e.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
     },
+    submenu: 'blockMath',
   },
   {
     label: 'Callout',
@@ -148,6 +163,8 @@ interface SlashMenuProps {
 
 const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, onSelect }: SlashMenuProps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [tableMode, setTableMode] = useState(false);
+  const [mathMode, setMathMode] = useState<MathDraft | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const q = query.toLowerCase();
@@ -171,8 +188,17 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (currentFiltered[selectedIdx]) {
-          currentFiltered[selectedIdx].action(editor);
-          onSelect();
+          const sub = currentFiltered[selectedIdx].submenu;
+          if (sub === 'table') {
+            setTableMode(true);
+          } else if (sub === 'inlineMath') {
+            setMathMode({ isBlock: false, initialLatex: 'x^2' });
+          } else if (sub === 'blockMath') {
+            setMathMode({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+          } else {
+            currentFiltered[selectedIdx].action(editor);
+            onSelect();
+          }
         }
       } else if (e.key === 'Escape') {
         onClose();
@@ -193,6 +219,50 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
 
   if (!position || filtered.length === 0) return null;
 
+  // 公式二级面板：MathEditor 模态框（插入行内/块级公式）
+  if (mathMode) {
+    return (
+      <MathEditor
+        initialLatex={mathMode.initialLatex}
+        isBlock={mathMode.isBlock}
+        onConfirm={(latex) => {
+          if (mathMode.isBlock) {
+            editor.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
+          } else {
+            editor
+              .chain()
+              .focus()
+              .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
+              .run();
+          }
+          setMathMode(null);
+          onSelect();
+          onClose();
+        }}
+        onCancel={() => setMathMode(null)}
+      />
+    );
+  }
+
+  // 表格二级面板：选择行列数
+  if (tableMode) {
+    return (
+      <div ref={menuRef} className="rte-slash-menu" style={{ top: position.top, left: position.left }}>
+        <TableInsertMenu
+          onInsert={(rows, cols) => {
+            editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run();
+            onSelect();
+            onClose();
+          }}
+          onClose={() => {
+            setTableMode(false);
+            onClose();
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div ref={menuRef} className="rte-slash-menu" style={{ top: position.top, left: position.left }}>
       <div className="p-1">
@@ -202,8 +272,17 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
             type="button"
             className={`rte-slash-item ${idx === selectedIdx ? 'is-selected' : ''}`}
             onClick={() => {
-              item.action(editor);
-              onSelect();
+              const sub = item.submenu;
+              if (sub === 'table') {
+                setTableMode(true);
+              } else if (sub === 'inlineMath') {
+                setMathMode({ isBlock: false, initialLatex: 'x^2' });
+              } else if (sub === 'blockMath') {
+                setMathMode({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+              } else {
+                item.action(editor);
+                onSelect();
+              }
             }}
           >
             <span className="w-6 text-center font-mono text-deep-text/60">{item.icon}</span>

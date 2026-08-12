@@ -1,3 +1,4 @@
+import type { AnyExtension } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from '@tiptap/extension-link';
@@ -16,7 +17,7 @@ import { Callout } from './callout';
 import { Figure } from './figure';
 import { CommentMark } from './comment-mark';
 
-export function getEditorExtensions(placeholder?: string) {
+export function getEditorExtensions(placeholder?: string): AnyExtension[] {
   return [
     StarterKit.configure({
       heading: { levels: [1, 2, 3, 4, 5, 6] },

@@ -27,6 +27,11 @@ export default [
         extraFileExtensions: ['.astro'],
       },
     },
+    // Astro 组件脚本（`<script is:inline>` 为纯 JS、普通 `<script>`/`<script lang="ts">`
+    // 由 Astro 原生处理）强制类型标注会把非法 TS/JS 打进页面（ts(8010)），故此处豁免。
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
   },
   {
     files: ['**/*.vue'],
@@ -83,6 +88,19 @@ export default [
       ],
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',
+    },
+  },
+  {
+    // 仅对纯 TypeScript 文件强制返回类型标注。
+    // 关键：`**/*.astro/**` 必须排除——Astro 的 `<script is:inline>`（纯 JS）与
+    // 部分 `<script>` 由 Astro 原生处理，若强制类型标注会把非法 TS 打进页面
+    // （`ts(8010): Type annotations can only be used in TypeScript files`）。
+    // astro-eslint-parser 会把 `<script>` 映射为匹配 `**/*.{ts,tsx}` 的虚拟路径，
+    // 因此必须用 ignores 显式排除 .astro 相关虚拟文件。
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['**/*.astro/**'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
     },
   },
   {

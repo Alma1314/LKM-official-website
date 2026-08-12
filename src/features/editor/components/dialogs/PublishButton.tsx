@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import type { ReactElement } from 'react';
 import type { DocumentData, PersistenceAdapter } from '../../engine/types';
 
 interface PublishButtonProps {
@@ -13,7 +14,7 @@ export default function PublishButton({
   adapter,
   onStatusChange,
   onOpenPublishDialog,
-}: PublishButtonProps) {
+}: PublishButtonProps): ReactElement | null {
   const [doc, setDoc] = useState<DocumentData | null>(null);
   const adapterRef = useRef(adapter);
   adapterRef.current = adapter;
@@ -29,11 +30,11 @@ export default function PublishButton({
 
   if (!doc) return null;
 
-  const handlePublish = () => {
+  const handlePublish = (): void => {
     onOpenPublishDialog();
   };
 
-  const handleUnpublish = () => {
+  const handleUnpublish = (): void => {
     const result = adapter.saveDocument({ ...doc, status: 'draft' });
     if (result instanceof Promise) {
       result.then((ok) => {
@@ -44,7 +45,7 @@ export default function PublishButton({
     }
   };
 
-  const handleArchive = () => {
+  const handleArchive = (): void => {
     if (!window.confirm('确定归档此文档？归档后不可编辑。')) return;
     const result = adapter.saveDocument({ ...doc, status: 'archived' });
     if (result instanceof Promise) {

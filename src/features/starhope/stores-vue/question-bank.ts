@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
 import type { Question, Folder } from '~/features/starhope/types';
@@ -11,7 +11,26 @@ const sortKey = ref<'createdAt' | 'difficulty' | 'type'>('createdAt');
 const searchQuery = ref('');
 const error = ref<string | null>(null);
 
-export function useQuestionBankStore() {
+export function useQuestionBankStore(): {
+  questions: Ref<Question[]>;
+  folders: Ref<Folder[]>;
+  currentFolderId: Ref<string | null>;
+  selectedIds: Ref<Set<string>>;
+  sortKey: Ref<'createdAt' | 'difficulty' | 'type'>;
+  searchQuery: Ref<string>;
+  error: Ref<string | null>;
+  filteredQuestions: ComputedRef<Question[]>;
+  loadQuestions: () => Promise<void>;
+  loadFolders: () => Promise<void>;
+  createQuestion: (data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => Promise<Question>;
+  updateQuestion: (id: string, data: Partial<Question>) => Promise<void>;
+  deleteQuestions: (ids: string[]) => Promise<void>;
+  createFolder: (name: string, parentId?: string | null) => Promise<Folder>;
+  deleteFolder: (id: string) => Promise<void>;
+  toggleSelect: (id: string) => void;
+  selectAll: () => void;
+  clearSelection: () => void;
+} {
   const auth = useAuthStore();
 
   const filteredQuestions = computed(() => {
@@ -25,7 +44,7 @@ export function useQuestionBankStore() {
     return list;
   });
 
-  async function loadQuestions() {
+  async function loadQuestions(): Promise<void> {
     if (!auth.isLoggedIn.value) return;
     let query = db.questions.where('userId').equals(auth.userId.value!);
     if (currentFolderId.value) query = query.and((q: Question) => q.folderId === currentFolderId.value);
@@ -33,12 +52,12 @@ export function useQuestionBankStore() {
     applySort();
   }
 
-  async function loadFolders() {
+  async function loadFolders(): Promise<void> {
     if (!auth.isLoggedIn.value) return;
     folders.value = await db.folders.where('userId').equals(auth.userId.value!).toArray();
   }
 
-  async function createQuestion(data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) {
+  async function createQuestion(data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Question> {
     const q: Question = {
       ...data,
       id: crypto.randomUUID(),
@@ -51,18 +70,18 @@ export function useQuestionBankStore() {
     return q;
   }
 
-  async function updateQuestion(id: string, data: Partial<Question>) {
+  async function updateQuestion(id: string, data: Partial<Question>): Promise<void> {
     await db.questions.update(id, { ...data, updatedAt: new Date().toISOString() });
     await loadQuestions();
   }
 
-  async function deleteQuestions(ids: string[]) {
+  async function deleteQuestions(ids: string[]): Promise<void> {
     await db.questions.bulkDelete(ids);
     selectedIds.value = new Set();
     await loadQuestions();
   }
 
-  async function createFolder(name: string, parentId: string | null = null) {
+  async function createFolder(name: string, parentId: string | null = null): Promise<Folder> {
     const folder: Folder = {
       id: crypto.randomUUID(),
       userId: String(auth.userId.value!),
@@ -75,7 +94,7 @@ export function useQuestionBankStore() {
     return folder;
   }
 
-  async function deleteFolder(id: string) {
+  async function deleteFolder(id: string): Promise<void> {
     await db.folders.where('parentId').equals(id).modify({ parentId: null });
     await db.questions.where('folderId').equals(id).modify({ folderId: undefined });
     await db.folders.delete(id);
@@ -83,21 +102,21 @@ export function useQuestionBankStore() {
     await loadQuestions();
   }
 
-  function toggleSelect(id: string) {
+  function toggleSelect(id: string): void {
     const next = new Set(selectedIds.value);
     if (next.has(id)) next.delete(id);
     else next.add(id);
     selectedIds.value = next;
   }
 
-  function selectAll() {
+  function selectAll(): void {
     selectedIds.value = new Set(filteredQuestions.value.map((q) => q.id));
   }
-  function clearSelection() {
+  function clearSelection(): void {
     selectedIds.value = new Set();
   }
 
-  function applySort() {
+  function applySort(): void {
     switch (sortKey.value) {
       case 'createdAt':
         questions.value.sort((a, b) => b.createdAt.localeCompare(a.createdAt));

@@ -20,12 +20,12 @@ export const useAuthStore = defineStore('auth', () => {
   const _pendingTempToken = ref<string | null>(null);
 
   // ── Token 辅助函数 ──
-  function setTokens(accessToken: string, refreshToken: string) {
+  function setTokens(accessToken: string, refreshToken: string): void {
     _token.value = accessToken;
     _refreshToken.value = refreshToken;
   }
 
-  function clearTokens() {
+  function clearTokens(): void {
     _token.value = null;
     _refreshToken.value = null;
   }
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 从 localStorage 恢复到内存 ──
-  function restoreFromStorage() {
+  function restoreFromStorage(): void {
     try {
       const saved = localStorage.getItem('lkm-auth-store');
       if (saved) {
@@ -104,7 +104,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 持久化到 localStorage ──
-  function persistToStorage() {
+  function persistToStorage(): void {
     if (_token.value) {
       localStorage.setItem(
         'lkm-auth-store',
@@ -242,7 +242,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 更新用户 ──
-  function updateUser(updated: UserInfo) {
+  function updateUser(updated: UserInfo): void {
     user.value = updated;
     if (_token.value) persistToStorage();
   }
@@ -259,7 +259,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── 重置状态 ──
-  function resetState() {
+  function resetState(): void {
     user.value = null;
     isLoggedIn.value = false;
     session.value = 'anonymous';

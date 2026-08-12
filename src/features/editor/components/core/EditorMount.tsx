@@ -1,4 +1,5 @@
 import { Component, useEffect, useState, lazy, Suspense } from 'react';
+import type { ReactElement } from 'react';
 import type { PersistenceAdapter } from '../../engine/types';
 import '../../styles/editor.css';
 
@@ -34,17 +35,17 @@ class EditorErrorBoundary extends Component<Props, State> {
     return { error };
   }
 
-  handleRetry = () => {
+  handleRetry = (): void => {
     const { retries } = this.state;
     if (retries >= MAX_RETRIES) return;
     this.setState({ error: null, retries: retries + 1, errorVersion: retries + 1 });
   };
 
-  handleRefresh = () => {
+  handleRefresh = (): void => {
     window.location.reload();
   };
 
-  render() {
+  render(): ReactElement {
     const { docId, adapter } = this.props;
     const { error, retries, errorVersion } = this.state;
 
@@ -148,7 +149,7 @@ export interface EditorMountProps {
   adapter: PersistenceAdapter;
 }
 
-export default function EditorMount({ adapter }: EditorMountProps) {
+export default function EditorMount({ adapter }: EditorMountProps): ReactElement {
   const [docId, setDocId] = useState<string | null>(null);
 
   useEffect(() => {

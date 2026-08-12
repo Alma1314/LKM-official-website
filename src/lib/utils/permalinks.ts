@@ -27,7 +27,7 @@ export const getBlogPermalink = (): string => buildPermalink(BLOG_BASE, { type: 
 
 export const getAsset = (path: string): string => buildPermalink(path, { type: 'asset' });
 
-export const cleanSlug = (text = '') =>
+export const cleanSlug = (text = ''): string =>
   trimSlash(text)
     .split('/')
     .map((slug) => slugify(slug))

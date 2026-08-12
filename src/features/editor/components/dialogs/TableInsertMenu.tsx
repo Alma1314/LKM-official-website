@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { ReactElement } from 'react';
 
 interface TableInsertMenuProps {
   onInsert: (rows: number, cols: number) => void;
@@ -8,11 +9,11 @@ interface TableInsertMenuProps {
 const MAX_ROWS = 8;
 const MAX_COLS = 8;
 
-function clamp(v: number, min: number, max: number) {
+function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
 
-export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuProps) {
+export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuProps): ReactElement {
   const [hoverRow, setHoverRow] = useState(0);
   const [hoverCol, setHoverCol] = useState(0);
   const [focusRow, setFocusRow] = useState(0);

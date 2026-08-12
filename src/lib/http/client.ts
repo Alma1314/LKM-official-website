@@ -138,7 +138,7 @@ function getInstance(): AxiosInstance {
     let isRefreshing = false;
     let failedQueue: Array<{ resolve: (v: unknown) => void; reject: (e: unknown) => void }> = [];
 
-    function processQueue(error: unknown, token: string | null = null) {
+    function processQueue(error: unknown, token: string | null = null): void {
       failedQueue.forEach((p) => {
         if (error) p.reject(error);
         else p.resolve(token);

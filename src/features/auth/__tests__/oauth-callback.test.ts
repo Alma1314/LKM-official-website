@@ -5,7 +5,7 @@ import { setActivePinia, createPinia } from 'pinia';
 import OAuthCallback from '../components/login/OAuthCallback.vue';
 import { useAuthStore } from '~/stores/auth';
 
-function setHash(hash: string) {
+function setHash(hash: string): void {
   // happy-dom 中直接改写 location.hash 会同步更新 href；无 hash 时置空
   window.location.hash = hash;
 }
