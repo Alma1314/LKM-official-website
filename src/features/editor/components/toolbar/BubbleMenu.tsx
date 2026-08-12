@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef, memo } from 'react';
 import type { Editor } from '@tiptap/core';
+import LinkEditPopover from '../dialogs/LinkEditPopover';
 
 interface BubbleMenuWrapperProps {
   editor: Editor;
@@ -8,6 +9,7 @@ interface BubbleMenuWrapperProps {
 
 const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapperProps) {
   const [show, setShow] = useState(false);
+  const [linkOpen, setLinkOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -68,7 +70,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
     };
   }, [editor, update]);
 
-  if (!show) return null;
+  // 链接浮层打开时需保留组件挂载（浮层依赖浏览器事件、点击外部关闭），此时不显示气泡按钮本体
+  if (!show && !linkOpen) return null;
 
   return (
     <div className="rte-bubble-menu" style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}>
@@ -122,21 +125,23 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       >
         {'</>'}
       </button>
-      <button
-        type="button"
-        className={`rte-toolbar-btn ${editor.isActive('link') ? 'is-active' : ''}`}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          if (editor.isActive('link')) {
-            editor.chain().focus().unsetLink().run();
-          } else {
-            const url = window.prompt('输入链接:');
-            if (url) editor.chain().focus().setLink({ href: url }).run();
-          }
-        }}
-      >
-        🔗
-      </button>
+      <div className="relative">
+        <button
+          type="button"
+          className={`rte-toolbar-btn ${editor.isActive('link') ? 'is-active' : ''}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setLinkOpen(true);
+          }}
+        >
+          🔗
+        </button>
+        {linkOpen && (
+          <div className="absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1">
+            <LinkEditPopover editor={editor} onClose={() => setLinkOpen(false)} />
+          </div>
+        )}
+      </div>
       {onComment && (
         <button
           type="button"

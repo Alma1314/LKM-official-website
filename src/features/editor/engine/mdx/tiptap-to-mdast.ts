@@ -84,8 +84,10 @@ function convertBlocks(nodes: JSONContent[]): RootContent[] {
       }
       case 'blockMath':
         result.push({
-          type: 'math',
-          value: (node.attrs as Record<string, string> | undefined)?.latex ?? '',
+          // 块级公式：同样用 html 节点直接输出 $$...$$，绕开 mdast-util-math 序列化缺失
+          // compilePattern 的兼容问题（见行内公式处说明）。
+          type: 'html',
+          value: `$$\n${(node.attrs as Record<string, string> | undefined)?.latex ?? ''}\n$$`,
         } as RootContent);
         break;
       case 'image': {
@@ -213,11 +215,26 @@ function convertInline(nodes: JSONContent[]): PhrasingContent[] {
     if (!node.type) continue;
 
     if (node.type === 'text') {
+      const marks = node.marks ?? [];
+
+      // inlineMath 是 Mark：当文本带该 mark 时整段作为行内公式导出（$...$）。
+      // 用 html 节点直接输出 `$latex$`，绕开 mdast-util-math 的序列化（依赖更高版本
+      // mdast-util-to-markdown 的 compilePattern，当前依赖树里缺失），remark-stringify
+      // 会原样输出 html 节点值，remark-math 解析时能正确识别 $...$。
+      const inlineMathMark = marks.find((m) => m.type === 'inlineMath');
+      if (inlineMathMark) {
+        const latex = (inlineMathMark.attrs as Record<string, string> | undefined)?.latex ?? node.text ?? '';
+        result.push({
+          type: 'html',
+          value: `$${latex}$`,
+        } as unknown as PhrasingContent);
+        continue;
+      }
+
       let current: PhrasingContent[] = [{ type: 'text', value: node.text ?? '' } as PhrasingContent];
 
       // 从内到外应用标记（Tiptap 中最后一个标记是最内层，MDAST 中最外层）
       // 需要按顺序应用：越早的阶段包裹越深
-      const marks = node.marks ?? [];
       // MDAST 嵌套顺序：link > strong > emphasis > delete
       // Tiptap 标记顺序不保证嵌套，因此按固定优先级应用：
       const priority = ['code', 'strike', 'italic', 'bold', 'link'];

@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import katex from 'katex';
 
 interface MathEditorProps {
   initialLatex: string;
@@ -9,10 +10,28 @@ interface MathEditorProps {
 
 export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel }: MathEditorProps) {
   const [latex, setLatex] = useState(initialLatex);
+  const previewRef = useRef<HTMLSpanElement>(null);
 
   const handleConfirm = useCallback(() => {
     onConfirm(latex || initialLatex);
   }, [latex, initialLatex, onConfirm]);
+
+  // 实时渲染 KaTeX 预览
+  useEffect(() => {
+    const el = previewRef.current;
+    if (!el) return;
+    const tex = latex.trim();
+    if (!tex) {
+      el.innerHTML = '<span class="text-deep-text/30 text-sm italic">输入公式后这里预览</span>';
+      return;
+    }
+    try {
+      el.innerHTML = katex.renderToString(tex, { displayMode: isBlock, throwOnError: false });
+    } catch (err) {
+      console.warn('[MathEditor] KaTeX 渲染失败:', err);
+      el.innerHTML = '<span class="text-error text-sm">LaTeX 语法错误</span>';
+    }
+  }, [latex, isBlock]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -42,11 +61,9 @@ export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel 
           <p className="text-xs text-deep-text/50 mt-1">Ctrl+Enter 确认</p>
         </div>
 
-        {isBlock && latex && (
-          <div className="mb-4 p-4 bg-page-bg rounded-lg flex items-center justify-center min-h-[60px]">
-            <span id="math-preview" className="text-lg" />
-          </div>
-        )}
+        <div className="mb-4 p-4 bg-page-bg rounded-lg flex items-center justify-center min-h-[60px]">
+          <span ref={previewRef} className="text-lg" />
+        </div>
 
         <div className="flex justify-end gap-2">
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--sm" onClick={onCancel}>

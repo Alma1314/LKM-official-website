@@ -234,13 +234,7 @@ pnpm dev
 
 ## 嘿！你需要基本熟悉一下目前的网站的基本架构！
 
-这里举两个例子
-
-例如要编写团队信息，具体的位置在
-
-`LKM-official-website\src\features\team\data\members.ts`
-
-中。
+这里举个例子
 
 如要编写起始页的信息，具体的位置在
 
@@ -586,58 +580,6 @@ pnpm run build   # 输出到 ./dist/
 ```
 
 推送 `main` 分支后，GitHub Actions 自动构建部署。
-
----
-
-## 团队成员
-
-团队数据维护在 `src/features/team/data/members.ts`，按部门分组导出。`src/pages/team.astro` 通过 `MemberCard` / `DepartmentSection` 组件渲染，头像存放于 `src/assets/images/member-optimized/`。
-
-### 添加新成员
-
-**第 1 步：准备头像**
-
-将原始头像图片（jpg/png）放入 `src/assets/images/member/` 目录，然后运行优化脚本：
-
-```bash
-node scripts/optimize-avatars.mjs
-```
-
-脚本会将所有原始图片缩放至 192px 并转换为 WebP，输出到 `member-optimized/` 目录。
-
-**第 2 步：编辑数据**
-
-在 `src/features/team/data/members.ts` 中找到对应的部门数组，按格式添加：
-
-```ts
-{ name: '七月X', avatarKey: '文件名.jpg', desc: '简短描述', dream: '梦想：xxx', quote: '—— 格言' }
-```
-
-字段说明：
-
-| 字段        | 必填 | 说明                                                                   |
-| :---------- | :--- | :--------------------------------------------------------------------- |
-| `name`      | 是   | 显示名称                                                               |
-| `avatarKey` | 否   | `member-optimized/` 下的文件名（写原始扩展名，运行时自动映射 `.webp`） |
-| `role`      | 否   | 职务标签（卡片上显示为彩色小字）                                       |
-| `desc`      | 否   | 简短描述                                                               |
-| `dream`     | 否   | 梦想/目标（紫色斜体）                                                  |
-| `quote`     | 否   | 一句话格言                                                             |
-
-**部门对应关系**（`src/features/team/data/members.ts`）：
-
-| 页面     | 部门            | 导出数组                              |
-| :------- | :-------------- | :------------------------------------ |
-| 管理团队 | 创始人          | `founderMembers`                      |
-|          | 总务部          | `generalMembers`                      |
-|          | 群务部          | `affairsSubGroups`（按子群组分组）    |
-|          | 活动策划部      | `eventsMembers`                       |
-|          | 新闻办          | `newsMembers` + `newsSubGroups`       |
-|          | 顾问团          | `advisorMembers`                      |
-|          | 专业委员会      | `professionalSubGroups`（按学科分组） |
-|          | 技术委员会      | `techMembers`                         |
-|          | 已离开成员      | `alumniMembers`                       |
-| 项目团队 | 教材/科普项目组 | `projectSubGroups`                    |
 
 ---
 

@@ -6,10 +6,16 @@ import type { PersistenceAdapter } from '../engine/types';
 import type { ImportResult } from '../engine/mdx/import-mdx';
 
 export function useEditorPersistence(docId: string, adapter: PersistenceAdapter) {
-  const { saveStatus, triggerSave, loadDraft, flushImmediate } = useAutoSave(docId, adapter, 1000);
+  const frontmatterRef = useRef<Record<string, unknown>>({});
+  const { saveStatus, triggerSave, loadDraft, flushImmediate } = useAutoSave(
+    docId,
+    adapter,
+    1000,
+    // 自动保存时带上当前文档 frontmatter，避免保存后元信息丢失
+    () => frontmatterRef.current
+  );
 
   const sourceMdxRef = useRef('');
-  const frontmatterRef = useRef<Record<string, unknown>>({});
   const lastValidJsonRef = useRef<Record<string, unknown> | null>(null);
 
   const importMdxContent = async (mdx: string): Promise<ImportResult> => {
