@@ -8,7 +8,12 @@ interface InlineInputProps {
   onCancel: () => void;
 }
 
-export default function InlineInput({ placeholder, defaultValue = '', onConfirm, onCancel }: InlineInputProps): ReactElement {
+export default function InlineInput({
+  placeholder,
+  defaultValue = '',
+  onConfirm,
+  onCancel,
+}: InlineInputProps): ReactElement {
   const [value, setValue] = useState(defaultValue);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);

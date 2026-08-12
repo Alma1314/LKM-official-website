@@ -82,7 +82,15 @@ function convertInlineChildren(children: any[], ancestors: any[]): JSONContent[]
         result.push({
           type: 'text',
           text: value,
-          marks: [...(marksToTiptap(ancestors.map((a) => ({ type: a.type as MarkContext['type'], attrs: a.type === 'link' ? { href: (a as any).url } : undefined }))) ?? []), { type: 'inlineMath', attrs: { latex: value } }],
+          marks: [
+            ...(marksToTiptap(
+              ancestors.map((a) => ({
+                type: a.type as MarkContext['type'],
+                attrs: a.type === 'link' ? { href: (a as any).url } : undefined,
+              }))
+            ) ?? []),
+            { type: 'inlineMath', attrs: { latex: value } },
+          ],
         });
         break;
       }
@@ -105,7 +113,18 @@ function convertTable(node: Table): JSONContent {
       const cellType = rowIndex === 0 ? 'tableHeader' : 'tableCell';
       const children = cell.children as any[];
       const hasBlock = children.some((c) =>
-        ['paragraph', 'heading', 'code', 'list', 'table', 'blockquote', 'math', 'thematicBreak', 'html', 'image'].includes(c.type)
+        [
+          'paragraph',
+          'heading',
+          'code',
+          'list',
+          'table',
+          'blockquote',
+          'math',
+          'thematicBreak',
+          'html',
+          'image',
+        ].includes(c.type)
       );
       let content: JSONContent[];
       if (hasBlock) {

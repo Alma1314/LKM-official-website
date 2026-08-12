@@ -39,9 +39,7 @@ export function usePracticeStore(): {
   prevQuestion: () => void;
   submitExam: () => Promise<PracticeSession | undefined>;
   pauseSession: () => Promise<void>;
-  getSessionResult: () =>
-    | { total: number; correct: number; wrong: number; score: number }
-    | null;
+  getSessionResult: () => { total: number; correct: number; wrong: number; score: number } | null;
   getPassed: () => boolean | null;
   loadSessions: (type?: 'practice' | 'exam') => Promise<PracticeSession[]>;
   loadWrongQuestions: () => Promise<Question[]>;
@@ -184,9 +182,7 @@ export function usePracticeStore(): {
     stopTimer();
   }
 
-  function getSessionResult():
-    | { total: number; correct: number; wrong: number; score: number }
-    | null {
+  function getSessionResult(): { total: number; correct: number; wrong: number; score: number } | null {
     if (!currentSession.value?.results) return null;
     const results = currentSession.value.results;
     const total = Object.keys(results).length;

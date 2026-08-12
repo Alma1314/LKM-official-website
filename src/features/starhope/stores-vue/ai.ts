@@ -24,10 +24,7 @@ export function useAiStore(): {
   deleteAgent: (id: string) => Promise<void>;
   selectAgent: (id: string) => void;
   loadMessages: () => Promise<void>;
-  sendMessage: (
-    content: string,
-    attachments?: { name: string; data: string; type: string }[]
-  ) => Promise<void>;
+  sendMessage: (content: string, attachments?: { name: string; data: string; type: string }[]) => Promise<void>;
   clearConversation: () => void;
 } {
   const auth = useAuthStore();

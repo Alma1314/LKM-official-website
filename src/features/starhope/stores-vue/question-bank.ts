@@ -22,9 +22,7 @@ export function useQuestionBankStore(): {
   filteredQuestions: ComputedRef<Question[]>;
   loadQuestions: () => Promise<void>;
   loadFolders: () => Promise<void>;
-  createQuestion: (
-    data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
-  ) => Promise<Question>;
+  createQuestion: (data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => Promise<Question>;
   updateQuestion: (id: string, data: Partial<Question>) => Promise<void>;
   deleteQuestions: (ids: string[]) => Promise<void>;
   createFolder: (name: string, parentId?: string | null) => Promise<Folder>;
@@ -59,9 +57,7 @@ export function useQuestionBankStore(): {
     folders.value = await db.folders.where('userId').equals(auth.userId.value!).toArray();
   }
 
-  async function createQuestion(
-    data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
-  ): Promise<Question> {
+  async function createQuestion(data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Question> {
     const q: Question = {
       ...data,
       id: crypto.randomUUID(),

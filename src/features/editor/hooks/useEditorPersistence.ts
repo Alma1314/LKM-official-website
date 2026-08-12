@@ -14,10 +14,7 @@ export function useEditorPersistence(
   loadDraft: () => Promise<DocumentData | null>;
   flushImmediate: (content: Record<string, unknown>) => void;
   importMdxContent: (mdx: string) => Promise<ImportResult>;
-  exportMdxContent: (
-    json: Record<string, unknown>,
-    frontmatter?: Record<string, unknown>
-  ) => Promise<string>;
+  exportMdxContent: (json: Record<string, unknown>, frontmatter?: Record<string, unknown>) => Promise<string>;
   sourceMdxRef: RefObject<string>;
   frontmatterRef: RefObject<Record<string, unknown>>;
   lastValidJsonRef: RefObject<Record<string, unknown> | null>;

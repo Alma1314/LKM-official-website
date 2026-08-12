@@ -44,7 +44,6 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     void document.querySelectorAll('[data-toc-link]') as NodeListOf<HTMLElement> | undefined;
     const headings = document.querySelectorAll('article h2, article h3');
 
-
     let activeLink: Element | null = null;
 
     const observer = new IntersectionObserver((entries) => {
