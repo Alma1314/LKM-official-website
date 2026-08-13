@@ -1,27 +1,27 @@
 #!/usr/bin/env node
 /**
- * SEO 产物检查脚本
- * 验证首页和关键页面的基本 SEO 元素。
+ * SEO 检查脚本（server 模式）
+ * 启动/复用 astro preview，对关键页面与产物做基本 SEO 检查。
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { withPreview } from './lib/start-preview.mjs';
 
-const DIST = resolve(import.meta.dirname, '..', 'dist');
+const DIST = resolve(import.meta.dirname, '..', 'dist', 'client');
 
 function contains(pattern, content) {
   if (pattern instanceof RegExp) return pattern.test(content);
   return content.includes(pattern);
 }
 
-function checkHtml(path, checks) {
-  const file = resolve(DIST, path);
-  if (!existsSync(file)) {
-    console.error(`  FAIL: ${path} 文件不存在`);
+async function checkPage(base, path, checks) {
+  const res = await fetch(base + path);
+  if (res.status >= 400) {
+    console.error(`  FAIL ${path}: HTTP ${res.status}`);
     return 1;
   }
-  const content = readFileSync(file, 'utf-8');
+  const content = await res.text();
   let errors = 0;
-
   for (const [label, pattern] of Object.entries(checks)) {
     if (!contains(pattern, content)) {
       console.error(`  FAIL ${path}: 缺少 ${label}`);
@@ -31,73 +31,47 @@ function checkHtml(path, checks) {
   return errors;
 }
 
-function main() {
-  if (!existsSync(DIST)) {
+async function main() {
+  if (!existsSync(resolve(import.meta.dirname, '..', 'dist'))) {
     console.error('ERROR: dist/ 目录不存在，请先运行 pnpm build');
     process.exit(1);
   }
 
   let errors = 0;
+  await withPreview(async (base) => {
+    errors += await checkPage(base, '/', {
+      '<title>': /<title>[^<]+<\/title>/,
+      canonical: /rel="canonical"/,
+      'meta description': /name="description"/,
+      '<h1>': /<h1[^>]*>/,
+      '<main>': /<main[^>]*>/,
+    });
 
-  errors += checkHtml('index.html', {
-    '<title>': /<title>[^<]+<\/title>/,
-    canonical: /rel="canonical"/,
-    'meta description': /name="description"/,
-    'meta robots': /name="robots"/,
-    '<h1>': /<h1[^>]*>/,
-    '<main>': /<main[^>]*>/,
-  });
-
-  errors += checkHtml('404.html', {
-    '<title>': /<title>[^<]+<\/title>/,
-  });
-
-  // robots.txt
-  const robotsFile = resolve(DIST, 'robots.txt');
-  if (existsSync(robotsFile)) {
-    const robotsContent = readFileSync(robotsFile, 'utf-8');
+    // robots.txt
+    const robotsRes = await fetch(base + '/robots.txt');
+    const robotsContent = robotsRes.ok ? await robotsRes.text() : '';
     if (!robotsContent.includes('Sitemap') && !robotsContent.includes('sitemap')) {
-      console.error('  FAIL: robots.txt 缺少 Sitemap 声明');
+      console.error('  FAIL: robots.txt 缺失或缺少 Sitemap 声明');
       errors++;
     }
-  } else {
-    console.error('  FAIL: 缺少 robots.txt');
-    errors++;
-  }
 
-  // sitemap
-  const sitemapFile = resolve(DIST, 'sitemap-index.xml');
-  if (!existsSync(sitemapFile)) {
-    console.error('  FAIL: 缺少 sitemap-index.xml');
-    errors++;
-  } else {
-    const sitemapRaw = readFileSync(sitemapFile, 'utf-8');
-    const urls = [...sitemapRaw.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-    console.log(`  Sitemap 包含 ${urls.length} 个条目`);
-  }
-
-  // demo 页面应有 noindex
-  const demoPages = [
-    'user/qiyue-hua/index.html',
-    'user/qiyue-moran/index.html',
-    'user/qiyue-o/index.html',
-    'user/qiyue-youzhi/index.html',
-    'user/qiyue-yuli/index.html',
-  ];
-  for (const dp of demoPages) {
-    const file = resolve(DIST, dp);
-    if (existsSync(file)) {
-      const content = readFileSync(file, 'utf-8');
-      if (!content.includes('noindex') && !content.includes('noindex')) {
-        console.error(`  WARN: mock 用户页 ${dp} 缺少 noindex (待阶段6修复)`);
-      }
+    // sitemap 静态产物
+    const sitemapFile = resolve(DIST, 'sitemap-index.xml');
+    if (!existsSync(sitemapFile)) {
+      console.error('  FAIL: 缺少 sitemap-index.xml');
+      errors++;
+    } else {
+      const sitemapRaw = readFileSync(sitemapFile, 'utf-8');
+      const urls = [...sitemapRaw.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+      console.log(`  Sitemap 包含 ${urls.length} 个条目`);
     }
-  }
+  });
 
   console.log(`\nSEO 检查完成: ${errors} 错误`);
-  if (errors > 0) {
-    process.exit(1);
-  }
+  process.exit(errors > 0 ? 1 : 0);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

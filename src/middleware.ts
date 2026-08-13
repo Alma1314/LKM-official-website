@@ -3,28 +3,56 @@
 // SSR 时 Astro 服务端拦截 /api/* 和 /graphql 请求，
 // 转发到由 API_URL 指向的真实后端，
 // 并转发客户端 Cookie 实现同域认证。
+//
+// 对所有页面请求建立 SSR 请求上下文（ssr-context.ts），
+// 供服务端数据访问层转发 Cookie，实现 B 类认证页面 SSR 识别用户。
 
 import { defineMiddleware } from 'astro:middleware';
+import { runWithRequest } from '~/lib/ssr-context.node';
 
 const API_TARGET = import.meta.env.API_URL ?? '';
 
+// hop-by-hop 头与 body 相关头不能原样转发给 fetch，
+// 否则与重写后的 body / fetch 自身的压缩协商冲突。
+const HOP_BY_HOP_HEADERS = new Set([
+  'host',
+  'connection',
+  'keep-alive',
+  'transfer-encoding',
+  'content-length',
+  'upgrade',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'te',
+  'trailer',
+]);
+
 export const onRequest = defineMiddleware(async (context, next) => {
-  // 代理 /api/ 和 /graphql 路径
   const { pathname } = context.url;
-  if (!pathname.startsWith('/api/') && !pathname.startsWith('/graphql')) {
-    return next();
+  const isProxyPath = pathname.startsWith('/api/') || pathname.startsWith('/graphql');
+
+  // 非代理路径：建立 SSR 请求上下文，供页面 SSR 数据获取转发 Cookie
+  if (!isProxyPath) {
+    return runWithRequest(context.request.headers, () => next());
   }
 
   try {
+    if (!API_TARGET) {
+      return new Response(
+        JSON.stringify({ error: { code: 'PROXY_NOT_CONFIGURED', message: 'API_URL 未配置，无法代理后端请求' } }),
+        {
+          status: 502,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     const targetUrl = new URL(context.url.pathname + context.url.search, API_TARGET);
 
-    // 转发客户端请求头（Cookie、Authorization 等）
+    // 转发客户端原始请求头（Cookie、Authorization 等），跳过 hop-by-hop 头
     const headers = new Headers();
-
-    // 复制客户端原始请求头
     for (const [key, value] of context.request.headers) {
-      // 跳过 host 头，使用目标地址的 host
-      if (key === 'host') continue;
+      if (HOP_BY_HOP_HEADERS.has(key.toLowerCase())) continue;
       headers.set(key, value);
     }
 

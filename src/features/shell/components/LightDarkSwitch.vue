@@ -58,7 +58,7 @@ function hidePanel() {
         <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem]" />
       </div>
       <div class="absolute transition-opacity duration-200" :class="{ 'opacity-0': mode !== AUTO_MODE }">
-        <Icon icon="material-symbols:radio-button-partial-outline" class="text-[1.25rem]" />
+        <Icon icon="material-symbols:radio-button-partial" class="text-[1.25rem]" />
       </div>
     </button>
 
@@ -105,7 +105,7 @@ function hidePanel() {
           "
           @click="switchScheme(AUTO_MODE)"
         >
-          <Icon icon="material-symbols:radio-button-partial-outline" class="text-[1.25rem] mr-2.5" />
+          <Icon icon="material-symbols:radio-button-partial" class="text-[1.25rem] mr-2.5" />
           {{ i18n(I18nKey.systemMode) }}
         </button>
       </div>

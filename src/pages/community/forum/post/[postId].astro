@@ -7,7 +7,7 @@ import PostInteractions from '~/features/forum/components/PostInteractions.vue';
 import CommentSection from '~/features/forum/components/CommentSection.vue';
 import PostCard from '~/features/forum/components/PostCard.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
-import sanitizeHtml from 'sanitize-html';
+import { sanitizeHtmlContent } from '~/lib/utils/html-sanitize';
 import { forumApi } from '~/lib/api';
 import type { GqlPost } from '~/features/forum/graphql';
 
@@ -107,15 +107,7 @@ const authorName = post.author?.displayName ?? '匿名用户';
 
       <!-- 正文 -->
       <div class="prose dark:prose-invert max-w-none mb-8">
-        <Fragment
-          set:html={sanitizeHtml(post.content, {
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-            allowedAttributes: {
-              ...sanitizeHtml.defaults.allowedAttributes,
-              img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
-            },
-          })}
-        />
+        <Fragment set:html={sanitizeHtmlContent(post.content)} />
       </div>
 
       <!-- 交互栏 -->

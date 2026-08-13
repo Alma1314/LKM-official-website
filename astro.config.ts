@@ -28,6 +28,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { GithubCardComponent } from './src/lib/markdown-plugins/rehype-component-github-card.mjs';
 import { AdmonitionComponent } from './src/lib/markdown-plugins/rehype-component-admonition.mjs';
 import { responsiveTablesRehypePlugin } from './src/lib/utils/frontmatter.js';
+import { astroIconInclude } from './src/lib/icons/astro-include';
 import fs from 'node:fs';
 import yaml from 'js-yaml';
 import { fileURLToPath } from 'node:url';
@@ -45,8 +46,9 @@ export default defineConfig({
     enabled: false,
   },
 
-  site: siteConfig.site as string,
-  base: (siteConfig.base as string) || '/',
+  site: process.env.PUBLIC_SITE_URL ?? (siteConfig.site as string),
+  // 环境变量可覆盖 base（如部署在子路径下）；默认读取 config.yaml
+  base: process.env.PUBLIC_BASE_PATH ?? ((siteConfig.base as string) || '/'),
 
   output: 'server',
   adapter: node({ mode: 'standalone' }),
@@ -67,8 +69,7 @@ export default defineConfig({
     }),
     icon({
       include: {
-        tabler: ['*'],
-        'material-symbols': ['*'],
+        ...astroIconInclude,
         'fa6-brands': ['creative-commons', 'github'],
         'fa6-regular': ['address-card'],
         'fa6-solid': ['arrow-rotate-left', 'arrow-up-right-from-square', 'chevron-right'],
@@ -239,9 +240,6 @@ export default defineConfig({
             }
             if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
               return;
-            }
-            if (id.includes('node_modules/three')) {
-              return 'vendor-three';
             }
             if (id.includes('node_modules/katex') || id.includes('node_modules/rehype-katex')) {
               return 'vendor-katex';
