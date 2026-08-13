@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import type { DocumentData, PersistenceAdapter } from '../../engine/types';
+import ConfirmDialog from './ConfirmDialog';
 
 interface PublishButtonProps {
   documentId: string;
@@ -16,6 +17,7 @@ export default function PublishButton({
   onOpenPublishDialog,
 }: PublishButtonProps): ReactElement | null {
   const [doc, setDoc] = useState<DocumentData | null>(null);
+  const [archiveConfirmOpen, setArchiveConfirmOpen] = useState(false);
   const adapterRef = useRef(adapter);
   adapterRef.current = adapter;
 
@@ -46,7 +48,11 @@ export default function PublishButton({
   };
 
   const handleArchive = (): void => {
-    if (!window.confirm('确定归档此文档？归档后不可编辑。')) return;
+    setArchiveConfirmOpen(true);
+  };
+
+  const handleArchiveConfirmed = (): void => {
+    setArchiveConfirmOpen(false);
     const result = adapter.saveDocument({ ...doc, status: 'archived' });
     if (result instanceof Promise) {
       result.then((ok) => {
@@ -59,35 +65,39 @@ export default function PublishButton({
 
   const status = doc.status as DocumentData['status'];
 
-  if (status === 'published') {
-    return (
-      <div className="flex gap-1">
-        <button type="button" className="rte-btn rte-btn--sm text-success" onClick={handleUnpublish}>
-          已发布
-        </button>
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-          归档
-        </button>
-      </div>
-    );
-  }
-
-  if (status === 'archived') {
-    return (
-      <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleUnpublish}>
-        已归档 — 点击恢复
-      </button>
-    );
-  }
-
   return (
-    <div className="flex gap-1">
-      <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish}>
-        发布
-      </button>
-      <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-        归档
-      </button>
-    </div>
+    <>
+      {status === 'published' ? (
+        <div className="flex gap-1">
+          <button type="button" className="rte-btn rte-btn--sm text-success" onClick={handleUnpublish}>
+            已发布
+          </button>
+          <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
+            归档
+          </button>
+        </div>
+      ) : status === 'archived' ? (
+        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleUnpublish}>
+          已归档 — 点击恢复
+        </button>
+      ) : (
+        <div className="flex gap-1">
+          <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish}>
+            发布
+          </button>
+          <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
+            归档
+          </button>
+        </div>
+      )}
+      {archiveConfirmOpen && (
+        <ConfirmDialog
+          message="确定归档此文档？归档后不可编辑。"
+          danger
+          onConfirm={handleArchiveConfirmed}
+          onCancel={() => setArchiveConfirmOpen(false)}
+        />
+      )}
+    </>
   );
 }

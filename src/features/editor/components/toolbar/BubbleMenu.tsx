@@ -77,6 +77,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
     <div className="rte-bubble-menu" style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}>
       <button
         type="button"
+        aria-label="加粗"
+        title="加粗"
         className={`rte-toolbar-btn ${editor.isActive('bold') ? 'is-active' : ''}`}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -87,6 +89,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
+        aria-label="斜体"
+        title="斜体"
         className={`rte-toolbar-btn ${editor.isActive('italic') ? 'is-active' : ''}`}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -97,6 +101,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
+        aria-label="下划线"
+        title="下划线"
         className={`rte-toolbar-btn ${editor.isActive('underline') ? 'is-active' : ''}`}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -107,6 +113,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
+        aria-label="删除线"
+        title="删除线"
         className={`rte-toolbar-btn ${editor.isActive('strike') ? 'is-active' : ''}`}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -117,6 +125,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
+        aria-label="行内代码"
+        title="行内代码"
         className={`rte-toolbar-btn ${editor.isActive('code') ? 'is-active' : ''}`}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -128,6 +138,8 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       <div className="relative">
         <button
           type="button"
+          aria-label="链接"
+          title="链接"
           className={`rte-toolbar-btn ${editor.isActive('link') ? 'is-active' : ''}`}
           onMouseDown={(e) => {
             e.preventDefault();
@@ -146,6 +158,7 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
         <button
           type="button"
           className="rte-toolbar-btn"
+          aria-label="添加评论"
           title="添加评论"
           onMouseDown={(e) => {
             e.preventDefault();

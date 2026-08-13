@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import type { PersistenceAdapter, VersionEntry } from '../../engine/types';
+import ConfirmDialog from '../dialogs/ConfirmDialog';
 
 interface VersionHistoryPanelProps {
   documentId: string;
@@ -16,6 +17,7 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
 }: VersionHistoryPanelProps) {
   const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<VersionEntry | null>(null);
+  const [confirmRestore, setConfirmRestore] = useState(false);
 
   useEffect(() => {
     const result = adapter.getVersions(documentId);
@@ -34,7 +36,12 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
 
   const handleRestore = (): void => {
     if (!selectedVersion) return;
-    if (window.confirm(`确定恢复到版本 ${selectedVersion.version}？当前未保存的更改会丢失。`)) {
+    setConfirmRestore(true);
+  };
+
+  const handleRestoreConfirmed = (): void => {
+    setConfirmRestore(false);
+    if (selectedVersion) {
       onRestore(selectedVersion);
     }
   };
@@ -81,6 +88,15 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
             恢复此版本
           </button>
         </div>
+      )}
+
+      {confirmRestore && selectedVersion && (
+        <ConfirmDialog
+          message={`确定恢复到版本 ${selectedVersion.version}？当前未保存的更改会丢失。`}
+          danger
+          onConfirm={handleRestoreConfirmed}
+          onCancel={() => setConfirmRestore(false)}
+        />
       )}
     </div>
   );
