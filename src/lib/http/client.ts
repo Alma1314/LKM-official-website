@@ -14,6 +14,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { AppError, ErrorCode } from '../errors/error-codes';
 import { ok, err } from '../errors/result';
 import type { Result } from '../errors/result';
+import { getSsrCookie } from '../ssr-context';
 
 /** SSR 时使用真实后端直连地址，客户端时使用同域 /api */
 function getApiBase(): string {
@@ -96,6 +97,21 @@ export function getHttpAccessToken(): string | null {
   return getAdapter().getAccessToken();
 }
 
+/** 只读刷新令牌（供 GraphQL 等非 axios 消费方使用）。 */
+export function getHttpRefreshToken(): string | null {
+  return getAdapter().getRefreshToken();
+}
+
+/** 更新令牌（供 GraphQL 等非 axios 消费方在刷新成功后写入）。 */
+export function setHttpTokens(accessToken: string, refreshToken: string): void {
+  getAdapter().setTokens(accessToken, refreshToken);
+}
+
+/** 清除会话（供 GraphQL 等非 axios 消费方在刷新失败后登出）。 */
+export function clearHttpSession(): void {
+  getAdapter().clear();
+}
+
 function isAxiosError(e: unknown): e is AxiosError {
   return axios.isAxiosError(e);
 }
@@ -119,6 +135,14 @@ function getInstance(): AxiosInstance {
 
     // Request interceptor: 自动附加 JWT（只给需要认证的端点且有有效 token 时附加）
     _instance.interceptors.request.use((config) => {
+      // SSR：转发当前请求携带的 Cookie（B 类认证页面服务端识别用户）
+      if (typeof window === 'undefined') {
+        const cookie = getSsrCookie();
+        if (cookie && config.headers) {
+          (config.headers as Record<string, string>)['Cookie'] = cookie;
+        }
+      }
+
       const token = getAdapter().getAccessToken();
       if (!token) return config;
       // only attach to authenticated endpoints
@@ -240,8 +264,15 @@ function getInstance(): AxiosInstance {
         let detail = '';
         try {
           const data = error.response.data as unknown;
-          const body = typeof data === 'string' ? data : JSON.stringify(data);
-          detail = body.slice(0, 300);
+          if (typeof data === 'string') {
+            detail = data.slice(0, 160);
+          } else if (data && typeof data === 'object') {
+            // 仅暴露后端返回的用户可读 msg/message，避免把完整响应体/内部细节透传
+            const body = data as Record<string, unknown>;
+            const msg =
+              typeof body.msg === 'string' ? body.msg : typeof body.message === 'string' ? body.message : null;
+            if (msg) detail = msg.slice(0, 160);
+          }
         } catch {
           // ignore
         }

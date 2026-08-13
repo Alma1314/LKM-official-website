@@ -2,8 +2,8 @@
 FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/ ./packages/
-RUN corepack enable && pnpm install --frozen-lockfile --prod
+# 全量安装：构建（astro build）需要 devDependencies（tailwindcss、@tailwindcss/vite 等）
+RUN corepack enable && pnpm install --frozen-lockfile
 
 FROM node:24-alpine AS builder
 WORKDIR /app

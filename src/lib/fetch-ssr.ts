@@ -1,3 +1,5 @@
+import { getSsrCookie } from './ssr-context';
+
 /**
  * SSR fetch 工具：超时降级 + 统一错误处理
  * 接入真实后端后，SSR 页面每次请求同步 fetch 后端 API 会成为瓶颈。
@@ -34,10 +36,15 @@ export async function ssrFetch<T>(
   const timer = setTimeout(() => controller.abort(), timeout);
 
   try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    // 转发当前 SSR 请求的 Cookie，使认证类接口在服务端可用
+    const cookie = getSsrCookie();
+    if (cookie) headers['Cookie'] = cookie;
+
     // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${API_BASE}${path}`, {
       signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
+      headers,
     });
 
     if (!res.ok) {

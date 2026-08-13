@@ -1,23 +1,14 @@
 import { mapExchange } from '@urql/core';
+import type { Operation } from '@urql/core';
+import { getHttpRefreshToken, setHttpTokens, clearHttpSession } from '~/lib/http/client';
+// 循环依赖安全：graphqlClient 仅在异步刷新回调内访问，模块求值阶段不触碰
+import { graphqlClient } from '../client';
 
 // --- 401 刷新辅助函数 ---
 
-function getRefreshToken(): string | null {
-  try {
-    const saved = localStorage.getItem('lkm-auth-store');
-    if (saved) {
-      const data = JSON.parse(saved);
-      return data._refreshToken ?? null;
-    }
-  } catch {
-    // ignore
-  }
-  return null;
-}
-
 /** 尝试刷新 token，成功返回 true */
 async function tryRefreshToken(): Promise<boolean> {
-  const rt = getRefreshToken();
+  const rt = getHttpRefreshToken();
   if (!rt) return false;
   try {
     const base =
@@ -34,10 +25,8 @@ async function tryRefreshToken(): Promise<boolean> {
     const json = await res.json();
     const data = (json as { data?: { access_token: string; refresh_token: string } }).data;
     if (!data?.access_token) return false;
-    const saved = JSON.parse(localStorage.getItem('lkm-auth-store') || '{}');
-    saved._token = data.access_token;
-    saved._refreshToken = data.refresh_token;
-    localStorage.setItem('lkm-auth-store', JSON.stringify(saved));
+    // 统一通过 HTTP 会话适配器写入，与 axios 刷新路径共享同一状态源
+    setHttpTokens(data.access_token, data.refresh_token);
     return true;
   } catch {
     return false;
@@ -58,30 +47,37 @@ async function refreshOnce(): Promise<boolean> {
   return refreshPromise;
 }
 
+function isUnauthorized(error: unknown): boolean {
+  const netErr = error as { networkError?: { status?: number } };
+  return netErr?.networkError?.status === 401;
+}
+
 /**
- * 统一 GraphQL 错误处理 + 401 自动刷新。
+ * 统一 GraphQL 错误处理 + 401 自动刷新重试。
  *
  * - 网络错误和 GraphQL errors 会 console.warn（Phase 2+ 可接入全局 toast）
- * - 检测到 401 时自动尝试 refresh token
- * - refresh 失败则清空 localStorage（等同登出）
+ * - 检测到 401 时自动刷新 token，成功后重发原操作（带 _retry 标记防循环）
+ * - 刷新失败则清空会话（等同登出）
  */
 export const errorExchange = mapExchange({
-  onError(error, _operation) {
-    // 401 自动刷新
+  onError(error, operation) {
+    // 401 自动刷新 + 重发原请求
+    if (isUnauthorized(error)) {
+      const retried = (operation.context as Record<string, unknown>)._retry === true;
+      refreshOnce().then((ok) => {
+        if (ok) {
+          if (retried) return; // 已重试过仍 401，不再循环
+          graphqlClient.reexecuteOperation({
+            ...operation,
+            context: { ...operation.context, _retry: true },
+          } as Operation);
+        } else {
+          clearHttpSession();
+        }
+      });
+      return; // 已处理，跳过后续 console.warn
+    }
     if (error.networkError) {
-      const netErr = error.networkError as { status?: number };
-      if (netErr?.status === 401) {
-        refreshOnce().then((ok) => {
-          if (!ok) {
-            try {
-              localStorage.removeItem('lkm-auth-store');
-            } catch {
-              // ignore
-            }
-          }
-        });
-        return; // 已处理，跳过后续 console.warn
-      }
       console.warn('[GraphQL] Network error:', error.networkError.message);
     }
     if (error.graphQLErrors.length > 0) {

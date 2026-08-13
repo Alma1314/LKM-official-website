@@ -29,6 +29,7 @@ pnpm-debug.log*
 # Python
 __pycache__
 *.pyc
+backend/.pytest_cache/
 
 #ai
 .claude
@@ -43,7 +44,18 @@ __pycache__
 tool/
 tools/
 reports/
+# scripts/ 默认忽略（保留已跟踪的构建/检查脚本）
 /scripts/
+!/scripts/
+/scripts/*
+!/scripts/generate-icons.mjs
+!/scripts/lib/
+!/scripts/lib/start-preview.mjs
+!/scripts/precompress.mjs
+!/scripts/check-bundle-budget.mjs
+!/scripts/check-links.mjs
+!/scripts/check-seo-output.mjs
+!/scripts/optimize-avatars.mjs
 !src/scripts/
 
 # reference material (astro templates, not committed)
