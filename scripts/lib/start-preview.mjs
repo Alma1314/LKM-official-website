@@ -65,11 +65,10 @@ export async function withPreview(callback, preferredPort) {
     return;
   }
 
-  const child = spawn(
-    'pnpm',
-    ['exec', 'astro', 'preview', '--host', '127.0.0.1', '--port', String(port)],
-    { stdio: ['ignore', 'pipe', 'pipe'], detached: true }
-  );
+  const child = spawn('pnpm', ['exec', 'astro', 'preview', '--host', '127.0.0.1', '--port', String(port)], {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: true,
+  });
 
   const deadline = Date.now() + READY_TIMEOUT_MS;
   let ready = false;

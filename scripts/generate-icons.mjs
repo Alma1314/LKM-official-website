@@ -115,7 +115,12 @@ async function main() {
   includeLines.push('/* 本文件由 scripts/generate-icons.mjs 自动生成，请勿手动修改 */');
   includeLines.push('export const astroIconInclude: Record<string, string[]> = {');
   for (const [prefix, names] of astroMap) {
-    includeLines.push(`  '${prefix}': [${[...names].sort().map((n) => `'${n}'`).join(', ')}],`);
+    includeLines.push(
+      `  '${prefix}': [${[...names]
+        .sort()
+        .map((n) => `'${n}'`)
+        .join(', ')}],`
+    );
   }
   includeLines.push('};');
   includeLines.push('');
