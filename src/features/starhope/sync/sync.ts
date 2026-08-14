@@ -41,7 +41,7 @@ export async function pullAll(): Promise<void> {
     const merged = mergePull(
       local,
       remote,
-      data.tombstones.map((t) => ({ id: t.id, deleted_at: t.deleted_at })),
+      data.tombstones.map((t) => ({ id: t.id, deleted_at: t.deleted_at }))
     );
     await table.bulkPut(merged.map((r) => toSnake(r)));
     setLastSync(entity, data.server_time);
@@ -49,12 +49,7 @@ export async function pullAll(): Promise<void> {
 }
 
 /** 记录一条待推送操作，debounce 后 flush。 */
-export function enqueue(
-  entity: StarHopeEntity,
-  entityId: string,
-  op: 'upsert' | 'delete',
-  payload?: unknown,
-): void {
+export function enqueue(entity: StarHopeEntity, entityId: string, op: 'upsert' | 'delete', payload?: unknown): void {
   void db.syncOps.add({
     entity,
     entityId,

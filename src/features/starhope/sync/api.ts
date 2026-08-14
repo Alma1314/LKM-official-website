@@ -15,9 +15,6 @@ export interface StarHopePushResult {
 export const starhopeApi = {
   pull: (entity: StarHopeEntity, since?: string) =>
     get<StarHopePullData>(`/api/v1/starhope/${entity}`, since ? { since } : undefined),
-  push: (
-    entity: StarHopeEntity,
-    upserts: Record<string, unknown>[],
-    deletes: { id: string; deleted_at: string }[],
-  ) => post<StarHopePushResult>(`/api/v1/starhope/${entity}/sync`, { upserts, deletes }),
+  push: (entity: StarHopeEntity, upserts: Record<string, unknown>[], deletes: { id: string; deleted_at: string }[]) =>
+    post<StarHopePushResult>(`/api/v1/starhope/${entity}/sync`, { upserts, deletes }),
 };

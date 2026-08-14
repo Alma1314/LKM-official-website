@@ -7,9 +7,13 @@ import { pullAll } from '../sync/sync';
 
 const { isLoggedIn } = useAuthStore();
 
-watch(isLoggedIn, (loggedIn) => {
-  if (loggedIn) void pullAll();
-}, { immediate: true });
+watch(
+  isLoggedIn,
+  (loggedIn) => {
+    if (loggedIn) void pullAll();
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

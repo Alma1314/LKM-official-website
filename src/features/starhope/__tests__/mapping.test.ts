@@ -4,10 +4,19 @@ import { toSnake, fromSnake } from '../sync/mapping';
 describe('starhope 同步字段映射', () => {
   it('toSnake 映射 camelCase→snake_case 并丢弃 userId', () => {
     const out = toSnake({
-      id: 'q1', userId: '7', folderId: 'f1', createdAt: 'a', updatedAt: 'b', content: 'x',
+      id: 'q1',
+      userId: '7',
+      folderId: 'f1',
+      createdAt: 'a',
+      updatedAt: 'b',
+      content: 'x',
     });
     expect(out).toEqual({
-      id: 'q1', folder_id: 'f1', created_at: 'a', updated_at: 'b', content: 'x',
+      id: 'q1',
+      folder_id: 'f1',
+      created_at: 'a',
+      updated_at: 'b',
+      content: 'x',
     });
     expect(out.user_id).toBeUndefined();
   });

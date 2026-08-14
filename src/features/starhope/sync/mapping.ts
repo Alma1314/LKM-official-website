@@ -17,7 +17,7 @@ const KEY_MAP: Record<string, string> = {
 };
 
 const REVERSE_KEY_MAP: Record<string, string> = Object.fromEntries(
-  Object.entries(KEY_MAP).map(([camel, snake]) => [snake, camel]),
+  Object.entries(KEY_MAP).map(([camel, snake]) => [snake, camel])
 );
 
 function mapKeys(obj: Record<string, unknown>, toSnake: boolean): Record<string, unknown> {

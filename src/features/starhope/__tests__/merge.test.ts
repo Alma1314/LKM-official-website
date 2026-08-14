@@ -11,7 +11,7 @@ describe('mergePull 合并规则', () => {
     const out = mergePull(
       [{ id: 'q1', updatedAt: '2026-08-20', content: 'local' }],
       [{ id: 'q1', updatedAt: '2026-08-15', content: 'remote' }],
-      [],
+      []
     );
     expect(out[0].content).toBe('local');
   });
@@ -20,26 +20,18 @@ describe('mergePull 合并规则', () => {
     const out = mergePull(
       [{ id: 'q1', updatedAt: '2026-08-10', content: 'local' }],
       [{ id: 'q1', updatedAt: '2026-08-15', content: 'remote' }],
-      [],
+      []
     );
     expect(out[0].content).toBe('remote');
   });
 
   it('tombstone 较新则删除本地', () => {
-    const out = mergePull(
-      [{ id: 'q1', updatedAt: '2026-08-10' }],
-      [],
-      [{ id: 'q1', deleted_at: '2026-08-15' }],
-    );
+    const out = mergePull([{ id: 'q1', updatedAt: '2026-08-10' }], [], [{ id: 'q1', deleted_at: '2026-08-15' }]);
     expect(out).toEqual([]);
   });
 
   it('tombstone 较旧则保留本地', () => {
-    const out = mergePull(
-      [{ id: 'q1', updatedAt: '2026-08-20' }],
-      [],
-      [{ id: 'q1', deleted_at: '2026-08-15' }],
-    );
+    const out = mergePull([{ id: 'q1', updatedAt: '2026-08-20' }], [], [{ id: 'q1', deleted_at: '2026-08-15' }]);
     expect(out.length).toBe(1);
   });
 });
