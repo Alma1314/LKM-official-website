@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { createRouter, createWebHistory } from 'vue-router';
+import { getCurrentInstance } from 'vue';
+import { createRouter, createWebHistory, useRoute } from 'vue-router';
 import BlogHome from './pages/BlogArticleList.vue';
 import { useAuthProvider } from '~/features/auth/composables/useAuth';
 
@@ -64,11 +65,17 @@ const router = createRouter({
   ],
 });
 
+// client:only island 中 vue-entry 无法 app.use(router)，此处手动安装，
+// 注入 $route/$router 并让 <router-view> 正常工作，否则 $route 为 undefined 报错。
+const app = getCurrentInstance()?.appContext.app;
+app?.use?.(router as never);
+const route = useRoute();
+
 router.replace(props.initialPath);
 </script>
 
 <template>
   <div class="max-w-6xl mx-auto px-4 py-8">
-    <router-view :key="$route.fullPath" />
+    <router-view :key="route.fullPath" />
   </div>
 </template>

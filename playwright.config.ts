@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'line',
   use: {
-    baseURL: 'http://localhost:4321/LKM-official-website',
+    baseURL: `http://localhost:4321${process.env.BASE_PATH ?? ''}`,
     trace: 'on-first-retry',
   },
   projects: [

@@ -7,7 +7,7 @@
 import { readdirSync, statSync, existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
 
-const DIST = resolve(import.meta.dirname, '..', 'dist');
+const DIST = resolve(import.meta.dirname, '..', 'dist', 'client');
 
 const MAX_CHUNK_KIB = 180;
 const MAX_TOTAL_KIB = 2000;

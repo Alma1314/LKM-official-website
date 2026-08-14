@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const BASE_PATH = '/LKM-official-website';
+const BASE_PATH = process.env.BASE_PATH ?? '';
 
 const KEY_ROUTES = [
   { path: `${BASE_PATH}/`, label: '首页' },

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useBlogPost } from '../composables/useBlogPost';
 import { blogApi } from '~/lib/api';
+import { sanitizeHtmlContent } from '~/lib/utils/html-sanitize';
 import type { BlogArticleDetail } from '../types/blog';
 
 const _props = defineProps<{ slug: string }>();
@@ -9,6 +10,8 @@ const _props = defineProps<{ slug: string }>();
 const article = ref<BlogArticleDetail | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
+
+const safeContent = computed(() => (article.value ? sanitizeHtmlContent(article.value.content) : ''));
 
 const { MDXComponent: _MDXComponent, fetchAndCompile } = useBlogPost();
 
@@ -50,7 +53,7 @@ onMounted(async () => {
 
     <!-- MDX content rendered client-side -->
     <div class="prose max-w-none mb-12">
-      <div v-html="article.content"></div>
+      <div v-html="safeContent"></div>
     </div>
 
     <!-- Share -->

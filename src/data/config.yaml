@@ -1,7 +1,7 @@
 site:
   name: 理科迷
-  site: 'https://LKM-AHZ.github.io'
-  base: '/LKM-official-website'
+  site: 'https://lkm.s12mc.xyz'
+  base: '/'
   trailingSlash: false
   googleSiteVerificationId: null
 
@@ -188,16 +188,16 @@ fuwari:
           - name: 常见问题
             url: /#faq
       - name: 博客
-        url: /community/blog
+        url: /blog
         children:
           - name: 博客列表
-            url: /community/blog
+            url: /blog
           - name: 所有分类
-            url: /community/blog/categories
+            url: /blog/categories
           - name: 博客归档
-            url: /community/blog/archive
+            url: /blog/archive
           - name: 关于博客
-            url: /community/blog/about
+            url: /blog/about
       - name: 七月团队
         url: /official/team
         children:

@@ -28,6 +28,23 @@ jobs:
           pnpm run build
           ls -la
 
+  # ── 产物检查（SEO / 内部链接 / Bundle 预算） ──
+  artifacts:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run check:seo
+      - run: pnpm run check:links
+      - run: pnpm run check:budget
+
   # ── 前端检查（类型 + ESLint + Prettier） ──
   check:
     runs-on: ubuntu-latest

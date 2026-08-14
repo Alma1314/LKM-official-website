@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_PATH = '/LKM-official-website';
+const BASE_PATH = process.env.BASE_PATH ?? '';
 
 /**
  * 认证端到端烟雾覆盖。
