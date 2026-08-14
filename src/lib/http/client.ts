@@ -20,7 +20,7 @@ import { getSsrCookie } from '../ssr-context';
 function getApiBase(): string {
   // SSR: Astro 服务端，使用 API_URL 环境变量指向真实后端
   if (typeof window === 'undefined') {
-    return import.meta.env.API_URL ?? '';
+    return process.env.API_URL ?? '';
   }
   // 客户端：同域 /api，无跨域
   return '';

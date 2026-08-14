@@ -10,7 +10,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { runWithRequest } from '~/lib/ssr-context.node';
 
-const API_TARGET = import.meta.env.API_URL ?? '';
+const API_TARGET = process.env.API_URL ?? '';
 
 // hop-by-hop 头与 body 相关头不能原样转发给 fetch，
 // 否则与重写后的 body / fetch 自身的压缩协商冲突。

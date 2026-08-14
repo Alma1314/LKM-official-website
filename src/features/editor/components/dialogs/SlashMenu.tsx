@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import type { Editor } from '@tiptap/core';
 import TableInsertMenu from './TableInsertMenu';
 import MathEditor from '../nodes/MathEditor';
+import ImageUrlPopover from './ImageUrlPopover';
 
 interface MathDraft {
   isBlock: boolean;
@@ -14,7 +15,7 @@ interface SlashItem {
   icon: string;
   action: (editor: Editor) => void;
   /** 特殊交互：选中后进入二级面板（例如表格尺寸选择）而非立即执行 */
-  submenu?: 'table' | 'inlineMath' | 'blockMath';
+  submenu?: 'table' | 'inlineMath' | 'blockMath' | 'image';
 }
 
 // 表格命令被组件内部引用做 submenu 识别；这里单独定义以保证引用稳定
@@ -81,12 +82,10 @@ const ITEMS: SlashItem[] = [
     label: '图片',
     description: '插入图片',
     icon: '🖼',
-    action: (e) => {
-      const url = window.prompt('输入图片地址:');
-      if (url) {
-        e.chain().focus().setImage({ src: url }).run();
-      }
+    action: () => {
+      // 由 submenu='image' 处理：打开 ImageUrlPopover
     },
+    submenu: 'image',
   },
   {
     label: '表格',
@@ -165,6 +164,7 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [tableMode, setTableMode] = useState(false);
   const [mathMode, setMathMode] = useState<MathDraft | null>(null);
+  const [imageMode, setImageMode] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const q = query.toLowerCase();
@@ -195,6 +195,8 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
             setMathMode({ isBlock: false, initialLatex: 'x^2' });
           } else if (sub === 'blockMath') {
             setMathMode({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+          } else if (sub === 'image') {
+            setImageMode(true);
           } else {
             currentFiltered[selectedIdx].action(editor);
             onSelect();
@@ -244,6 +246,20 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
     );
   }
 
+  // 图片二级面板：URL + alt 弹窗
+  if (imageMode) {
+    return (
+      <ImageUrlPopover
+        onInsert={(src, alt) => {
+          editor.chain().focus().setImage({ src, alt }).run();
+          onSelect();
+          onClose();
+        }}
+        onClose={() => setImageMode(false)}
+      />
+    );
+  }
+
   // 表格二级面板：选择行列数
   if (tableMode) {
     return (
@@ -265,12 +281,15 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
 
   return (
     <div ref={menuRef} className="rte-slash-menu" style={{ top: position.top, left: position.left }}>
-      <div className="p-1">
+      <div role="listbox" className="p-1">
         {filtered.slice(0, 8).map((item, idx) => (
           <button
             key={item.label}
             type="button"
+            role="option"
+            aria-selected={idx === selectedIdx}
             className={`rte-slash-item ${idx === selectedIdx ? 'is-selected' : ''}`}
+            onMouseEnter={() => setSelectedIdx(idx)}
             onClick={() => {
               const sub = item.submenu;
               if (sub === 'table') {
@@ -279,6 +298,8 @@ const SlashMenu = memo(function SlashMenu({ editor, query, position, onClose, on
                 setMathMode({ isBlock: false, initialLatex: 'x^2' });
               } else if (sub === 'blockMath') {
                 setMathMode({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+              } else if (sub === 'image') {
+                setImageMode(true);
               } else {
                 item.action(editor);
                 onSelect();
