@@ -1,6 +1,7 @@
 import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
+import { enqueue } from '../sync/sync';
 import type { Question, PracticeSession } from '~/features/starhope/types';
 
 export interface PracticeConfig {
@@ -87,10 +88,12 @@ export function usePracticeStore(): {
       answers: {},
       status: 'ongoing',
       startedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       timeLimit: config.timeLimit,
       passingGrade: config.passingGrade,
     };
     await db.practiceSessions.put(session);
+    enqueue('sessions', session.id, 'upsert', session);
     currentSession.value = session;
     currentIndex.value = 0;
     elapsedSeconds.value = 0;
@@ -170,7 +173,9 @@ export function usePracticeStore(): {
     }
     currentSession.value.status = 'completed';
     currentSession.value.completedAt = new Date().toISOString();
+    currentSession.value.updatedAt = new Date().toISOString();
     await db.practiceSessions.put(currentSession.value);
+    enqueue('sessions', currentSession.value.id, 'upsert', currentSession.value);
     stopTimer();
     return currentSession.value;
   }
@@ -178,7 +183,9 @@ export function usePracticeStore(): {
   async function pauseSession(): Promise<void> {
     if (!currentSession.value) return;
     currentSession.value.status = 'paused';
+    currentSession.value.updatedAt = new Date().toISOString();
     await db.practiceSessions.put(currentSession.value);
+    enqueue('sessions', currentSession.value.id, 'upsert', currentSession.value);
     stopTimer();
   }
 

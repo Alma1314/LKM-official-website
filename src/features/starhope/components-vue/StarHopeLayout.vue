@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores-vue/auth';
 import { useNavigationStore } from '../stores-vue/navigation';
-import { getAuthPath } from '~/features/auth/constants/auth-paths';
 
 const { navItems, currentRoute, navigate } = useNavigationStore();
-const { currentUser } = useAuthStore();
+const { currentUser, logout } = useAuthStore();
 </script>
 
 <template>
@@ -38,12 +37,13 @@ const { currentUser } = useAuthStore();
             <div class="text-xs text-text-muted">{{ currentUser.account_level }}</div>
           </div>
         </div>
-        <a
-          :href="getAuthPath('login')"
+        <button
+          type="button"
+          @click="logout"
           class="w-full text-left px-3 py-2 text-xs text-text-muted hover:text-red-500 rounded-lg hover:bg-surface-3 transition-colors block"
         >
           退出登录
-        </a>
+        </button>
       </div>
     </aside>
     <main class="flex-1 min-w-0">

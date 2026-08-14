@@ -1,25 +1,21 @@
 import { computed, type ComputedRef } from 'vue';
-import type { AuthContextType, User } from '~/types/auth';
-
-// 全局桥接：由 AuthProvider（Vue）在挂载时注入
-let _authContext: AuthContextType | null = null;
-
-export function setStarHopeAuthContext(ctx: AuthContextType | null): void {
-  _authContext = ctx;
-}
+import { useAuthStore as usePiniaAuth } from '~/stores/auth';
+import type { UserInfo } from '~/lib/api/modules/auth';
 
 export function useAuthStore(): {
   isLoggedIn: ComputedRef<boolean>;
-  currentUser: ComputedRef<User | null>;
+  currentUser: ComputedRef<UserInfo | null>;
   userId: ComputedRef<number | null>;
-  logout: () => void;
+  logout: () => Promise<void>;
 } {
-  const isLoggedIn = computed(() => _authContext?.state.isLoggedIn ?? false);
-  const currentUser = computed<User | null>(() => _authContext?.state.user ?? null);
-  const userId = computed(() => currentUser.value?.id ?? null);
+  const store = usePiniaAuth();
 
-  function logout(): void {
-    _authContext?.logout();
+  const isLoggedIn = computed(() => store.isLoggedIn);
+  const currentUser = computed<UserInfo | null>(() => store.user ?? null);
+  const userId = computed(() => store.user?.id ?? null);
+
+  async function logout(): Promise<void> {
+    await store.logout();
   }
 
   return { isLoggedIn, currentUser, userId, logout };

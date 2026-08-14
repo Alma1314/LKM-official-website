@@ -1,6 +1,7 @@
 import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
+import { enqueue } from '../sync/sync';
 import type { AiAgent, AiMessage } from '~/features/starhope/types';
 
 const agents = ref<AiAgent[]>([]);
@@ -60,8 +61,10 @@ export function useAiStore(): {
       topP: 1,
       maxTokens: 4096,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     await db.aiAgents.put(agent);
+    enqueue('agents', agent.id, 'upsert', agent);
     agents.value = [...agents.value, agent];
     return agent;
   }
@@ -73,8 +76,10 @@ export function useAiStore(): {
         id: crypto.randomUUID(),
         userId: String(auth.userId.value!),
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       await db.aiAgents.put(agent);
+      enqueue('agents', agent.id, 'upsert', agent);
       await loadAgents();
       return agent;
     } catch {
@@ -85,10 +90,13 @@ export function useAiStore(): {
   async function updateAgent(id: string, data: Partial<AiAgent>): Promise<void> {
     await db.aiAgents.update(id, data);
     await loadAgents();
+    const updated = await db.aiAgents.get(id);
+    if (updated) enqueue('agents', id, 'upsert', updated);
   }
 
   async function deleteAgent(id: string): Promise<void> {
     await db.aiAgents.delete(id);
+    enqueue('agents', id, 'delete');
     await db.aiMessages.where('agentId').equals(id).delete();
     await loadAgents();
     if (currentAgentId.value === id) {

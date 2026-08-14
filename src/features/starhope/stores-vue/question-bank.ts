@@ -1,6 +1,7 @@
 import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import { db } from './db';
 import { useAuthStore } from './auth';
+import { enqueue } from '../sync/sync';
 import type { Question, Folder } from '~/features/starhope/types';
 
 const questions = ref<Question[]>([]);
@@ -66,6 +67,7 @@ export function useQuestionBankStore(): {
       updatedAt: new Date().toISOString(),
     };
     await db.questions.put(q);
+    enqueue('questions', q.id, 'upsert', q);
     await loadQuestions();
     return q;
   }
@@ -73,10 +75,13 @@ export function useQuestionBankStore(): {
   async function updateQuestion(id: string, data: Partial<Question>): Promise<void> {
     await db.questions.update(id, { ...data, updatedAt: new Date().toISOString() });
     await loadQuestions();
+    const updated = await db.questions.get(id);
+    if (updated) enqueue('questions', id, 'upsert', updated);
   }
 
   async function deleteQuestions(ids: string[]): Promise<void> {
     await db.questions.bulkDelete(ids);
+    ids.forEach((id) => enqueue('questions', id, 'delete'));
     selectedIds.value = new Set();
     await loadQuestions();
   }
@@ -88,16 +93,31 @@ export function useQuestionBankStore(): {
       name,
       parentId,
       sort: folders.value.length,
+      updatedAt: new Date().toISOString(),
     };
     await db.folders.put(folder);
+    enqueue('folders', folder.id, 'upsert', folder);
     await loadFolders();
     return folder;
   }
 
   async function deleteFolder(id: string): Promise<void> {
-    await db.folders.where('parentId').equals(id).modify({ parentId: null });
-    await db.questions.where('folderId').equals(id).modify({ folderId: undefined });
+    const now = new Date().toISOString();
+    // 级联变更也要同步：先查出受影响子项，本地 reparent/清 folderId 后逐条入队，
+    // 否则其他设备 pull 到 folder 的 tombstone 后仍残留 dangling folder_id/parent_id。
+    const childFolders = await db.folders.where('parentId').equals(id).toArray();
+    const affectedQuestions = await db.questions.where('folderId').equals(id).toArray();
+
+    await db.folders.where('parentId').equals(id).modify({ parentId: null, updatedAt: now });
+    await db.questions.where('folderId').equals(id).modify({ folderId: undefined, updatedAt: now });
     await db.folders.delete(id);
+    enqueue('folders', id, 'delete');
+    for (const child of childFolders) {
+      enqueue('folders', child.id, 'upsert', { ...child, parentId: null, updatedAt: now });
+    }
+    for (const q of affectedQuestions) {
+      enqueue('questions', q.id, 'upsert', { ...q, folderId: undefined, updatedAt: now });
+    }
     await loadFolders();
     await loadQuestions();
   }
