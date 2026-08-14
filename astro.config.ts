@@ -34,6 +34,33 @@ import yaml from 'js-yaml';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+// 将 .env 加载进 process.env（已存在的环境变量优先，.env 仅作兜底）。
+// 全站 SSR 代码（src/middleware.ts / fetch-ssr.ts / graphql client 等）都用
+// process.env.API_URL 读取后端地址，但 Vite 只会把 .env 注入 import.meta.env、
+// 不会写回 process.env；此处显式加载，保证 `pnpm run dev` 无需手动 export API_URL。
+// 不用 vite 的 loadEnv —— pnpm 隔离下 vite 未 hoist 到根 node_modules，import 'vite' 会解析失败。
+function loadDotEnvIntoProcess(): void {
+  let content: string;
+  try {
+    content = fs.readFileSync(path.resolve(process.cwd(), '.env'), 'utf-8');
+  } catch {
+    return; // 无 .env 则跳过（生产环境靠环境变量注入）
+  }
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] ??= value;
+  }
+}
+loadDotEnvIntoProcess();
+
 function loadConfigYaml(): Record<string, unknown> {
   const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
   return yaml.load(raw) as Record<string, unknown>;
