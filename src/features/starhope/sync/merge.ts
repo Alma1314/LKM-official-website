@@ -1,5 +1,3 @@
-import type { StarHopeEntity } from './mapping';
-
 export interface TombstoneInput {
   id: string;
   deleted_at: string;
@@ -10,7 +8,6 @@ export interface TombstoneInput {
  * 规则：items 里本地已有同 id 取 updatedAt 较新者；tombstone 以 deleted_at 参与比较，晚者胜。
  */
 export function mergePull(
-  entity: StarHopeEntity,
   local: Record<string, unknown>[],
   items: Record<string, unknown>[],
   tombstones: TombstoneInput[],

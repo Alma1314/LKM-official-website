@@ -12,7 +12,7 @@ const TABLE_BY_ENTITY: Record<StarHopeEntity, keyof typeof db> = {
   agents: 'aiAgents',
 };
 
-const LAST_SYNC_KEY = (e: StarHopeEntity) => `starhope-sync:${e}:lastSyncAt`;
+const LAST_SYNC_KEY = (e: StarHopeEntity): string => `starhope-sync:${e}:lastSyncAt`;
 
 function getLastSync(entity: StarHopeEntity): string | undefined {
   return localStorage.getItem(LAST_SYNC_KEY(entity)) ?? undefined;
@@ -27,22 +27,23 @@ export async function pullAll(): Promise<void> {
   for (const entity of ENTITIES) {
     const since = getLastSync(entity);
     const result = await starhopeApi.pull(entity, since);
-    if (result.isErr()) continue;
+    if (result.isErr()) {
+      console.warn(`[starhope] pull ${entity} 失败，跳过`, result.error);
+      continue;
+    }
     const data = result.value;
     const table = db[TABLE_BY_ENTITY[entity]] as unknown as {
       toArray(): Promise<Record<string, unknown>[]>;
       bulkPut(rows: Record<string, unknown>[]): Promise<unknown>;
-      bulkDelete(ids: string[]): Promise<unknown>;
     };
-    const local = (await table.toArray()).map((r) => fromSnake(entity, r));
-    const remote = data.items.map((r) => fromSnake(entity, r));
+    const local = (await table.toArray()).map((r) => fromSnake(r));
+    const remote = data.items.map((r) => fromSnake(r));
     const merged = mergePull(
-      entity,
       local,
       remote,
       data.tombstones.map((t) => ({ id: t.id, deleted_at: t.deleted_at })),
     );
-    await table.bulkPut(merged.map((r) => toSnake(entity, r)));
+    await table.bulkPut(merged.map((r) => toSnake(r)));
     setLastSync(entity, data.server_time);
   }
 }
@@ -72,8 +73,10 @@ function scheduleFlush(): void {
   }, 300);
 }
 
-/** 把 outbox 里所有待推记录按实体分组推送；成功才清对应 outbox。 */
-export async function flush(): Promise<void> {
+let _flushing = false;
+let _flushQueued = false;
+
+async function doFlush(): Promise<void> {
   const ops = await db.syncOps.toArray();
   if (ops.length === 0) return;
 
@@ -91,7 +94,7 @@ export async function flush(): Promise<void> {
         deletes.push({ id: op.entityId, deleted_at: op.updatedAt });
       } else {
         const row = op.payload ?? (await table.get(op.entityId));
-        if (row) upserts.push(toSnake(entity, row));
+        if (row) upserts.push(toSnake(row));
       }
     }
 
@@ -99,5 +102,23 @@ export async function flush(): Promise<void> {
     if (result.isErr()) continue; // 保留下次重试
     await db.syncOps.bulkDelete(entityOps.map((o) => o.id!));
     setLastSync(entity, result.value.server_time);
+  }
+}
+
+/** 把 outbox 里所有待推记录按实体分组推送；成功才清对应 outbox。 */
+export async function flush(): Promise<void> {
+  if (_flushing) {
+    _flushQueued = true;
+    return;
+  }
+  _flushing = true;
+  try {
+    await doFlush();
+  } finally {
+    _flushing = false;
+    if (_flushQueued) {
+      _flushQueued = false;
+      void flush();
+    }
   }
 }
