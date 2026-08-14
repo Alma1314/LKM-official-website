@@ -11,7 +11,7 @@ async function tryRefreshToken(): Promise<boolean> {
   const rt = getHttpRefreshToken();
   if (!rt) return false;
   try {
-    const base = typeof window === 'undefined' ? (process.env.API_URL || '') : '';
+    const base = typeof window === 'undefined' ? process.env.API_URL || '' : '';
     // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${base}/api/v1/auth/refresh`, {
       method: 'POST',
