@@ -10,7 +10,7 @@ function getGraphqlUrl(): string {
 
   // SSR: 使用真实后端直连地址
   if (typeof window === 'undefined') {
-    return (import.meta.env.API_URL ?? '') + '/graphql';
+    return (process.env.API_URL ?? '') + '/graphql';
   }
 
   // CSR: 完整 URL（urql 内部用 new URL() 解析，必须有 origin）

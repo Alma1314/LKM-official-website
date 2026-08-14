@@ -1,4 +1,38 @@
-dist/
+# 依赖与构建产物
 node_modules/
-.vscode/
+dist/
+.astro/
+
+# 版本控制
+.git/
+.gitignore
+
+# 环境变量（敏感，勿打进镜像；.env.example 为模板保留）
+.env
+.env.local
+.env.production
+.env.development
+
+# 测试与 CI
+tests/
+test-results/
+playwright-report/
+coverage/
 .github/
+
+# 编辑器
+.vscode/
+.idea/
+
+# AI / 工具目录
+.claude/
+.superpowers/
+.agents/
+.codex/
+.codegraph/
+
+# 参考材料与临时文件
+reference/
+tmp/
+*.log
+.DS_Store
