@@ -25,6 +25,7 @@ export interface ArticleDetail extends OfficialArticle {
   department: string;
   publisher: string;
   content: string;
+  reading_time: number;
   keywords: string[];
 }
 
