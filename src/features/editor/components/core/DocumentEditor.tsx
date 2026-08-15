@@ -90,7 +90,9 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         await adapter.saveDocument(doc);
         setDocId(doc.id);
         const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
-        window.history.replaceState(null, '', `${base}/admin/documents/editor?id=${doc.id}`);
+        // base 为 '/' 时 `${base}/admin/...` 会拼成 '//admin/...'（协议相对 URL，被解析为 http://admin/...），
+        // 导致 replaceState 抛 SecurityError。去尾部斜杠后再拼接。
+        window.history.replaceState(null, '', `${base.replace(/\/+$/, '')}/admin/documents/editor?id=${doc.id}`);
       })();
     }
   }, [documentId, adapter]);
@@ -386,8 +388,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                 type="button"
                 className={aiPanelOpen ? 'rte-toolbar-btn is-active' : 'rte-btn rte-btn--ghost rte-btn--xs'}
                 onClick={() => setAiPanelOpen(!aiPanelOpen)}
+                title="AI 助手"
               >
-                AI
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z" />
+                </svg>
               </button>
             )}
             {docId && mode === 'richtext' && (
@@ -399,8 +414,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     setCommentPanelOpen(!commentPanelOpen);
                     setVersionPanelOpen(false);
                   }}
+                  title="评论"
                 >
-                  评论
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
                 </button>
                 <button
                   type="button"
@@ -409,8 +437,23 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     setVersionPanelOpen(!versionPanelOpen);
                     setCommentPanelOpen(false);
                   }}
+                  title="版本"
                 >
-                  版本
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                    <path d="M12 7v5l4 2" />
+                  </svg>
                 </button>
               </>
             )}

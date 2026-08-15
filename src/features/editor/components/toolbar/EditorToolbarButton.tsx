@@ -26,7 +26,6 @@ const EditorToolbarButton = memo(function EditorToolbarButton({
       aria-pressed={isActive}
     >
       {icon}
-      <span className="hidden lg:inline text-xs">{label}</span>
     </button>
   );
 });

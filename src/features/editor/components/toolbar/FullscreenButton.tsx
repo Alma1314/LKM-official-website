@@ -21,7 +21,7 @@ export default function FullscreenButton(): ReactElement {
   return (
     <button
       type="button"
-      className="rte-fullscreen-btn hidden md:inline-flex"
+      className="rte-fullscreen-btn"
       title={isFullscreen ? '退出全屏' : '全屏编辑'}
       onClick={toggle}
     >

@@ -26,6 +26,9 @@ export function getEditorExtensions(placeholder?: string): AnyExtension[] {
           class: 'rounded-lg',
         },
       },
+      // StarterKit v3 默认已含 link/underline，显式排除后再单独配置，避免重复注册
+      link: false,
+      underline: false,
     }),
     Placeholder.configure({
       placeholder: placeholder ?? '开始编写内容……',
