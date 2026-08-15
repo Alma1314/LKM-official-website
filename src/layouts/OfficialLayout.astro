@@ -3,10 +3,9 @@ import Layout from './BaseLayout.astro';
 import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
-import { navBarConfig } from '~/lib/config';
+import { allMenuItems } from '~/features/shell/menus';
 import { footerData, filterNavbarByNames } from '~/lib/navigation';
-import { LinkPresets } from '~/lib/constants/link-presets';
-import { LinkPreset, type NavBarLink } from '~/types/config';
+import type { NavBarLink } from '~/types/config';
 import type { MetaData } from '~/types/core';
 
 export interface Props {
@@ -17,19 +16,12 @@ export interface Props {
 
 const { metadata, showFooter = true, navItems } = Astro.props;
 
-const navbarLinks: NavBarLink[] = filterNavbarByNames(
-  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
-    if (typeof item === 'number') {
-      return LinkPresets[item];
-    }
-    return item;
-  }),
-  navItems,
-);
+// 官网顶栏：从统一菜单池用 navItems 白名单挑选；桌面 SiteNavbar 与移动端共用
+const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
 ---
 
 <Layout metadata={metadata} navbarLinks={navbarLinks}>
-  <SiteNavbar links={navbarLinks} />
+  <SiteNavbar links={navbarLinks} module="official" />
   <main>
     <slot />
   </main>
