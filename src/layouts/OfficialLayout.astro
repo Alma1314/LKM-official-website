@@ -4,7 +4,7 @@ import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
 import { navBarConfig } from '~/lib/config';
-import { footerData } from '~/lib/navigation';
+import { footerData, filterNavbarByNames } from '~/lib/navigation';
 import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import type { MetaData } from '~/types/core';
@@ -12,22 +12,23 @@ import type { MetaData } from '~/types/core';
 export interface Props {
   metadata?: MetaData;
   showFooter?: boolean;
+  navItems?: string[];
 }
 
-const { metadata, showFooter = true } = Astro.props;
+const { metadata, showFooter = true, navItems } = Astro.props;
 
-// official 模块顶栏不含"资源"栏
-const navbarLinks: NavBarLink[] = navBarConfig.links
-  .map((item: NavBarLink | LinkPreset): NavBarLink => {
+const navbarLinks: NavBarLink[] = filterNavbarByNames(
+  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
     if (typeof item === 'number') {
       return LinkPresets[item];
     }
     return item;
-  })
-  .filter((item) => item.name !== '资源');
+  }),
+  navItems,
+);
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} navbarLinks={navbarLinks}>
   <SiteNavbar links={navbarLinks} />
   <main>
     <slot />

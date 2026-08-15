@@ -175,18 +175,18 @@ fuwari:
   navbarCommunity:
     links:
       - name: 主页
-        url: /
+        url: /community
         children:
-          - name: 简明介绍
-            url: /
-          - name: 团队成员
-            url: /#team
-          - name: 发展历程
-            url: /#timeline
-          - name: 最近更新
-            url: /#update
-          - name: 常见问题
-            url: /#faq
+          - name: 社区首页
+            url: /community
+          - name: 板块广场
+            url: /community/forum
+          - name: 专栏
+            url: /community/columns
+          - name: 帮助/求助
+            url: /official/qa
+          - name: 竞赛
+            url: /community/competition
       - name: 博客
         url: /blog
         children:

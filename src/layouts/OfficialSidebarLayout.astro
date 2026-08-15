@@ -15,13 +15,14 @@ export interface Props {
   sidebarLinks?: SidebarLink[];
   currentPath?: string;
   showFooter?: boolean;
+  navItems?: string[];
 }
 
 const DEFAULT_ICON = 'tabler:link';
-const { metadata, sidebarLinks = [], currentPath = '', showFooter = true } = Astro.props;
+const { metadata, sidebarLinks = [], currentPath = '', showFooter = true, navItems } = Astro.props;
 ---
 
-<OfficialLayout metadata={metadata} showFooter={showFooter}>
+<OfficialLayout metadata={metadata} showFooter={showFooter} navItems={navItems}>
   {
     sidebarLinks.length > 0 && (
       <Sidebar

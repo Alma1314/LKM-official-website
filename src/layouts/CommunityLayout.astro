@@ -4,43 +4,31 @@ import SiteNavbar from '~/features/shell-community/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
 import { navBarConfig } from '~/lib/config/fuwari-community';
-import { footerData } from '~/lib/navigation';
+import { footerData, filterNavbarByNames } from '~/lib/navigation';
 import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import type { MetaData } from '~/types/core';
 
 export interface Props {
   metadata?: MetaData;
+  navItems?: string[];
 }
 
-const { metadata } = Astro.props;
+const { metadata, navItems } = Astro.props;
 
-// community 模块顶栏：不含原始"主页"和"七月团队"，替换为指向 community 的首页
-const baseLinks: NavBarLink[] = navBarConfig.links
-  .map((item: NavBarLink | LinkPreset): NavBarLink => {
+// community 模块顶栏：直接使用完整社区配置，由页面用 navItems 白名单挑选
+const navbarLinks: NavBarLink[] = filterNavbarByNames(
+  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
     if (typeof item === 'number') {
       return LinkPresets[item];
     }
     return item;
-  })
-  .filter((item) => item.name !== '主页' && item.name !== '七月团队');
-
-const communityHome: NavBarLink = {
-  name: '主页',
-  url: '/community',
-  children: [
-    { name: '社区首页', url: '/community' },
-    { name: '板块广场', url: '/community/forum' },
-    { name: '专栏', url: '/community/columns' },
-    { name: '帮助/求助', url: '/official/qa' },
-    { name: '竞赛', url: '/community/competition' },
-  ],
-};
-
-const navbarLinks: NavBarLink[] = [communityHome, ...baseLinks];
+  }),
+  navItems,
+);
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} navbarLinks={navbarLinks}>
   <SiteNavbar links={navbarLinks} />
   <main>
     <slot />

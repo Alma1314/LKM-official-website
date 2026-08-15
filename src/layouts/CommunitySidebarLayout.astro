@@ -14,13 +14,14 @@ export interface Props {
   metadata?: MetaData;
   sidebarLinks?: SidebarLink[];
   currentPath?: string;
+  navItems?: string[];
 }
 
 const DEFAULT_ICON = 'tabler:link';
-const { metadata, sidebarLinks = [], currentPath = '' } = Astro.props;
+const { metadata, sidebarLinks = [], currentPath = '', navItems } = Astro.props;
 ---
 
-<CommunityLayout metadata={metadata}>
+<CommunityLayout metadata={metadata} navItems={navItems}>
   {
     sidebarLinks.length > 0 && (
       <Sidebar
