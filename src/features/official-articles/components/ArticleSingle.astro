@@ -1,0 +1,99 @@
+---
+import type { MarkdownHeading } from 'astro';
+import { Icon } from 'astro-icon/components';
+import Image from '~/components/primitives/Image.astro';
+import TableOfContents from '~/components/patterns/TableOfContents.astro';
+import ArticleTags from './ArticleTags.astro';
+import type { ArticleDetail } from '~/lib/api/modules/official-articles';
+import { categoryLabel } from '~/lib/api/modules/official-articles';
+import { getPermalink } from '~/lib/utils/permalinks';
+import { getFormattedDate } from '~/lib/utils/utils';
+
+interface Props {
+  article: ArticleDetail;
+  headings?: MarkdownHeading[];
+}
+
+const { article, headings = [] } = Astro.props;
+---
+
+<section class="py-8 sm:py-16 lg:py-20 mx-auto">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex gap-8 relative">
+      <article class="flex-1 min-w-0">
+        <header class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+          <div class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center">
+            <p>
+              <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+              <time datetime={article.published} class="inline-block">{getFormattedDate(new Date(article.published))}</time>
+              {
+                article.publisher && (
+                  <>
+                    {' '}
+                    · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+                    <span class="inline-block">{article.publisher}</span>
+                  </>
+                )
+              }
+              {
+                article.category && (
+                  <>
+                    {' '}
+                    ·{' '}
+                    <a class="hover:underline inline-block" href={getPermalink(`/official/articles/category/${article.category}`)}>
+                      {categoryLabel(article.category)}
+                    </a>
+                  </>
+                )
+              }
+            </p>
+          </div>
+
+          <h1 class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading">
+            {article.title}
+          </h1>
+          <p class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify">
+            {article.description}
+          </p>
+
+          {
+            article.cover ? (
+              <Image
+                src={article.cover}
+                class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
+                widths={[400, 900]}
+                sizes="(max-width: 900px) 400px, 900px"
+                alt={article.title}
+                width={900}
+                height={506}
+                format="webp"
+                loading="eager"
+                decoding="async"
+              />
+            ) : (
+              <div class="max-w-3xl mx-auto px-4 sm:px-6">
+                <div class="border-t dark:border-slate-700" />
+              </div>
+            )
+          }
+        </header>
+
+        <div class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-lg dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px]">
+          <slot />
+        </div>
+
+        {
+          article.keywords && article.keywords.length > 0 && (
+            <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8">
+              <ArticleTags keywords={article.keywords} />
+            </div>
+          )
+        }
+      </article>
+
+      <aside class="hidden xl:block flex-shrink-0">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div>
+  </div>
+</section>

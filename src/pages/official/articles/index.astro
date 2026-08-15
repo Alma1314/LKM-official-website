@@ -6,7 +6,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 import type { OfficialArticle, OfficialArticleListData } from '~/lib/api/modules/official-articles';
 
-const { data: listData, error } = await ssrFetch<OfficialArticleListData>('/api/articles?page=1&page_size=50', {
+const { data: listData, error } = await ssrFetch<OfficialArticleListData>('/api/v1/articles?page=1&page_size=50', {
   fallback: { items: [], total: 0 },
 });
 logSsrError('文章列表', error);

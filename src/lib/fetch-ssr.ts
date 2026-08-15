@@ -21,7 +21,7 @@ interface FetchOptions {
 
 /**
  * SSR 安全的 fetch 封装，带超时和降级
- * @param path API 路径（如 /api/articles）
+ * @param path API 路径（如 /api/v1/articles）
  * @param options 超时和 fallback 配置
  * @returns { data: T | null, error: string | null }
  */

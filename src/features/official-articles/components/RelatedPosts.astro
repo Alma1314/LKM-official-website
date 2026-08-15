@@ -1,0 +1,32 @@
+---
+import type { OfficialArticle } from '~/lib/api/modules/official-articles';
+import ArticleListItem from './ArticleListItem.astro';
+
+interface Props {
+  articles: OfficialArticle[];
+  currentSlug: string;
+  currentCategory?: string;
+}
+
+const { articles, currentSlug, currentCategory } = Astro.props;
+const others = articles.filter((a) => a.slug !== currentSlug);
+const related = [
+  ...others.filter((a) => a.category === currentCategory),
+  ...others.filter((a) => a.category !== currentCategory),
+].slice(0, 4);
+---
+
+{
+  related.length > 0 && (
+    <section class="max-w-3xl mx-auto px-6 mt-16">
+      <h2 class="text-2xl font-bold mb-6 text-deep-text">相关文章</h2>
+      <ul>
+        {related.map((article) => (
+          <li class="mb-8">
+            <ArticleListItem article={article} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

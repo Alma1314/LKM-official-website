@@ -7,8 +7,8 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// 过滤掉不需要的标题级别（比如只保留 h2 和 h3）
-const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+// 过滤标题级别：h1~h3 都进目录（h1 是文章主标题，作为目录第一项）
+const filteredHeadings = headings.filter((h) => h.depth >= 1 && h.depth <= 3);
 ---
 
 {
