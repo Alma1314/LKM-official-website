@@ -14,7 +14,6 @@
         <div
           class="qa-card relative z-10 w-full max-w-lg flex flex-col max-h-[85vh] bg-card-bg rounded-[var(--radius-large)] border border-surface-3 shadow-xl dark:shadow-none"
         >
-          <!-- 头部 -->
           <div class="flex items-center justify-between px-6 py-4 border-b border-surface-3 shrink-0">
             <h3 class="text-lg font-semibold text-deep-text">我要提问</h3>
             <button
@@ -27,7 +26,6 @@
             </button>
           </div>
 
-          <!-- 表单 -->
           <div class="px-6 py-5 space-y-4 overflow-y-auto">
             <div>
               <label class="block text-sm font-medium text-deep-text mb-1.5">标题</label>
@@ -60,8 +58,32 @@
                 class="qa-input resize-none"
                 placeholder="详细描述你的问题..."
                 @input="clearError('detail')"
+                @paste="onPaste"
+                @dragover.prevent
+                @drop.prevent="onDrop"
               ></textarea>
               <p v-if="errors.detail" class="mt-1 text-xs text-error">{{ errors.detail }}</p>
+
+              <button type="button" class="btn btn-ghost btn-sm mt-2" @click="triggerFilePicker">插入图片</button>
+              <input ref="fileInputRef" type="file" accept="image/*" multiple class="hidden" @change="onFileChange" />
+
+              <div v-if="formModel.images.length" class="grid grid-cols-3 gap-2 mt-2">
+                <div
+                  v-for="ref in formModel.images"
+                  :key="ref"
+                  class="group relative aspect-square rounded-[var(--radius-md)] overflow-hidden border border-surface-3 bg-base-200"
+                >
+                  <img :src="imageUrls[ref] ?? ''" class="w-full h-full object-cover" alt="问题图片" />
+                  <button
+                    type="button"
+                    class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label="删除图片"
+                    @click="removeImage(ref)"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -99,7 +121,6 @@
             </div>
           </div>
 
-          <!-- 底部 -->
           <div class="flex justify-end gap-3 px-6 py-4 border-t border-surface-3 shrink-0">
             <button type="button" class="btn btn-ghost" @click="handleSaveDraft">暂存</button>
             <button type="button" class="btn btn-primary" @click="handlePublish">发布</button>
@@ -108,7 +129,6 @@
       </div>
     </Transition>
 
-    <!-- 退出确认弹窗 -->
     <Transition name="qa-fade">
       <div
         v-if="confirmOpen"
@@ -130,7 +150,6 @@
       </div>
     </Transition>
 
-    <!-- 轻提示 -->
     <Transition name="qa-toast">
       <div
         v-if="toast"
@@ -146,11 +165,15 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { QA_DRAFT_STORAGE_KEY, computeTotalBounty, parseDraft, serializeDraft } from '../lib/draft';
 import type { QaDraft } from '../lib/draft';
+import { deleteImageBlobs, resolveImageSrc, saveImageBlob } from '../../editor/persistence/image-store';
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits<{ 'update:show': [value: boolean] }>();
 
 type FieldKey = keyof QaDraft;
+
+const MAX_IMAGES = 6;
+const MAX_IMAGE_SIZE_BYTES = 20 * 1024 * 1024;
 
 const formModel = reactive<QaDraft>({
   title: '',
@@ -158,6 +181,7 @@ const formModel = reactive<QaDraft>({
   detail: '',
   bountyPeople: null,
   bountyPerPerson: null,
+  images: [],
 });
 
 const errors = reactive<Record<FieldKey, string>>({
@@ -166,7 +190,11 @@ const errors = reactive<Record<FieldKey, string>>({
   detail: '',
   bountyPeople: '',
   bountyPerPerson: '',
+  images: '',
 });
+
+const imageUrls = reactive<Record<string, string>>({});
+const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const confirmOpen = ref(false);
 const toast = ref<string | null>(null);
@@ -182,6 +210,7 @@ watch(
       const draft = loadDraft();
       if (draft) {
         Object.assign(formModel, draft);
+        void refreshImageUrls();
       } else {
         resetForm();
       }
@@ -215,6 +244,8 @@ function resetForm(): void {
   formModel.detail = '';
   formModel.bountyPeople = null;
   formModel.bountyPerPerson = null;
+  formModel.images = [];
+  Object.keys(imageUrls).forEach((key) => delete imageUrls[key]);
   clearErrors();
 }
 
@@ -271,17 +302,82 @@ function validate(): boolean {
   return Object.values(errors).every((message) => message === '');
 }
 
+function triggerFilePicker(): void {
+  fileInputRef.value?.click();
+}
+
+function onFileChange(e: Event): void {
+  const input = e.target as HTMLInputElement;
+  if (input.files) void addFiles(Array.from(input.files));
+  input.value = '';
+}
+
+function onPaste(e: ClipboardEvent): void {
+  const files = Array.from(e.clipboardData?.files ?? []).filter((file) => file.type.startsWith('image/'));
+  if (files.length) {
+    e.preventDefault();
+    void addFiles(files);
+  }
+}
+
+function onDrop(e: DragEvent): void {
+  const files = Array.from(e.dataTransfer?.files ?? []).filter((file) => file.type.startsWith('image/'));
+  if (files.length) void addFiles(files);
+}
+
+async function addFiles(files: File[]): Promise<void> {
+  for (const file of files) {
+    if (formModel.images.length >= MAX_IMAGES) {
+      showToast(`最多插入 ${MAX_IMAGES} 张图片`);
+      break;
+    }
+    const error = validateImageFile(file);
+    if (error) {
+      showToast(error);
+      continue;
+    }
+    await addImageFile(file);
+  }
+}
+
+function validateImageFile(file: File): string | null {
+  if (!file.type.startsWith('image/')) return '仅支持图片文件';
+  if (file.size > MAX_IMAGE_SIZE_BYTES) return '图片大小需 ≤ 20MB';
+  return null;
+}
+
+async function addImageFile(file: File): Promise<void> {
+  const ref = await saveImageBlob(file);
+  formModel.images.push(ref);
+  imageUrls[ref] = await resolveImageSrc(ref);
+}
+
+async function removeImage(ref: string): Promise<void> {
+  formModel.images = formModel.images.filter((item) => item !== ref);
+  delete imageUrls[ref];
+  await deleteImageBlobs([ref]);
+}
+
+async function refreshImageUrls(): Promise<void> {
+  Object.keys(imageUrls).forEach((key) => delete imageUrls[key]);
+  for (const ref of formModel.images) {
+    imageUrls[ref] = await resolveImageSrc(ref);
+  }
+}
+
 function handleSaveDraft(): void {
   saveDraft();
   showToast('草稿已暂存');
 }
 
-function handlePublish(): void {
+async function handlePublish(): Promise<void> {
   if (!validate()) return;
+  const refs = [...formModel.images];
   clearDraft();
-  showToast('问题已发布');
   resetForm();
+  showToast('问题已发布');
   emit('update:show', false);
+  await deleteImageBlobs(refs);
 }
 
 function requestClose(): void {

@@ -4,6 +4,7 @@ export interface QaDraft {
   detail: string;
   bountyPeople: number | null;
   bountyPerPerson: number | null;
+  images: string[];
 }
 
 export const QA_DRAFT_STORAGE_KEY = 'lkm-qa-draft';
@@ -19,6 +20,7 @@ export function parseDraft(raw: string | null): QaDraft | null {
       detail: typeof value.detail === 'string' ? value.detail : '',
       bountyPeople: typeof value.bountyPeople === 'number' ? value.bountyPeople : null,
       bountyPerPerson: typeof value.bountyPerPerson === 'number' ? value.bountyPerPerson : null,
+      images: Array.isArray(value.images) ? value.images.filter((item): item is string => typeof item === 'string') : [],
     };
   } catch {
     return null;

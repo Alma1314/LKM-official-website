@@ -22,13 +22,32 @@ describe('parseDraft', () => {
       detail: '',
       bountyPeople: null,
       bountyPerPerson: null,
+      images: [],
+    });
+  });
+
+  it('images 回填并过滤非字符串项', () => {
+    expect(parseDraft('{"images":["blob:a", 1, null, "blob:b"]}')).toEqual({
+      title: '',
+      situation: '',
+      detail: '',
+      bountyPeople: null,
+      bountyPerPerson: null,
+      images: ['blob:a', 'blob:b'],
     });
   });
 });
 
 describe('serializeDraft', () => {
   it('序列化后可被 parseDraft 还原', () => {
-    const draft = { title: 't', situation: 's', detail: 'd', bountyPeople: 3, bountyPerPerson: 10 };
+    const draft = {
+      title: 't',
+      situation: 's',
+      detail: 'd',
+      bountyPeople: 3,
+      bountyPerPerson: 10,
+      images: ['blob:a', 'blob:b'],
+    };
     expect(parseDraft(serializeDraft(draft))).toEqual(draft);
   });
 });
