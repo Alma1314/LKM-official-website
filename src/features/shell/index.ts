@@ -2,7 +2,6 @@ export { default as ShellHeader } from './components/Header.astro';
 export { default as ShellFooter } from './components/Footer.astro';
 export { default as ShellTopNav } from './components/TopNav.astro';
 export { default as ShellSidebar } from '~/features/homepage/components/Sidebar.astro';
-export { default as ShellFuwariNavbar } from './components/FuwariNavbar.astro';
 export { default as ShellFuwariFooter } from './components/FuwariFooter.astro';
 export { default as ShellLogo } from './components/Logo.astro';
 export { default as ShellFavicons } from './components/Favicons.astro';
@@ -40,4 +39,3 @@ export { default as ShellUserAvatarMenu } from './components/user/UserAvatarMenu
 
 // Astro components
 export { default as ShellMobileNavPanel } from './components/MobileNavPanel.astro';
-export { default as ShellSiteNavbar } from './components/SiteNavbar.astro';

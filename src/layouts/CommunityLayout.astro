@@ -1,12 +1,11 @@
 ---
 import Layout from './BaseLayout.astro';
-import SiteNavbar from '~/features/shell-community/components/SiteNavbar.astro';
+import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
-import { navBarConfig } from '~/lib/config/fuwari-community';
+import { allMenuItems } from '~/features/shell/menus';
 import { footerData, filterNavbarByNames } from '~/lib/navigation';
-import { LinkPresets } from '~/lib/constants/link-presets';
-import { LinkPreset, type NavBarLink } from '~/types/config';
+import type { NavBarLink } from '~/types/config';
 import type { MetaData } from '~/types/core';
 
 export interface Props {
@@ -16,20 +15,12 @@ export interface Props {
 
 const { metadata, navItems } = Astro.props;
 
-// community 模块顶栏：直接使用完整社区配置，由页面用 navItems 白名单挑选
-const navbarLinks: NavBarLink[] = filterNavbarByNames(
-  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
-    if (typeof item === 'number') {
-      return LinkPresets[item];
-    }
-    return item;
-  }),
-  navItems,
-);
+// 社区顶栏：从统一菜单池用 navItems 白名单挑选；桌面 SiteNavbar 与移动端共用
+const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
 ---
 
 <Layout metadata={metadata} navbarLinks={navbarLinks}>
-  <SiteNavbar links={navbarLinks} />
+  <SiteNavbar links={navbarLinks} module="community" />
   <main>
     <slot />
   </main>

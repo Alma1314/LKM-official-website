@@ -1,5 +1,8 @@
 import type { NavBarLink } from '~/types/config';
 
+/** 官网默认顶栏一级菜单（原官方 navbar 的 4 项），供无显式 navItems 的布局兜底。 */
+export const officialDefaultNavItems: string[] = ['主页', '新闻资讯', '寻求帮助', '七月团队'];
+
 /**
  * 全站统一导航菜单池（原 config.yaml fuwari.navbar 与 fuwari.navbarCommunity 合并）。
  * 页面用 navItems 白名单从该池中挑选要显示的一级菜单。

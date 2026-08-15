@@ -5,8 +5,11 @@ import SideBar from '~/features/shell/components/BlogSidePanel.astro';
 import type { MarkdownHeading } from 'astro';
 import { Icon } from 'astro-icon/components';
 import TOC from '~/features/shell/components/TOC.astro';
-import SiteNavbar from '~/features/shell/components/SiteNavbar.astro';
+import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
+import { allMenuItems } from '~/features/shell/menus';
+import { filterNavbarByNames } from '~/lib/navigation';
 import { siteConfig } from '~/lib/config';
+import type { NavBarLink } from '~/types/config';
 import { BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT } from '~/lib/constants/constants';
 import Layout from './BlogLayout.astro';
 
@@ -18,21 +21,32 @@ interface Props {
   setOGTypeArticle?: boolean;
   headings?: MarkdownHeading[];
   username?: string;
+  navItems?: string[];
 }
 
-const { title, banner, description, lang, setOGTypeArticle, headings = [], username } = Astro.props;
+const { title, banner, description, lang, setOGTypeArticle, headings = [], username, navItems } = Astro.props;
 const hasBannerCredit = siteConfig.banner.enable && siteConfig.banner.credit.enable;
 const hasBannerLink = !!siteConfig.banner.credit.url;
 
 const mainPanelTop = siteConfig.banner.enable
   ? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
   : '5.5rem';
+
+// 博客网格顶栏：从统一菜单池用 navItems 白名单挑选（桌面 SiteNavbar），并向底层 BlogLayout 透传（移动端）
+const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
 ---
 
-<Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
+<Layout
+  title={title}
+  banner={banner}
+  description={description}
+  lang={lang}
+  setOGTypeArticle={setOGTypeArticle}
+  navItems={navItems}
+>
   <!-- Navbar -->
   <slot slot="head" name="head" />
-  <SiteNavbar class="transition-all" />
+  <SiteNavbar class="transition-all" links={navbarLinks} />
 
   <!-- Banner -->
   {

@@ -40,6 +40,4 @@ export {
 export * from '~/features/shell/common/shell-events';
 
 // 差异化组件
-export { default as ShellFuwariNavbar } from './components/FuwariNavbar.astro';
-export { default as ShellSiteNavbar } from './components/SiteNavbar.astro';
 export { communitySidebarLinks } from './data/community-sidebar';
