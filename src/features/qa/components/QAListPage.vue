@@ -1,66 +1,59 @@
 <template>
-  <NMessageProvider>
-    <NDialogProvider>
-      <NModalProvider>
-        <div class="space-y-6">
-          <div class="flex items-center justify-between">
-            <div class="flex gap-2 border-b border-surface-3 flex-1">
-              <button
-                v-for="tab in tabs"
-                :key="tab.key"
-                class="px-4 py-3 text-sm font-medium transition-colors relative"
-                :class="activeTab === tab.key ? 'text-primary' : 'text-text-muted hover:text-deep-text'"
-                @click="activeTab = tab.key"
-              >
-                {{ tab.label }}
-                <div
-                  v-if="activeTab === tab.key"
-                  class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full"
-                ></div>
-              </button>
-            </div>
-            <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0" @click="askModalOpen = true">
-              我要提问
-            </button>
-          </div>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between">
+      <div class="flex gap-2 border-b border-surface-3 flex-1">
+        <button
+          v-for="tab in tabs"
+          :key="tab.key"
+          class="px-4 py-3 text-sm font-medium transition-colors relative"
+          :class="activeTab === tab.key ? 'text-primary' : 'text-text-muted hover:text-deep-text'"
+          @click="activeTab = tab.key"
+        >
+          {{ tab.label }}
+          <div
+            v-if="activeTab === tab.key"
+            class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full"
+          ></div>
+        </button>
+      </div>
+      <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0" @click="askModalOpen = true">
+        我要提问
+      </button>
+    </div>
 
-          <div class="space-y-3">
-            <a v-for="q in filteredQuestions" :key="q.id" :href="buildUrl(`/qa/${q.id}`)" class="profile-card group block">
-              <div class="profile-inner p-4 flex flex-col gap-2">
-                <div class="flex items-center gap-2">
-                  <span
-                    class="text-xs px-1.5 py-0.5 rounded-full font-medium"
-                    :class="
-                      q.status === 'resolved'
-                        ? 'bg-green-100 dark:bg-green-950/30 text-green-500'
-                        : 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500'
-                    "
-                  >
-                    {{ q.status === 'resolved' ? '已解决' : '待解决' }}
-                  </span>
-                  <span v-if="q.bounty" class="text-xs text-amber-500 font-medium">{{ q.bounty }} 积分悬赏</span>
-                </div>
-                <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-                  {{ q.title }}
-                </h3>
-                <div class="flex items-center justify-between text-xs text-text-muted/60">
-                  <span>{{ q.askerName }} · {{ formatTime(q.createdAt) }}</span>
-                  <span>{{ q.answerCount }} 回答 · {{ q.viewCount }} 浏览</span>
-                </div>
-              </div>
-            </a>
+    <div class="space-y-3">
+      <a v-for="q in filteredQuestions" :key="q.id" :href="buildUrl(`/qa/${q.id}`)" class="profile-card group block">
+        <div class="profile-inner p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <span
+              class="text-xs px-1.5 py-0.5 rounded-full font-medium"
+              :class="
+                q.status === 'resolved'
+                  ? 'bg-green-100 dark:bg-green-950/30 text-green-500'
+                  : 'bg-yellow-100 dark:bg-yellow-950/30 text-yellow-500'
+              "
+            >
+              {{ q.status === 'resolved' ? '已解决' : '待解决' }}
+            </span>
+            <span v-if="q.bounty" class="text-xs text-amber-500 font-medium">{{ q.bounty }} 积分悬赏</span>
           </div>
-
-          <AskQuestionModal v-model:show="askModalOpen" />
+          <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-1">
+            {{ q.title }}
+          </h3>
+          <div class="flex items-center justify-between text-xs text-text-muted/60">
+            <span>{{ q.askerName }} · {{ formatTime(q.createdAt) }}</span>
+            <span>{{ q.answerCount }} 回答 · {{ q.viewCount }} 浏览</span>
+          </div>
         </div>
-      </NModalProvider>
-    </NDialogProvider>
-  </NMessageProvider>
+      </a>
+    </div>
+
+    <AskQuestionModal v-model:show="askModalOpen" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NMessageProvider, NDialogProvider, NModalProvider } from 'naive-ui';
 import { mockQuestions } from '../data/mock-questions';
 import { buildUrl } from '~/lib/utils/paths';
 import AskQuestionModal from './AskQuestionModal.vue';
