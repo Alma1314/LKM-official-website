@@ -8,15 +8,7 @@ export function searchFiles(files: MockFile[], query: string): MockFile[] {
   const keyword = query.trim().toLowerCase();
   if (!keyword) return [];
   return files.filter((f) => {
-    const haystack = [
-      f.originalName,
-      f.description,
-      f.categoryName,
-      f.uploaderName,
-      ...f.tags,
-    ]
-      .join(' ')
-      .toLowerCase();
+    const haystack = [f.originalName, f.description, f.categoryName, f.uploaderName, ...f.tags].join(' ').toLowerCase();
     return haystack.includes(keyword);
   });
 }

@@ -10,11 +10,7 @@
     >
       全部学科
     </button>
-    <span
-      v-for="node in path"
-      :key="node.id"
-      class="flex items-center gap-1"
-    >
+    <span v-for="node in path" :key="node.id" class="flex items-center gap-1">
       <span class="text-text-muted/60 select-none">/</span>
       <button
         class="px-1.5 py-0.5 rounded-md transition-colors"

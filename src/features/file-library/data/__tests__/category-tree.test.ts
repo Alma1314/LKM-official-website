@@ -31,7 +31,10 @@ describe('category-tree 数据完整性', () => {
   it('无自环：getCategoryPath 对所有节点都能返回到根', () => {
     for (const c of fileCategories) {
       const path = getCategoryPath(c.id);
-      expect(path.map((p) => p.id), `无法回溯: ${c.id}`).toContain(c.id);
+      expect(
+        path.map((p) => p.id),
+        `无法回溯: ${c.id}`
+      ).toContain(c.id);
       // 根能连到一级：路径首节点是一级
       expect(path[0] && path[0].parentId === null).toBe(true);
     }
@@ -57,11 +60,7 @@ describe('getChildren', () => {
 describe('getCategoryPath', () => {
   it('叶子分类回溯到根（四层路径）', () => {
     const path = getCategoryPath('math-linear-algebra');
-    expect(path.map((c) => c.id)).toEqual([
-      'basic-science',
-      'math',
-      'math-linear-algebra',
-    ]);
+    expect(path.map((c) => c.id)).toEqual(['basic-science', 'math', 'math-linear-algebra']);
     expect(path.map((c: FileCategory) => c.name)).toEqual(['基础学科', '数学', '线性代数']);
   });
 
