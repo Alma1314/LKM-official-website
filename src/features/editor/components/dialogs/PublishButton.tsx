@@ -139,12 +139,7 @@ export default function PublishButton({
         </button>
       ) : (
         <div className="flex gap-1">
-          <button
-            type="button"
-            className="rte-btn rte-btn--primary rte-btn--xs"
-            onClick={handlePublish}
-            title="发布"
-          >
+          <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish} title="发布">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"

@@ -80,7 +80,8 @@ function renderText(node: JSONContent): string {
     else if (mark.type === 'strike') out = `<del>${out}</del>`;
     else if (mark.type === 'code') out = `<code>${out}</code>`;
     else if (mark.type === 'link') out = `<a href="${escapeHtml(mark.attrs?.href ?? '#')}">${out}</a>`;
-    else if (mark.type === 'inlineMath') out = `<span class="math-inline">$${escapeHtml(mark.attrs?.latex ?? '')}$</span>`;
+    else if (mark.type === 'inlineMath')
+      out = `<span class="math-inline">$${escapeHtml(mark.attrs?.latex ?? '')}$</span>`;
   }
   return out;
 }

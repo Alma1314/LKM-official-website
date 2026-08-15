@@ -66,10 +66,7 @@ export function detectWiki(text: string): Detected | null {
  * @param getDocs 惰性获取已发布文档索引（懒加载，仅在调用时求值）
  * @returns 指向文档的绝对路径，或空串表示无匹配
  */
-export function wikiHref(
-  label: string,
-  getDocs: () => Array<{ title: string; slug?: string }>,
-): string {
+export function wikiHref(label: string, getDocs: () => Array<{ title: string; slug?: string }>): string {
   const hit = getDocs().find((d) => d.title === label && d.slug);
   return hit && hit.slug ? `/docs/${hit.slug}` : '';
 }

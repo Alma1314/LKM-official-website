@@ -253,7 +253,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           .setTextSelection({ from: cand.from, to: cand.to })
           .insertContent({ type: 'text', text: cand.label, marks: [{ type: 'link', attrs: { href: cand.href } }] })
           .run();
-        editor.chain().focus().setTextSelection(Math.max(0, cand.from + cand.label.length)).run();
+        editor
+          .chain()
+          .focus()
+          .setTextSelection(Math.max(0, cand.from + cand.label.length))
+          .run();
       } else {
         // wiki 的 href 需实时查已发布索引（slug 贯通后不再 cast）
         const docList = await Promise.resolve(adapter.listDocuments());
@@ -265,7 +269,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           .setTextSelection({ from: cand.from, to: cand.to })
           .insertContent({ type: 'wikiLink', attrs: { href, label: cand.label } })
           .run();
-        editor.chain().focus().setTextSelection(Math.max(0, cand.from + cand.label.length)).run();
+        editor
+          .chain()
+          .focus()
+          .setTextSelection(Math.max(0, cand.from + cand.label.length))
+          .run();
       }
     };
 
@@ -287,7 +295,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       const attach = $from.parent.textBetween(Math.max(0, $from.parentOffset - 60), $from.parentOffset);
       const attachMatch = attach.match(/!\[\[([^\]]*)\]\]$/);
       if (attachMatch) {
-        pendingImageReplace.current = { from: $from.pos - attachMatch[0].length, to: $from.pos, syntax: attachMatch[0] };
+        pendingImageReplace.current = {
+          from: $from.pos - attachMatch[0].length,
+          to: $from.pos,
+          syntax: attachMatch[0],
+        };
         setImagePickerOpen(true);
         return;
       }
@@ -299,9 +311,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       if (pending) {
         const close = pending.kind === 'wiki' ? ']]' : ')';
         // href 闭括号后跟的是 url（`[label](url)` 以 `)` 收尾），与 wiki 不同；直接复用探测器更稳。
-        const stillClosing = pending.kind === 'wiki'
-          ? parentText.endsWith(close)
-          : detectLink(parentText) !== null;
+        const stillClosing = pending.kind === 'wiki' ? parentText.endsWith(close) : detectLink(parentText) !== null;
         if (!stillClosing) {
           pendingConvertRef.current = null;
           await applyConvert(pending);
@@ -421,7 +431,17 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
       setMode(newMode);
     },
-    [mode, editor, exportMdxContent, importMdxContent, sourceMdxRef, frontmatterRef, lastValidEditorJsonRef, sourceKind, htmlSource]
+    [
+      mode,
+      editor,
+      exportMdxContent,
+      importMdxContent,
+      sourceMdxRef,
+      frontmatterRef,
+      lastValidEditorJsonRef,
+      sourceKind,
+      htmlSource,
+    ]
   );
 
   const handleSourceChange = useCallback(
@@ -444,7 +464,13 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       const doc = await adapter.loadDocument(docId);
       if (doc) {
         // 发布时落库 slug（未填则沿用既有 slug，供 wiki 双链 /docs/<slug> 解析）
-        const updated: DocumentData = { ...doc, title, slug: slug || doc.slug, status: 'published', updatedAt: new Date().toISOString() };
+        const updated: DocumentData = {
+          ...doc,
+          title,
+          slug: slug || doc.slug,
+          status: 'published',
+          updatedAt: new Date().toISOString(),
+        };
         await adapter.saveDocument(updated);
         await adapter.saveVersion(docId, updated, '发布');
         setRefreshKey((k) => k + 1);
