@@ -16,9 +16,9 @@ import Analytics from '~/features/shell/common/components/Analytics.astro';
 import SecurityHeaders from '~/features/shell/common/components/SecurityHeaders.astro';
 import BasicScripts from '~/features/shell/common/components/BasicScripts.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
-import { navBarConfig } from '~/lib/config';
-import { LinkPresets } from '~/lib/constants/link-presets';
-import { LinkPreset, type NavBarLink } from '~/types/config';
+import { allMenuItems, officialDefaultNavItems } from '~/features/shell/menus';
+import { filterNavbarByNames } from '~/lib/navigation';
+import type { NavBarLink } from '~/types/config';
 
 // 注释下面这行以禁用 View Transitions
 import { ClientRouter } from 'astro:transitions';
@@ -27,18 +27,15 @@ import type { MetaData as MetaDataType } from '~/types/core';
 
 export interface Props {
   metadata?: MetaDataType;
+  navbarLinks?: NavBarLink[];
 }
 
-const { metadata = {} } = Astro.props;
+const { metadata = {}, navbarLinks: navbarLinksProp } = Astro.props;
 const { language, textDirection } = I18N;
 const baseUrl = import.meta.env.BASE_URL;
 
-const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
-  if (typeof item === 'number') {
-    return LinkPresets[item];
-  }
-  return item;
-});
+// 未传入 navbarLinks 时，兜底为官网默认菜单（官方 4 项）
+const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenuItems, officialDefaultNavItems);
 ---
 
 <!doctype html>

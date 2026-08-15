@@ -17,7 +17,12 @@ const sidebarLinks = [
 ];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/services')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={sidebarLinks}
+  currentPath={getPermalink('/official/services')}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   <!-- 首屏 -->
   <HeroText
     title="让科技回归每一个人"

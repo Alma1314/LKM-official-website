@@ -11,7 +11,11 @@ const metadata = {
 };
 ---
 
-<Layout metadata={metadata} currentPath={getPermalink('/official/pricing')}>
+<Layout
+  metadata={metadata}
+  currentPath={getPermalink('/official/pricing')}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   <!-- 首屏 -->
   <HeroText
     title="让科技传播走得更远"

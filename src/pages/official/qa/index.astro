@@ -7,7 +7,12 @@ import { getPermalink } from '~/lib/utils/permalinks';
 const metadata = { title: '帮助/求助 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/qa')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink('/qa')}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">帮助/求助</h1>
     <div style="min-height: 400px"><QAListPage client:only="vue" /></div>

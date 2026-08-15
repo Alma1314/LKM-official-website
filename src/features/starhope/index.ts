@@ -1,4 +1,4 @@
-export { setStarHopeAuthContext, useAuthStore } from './stores-vue/auth';
+export { useAuthStore } from './stores-vue/auth';
 export { useQuestionBankStore } from './stores-vue/question-bank';
 export { usePracticeStore } from './stores-vue/practice';
 export { useNavigationStore, navigation } from './stores-vue/navigation';

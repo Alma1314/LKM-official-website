@@ -1,29 +1,16 @@
 ---
 import Layout from '~/layouts/OfficialSidebarLayout.astro';
+import ArticleSingle from '~/features/official-articles/components/ArticleSingle.astro';
+import RelatedPosts from '~/features/official-articles/components/RelatedPosts.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import { fetchAllArticles, type ArticleDetail } from '~/lib/api';
 
-interface ArticleDetail {
-  slug: string;
-  title: string;
-  description: string;
-  cover: string;
-  category: string;
-  published: string;
-  views: number;
-  likes: number;
-  comments: number;
-  bookmarks: number;
-  department: string;
-  publisher: string;
-  content: string;
-  keywords: string[];
-}
+const { slug } = Astro.params as { slug: string };
 
-const { slug } = Astro.params;
-
-const { data: article, error } = await ssrFetch<ArticleDetail>(`/api/articles/${slug}`, {
+const { data: article, error } = await ssrFetch<ArticleDetail>(`/api/v1/articles/${slug}`, {
   fallback: null,
 });
 logSsrError(`文章详情 ${slug}`, error);
@@ -39,19 +26,11 @@ if (error || !article) {
   );
 }
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-}
+const processor = await createMarkdownProcessor();
+const rendered = await processor.render(article.content);
+const headings = rendered.metadata.headings;
 
-const categoryLabels: Record<string, string> = {
-  announcement: '公告',
-  architecture: '架构',
-  security: '安全',
-  engineering: '工程',
-  ai: 'AI',
-  community: '社区',
-  culture: '文化',
-};
+const { articles: allArticles } = await fetchAllArticles();
 
 const metadata = { title: `${article.title} —— 理科迷` };
 ---
@@ -60,56 +39,18 @@ const metadata = { title: `${article.title} —— 理科迷` };
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink(`/official/articles/${slug}`)}
+  showFooter={false}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
 >
   <div class="space-y-6">
-    <!-- 返回链接 -->
     <a href={getPermalink('/official/articles')} class="text-sm text-text-muted hover:text-primary transition-colors">
       &larr; 返回文章列表
     </a>
 
-    <!-- 头部 -->
-    <div>
-      {
-        article.category && (
-          <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary mb-3">
-            {categoryLabels[article.category] || article.category}
-          </span>
-        )
-      }
-      <h1 class="text-3xl font-bold text-deep-text mb-2">{article.title}</h1>
-      <p class="text-text-muted mb-3">{article.description}</p>
-      <div class="flex items-center gap-4 text-sm text-text-muted">
-        <span>{article.publisher}</span>
-        <span>{formatDate(article.published)}</span>
-        <span>{article.views} 阅读</span>
-        <span>{article.likes} 赞</span>
-        <span>{article.comments} 评论</span>
-        <span>{article.bookmarks} 收藏</span>
-      </div>
-    </div>
+    <ArticleSingle article={article} headings={headings}>
+      <Fragment set:html={rendered.code} />
+    </ArticleSingle>
 
-    <!-- 封面 -->
-    {article.cover && <img src={article.cover} alt={article.title} class="w-full rounded-xl object-cover max-h-96" />}
-
-    <!-- 文章内容 -->
-    <article class="bg-card-bg border border-surface-3 rounded-xl p-6 prose prose-slate max-w-none">
-      <Fragment set:html={article.content} />
-    </article>
-
-    <!-- 关键词 -->
-    {
-      article.keywords?.length > 0 && (
-        <div class="flex flex-wrap gap-2">
-          {article.keywords.map((kw) => (
-            <span class="text-xs px-2 py-1 rounded-full bg-surface-3 text-text-muted">{kw}</span>
-          ))}
-        </div>
-      )
-    }
-
-    <!-- 底部操作 -->
-    <div class="flex items-center gap-4 py-4 border-t border-surface-3">
-      <span class="text-sm text-text-muted">{article.department}</span>
-    </div>
+    <RelatedPosts articles={allArticles} currentSlug={article.slug} currentCategory={article.category} />
   </div>
 </Layout>

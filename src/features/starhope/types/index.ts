@@ -23,6 +23,7 @@ export interface Folder {
   name: string;
   parentId: string | null;
   sort: number;
+  updatedAt: string;
 }
 
 export interface PracticeSession {
@@ -38,6 +39,7 @@ export interface PracticeSession {
   completedAt?: string;
   timeLimit?: number;
   passingGrade?: number;
+  updatedAt: string;
 }
 
 export interface AiAgent {
@@ -52,6 +54,7 @@ export interface AiAgent {
   topP: number;
   maxTokens: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface AiMessage {
@@ -61,4 +64,13 @@ export interface AiMessage {
   content: string;
   attachments?: { name: string; data: string; type: string }[];
   timestamp: string;
+}
+
+export interface SyncOp {
+  id?: number;
+  entity: 'questions' | 'folders' | 'sessions' | 'agents';
+  entityId: string;
+  op: 'upsert' | 'delete';
+  payload?: unknown;
+  updatedAt: string;
 }

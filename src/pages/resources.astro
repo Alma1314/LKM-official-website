@@ -4,7 +4,7 @@ import Section from '~/features/homepage/components/Section.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
 ---
 
-<OfficialLayout metadata={{ title: '资源' }}>
+<OfficialLayout metadata={{ title: '资源' }} navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}>
   <div class="max-w-6xl mx-auto py-12 px-4">
     <a href={getPermalink('/')} class="inline-flex items-center gap-1 text-sm text-primary hover:underline mb-6">
       ← 返回首页

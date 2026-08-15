@@ -15,7 +15,12 @@ function gridCols(count: number): string {
 }
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/forum')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink('/forum')}
+  navItems={['社区主页', '博客', '资源', '我的']}
+>
   <div class="space-y-10">
     <div>
       <h1 class="text-3xl font-bold text-deep-text">板块广场</h1>

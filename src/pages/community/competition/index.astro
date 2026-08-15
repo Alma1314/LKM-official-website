@@ -7,7 +7,12 @@ import { getPermalink } from '~/lib/utils/permalinks';
 const metadata = { title: '竞赛 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/competition')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink('/competition')}
+  navItems={['社区主页', '博客', '资源', '我的']}
+>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">竞赛大厅</h1>
     <div style="min-height: 400px"><CompetitionHall client:only="vue" /></div>

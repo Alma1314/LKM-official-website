@@ -151,6 +151,7 @@ function getInstance(): AxiosInstance {
         (url.startsWith('/api/v1/auth/') &&
           !url.startsWith('/api/v1/auth/login') &&
           !url.startsWith('/api/v1/auth/reg')) ||
+        url.startsWith('/api/v1/starhope/') ||
         url.startsWith('/graphql');
       if (needsAuth && config.headers) {
         (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;

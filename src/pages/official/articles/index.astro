@@ -6,7 +6,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 import type { OfficialArticle, OfficialArticleListData } from '~/lib/api/modules/official-articles';
 
-const { data: listData, error } = await ssrFetch<OfficialArticleListData>('/api/articles?page=1&page_size=50', {
+const { data: listData, error } = await ssrFetch<OfficialArticleListData>('/api/v1/articles?page=1&page_size=50', {
   fallback: { items: [], total: 0 },
 });
 logSsrError('文章列表', error);
@@ -15,7 +15,12 @@ const articles = (listData?.items ?? []) as OfficialArticle[];
 const metadata = { title: '官方文章 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink('/official/articles')}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">官方文章</h1>
 
