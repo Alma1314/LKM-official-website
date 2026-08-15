@@ -5,7 +5,10 @@ import StarHopeRouter from './StarHopeRouter.vue';
 import { useAuthStore } from '../stores-vue/auth';
 import { pullAll } from '../sync/sync';
 
-const { isLoggedIn } = useAuthStore();
+const { isLoggedIn, restore } = useAuthStore();
+
+// 恢复主站登录态，确保进入 StarHope 时已识别登录状态（否则 AuthGuard 会误判未登录）
+restore();
 
 watch(
   isLoggedIn,

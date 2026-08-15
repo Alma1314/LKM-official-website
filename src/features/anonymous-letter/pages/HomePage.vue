@@ -10,8 +10,8 @@
         <p class="hero-sub">把心事交给风，把秘密留给树洞。</p>
         <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
         <div class="hero-acts">
-          <a :href="buildUrl('/treehole/write')" class="btn-grad">✍️ 写一封信</a>
-          <a :href="buildUrl('/treehole/random')" class="chip">🎲 随机树洞</a>
+          <a :href="buildUrl('/community/treehole/write')" class="btn-grad">✍️ 写一封信</a>
+          <a :href="buildUrl('/community/treehole/random')" class="chip">🎲 随机树洞</a>
         </div>
       </section>
 
