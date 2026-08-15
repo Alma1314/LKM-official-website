@@ -12,7 +12,7 @@ const comp = mockCompetitions.find((c) => c.id === id);
 const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详情' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/competition/${id}`)}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/competition/${id}`)} navItems={['社区主页','博客','资源','我的']}>
   {
     comp ? (
       <div class="space-y-6">

@@ -28,7 +28,7 @@ function formatDate(dateStr: string): string {
 const metadata = { title: `${question.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/qa/${questionId}`)}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/qa/${questionId}`)} navItems={['主页','新闻资讯','寻求帮助','七月团队','资源']}>
   <div class="space-y-6 max-w-3xl">
     <!-- 问题 -->
     <div>

@@ -34,7 +34,7 @@ const otherArticles = getArticlesByColumnId(column.id)
 const metadata = { title: `${article.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/columns/${slug}`)}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/columns/${slug}`)} navItems={['社区主页','博客','资源','我的']}>
   <div class="max-w-3xl mx-auto">
     <!-- 面包屑 -->
     <div class="flex items-center gap-2 text-sm text-text-muted/60 mb-6">

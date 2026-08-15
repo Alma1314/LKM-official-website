@@ -15,7 +15,7 @@ const articles = (listData?.items ?? []) as OfficialArticle[];
 const metadata = { title: '官方文章 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')} navItems={['主页','新闻资讯','寻求帮助','七月团队','资源']}>
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">官方文章</h1>
 

@@ -7,6 +7,6 @@ import { getPermalink } from '~/lib/utils/permalinks';
 const metadata = { title: '提出问题 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/qa/ask')}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/qa/ask')} navItems={['主页','新闻资讯','寻求帮助','七月团队','资源']}>
   <div style="min-height: 400px"><AskFormPage client:only="vue" /></div>
 </Layout>

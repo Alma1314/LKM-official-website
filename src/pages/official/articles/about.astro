@@ -6,7 +6,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
 const metadata = { title: '关于 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')}>
+<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/official/articles')} navItems={['主页','新闻资讯','寻求帮助','七月团队','资源']}>
   <div class="space-y-6">
     <header>
       <h1 class="text-3xl font-bold text-deep-text">关于</h1>
