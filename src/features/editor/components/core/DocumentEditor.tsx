@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo, Suspense, lazy } from 'react';
 import type { ReactElement } from 'react';
 import FullscreenButton from '../toolbar/FullscreenButton';
 import CommentPanel from '../panels/CommentPanel';
@@ -7,6 +7,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '../../engine/extensions/index';
 import { useEditorPersistence } from '../../hooks/useEditorPersistence';
 import { exportMdx } from '../../engine/mdx/index';
+import { serializeHtml } from '../../engine/serialize-html';
 import type { PersistenceAdapter, EditorMode, VersionEntry, DocumentData } from '../../engine/types';
 import EditorToolbar from '../toolbar/EditorToolbar';
 import ModeTabs from './ModeTabs';
@@ -71,6 +72,9 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
   // 评论面板状态
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
+
+  // 源码视图类型（MDX / HTML）
+  const [sourceKind, setSourceKind] = useState<'mdx' | 'html'>('mdx');
 
   // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
@@ -369,6 +373,13 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   const charCount = metrics.characters;
   const wordCount = metrics.words;
 
+  // HTML 源码（只读查看）：随编辑器内容变化重新生成
+  const htmlSource = useMemo(() => {
+    if (!editor) return '';
+    const content = (editor.getJSON().content ?? []) as Parameters<typeof serializeHtml>[0];
+    return serializeHtml(content);
+  }, [editor?.state.doc]);
+
   return (
     <div className="rte-container">
       {/* Tier 1: sticky 顶栏容器（两行一起固定） */}
@@ -513,15 +524,39 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           )}
         </div>
       ) : mode === 'source' ? (
-        <Suspense
-          fallback={
-            <div className="rte-loading">
-              <div className="rte-spinner" />
-            </div>
-          }
-        >
-          <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
-        </Suspense>
+        <div className="flex flex-col flex-1 min-h-0">
+          <div className="flex items-center gap-1 p-2 border-b border-surface-3 shrink-0">
+            <button
+              type="button"
+              className={`rte-mode-tab ${sourceKind === 'mdx' ? 'is-active' : ''}`}
+              onClick={() => setSourceKind('mdx')}
+            >
+              MDX
+            </button>
+            <button
+              type="button"
+              className={`rte-mode-tab ${sourceKind === 'html' ? 'is-active' : ''}`}
+              onClick={() => setSourceKind('html')}
+            >
+              HTML
+            </button>
+          </div>
+          <div className="flex-1 min-h-0">
+            <Suspense
+              fallback={
+                <div className="rte-loading">
+                  <div className="rte-spinner" />
+                </div>
+              }
+            >
+              {sourceKind === 'mdx' ? (
+                <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
+              ) : (
+                <SourceEditor value={htmlSource} onChange={() => {}} readOnly />
+              )}
+            </Suspense>
+          </div>
+        </div>
       ) : mode === 'preview' && editor ? (
         <PreviewPanel editor={editor} />
       ) : (

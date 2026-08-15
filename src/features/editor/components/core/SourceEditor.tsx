@@ -31,9 +31,10 @@ const markdownHighlightStyle = HighlightStyle.define([
 interface SourceEditorProps {
   value: string;
   onChange: (value: string) => void;
+  readOnly?: boolean;
 }
 
-export default function SourceEditor({ value, onChange }: SourceEditorProps): ReactElement {
+export default function SourceEditor({ value, onChange, readOnly = false }: SourceEditorProps): ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const editorViewRef = useRef<EditorView | null>(null);
   const isInternalRef = useRef(false);
@@ -46,6 +47,7 @@ export default function SourceEditor({ value, onChange }: SourceEditorProps): Re
       doc: value,
       extensions: [
         markdown(),
+        ...(readOnly ? [EditorState.readOnly.of(true), EditorView.editable.of(false)] : []),
         lineNumbers(),
         highlightActiveLine(),
         bracketMatching(),
