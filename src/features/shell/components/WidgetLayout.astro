@@ -1,8 +1,7 @@
 ---
 import { twMerge } from 'tailwind-merge';
 import { Icon } from 'astro-icon/components';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 
 interface Props {
   id: string;
@@ -41,7 +40,7 @@ const className = Astro.props.class;
       <div class="expand-btn px-4 -mb-2">
         <button class="btn-plain rounded-lg w-full h-9">
           <div class="text-primary flex items-center justify-center gap-2 -translate-x-2">
-            <Icon name="material-symbols:more-horiz" class="text-[1.75rem]" /> {i18n(I18nKey.more)}
+            <Icon name="material-symbols:more-horiz" class="text-[1.75rem]" /> {t('common.more')}
           </div>
         </button>
       </div>

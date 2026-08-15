@@ -3,7 +3,7 @@
     <AuthStatus v-if="error" type="error" :message="error" class="mb-4" />
     <div v-else class="flex flex-col items-center gap-3 py-6">
       <span class="loading loading-spinner loading-lg text-primary"></span>
-      <p class="text-sm text-text-muted">正在完成第三方登录…</p>
+      <p class="text-sm text-text-muted">{{ t('auth.oauth.completing') }}</p>
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '~/stores/auth';
+import { t } from '~/lib/i18n';
 import AuthStatus from '../shared/AuthStatus.vue';
 
 /**
@@ -76,6 +77,6 @@ onMounted(() => {
     return;
   }
 
-  error.value = '第三方登录未能完成，请重试';
+  error.value = t('auth.oauth.failed');
 });
 </script>

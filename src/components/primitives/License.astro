@@ -1,8 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { licenseConfig, profileConfig } from '~/lib/config';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { formatDateToYYYYMMDD } from '~/lib/utils/date-utils';
 
 interface Props {
@@ -28,15 +27,15 @@ const postUrl = decodeURIComponent(Astro.url.toString());
   </a>
   <div class="flex gap-6 mt-2">
     <div>
-      <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.author)}</div>
+      <div class="transition text-black/30 dark:text-white/30 text-sm">{t('blog.author')}</div>
       <div class="transition text-black/75 dark:text-white/75 line-clamp-2">{profileConf.name}</div>
     </div>
     <div>
-      <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.publishedAt)}</div>
+      <div class="transition text-black/30 dark:text-white/30 text-sm">{t('blog.publishedAt')}</div>
       <div class="transition text-black/75 dark:text-white/75 line-clamp-2">{formatDateToYYYYMMDD(pubDate)}</div>
     </div>
     <div>
-      <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.license)}</div>
+      <div class="transition text-black/30 dark:text-white/30 text-sm">{t('blog.license')}</div>
       <a href={licenseConf.url} target="_blank" rel="noopener noreferrer" class="link text-primary line-clamp-2"
         >{licenseConf.name}</a
       >

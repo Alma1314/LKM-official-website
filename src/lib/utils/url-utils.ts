@@ -1,5 +1,4 @@
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { buildUrl } from './paths';
 
 export function pathsEqual(path1: string, path2: string): boolean {
@@ -18,11 +17,7 @@ export function getTagUrl(tag: string): string {
 }
 
 export function getCategoryUrl(category: string | null): string {
-  if (
-    !category ||
-    category.trim() === '' ||
-    category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
-  )
+  if (!category || category.trim() === '' || category.trim().toLowerCase() === t('blog.uncategorized').toLowerCase())
     return buildUrl('/blog/archive/?uncategorized=true');
   return buildUrl(`/blog/archive/?category=${encodeURIComponent(category.trim())}`);
 }

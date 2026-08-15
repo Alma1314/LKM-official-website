@@ -6,6 +6,10 @@ const projectConfig: Record<string, unknown> = {
     base: '/LKM-official-website',
     trailingSlash: false,
   },
+  i18n: {
+    language: 'zh-cn',
+    textDirection: 'ltr',
+  },
   apps: {
     blog: {
       isEnabled: true,

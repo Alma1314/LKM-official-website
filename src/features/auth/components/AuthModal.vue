@@ -5,7 +5,7 @@
       class="fixed inset-0 z-[100] flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
-      aria-label="认证对话框"
+      aria-label="Authentication dialog"
       @keydown.esc="close"
     >
       <!-- 遮罩：点击关闭 -->
@@ -17,7 +17,7 @@
         <button
           type="button"
           class="absolute top-4 right-4 btn btn-ghost btn-sm btn-circle z-10"
-          aria-label="关闭"
+          :aria-label="t('common.close')"
           @click="close"
         >
           &#10005;
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { t } from '~/lib/i18n';
 import LoginPage from './login/LoginPage.vue';
 import RegisterPage from './register/RegisterPage.vue';
 import RecoveryPage from './recovery/RecoveryPage.vue';

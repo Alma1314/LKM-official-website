@@ -1,6 +1,5 @@
 ---
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { getCategoryList } from '~/lib/utils/content-utils';
 import { ButtonLink } from '~/components/primitives';
 import WidgetLayout from './WidgetLayout.astro';
@@ -21,7 +20,7 @@ const style = Astro.props.style;
 ---
 
 <WidgetLayout
-  name={i18n(I18nKey.categories)}
+  name={t('blog.categories')}
   id="categories"
   isCollapsed={isCollapsed}
   collapsedHeight={COLLAPSED_HEIGHT}

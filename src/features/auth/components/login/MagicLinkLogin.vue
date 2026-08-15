@@ -4,18 +4,22 @@
     <div v-if="stage === 'sent'" class="text-center space-y-4">
       <div class="rounded-xl border border-surface-3 bg-page-bg p-6 space-y-4">
         <div class="text-4xl">📧</div>
-        <p class="font-semibold text-deep-text">魔法链接已发送</p>
+        <p class="font-semibold text-deep-text">{{ t('auth.login.magicSentTitle') }}</p>
         <p class="text-sm text-text-muted">
-          模拟已向 <span class="font-semibold">{{ email }}</span> 发送登录链接
+          {{ t('auth.login.magicSentSimulation') }} <span class="font-semibold">{{ email }}</span>
         </p>
         <div class="flex flex-col gap-2">
           <button type="button" class="btn btn-primary btn-sm" @click="handleSimulateClick" :disabled="loading">
             <span v-if="loading" class="loading loading-spinner loading-xs"></span>
-            <template v-else>模拟点击邮件链接</template>
+            <template v-else>{{ t('auth.login.simulateClick') }}</template>
           </button>
           <div class="flex gap-2 justify-center">
-            <button type="button" class="btn btn-ghost btn-xs" @click="stage = 'expired'">模拟链接已过期</button>
-            <button type="button" class="btn btn-ghost btn-xs" @click="stage = 'used'">模拟链接已使用</button>
+            <button type="button" class="btn btn-ghost btn-xs" @click="stage = 'expired'">
+              {{ t('auth.login.simulateExpired') }}
+            </button>
+            <button type="button" class="btn btn-ghost btn-xs" @click="stage = 'used'">
+              {{ t('auth.login.simulateUsed') }}
+            </button>
           </div>
         </div>
       </div>
@@ -23,28 +27,37 @@
 
     <!-- Expired state -->
     <div v-else-if="stage === 'expired'" class="text-center space-y-4">
-      <div class="alert alert-warning"><span>链接已过期，请重新获取</span></div>
-      <button type="button" class="btn btn-ghost btn-sm" @click="stage = 'input'">返回重新发送</button>
+      <div class="alert alert-warning">
+        <span>{{ t('auth.login.linkExpired') }}</span>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" @click="stage = 'input'">
+        {{ t('auth.login.backToResend') }}
+      </button>
     </div>
 
     <!-- Used state -->
     <div v-else-if="stage === 'used'" class="text-center space-y-4">
-      <div class="alert alert-warning"><span>链接已失效（已使用），请重新获取</span></div>
-      <button type="button" class="btn btn-ghost btn-sm" @click="stage = 'input'">返回重新发送</button>
+      <div class="alert alert-warning">
+        <span>{{ t('auth.login.linkUsed') }}</span>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" @click="stage = 'input'">
+        {{ t('auth.login.backToResend') }}
+      </button>
     </div>
 
     <!-- Input state (default) -->
     <form v-else @submit.prevent="handleSend" class="space-y-4">
       <p class="text-sm text-text-muted text-center">
-        我们将向 <span class="font-semibold">{{ email }}</span> 发送包含登录链接的邮件
+        {{ t('auth.login.magicSendTo') }} <span class="font-semibold">{{ email }}</span>
       </p>
-      <button type="submit" class="btn btn-primary w-full">发送魔法链接</button>
+      <button type="submit" class="btn btn-primary w-full">{{ t('auth.login.sendMagicLink') }}</button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { t } from '~/lib/i18n';
 import type { LoginMethod } from '~/types/auth';
 
 const emit = defineEmits<{

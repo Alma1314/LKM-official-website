@@ -5,6 +5,7 @@ import { LinkPresets } from '~/lib/constants/link-presets';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 import { url } from '~/lib/utils/url-utils';
 import LightDarkSwitch from './LightDarkSwitch.vue';
+import LanguageSwitcher from './LanguageSwitcher.vue';
 import { SearchGlobalSearch } from '~/features/search';
 import DisplaySettings from './widget/DisplaySettings.vue';
 import { NotificationBell } from '~/features/notification';
@@ -115,6 +116,7 @@ let links: NavBarLink[] =
         )
       }
       <LightDarkSwitch client:only="vue" />
+      <LanguageSwitcher client:only="vue" />
       <NotificationBell client:idle />
       <UserAvatarMenu client:only="vue" base={url('/')} />
       <button

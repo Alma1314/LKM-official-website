@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { Icon } from '@iconify/vue';
 import { getDefaultHue, getHue, setHue } from '~/lib/utils/setting-utils';
 
@@ -25,7 +24,7 @@ watch(hue, (val) => {
       <div
         class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)] before:absolute before:-left-3 before:top-[0.33rem]"
       >
-        {{ i18n(I18nKey.themeColor) }}
+        {{ t('theme.color') }}
         <button
           aria-label="Reset to Default"
           class="btn-regular w-7 h-7 rounded-md active:scale-90 will-change-transform"
@@ -48,7 +47,7 @@ watch(hue, (val) => {
     </div>
     <div class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded select-none">
       <input
-        :aria-label="i18n(I18nKey.themeColor)"
+        :aria-label="t('theme.color')"
         type="range"
         min="0"
         max="360"

@@ -1,13 +1,15 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <h3 class="text-xl font-semibold text-deep-text">专业知识答题</h3>
-      <p class="text-sm text-text-muted mt-1">通过答题即可解锁专栏功能和专业资格（可跳过，之后也可以在设置中答题）</p>
+      <h3 class="text-xl font-semibold text-deep-text">{{ t('onboarding.quiz.title') }}</h3>
+      <p class="text-sm text-text-muted mt-1">{{ t('onboarding.quiz.subtitle') }}</p>
     </div>
 
     <!-- 选择领域 -->
     <div v-if="!quizStarted">
-      <label class="block text-sm font-medium text-deep-text mb-3 text-center">选择你擅长的领域</label>
+      <label class="block text-sm font-medium text-deep-text mb-3 text-center">{{
+        t('onboarding.quiz.chooseField')
+      }}</label>
       <div class="flex flex-wrap justify-center gap-2">
         <button
           v-for="f in quizFields"
@@ -21,7 +23,7 @@
           "
           @click="selectedField = f.value"
         >
-          {{ f.label }}
+          {{ t(f.labelKey) }}
         </button>
       </div>
       <div class="text-center mt-4">
@@ -32,7 +34,7 @@
           :class="!selectedField ? 'opacity-50 cursor-not-allowed' : ''"
           @click="startQuiz"
         >
-          开始答题（{{ questions.length }} 题）
+          {{ t('onboarding.quiz.start', { count: questions.length }) }}
         </button>
       </div>
     </div>
@@ -40,7 +42,9 @@
     <!-- 答题中 -->
     <div v-else-if="!quizFinished">
       <div class="flex items-center justify-between mb-4">
-        <span class="text-sm text-text-muted">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
+        <span class="text-sm text-text-muted">{{
+          t('onboarding.quiz.progress', { current: currentIndex + 1, total: questions.length })
+        }}</span>
         <div class="flex gap-1">
           <span
             v-for="(_, i) in questions"
@@ -83,7 +87,7 @@
 
       <div class="flex justify-between mt-4">
         <button type="button" class="btn-ghost text-sm" :disabled="currentIndex === 0" @click="currentIndex--">
-          上一题
+          {{ t('onboarding.quiz.prev') }}
         </button>
         <button
           v-if="currentIndex < questions.length - 1 && answers[currentIndex] !== undefined"
@@ -91,10 +95,10 @@
           class="btn-primary px-4 py-2 rounded-lg text-sm"
           @click="currentIndex++"
         >
-          下一题
+          {{ t('onboarding.quiz.next') }}
         </button>
         <button v-if="allAnswered" type="button" class="btn-primary px-4 py-2 rounded-lg text-sm" @click="finishQuiz">
-          提交
+          {{ t('onboarding.submit') }}
         </button>
       </div>
     </div>
@@ -115,15 +119,22 @@
         class="text-lg font-semibold"
         :class="passed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
       >
-        {{ passed ? '恭喜通过！' : '未通过' }}
+        {{ passed ? t('onboarding.quiz.passed') : t('onboarding.quiz.failed') }}
       </h3>
       <p class="text-sm text-text-muted">
-        正确 {{ correctCount }} / {{ questions.length }}（正确率
-        {{ Math.round((correctCount / questions.length) * 100) }}%，{{ passed ? '≥60%' : '<60%' }}）
+        {{
+          t('onboarding.quiz.result', {
+            correct: correctCount,
+            total: questions.length,
+            rate: Math.round((correctCount / questions.length) * 100),
+          })
+        }}
       </p>
-      <p v-if="passed" class="text-sm text-primary font-medium">已解锁专栏功能和专业资格！</p>
-      <p v-else class="text-sm text-text-muted">正确率达到 60% 即可通过，可以重新答题或稍后再试。</p>
-      <button v-if="!passed" type="button" class="btn-ghost text-sm" @click="resetQuiz">重新答题</button>
+      <p v-if="passed" class="text-sm text-primary font-medium">{{ t('onboarding.quiz.unlocked') }}</p>
+      <p v-else class="text-sm text-text-muted">{{ t('onboarding.quiz.retryHint') }}</p>
+      <button v-if="!passed" type="button" class="btn-ghost text-sm" @click="resetQuiz">
+        {{ t('onboarding.quiz.retry') }}
+      </button>
     </div>
   </div>
 </template>
@@ -131,6 +142,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t, type TranslationKey } from '~/lib/i18n';
 
 interface QuizQuestion {
   id: string;
@@ -338,11 +350,11 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 const quizFields = [
-  { value: 'physics', label: '物理学' },
-  { value: 'math', label: '数学' },
-  { value: 'chemistry', label: '化学' },
-  { value: 'biology', label: '生物学' },
-  { value: 'cs', label: '信息科学' },
+  { value: 'physics', labelKey: 'onboarding.tags.physics' as TranslationKey },
+  { value: 'math', labelKey: 'onboarding.tags.math' as TranslationKey },
+  { value: 'chemistry', labelKey: 'onboarding.tags.chemistry' as TranslationKey },
+  { value: 'biology', labelKey: 'onboarding.tags.biology' as TranslationKey },
+  { value: 'cs', labelKey: 'onboarding.tags.cs' as TranslationKey },
 ];
 
 const selectedField = ref('');

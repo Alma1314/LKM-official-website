@@ -1,14 +1,14 @@
 <template>
   <div class="space-y-4">
-    <h3 class="text-lg font-semibold">登录方式管理</h3>
+    <h3 class="text-lg font-semibold">{{ t('settings.bind.title') }}</h3>
 
     <!-- 邮箱 -->
     <div class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3">
       <div>
-        <span class="font-medium">邮箱</span>
+        <span class="font-medium">{{ t('settings.bind.email') }}</span>
         <span class="text-xs text-text-muted ml-1">{{ boundEmail || '' }}</span>
         <span class="badge badge-xs ml-2" :class="boundEmail ? 'badge-success' : 'badge-ghost'">
-          {{ boundEmail ? '已绑定' : '未绑定' }}
+          {{ boundEmail ? t('settings.bind.bound') : t('settings.bind.notBound') }}
         </span>
       </div>
       <div class="flex items-center gap-2">
@@ -20,7 +20,7 @@
           data-testid="bind-email"
           @click="beginBind('email')"
         >
-          绑定
+          {{ t('settings.bind.bind') }}
         </button>
         <button
           v-else-if="boundEmail"
@@ -31,7 +31,7 @@
             unbindCode = '';
           "
         >
-          解绑
+          {{ t('settings.bind.unbind') }}
         </button>
       </div>
     </div>
@@ -46,26 +46,30 @@
           v-model.trim="email"
           type="email"
           class="input input-bordered input-sm w-full"
-          :placeholder="pending.email === 'request' ? '输入邮箱地址' : '输入验证码'"
+          :placeholder="
+            pending.email === 'request' ? t('settings.bind.emailPlaceholder') : t('settings.bind.codePlaceholder')
+          "
         />
         <span v-if="errors.email" class="text-xs text-error mt-1 inline-block">{{ errors.email }}</span>
       </div>
       <button type="submit" class="btn btn-primary btn-sm" :disabled="busy.email">
         <span v-if="busy.email" class="loading loading-spinner loading-xs"></span>
-        <template v-else>{{ pending.email === 'request' ? '发送验证码' : '确认绑定' }}</template>
+        <template v-else>{{
+          pending.email === 'request' ? t('settings.bind.sendCode') : t('settings.bind.confirmBind')
+        }}</template>
       </button>
       <button type="button" class="btn btn-ghost btn-xs" :disabled="busy.email" @click="cancelBind('email')">
-        取消
+        {{ t('common.cancel') }}
       </button>
     </form>
 
     <!-- 手机号 -->
     <div class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3">
       <div>
-        <span class="font-medium">手机号</span>
+        <span class="font-medium">{{ t('settings.bind.phone') }}</span>
         <span class="text-xs text-text-muted ml-1">{{ boundPhone || '' }}</span>
         <span class="badge badge-xs ml-2" :class="boundPhone ? 'badge-success' : 'badge-ghost'">
-          {{ boundPhone ? '已绑定' : '未绑定' }}
+          {{ boundPhone ? t('settings.bind.bound') : t('settings.bind.notBound') }}
         </span>
       </div>
       <div class="flex items-center gap-2">
@@ -76,7 +80,7 @@
           class="btn btn-ghost btn-xs"
           @click="beginBind('phone')"
         >
-          绑定
+          {{ t('settings.bind.bind') }}
         </button>
         <button
           v-else-if="boundPhone"
@@ -87,7 +91,7 @@
             unbindCode = '';
           "
         >
-          解绑
+          {{ t('settings.bind.unbind') }}
         </button>
       </div>
     </div>
@@ -102,16 +106,20 @@
           v-model.trim="phone"
           type="tel"
           class="input input-bordered input-sm w-full"
-          :placeholder="pending.phone === 'request' ? '输入手机号' : '输入验证码'"
+          :placeholder="
+            pending.phone === 'request' ? t('settings.bind.phonePlaceholder') : t('settings.bind.codePlaceholder')
+          "
         />
         <span v-if="errors.phone" class="text-xs text-error mt-1 inline-block">{{ errors.phone }}</span>
       </div>
       <button type="submit" class="btn btn-primary btn-sm" :disabled="busy.phone">
         <span v-if="busy.phone" class="loading loading-spinner loading-xs"></span>
-        <template v-else>{{ pending.phone === 'request' ? '发送验证码' : '确认绑定' }}</template>
+        <template v-else>{{
+          pending.phone === 'request' ? t('settings.bind.sendCode') : t('settings.bind.confirmBind')
+        }}</template>
       </button>
       <button type="button" class="btn btn-ghost btn-xs" :disabled="busy.phone" @click="cancelBind('phone')">
-        取消
+        {{ t('common.cancel') }}
       </button>
     </form>
 
@@ -120,7 +128,7 @@
       <div>
         <span class="font-medium">GitHub OAuth</span>
         <span class="badge badge-xs ml-2" :class="boundGithub ? 'badge-success' : 'badge-ghost'">
-          {{ boundGithub ? '已绑定' : '未绑定' }}
+          {{ boundGithub ? t('settings.bind.bound') : t('settings.bind.notBound') }}
         </span>
       </div>
       <div class="flex items-center gap-2">
@@ -133,7 +141,7 @@
           @click="startGithubBind"
         >
           <span v-if="busy.github" class="loading loading-spinner loading-xs"></span>
-          <template v-else>绑定</template>
+          <template v-else>{{ t('settings.bind.bind') }}</template>
         </button>
         <button
           v-else
@@ -144,7 +152,7 @@
             unbindCode = '';
           "
         >
-          解绑
+          {{ t('settings.bind.unbind') }}
         </button>
       </div>
     </div>
@@ -157,10 +165,12 @@
           type="text"
           inputmode="numeric"
           class="input input-bordered input-sm w-full"
-          placeholder="已开启两步验证，请输入动态验证码"
+          :placeholder="t('settings.bind.enterTOTP')"
         />
       </div>
-      <button type="submit" class="btn btn-error btn-sm" :disabled="has2FA && unbindCode.length < 6">确认解绑</button>
+      <button type="submit" class="btn btn-error btn-sm" :disabled="has2FA && unbindCode.length < 6">
+        {{ t('settings.bind.confirmUnbind') }}
+      </button>
       <button
         type="button"
         class="btn btn-ghost btn-xs"
@@ -169,7 +179,7 @@
           unbindCode = '';
         "
       >
-        取消
+        {{ t('common.cancel') }}
       </button>
     </form>
   </div>
@@ -178,6 +188,7 @@
 <script setup lang="ts">
 import { reactive, computed, ref, onMounted } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
+import { t } from '~/lib/i18n';
 import type { User } from '~/types/auth';
 import AuthStatus from '../shared/AuthStatus.vue';
 
@@ -229,7 +240,7 @@ async function onSubmit(type: BindType) {
   try {
     if (pending[type] === 'request') {
       if (!input) {
-        errors[type] = type === 'email' ? '请输入邮箱地址' : '请输入手机号';
+        errors[type] = type === 'email' ? t('settings.bind.enterEmail') : t('settings.bind.enterPhone');
         return;
       }
       const r = type === 'email' ? await authApi.bindEmailRequest(input) : await authApi.bindPhoneRequest(input);
@@ -244,7 +255,7 @@ async function onSubmit(type: BindType) {
     // confirm：input 为验证码
     const code = input;
     if (!code) {
-      errors[type] = '请输入验证码';
+      errors[type] = t('settings.bind.enterCode');
       return;
     }
     const contact = type === 'email' ? email.value : phone.value;
@@ -275,7 +286,7 @@ async function startGithubBind() {
     }
     window.location.assign(r.value.url);
   } catch {
-    errors.github = '发起 GitHub 授权失败';
+    errors.github = t('settings.bind.githubFail');
   }
 }
 
@@ -298,12 +309,12 @@ async function doUnbind() {
   errors[key] = '';
   try {
     if (has2FA.value && !unbindCode.value) {
-      errors[key] = '已开启两步验证，请输入动态验证码';
+      errors[key] = t('settings.bind.enterTOTP');
       return;
     }
     const r = await authApi.unbind(type, has2FA.value ? unbindCode.value : undefined);
     if (r.isErr()) {
-      errors[key] = r.error.message || '解绑失败，请重试';
+      errors[key] = r.error.message || t('settings.bind.unbindFail');
       return;
     }
     if (type === 'email') boundEmail.value = '';
@@ -313,7 +324,7 @@ async function doUnbind() {
     unbindCode.value = '';
     emit('update', props.user);
   } catch {
-    errors[key] = '解绑失败，请重试';
+    errors[key] = t('settings.bind.unbindFail');
   }
 }
 

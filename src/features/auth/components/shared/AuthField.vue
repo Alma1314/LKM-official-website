@@ -21,9 +21,9 @@
         type="button"
         class="absolute right-2 inset-y-0 flex items-center px-2 text-text-muted"
         @click="showPassword = !showPassword"
-        :aria-label="showPassword ? '隐藏密码' : '显示密码'"
+        :aria-label="showPassword ? t('auth.field.hidePassword') : t('auth.field.showPassword')"
       >
-        {{ showPassword ? '隐藏' : '显示' }}
+        {{ showPassword ? t('auth.field.hide') : t('auth.field.show') }}
       </button>
     </div>
     <span v-if="error" :id="`${id}-error`" class="label-text-alt text-error">{{ error }}</span>
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { t } from '~/lib/i18n';
 
 withDefaults(
   defineProps<{

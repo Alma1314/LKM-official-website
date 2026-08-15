@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4">
-    <h3 class="text-lg font-semibold">通行密钥 (Passkey)</h3>
+    <h3 class="text-lg font-semibold">{{ t('settings.passkey.title') }}</h3>
 
     <AuthStatus v-if="error" type="error" :message="error" class="text-xs" />
 
@@ -10,15 +10,15 @@
         v-model.trim="newName"
         type="text"
         class="input input-bordered input-sm flex-1"
-        placeholder="为新密钥命名（如：我的手机）"
+        :placeholder="t('settings.passkey.namePlaceholder')"
       />
       <button type="submit" class="btn btn-primary btn-sm" :disabled="creating || !newName">
         <span v-if="creating" class="loading loading-spinner loading-xs"></span>
-        <template v-else>创建</template>
+        <template v-else>{{ t('common.create') }}</template>
       </button>
     </form>
 
-    <div v-if="loadingList" class="py-4 text-center text-sm text-text-muted">加载中…</div>
+    <div v-if="loadingList" class="py-4 text-center text-sm text-text-muted">{{ t('common.loading') }}</div>
 
     <!-- 列表 -->
     <ul v-else class="space-y-2">
@@ -34,18 +34,18 @@
             :disabled="deletingId === pk.id"
             @click="confirmDelete = pk.id"
           >
-            删除
+            {{ t('common.delete') }}
           </button>
         </div>
       </li>
-      <li v-if="!passkeys.length" class="text-sm text-text-muted py-2">暂无通行密钥</li>
+      <li v-if="!passkeys.length" class="text-sm text-text-muted py-2">{{ t('settings.passkey.empty') }}</li>
     </ul>
 
     <ConfirmDialog
       :open="confirmDelete !== null"
-      title="删除通行密钥"
-      message="确定删除该通行密钥吗？此操作不可撤销。"
-      confirm-text="删除"
+      :title="t('settings.passkey.deleteTitle')"
+      :message="t('settings.passkey.deleteMessage')"
+      :confirm-text="t('common.delete')"
       danger
       @confirm="doDelete(confirmDelete!)"
       @cancel="confirmDelete = null"
@@ -56,6 +56,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
+import { t } from '~/lib/i18n';
 import type { PasskeyCredential } from '~/lib/api/modules/auth';
 import type { User } from '~/types/auth';
 import AuthStatus from '../shared/AuthStatus.vue';
@@ -116,7 +117,7 @@ async function createPasskey() {
     await load();
     newName.value = '';
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '创建通行密钥失败';
+    error.value = e instanceof Error ? e.message : t('settings.passkey.createFail');
   } finally {
     creating.value = false;
   }

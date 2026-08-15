@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { t } from '~/lib/i18n';
 import { url } from '~/lib/utils/url-utils';
 
 interface MobileMenuLink {
@@ -15,7 +16,7 @@ interface Props {
   title?: string;
 }
 
-const { id, links = [], title = '导航' } = Astro.props;
+const { id, links = [], title = t('nav.navigation') } = Astro.props;
 ---
 
 <div id={id} data-mobile-nav-panel class="fixed inset-0 z-[100] pointer-events-none" aria-hidden="true">
@@ -33,7 +34,7 @@ const { id, links = [], title = '导航' } = Astro.props;
       <span class="text-[17px] font-semibold text-deep-text">{title}</span>
       <button
         data-nav-close
-        aria-label="关闭菜单"
+        aria-label={t('nav.closeMenu')}
         class="btn-plain rounded-lg w-10 h-10 flex items-center justify-center"
       >
         <Icon name="material-symbols:close" class="text-[1.25rem]" />
@@ -41,7 +42,7 @@ const { id, links = [], title = '导航' } = Astro.props;
     </div>
 
     <!-- links -->
-    <nav class="flex-1 overflow-y-auto py-2" aria-label="移动端导航">
+    <nav class="flex-1 overflow-y-auto py-2" aria-label={t('nav.mobileNav')}>
       <ul>
         {
           links.map((link) => {

@@ -1,26 +1,26 @@
 <template>
   <form v-if="flow.stage === 'form'" @submit.prevent="flow.submit()" class="space-y-4">
-    <p class="text-sm text-text-muted text-center">仅用户名 + 密码，无需绑定邮箱/手机</p>
+    <p class="text-sm text-text-muted text-center">{{ t('register.local.onlyUsername') }}</p>
     <AuthField
       id="reg-local-username"
-      label="用户名"
-      placeholder="请输入用户名（至少3位）"
+      :label="t('register.local.username')"
+      :placeholder="t('register.local.usernamePlaceholder')"
       autocomplete="username"
       v-model="flow.username"
     />
     <AuthField
       id="reg-local-password"
-      label="密码"
+      :label="t('register.local.password')"
       type="password"
-      placeholder="请输入密码（至少6位）"
+      :placeholder="t('register.local.passwordPlaceholder')"
       autocomplete="new-password"
       v-model="flow.password"
     />
     <AuthField
       id="reg-local-confirm"
-      label="确认密码"
+      :label="t('register.local.confirm')"
       type="password"
-      placeholder="再次输入密码（至少6位）"
+      :placeholder="t('register.local.confirmPlaceholder')"
       autocomplete="new-password"
       v-model="flow.confirm"
     />
@@ -31,13 +31,14 @@
       :disabled="flow.loading"
     >
       <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-      <span v-else>注册本地账户</span>
+      <span v-else>{{ t('register.local.submit') }}</span>
     </button>
   </form>
 </template>
 
 <script setup lang="ts">
 import type { RegisterFlow } from '~/features/auth/composables/useRegisterFlow';
+import { t } from '~/lib/i18n';
 import AuthField from '../shared/AuthField.vue';
 import AuthStatus from '../shared/AuthStatus.vue';
 

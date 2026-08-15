@@ -35,3 +35,6 @@ Object.defineProperty(globalThis, 'localStorage', {
   configurable: true,
   writable: true,
 });
+
+// 站点配置默认语言为 zh-CN，测试断言基于中文文案；预置 locale 使 i18n 解析一致。
+localStorage.setItem('lkm-locale', 'zh-CN');

@@ -1,6 +1,5 @@
 ---
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { getTagList } from '~/lib/utils/content-utils';
 import { getTagUrl } from '~/lib/utils/url-utils';
 import { ButtonTag } from '~/components/primitives';
@@ -21,7 +20,7 @@ const style = Astro.props.style;
 ---
 
 <WidgetLayout
-  name={i18n(I18nKey.tags)}
+  name={t('blog.tags')}
   id="tags"
   isCollapsed={isCollapsed}
   collapsedHeight={COLLAPSED_HEIGHT}
@@ -30,9 +29,9 @@ const style = Astro.props.style;
 >
   <div class="flex gap-2 flex-wrap">
     {
-      tags.map((t) => (
-        <ButtonTag href={getTagUrl(t.name)} label={`View all posts with the ${t.name.trim()} tag`}>
-          {t.name.trim()}
+      tags.map((tag) => (
+        <ButtonTag href={getTagUrl(tag.name)} label={`View all posts with the ${tag.name.trim()} tag`}>
+          {tag.name.trim()}
         </ButtonTag>
       ))
     }

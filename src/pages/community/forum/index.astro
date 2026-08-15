@@ -4,8 +4,9 @@ import { Icon } from 'astro-icon/components';
 import { getRootCategories, getChildCategories } from '~/features/forum/data/categories';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
-const metadata = { title: '板块广场 —— 理科迷' };
+const metadata = { title: `${t('community.forum.title')} —— LKM` };
 const rootCategories = getRootCategories();
 
 // 每类子分类的网格列数
@@ -18,8 +19,8 @@ function gridCols(count: number): string {
 <Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/forum')}>
   <div class="space-y-10">
     <div>
-      <h1 class="text-3xl font-bold text-deep-text">板块广场</h1>
-      <p class="text-text-muted mt-2">选择一个感兴趣的板块，加入讨论吧！</p>
+      <h1 class="text-3xl font-bold text-deep-text">{t('community.forum.title')}</h1>
+      <p class="text-text-muted mt-2">{t('community.forum.subtitle')}</p>
     </div>
 
     {
@@ -36,14 +37,15 @@ function gridCols(count: number): string {
               <div>
                 <h2 class="text-xl font-bold text-deep-text">{root.name}</h2>
                 <p class="text-sm text-text-muted">
-                  {root.memberCount} 成员 · {root.postCount} 帖子 · 今日 {root.todayPostCount}
+                  {root.memberCount} {t('community.forum.members')} · {root.postCount} {t('community.forum.posts')} ·{' '}
+                  {t('community.forum.todayPosts', { count: root.todayPostCount })}
                 </p>
               </div>
               <a
                 href={getPermalink(`/forum/${root.slug}`)}
                 class="ml-auto text-sm text-primary hover:underline whitespace-nowrap shrink-0"
               >
-                查看全部 →
+                {t('community.forum.viewAll')} →
               </a>
             </div>
 
@@ -60,10 +62,16 @@ function gridCols(count: number): string {
                       </div>
                       <p class="text-xs text-text-muted line-clamp-2 leading-relaxed flex-1">{child.description}</p>
                       <div class="flex items-center justify-between text-xs text-text-muted/60 pt-1 border-t border-surface-3">
-                        <span>{child.memberCount} 成员</span>
-                        <span>{child.postCount} 帖</span>
+                        <span>
+                          {child.memberCount} {t('community.forum.members')}
+                        </span>
+                        <span>
+                          {child.postCount} {t('community.forum.postsShort')}
+                        </span>
                         <span class="text-primary/80">
-                          {child.todayPostCount > 0 ? `今日 ${child.todayPostCount}` : ''}
+                          {child.todayPostCount > 0
+                            ? t('community.forum.todayPosts', { count: child.todayPostCount })
+                            : ''}
                         </span>
                       </div>
                     </div>
@@ -79,7 +87,7 @@ function gridCols(count: number): string {
                     class="inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline"
                   >
                     <Icon name="tabler:plus" class="w-4 h-4" />
-                    申请合作，开启你的社团板块
+                    {t('community.forum.applyCollaboration')}
                   </a>
                 )}
               </div>

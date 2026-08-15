@@ -5,8 +5,14 @@
     :class="mode === 'modal' ? 'w-full' : undefined"
   >
     <AuthCard
-      :title="flow.loggedIn ? '登录成功' : flow.mode === '2fa' ? '双因素认证' : '登录'"
-      subtitle="登录理科迷账号，访问社区资源与文档"
+      :title="
+        flow.loggedIn
+          ? t('auth.login.success')
+          : flow.mode === '2fa'
+            ? t('auth.login.twoFactor')
+            : t('auth.login.title')
+      "
+      :subtitle="t('auth.login.subtitle')"
       :mode="mode"
     >
       <!-- 登录成功态：停留在登录卡片，不自动跳转 -->
@@ -26,7 +32,7 @@
           </svg>
         </div>
         <p class="text-sm text-text-muted">
-          欢迎回来，<span class="font-semibold text-deep-text">{{ flow.account || '用户' }}</span>
+          {{ t('auth.login.welcomeBack', { name: flow.account || t('auth.login.user') }) }}
         </p>
       </div>
 
@@ -48,21 +54,21 @@
         <!-- 密码登录 -->
         <form v-if="flow.mode === 'password'" class="space-y-4" @submit.prevent="flow.submitPassword()">
           <AuthField
-            label="用户名 / 邮箱 / 手机号"
-            placeholder="请输入用户名、邮箱或手机号"
+            :label="t('auth.login.accountLabel')"
+            :placeholder="t('auth.login.accountPlaceholder')"
             autocomplete="username"
             v-model="flow.account"
           />
           <AuthField
-            label="密码"
+            :label="t('auth.login.passwordLabel')"
             type="password"
-            placeholder="请输入密码"
+            :placeholder="t('auth.login.passwordPlaceholder')"
             autocomplete="current-password"
             v-model="flow.password"
           />
           <div class="flex justify-end">
             <a :href="getAuthPath('account/recovery')" class="text-sm text-primary font-semibold hover:underline">
-              忘记密码？
+              {{ t('auth.login.forgotPassword') }}
             </a>
           </div>
           <button
@@ -71,13 +77,17 @@
             :disabled="flow.loading"
           >
             <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-            <span v-else>登录</span>
+            <span v-else>{{ t('auth.login.title') }}</span>
           </button>
         </form>
 
         <!-- 验证码登录 -->
         <form v-else-if="flow.mode === 'code'" class="space-y-4" @submit.prevent="flow.submitCode()">
-          <AuthField label="邮箱 / 手机号" placeholder="请输入接收验证码的账号" v-model="flow.account" />
+          <AuthField
+            :label="t('auth.login.emailOrPhone')"
+            :placeholder="t('auth.login.emailOrPhonePlaceholder')"
+            v-model="flow.account"
+          />
           <div>
             <VerificationCodeField id="login-code" v-model="flow.code" :error="flow.error ?? undefined" />
           </div>
@@ -87,8 +97,8 @@
             :disabled="flow.countdownRunning || flow.loading"
             @click="flow.requestCode()"
           >
-            <span v-if="!flow.countdownRunning">获取验证码</span>
-            <span v-else>{{ flow.countdown }}s 后重新获取</span>
+            <span v-if="!flow.countdownRunning">{{ t('auth.login.getCode') }}</span>
+            <span v-else>{{ t('auth.login.resendCode', { count: flow.countdown }) }}</span>
           </button>
           <button
             type="submit"
@@ -96,7 +106,7 @@
             :disabled="flow.loading || flow.code.length < 6"
           >
             <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-            <span v-else>登录</span>
+            <span v-else>{{ t('auth.login.title') }}</span>
           </button>
         </form>
 
@@ -104,42 +114,52 @@
         <template v-if="flow.mode === 'password' || flow.mode === 'code'">
           <div class="my-6 flex items-center gap-3">
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
-            <span class="text-xs text-text-muted">其他登录方式</span>
+            <span class="text-xs text-text-muted">{{ t('auth.login.otherMethods') }}</span>
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
           </div>
           <div class="space-y-3">
-            <AuthMethodButton label="使用 GitHub 登录" @click="flow.startGithub()" :disabled="flow.loading" />
-            <AuthMethodButton label="Magic Link 登录" @click="flow.startMagic()" :disabled="flow.loading" />
-            <AuthMethodButton label="Passkey 通行密钥" @click="flow.startPasskey()" :disabled="flow.loading" />
+            <AuthMethodButton
+              :label="t('auth.login.githubLogin')"
+              @click="flow.startGithub()"
+              :disabled="flow.loading"
+            />
+            <AuthMethodButton :label="t('auth.login.magicLink')" @click="flow.startMagic()" :disabled="flow.loading" />
+            <AuthMethodButton :label="t('auth.login.passkey')" @click="flow.startPasskey()" :disabled="flow.loading" />
           </div>
         </template>
 
         <!-- Magic 态：发送后提示 + 在当前设备继续 -->
         <div v-else-if="flow.mode === 'magic'" class="space-y-4">
-          <AuthStatus v-if="flow.magicSent" type="info" message="Magic Link 已发送，请查收邮箱" />
-          <p class="text-sm text-text-muted">没有收到邮件？可重试发送，或换用其他登录方式。</p>
+          <AuthStatus v-if="flow.magicSent" type="info" :message="t('auth.login.magicSent')" />
+          <p class="text-sm text-text-muted">{{ t('auth.login.magicNoEmail') }}</p>
           <button type="button" class="btn btn-outline w-full" :disabled="flow.loading" @click="flow.continueMagic()">
             <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-            <span v-else>在当前设备继续</span>
+            <span v-else>{{ t('auth.login.continueOnDevice') }}</span>
           </button>
-          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">
+            {{ t('auth.login.backToLogin') }}
+          </button>
         </div>
 
         <!-- GitHub 态：正在跳转到真实授权页 -->
         <div v-else-if="flow.mode === 'github'" class="space-y-4">
-          <AuthStatus v-if="!flow.loading" type="info" message="正在跳转到 GitHub 登录…" />
+          <AuthStatus v-if="!flow.loading" type="info" :message="t('auth.login.redirectingGithub')" />
           <button type="button" class="btn btn-outline w-full" disabled>
             <span class="loading loading-spinner loading-sm"></span>
-            跳转中
+            {{ t('auth.login.redirecting') }}
           </button>
-          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">
+            {{ t('auth.login.backToLogin') }}
+          </button>
         </div>
 
         <!-- Passkey 态 -->
         <div v-else-if="flow.mode === 'passkey'" class="space-y-4">
-          <AuthStatus v-if="!flow.loading" type="info" message="正在进行 Passkey 通行密钥验证…" />
-          <button type="button" class="btn btn-outline w-full" disabled>等待设备验证</button>
-          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+          <AuthStatus v-if="!flow.loading" type="info" :message="t('auth.login.passkeyVerifying')" />
+          <button type="button" class="btn btn-outline w-full" disabled>{{ t('auth.login.waitingDevice') }}</button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">
+            {{ t('auth.login.backToLogin') }}
+          </button>
         </div>
 
         <!-- 2FA 态 -->
@@ -151,16 +171,18 @@
             :disabled="flow.loading"
           >
             <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-            <span v-else>验证</span>
+            <span v-else>{{ t('common.verify') }}</span>
           </button>
-          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">返回登录</button>
+          <button type="button" class="btn btn-ghost btn-sm w-full" @click="flow.reset()">
+            {{ t('auth.login.backToLogin') }}
+          </button>
         </form>
 
         <!-- 底部注册入口 -->
         <p class="mt-6 text-center text-[13px] text-text-muted">
-          没有账号？
+          {{ t('auth.login.noAccount') }}
           <button type="button" class="text-primary font-semibold hover:underline" @click="switchToRegister">
-            立即注册
+            {{ t('auth.login.signUpNow') }}
           </button>
         </p>
       </template>
@@ -171,6 +193,7 @@
 <script setup lang="ts">
 import { useLoginFlow, type LoginMode } from '~/features/auth/composables/useLoginFlow';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import { t } from '~/lib/i18n';
 import AuthShell from '../shared/AuthShell.vue';
 import AuthCard from '../shared/AuthCard.vue';
 import AuthSegmentedControl from '../shared/AuthSegmentedControl.vue';
@@ -190,8 +213,8 @@ const flow = useLoginFlow({
 });
 
 const segmentedOptions = [
-  { key: 'password', label: '密码登录' },
-  { key: 'code', label: '验证码登录' },
+  { key: 'password', label: t('auth.login.passwordLogin') },
+  { key: 'code', label: t('auth.login.codeLogin') },
 ];
 
 function switchToRegister() {

@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <h3 class="text-xl font-semibold text-deep-text">关注你感兴趣的内容</h3>
+      <h3 class="text-xl font-semibold text-deep-text">{{ t('onboarding.follow.title') }}</h3>
       <p class="text-sm text-text-muted mt-1">
-        至少选择 <span class="text-primary font-semibold">3 个</span> 板块或作者（已选 {{ selectedIds.length }}/3）
+        {{ t('onboarding.follow.hint', { min: 3, selected: selectedIds.length }) }}
       </p>
     </div>
 
@@ -17,7 +17,7 @@
         "
         @click="activeTab = 'category'"
       >
-        板块推荐
+        {{ t('onboarding.follow.categoriesTab') }}
       </button>
       <button
         type="button"
@@ -27,7 +27,7 @@
         "
         @click="activeTab = 'author'"
       >
-        作者推荐
+        {{ t('onboarding.follow.authorsTab') }}
       </button>
     </div>
 
@@ -56,7 +56,7 @@
             <span v-if="selectedIds.includes(item.id)" class="text-primary text-xs">✓</span>
           </div>
           <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ item.description }}</div>
-          <div class="text-xs text-text-muted/60 mt-1">{{ item.memberCount }} 成员</div>
+          <div class="text-xs text-text-muted/60 mt-1">{{ item.memberCount }} {{ t('onboarding.follow.members') }}</div>
         </div>
       </button>
     </div>
@@ -86,7 +86,9 @@
             <span v-if="selectedIds.includes(item.id)" class="text-primary text-xs">✓</span>
           </div>
           <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ item.description }}</div>
-          <div class="text-xs text-text-muted/60 mt-1">{{ item.memberCount }} 关注者</div>
+          <div class="text-xs text-text-muted/60 mt-1">
+            {{ item.memberCount }} {{ t('onboarding.follow.followers') }}
+          </div>
         </div>
       </button>
     </div>
@@ -96,6 +98,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 
 interface RecommendItem {
   id: string;
