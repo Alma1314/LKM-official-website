@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useMemo, Suspense, lazy } from 'react';
+import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
 import type { ReactElement } from 'react';
 import FullscreenButton from '../toolbar/FullscreenButton';
 import CommentPanel from '../panels/CommentPanel';
@@ -7,7 +7,6 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { getEditorExtensions } from '../../engine/extensions/index';
 import { useEditorPersistence } from '../../hooks/useEditorPersistence';
 import { exportMdx } from '../../engine/mdx/index';
-import { serializeHtml } from '../../engine/serialize-html';
 import type { PersistenceAdapter, EditorMode, VersionEntry, DocumentData } from '../../engine/types';
 import EditorToolbar from '../toolbar/EditorToolbar';
 import ModeTabs from './ModeTabs';
@@ -75,6 +74,8 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
   // 源码视图类型（MDX / HTML）
   const [sourceKind, setSourceKind] = useState<'mdx' | 'html'>('mdx');
+  // HTML 源码（可编辑回写，进入源码模式时用 TipTap 原生 HTML 初始化）
+  const [htmlSource, setHtmlSource] = useState('');
 
   // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
@@ -279,23 +280,36 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       }
 
       if (mode === 'source' && newMode === 'richtext') {
-        try {
-          const result = await importMdxContent(sourceMdxRef.current);
+        if (sourceKind === 'html') {
           if (editor) {
-            editor.commands.clearContent();
-            editor.commands.setContent({ type: 'doc', content: result.content });
-            lastValidEditorJsonRef.current = editor.getJSON();
+            try {
+              editor.commands.setContent(htmlSource);
+              lastValidEditorJsonRef.current = editor.getJSON();
+            } catch (err) {
+              console.warn('[DocumentEditor] HTML 解析失败:', err);
+              alert('HTML 解析失败，请检查源码格式后重试');
+              return;
+            }
           }
-        } catch (err) {
-          console.warn('[DocumentEditor] MDX 手动解析失败:', err);
-          alert('MDX 解析失败，请检查源码格式后重试');
-          return;
+        } else {
+          try {
+            const result = await importMdxContent(sourceMdxRef.current);
+            if (editor) {
+              editor.commands.clearContent();
+              editor.commands.setContent({ type: 'doc', content: result.content });
+              lastValidEditorJsonRef.current = editor.getJSON();
+            }
+          } catch (err) {
+            console.warn('[DocumentEditor] MDX 手动解析失败:', err);
+            alert('MDX 解析失败，请检查源码格式后重试');
+            return;
+          }
         }
       }
 
       setMode(newMode);
     },
-    [mode, editor, exportMdxContent, importMdxContent, sourceMdxRef, frontmatterRef, lastValidEditorJsonRef]
+    [mode, editor, exportMdxContent, importMdxContent, sourceMdxRef, frontmatterRef, lastValidEditorJsonRef, sourceKind, htmlSource]
   );
 
   const handleSourceChange = useCallback(
@@ -307,6 +321,10 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
     },
     [docId, triggerSave, sourceMdxRef, lastValidEditorJsonRef]
   );
+
+  const handleHtmlSourceChange = useCallback((html: string) => {
+    setHtmlSource(html);
+  }, []);
 
   const handlePublish = useCallback(
     async (title: string, _slug: string) => {
@@ -373,12 +391,12 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   const charCount = metrics.characters;
   const wordCount = metrics.words;
 
-  // HTML 源码（只读查看）：随编辑器内容变化重新生成
-  const htmlSource = useMemo(() => {
-    if (!editor) return '';
-    const content = (editor.getJSON().content ?? []) as Parameters<typeof serializeHtml>[0];
-    return serializeHtml(content);
-  }, [editor?.state.doc]);
+  // 进入源码模式时，基于当前编辑器内容初始化 HTML 源码（TipTap 原生 HTML，可回写）
+  useEffect(() => {
+    if (mode === 'source' && editor) {
+      setHtmlSource(editor.getHTML());
+    }
+  }, [mode, editor]);
 
   return (
     <div className="rte-container">
@@ -550,9 +568,9 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
               }
             >
               {sourceKind === 'mdx' ? (
-                <SourceEditor value={sourceMdxRef.current} onChange={handleSourceChange} />
+                <SourceEditor key="mdx" value={sourceMdxRef.current} onChange={handleSourceChange} />
               ) : (
-                <SourceEditor value={htmlSource} onChange={() => {}} readOnly />
+                <SourceEditor key="html" value={htmlSource} onChange={handleHtmlSourceChange} />
               )}
             </Suspense>
           </div>
