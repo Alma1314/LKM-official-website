@@ -1,4 +1,4 @@
-import { db } from '../stores-vue/db';
+import { db } from '../stores/db';
 import type { StarHopeEntity } from './mapping';
 import { fromSnake, toSnake } from './mapping';
 import { starhopeApi } from './api';

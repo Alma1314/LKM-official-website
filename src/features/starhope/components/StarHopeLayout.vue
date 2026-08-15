@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAuthStore } from '../stores-vue/auth';
-import { useNavigationStore } from '../stores-vue/navigation';
+import { useAuthStore } from '../stores/auth';
+import { useNavigationStore } from '../stores/navigation';
 
 const { navItems, currentRoute, navigate } = useNavigationStore();
 const { currentUser, logout } = useAuthStore();

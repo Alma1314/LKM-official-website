@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAuthStore } from '../stores-vue/auth';
-import StarHopeLoginRequired from '../routes-vue/StarHopeLoginRequired.vue';
+import { useAuthStore } from '../stores/auth';
+import StarHopeLoginRequired from '../routes/StarHopeLoginRequired.vue';
 
 const { isLoggedIn } = useAuthStore();
 </script>

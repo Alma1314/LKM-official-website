@@ -2,7 +2,7 @@
 import { watch } from 'vue';
 import StarHopeLayout from './StarHopeLayout.vue';
 import StarHopeRouter from './StarHopeRouter.vue';
-import { useAuthStore } from '../stores-vue/auth';
+import { useAuthStore } from '../stores/auth';
 import { pullAll } from '../sync/sync';
 
 const { isLoggedIn, restore } = useAuthStore();

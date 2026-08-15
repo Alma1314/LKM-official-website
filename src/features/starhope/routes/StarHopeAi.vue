@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useAiStore } from '../stores-vue/ai';
+import { useAiStore } from '../stores/ai';
 import type { AiAgent } from '~/features/starhope/types';
 
 const ai = useAiStore();
