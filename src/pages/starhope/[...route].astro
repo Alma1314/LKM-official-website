@@ -6,7 +6,7 @@ import StarHopeShell from '~/features/starhope/components-vue/StarHopeShell.vue'
 const metadata = { title: 'StarHope 学习助手 —— 理科迷' };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} showFooter={false}>
   <div style="min-height: calc(100vh - 10rem)">
     <StarHopeShell client:only="vue" />
   </div>

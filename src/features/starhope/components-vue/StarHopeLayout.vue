@@ -8,7 +8,7 @@ const { currentUser, logout } = useAuthStore();
 
 <template>
   <div class="flex min-h-screen">
-    <aside class="w-56 shrink-0 border-r border-surface-3 bg-card-bg min-h-screen p-4">
+    <aside class="w-56 shrink-0 border-r border-surface-3 bg-card-bg min-h-screen p-4 flex flex-col">
       <div class="mb-6">
         <h1 class="text-lg font-bold text-primary">StarHope</h1>
         <p class="text-xs text-text-muted mt-1">学习助手</p>
@@ -25,15 +25,15 @@ const { currentUser, logout } = useAuthStore();
           <span>{{ item.label }}</span>
         </button>
       </nav>
-      <div class="mt-auto pt-4 border-t border-surface-3 absolute bottom-4 left-4 right-4">
+      <div class="mt-auto pt-4 border-t border-surface-3">
         <div v-if="currentUser" class="flex items-center gap-2 px-3 py-2">
           <div
             class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary"
           >
-            {{ currentUser.username.charAt(0) }}
+            {{ currentUser.username ? currentUser.username.charAt(0) : '?' }}
           </div>
           <div class="text-sm">
-            <div class="font-medium text-deep-text">{{ currentUser.username }}</div>
+            <div class="font-medium text-deep-text">{{ currentUser.username ?? '用户' }}</div>
             <div class="text-xs text-text-muted">{{ currentUser.account_level }}</div>
           </div>
         </div>
