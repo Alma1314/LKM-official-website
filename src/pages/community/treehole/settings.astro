@@ -2,11 +2,13 @@
 import Layout from '~/layouts/BaseLayout.astro';
 import SettingsPage from '~/features/anonymous-letter/pages/SettingsPage.vue';
 import '~/features/anonymous-letter/styles/global.css';
+import { allMenuItems } from '~/features/shell/menus';
+import { filterNavbarByNames } from '~/lib/navigation';
 import type { MetaData } from '~/types/core';
 const metadata: MetaData = { title: '设置 — 拾光树洞', description: '个性化你的树洞体验。' };
 ---
 
-<Layout metadata={metadata}><div style="min-height: 400px"><SettingsPage client:only="vue" /></div></Layout>
+<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页','博客','资源','我的'])}><div style="min-height: 400px"><SettingsPage client:only="vue" /></div></Layout>
 
 <script is:inline>
   (function () {
