@@ -21,11 +21,15 @@ export interface DocumentMeta {
   lastModified: string;
   status: 'draft' | 'published' | 'archived';
   version: number;
+  /** 发布时生成的永久链接片段 `/docs/<slug>`，供 wiki 双链解析；索引需在写盘时一并落 slug */
+  slug?: string;
 }
 
 export interface DocumentData extends DocumentMeta {
   contentMdx: string;
   editorJson: Record<string, unknown> | null;
+  /** 发布时生成的永久链接片段 `/docs/<slug>`，用于 wiki 双链解析 */
+  slug?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -57,7 +61,8 @@ export interface PublishPayload {
   contentMdx: string;
 }
 
-export interface DocumentSummary {
+// 索引概要：继承 DocumentMeta，自动获得 slug? 字段，使 listDocuments() 返回的索引可直接为 wiki 双链解析取 slug
+export interface DocumentSummary extends DocumentMeta {
   id: string;
   title: string;
   lastModified: string;

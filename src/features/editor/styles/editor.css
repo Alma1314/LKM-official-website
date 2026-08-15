@@ -241,6 +241,20 @@
   text-underline-offset: 2px;
 }
 
+/* Obsidian 式 wiki 链接 */
+.rte-editor-content [data-wiki-link] {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.rte-editor-content [data-wiki-link][data-resolved=''] {
+  color: var(--deep-text);
+  text-decoration: underline dotted;
+  text-decoration-color: var(--text-muted);
+  cursor: default;
+}
+
 .rte-editor-content code:not(pre code) {
   background: var(--inline-code-bg);
   color: var(--inline-code-color);

@@ -135,4 +135,25 @@ describe('MDX 往返转换', () => {
     const back = importMdx(out.mdx);
     expect(back.frontmatter.title).toBe('我的标题');
   });
+
+  it('WikiLink 往返：导出为 [[label]] 文本，读回不丢内容', () => {
+    const doc: JSONContent = {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'wikiLink', attrs: { href: '/docs/my-doc', label: '我的文档' } },
+            { type: 'text', text: ' 见' },
+          ],
+        },
+      ],
+    };
+    const out = exportMdx(doc.content ?? [], {});
+    expect(out.mdx).toContain('[[我的文档]]');
+    const back = importMdx(out.mdx);
+    // 读取回退为普通文本（remarkParse 无 wiki-link 插件），但内容保留
+    const paragraphText = (back.content![0].content ?? []).map((c) => c.text ?? '').join('');
+    expect(paragraphText).toContain('我的文档');
+  });
 });

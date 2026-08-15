@@ -16,6 +16,7 @@ import { RawMdx } from './raw-mdx';
 import { Callout } from './callout';
 import { Figure } from './figure';
 import { CommentMark } from './comment-mark';
+import { WikiLink } from './wiki-link';
 
 export function getEditorExtensions(placeholder?: string): AnyExtension[] {
   return [
@@ -55,5 +56,6 @@ export function getEditorExtensions(placeholder?: string): AnyExtension[] {
     Callout,
     Figure,
     CommentMark,
+    WikiLink,
   ];
 }

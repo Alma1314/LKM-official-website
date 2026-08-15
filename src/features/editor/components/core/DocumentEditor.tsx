@@ -33,7 +33,9 @@ interface DocumentEditorProps {
 }
 
 import { computeTextMetrics } from '../../engine/text-metrics';
-import { saveImageBlob } from '../../persistence/image-store';
+import { findImageByOrgName, saveImageBlob } from '../../persistence/image-store';
+import { detectLink, detectWiki, wikiHref } from '../../engine/plugins/markdown-shortcuts';
+import ObsidianImagePicker from '../dialogs/ObsidianImagePicker';
 
 /** 上传图片为 blob 引用，避免 base64 塞满 localStorage */
 function uploadImageToBlob(file: File): Promise<string> {
@@ -71,6 +73,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
   // 评论面板状态
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
+
+  // Obsidian 附件 `![[文件名]]` 选图状态
+  const [imagePickerOpen, setImagePickerOpen] = useState(false);
+  // 待替换为图片的附件语法：记录原始 `![[文件名]]` 串 + 大致起始位置。
+  // 选图是异步的（文件弹窗期间用户/光标可位移），用原始串在文档中重新定位，避免绝对区间过期。
+  const pendingImageReplace = useRef<{ from: number; to: number; syntax: string } | null>(null);
+  // 延迟转换候选（链接/维基）：闭合括号后不立刻转，等光标移开/回车再转（对齐 Obsidian live preview）。
+  // 存绝对 from/to，光标离开该区间后据此替换。
+  const pendingConvertRef = useRef<{
+    from: number;
+    to: number;
+    kind: 'link' | 'wiki';
+    label: string;
+    href: string;
+  } | null>(null);
 
   // 源码视图类型（MDX / HTML）
   const [sourceKind, setSourceKind] = useState<'mdx' | 'html'>('mdx');
@@ -217,14 +234,109 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       }
     };
 
+    // 把已确认的候选（链接/维基）替换为对应节点。
+    // 候选 from/to 在探测时确定；若区间越界则放弃（并发编辑已改变文档），不落地。
+    const applyConvert = async (cand: {
+      from: number;
+      to: number;
+      kind: 'link' | 'wiki';
+      label: string;
+      href: string;
+    }): Promise<void> => {
+      if (!editor) return;
+      const docSize = editor.state.doc.content.size;
+      if (cand.from < 0 || cand.to > docSize || cand.from >= cand.to) return;
+      if (cand.kind === 'link') {
+        editor
+          .chain()
+          .focus()
+          .setTextSelection({ from: cand.from, to: cand.to })
+          .insertContent({ type: 'text', text: cand.label, marks: [{ type: 'link', attrs: { href: cand.href } }] })
+          .run();
+        editor.chain().focus().setTextSelection(Math.max(0, cand.from + cand.label.length)).run();
+      } else {
+        // wiki 的 href 需实时查已发布索引（slug 贯通后不再 cast）
+        const docList = await Promise.resolve(adapter.listDocuments());
+        const docs = docList.map((d) => ({ title: d.title, slug: d.slug }));
+        const href = wikiHref(cand.label, () => docs) || cand.href;
+        editor
+          .chain()
+          .focus()
+          .setTextSelection({ from: cand.from, to: cand.to })
+          .insertContent({ type: 'wikiLink', attrs: { href, label: cand.label } })
+          .run();
+        editor.chain().focus().setTextSelection(Math.max(0, cand.from + cand.label.length)).run();
+      }
+    };
+
+    // Obsidian md 自动转换：链接 `[text](url)` 与维基 `[[名称]]` + 附件 `![[文件名]]`
+    //
+    // 延迟转换（对齐 Obsidian live preview）：光标停在闭括号处时不立刻渲染源语法，
+    // 仅登记为 pendingConvertRef；等光标真正离开候选文本（回车/移开/后续输入使光标后
+    // 不再紧跟闭括号）才做替换。因此「刚闭合」的瞬间触发依据 `$from.pos >= toAbs` 恒真
+    // 的问题被消除——转换只发生在离开候选区间之后，且转换为幂等替换，不会死循环。
+    const handleMarkdownTextInput = async (): Promise<void> => {
+      if (!editor) return;
+      const { $from } = editor.state.selection;
+      const parentText = $from.parent.textBetween(0, $from.parentOffset);
+      // 父文本在文档中的绝对起点，用于把 detect* 返回的相对 offset 换算成绝对位置
+      const textStart = $from.pos - $from.parentOffset;
+
+      // 附件：`![[文件名]]` → 弹隐藏文件选择器（优先检测并早退，避免 `![[file]]`
+      // 同时被 detectWiki 的 `[[...]]` 误匹配）
+      const attach = $from.parent.textBetween(Math.max(0, $from.parentOffset - 60), $from.parentOffset);
+      const attachMatch = attach.match(/!\[\[([^\]]*)\]\]$/);
+      if (attachMatch) {
+        pendingImageReplace.current = { from: $from.pos - attachMatch[0].length, to: $from.pos, syntax: attachMatch[0] };
+        setImagePickerOpen(true);
+        return;
+      }
+
+      // 1) 若存在待转换候选，先判断光标是否已离开其区间。
+      //   「离开」= 光标所在段落的文本在光标处不再以该候选的闭括号收尾，即探测器不再命中，
+      //   覆盖：回车（光标跳到新段）、向右移出、在后方继续输入等一切「离开」情形。
+      const pending = pendingConvertRef.current;
+      if (pending) {
+        const close = pending.kind === 'wiki' ? ']]' : ')';
+        // href 闭括号后跟的是 url（`[label](url)` 以 `)` 收尾），与 wiki 不同；直接复用探测器更稳。
+        const stillClosing = pending.kind === 'wiki'
+          ? parentText.endsWith(close)
+          : detectLink(parentText) !== null;
+        if (!stillClosing) {
+          pendingConvertRef.current = null;
+          await applyConvert(pending);
+          return;
+        }
+      }
+
+      // 2) 继续用当前光标处的收尾语法探测新候选：命中即登记 pending，不立刻转。
+      const link = detectLink(parentText);
+      const wiki = detectWiki(parentText);
+      if (link) {
+        const fromAbs = textStart + link.from;
+        const toAbs = textStart + link.to;
+        if (fromAbs < 0 || toAbs > textStart + $from.parentOffset) return;
+        pendingConvertRef.current = { from: fromAbs, to: toAbs, kind: 'link', label: link.label, href: link.href };
+      } else if (wiki) {
+        const fromAbs = textStart + wiki.from;
+        const toAbs = textStart + wiki.to;
+        if (fromAbs < 0 || toAbs > textStart + $from.parentOffset) return;
+        pendingConvertRef.current = { from: fromAbs, to: toAbs, kind: 'wiki', label: wiki.label, href: '' };
+      }
+    };
+
     editor.on('selectionUpdate', handleTextInput);
     editor.on('update', handleUpdate);
+    editor.on('selectionUpdate', handleMarkdownTextInput);
+    editor.on('update', handleMarkdownTextInput);
 
     return () => {
       editor.off('selectionUpdate', handleTextInput);
       editor.off('update', handleUpdate);
+      editor.off('selectionUpdate', handleMarkdownTextInput);
+      editor.off('update', handleMarkdownTextInput);
     };
-  }, [editor, slashOpen]);
+  }, [editor, slashOpen, adapter]);
 
   // 移动端键盘自动滚动
   useEffect(() => {
@@ -327,11 +439,12 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   }, []);
 
   const handlePublish = useCallback(
-    async (title: string, _slug: string) => {
+    async (title: string, slug: string) => {
       if (!docId) return;
       const doc = await adapter.loadDocument(docId);
       if (doc) {
-        const updated: DocumentData = { ...doc, title, status: 'published', updatedAt: new Date().toISOString() };
+        // 发布时落库 slug（未填则沿用既有 slug，供 wiki 双链 /docs/<slug> 解析）
+        const updated: DocumentData = { ...doc, title, slug: slug || doc.slug, status: 'published', updatedAt: new Date().toISOString() };
         await adapter.saveDocument(updated);
         await adapter.saveVersion(docId, updated, '发布');
         setRefreshKey((k) => k + 1);
@@ -594,6 +707,52 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         <Suspense fallback={null}>
           <AiAssistant editor={editor!} onClose={() => setAiPanelOpen(false)} />
         </Suspense>
+      )}
+
+      {imagePickerOpen && (
+        <ObsidianImagePicker
+          onSelect={(file) => {
+            setImagePickerOpen(false);
+            const pending = pendingImageReplace.current;
+            pendingImageReplace.current = null;
+            if (!editor || !pending) return;
+            if (!file) {
+              // 取消选图：保持 `![[文件名]]` 文本原样，不改动
+              return;
+            }
+            // 选图是异步的，期间用户/光标可能位移，不能用探测时存死的绝对区间。
+            // 依据原始 `![[文件名]]` 串在「当前文档全文」中重新定位（从原 from 向后找），
+            // 找不到则回退到存储区间（若该区间当前仍是 `![[...]]` 文本）。
+            void (async () => {
+              const fullText = editor.state.doc.textBetween(0, editor.state.doc.content.size);
+              const probeFrom = Math.min(Math.max(pending.from, 0), fullText.length);
+              let index = fullText.indexOf(pending.syntax, probeFrom);
+              if (index === -1) {
+                // 兜底：从更前的位置向后找一次（光标向前移过的情况）
+                index = fullText.indexOf(pending.syntax);
+              }
+              let from = pending.from;
+              let to = pending.to;
+              if (index !== -1) {
+                from = index;
+                to = index + pending.syntax.length;
+              }
+              if (from < 0 || to > editor.state.doc.content.size || from >= to) return;
+              // 附件 `![[文件名]]` 复用：先按原始文件名查是否已有同名的已存图片，
+              // 命中则直接复用它（避免对同名附件重复占用 IndexedDB 存储），未命中才新建并建 orgName 索引。
+              const reusedRef = await findImageByOrgName(file.name);
+              const ref = reusedRef ?? (await saveImageBlob(file, file.name));
+              if (!editor.isDestroyed) {
+                editor
+                  .chain()
+                  .focus()
+                  .setTextSelection({ from, to })
+                  .insertContent({ type: 'image', attrs: { src: ref } })
+                  .run();
+              }
+            })();
+          }}
+        />
       )}
     </div>
   );

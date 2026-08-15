@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { collectImageSrcs } from '../image-store';
+// node 测试环境无原生 IndexedDB，用 fake-indexeddb 提供，使 Dexie 持久化可用于集成式断言
+import 'fake-indexeddb/auto';
+import { describe, it, expect, beforeEach } from 'vitest';
+import Dexie from 'dexie';
+import { collectImageSrcs, saveImageBlob, findImageByOrgName } from '../image-store';
 
 describe('image-store 纯逻辑', () => {
   it('collectImageSrcs 收集嵌套 image 节点 src', () => {
@@ -23,3 +26,28 @@ describe('image-store 纯逻辑', () => {
     expect(collectImageSrcs(undefined)).toEqual([]);
   });
 });
+
+describe('image-store orgName 索引', () => {
+  beforeEach(async () => {
+    await Dexie.delete('lkm-editor-images');
+  });
+
+  it('saveImageBlob 带 orgName 后可按名查询', async () => {
+    const blob = new Blob(['x'], { type: 'image/png' });
+    const ref = await saveImageBlob(blob, 'pic.png');
+    const found = await findImageByOrgName('pic.png');
+    expect(found).toBe(ref);
+    expect(sortedPrefixRef(found)).toBe(true);
+  });
+
+  it('无 orgName 时 findImageByOrgName 返回 null', async () => {
+    const blob = new Blob(['x'], { type: 'image/png' });
+    await saveImageBlob(blob);
+    const found = await findImageByOrgName('pic.png');
+    expect(found).toBeNull();
+  });
+});
+
+function sortedPrefixRef(x: string | null): boolean {
+  return typeof x === 'string' && x.startsWith('blob:');
+}

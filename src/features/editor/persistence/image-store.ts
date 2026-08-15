@@ -6,6 +6,8 @@ export interface ImageRecord {
   mime: string;
   width?: number;
   height?: number;
+  /** 图片原始文件名，用于 `![[文件名]]` 附件语法复用 */
+  orgName?: string;
   createdAt: string;
 }
 
@@ -14,7 +16,7 @@ const imageDb = new Dexie('lkm-editor-images') as Dexie & {
 };
 
 imageDb.version(1).stores({
-  images: 'id, createdAt',
+  images: 'id, createdAt, orgName',
 });
 
 /** 图片引用前缀：编辑器 JSON / MDX 中图片 src 用 `blob:<id>` 引用，避免 base64 塞满 localStorage */
@@ -33,8 +35,9 @@ function parseBlobRefId(src: string): string | null {
 
 /**
  * 持久化一张图片 blob，返回 blob 引用 id（例如 `blob:abc-123`）。
+ * 可选传入原始文件名 orgName 写入索引，供 `![[文件名]]` 附件语法按名复用。
  */
-export async function saveImageBlob(blob: Blob): Promise<string> {
+export async function saveImageBlob(blob: Blob, orgName?: string): Promise<string> {
   const id = crypto.randomUUID();
   let width: number | undefined;
   let height: number | undefined;
@@ -57,6 +60,7 @@ export async function saveImageBlob(blob: Blob): Promise<string> {
     height,
     createdAt: new Date().toISOString(),
   };
+  if (orgName) record.orgName = orgName;
   await imageDb.images.put(record);
   return BLOB_REF_PREFIX + id;
 }
@@ -83,6 +87,13 @@ export async function resolveImageSrc(src: string): Promise<string> {
   const url = URL.createObjectURL(record.blob);
   objectUrlCache.set(id, url);
   return url;
+}
+
+/** 按原始文件名查最先匹配的图片，返回 `blob:<id>` 或 null（供 `![[文件名]]` 复用）。 */
+export async function findImageByOrgName(orgName: string): Promise<string | null> {
+  if (!orgName) return null;
+  const match = await imageDb.images.where('orgName').equals(orgName).first();
+  return match ? BLOB_REF_PREFIX + match.id : null;
 }
 
 /** 删除多张 blob 引用图片（释放 IndexedDB 占用）。供删除文档等场景调用。 */
