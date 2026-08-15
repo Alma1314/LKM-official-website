@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import type { PersistenceAdapter, CommentThread } from '../../engine/types';
+import ConfirmDialog from '../dialogs/ConfirmDialog';
 
 interface CommentPanelProps {
   documentId: string;
@@ -11,6 +12,7 @@ interface CommentPanelProps {
 const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, onHighlightClick }: CommentPanelProps) {
   const [threads, setThreads] = useState<CommentThread[]>([]);
   const [replyInput, setReplyInput] = useState<Record<string, string>>({});
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const refresh = useCallback(() => {
     const result = adapter.getComments?.(documentId) ?? [];
@@ -41,10 +43,15 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
   };
 
   const handleDelete = (threadId: string): void => {
-    if (window.confirm('确定删除此评论？')) {
-      adapter.deleteThread?.(documentId, threadId);
+    setDeleteTarget(threadId);
+  };
+
+  const handleDeleteConfirmed = (): void => {
+    if (deleteTarget) {
+      adapter.deleteThread?.(documentId, deleteTarget);
       refresh();
     }
+    setDeleteTarget(null);
   };
 
   return (
@@ -141,6 +148,15 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
           ))
         )}
       </div>
+
+      {deleteTarget && (
+        <ConfirmDialog
+          message="确定删除此评论？"
+          danger
+          onConfirm={handleDeleteConfirmed}
+          onCancel={() => setDeleteTarget(null)}
+        />
+      )}
     </div>
   );
 });

@@ -1,25 +1,33 @@
 ---
 import Layout from './BaseLayout.astro';
-import SiteNavbar from '~/features/shell/components/SiteNavbar.astro';
+import SiteNavbar from '~/features/shell-official/components/SiteNavbar.astro';
 import Footer from '~/features/shell/components/Footer.astro';
 
-import { footerData } from '~/lib/navigation';
-
+import { allMenuItems, officialDefaultNavItems } from '~/features/shell/menus';
+import { footerData, filterNavbarByNames } from '~/lib/navigation';
+import type { NavBarLink } from '~/types/config';
 import type { MetaData } from '~/types/core';
 
 export interface Props {
   metadata?: MetaData;
+  showFooter?: boolean;
+  navItems?: string[];
 }
 
-const { metadata } = Astro.props;
+const { metadata, showFooter = true, navItems = officialDefaultNavItems } = Astro.props;
+const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
 ---
 
-<Layout metadata={metadata}>
-  <SiteNavbar />
+<Layout metadata={metadata} navbarLinks={navbarLinks}>
+  <SiteNavbar links={navbarLinks} module="official" />
   <main>
     <slot />
   </main>
-  <slot name="footer">
-    <Footer {...footerData} />
-  </slot>
+  {
+    showFooter && (
+      <slot name="footer">
+        <Footer {...footerData} />
+      </slot>
+    )
+  }
 </Layout>

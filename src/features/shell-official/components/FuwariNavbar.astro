@@ -1,10 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { navBarConfig, siteConfig } from '~/lib/config';
-import { LinkPresets } from '~/lib/constants/link-presets';
-import { LinkPreset, type NavBarLink } from '~/types/config';
+import { siteConfig } from '~/lib/config';
+import type { NavBarLink } from '~/types/config';
 import { url } from '~/lib/utils/url-utils';
 import LightDarkSwitch from '~/features/shell/components/LightDarkSwitch.vue';
+import LanguageSwitcher from '~/features/shell/components/LanguageSwitcher.vue';
 import { SearchGlobalSearch } from '~/features/search';
 import DisplaySettings from '~/features/shell/components/widget/DisplaySettings.vue';
 import { NotificationBell } from '~/features/notification';
@@ -12,7 +12,7 @@ import UserAvatarMenu from '~/features/shell/components/user/UserAvatarMenu.vue'
 
 interface Props {
   class?: string;
-  links?: NavBarLink[];
+  links: NavBarLink[];
   module?: 'official' | 'community';
 }
 
@@ -28,14 +28,7 @@ const navInnerClass = [
   .filter(Boolean)
   .join(' ');
 
-let links: NavBarLink[] =
-  Astro.props.links ||
-  navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
-    if (typeof item === 'number') {
-      return LinkPresets[item];
-    }
-    return item;
-  });
+const links: NavBarLink[] = Astro.props.links;
 ---
 
 <div id="navbar" class="z-50 onload-animation">
@@ -135,6 +128,7 @@ let links: NavBarLink[] =
         )
       }
       <LightDarkSwitch client:only="vue" />
+      <LanguageSwitcher client:only="vue" />
       <NotificationBell client:idle />
       <UserAvatarMenu client:only="vue" base={url('/')} />
       <button

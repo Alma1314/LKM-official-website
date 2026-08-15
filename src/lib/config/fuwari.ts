@@ -1,25 +1,9 @@
-import type {
-  ExpressiveCodeConfig,
-  LicenseConfig,
-  NavBarConfig,
-  NavBarLink,
-  ProfileConfig,
-  SiteConfig,
-} from '~/types/config';
-import { LinkPreset } from '~/types/config';
+import type { ExpressiveCodeConfig, LicenseConfig, ProfileConfig, SiteConfig } from '~/types/config';
 import projectConfigRaw from 'virtual:config';
 
 // virtual:config 运行时数据没有编译期类型 —— 在此唯一断言一次
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const projectConfig = projectConfigRaw as Record<string, any>;
-
-interface FuwariLinkItem {
-  preset?: string;
-  name?: string;
-  url?: string;
-  external?: boolean;
-  children?: FuwariLinkItem[];
-}
 
 interface RawCredit {
   enable?: boolean;
@@ -57,28 +41,13 @@ interface RawSiteConfig {
 const cfg = projectConfig.fuwari as
   | {
       site?: RawSiteConfig;
-      navbar?: { links: FuwariLinkItem[] };
       profile?: Record<string, unknown>;
       license?: Record<string, unknown>;
       expressiveCode?: { theme: string };
     }
   | undefined;
 
-function presetFromString(s: string): LinkPreset {
-  switch (s) {
-    case 'Home':
-      return LinkPreset.Home;
-    case 'Archive':
-      return LinkPreset.Archive;
-    case 'About':
-      return LinkPreset.About;
-    default:
-      return LinkPreset.Home;
-  }
-}
-
 const siteCfg = cfg?.site ?? {};
-const navCfg = cfg?.navbar ?? { links: [] };
 const profileCfg = cfg?.profile ?? {};
 const licCfg = cfg?.license ?? {};
 const ecCfg = cfg?.expressiveCode ?? { theme: 'github-dark' };
@@ -106,36 +75,6 @@ export const siteConfig: SiteConfig = {
     depth: (siteCfg.toc?.depth ?? 2) as 1 | 2 | 3,
   },
   favicon: Array.isArray(siteCfg.favicon) ? (siteCfg.favicon as SiteConfig['favicon']) : [],
-};
-
-function buildLinks(items: FuwariLinkItem[]): NavBarLink[] {
-  return items.flatMap((link: FuwariLinkItem) => {
-    if (link.preset) {
-      const preset = presetFromString(link.preset);
-      if (typeof preset === 'number') {
-        const map: Record<number, { name: string; url: string; external?: boolean }> = {
-          [LinkPreset.Home]: { name: 'Home', url: '/' },
-          [LinkPreset.Archive]: { name: 'Archive', url: '/blog/archive' },
-          [LinkPreset.About]: { name: 'About', url: '/blog/about' },
-        };
-        const resolved = map[preset];
-        if (resolved) return [{ ...resolved, external: false }];
-      }
-      return [];
-    }
-    return [
-      {
-        name: link.name ?? '',
-        url: link.url ?? '',
-        external: link.external ?? false,
-        ...(link.children ? { children: buildLinks(link.children) } : {}),
-      },
-    ];
-  });
-}
-
-export const navBarConfig: NavBarConfig = {
-  links: buildLinks(navCfg.links),
 };
 
 export const profileConfig: ProfileConfig = {

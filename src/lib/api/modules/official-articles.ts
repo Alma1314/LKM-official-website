@@ -1,6 +1,6 @@
-// 官方文章（/api/articles）SSR 数据访问层
+// 官方文章（/api/v1/articles）SSR 数据访问层
 //
-// 官方站点文章列表/详情页使用真实后端的 /api/articles 端点（经 API_URL 直连）。
+// 官方站点文章列表/详情页使用真实后端的 /api/v1/articles 端点（经 API_URL 直连）。
 // 此处提供统一的类型与聚合函数，供 文章列表 / 所有分类 / 归档 / 新闻资讯 等 SSR 页面复用。
 // 与 Vue 博客（/api/v1/blog/*）相互独立。
 
@@ -10,13 +10,23 @@ import { ssrFetch } from '~/lib/fetch-ssr';
 export interface OfficialArticle {
   slug: string;
   title: string;
-  description: string;
-  cover: string;
+  description: string | null;
+  cover: string | null;
   category: string;
   published: string;
   views: number;
   likes: number;
   comments: number;
+}
+
+/** 官方文章详情（列表项基础上含正文与互动扩展字段） */
+export interface ArticleDetail extends OfficialArticle {
+  bookmarks: number;
+  department: string;
+  publisher: string;
+  content: string;
+  reading_time: number;
+  keywords: string[];
 }
 
 /** 官方文章列表分页数据 */
@@ -62,7 +72,7 @@ export async function fetchAllArticles(
 
   for (let page = 1; page <= maxPages; page += 1) {
     const { data, error } = await ssrFetch<OfficialArticleListData>(
-      `/api/articles?page=${page}&page_size=${pageSize}`,
+      `/api/v1/articles?page=${page}&page_size=${pageSize}`,
       {
         fallback: null,
       }
@@ -84,7 +94,7 @@ export async function fetchAllArticles(
 
 /**
  * 拉取官方文章分类列表。
- * 优先使用后端分类端点（/api/articles/categories）；
+ * 优先使用后端分类端点（/api/v1/articles/categories）；
  * 若端点不可用，则回退为根据全部文章中的 category 字段聚合统计。
  */
 export async function fetchArticleCategories(): Promise<{
@@ -92,7 +102,7 @@ export async function fetchArticleCategories(): Promise<{
   error: string | null;
 }> {
   const { data, error } = await ssrFetch<{ items: OfficialArticleCategory[] } | OfficialArticleCategory[]>(
-    '/api/articles/categories',
+    '/api/v1/articles/categories',
     { fallback: null }
   );
 

@@ -8,10 +8,9 @@ import { getSsrCookie } from './ssr-context';
 
 const SSR_TIMEOUT_MS = 3000; // 3 秒超时
 
-// 用 import.meta.env 而不是 process.env，避免 SSR 工具被打进客户端 chunk 时
-// 因缺少 Node 全局 process 而报 ReferenceError。SSR 下 import.meta.env.API_URL
-// 同样可读（见 vite 注入），与 fetch.ts 的 getApiBase 保持一致。
-const API_BASE = (import.meta as unknown as { env: Record<string, string | undefined> }).env.API_URL ?? '';
+// 用 process.env 运行时读取 API_URL。import.meta.env 会在构建时被静态内联，
+// 导致运行时注入的 API_URL 失效。此模块仅在 SSR 服务端使用。
+const API_BASE = process.env.API_URL ?? '';
 
 interface FetchOptions {
   /** 超时毫秒数，默认 SSR_TIMEOUT_MS */
@@ -22,7 +21,7 @@ interface FetchOptions {
 
 /**
  * SSR 安全的 fetch 封装，带超时和降级
- * @param path API 路径（如 /api/articles）
+ * @param path API 路径（如 /api/v1/articles）
  * @param options 超时和 fallback 配置
  * @returns { data: T | null, error: string | null }
  */

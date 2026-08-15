@@ -21,7 +21,7 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 分钟
 onMounted(async () => {
   try {
     const { data, fromCache } = await fetchWithCache<{ items: OfficialArticle[]; total: number }>(
-      '/api/articles?page=1&page_size=6',
+      '/api/v1/articles?page=1&page_size=6',
       CACHE_KEY,
       CACHE_TTL
     );

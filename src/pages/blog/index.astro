@@ -3,6 +3,6 @@ import Layout from '~/layouts/CommunityLayout.astro';
 import BlogApp from '~/features/blog-community/BlogApp.vue';
 ---
 
-<Layout>
+<Layout navItems={['社区主页', '博客', '资源', '我的']}>
   <BlogApp initialPath="/blog" client:only="vue" />
 </Layout>

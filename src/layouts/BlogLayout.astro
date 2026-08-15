@@ -12,9 +12,10 @@ import '../styles/expressive-code.css';
 
 import ConfigCarrier from '~/features/shell/common/components/ConfigCarrier.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
-import { navBarConfig, profileConfig, siteConfig } from '~/lib/config';
-import { LinkPresets } from '~/lib/constants/link-presets';
-import { LinkPreset, type NavBarLink } from '~/types/config';
+import { profileConfig, siteConfig } from '~/lib/config';
+import { allMenuItems } from '~/features/shell/menus';
+import { filterNavbarByNames } from '~/lib/navigation';
+import type { NavBarLink } from '~/types/config';
 import {
   AUTO_MODE,
   BANNER_HEIGHT,
@@ -34,9 +35,10 @@ interface Props {
   lang?: string;
   setOGTypeArticle?: boolean;
   math?: boolean;
+  navItems?: string[];
 }
 
-let { title, banner: _banner, description, lang, setOGTypeArticle } = Astro.props;
+let { title, banner: _banner, description, lang, setOGTypeArticle, navItems } = Astro.props;
 
 // 给 body 元素添加 class 以决定 Banner 高度，仅用于首次页面加载
 // View Transitions 在页面过渡后更新 body，导致 Banner 高度变化延迟
@@ -52,12 +54,8 @@ void _banner;
 
 const enableBanner = siteConfig.banner.enable;
 
-const navbarLinks: NavBarLink[] = navBarConfig.links.map((item: NavBarLink | LinkPreset): NavBarLink => {
-  if (typeof item === 'number') {
-    return LinkPresets[item];
-  }
-  return item;
-});
+// 博客顶栏：从统一菜单池用 navItems 白名单挑选（供移动端 MobileNavPanel 使用）
+const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
 
 let pageTitle: string;
 if (title) {

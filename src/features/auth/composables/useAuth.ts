@@ -107,11 +107,7 @@ export function useAuthProvider(): AuthContextType {
 
     if (method === 'github') {
       // 整页跳转到真实后端授权入口（302 到 GitHub）
-      const base = (
-        typeof window === 'undefined'
-          ? ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || ''
-          : ''
-      ).replace(/\/$/, '');
+      const base = (typeof window === 'undefined' ? process.env.API_URL || '' : '').replace(/\/$/, '');
       window.location.assign(`${base}${authApi.githubLoginUrl()}`);
       return ok({});
     }

@@ -34,9 +34,29 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>): void => {
     e.preventDefault();
-    if (href) {
-      editor.chain().focus().extendMarkRange('link').setLink({ href }).run();
+    const trimmedHref = href.trim();
+    const finalText = text.trim();
+    if (!trimmedHref) return; // 无地址不提交，保留弹窗
+
+    const chain = editor.chain().focus();
+    const { from, to } = editor.state.selection;
+    const currentText = editor.state.doc.textBetween(from, to, ' ');
+
+    if (finalText && finalText !== currentText) {
+      // 显示文本有改动（或光标无选区）：用新文本 + 链接替换/插入
+      chain.extendMarkRange('link');
+      if (from !== to || editor.isActive('link')) {
+        chain.deleteSelection();
+      }
+      chain.insertContent({
+        type: 'text',
+        text: finalText,
+        marks: [{ type: 'link', attrs: { href: trimmedHref } }],
+      });
+    } else {
+      chain.extendMarkRange('link').setLink({ href: trimmedHref });
     }
+    chain.run();
     onClose();
   };
 

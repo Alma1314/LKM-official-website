@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 import type { Editor } from '@tiptap/core';
 import EditorToolbarButton from './EditorToolbarButton';
 import MathEditor from '../nodes/MathEditor';
+import ImageUrlPopover from '../dialogs/ImageUrlPopover';
+import LinkEditPopover from '../dialogs/LinkEditPopover';
 
 interface MathDraft {
   isBlock: boolean;
@@ -390,16 +392,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
       label: '链接',
       title: '插入链接',
       group: 'insert',
-      action: (e) => {
-        const prevUrl = e.getAttributes('link').href;
-        if (prevUrl) {
-          e.chain().focus().extendMarkRange('link').unsetLink().run();
-        } else {
-          const url = window.prompt('输入链接地址:');
-          if (url) {
-            e.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
-          }
-        }
+      action: () => {
+        // 链接由 dispatchAction 拦截：有链接则移除，无链接则打开 LinkEditPopover
       },
       isActive: (e) => e.isActive('link'),
     },
@@ -497,9 +491,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
       label: '图片',
       title: '插入图片',
       group: 'insert',
-      action: (e) => {
-        const url = window.prompt('输入图片地址:');
-        if (url) e.chain().focus().setImage({ src: url }).run();
+      action: () => {
+        // 图片由 dispatchAction 拦截：打开 ImageUrlPopover
       },
       isActive: () => false,
     },
@@ -525,14 +518,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
       label: '行内公式',
       title: '插入行内公式',
       group: 'insert',
-      action: (e) => {
-        const latex = window.prompt('输入 LaTeX:', 'x^2');
-        if (latex) {
-          e.chain()
-            .focus()
-            .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
-            .run();
-        }
+      action: () => {
+        // 行内公式由 dispatchAction 拦截：打开 MathEditor
       },
       isActive: () => false,
     },
@@ -558,11 +545,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
       label: '块级公式',
       title: '插入块级公式',
       group: 'insert',
-      action: (e) => {
-        const latex = window.prompt('输入 LaTeX:', '\\sum_{i=1}^{n} x_i');
-        if (latex) {
-          e.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
-        }
+      action: () => {
+        // 块级公式由 dispatchAction 拦截：打开 MathEditor
       },
       isActive: () => false,
     },
@@ -666,15 +650,24 @@ interface EditorToolbarProps {
 export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mathDraft, setMathDraft] = useState<MathDraft | null>(null);
+  const [imageOpen, setImageOpen] = useState(false);
+  const [linkOpen, setLinkOpen] = useState(false);
   const mobileBarRef = useRef<HTMLDivElement>(null);
 
-  // 公式按钮打开 MathEditor 模态，其余走 item.action
   const dispatchAction = useCallback(
     (item: ToolbarItemDef) => {
       if (item.key === 'inlineMath') {
         setMathDraft({ isBlock: false, initialLatex: 'x^2' });
       } else if (item.key === 'blockMath') {
         setMathDraft({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
+      } else if (item.key === 'link') {
+        if (editor.isActive('link')) {
+          editor.chain().focus().extendMarkRange('link').unsetLink().run();
+        } else {
+          setLinkOpen(true);
+        }
+      } else if (item.key === 'image') {
+        setImageOpen(true);
       } else {
         item.action(editor);
       }
@@ -830,6 +823,20 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           }}
           onCancel={() => setMathDraft(null)}
         />
+      )}
+      {imageOpen && (
+        <ImageUrlPopover
+          onInsert={(src, alt) => {
+            editor.chain().focus().setImage({ src, alt }).run();
+            setImageOpen(false);
+          }}
+          onClose={() => setImageOpen(false)}
+        />
+      )}
+      {linkOpen && (
+        <div className="absolute top-full right-2 mt-1 z-50">
+          <LinkEditPopover editor={editor} onClose={() => setLinkOpen(false)} />
+        </div>
       )}
     </div>
   );

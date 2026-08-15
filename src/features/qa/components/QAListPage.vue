@@ -16,9 +16,9 @@
           ></div>
         </button>
       </div>
-      <a :href="buildUrl('/qa/ask')" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0"
-        >我要提问</a
-      >
+      <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold shrink-0" @click="askModalOpen = true">
+        我要提问
+      </button>
     </div>
 
     <div class="space-y-3">
@@ -47,6 +47,8 @@
         </div>
       </a>
     </div>
+
+    <AskQuestionModal v-model:show="askModalOpen" />
   </div>
 </template>
 
@@ -54,8 +56,10 @@
 import { ref, computed } from 'vue';
 import { mockQuestions } from '../data/mock-questions';
 import { buildUrl } from '~/lib/utils/paths';
+import AskQuestionModal from './AskQuestionModal.vue';
 
 const activeTab = ref('general');
+const askModalOpen = ref(false);
 const tabs = [
   { key: 'general', label: '求助' },
   { key: 'volunteer', label: '志愿/专业推荐' },

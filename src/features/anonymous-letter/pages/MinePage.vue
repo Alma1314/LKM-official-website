@@ -42,7 +42,7 @@
               <div class="item-acts">
                 <a
                   v-if="['pending', 'rejected', 'scheduled'].includes(l.status)"
-                  :href="buildUrl('/treehole/write') + '?letterId=' + l.id"
+                  :href="buildUrl('/community/treehole/write') + '?letterId=' + l.id"
                   class="mini"
                   >✏️ 编辑</a
                 >
@@ -72,7 +72,7 @@
             <div class="item-foot">
               <span>{{ timeText(d.updatedAt) }}</span>
               <div class="item-acts">
-                <a :href="buildUrl('/treehole/write') + '?draftId=' + d.id" class="mini">继续编辑</a>
+                <a :href="buildUrl('/community/treehole/write') + '?draftId=' + d.id" class="mini">继续编辑</a>
                 <button class="mini danger" @click="removeDraft(d)">删除</button>
               </div>
             </div>

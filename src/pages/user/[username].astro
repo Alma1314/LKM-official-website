@@ -6,7 +6,7 @@ const { username } = Astro.params;
 const displayName = username || '';
 ---
 
-<MainGridLayout username={username} title={displayName} description="">
+<MainGridLayout username={username} title={displayName} description="" navItems={['主页', '博客', '资源']}>
   <Fragment slot="head">
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>

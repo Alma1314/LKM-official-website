@@ -21,7 +21,7 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 
 function getApiBase(): string {
   if (typeof window === 'undefined') {
-    return ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) ?? '';
+    return process.env.API_URL ?? '';
   }
   return '';
 }

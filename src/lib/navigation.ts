@@ -1,4 +1,11 @@
+import type { NavBarLink } from '~/types/config';
 import { getPermalink, getAsset } from './utils/permalinks';
+
+/** 按一级菜单名（name）白名单过滤顶栏链接；names 未传(undefined)时不过滤，原样返回；空数组会返回空列表。 */
+export function filterNavbarByNames(links: NavBarLink[], names?: string[]): NavBarLink[] {
+  if (!names) return links;
+  return links.filter((item) => names.includes(item.name));
+}
 
 export const footerData = {
   links: [

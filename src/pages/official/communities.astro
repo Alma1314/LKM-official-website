@@ -24,7 +24,12 @@ const sidebarLinks = [
 const sectionIds = ['general', 'grades', 'groups', 'basic', 'applied', 'hobby', 'events', 'legacy'];
 ---
 
-<Layout metadata={metadata} sidebarLinks={sidebarLinks} currentPath={getPermalink('/official/communities')}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={sidebarLinks}
+  currentPath={getPermalink('/official/communities')}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   {
     communityCategories.map((cat, i) => (
       <CommunitySection id={sectionIds[i]} title={cat.label} intro={cat.intro}>

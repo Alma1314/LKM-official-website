@@ -257,8 +257,8 @@
           <h2 class="modal-title">投递成功</h2>
           <p class="modal-desc">{{ successMsg }}</p>
           <div class="modal-actions">
-            <a :href="buildUrl('/treehole')" class="btn-grad">🏠 返回广场</a>
-            <a :href="buildUrl('/treehole/mine')" class="chip">📬 我的信箱</a>
+            <a :href="buildUrl('/community/treehole')" class="btn-grad">🏠 返回广场</a>
+            <a :href="buildUrl('/community/treehole/mine')" class="chip">📬 我的信箱</a>
             <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
           </div>
         </div>

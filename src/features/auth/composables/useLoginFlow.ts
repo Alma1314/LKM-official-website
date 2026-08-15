@@ -44,7 +44,7 @@ export interface LoginFlow {
 /** API_BASE：SSR 用 API_URL，浏览器同域。与 http/client 的 base 策略一致。 */
 function getApiBase(): string {
   if (typeof window === 'undefined') {
-    return ((import.meta as unknown as { env: Record<string, unknown> }).env.API_URL as string) || '';
+    return process.env.API_URL || '';
   }
   return '';
 }

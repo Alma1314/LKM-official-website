@@ -1,0 +1,53 @@
+<script setup lang="ts">
+import { useAuthStore } from '../stores/auth';
+import { useNavigationStore } from '../stores/navigation';
+
+const { navItems, currentRoute, navigate } = useNavigationStore();
+const { currentUser, logout } = useAuthStore();
+</script>
+
+<template>
+  <div class="flex min-h-screen">
+    <aside class="w-56 shrink-0 border-r border-surface-3 bg-card-bg min-h-screen p-4 flex flex-col">
+      <div class="mb-6">
+        <h1 class="text-lg font-bold text-primary">StarHope</h1>
+        <p class="text-xs text-text-muted mt-1">学习助手</p>
+      </div>
+      <nav class="space-y-1">
+        <button
+          v-for="item in navItems"
+          :key="item.route"
+          @click="navigate(item.route)"
+          class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2"
+          :class="currentRoute === item.route ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-3'"
+        >
+          <span class="text-base">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </button>
+      </nav>
+      <div class="mt-auto pt-4 border-t border-surface-3">
+        <div v-if="currentUser" class="flex items-center gap-2 px-3 py-2">
+          <div
+            class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary"
+          >
+            {{ currentUser.username ? currentUser.username.charAt(0) : '?' }}
+          </div>
+          <div class="text-sm">
+            <div class="font-medium text-deep-text">{{ currentUser.username ?? '用户' }}</div>
+            <div class="text-xs text-text-muted">{{ currentUser.account_level }}</div>
+          </div>
+        </div>
+        <button
+          type="button"
+          @click="logout"
+          class="w-full text-left px-3 py-2 text-xs text-text-muted hover:text-red-500 rounded-lg hover:bg-surface-3 transition-colors block"
+        >
+          退出登录
+        </button>
+      </div>
+    </aside>
+    <main class="flex-1 min-w-0">
+      <slot />
+    </main>
+  </div>
+</template>
