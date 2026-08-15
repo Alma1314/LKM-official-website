@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useAuthStore } from '../stores-vue/auth';
-import { useQuestionBankStore } from '../stores-vue/question-bank';
+import { useAuthStore } from '../stores/auth';
+import { useQuestionBankStore } from '../stores/question-bank';
+import { useNavigationStore, type StarHopeRoute } from '../stores/navigation';
 
 const auth = useAuthStore();
 const bank = useQuestionBankStore();
+const { navigate } = useNavigationStore();
 const questionCount = ref(0);
 const folderCount = ref(0);
 
@@ -15,15 +17,15 @@ onMounted(async () => {
   folderCount.value = bank.folders.value.length;
 });
 
-const shortcuts = [
-  { label: '题库管理', desc: '创建和管理题目', icon: '📚' },
-  { label: '开始练习', desc: '自定义选题练习', icon: '✏️' },
-  { label: '模拟考试', desc: '全真考试模拟', icon: '📝' },
-  { label: '错题本', desc: '回顾错题', icon: '📕' },
-  { label: 'AI 助手', desc: '智能学习伙伴', icon: '🤖' },
-  { label: '文档阅读', desc: 'PDF 标注阅读', icon: '📖' },
-  { label: '插件中心', desc: '扩展功能', icon: '🧩' },
-  { label: '应用设置', desc: '备份与偏好', icon: '⚙️' },
+const shortcuts: { label: string; desc: string; icon: string; route: StarHopeRoute }[] = [
+  { label: '题库管理', desc: '创建和管理题目', icon: '📚', route: 'bank' },
+  { label: '开始练习', desc: '自定义选题练习', icon: '✏️', route: 'practice' },
+  { label: '模拟考试', desc: '全真考试模拟', icon: '📝', route: 'exam' },
+  { label: '错题本', desc: '回顾错题', icon: '📕', route: 'wrong-book' },
+  { label: 'AI 助手', desc: '智能学习伙伴', icon: '🤖', route: 'ai' },
+  { label: '文档阅读', desc: 'PDF 标注阅读', icon: '📖', route: 'reader' },
+  { label: '插件中心', desc: '扩展功能', icon: '🧩', route: 'plugins' },
+  { label: '应用设置', desc: '备份与偏好', icon: '⚙️', route: 'settings' },
 ];
 </script>
 
@@ -59,6 +61,7 @@ const shortcuts = [
         v-for="item in shortcuts"
         :key="item.label"
         class="card-base p-4 cursor-pointer hover:border-primary/30 transition-colors"
+        @click="navigate(item.route)"
       >
         <div class="text-2xl mb-2">{{ item.icon }}</div>
         <div class="text-sm font-semibold text-deep-text">{{ item.label }}</div>

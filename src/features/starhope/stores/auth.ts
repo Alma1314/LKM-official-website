@@ -7,6 +7,7 @@ export function useAuthStore(): {
   currentUser: ComputedRef<UserInfo | null>;
   userId: ComputedRef<number | null>;
   logout: () => Promise<void>;
+  restore: () => void;
 } {
   const store = usePiniaAuth();
 
@@ -18,5 +19,10 @@ export function useAuthStore(): {
     await store.logout();
   }
 
-  return { isLoggedIn, currentUser, userId, logout };
+  // 从 localStorage 恢复主站登录态（StarHope 是独立 Vue island，需主动恢复）
+  function restore(): void {
+    store.restoreFromStorage();
+  }
+
+  return { isLoggedIn, currentUser, userId, logout, restore };
 }

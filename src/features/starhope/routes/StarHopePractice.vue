@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useQuestionBankStore } from '../stores-vue/question-bank';
-import { usePracticeStore } from '../stores-vue/practice';
-import { useNavigationStore } from '../stores-vue/navigation';
+import { useQuestionBankStore } from '../stores/question-bank';
+import { usePracticeStore } from '../stores/practice';
+import { useNavigationStore } from '../stores/navigation';
 
 const bank = useQuestionBankStore();
 const practice = usePracticeStore();

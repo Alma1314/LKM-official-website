@@ -61,6 +61,9 @@ import { updatePhase } from '../sim/clock.js';
 import { writeRenU, writeSimU } from './uniforms.js';
 
 export function frame(tms) {
+  // View Transitions（ClientRouter）导航离开本页时，旧 DOM 被移除但 rAF 循环不会被自动清理。
+  // 通过 canvas 是否仍在文档中判断，离开后立即停止循环，避免在其它页面访问不存在的元素而抛错。
+  if (!canvas.isConnected) return;
   requestAnimationFrame(frame);
   const t = tms / 1000;
   const dt = Math.min(0.05, Math.max(0.0001, t - rt.lastT));

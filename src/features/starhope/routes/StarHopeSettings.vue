@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { db } from '../stores-vue/db';
+import { db } from '../stores/db';
 import type { Question } from '~/features/starhope/types';
 const exportStatus = ref('');
 

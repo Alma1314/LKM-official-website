@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useQuestionBankStore } from '../stores-vue/question-bank';
+import { useQuestionBankStore } from '../stores/question-bank';
 const bank = useQuestionBankStore();
 onMounted(async () => {
   await bank.loadQuestions();

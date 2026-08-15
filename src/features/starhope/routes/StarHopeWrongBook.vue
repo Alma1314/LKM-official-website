@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { usePracticeStore } from '../stores-vue/practice';
+import { usePracticeStore } from '../stores/practice';
 import type { Question } from '~/features/starhope/types';
 const practice = usePracticeStore();
 const wrongQuestions = ref<Question[]>([]);
