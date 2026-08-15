@@ -37,24 +37,40 @@
                 </div>
 
                 <nav class="nav-links" aria-label="主导航">
-                  <a :href="buildUrl('/community/treehole')" class="nav-link" :class="{ active: activeNav === 'home' }">广场</a>
-                  <a :href="buildUrl('/community/treehole/random')" class="nav-link" :class="{ active: activeNav === 'random' }"
+                  <a :href="buildUrl('/community/treehole')" class="nav-link" :class="{ active: activeNav === 'home' }"
+                    >广场</a
+                  >
+                  <a
+                    :href="buildUrl('/community/treehole/random')"
+                    class="nav-link"
+                    :class="{ active: activeNav === 'random' }"
                     >随机</a
                   >
-                  <a :href="buildUrl('/community/treehole/bottle')" class="nav-link" :class="{ active: activeNav === 'bottle' }"
+                  <a
+                    :href="buildUrl('/community/treehole/bottle')"
+                    class="nav-link"
+                    :class="{ active: activeNav === 'bottle' }"
                     >漂流瓶</a
                   >
-                  <a :href="buildUrl('/community/treehole/wish')" class="nav-link" :class="{ active: activeNav === 'wish' }"
+                  <a
+                    :href="buildUrl('/community/treehole/wish')"
+                    class="nav-link"
+                    :class="{ active: activeNav === 'wish' }"
                     >许愿墙</a
                   >
-                  <a :href="buildUrl('/community/treehole/rank')" class="nav-link" :class="{ active: activeNav === 'rank' }"
+                  <a
+                    :href="buildUrl('/community/treehole/rank')"
+                    class="nav-link"
+                    :class="{ active: activeNav === 'rank' }"
                     >榜单</a
                   >
                 </nav>
 
                 <!-- 右侧操作 -->
                 <div class="nav-actions">
-                  <a :href="buildUrl('/community/treehole/write')" class="btn-grad nav-write-btn">&#x270D;&#xFE0F; 写信</a>
+                  <a :href="buildUrl('/community/treehole/write')" class="btn-grad nav-write-btn"
+                    >&#x270D;&#xFE0F; 写信</a
+                  >
                   <button
                     class="nav-icon-btn"
                     @click="app.toggleTheme()"
@@ -77,7 +93,10 @@
                 aria-label="移动端导航"
                 @click="mobileMenuOpen = false"
               >
-                <a :href="buildUrl('/community/treehole')" class="mobile-nav-link" :class="{ active: activeNav === 'home' }"
+                <a
+                  :href="buildUrl('/community/treehole')"
+                  class="mobile-nav-link"
+                  :class="{ active: activeNav === 'home' }"
                   >&#x1F3E0; 广场</a
                 >
                 <a
@@ -98,13 +117,22 @@
                   :class="{ active: activeNav === 'bottle' }"
                   >&#x1F37E; 漂流瓶</a
                 >
-                <a :href="buildUrl('/community/treehole/wish')" class="mobile-nav-link" :class="{ active: activeNav === 'wish' }"
+                <a
+                  :href="buildUrl('/community/treehole/wish')"
+                  class="mobile-nav-link"
+                  :class="{ active: activeNav === 'wish' }"
                   >&#x2B50; 许愿墙</a
                 >
-                <a :href="buildUrl('/community/treehole/rank')" class="mobile-nav-link" :class="{ active: activeNav === 'rank' }"
+                <a
+                  :href="buildUrl('/community/treehole/rank')"
+                  class="mobile-nav-link"
+                  :class="{ active: activeNav === 'rank' }"
                   >&#x1F3C6; 榜单</a
                 >
-                <a :href="buildUrl('/community/treehole/mine')" class="mobile-nav-link" :class="{ active: activeNav === 'mine' }"
+                <a
+                  :href="buildUrl('/community/treehole/mine')"
+                  class="mobile-nav-link"
+                  :class="{ active: activeNav === 'mine' }"
                   >&#x1F4EC; 我的信箱</a
                 >
                 <a
@@ -133,7 +161,11 @@
                 <span class="bn-icon">&#x1F3E0;</span>
                 <span class="bn-label">广场</span>
               </a>
-              <a :href="buildUrl('/community/treehole/random')" class="bn-item" :class="{ active: activeNav === 'random' }">
+              <a
+                :href="buildUrl('/community/treehole/random')"
+                class="bn-item"
+                :class="{ active: activeNav === 'random' }"
+              >
                 <span class="bn-icon">&#x1F3B2;</span>
                 <span class="bn-label">随机</span>
               </a>
@@ -144,7 +176,11 @@
               >
                 <span class="bn-center-circle">&#x270D;&#xFE0F;</span>
               </a>
-              <a :href="buildUrl('/community/treehole/bottle')" class="bn-item" :class="{ active: activeNav === 'bottle' }">
+              <a
+                :href="buildUrl('/community/treehole/bottle')"
+                class="bn-item"
+                :class="{ active: activeNav === 'bottle' }"
+              >
                 <span class="bn-icon">&#x1F37E;</span>
                 <span class="bn-label">漂流瓶</span>
               </a>
