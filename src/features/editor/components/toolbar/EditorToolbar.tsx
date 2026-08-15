@@ -157,6 +157,64 @@ const H3 = (
     <path d="M17 17.5c2 1.5 4 .3 4-1.5a2 2 0 0 0-2-2" />
   </svg>
 );
+const H4 = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 12h8" />
+    <path d="M4 18V6" />
+    <path d="M12 18V6" />
+    <path d="M17 10v3" />
+    <path d="M17 13h4" />
+    <path d="M21 10v8" />
+  </svg>
+);
+const H5 = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 12h8" />
+    <path d="M4 18V6" />
+    <path d="M12 18V6" />
+    <path d="M17 13v-3h4" />
+    <path d="M17 17.7c.4.2.8.3 1.3.3 1.5 0 2.7-1.1 2.7-2.5S19.8 13 18.3 13H17" />
+  </svg>
+);
+const H6 = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 12h8" />
+    <path d="M4 18V6" />
+    <path d="M12 18V6" />
+    <circle cx="19" cy="16" r="2" />
+    <path d="M20 10c-2 2-3 3.5-3 6" />
+  </svg>
+);
 const Blockquote = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -342,6 +400,33 @@ function buildToolbarItems(): ToolbarItemDef[] {
       isActive: (e) => e.isActive('heading', { level: 3 }),
     },
     {
+      key: 'h4',
+      icon: H4,
+      label: 'H4',
+      title: '标题 4',
+      group: 'heading',
+      action: (e) => e.chain().focus().toggleHeading({ level: 4 }).run(),
+      isActive: (e) => e.isActive('heading', { level: 4 }),
+    },
+    {
+      key: 'h5',
+      icon: H5,
+      label: 'H5',
+      title: '标题 5',
+      group: 'heading',
+      action: (e) => e.chain().focus().toggleHeading({ level: 5 }).run(),
+      isActive: (e) => e.isActive('heading', { level: 5 }),
+    },
+    {
+      key: 'h6',
+      icon: H6,
+      label: 'H6',
+      title: '标题 6',
+      group: 'heading',
+      action: (e) => e.chain().focus().toggleHeading({ level: 6 }).run(),
+      isActive: (e) => e.isActive('heading', { level: 6 }),
+    },
+    {
       key: 'bold',
       icon: B,
       label: '加粗',
@@ -510,9 +595,9 @@ function buildToolbarItems(): ToolbarItemDef[] {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M4 19h16" />
-          <path d="M4 5h16" />
-          <path d="M8 12h8" />
+          <path d="M9 4v16" />
+          <path d="M4 7c0-1.7 1.3-3 3-3h13" />
+          <path d="M18 20c-1.7 0-3-1.3-3-3V4" />
         </svg>
       ),
       label: '行内公式',
@@ -537,9 +622,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M4 19h16" />
-          <path d="M8 12h8" />
-          <path d="M20 5H4" />
+          <path d="M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a2 2 0 0 1 0 2.4l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2" />
         </svg>
       ),
       label: '块级公式',

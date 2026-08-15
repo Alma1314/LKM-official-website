@@ -1,6 +1,6 @@
 # LKM Official Website · 理科迷官方网站
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Astro v7](https://img.shields.io/badge/Astro-v7-FF5D01?logo=astro)](https://astro.build)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org)
@@ -439,7 +439,7 @@ Jason·CJ `QQ3549287757`
 ├── AGENTS.md                   # AI Agent 指令
 ├── CLAUDE.md                   # Claude Code 配置
 ├── CODING_STANDARDS.md         # 代码规范
-├── LICENSE.md                  # MIT 许可证
+├── LICENSE.md                  # AGPL-3.0 许可证
 ├── astro.config.ts             # Astro 配置（server 模式 + Vue/React 集成）
 └── tsconfig.json               # TypeScript 配置
 ```
@@ -653,4 +653,4 @@ pages/          文件路由页面
 
 ## 许可证
 
-本项目基于 MIT 许可证开源。详见 [LICENSE.md](./LICENSE.md)。
+本项目基于 GNU Affero General Public License v3（AGPL-3.0）开源。详见 [LICENSE.md](./LICENSE.md)。

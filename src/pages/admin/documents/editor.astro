@@ -1,5 +1,5 @@
 ---
-import PageLayout from '~/layouts/PageLayout.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
 
 const metadata = {
@@ -8,9 +8,9 @@ const metadata = {
 };
 ---
 
-<PageLayout metadata={metadata}>
-  <div class="section-container max-w-4xl mx-auto py-8 px-4">
-    <div class="mb-4 flex items-center gap-3">
+<BaseLayout metadata={metadata}>
+  <div class="h-screen flex flex-col p-3">
+    <div class="mb-3 flex items-center gap-3 shrink-0">
       <a href={getPermalink('/admin/documents')} class="btn btn-ghost btn-sm gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,14 +28,14 @@ const metadata = {
         返回列表
       </a>
     </div>
-    <div id="editor-root" class="min-h-[60vh]">
-      <div class="flex items-center justify-center min-h-[60vh]">
+    <div id="editor-root" class="flex-1 min-h-0">
+      <div class="flex items-center justify-center h-full">
         <span class="loading loading-spinner loading-md"></span>
         <span class="ml-2 text-deep-text/50">正在加载编辑器……</span>
       </div>
     </div>
   </div>
-</PageLayout>
+</BaseLayout>
 
 <script>
   import { createRoot } from 'react-dom/client';

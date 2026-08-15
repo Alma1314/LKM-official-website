@@ -281,6 +281,18 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ['virtual:config'],
       include: ['react', 'react-dom', 'react-dom/client'],
+      rolldownOptions: {
+        transform: {
+          // 修复 dev 模式下富文本编辑器不渲染的问题：
+          // Vite 8 (Rolldown) 预构建 react/jsx-dev-runtime 时把 process.env.NODE_ENV
+          // 折叠为 production，导致 jsxDEV 被编译成 undefined；而 @astrojs/react 在
+          // dev 模式把 .tsx 编译成调用 jsxDEV，于是报 "_jsxDEV is not a function"。
+          // optimizeDeps 仅在 dev server 运行，这里强制 development 是安全的。
+          define: {
+            'process.env.NODE_ENV': JSON.stringify('development'),
+          },
+        },
+      },
     },
     css: {
       transformer: 'postcss',
