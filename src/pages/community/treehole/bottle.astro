@@ -8,7 +8,9 @@ import type { MetaData } from '~/types/core';
 const metadata: MetaData = { title: '漂流瓶 — 拾光树洞', description: '把心事装进瓶子，交给海流，等一个陌生的回应。' };
 ---
 
-<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页','博客','资源','我的'])}><div style="min-height: 400px"><BottlePage client:only="vue" /></div></Layout>
+<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}
+  ><div style="min-height: 400px"><BottlePage client:only="vue" /></div></Layout
+>
 
 <script is:inline>
   (function () {

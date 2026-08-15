@@ -8,7 +8,9 @@ import type { MetaData } from '~/types/core';
 const metadata: MetaData = { title: '匿名回信 — 拾光树洞', description: '全程匿名，双方都不暴露真实身份。' };
 ---
 
-<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页','博客','资源','我的'])}><div style="min-height: 400px"><MessagesPage client:only="vue" /></div></Layout>
+<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}
+  ><div style="min-height: 400px"><MessagesPage client:only="vue" /></div></Layout
+>
 
 <script is:inline>
   (function () {

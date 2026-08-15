@@ -1,9 +1,4 @@
-import type {
-  ExpressiveCodeConfig,
-  LicenseConfig,
-  ProfileConfig,
-  SiteConfig,
-} from '~/types/config';
+import type { ExpressiveCodeConfig, LicenseConfig, ProfileConfig, SiteConfig } from '~/types/config';
 import projectConfigRaw from 'virtual:config';
 
 // virtual:config 运行时数据没有编译期类型 —— 在此唯一断言一次

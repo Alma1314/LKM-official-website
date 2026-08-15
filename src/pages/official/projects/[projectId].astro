@@ -22,7 +22,12 @@ const revisionLabel = (rev: number) => (rev === 0 ? '初版' : rev === 1 ? '一�
 const metadata = { title: `${proj.name} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/projects/${projectId}`)} navItems={['主页','新闻资讯','寻求帮助','七月团队','资源']}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink(`/projects/${projectId}`)}
+  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+>
   <div class="space-y-6">
     <!-- 头部 -->
     <div>

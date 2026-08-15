@@ -23,7 +23,12 @@ function formatDate(dateStr: string): string {
 const metadata = { title: `${column.title} —— 理科迷` };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink(`/columns/${slug}`)} navItems={['社区主页','博客','资源','我的']}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink(`/columns/${slug}`)}
+  navItems={['社区主页', '博客', '资源', '我的']}
+>
   <div class="space-y-6">
     <!-- 专栏头部 -->
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">

@@ -8,7 +8,12 @@ import { getPermalink } from '~/lib/utils/permalinks';
 const metadata = { title: '专栏 —— 理科迷' };
 ---
 
-<Layout metadata={metadata} sidebarLinks={communitySidebarLinks} currentPath={getPermalink('/columns')} navItems={['社区主页','博客','资源','我的']}>
+<Layout
+  metadata={metadata}
+  sidebarLinks={communitySidebarLinks}
+  currentPath={getPermalink('/columns')}
+  navItems={['社区主页', '博客', '资源', '我的']}
+>
   <div class="space-y-6">
     <div>
       <h1 class="text-3xl font-bold text-deep-text">专栏</h1>

@@ -58,10 +58,14 @@ const { article, headings = [] } = Astro.props;
             }
           </div>
 
-          <h1 class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading">
+          <h1
+            class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
+          >
             {article.title}
           </h1>
-          <p class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify">
+          <p
+            class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify"
+          >
             {article.description}
           </p>
 
@@ -127,8 +131,7 @@ const { article, headings = [] } = Astro.props;
     padding: 0.1rem 0.5rem;
     border-radius: 0.25rem;
     background: rgba(128, 128, 128, 0.18);
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.04em;

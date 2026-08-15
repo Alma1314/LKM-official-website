@@ -8,7 +8,9 @@ import type { MetaData } from '~/types/core';
 const metadata: MetaData = { title: '许愿墙 — 拾光树洞', description: '把愿望交给星光，被温柔照亮。' };
 ---
 
-<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页','博客','资源','我的'])}><div style="min-height: 400px"><WishPage client:only="vue" /></div></Layout>
+<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}
+  ><div style="min-height: 400px"><WishPage client:only="vue" /></div></Layout
+>
 
 <script is:inline>
   (function () {

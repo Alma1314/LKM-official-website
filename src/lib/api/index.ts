@@ -10,7 +10,12 @@
 export { forumApi } from './modules/forum';
 export { blogApi, blogPostApi } from './modules/blog';
 export { fetchAllArticles, fetchArticleCategories, categoryLabel } from './modules/official-articles';
-export type { OfficialArticle, OfficialArticleListData, OfficialArticleCategory, ArticleDetail } from './modules/official-articles';
+export type {
+  OfficialArticle,
+  OfficialArticleListData,
+  OfficialArticleCategory,
+  ArticleDetail,
+} from './modules/official-articles';
 export { competitionApi } from './modules/competition';
 export { columnApi } from './modules/column';
 export { qaApi } from './modules/qa';

@@ -16,9 +16,7 @@ const image = await findImage(article.cover);
 const link = getPermalink(`/official/articles/${article.slug}`);
 ---
 
-<article
-  class={`max-w-md mx-auto md:max-w-none grid gap-6 md:gap-8 ${image ? 'md:grid-cols-2' : ''}`}
->
+<article class={`max-w-md mx-auto md:max-w-none grid gap-6 md:gap-8 ${image ? 'md:grid-cols-2' : ''}`}>
   {
     image && (
       <a class="relative block group" href={link}>
