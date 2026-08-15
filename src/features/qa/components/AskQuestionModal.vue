@@ -219,7 +219,7 @@ watch(
       document.body.style.overflow = '';
       confirmOpen.value = false;
     }
-  },
+  }
 );
 
 onMounted(() => document.addEventListener('keydown', onKeydown));
