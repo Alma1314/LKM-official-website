@@ -32,8 +32,10 @@
   animation: var(--duration-slow) var(--ease-out) fade-in-up;
   animation-fill-mode: forwards;
 }
-#navbar {
-  animation-delay: 0ms;
+#navbar,
+#navbar .onload-animation {
+  animation: none !important;
+  opacity: 1 !important;
 }
 #sidebar,
 #sidebar .onload-animation {

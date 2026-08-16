@@ -5,7 +5,8 @@
   width: 67px;
 }
 
-.shell:global(.expanded) {
+.shell:global(.expanded),
+:global(html.sidebar-expanded .shell) {
   width: 240px;
 }
 
@@ -16,7 +17,8 @@
     padding-left: 4px;
   }
 
-  .shell:global(.expanded) {
+  .shell:global(.expanded),
+  :global(html.sidebar-expanded .shell) {
     width: 200px;
   }
 

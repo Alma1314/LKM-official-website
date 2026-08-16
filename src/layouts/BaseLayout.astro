@@ -59,6 +59,20 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
         }
       })();
     </script>
+    <script is:inline>
+      // 在首次渲染前应用侧边栏展开态：若上次收起/展开过，先给 <html> 加标记，
+      // 让首帧侧边栏宽度即为 localStorage 持久化值，避免窄→宽 FOUC 闪烁。
+      // 后续由 Sidebar 的脚本负责 class 与标记保持同步。
+      (function () {
+        try {
+          if (localStorage.getItem('sidebar-expanded') === 'true') {
+            document.documentElement.classList.add('sidebar-expanded');
+          }
+        } catch {
+          /* noop */
+        }
+      })();
+    </script>
     <SecurityHeaders />
     <Favicons />
     <CustomStyles />

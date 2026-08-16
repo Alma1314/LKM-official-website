@@ -208,6 +208,15 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       main.style.paddingLeft = isExpanded ? expanded : collapsed;
     }
 
+    // 展开/收起统一入口：同步 .shell 的 .expanded、<html> 的首帧兜底标记与主内容偏移，
+    // 保证首帧内联脚本设置的 html.sidebar-expanded 与实际展开态始终一致，
+    // 否则收起时 CSS 兜底选择器会把宽度钉在展开态。
+    function setSidebarExpanded(isExpanded: boolean): void {
+      sidebar!.classList.toggle('expanded', isExpanded);
+      document.documentElement.classList.toggle('sidebar-expanded', isExpanded);
+      syncMainMargin();
+    }
+
     // 恢复或初始化侧边栏状态（无动画）
     const STORAGE_KEY = 'sidebar-expanded';
     const mq = window.matchMedia('(max-width: 767px)');
@@ -218,15 +227,9 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     sidebarEl.style.transition = 'none';
 
     if (stored !== null) {
-      if (stored === 'true') {
-        sidebar.classList.add('expanded');
-      } else {
-        sidebar.classList.remove('expanded');
-      }
+      setSidebarExpanded(stored === 'true');
     } else {
-      if (!mq.matches) {
-        sidebar.classList.add('expanded');
-      }
+      setSidebarExpanded(!mq.matches);
     }
     syncMainMargin();
 
@@ -238,8 +241,8 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     btn.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
-      sidebar.classList.toggle('expanded');
-      const isExpanded = sidebar!.classList.contains('expanded');
+      const isExpanded = !sidebar!.classList.contains('expanded');
+      setSidebarExpanded(isExpanded);
       localStorage.setItem(STORAGE_KEY, String(isExpanded));
       syncMainMargin();
     });
