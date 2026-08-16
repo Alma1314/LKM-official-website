@@ -112,9 +112,9 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         await adapter.saveDocument(doc);
         setDocId(doc.id);
         const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
-        // base 为 '/' 时 `${base}/admin/...` 会拼成 '//admin/...'（协议相对 URL，被解析为 http://admin/...），
+        // base 为 '/' 时 `${base}/editor` 会拼成 '//editor'（协议相对 URL，被解析为 http://editor/...），
         // 导致 replaceState 抛 SecurityError。去尾部斜杠后再拼接。
-        window.history.replaceState(null, '', `${base.replace(/\/+$/, '')}/admin/documents/editor?id=${doc.id}`);
+        window.history.replaceState(null, '', `${base.replace(/\/+$/, '')}/editor?id=${doc.id}`);
       })();
     }
   }, [documentId, adapter]);
