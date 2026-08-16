@@ -503,13 +503,15 @@
 
 .custom-md spoiler {
   @apply bg-[var(--codeblock-bg)] hover:bg-transparent px-1 py-0.5 overflow-hidden rounded-md transition-all duration-150;
-
-  &:not(:hover) {
-    color: var(--codeblock-bg);
-    * {
-      color: var(--codeblock-bg);
-    }
-  }
+}
+/* 注意：不能用 `@apply` 声明后的 `&` 嵌套（`&:not(:hover)`）——它没有可继承的父选择器，
+   Tailwind v4 会把它脱锚解析成全局 `:not(:hover)`，从而把所有按钮/文字颜色覆盖成
+   --codeblock-bg 的深色。必须写成带完整限定选择器的形式。 */
+.custom-md spoiler:not(:hover) {
+  color: var(--codeblock-bg);
+}
+.custom-md spoiler:not(:hover) * {
+  color: var(--codeblock-bg);
 }
 
 /*
