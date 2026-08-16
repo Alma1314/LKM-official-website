@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { NodeViewWrapper } from '@tiptap/react';
 
 interface FigureNodeViewProps {
   node: Node;
@@ -36,7 +37,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
   };
 
   return (
-    <figure className={`relative my-4 ${alignClasses[align]}`} contentEditable={false} data-figure>
+    <NodeViewWrapper as="figure" className={`relative my-4 ${alignClasses[align]}`} contentEditable={false} data-figure>
       {src ? (
         <img
           src={src}
@@ -161,7 +162,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
           </div>
         </div>
       )}
-    </figure>
+    </NodeViewWrapper>
   );
 });
 

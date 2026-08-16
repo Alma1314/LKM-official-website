@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { NodeViewWrapper } from '@tiptap/react';
 
 interface CalloutNodeViewProps {
   node: Node;
@@ -53,12 +54,18 @@ const CalloutNodeView = memo(function CalloutNodeView({
   }[ctype];
 
   return (
-    <div className="relative my-2" contentEditable={false} data-callout>
-      <div className={`alert ${alertClass} cursor-pointer`} onClick={() => setEditing(!editing)}>
-        <span className="text-lg">{TYPE_ICONS[ctype]}</span>
-        <div>
-          {title && <h4 className="font-semibold text-sm">{title}</h4>}
-          <p className="text-sm opacity-80">{TYPE_LABELS[ctype]} 提示 — 点击编辑属性</p>
+    <NodeViewWrapper className="relative my-2" contentEditable={false} data-callout>
+      <div
+        className={`alert ${alertClass} rte-callout cursor-pointer`}
+        onClick={() => setEditing(!editing)}
+      >
+        <span className="rte-callout-icon">{TYPE_ICONS[ctype]}</span>
+        <div className="rte-callout-body">
+          {title ? (
+            <h4 className="font-semibold text-sm">{title}</h4>
+          ) : (
+            <p className="text-sm opacity-80">{TYPE_LABELS[ctype]} 提示 — 点击编辑属性</p>
+          )}
         </div>
       </div>
 
@@ -118,7 +125,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
           </div>
         </div>
       )}
-    </div>
+    </NodeViewWrapper>
   );
 });
 

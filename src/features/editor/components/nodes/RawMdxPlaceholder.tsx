@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { NodeViewWrapper } from '@tiptap/react';
 
 interface RawMdxPlaceholderProps {
   node: Node;
@@ -34,7 +35,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
   };
 
   return (
-    <div
+    <NodeViewWrapper
       className="my-2 border border-warning/40 rounded-lg bg-warning/10 p-4 select-none"
       contentEditable={false}
       data-raw-mdx
@@ -78,7 +79,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
           删除
         </button>
       </div>
-    </div>
+    </NodeViewWrapper>
   );
 });
 

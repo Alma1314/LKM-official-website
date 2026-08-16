@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import type { Node } from '@tiptap/pm/model';
+import { NodeViewWrapper } from '@tiptap/react';
 import katex from 'katex';
 import MathEditor from './MathEditor';
 
@@ -33,7 +34,7 @@ const BlockMathNodeView = memo(function BlockMathNodeView({
   }, [latex]);
 
   return (
-    <div contentEditable={false} data-block-math>
+    <NodeViewWrapper contentEditable={false} data-block-math>
       <div ref={previewRef} className="my-4 text-center select-none cursor-pointer" onClick={() => setEditing(true)} />
       {editing && (
         <MathEditor
@@ -46,7 +47,7 @@ const BlockMathNodeView = memo(function BlockMathNodeView({
           onCancel={() => setEditing(false)}
         />
       )}
-    </div>
+    </NodeViewWrapper>
   );
 });
 
