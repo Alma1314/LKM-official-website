@@ -1,5 +1,7 @@
 <template>
-  <Teleport to="body">
+  <!-- Teleport + Transition 在 SSR 水合时会产生节点结构 mismatch（注释 vs 文本）。
+       mounted 前不渲染 Teleport，客户端水合一致，onMounted 后再挂载。 -->
+  <Teleport v-if="mounted" to="body">
     <!-- 提问弹窗 -->
     <Transition name="qa-modal">
       <div
@@ -209,6 +211,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const confirmOpen = ref(false);
 const toast = ref<string | null>(null);
+const mounted = ref(false);
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
 const totalBounty = computed<number>(() => computeTotalBounty(formModel.bountyPeople, formModel.bountyPerPerson));
@@ -233,7 +236,10 @@ watch(
   }
 );
 
-onMounted(() => document.addEventListener('keydown', onKeydown));
+onMounted(() => {
+  mounted.value = true;
+  document.addEventListener('keydown', onKeydown);
+});
 onUnmounted(() => {
   document.removeEventListener('keydown', onKeydown);
   document.body.style.overflow = '';

@@ -8,6 +8,6 @@ const metadata = { title: t('auth.login.success') };
 
 <PageLayout metadata={metadata}>
   <div class="min-h-[60vh] flex items-center justify-center">
-    <OAuthCallback client:only="vue" />
+    <OAuthCallback client:load />
   </div>
 </PageLayout>

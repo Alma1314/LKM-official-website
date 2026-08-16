@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { t } from '~/lib/i18n';
 import { Icon } from '@iconify/vue';
 import { getDefaultHue, getHue, setHue } from '~/lib/utils/setting-utils';
 
-const hue = ref(typeof window !== 'undefined' ? getHue() : 250);
-const defaultHue = typeof window !== 'undefined' ? getDefaultHue() : 250;
+// SSR 与客户端水合都用固定初始值 250，避免 hydration mismatch；
+// 真实 hue 在 onMounted（仅客户端）再同步，面板默认隐藏，跳变不可见。
+const hue = ref(250);
+const defaultHue = ref(250);
+
+onMounted(() => {
+  hue.value = getHue();
+  defaultHue.value = getDefaultHue();
+});
 
 function resetHue() {
   hue.value = getDefaultHue();

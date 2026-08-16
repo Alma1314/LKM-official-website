@@ -43,7 +43,7 @@
             {{ t(q.title) }}
           </h3>
           <div class="flex items-center justify-between text-xs text-text-muted/60">
-            <span>{{ t(q.askerName) }} · {{ formatTime(q.createdAt) }}</span>
+            <span>{{ t(q.askerName) }} · {{ mounted ? formatTime(q.createdAt) : '' }}</span>
             <span>
               {{ t('page.qa.answers', { count: q.answerCount }) }} · {{ t('page.qa.views', { count: q.viewCount }) }}
             </span>
@@ -57,11 +57,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { t } from '~/lib/i18n';
 import { mockQuestions } from '../data/mock-questions';
 import { buildUrl } from '~/lib/utils/paths';
 import AskQuestionModal from './AskQuestionModal.vue';
+
+// SSR 与客户端水合时 `new Date()`（相对时间计算）结果可能跨天边界导致
+// hydration mismatch。mounted 前渲染空时间，onMounted 后再显示真实相对时间。
+const mounted = ref(false);
+onMounted(() => {
+  mounted.value = true;
+});
 
 const activeTab = ref('general');
 const askModalOpen = ref(false);

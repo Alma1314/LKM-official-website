@@ -92,7 +92,11 @@ export default defineConfig({
       appEntrypoint: '/src/vue-entry',
     }),
     react({
-      include: ['**/*.tsx', '**/*.jsx'],
+      // React 仅用于编辑器（Tiptap）。限定 include 到编辑器目录，避免 dev 模式下
+      // Vite 8 (Rolldown) 的 react-refresh 机制把 .vue 组件的 setup 误当 React 组件包裹，
+      // 注入 $RefreshSig$ 导致 SSR 报 "ReferenceError: $RefreshSig$ is not defined"。
+      include: ['src/features/editor/**/*.tsx'],
+      exclude: ['**/*.vue'],
     }),
     icon({
       include: {

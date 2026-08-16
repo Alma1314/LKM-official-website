@@ -172,7 +172,7 @@
     </button>
 
     <!-- 上传弹窗 -->
-    <Teleport to="body">
+    <Teleport v-if="mounted" to="body">
       <div
         v-if="showUpload"
         class="fixed inset-0 bg-black/40 dark:bg-black/70 z-[150] flex items-center justify-center"
@@ -227,7 +227,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { mockFiles } from '../data/mock-files';
 import { forumCategories } from '../../forum/data/categories';
@@ -244,6 +244,12 @@ const filterType = ref('');
 const filterStatus = ref('');
 const sortBy = ref('newest');
 const showUpload = ref(false);
+// Teleport 在 SSR 水合时会产生节点结构 mismatch（注释 vs 文本）。
+// mounted 前不渲染 Teleport，客户端水合一致，onMounted 后再挂载。
+const mounted = ref(false);
+onMounted(() => {
+  mounted.value = true;
+});
 const uploadCategory = ref('');
 const uploadDesc = ref('');
 
