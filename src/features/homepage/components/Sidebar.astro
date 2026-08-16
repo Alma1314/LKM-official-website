@@ -203,47 +203,47 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
 
     function syncMainMargin(): void {
       if (!main) return;
-      const isExpanded = sidebar!.classList.contains('expanded');
+      const isExpanded = !sidebar!.classList.contains('collapsed');
       const { collapsed, expanded } = getSizes();
       main.style.paddingLeft = isExpanded ? expanded : collapsed;
     }
 
-    // 展开/收起统一入口：同步 .shell 的 .expanded、<html> 的首帧兜底标记与主内容偏移，
-    // 保证首帧内联脚本设置的 html.sidebar-expanded 与实际展开态始终一致，
-    // 否则收起时 CSS 兜底选择器会把宽度钉在展开态。
+    // 展开/收起统一入口：侧边栏默认展开，收起态用显式 .collapsed。
+    // 同步 .shell 的 .collapsed、<html> 的首帧兜底标记与主内容偏移，
+    // 保证首帧内联脚本设置的 html.sidebar-collapsed 与实际收起态始终一致。
     function setSidebarExpanded(isExpanded: boolean): void {
-      sidebar!.classList.toggle('expanded', isExpanded);
-      document.documentElement.classList.toggle('sidebar-expanded', isExpanded);
+      sidebar!.classList.toggle('collapsed', !isExpanded);
+      document.documentElement.classList.toggle('sidebar-collapsed', !isExpanded);
       syncMainMargin();
     }
 
-    // 恢复或初始化侧边栏状态（无动画）
+    // 恢复或初始化侧边栏状态（无动画）。
+    // 默认：桌面端展开、移动端收起；用户显式持久化的值优先。
     const STORAGE_KEY = 'sidebar-expanded';
-    const mq = window.matchMedia('(max-width: 767px)');
     const stored = localStorage.getItem(STORAGE_KEY);
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
 
     const sidebarEl = sidebar as HTMLElement;
     const prevTransition = sidebarEl.style.transition;
     sidebarEl.style.transition = 'none';
 
-    if (stored !== null) {
-      setSidebarExpanded(stored === 'true');
-    } else {
-      setSidebarExpanded(!mq.matches);
-    }
+    const defaultExpanded = stored !== null ? stored === 'true' : !mobile;
+    setSidebarExpanded(defaultExpanded);
     syncMainMargin();
 
     // 强制回流后恢复 transition
     void sidebarEl.offsetWidth;
     sidebarEl.style.transition = prevTransition;
-    mq.addEventListener('change', syncMainMargin);
+
+    // 视口在移动/桌面间切换时，重算主内容偏移（宽度随断点变化）
+    window.matchMedia('(max-width: 767px)').addEventListener('change', syncMainMargin);
 
     btn.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = !sidebar!.classList.contains('expanded');
-      setSidebarExpanded(isExpanded);
-      localStorage.setItem(STORAGE_KEY, String(isExpanded));
+      const isExpanded = !sidebar!.classList.contains('collapsed');
+      setSidebarExpanded(!isExpanded);
+      localStorage.setItem(STORAGE_KEY, String(!isExpanded));
       syncMainMargin();
     });
   }

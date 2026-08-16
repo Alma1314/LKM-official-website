@@ -60,14 +60,15 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
       })();
     </script>
     <script is:inline>
-      // 在首次渲染前应用侧边栏展开态：若上次收起/展开过，先给 <html> 加标记，
-      // 让首帧侧边栏宽度即为 localStorage 持久化值，避免窄→宽 FOUC 闪烁。
-      // 后续由 Sidebar 的脚本负责 class 与标记保持同步。
+      // 侧边栏首帧宽度：桌面默认展开、移动端默认收起（SSR 首帧即正确，无收起→展开/展开→收起闪烁）。
+      // 用户显式持久化的 localStorage 值优先。加 html.sidebar-collapsed 标记由 CSS 兜底生效。
+      // 后续由 Sidebar 的脚本负责 class 与该标记保持同步。
       (function () {
         try {
-          if (localStorage.getItem('sidebar-expanded') === 'true') {
-            document.documentElement.classList.add('sidebar-expanded');
-          }
+          const stored = localStorage.getItem('sidebar-expanded');
+          const mobile = window.matchMedia('(max-width: 767px)').matches;
+          const collapsed = stored !== null ? stored === 'false' : mobile;
+          if (collapsed) document.documentElement.classList.add('sidebar-collapsed');
         } catch {
           /* noop */
         }
