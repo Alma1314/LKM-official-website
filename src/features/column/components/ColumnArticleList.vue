@@ -19,10 +19,19 @@
         </div>
         <button
           class="p-1.5 rounded-lg border border-surface-3 text-text-muted hover:text-primary hover:border-primary transition-colors"
-          :title="sortOrder === 'desc' ? '当前倒序，点击切换为正序' : '当前正序，点击切换为倒序'"
+          :title="
+            sortOrder === 'desc'
+              ? '当前倒序，点击切换为正序'
+              : '当前正序，点击切换为倒序'
+          "
           @click="toggleOrder"
         >
-          <Icon :icon="sortOrder === 'desc' ? 'tabler:arrow-down' : 'tabler:arrow-up'" class="w-4 h-4" />
+          <Icon
+            :icon="
+              sortOrder === 'desc' ? 'tabler:arrow-down' : 'tabler:arrow-up'
+            "
+            class="w-4 h-4"
+          />
         </button>
       </div>
     </div>
@@ -35,11 +44,17 @@
         class="profile-card group block"
       >
         <div class="profile-inner p-5">
-          <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
+          <h3
+            class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1"
+          >
             {{ art.title }}
           </h3>
-          <p class="text-sm text-text-muted mt-1 line-clamp-2">{{ art.excerpt }}</p>
-          <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60">
+          <p class="text-sm text-text-muted mt-1 line-clamp-2">
+            {{ art.excerpt }}
+          </p>
+          <div
+            class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60"
+          >
             <span>{{ formatDate(art.createdAt) }}</span>
             <span>{{ art.viewCount }} 阅读</span>
             <span>{{ art.likeCount }} 赞</span>
@@ -53,30 +68,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { Icon } from '@iconify/vue';
-import { getArticlesByColumnId, getColumnBySlug } from '../data/mock-columns';
-import { buildUrl } from '~/lib/utils/paths';
-import { sortArticles, type SortField, type SortOrder } from '../utils';
+import { computed, ref } from "vue";
+import { Icon } from "@iconify/vue";
+import { getArticlesByColumnId, getColumnBySlug } from "../data/mock-columns";
+import { buildUrl } from "~/lib/utils/paths";
+import { sortArticles, type SortField, type SortOrder } from "../utils";
 
 const props = defineProps<{ columnSlug: string }>();
 
-const sortField = ref<SortField>('time');
-const sortOrder = ref<SortOrder>('desc');
+const sortField = ref<SortField>("time");
+const sortOrder = ref<SortOrder>("desc");
 
 const column = computed(() => getColumnBySlug(props.columnSlug));
-const articles = computed(() => (column.value ? getArticlesByColumnId(column.value.id) : []));
-const sorted = computed(() => sortArticles(articles.value, sortField.value, sortOrder.value));
+const articles = computed(() =>
+  column.value ? getArticlesByColumnId(column.value.id) : [],
+);
+const sorted = computed(() =>
+  sortArticles(articles.value, sortField.value, sortOrder.value),
+);
 
 function onFieldChange(event: Event): void {
   sortField.value = (event.target as HTMLSelectElement).value as SortField;
 }
 
 function toggleOrder(): void {
-  sortOrder.value = sortOrder.value === 'desc' ? 'asc' : 'desc';
+  sortOrder.value = sortOrder.value === "desc" ? "asc" : "desc";
 }
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+  return new Date(dateStr).toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 </script>

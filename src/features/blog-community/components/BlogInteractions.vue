@@ -23,9 +23,11 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <path
+            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+          />
         </svg>
-        <span class="text-sm font-medium">{{ t('blog.comments') }}</span>
+        <span class="text-sm font-medium">{{ t("blog.comments") }}</span>
       </button>
 
       <span class="w-px h-5 bg-surface-3" />
@@ -50,11 +52,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import BlogLike from './BlogLike.vue';
-import BlogShare from './BlogShare.vue';
-import BlogComments from './BlogComments.vue';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import BlogLike from "./BlogLike.vue";
+import BlogShare from "./BlogShare.vue";
+import BlogComments from "./BlogComments.vue";
+import { t } from "~/lib/i18n";
 
 export interface BlogInteractionsProps {
   /** 文章完整 URL */
@@ -71,17 +73,17 @@ export interface BlogInteractionsProps {
   giscusCategory?: string;
   giscusCategoryId?: string;
   /** Giscus 映射方式 */
-  mapping?: 'pathname' | 'url' | 'title' | 'og:title' | 'specific';
+  mapping?: "pathname" | "url" | "title" | "og:title" | "specific";
 }
 
 const _props = withDefaults(defineProps<BlogInteractionsProps>(), {
-  excerpt: '',
-  term: '',
-  giscusRepo: '',
-  giscusRepoId: '',
-  giscusCategory: 'Announcements',
-  giscusCategoryId: '',
-  mapping: 'pathname',
+  excerpt: "",
+  term: "",
+  giscusRepo: "",
+  giscusRepoId: "",
+  giscusCategory: "Announcements",
+  giscusCategoryId: "",
+  mapping: "pathname",
 });
 
 const showComments = ref(false);
@@ -95,8 +97,8 @@ function scrollToComments() {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       commentsSection.value?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+        behavior: "smooth",
+        block: "start",
       });
     });
   });

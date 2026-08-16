@@ -1,8 +1,8 @@
-import { ref, shallowRef, Fragment, type Component, type Ref } from 'vue';
-import { evaluate } from '@mdx-js/mdx';
-import * as runtime from '@mdx-js/vue';
-import { blogApi } from '~/lib/api';
-import type { GitFileContent } from '../types/blog';
+import { ref, shallowRef, Fragment, type Component, type Ref } from "vue";
+import { evaluate } from "@mdx-js/mdx";
+import * as runtime from "@mdx-js/vue";
+import { blogApi } from "~/lib/api";
+import type { GitFileContent } from "../types/blog";
 
 export function useBlogPost(): {
   content: Ref<GitFileContent | null>;
@@ -16,7 +16,10 @@ export function useBlogPost(): {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  async function fetchAndCompile(seriesId: number, filepath: string): Promise<void> {
+  async function fetchAndCompile(
+    seriesId: number,
+    filepath: string,
+  ): Promise<void> {
     loading.value = true;
     error.value = null;
 

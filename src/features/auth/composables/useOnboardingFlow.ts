@@ -1,7 +1,7 @@
-import { reactive, ref } from 'vue';
-import { authApi } from '~/lib/api/modules/auth';
-import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
-import { t } from '~/lib/i18n';
+import { reactive, ref } from "vue";
+import { authApi } from "~/lib/api/modules/auth";
+import { resolveSafeRedirect } from "~/features/auth/utils/safe-redirect";
+import { t } from "~/lib/i18n";
 
 export type OnboardingStepNumber = 1 | 2 | 3 | 4;
 
@@ -37,7 +37,9 @@ export interface OnboardingFlow {
  * 数据统一由 OnboardingPage→本 flow 提交；各步骤组件不再各自写 localStorage
  * 或独立调 API。
  */
-export function useOnboardingFlow(options: OnboardingFlowOptions = {}): OnboardingFlow {
+export function useOnboardingFlow(
+  options: OnboardingFlowOptions = {},
+): OnboardingFlow {
   const { redirect = null, onDone } = options;
 
   const step = ref<OnboardingStepNumber>(1);
@@ -47,13 +49,13 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
   const dataByStep = ref<Record<number, Record<string, unknown>>>({});
 
   function setError(msg?: string): void {
-    error.value = msg ?? t('messages.operationFailed');
+    error.value = msg ?? t("messages.operationFailed");
   }
 
   function finish(): void {
     error.value = null;
     const dst = resolveSafeRedirect(redirect);
-    if (typeof onDone === 'function') onDone(dst);
+    if (typeof onDone === "function") onDone(dst);
   }
 
   /** 从 getOnboarding 恢复未完成步骤与已提交的分步数据。 */
@@ -76,13 +78,20 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
       const next: Record<number, Record<string, unknown>> = {};
       for (const key of Object.keys(data)) {
         const numKey = Number(key);
-        if (Number.isInteger(numKey) && numKey >= 1 && numKey <= 4 && data[key] && typeof data[key] === 'object') {
+        if (
+          Number.isInteger(numKey) &&
+          numKey >= 1 &&
+          numKey <= 4 &&
+          data[key] &&
+          typeof data[key] === "object"
+        ) {
           next[numKey] = data[key] as Record<string, unknown>;
         }
       }
       dataByStep.value = next;
       // 首个未完成步骤优先：后端回传的 step，否则退回到第 1 步
-      const resume = res.step >= 1 && res.step <= 4 ? (res.step as OnboardingStepNumber) : 1;
+      const resume =
+        res.step >= 1 && res.step <= 4 ? (res.step as OnboardingStepNumber) : 1;
       step.value = resume;
     } finally {
       loading.value = false;
@@ -93,7 +102,10 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
    * 逐步持久化：把某一步 data 提交到后端，成功后据返回的 step/completed 更新流状态。
    * 返回是否成功，供页面决定是否推进。
    */
-  async function saveStep(stepNum: number, data: Record<string, unknown>): Promise<boolean> {
+  async function saveStep(
+    stepNum: number,
+    data: Record<string, unknown>,
+  ): Promise<boolean> {
     loading.value = true;
     error.value = null;
     try {

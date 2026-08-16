@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import type { ReactElement } from 'react';
-import type { DocumentData, PersistenceAdapter } from '../../engine/types';
-import ConfirmDialog from './ConfirmDialog';
-import { t } from '~/lib/i18n';
+import { useState, useEffect, useRef } from "react";
+import type { ReactElement } from "react";
+import type { DocumentData, PersistenceAdapter } from "../../engine/types";
+import ConfirmDialog from "./ConfirmDialog";
+import { t } from "~/lib/i18n";
 
 interface PublishButtonProps {
   documentId: string;
@@ -38,7 +38,7 @@ export default function PublishButton({
   };
 
   const handleUnpublish = (): void => {
-    const result = adapter.saveDocument({ ...doc, status: 'draft' });
+    const result = adapter.saveDocument({ ...doc, status: "draft" });
     if (result instanceof Promise) {
       result.then((ok) => {
         if (ok !== false) onStatusChange();
@@ -54,7 +54,7 @@ export default function PublishButton({
 
   const handleArchiveConfirmed = (): void => {
     setArchiveConfirmOpen(false);
-    const result = adapter.saveDocument({ ...doc, status: 'archived' });
+    const result = adapter.saveDocument({ ...doc, status: "archived" });
     if (result instanceof Promise) {
       result.then((ok) => {
         if (ok !== false) onStatusChange();
@@ -64,17 +64,17 @@ export default function PublishButton({
     }
   };
 
-  const status = doc.status as DocumentData['status'];
+  const status = doc.status as DocumentData["status"];
 
   return (
     <>
-      {status === 'published' ? (
+      {status === "published" ? (
         <div className="flex gap-1">
           <button
             type="button"
             className="rte-btn rte-btn--sm text-success"
             onClick={handleUnpublish}
-            title={t('editor.published')}
+            title={t("editor.published")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--ghost rte-btn--xs text-error"
             onClick={handleArchive}
-            title={t('editor.archive')}
+            title={t("editor.archive")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,12 +114,12 @@ export default function PublishButton({
             </svg>
           </button>
         </div>
-      ) : status === 'archived' ? (
+      ) : status === "archived" ? (
         <button
           type="button"
           className="rte-btn rte-btn--ghost rte-btn--xs"
           onClick={handleUnpublish}
-          title={t('editor.archivedClickToRestore')}
+          title={t("editor.archivedClickToRestore")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--primary rte-btn--xs"
             onClick={handlePublish}
-            title={t('editor.publish')}
+            title={t("editor.publish")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +165,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--ghost rte-btn--xs text-error"
             onClick={handleArchive}
-            title={t('editor.archive')}
+            title={t("editor.archive")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,7 @@ export default function PublishButton({
       )}
       {archiveConfirmOpen && (
         <ConfirmDialog
-          message={t('editor.confirmArchiveMessage')}
+          message={t("editor.confirmArchiveMessage")}
           danger
           onConfirm={handleArchiveConfirmed}
           onCancel={() => setArchiveConfirmOpen(false)}

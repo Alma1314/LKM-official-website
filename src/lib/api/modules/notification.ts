@@ -1,8 +1,8 @@
-import { get } from '../../http/client';
+import { get } from "../../http/client";
 
 export interface Notification {
   id: string;
-  type: 'reply' | 'like' | 'follow' | 'system';
+  type: "reply" | "like" | "follow" | "system";
   message: string;
   isRead: boolean;
   link?: string;
@@ -17,7 +17,9 @@ export interface PaginatedResponse<T> {
 }
 
 export const notificationApi = {
-  getNotifications: (page = 1) => get<PaginatedResponse<Notification>>('/api/notifications', { page }),
+  getNotifications: (page = 1) =>
+    get<PaginatedResponse<Notification>>("/api/notifications", { page }),
 
-  getUnreadCount: () => get<{ count: number }>('/api/notifications/unread-count'),
+  getUnreadCount: () =>
+    get<{ count: number }>("/api/notifications/unread-count"),
 };

@@ -1,55 +1,83 @@
 <template>
   <div class="rank">
-    <h1 class="page-title">🏆 {{ t('treehole.rank.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.rank.subtitle') }}</p>
+    <h1 class="page-title">🏆 {{ t("treehole.rank.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.rank.subtitle") }}</p>
 
     <div class="tabs">
-      <button class="chip" :class="{ active: range === 'today' }" @click="range = 'today'">
-        {{ t('treehole.rank.todayTab') }}
+      <button
+        class="chip"
+        :class="{ active: range === 'today' }"
+        @click="range = 'today'"
+      >
+        {{ t("treehole.rank.todayTab") }}
       </button>
-      <button class="chip" :class="{ active: range === 'week' }" @click="range = 'week'">
-        {{ t('treehole.rank.weekTab') }}
+      <button
+        class="chip"
+        :class="{ active: range === 'week' }"
+        @click="range = 'week'"
+      >
+        {{ t("treehole.rank.weekTab") }}
       </button>
     </div>
 
     <section v-if="rankList.length" class="rank-list">
-      <div v-for="(l, i) in rankList" :key="l.id" class="rank-item glass glass-hover">
+      <div
+        v-for="(l, i) in rankList"
+        :key="l.id"
+        class="rank-item glass glass-hover"
+      >
         <div class="rank-no" :class="'no' + (i + 1)">{{ i + 1 }}</div>
         <div class="rank-body">
           <div class="rank-head">
-            <span class="rank-cat" :style="{ background: getCategory(l.category).color }">{{
-              getCategory(l.category).emoji
-            }}</span>
+            <span
+              class="rank-cat"
+              :style="{ background: getCategory(l.category).color }"
+              >{{ getCategory(l.category).emoji }}</span
+            >
             <span class="rank-code">{{ l.codename }}</span>
-            <span class="rank-heat">🔥 {{ (l.likes || 0) + (l.favorites || 0) }}</span>
+            <span class="rank-heat"
+              >🔥 {{ (l.likes || 0) + (l.favorites || 0) }}</span
+            >
           </div>
           <p class="rank-content">{{ l.content }}</p>
         </div>
       </div>
     </section>
-    <EmptyState v-else :title="t('treehole.rank.emptyTitle')" :sub="t('treehole.rank.emptySub')" />
+    <EmptyState
+      v-else
+      :title="t('treehole.rank.emptyTitle')"
+      :sub="t('treehole.rank.emptySub')"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import EmptyState from '../components/EmptyState.vue';
-import { getCategory } from '../stores/constants';
-import { getLetters } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import EmptyState from "../components/EmptyState.vue";
+import { getCategory } from "../stores/constants";
+import { getLetters } from "../stores/storage";
+import { t } from "~/lib/i18n";
 
-const range = ref('today');
+const range = ref("today");
 const letters = ref([]);
 onMounted(() => {
-  letters.value = getLetters().filter((l) => l.status === 'published' && l.privacy === 'public');
+  letters.value = getLetters().filter(
+    (l) => l.status === "published" && l.privacy === "public",
+  );
 });
 
 const rankList = computed(() => {
   const now = Date.now();
-  const within = range.value === 'today' ? 86400000 : 7 * 86400000;
+  const within = range.value === "today" ? 86400000 : 7 * 86400000;
   return letters.value
     .filter((l) => now - l.createdAt < within)
-    .sort((a, b) => (b.likes || 0) + (b.favorites || 0) - (a.likes || 0) - (a.favorites || 0))
+    .sort(
+      (a, b) =>
+        (b.likes || 0) +
+        (b.favorites || 0) -
+        (a.likes || 0) -
+        (a.favorites || 0),
+    )
     .slice(0, 20);
 });
 </script>

@@ -41,90 +41,90 @@ export interface MockColumnArticle {
 
 export const mockColumns: MockColumn[] = [
   {
-    id: 'col-1',
-    authorId: 'user-qiyue-o',
-    authorName: 'columnData.columns.col1.authorName',
-    authorTitle: 'columnData.columns.col1.authorTitle',
-    authorBio: 'columnData.columns.col1.authorBio',
-    title: 'columnData.columns.col1.title',
-    slug: 'cosmic-notes',
-    description: 'columnData.columns.col1.description',
+    id: "col-1",
+    authorId: "user-qiyue-o",
+    authorName: "columnData.columns.col1.authorName",
+    authorTitle: "columnData.columns.col1.authorTitle",
+    authorBio: "columnData.columns.col1.authorBio",
+    title: "columnData.columns.col1.title",
+    slug: "cosmic-notes",
+    description: "columnData.columns.col1.description",
     isVerified: true,
     followerCount: 1200,
     articleCount: 15,
     avatar: undefined,
     likeCount: 3200,
     subscribeCount: 1500,
-    tags: ['引力波', '黑洞', '天体物理'],
-    boardTag: '物理',
-    badges: ['机构认证', '签约作者'],
+    tags: ["引力波", "黑洞", "天体物理"],
+    boardTag: "物理",
+    badges: ["机构认证", "签约作者"],
   },
   {
-    id: 'col-2',
-    authorId: 'user-qiyue-hua',
-    authorName: 'columnData.columns.col2.authorName',
-    authorTitle: 'columnData.columns.col2.authorTitle',
-    authorBio: 'columnData.columns.col2.authorBio',
-    title: 'columnData.columns.col2.title',
-    slug: 'edu-lab',
-    description: 'columnData.columns.col2.description',
+    id: "col-2",
+    authorId: "user-qiyue-hua",
+    authorName: "columnData.columns.col2.authorName",
+    authorTitle: "columnData.columns.col2.authorTitle",
+    authorBio: "columnData.columns.col2.authorBio",
+    title: "columnData.columns.col2.title",
+    slug: "edu-lab",
+    description: "columnData.columns.col2.description",
     isVerified: true,
     followerCount: 890,
     articleCount: 8,
     avatar: undefined,
     likeCount: 1800,
     subscribeCount: 950,
-    tags: ['科学教育', '课程设计', '科普'],
-    boardTag: '教育',
-    badges: ['机构认证'],
+    tags: ["科学教育", "课程设计", "科普"],
+    boardTag: "教育",
+    badges: ["机构认证"],
   },
   {
-    id: 'col-3',
-    authorId: 'user-col-3',
-    authorName: 'columnData.columns.col3.authorName',
-    authorTitle: 'columnData.columns.col3.authorTitle',
-    authorBio: 'columnData.columns.col3.authorBio',
-    title: 'columnData.columns.col3.title',
-    slug: 'academic-writing',
-    description: 'columnData.columns.col3.description',
+    id: "col-3",
+    authorId: "user-col-3",
+    authorName: "columnData.columns.col3.authorName",
+    authorTitle: "columnData.columns.col3.authorTitle",
+    authorBio: "columnData.columns.col3.authorBio",
+    title: "columnData.columns.col3.title",
+    slug: "academic-writing",
+    description: "columnData.columns.col3.description",
     isVerified: true,
     followerCount: 650,
     articleCount: 12,
     avatar: undefined,
     likeCount: 2100,
     subscribeCount: 720,
-    tags: ['学术写作', '论文', '科研方法'],
-    boardTag: '学术',
-    badges: ['签约作者'],
+    tags: ["学术写作", "论文", "科研方法"],
+    boardTag: "学术",
+    badges: ["签约作者"],
   },
   {
-    id: 'col-4',
-    authorId: 'user-col-4',
-    authorName: 'columnData.columns.col4.authorName',
-    authorTitle: 'columnData.columns.col4.authorTitle',
-    authorBio: 'columnData.columns.col4.authorBio',
-    title: 'columnData.columns.col4.title',
-    slug: 'algorithm-beauty',
-    description: 'columnData.columns.col4.description',
+    id: "col-4",
+    authorId: "user-col-4",
+    authorName: "columnData.columns.col4.authorName",
+    authorTitle: "columnData.columns.col4.authorTitle",
+    authorBio: "columnData.columns.col4.authorBio",
+    title: "columnData.columns.col4.title",
+    slug: "algorithm-beauty",
+    description: "columnData.columns.col4.description",
     isVerified: false,
     followerCount: 450,
     articleCount: 20,
     avatar: undefined,
     likeCount: 1500,
     subscribeCount: 480,
-    tags: ['算法', '数据结构', 'Python'],
-    boardTag: '计算机',
+    tags: ["算法", "数据结构", "Python"],
+    boardTag: "计算机",
     badges: [],
   },
 ];
 
 export const mockColumnArticles: MockColumnArticle[] = [
   {
-    id: 'art-1',
-    columnId: 'col-1',
-    columnSlug: 'cosmic-notes',
-    title: 'columnData.articles.art1.title',
-    excerpt: 'columnData.articles.art1.excerpt',
+    id: "art-1",
+    columnId: "col-1",
+    columnSlug: "cosmic-notes",
+    title: "columnData.articles.art1.title",
+    excerpt: "columnData.articles.art1.excerpt",
     content: `## 引力波天文学：聆听宇宙的"声音"
 
 2015年9月14日，LIGO探测器首次直接探测到引力波信号——GW150914。这是两个约30倍太阳质量的黑洞合并产生的时空涟漪。
@@ -146,18 +146,22 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 - 中子星-黑洞合并
 
 引力波天文学已经从一个"梦想"变成了一个蓬勃发展的领域。`,
-    tags: ['columnData.articles.art1.tags.a', 'columnData.articles.art1.tags.b', 'columnData.articles.art1.tags.c'],
+    tags: [
+      "columnData.articles.art1.tags.a",
+      "columnData.articles.art1.tags.b",
+      "columnData.articles.art1.tags.c",
+    ],
     viewCount: 3400,
     likeCount: 256,
     commentCount: 42,
-    createdAt: '2026-07-15T08:00:00Z',
+    createdAt: "2026-07-15T08:00:00Z",
   },
   {
-    id: 'art-2',
-    columnId: 'col-1',
-    columnSlug: 'cosmic-notes',
-    title: 'columnData.articles.art2.title',
-    excerpt: 'columnData.articles.art2.excerpt',
+    id: "art-2",
+    columnId: "col-1",
+    columnSlug: "cosmic-notes",
+    title: "columnData.articles.art2.title",
+    excerpt: "columnData.articles.art2.excerpt",
     content: `## 黑洞信息悖论
 
 ### 问题的起源
@@ -175,18 +179,22 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 ### 最新进展
 
 近年来，通过全息对偶、纠缠熵等工具，理论物理学家在解决这一悖论上取得了重大进展。黑洞信息悖论的研究正在改写我们对时空和量子力学的基本理解。`,
-    tags: ['columnData.articles.art2.tags.a', 'columnData.articles.art2.tags.b', 'columnData.articles.art2.tags.c'],
+    tags: [
+      "columnData.articles.art2.tags.a",
+      "columnData.articles.art2.tags.b",
+      "columnData.articles.art2.tags.c",
+    ],
     viewCount: 2800,
     likeCount: 198,
     commentCount: 35,
-    createdAt: '2026-07-10T10:00:00Z',
+    createdAt: "2026-07-10T10:00:00Z",
   },
   {
-    id: 'art-3',
-    columnId: 'col-2',
-    columnSlug: 'edu-lab',
-    title: 'columnData.articles.art3.title',
-    excerpt: 'columnData.articles.art3.excerpt',
+    id: "art-3",
+    columnId: "col-2",
+    columnSlug: "edu-lab",
+    title: "columnData.articles.art3.title",
+    excerpt: "columnData.articles.art3.excerpt",
     content: `## 如何设计一门引人入胜的科普课程
 
 ### 核心理念：好奇驱动
@@ -204,18 +212,22 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 ### 实践案例
 
 我在设计"光的奇妙世界"课程时，第一节课不是讲麦克斯韦方程组，而是让学生在暗室中用三棱镜分解白光，看到彩虹的瞬间，所有孩子的眼睛都亮了。`,
-    tags: ['columnData.articles.art3.tags.a', 'columnData.articles.art3.tags.b', 'columnData.articles.art3.tags.c'],
+    tags: [
+      "columnData.articles.art3.tags.a",
+      "columnData.articles.art3.tags.b",
+      "columnData.articles.art3.tags.c",
+    ],
     viewCount: 1800,
     likeCount: 145,
     commentCount: 22,
-    createdAt: '2026-07-08T09:00:00Z',
+    createdAt: "2026-07-08T09:00:00Z",
   },
   {
-    id: 'art-4',
-    columnId: 'col-3',
-    columnSlug: 'academic-writing',
-    title: 'columnData.articles.art4.title',
-    excerpt: 'columnData.articles.art4.excerpt',
+    id: "art-4",
+    columnId: "col-3",
+    columnSlug: "academic-writing",
+    title: "columnData.articles.art4.title",
+    excerpt: "columnData.articles.art4.excerpt",
     content: `## 学术论文摘要写作的黄金法则
 
 ### 摘要的五个要素
@@ -239,18 +251,22 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 > [方法] 本文提出了一种XXX方法，通过YYY手段解决上述问题。
 > [结果] 实验结果表明，该方法在ZZZ指标上提升了XX%。
 > [意义] 这一发现为AAA领域的进一步研究奠定了基础。`,
-    tags: ['columnData.articles.art4.tags.a', 'columnData.articles.art4.tags.b', 'columnData.articles.art4.tags.c'],
+    tags: [
+      "columnData.articles.art4.tags.a",
+      "columnData.articles.art4.tags.b",
+      "columnData.articles.art4.tags.c",
+    ],
     viewCount: 4200,
     likeCount: 312,
     commentCount: 28,
-    createdAt: '2026-07-01T14:00:00Z',
+    createdAt: "2026-07-01T14:00:00Z",
   },
   {
-    id: 'art-5',
-    columnId: 'col-4',
-    columnSlug: 'algorithm-beauty',
-    title: 'columnData.articles.art5.title',
-    excerpt: 'columnData.articles.art5.excerpt',
+    id: "art-5",
+    columnId: "col-4",
+    columnSlug: "algorithm-beauty",
+    title: "columnData.articles.art5.title",
+    excerpt: "columnData.articles.art5.excerpt",
     content: `## 动态规划：思维框架
 
 ### 什么是动态规划？
@@ -285,11 +301,15 @@ def length_of_lis(nums):
 3. 能用数组/哈希表存储子问题解吗？
 
 如果三个问题都回答"是"，那么动态规划大概率可行。`,
-    tags: ['columnData.articles.art5.tags.a', 'columnData.articles.art5.tags.b', 'columnData.articles.art5.tags.c'],
+    tags: [
+      "columnData.articles.art5.tags.a",
+      "columnData.articles.art5.tags.b",
+      "columnData.articles.art5.tags.c",
+    ],
     viewCount: 5600,
     likeCount: 423,
     commentCount: 56,
-    createdAt: '2026-06-28T11:00:00Z',
+    createdAt: "2026-06-28T11:00:00Z",
   },
 ];
 
@@ -305,6 +325,9 @@ export function getArticleById(id: string): MockColumnArticle | undefined {
   return mockColumnArticles.find((a) => a.id === id);
 }
 
-export function getArticleBySlug(columnSlug: string, _articleSlug: string): MockColumnArticle | undefined {
+export function getArticleBySlug(
+  columnSlug: string,
+  _articleSlug: string,
+): MockColumnArticle | undefined {
   return mockColumnArticles.find((a) => a.columnSlug === columnSlug);
 }

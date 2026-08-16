@@ -1,38 +1,38 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-import { unified } from '@astrojs/markdown-remark';
-import sitemap from '@astrojs/sitemap';
-import astroExpressiveCode from 'astro-expressive-code';
-import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
-import mdx from '@astrojs/mdx';
-import icon from 'astro-icon';
-import compress from 'astro-compress';
-import vue from '@astrojs/vue';
-import react from '@astrojs/react';
-import node from '@astrojs/node';
-import Unfonts from 'unplugin-fonts/astro';
-import tailwindcss from '@tailwindcss/vite';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import type { RemarkPlugin } from '@astrojs/markdown-remark';
+import { unified } from "@astrojs/markdown-remark";
+import sitemap from "@astrojs/sitemap";
+import astroExpressiveCode from "astro-expressive-code";
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
+import mdx from "@astrojs/mdx";
+import icon from "astro-icon";
+import compress from "astro-compress";
+import vue from "@astrojs/vue";
+import react from "@astrojs/react";
+import node from "@astrojs/node";
+import Unfonts from "unplugin-fonts/astro";
+import tailwindcss from "@tailwindcss/vite";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import type { RemarkPlugin } from "@astrojs/markdown-remark";
 
-import { remarkReadingTime } from './src/lib/markdown-plugins/remark-reading-time.mjs';
-import { remarkExcerpt } from './src/lib/markdown-plugins/remark-excerpt.js';
-import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
-import remarkDirective from 'remark-directive';
-import remarkSectionize from 'remark-sectionize';
-import { parseDirectiveNode } from './src/lib/markdown-plugins/remark-directive-rehype.js';
-import rehypeSlug from 'rehype-slug';
-import rehypeComponents from 'rehype-components';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { GithubCardComponent } from './src/lib/markdown-plugins/rehype-component-github-card.mjs';
-import { AdmonitionComponent } from './src/lib/markdown-plugins/rehype-component-admonition.mjs';
-import { responsiveTablesRehypePlugin } from './src/lib/utils/frontmatter.js';
-import { astroIconInclude } from './src/lib/icons/astro-include';
-import fs from 'node:fs';
-import yaml from 'js-yaml';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
+import { remarkReadingTime } from "./src/lib/markdown-plugins/remark-reading-time.mjs";
+import { remarkExcerpt } from "./src/lib/markdown-plugins/remark-excerpt.js";
+import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkDirective from "remark-directive";
+import remarkSectionize from "remark-sectionize";
+import { parseDirectiveNode } from "./src/lib/markdown-plugins/remark-directive-rehype.js";
+import rehypeSlug from "rehype-slug";
+import rehypeComponents from "rehype-components";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { GithubCardComponent } from "./src/lib/markdown-plugins/rehype-component-github-card.mjs";
+import { AdmonitionComponent } from "./src/lib/markdown-plugins/rehype-component-admonition.mjs";
+import { responsiveTablesRehypePlugin } from "./src/lib/utils/frontmatter.js";
+import { astroIconInclude } from "./src/lib/icons/astro-include";
+import fs from "node:fs";
+import yaml from "js-yaml";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
 // 将 .env 加载进 process.env（已存在的环境变量优先，.env 仅作兜底）。
 // 全站 SSR 代码（src/middleware.ts / fetch-ssr.ts / graphql client 等）都用
@@ -42,18 +42,21 @@ import path from 'node:path';
 function loadDotEnvIntoProcess(): void {
   let content: string;
   try {
-    content = fs.readFileSync(path.resolve(process.cwd(), '.env'), 'utf-8');
+    content = fs.readFileSync(path.resolve(process.cwd(), ".env"), "utf-8");
   } catch {
     return; // 无 .env 则跳过（生产环境靠环境变量注入）
   }
   for (const line of content.split(/\r?\n/)) {
     const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eq = trimmed.indexOf('=');
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
     if (eq === -1) continue;
     const key = trimmed.slice(0, eq).trim();
     let value = trimmed.slice(eq + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
       value = value.slice(1, -1);
     }
     process.env[key] ??= value;
@@ -62,11 +65,12 @@ function loadDotEnvIntoProcess(): void {
 loadDotEnvIntoProcess();
 
 function loadConfigYaml(): Record<string, unknown> {
-  const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
+  const raw = fs.readFileSync("src/data/config.yaml", "utf-8");
   return yaml.load(raw) as Record<string, unknown>;
 }
 const configYaml = loadConfigYaml();
-const siteConfig = (configYaml as Record<string, Record<string, unknown>>).site as Record<string, string>;
+const siteConfig = (configYaml as Record<string, Record<string, unknown>>)
+  .site as Record<string, string>;
 
 export default defineConfig({
   devToolbar: {
@@ -75,41 +79,49 @@ export default defineConfig({
 
   site: process.env.PUBLIC_SITE_URL ?? (siteConfig.site as string),
   // 环境变量可覆盖 base（如部署在子路径下）；默认读取 config.yaml
-  base: process.env.PUBLIC_BASE_PATH ?? ((siteConfig.base as string) || '/'),
+  base: process.env.PUBLIC_BASE_PATH ?? ((siteConfig.base as string) || "/"),
 
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  output: "server",
+  adapter: node({ mode: "standalone" }),
 
   integrations: [
     sitemap(),
     astroExpressiveCode({
-      themes: ['github-dark'],
+      themes: ["github-dark"],
       defaultProps: { showLineNumbers: false },
       plugins: [pluginLineNumbers()],
     }),
     mdx(),
     vue({
-      appEntrypoint: '/src/vue-entry',
+      appEntrypoint: "/src/vue-entry",
     }),
     react({
-      include: ['**/*.tsx', '**/*.jsx'],
+      // React 仅用于编辑器（Tiptap）。限定 include 到编辑器目录，避免 dev 模式下
+      // Vite 8 (Rolldown) 的 react-refresh 机制把 .vue 组件的 setup 误当 React 组件包裹，
+      // 注入 $RefreshSig$ 导致 SSR 报 "ReferenceError: $RefreshSig$ is not defined"。
+      include: ["src/features/editor/**/*.tsx"],
+      exclude: ["**/*.vue"],
     }),
     icon({
       include: {
         ...astroIconInclude,
-        'fa6-brands': ['creative-commons', 'github'],
-        'fa6-regular': ['address-card'],
-        'fa6-solid': ['arrow-rotate-left', 'arrow-up-right-from-square', 'chevron-right'],
-        'flat-color-icons': [
-          'template',
-          'gallery',
-          'approval',
-          'document',
-          'advertising',
-          'currency-exchange',
-          'voice-presentation',
-          'business-contact',
-          'database',
+        "fa6-brands": ["creative-commons", "github"],
+        "fa6-regular": ["address-card"],
+        "fa6-solid": [
+          "arrow-rotate-left",
+          "arrow-up-right-from-square",
+          "chevron-right",
+        ],
+        "flat-color-icons": [
+          "template",
+          "gallery",
+          "approval",
+          "document",
+          "advertising",
+          "currency-exchange",
+          "voice-presentation",
+          "business-contact",
+          "database",
         ],
       },
     }),
@@ -118,12 +130,12 @@ export default defineConfig({
       google: {
         families: [
           {
-            name: 'Noto Sans SC',
-            styles: 'wght@400;500;700',
+            name: "Noto Sans SC",
+            styles: "wght@400;500;700",
           },
           {
-            name: 'JetBrains Mono',
-            styles: 'wght@400;500;700',
+            name: "JetBrains Mono",
+            styles: "wght@400;500;700",
           },
         ],
       },
@@ -132,7 +144,7 @@ export default defineConfig({
     compress({
       // 用 lightningcss 而非 csso：csso 压缩时会把包含某些规则的手写 @media 块整块误删
       CSS: { csso: false, lightningcss: true },
-      HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
+      HTML: { "html-minifier-terser": { removeAttributeQuotes: false } },
       Image: true,
       JavaScript: true,
       SVG: true,
@@ -141,7 +153,7 @@ export default defineConfig({
   ],
 
   image: {
-    domains: ['cdn.pixabay.com'],
+    domains: ["cdn.pixabay.com"],
   },
 
   markdown: {
@@ -164,37 +176,47 @@ export default defineConfig({
           {
             components: {
               github: GithubCardComponent,
-              note: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
-                AdmonitionComponent(x, y, 'note'),
-              tip: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
-                AdmonitionComponent(x, y, 'tip'),
-              important: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
-                AdmonitionComponent(x, y, 'important'),
-              caution: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
-                AdmonitionComponent(x, y, 'caution'),
-              warning: (x: Parameters<typeof AdmonitionComponent>[0], y: Parameters<typeof AdmonitionComponent>[1]) =>
-                AdmonitionComponent(x, y, 'warning'),
+              note: (
+                x: Parameters<typeof AdmonitionComponent>[0],
+                y: Parameters<typeof AdmonitionComponent>[1],
+              ) => AdmonitionComponent(x, y, "note"),
+              tip: (
+                x: Parameters<typeof AdmonitionComponent>[0],
+                y: Parameters<typeof AdmonitionComponent>[1],
+              ) => AdmonitionComponent(x, y, "tip"),
+              important: (
+                x: Parameters<typeof AdmonitionComponent>[0],
+                y: Parameters<typeof AdmonitionComponent>[1],
+              ) => AdmonitionComponent(x, y, "important"),
+              caution: (
+                x: Parameters<typeof AdmonitionComponent>[0],
+                y: Parameters<typeof AdmonitionComponent>[1],
+              ) => AdmonitionComponent(x, y, "caution"),
+              warning: (
+                x: Parameters<typeof AdmonitionComponent>[0],
+                y: Parameters<typeof AdmonitionComponent>[1],
+              ) => AdmonitionComponent(x, y, "warning"),
             },
           },
         ],
         [
           rehypeAutolinkHeadings,
           {
-            behavior: 'append',
+            behavior: "append",
             properties: {
-              className: ['anchor'],
+              className: ["anchor"],
             },
             content: {
-              type: 'element',
-              tagName: 'span',
+              type: "element",
+              tagName: "span",
               properties: {
-                className: ['anchor-icon'],
-                'data-pagefind-ignore': true,
+                className: ["anchor-icon"],
+                "data-pagefind-ignore": true,
               },
               children: [
                 {
-                  type: 'text',
-                  value: '#',
+                  type: "text",
+                  value: "#",
                 },
               ],
             },
@@ -206,11 +228,11 @@ export default defineConfig({
 
   vite: {
     server: {
-      allowedHosts: ['lkm.s12mc.xyz'],
+      allowedHosts: ["lkm.s12mc.xyz"],
       proxy: process.env.API_URL
         ? {
-            '/api': { target: process.env.API_URL, changeOrigin: true },
-            '/graphql': { target: process.env.API_URL, changeOrigin: true },
+            "/api": { target: process.env.API_URL, changeOrigin: true },
+            "/graphql": { target: process.env.API_URL, changeOrigin: true },
           }
         : undefined,
     },
@@ -222,35 +244,35 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       {
-        name: 'virtual-config',
+        name: "virtual-config",
         resolveId(id) {
-          if (id === 'virtual:config') return '\0virtual:config';
+          if (id === "virtual:config") return "\0virtual:config";
         },
         load(id) {
-          if (id === '\0virtual:config') {
-            const raw = fs.readFileSync('src/data/config.yaml', 'utf-8');
+          if (id === "\0virtual:config") {
+            const raw = fs.readFileSync("src/data/config.yaml", "utf-8");
             const parsed = yaml.load(raw);
             return `export default ${JSON.stringify(parsed)};`;
           }
         },
       },
       {
-        name: 'exclude-yaml',
+        name: "exclude-yaml",
         resolveId(id) {
-          if (id.endsWith('.yaml') || id.endsWith('.yml')) {
+          if (id.endsWith(".yaml") || id.endsWith(".yml")) {
             return false;
           }
         },
         load(id) {
-          if (id.endsWith('.yaml') || id.endsWith('.yml')) {
-            return 'export default {}';
+          if (id.endsWith(".yaml") || id.endsWith(".yml")) {
+            return "export default {}";
           }
         },
       },
       {
-        name: 'wgsl-raw',
+        name: "wgsl-raw",
         transform(code, id) {
-          if (id.endsWith('.wgsl')) {
+          if (id.endsWith(".wgsl")) {
             return `export default ${JSON.stringify(code)};`;
           }
         },
@@ -263,25 +285,37 @@ export default defineConfig({
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-              return 'vendor-react';
+            if (
+              id.includes("node_modules/react") ||
+              id.includes("node_modules/react-dom")
+            ) {
+              return "vendor-react";
             }
-            if (id.includes('node_modules/overlayscrollbars') || id.includes('node_modules/photoswipe')) {
+            if (
+              id.includes("node_modules/overlayscrollbars") ||
+              id.includes("node_modules/photoswipe")
+            ) {
               return;
             }
-            if (id.includes('node_modules/katex') || id.includes('node_modules/rehype-katex')) {
-              return 'vendor-katex';
+            if (
+              id.includes("node_modules/katex") ||
+              id.includes("node_modules/rehype-katex")
+            ) {
+              return "vendor-katex";
             }
-            if (id.includes('node_modules/vue') || id.includes('node_modules/@iconify/vue')) {
-              return 'vendor-vue';
+            if (
+              id.includes("node_modules/vue") ||
+              id.includes("node_modules/@iconify/vue")
+            ) {
+              return "vendor-vue";
             }
           },
         },
       },
     },
     optimizeDeps: {
-      exclude: ['virtual:config'],
-      include: ['react', 'react-dom', 'react-dom/client'],
+      exclude: ["virtual:config"],
+      include: ["react", "react-dom", "react-dom/client"],
       rolldownOptions: {
         transform: {
           // 修复 dev 模式下富文本编辑器不渲染的问题：
@@ -290,22 +324,24 @@ export default defineConfig({
           // dev 模式把 .tsx 编译成调用 jsxDEV，于是报 "_jsxDEV is not a function"。
           // optimizeDeps 仅在 dev server 运行，这里强制 development 是安全的。
           define: {
-            'process.env.NODE_ENV': JSON.stringify('development'),
+            "process.env.NODE_ENV": JSON.stringify("development"),
           },
         },
       },
     },
     css: {
-      transformer: 'postcss',
+      transformer: "postcss",
     },
     resolve: {
       alias: {
-        '~': path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'src'),
+        "~": path.resolve(fileURLToPath(new URL(".", import.meta.url)), "src"),
         // naive-ui 同时提供 CJS(lib/index.js) 与 ESM(es/index.mjs) 入口、且无 exports 字段，
         // Vite 解析时可能回调到 CJS 入口，导致按命名导入报
         // "Named export not found ... is a CommonJS module"。
         // 强制固定到 ESM 入口，消除 double-package，保证全部命名导出可用。
-        'naive-ui': fileURLToPath(new URL('./node_modules/naive-ui/es/index.mjs', import.meta.url)),
+        "naive-ui": fileURLToPath(
+          new URL("./node_modules/naive-ui/es/index.mjs", import.meta.url),
+        ),
       },
     },
   },

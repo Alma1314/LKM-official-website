@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import type { ReactNode } from 'react';
+import { memo } from "react";
+import type { ReactNode } from "react";
 
 interface EditorToolbarButtonProps {
   icon: ReactNode;
@@ -19,7 +19,7 @@ const EditorToolbarButton = memo(function EditorToolbarButton({
   return (
     <button
       type="button"
-      className={`rte-toolbar-btn ${isActive ? 'is-active' : ''}`}
+      className={`rte-toolbar-btn ${isActive ? "is-active" : ""}`}
       title={title}
       onClick={onClick}
       aria-label={label}

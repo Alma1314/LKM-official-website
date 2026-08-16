@@ -29,4 +29,6 @@
 
 ---
 
+新手从零部署环境 / 安装工具 / 上传改动，见 [GETTING_STARTED.md](./GETTING_STARTED.md)。
+
 See [AGENTS.md](./AGENTS.md) for all project documentation and AI agent instructions.

@@ -1,21 +1,22 @@
-import { Client, cacheExchange, fetchExchange } from '@urql/core';
-import { authExchange } from './exchanges/auth';
-import { errorExchange } from './exchanges/error';
+import { Client, cacheExchange, fetchExchange } from "@urql/core";
+import { authExchange } from "./exchanges/auth";
+import { errorExchange } from "./exchanges/error";
 
 /**
  * 运行时获取 GraphQL URL，自动带上 BASE_URL 前缀
  */
 function getGraphqlUrl(): string {
-  if (import.meta.env.PUBLIC_GRAPHQL_URL) return import.meta.env.PUBLIC_GRAPHQL_URL;
+  if (import.meta.env.PUBLIC_GRAPHQL_URL)
+    return import.meta.env.PUBLIC_GRAPHQL_URL;
 
   // SSR: 使用真实后端直连地址
-  if (typeof window === 'undefined') {
-    return (process.env.API_URL ?? '') + '/graphql';
+  if (typeof window === "undefined") {
+    return (process.env.API_URL ?? "") + "/graphql";
   }
 
   // CSR: 完整 URL（urql 内部用 new URL() 解析，必须有 origin）
-  const base = window.__BASE_URL__ || import.meta.env.BASE_URL || '/';
-  const cleanBase = base.replace(/\/$/, '');
+  const base = window.__BASE_URL__ || import.meta.env.BASE_URL || "/";
+  const cleanBase = base.replace(/\/$/, "");
   return `${window.location.origin}${cleanBase}/graphql`;
 }
 

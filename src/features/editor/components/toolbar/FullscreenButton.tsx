@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { ReactElement } from 'react';
-import { t } from '~/lib/i18n';
+import { useState, useEffect, useCallback } from "react";
+import type { ReactElement } from "react";
+import { t } from "~/lib/i18n";
 
 export default function FullscreenButton(): ReactElement {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -15,15 +15,17 @@ export default function FullscreenButton(): ReactElement {
 
   useEffect(() => {
     const handler = (): void => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', handler);
-    return () => document.removeEventListener('fullscreenchange', handler);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
   }, []);
 
   return (
     <button
       type="button"
       className="rte-fullscreen-btn"
-      title={isFullscreen ? t('editor.exitFullscreen') : t('editor.enterFullscreen')}
+      title={
+        isFullscreen ? t("editor.exitFullscreen") : t("editor.enterFullscreen")
+      }
       onClick={toggle}
     >
       <svg

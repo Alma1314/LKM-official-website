@@ -3,31 +3,31 @@
 // 注意：paths.test.ts 的断言依赖此处 site.base = '/LKM-official-website'。
 const projectConfig: Record<string, unknown> = {
   site: {
-    base: '/LKM-official-website',
+    base: "/LKM-official-website",
     trailingSlash: false,
   },
   i18n: {
-    language: 'zh-cn',
-    textDirection: 'ltr',
+    language: "zh-cn",
+    textDirection: "ltr",
   },
   apps: {
     blog: {
       isEnabled: true,
       post: {
         isEnabled: true,
-        permalink: '/blog/posts/%slug%',
+        permalink: "/blog/posts/%slug%",
       },
       list: {
         isEnabled: true,
-        pathname: 'blog',
+        pathname: "blog",
       },
       category: {
         isEnabled: true,
-        pathname: 'category',
+        pathname: "category",
       },
       tag: {
         isEnabled: true,
-        pathname: 'tag',
+        pathname: "tag",
       },
     },
   },
@@ -38,14 +38,14 @@ const projectConfig: Record<string, unknown> = {
     navbarCommunity: {
       links: [
         {
-          name: '主页',
-          url: '/',
-          children: [{ name: '简明介绍', url: '/' }],
+          name: "主页",
+          url: "/",
+          children: [{ name: "简明介绍", url: "/" }],
         },
         {
-          name: '博客',
-          url: '/community/blog',
-          children: [{ name: '博客列表', url: '/community/blog' }],
+          name: "博客",
+          url: "/community/blog",
+          children: [{ name: "博客列表", url: "/community/blog" }],
         },
       ],
     },

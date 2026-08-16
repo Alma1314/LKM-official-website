@@ -12,8 +12,8 @@ const metadata: MetaData = {
 };
 ---
 
-<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}
-  ><div style="min-height: 400px"><WishPage client:only="vue" /></div></Layout
+<Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['nav.community', 'nav.blog', 'nav.resources', 'nav.mine'])}
+  ><div style="min-height: 400px"><WishPage client:load /></div></Layout
 >
 
 <script is:inline>

@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
-import type { ReactElement } from 'react';
-import type { Editor } from '@tiptap/core';
-import { handleExportPdf } from './ExportPdfButton';
-import { handleExportDocx } from './ExportDocxButton';
-import { t } from '~/lib/i18n';
-import { handleExportMdx, handleExportMd } from './ExportMdxButton';
-import { handleExportHtml } from './ExportHtmlButton';
+import { useState, useRef, useEffect } from "react";
+import type { ReactElement } from "react";
+import type { Editor } from "@tiptap/core";
+import { handleExportPdf } from "./ExportPdfButton";
+import { handleExportDocx } from "./ExportDocxButton";
+import { t } from "~/lib/i18n";
+import { handleExportMdx, handleExportMd } from "./ExportMdxButton";
+import { handleExportHtml } from "./ExportHtmlButton";
 
 interface ExportMenuProps {
   editor: Editor;
@@ -22,17 +22,17 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
         setOpen(false);
       }
     };
-    if (open) document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
   return (
     <div ref={ref} className="relative">
       <button
         type="button"
-        className={`rte-btn rte-btn--ghost rte-btn--xs gap-1 ${open ? 'is-active' : ''}`}
+        className={`rte-btn rte-btn--ghost rte-btn--xs gap-1 ${open ? "is-active" : ""}`}
         onClick={() => setOpen(!open)}
-        title={t('editor.export')}
+        title={t("editor.export")}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" x2="12" y1="15" y2="3" />
         </svg>
-        <span className="hidden lg:inline text-xs">{t('editor.export')}</span>
+        <span className="hidden lg:inline text-xs">{t("editor.export")}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"
@@ -91,7 +91,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <line x1="16" x2="8" y1="17" y2="17" />
               <polyline points="10 9 9 9 8 9" />
             </svg>
-            {t('editor.exportPdf')}
+            {t("editor.exportPdf")}
           </button>
           <button
             type="button"
@@ -117,7 +117,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <path d="M3 15h6" />
               <path d="M6 12v6" />
             </svg>
-            {t('editor.exportWord')}
+            {t("editor.exportWord")}
           </button>
           <button
             type="button"
@@ -141,7 +141,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
               <path d="M14 2v4a2 2 0 0 0 2 2h4" />
             </svg>
-            {t('editor.exportMd')}
+            {t("editor.exportMd")}
           </button>
           <button
             type="button"
@@ -168,7 +168,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <path d="M16 13H8" />
               <path d="M16 17H8" />
             </svg>
-            {t('editor.exportMd')}X
+            {t("editor.exportMd")}X
           </button>
           <button
             type="button"
@@ -192,7 +192,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <polyline points="16 18 22 12 16 6" />
               <polyline points="8 6 2 12 8 18" />
             </svg>
-            {t('editor.exportHtml')}
+            {t("editor.exportHtml")}
           </button>
         </div>
       )}

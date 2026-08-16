@@ -14,8 +14,17 @@ interface Window {
           content?: string;
           word_count?: number;
           filters?: Record<string, unknown>;
-          anchors?: Array<{ element: string; id: string; text: string; location: number }>;
-          weighted_locations?: Array<{ weight: number; balanced_score: number; location: number }>;
+          anchors?: Array<{
+            element: string;
+            id: string;
+            text: string;
+            location: number;
+          }>;
+          weighted_locations?: Array<{
+            weight: number;
+            balanced_score: number;
+            location: number;
+          }>;
           locations?: number[];
           raw_content?: string;
           raw_url?: string;
@@ -25,30 +34,29 @@ interface Window {
   };
 }
 
-declare module '*.yaml?raw' {
+declare module "*.yaml?raw" {
   const content: string;
   export default content;
 }
 
-declare module '*.yml?raw' {
+declare module "*.yml?raw" {
   const content: string;
   export default content;
 }
 
 // wgsl-raw 插件把 *.wgsl 转成 default 字符串
-declare module '*.wgsl' {
+declare module "*.wgsl" {
   const code: string;
   export default code;
 }
 
-declare module 'virtual:config' {
+declare module "virtual:config" {
   const config: Record<string, unknown>;
   export default config;
 }
 
-declare module '~/scripts/blog-init.ts';
-declare module '~/scripts/blog-transitions.ts';
-declare module '~/scripts/blog-photoswipe.ts';
+declare module "~/scripts/blog-init.ts";
+declare module "~/scripts/blog-photoswipe.ts";
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;

@@ -1,15 +1,17 @@
-import { ref, type Ref } from 'vue';
-import { blogApi } from '~/lib/api';
-import type { BlogCommentInfo, BlogCommentCreate } from '../types/blog';
-import type { Result } from '~/lib/errors/result';
-import type { AppError } from '~/lib/errors/error-codes';
+import { ref, type Ref } from "vue";
+import { blogApi } from "~/lib/api";
+import type { BlogCommentInfo, BlogCommentCreate } from "../types/blog";
+import type { Result } from "~/lib/errors/result";
+import type { AppError } from "~/lib/errors/error-codes";
 
 export function useBlogComments(seriesId: number): {
   comments: Ref<BlogCommentInfo[]>;
   loading: Ref<boolean>;
   error: Ref<string | null>;
   fetch: () => Promise<void>;
-  addComment: (data: BlogCommentCreate) => Promise<Result<BlogCommentInfo, AppError>>;
+  addComment: (
+    data: BlogCommentCreate,
+  ) => Promise<Result<BlogCommentInfo, AppError>>;
   removeComment: (commentId: number) => Promise<Result<null, AppError>>;
 } {
   const comments: Ref<BlogCommentInfo[]> = ref([]);
@@ -28,7 +30,9 @@ export function useBlogComments(seriesId: number): {
     loading.value = false;
   }
 
-  async function addComment(data: BlogCommentCreate): Promise<Result<BlogCommentInfo, AppError>> {
+  async function addComment(
+    data: BlogCommentCreate,
+  ): Promise<Result<BlogCommentInfo, AppError>> {
     const result = await blogApi.createComment(seriesId, data);
     if (result.isErr()) {
       return result;
@@ -37,7 +41,9 @@ export function useBlogComments(seriesId: number): {
     return result;
   }
 
-  async function removeComment(commentId: number): Promise<Result<null, AppError>> {
+  async function removeComment(
+    commentId: number,
+  ): Promise<Result<null, AppError>> {
     const result = await blogApi.deleteComment(seriesId, commentId);
     if (result.isErr()) {
       return result;

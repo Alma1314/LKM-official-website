@@ -1,12 +1,12 @@
 /**
  * Based on the discussion at https://github.com/expressive-code/expressive-code/issues/153#issuecomment-2282218684
  */
-import { definePlugin } from '@expressive-code/core';
-import type { ExpressiveCodePlugin } from '@expressive-code/core';
+import { definePlugin } from "@expressive-code/core";
+import type { ExpressiveCodePlugin } from "@expressive-code/core";
 
 export function pluginLanguageBadge(): ExpressiveCodePlugin {
   return definePlugin({
-    name: 'Language Badge',
+    name: "Language Badge",
     baseStyles: () => `
       [data-language]::before {
         position: absolute;

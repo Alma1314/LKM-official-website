@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NForm, NFormItem, NInput, NButton, NAlert } from 'naive-ui';
-import { useAdminAuthStore } from '~/stores/adminAuth';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import { NForm, NFormItem, NInput, NButton, NAlert } from "naive-ui";
+import { useAdminAuthStore } from "~/stores/adminAuth";
+import { t } from "~/lib/i18n";
 
 const auth = useAdminAuthStore();
 
-const username = ref('');
-const password = ref('');
+const username = ref("");
+const password = ref("");
 const submitting = ref(false);
-const error = ref('');
+const error = ref("");
 const success = ref(false);
 
 async function handleSubmit() {
-  error.value = '';
+  error.value = "";
   if (!username.value.trim() || !password.value) {
-    error.value = t('admin.login.required');
+    error.value = t("admin.login.required");
     return;
   }
   submitting.value = true;
@@ -25,10 +25,10 @@ async function handleSubmit() {
     // 成功提示由下方 NAlert 呈现（不再用 useMessage，避免无 provider）
     // 稍作停留展示成功态后跳回后台首页
     window.setTimeout(() => {
-      window.location.href = '/admin';
+      window.location.href = "/admin";
     }, 600);
   } catch (e) {
-    error.value = e instanceof Error ? e.message : t('admin.login.failed');
+    error.value = e instanceof Error ? e.message : t("admin.login.failed");
   } finally {
     submitting.value = false;
   }
@@ -39,14 +39,23 @@ async function handleSubmit() {
   <div class="min-h-screen bg-page-bg flex items-center justify-center px-4">
     <div class="w-full max-w-sm">
       <div class="bg-card-bg border border-surface-3 rounded-xl p-8 shadow-sm">
-        <h1 class="text-xl font-bold text-deep-text text-center mb-1">{{ t('admin.title') }}</h1>
-        <p class="text-sm text-text-muted text-center mb-6">{{ t('admin.login.subtitle') }}</p>
+        <h1 class="text-xl font-bold text-deep-text text-center mb-1">
+          {{ t("admin.title") }}
+        </h1>
+        <p class="text-sm text-text-muted text-center mb-6">
+          {{ t("admin.login.subtitle") }}
+        </p>
 
         <NAlert v-if="error" type="error" :show-icon="false" class="mb-4">
           {{ error }}
         </NAlert>
-        <NAlert v-else-if="success" type="success" :show-icon="false" class="mb-4">
-          {{ t('admin.login.success') }}
+        <NAlert
+          v-else-if="success"
+          type="success"
+          :show-icon="false"
+          class="mb-4"
+        >
+          {{ t("admin.login.success") }}
         </NAlert>
 
         <NForm @submit.prevent="handleSubmit">
@@ -70,14 +79,22 @@ async function handleSubmit() {
               show-password-on="click"
             />
           </NFormItem>
-          <NButton type="primary" attr-type="submit" block size="large" :loading="submitting">
-            {{ t('admin.login.submit') }}
+          <NButton
+            type="primary"
+            attr-type="submit"
+            block
+            size="large"
+            :loading="submitting"
+          >
+            {{ t("admin.login.submit") }}
           </NButton>
         </NForm>
 
         <div class="mt-6 text-center">
-          <a href="/" class="text-xs text-text-muted hover:text-primary transition-colors"
-            >← {{ t('admin.backToSite') }}</a
+          <a
+            href="/"
+            class="text-xs text-text-muted hover:text-primary transition-colors"
+            >← {{ t("admin.backToSite") }}</a
           >
         </div>
       </div>

@@ -1,6 +1,11 @@
-import type { Root } from 'mdast';
+import type { Root } from "mdast";
 
-type Node = { type?: string; children?: Node[]; value?: string; depth?: number };
+type Node = {
+  type?: string;
+  children?: Node[];
+  value?: string;
+  depth?: number;
+};
 
 /**
  * 合并段落和标题中相邻的文本节点。
@@ -11,8 +16,8 @@ function mergeTextChildren(children: Node[]): Node[] {
 
   for (const child of children) {
     const prev = result[result.length - 1];
-    if (prev && prev.type === 'text' && child.type === 'text') {
-      prev.value = (prev.value ?? '') + (child.value ?? '');
+    if (prev && prev.type === "text" && child.type === "text") {
+      prev.value = (prev.value ?? "") + (child.value ?? "");
     } else {
       result.push(child);
     }
@@ -36,7 +41,7 @@ function clampHeadingDepth(depth: number): number {
 }
 
 function walkAndClamp(node: Node): void {
-  if (node.type === 'heading' && typeof node.depth === 'number') {
+  if (node.type === "heading" && typeof node.depth === "number") {
     node.depth = clampHeadingDepth(node.depth);
   }
 

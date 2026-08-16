@@ -6,8 +6,8 @@
  * 使用随机空闲端口避免连续调用（脚本串行/CI 并行）时的端口冲突，
  * 并以独立进程组启动/终止，确保 preview 及其子进程被完全清理。
  */
-import { spawn } from 'node:child_process';
-import net from 'node:net';
+import { spawn } from "node:child_process";
+import net from "node:net";
 
 const READY_TIMEOUT_MS = 60_000;
 
@@ -19,11 +19,11 @@ function sleep(ms) {
 function getFreePort() {
   return new Promise((resolve, reject) => {
     const srv = net.createServer();
-    srv.listen(0, '127.0.0.1', () => {
+    srv.listen(0, "127.0.0.1", () => {
       const { port } = srv.address();
       srv.close(() => resolve(port));
     });
-    srv.on('error', reject);
+    srv.on("error", reject);
   });
 }
 
@@ -38,12 +38,12 @@ async function isReady(url) {
 
 function killTree(child) {
   try {
-    if (child.pid) process.kill(-child.pid, 'SIGTERM');
+    if (child.pid) process.kill(-child.pid, "SIGTERM");
   } catch {
     // 进程组可能已退出
   }
   try {
-    child.kill('SIGTERM');
+    child.kill("SIGTERM");
   } catch {
     // ignore
   }
@@ -65,15 +65,19 @@ export async function withPreview(callback, preferredPort) {
     return;
   }
 
-  const child = spawn('pnpm', ['exec', 'astro', 'preview', '--host', '127.0.0.1', '--port', String(port)], {
-    stdio: ['ignore', 'pipe', 'pipe'],
-    detached: true,
-  });
+  const child = spawn(
+    "pnpm",
+    ["exec", "astro", "preview", "--host", "127.0.0.1", "--port", String(port)],
+    {
+      stdio: ["ignore", "pipe", "pipe"],
+      detached: true,
+    },
+  );
 
   const deadline = Date.now() + READY_TIMEOUT_MS;
   let ready = false;
-  let stderrBuf = '';
-  child.stderr?.on('data', (d) => {
+  let stderrBuf = "";
+  child.stderr?.on("data", (d) => {
     stderrBuf += String(d);
     if (stderrBuf.length > 4000) stderrBuf = stderrBuf.slice(-4000);
   });
@@ -89,7 +93,9 @@ export async function withPreview(callback, preferredPort) {
 
   if (!ready) {
     killTree(child);
-    throw new Error(`Astro preview 未就绪（端口 ${port}）: ${stderrBuf.trim().split('\n').pop()}`);
+    throw new Error(
+      `Astro preview 未就绪（端口 ${port}）: ${stderrBuf.trim().split("\n").pop()}`,
+    );
   }
 
   try {

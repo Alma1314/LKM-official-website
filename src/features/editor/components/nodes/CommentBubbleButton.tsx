@@ -1,16 +1,19 @@
-import type { Editor } from '@tiptap/core';
-import type { ReactElement } from 'react';
-import { t } from '~/lib/i18n';
+import type { Editor } from "@tiptap/core";
+import type { ReactElement } from "react";
+import { t } from "~/lib/i18n";
 
 interface CommentBubbleButtonProps {
   editor: Editor;
   onClick: (from: number, to: number, text: string) => void;
 }
 
-export default function CommentBubbleButton({ editor, onClick }: CommentBubbleButtonProps): ReactElement {
+export default function CommentBubbleButton({
+  editor,
+  onClick,
+}: CommentBubbleButtonProps): ReactElement {
   const handleComment = (): void => {
     const { from, to } = editor.state.selection;
-    const text = editor.state.doc.textBetween(from, to, ' ');
+    const text = editor.state.doc.textBetween(from, to, " ");
     if (text.trim()) {
       onClick(from, to, text);
     }
@@ -20,7 +23,7 @@ export default function CommentBubbleButton({ editor, onClick }: CommentBubbleBu
     <button
       type="button"
       className="rte-toolbar-btn"
-      title={t('editor.addComment')}
+      title={t("editor.addComment")}
       onMouseDown={(e) => {
         e.preventDefault();
         handleComment();

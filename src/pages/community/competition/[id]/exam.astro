@@ -2,10 +2,10 @@
 import ExamInterface from '~/features/competition/components/ExamInterface.vue';
 
 // server 模式：params 从 URL 直接解析，无需 getStaticPaths
-// 考试接口完全由 Vue 组件 client:only 处理
+// 考试接口由 Vue 组件 client:load 处理（SSR 预渲染 + 立即水合）
 const { id: _id } = Astro.params;
 ---
 
 <div class="max-w-7xl mx-auto px-4 py-8">
-  <div style="min-height: 400px"><ExamInterface client:only="vue" /></div>
+  <div style="min-height: 400px"><ExamInterface client:load /></div>
 </div>

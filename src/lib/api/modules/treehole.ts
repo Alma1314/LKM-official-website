@@ -1,4 +1,4 @@
-import { get, post } from '../../http/client';
+import { get, post } from "../../http/client";
 
 export interface TreeholeMessage {
   id: string;
@@ -18,8 +18,11 @@ export interface PaginatedResponse<T> {
 
 export const treeholeApi = {
   getMessages: (page = 1, limit = 20) =>
-    get<PaginatedResponse<TreeholeMessage>>('/api/treehole/messages', { page, limit }),
+    get<PaginatedResponse<TreeholeMessage>>("/api/treehole/messages", {
+      page,
+      limit,
+    }),
 
   createMessage: (data: { content: string; isAnonymous: boolean }) =>
-    post<TreeholeMessage>('/api/treehole/messages', data),
+    post<TreeholeMessage>("/api/treehole/messages", data),
 };

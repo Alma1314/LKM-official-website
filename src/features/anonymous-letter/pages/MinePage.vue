@@ -1,34 +1,46 @@
 <template>
   <TreeholeShell active-nav="mine">
     <div class="container">
-      <h1 class="page-title">🌙 {{ t('treehole.mine.title') }}</h1>
-      <p class="page-sub">{{ t('treehole.mine.subtitle') }}</p>
+      <h1 class="page-title">🌙 {{ t("treehole.mine.title") }}</h1>
+      <p class="page-sub">{{ t("treehole.mine.subtitle") }}</p>
 
       <!-- 统计 -->
       <section class="stats">
         <div class="stat glass">
           <b>{{ letters.length }}</b
-          ><span>{{ t('treehole.mine.statLetters') }}</span>
+          ><span>{{ t("treehole.mine.statLetters") }}</span>
         </div>
         <div class="stat glass">
           <b>{{ favList.length }}</b
-          ><span>{{ t('treehole.mine.statFavs') }}</span>
+          ><span>{{ t("treehole.mine.statFavs") }}</span>
         </div>
         <div class="stat glass">
           <b>{{ drafts.length }}</b
-          ><span>{{ t('treehole.mine.statDrafts') }}</span>
+          ><span>{{ t("treehole.mine.statDrafts") }}</span>
         </div>
       </section>
 
       <div class="tabs">
-        <button class="chip" :class="{ active: tab === 'letters' }" @click="tab = 'letters'">
-          {{ t('treehole.mine.tabLetters') }}
+        <button
+          class="chip"
+          :class="{ active: tab === 'letters' }"
+          @click="tab = 'letters'"
+        >
+          {{ t("treehole.mine.tabLetters") }}
         </button>
-        <button class="chip" :class="{ active: tab === 'fav' }" @click="tab = 'fav'">
-          {{ t('treehole.mine.tabFavs') }}
+        <button
+          class="chip"
+          :class="{ active: tab === 'fav' }"
+          @click="tab = 'fav'"
+        >
+          {{ t("treehole.mine.tabFavs") }}
         </button>
-        <button class="chip" :class="{ active: tab === 'drafts' }" @click="tab = 'drafts'">
-          {{ t('treehole.mine.tabDrafts') }}
+        <button
+          class="chip"
+          :class="{ active: tab === 'drafts' }"
+          @click="tab = 'drafts'"
+        >
+          {{ t("treehole.mine.tabDrafts") }}
         </button>
       </div>
 
@@ -37,10 +49,15 @@
         <div v-if="letters.length" class="list">
           <div v-for="l in letters" :key="l.id" class="item glass">
             <div class="item-head">
-              <span class="item-cat" :style="{ background: getCategory(l.category).color }"
-                >{{ getCategory(l.category).emoji }} {{ t(getCategory(l.category).label) }}</span
+              <span
+                class="item-cat"
+                :style="{ background: getCategory(l.category).color }"
+                >{{ getCategory(l.category).emoji }}
+                {{ t(getCategory(l.category).label) }}</span
               >
-              <span class="item-status" :class="l.status">{{ statusLabel(l.status) }}</span>
+              <span class="item-status" :class="l.status">{{
+                statusLabel(l.status)
+              }}</span>
             </div>
             <p class="item-content">{{ l.content }}</p>
             <div class="item-foot">
@@ -48,16 +65,24 @@
               <div class="item-acts">
                 <a
                   v-if="['pending', 'rejected', 'scheduled'].includes(l.status)"
-                  :href="buildUrl('/community/treehole/write') + '?letterId=' + l.id"
+                  :href="
+                    buildUrl('/community/treehole/write') + '?letterId=' + l.id
+                  "
                   class="mini"
-                  >{{ t('treehole.mine.edit') }}</a
+                  >{{ t("treehole.mine.edit") }}</a
                 >
-                <button class="mini danger" @click="removeLetter(l)">{{ t('treehole.mine.delete') }}</button>
+                <button class="mini danger" @click="removeLetter(l)">
+                  {{ t("treehole.mine.delete") }}
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else :title="t('treehole.mine.emptyLettersTitle')" :sub="t('treehole.mine.emptyLettersSub')" />
+        <EmptyState
+          v-else
+          :title="t('treehole.mine.emptyLettersTitle')"
+          :sub="t('treehole.mine.emptyLettersSub')"
+        />
       </section>
 
       <!-- 收藏夹 -->
@@ -67,26 +92,42 @@
             <LetterCard :letter="l" @fav="refreshFavs" />
           </div>
         </div>
-        <EmptyState v-else :title="t('treehole.mine.emptyFavsTitle')" :sub="t('treehole.mine.emptyFavsSub')" />
+        <EmptyState
+          v-else
+          :title="t('treehole.mine.emptyFavsTitle')"
+          :sub="t('treehole.mine.emptyFavsSub')"
+        />
       </section>
 
       <!-- 草稿（本地） -->
       <section v-if="tab === 'drafts'">
         <div v-if="drafts.length" class="list">
           <div v-for="d in drafts" :key="d.id" class="item glass">
-            <p class="item-content">{{ d.content || t('treehole.mine.emptyDraft') }}</p>
+            <p class="item-content">
+              {{ d.content || t("treehole.mine.emptyDraft") }}
+            </p>
             <div class="item-foot">
               <span>{{ timeText(d.updatedAt) }}</span>
               <div class="item-acts">
-                <a :href="buildUrl('/community/treehole/write') + '?draftId=' + d.id" class="mini">{{
-                  t('treehole.mine.continueEdit')
-                }}</a>
-                <button class="mini danger" @click="removeDraft(d)">{{ t('treehole.mine.delete') }}</button>
+                <a
+                  :href="
+                    buildUrl('/community/treehole/write') + '?draftId=' + d.id
+                  "
+                  class="mini"
+                  >{{ t("treehole.mine.continueEdit") }}</a
+                >
+                <button class="mini danger" @click="removeDraft(d)">
+                  {{ t("treehole.mine.delete") }}
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else :title="t('treehole.mine.emptyDraftsTitle')" :sub="t('treehole.mine.emptyDraftsSub')" />
+        <EmptyState
+          v-else
+          :title="t('treehole.mine.emptyDraftsTitle')"
+          :sub="t('treehole.mine.emptyDraftsSub')"
+        />
       </section>
 
       <!-- 数据备份 -->
@@ -95,27 +136,36 @@
       <!-- 危险操作 -->
       <section class="danger-zone glass">
         <div>
-          <b>{{ t('treehole.mine.clearAllTitle') }}</b>
-          <p>{{ t('treehole.mine.clearAllDesc') }}</p>
+          <b>{{ t("treehole.mine.clearAllTitle") }}</b>
+          <p>{{ t("treehole.mine.clearAllDesc") }}</p>
         </div>
-        <button class="btn-reset" @click="resetDraftsConfirm">{{ t('treehole.mine.clearDraftsBtn') }}</button>
+        <button class="btn-reset" @click="resetDraftsConfirm">
+          {{ t("treehole.mine.clearDraftsBtn") }}
+        </button>
       </section>
     </div>
   </TreeholeShell>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
-import LetterCard from '../components/LetterCard.vue';
-import EmptyState from '../components/EmptyState.vue';
-import BackupPanel from '../components/BackupPanel.vue';
-import { getCategory } from '../stores/constants';
-import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../stores/storage';
-import { buildUrl } from '~/lib/utils/paths';
-import { t } from '~/lib/i18n';
+import { ref, onMounted } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
+import LetterCard from "../components/LetterCard.vue";
+import EmptyState from "../components/EmptyState.vue";
+import BackupPanel from "../components/BackupPanel.vue";
+import { getCategory } from "../stores/constants";
+import {
+  getLetters,
+  getFavorites,
+  getDrafts,
+  deleteLetter,
+  deleteDraft,
+  resetDrafts,
+} from "../stores/storage";
+import { buildUrl } from "~/lib/utils/paths";
+import { t } from "~/lib/i18n";
 
-const tab = ref('letters');
+const tab = ref("letters");
 const letters = ref([]);
 const favList = ref([]);
 const drafts = ref([]);
@@ -124,7 +174,10 @@ function load() {
   letters.value = getLetters();
   const favIds = getFavorites();
   favList.value = getLetters().filter(
-    (l) => favIds.includes(l.id) && l.status === 'published' && l.privacy === 'public'
+    (l) =>
+      favIds.includes(l.id) &&
+      l.status === "published" &&
+      l.privacy === "public",
   );
   drafts.value = getDrafts();
 }
@@ -138,42 +191,46 @@ function refreshFavs() {
 }
 
 function statusLabel(s) {
-  return s === 'pending'
-    ? t('treehole.mine.statusPending')
-    : s === 'published'
-      ? t('treehole.mine.statusPublished')
-      : s === 'rejected'
-        ? t('treehole.mine.statusRejected')
-        : s === 'scheduled'
-          ? t('treehole.mine.statusScheduled')
-          : s === 'sealed'
-            ? t('treehole.mine.statusSealed')
-            : t('treehole.mine.statusPrivate');
+  return s === "pending"
+    ? t("treehole.mine.statusPending")
+    : s === "published"
+      ? t("treehole.mine.statusPublished")
+      : s === "rejected"
+        ? t("treehole.mine.statusRejected")
+        : s === "scheduled"
+          ? t("treehole.mine.statusScheduled")
+          : s === "sealed"
+            ? t("treehole.mine.statusSealed")
+            : t("treehole.mine.statusPrivate");
 }
 
 function timeText(ts) {
-  if (!ts) return '';
+  if (!ts) return "";
   const d = new Date(ts);
-  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-  return t('treehole.mine.dateTime', { month: d.getMonth() + 1, day: d.getDate(), time });
+  const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return t("treehole.mine.dateTime", {
+    month: d.getMonth() + 1,
+    day: d.getDate(),
+    time,
+  });
 }
 
 function removeLetter(l) {
-  if (confirm(t('treehole.mine.confirmDeleteLetter'))) {
+  if (confirm(t("treehole.mine.confirmDeleteLetter"))) {
     deleteLetter(l.id);
     load();
   }
 }
 
 function removeDraft(d) {
-  if (confirm(t('treehole.mine.confirmDeleteDraft'))) {
+  if (confirm(t("treehole.mine.confirmDeleteDraft"))) {
     deleteDraft(d.id);
     load();
   }
 }
 
 function resetDraftsConfirm() {
-  if (confirm(t('treehole.mine.confirmResetDrafts2'))) {
+  if (confirm(t("treehole.mine.confirmResetDrafts2"))) {
     resetDrafts();
     load();
   }

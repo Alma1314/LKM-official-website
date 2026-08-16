@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watchEffect, onMounted } from 'vue';
-import { t } from '~/lib/i18n';
-import { Icon } from '@iconify/vue';
-import { url } from '~/lib/utils/url-utils';
+import { ref, watchEffect, onMounted } from "vue";
+import { t } from "~/lib/i18n";
+import { Icon } from "@iconify/vue";
+import { url } from "~/lib/utils/url-utils";
 
 interface SearchResult {
   url: string;
@@ -10,8 +10,8 @@ interface SearchResult {
   excerpt: string;
 }
 
-const keywordDesktop = ref('');
-const keywordMobile = ref('');
+const keywordDesktop = ref("");
+const keywordMobile = ref("");
 const result = ref<SearchResult[]>([]);
 const isSearching = ref(false);
 const pagefindLoaded = ref(false);
@@ -19,40 +19,41 @@ const initialized = ref(false);
 
 const fakeResult: SearchResult[] = [
   {
-    url: url('/'),
-    meta: { title: 'This Is a Fake Search Result' },
-    excerpt: 'Because the search cannot work in the <mark>dev</mark> environment.',
+    url: url("/"),
+    meta: { title: "This Is a Fake Search Result" },
+    excerpt:
+      "Because the search cannot work in the <mark>dev</mark> environment.",
   },
   {
-    url: url('/'),
-    meta: { title: 'If You Want to Test the Search' },
-    excerpt: 'Try running <mark>npm build && npm preview</mark> instead.',
+    url: url("/"),
+    meta: { title: "If You Want to Test the Search" },
+    excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
   },
 ];
 
 const sanitizeHtmlExcerpt = (html: string): string => {
   return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
-    .replace(/<object[\s\S]*?<\/object>/gi, '')
-    .replace(/<embed[\s\S]*?>/gi, '')
-    .replace(/<link[\s\S]*?>/gi, '')
-    .replace(/\bon\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, '');
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
+    .replace(/<object[\s\S]*?<\/object>/gi, "")
+    .replace(/<embed[\s\S]*?>/gi, "")
+    .replace(/<link[\s\S]*?>/gi, "")
+    .replace(/\bon\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, "");
 };
 
 const togglePanel = () => {
-  const panel = document.getElementById('search-panel');
-  panel?.classList.toggle('float-panel-closed');
+  const panel = document.getElementById("search-panel");
+  panel?.classList.toggle("float-panel-closed");
 };
 
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
-  const panel = document.getElementById('search-panel');
+  const panel = document.getElementById("search-panel");
   if (!panel || !isDesktop) return;
   if (show) {
-    panel.classList.remove('float-panel-closed');
+    panel.classList.remove("float-panel-closed");
   } else {
-    panel.classList.add('float-panel-closed');
+    panel.classList.add("float-panel-closed");
   }
 };
 
@@ -70,20 +71,28 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
   try {
     let searchResults: SearchResult[] = [];
 
-    if (import.meta.env.PROD && pagefindLoaded.value && (window as Record<string, unknown>).pagefind) {
-      const response = await (window as Record<string, unknown>).pagefind.search(keyword);
-      searchResults = await Promise.all(response.results.map((item: Record<string, unknown>) => item.data()));
+    if (
+      import.meta.env.PROD &&
+      pagefindLoaded.value &&
+      (window as Record<string, unknown>).pagefind
+    ) {
+      const response = await (
+        window as Record<string, unknown>
+      ).pagefind.search(keyword);
+      searchResults = await Promise.all(
+        response.results.map((item: Record<string, unknown>) => item.data()),
+      );
     } else if (import.meta.env.DEV) {
       searchResults = fakeResult;
     } else {
       searchResults = [];
-      console.error('Pagefind is not available in production environment.');
+      console.error("Pagefind is not available in production environment.");
     }
 
     result.value = searchResults;
     setPanelVisibility(result.value.length > 0, isDesktop);
   } catch (error) {
-    console.error('Search error:', error);
+    console.error("Search error:", error);
     result.value = [];
     setPanelVisibility(false, isDesktop);
   } finally {
@@ -95,17 +104,17 @@ function initPagefind() {
   if (initialized.value) return;
   initialized.value = true;
   pagefindLoaded.value =
-    typeof window !== 'undefined' &&
+    typeof window !== "undefined" &&
     !!(window as Record<string, unknown>).pagefind &&
-    typeof (window as Record<string, unknown>).pagefind.search === 'function';
+    typeof (window as Record<string, unknown>).pagefind.search === "function";
 }
 
 onMounted(() => {
   if (import.meta.env.DEV) {
     initPagefind();
   } else {
-    document.addEventListener('pagefindready', initPagefind);
-    document.addEventListener('pagefindloaderror', initPagefind);
+    document.addEventListener("pagefindready", initPagefind);
+    document.addEventListener("pagefindloaderror", initPagefind);
     setTimeout(() => {
       if (!initialized.value) initPagefind();
     }, 2000);
@@ -146,12 +155,16 @@ watchEffect(() => {
       @focus="
         () => {
           search(keywordDesktop, true);
-          document.getElementById('navbar')?.setAttribute('data-search-expanded', '');
+          document
+            .getElementById('navbar')
+            ?.setAttribute('data-search-expanded', '');
         }
       "
       @blur="
         () => {
-          document.getElementById('navbar')?.removeAttribute('data-search-expanded');
+          document
+            .getElementById('navbar')
+            ?.removeAttribute('data-search-expanded');
         }
       "
       class="transition-all pl-10 text-sm bg-transparent outline-0 h-full w-40 focus:w-80 text-black/50 dark:text-white/50"
@@ -196,14 +209,19 @@ watchEffect(() => {
       :href="item.url"
       class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block rounded-xl text-lg px-3 py-2 hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]"
     >
-      <div class="transition text-90 inline-flex font-bold group-hover:text-[var(--primary)]">
+      <div
+        class="transition text-90 inline-flex font-bold group-hover:text-[var(--primary)]"
+      >
         {{ item.meta.title }}
         <Icon
           icon="fa6-solid:chevron-right"
           class="transition text-[0.75rem] translate-x-1 my-auto text-[var(--primary)]"
         />
       </div>
-      <div class="transition text-sm text-50" v-html="sanitizeHtmlExcerpt(item.excerpt)" />
+      <div
+        class="transition text-sm text-50"
+        v-html="sanitizeHtmlExcerpt(item.excerpt)"
+      />
     </a>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { blogApi } from '~/lib/api';
-import type { BlogSeriesDetail } from '../types/blog';
-import { t } from '~/lib/i18n';
+import { ref, onMounted } from "vue";
+import { blogApi } from "~/lib/api";
+import type { BlogSeriesDetail } from "../types/blog";
+import { t } from "~/lib/i18n";
 
 const props = defineProps<{
   seriesId: number;
@@ -38,30 +38,47 @@ function fileLink(filepath: string) {
 
 <template>
   <div v-if="loading" class="flex justify-center py-16">
-    <div class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+    <div
+      class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"
+    />
   </div>
 
   <div v-else-if="error" class="text-center py-16">
     <p class="text-red-500 mb-4">{{ error }}</p>
-    <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="load">{{ t('common.retry') }}</button>
+    <button
+      class="btn-plain rounded-lg px-4 py-2 bg-primary text-white"
+      @click="load"
+    >
+      {{ t("common.retry") }}
+    </button>
   </div>
 
   <div v-else-if="series" class="blog-series">
     <div class="mb-6">
       <h1 class="text-3xl font-bold">{{ series.title }}</h1>
-      <p v-if="series.description" class="mt-2 text-text-muted">{{ series.description }}</p>
+      <p v-if="series.description" class="mt-2 text-text-muted">
+        {{ series.description }}
+      </p>
       <div class="flex items-center gap-4 mt-3 text-sm text-text-muted">
-        <span>{{ t('blog.starCount', { count: series.star_count }) }}</span>
-        <span>{{ series.status === 'active' ? t('blog.seriesActive') : t('blog.seriesArchived') }}</span>
+        <span>{{ t("blog.starCount", { count: series.star_count }) }}</span>
+        <span>{{
+          series.status === "active"
+            ? t("blog.seriesActive")
+            : t("blog.seriesArchived")
+        }}</span>
       </div>
     </div>
 
     <div v-if="series.file_tree && series.file_tree.length > 0" class="mt-8">
-      <h2 class="text-xl font-semibold mb-4">{{ t('blog.articleListTitle') }}</h2>
+      <h2 class="text-xl font-semibold mb-4">
+        {{ t("blog.articleListTitle") }}
+      </h2>
       <ul class="space-y-2">
         <li v-for="node in series.file_tree" :key="node.name">
           <div v-if="node.type === 'tree' && node.children">
-            <p class="text-sm font-medium text-text-muted mb-1">{{ node.name }}</p>
+            <p class="text-sm font-medium text-text-muted mb-1">
+              {{ node.name }}
+            </p>
             <ul class="ml-4 space-y-1">
               <li v-for="child in node.children" :key="child.name">
                 <router-link
@@ -69,21 +86,25 @@ function fileLink(filepath: string) {
                   :to="fileLink(`${node.name}/${child.name}`)"
                   class="text-primary hover:underline"
                 >
-                  {{ child.name.replace(/\.(md|mdx)$/i, '') }}
+                  {{ child.name.replace(/\.(md|mdx)$/i, "") }}
                 </router-link>
                 <span v-else class="text-text-muted">{{ child.name }}</span>
               </li>
             </ul>
           </div>
-          <router-link v-else-if="isMarkdown(node.name)" :to="fileLink(node.name)" class="text-primary hover:underline">
-            {{ node.name.replace(/\.(md|mdx)$/i, '') }}
+          <router-link
+            v-else-if="isMarkdown(node.name)"
+            :to="fileLink(node.name)"
+            class="text-primary hover:underline"
+          >
+            {{ node.name.replace(/\.(md|mdx)$/i, "") }}
           </router-link>
         </li>
       </ul>
     </div>
 
     <div v-else class="mt-8 text-text-muted">
-      <p>{{ t('blog.seriesEmpty') }}</p>
+      <p>{{ t("blog.seriesEmpty") }}</p>
     </div>
   </div>
 </template>

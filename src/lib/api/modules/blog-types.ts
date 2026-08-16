@@ -8,7 +8,7 @@ export interface BlogSeriesInfo {
   description: string | null;
   cover_url: string | null;
   repo_name: string;
-  status: 'active' | 'archived';
+  status: "active" | "archived";
   created_at: string;
   updated_at: string;
   star_count: number;
@@ -21,7 +21,7 @@ export interface BlogSeriesDetail extends BlogSeriesInfo {
 
 export interface FileTreeNode {
   name: string;
-  type: 'blob' | 'tree';
+  type: "blob" | "tree";
   children?: FileTreeNode[];
 }
 

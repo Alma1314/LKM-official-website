@@ -1,18 +1,18 @@
-import { Component, useEffect, useState, lazy, Suspense } from 'react';
-import type { ReactElement } from 'react';
-import type { PersistenceAdapter } from '../../engine/types';
-import '../../styles/editor.css';
-import { t } from '~/lib/i18n';
+import { Component, useEffect, useState, lazy, Suspense } from "react";
+import type { ReactElement } from "react";
+import type { PersistenceAdapter } from "../../engine/types";
+import "../../styles/editor.css";
+import { t } from "~/lib/i18n";
 
-const DocumentEditor = lazy(() => import('./DocumentEditor'));
+const DocumentEditor = lazy(() => import("./DocumentEditor"));
 
 function getDocumentId(): string {
   const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  const id = params.get("id");
   if (id) return id;
   const hash = window.location.hash.slice(1);
   if (hash) return hash;
-  return 'new';
+  return "new";
 }
 
 const MAX_RETRIES = 3;
@@ -39,7 +39,11 @@ class EditorErrorBoundary extends Component<Props, State> {
   handleRetry = (): void => {
     const { retries } = this.state;
     if (retries >= MAX_RETRIES) return;
-    this.setState({ error: null, retries: retries + 1, errorVersion: retries + 1 });
+    this.setState({
+      error: null,
+      retries: retries + 1,
+      errorVersion: retries + 1,
+    });
   };
 
   handleRefresh = (): void => {
@@ -60,8 +64,12 @@ class EditorErrorBoundary extends Component<Props, State> {
             <div className="rte-root">
               <div className="rte-loading">
                 <div className="rte-spinner" />
-                <span className="text-sm">{t('editor.retryingEditor', { retries, total: MAX_RETRIES })}</span>
-                <pre className="rte-error">{error.message || String(error)}</pre>
+                <span className="text-sm">
+                  {t("editor.retryingEditor", { retries, total: MAX_RETRIES })}
+                </span>
+                <pre className="rte-error">
+                  {error.message || String(error)}
+                </pre>
               </div>
             </div>
           );
@@ -71,7 +79,9 @@ class EditorErrorBoundary extends Component<Props, State> {
           <div className="rte-root">
             <div className="rte-loading">
               <div className="rte-spinner" />
-              <span className="text-sm">{t('editor.editorLoadRetryNotice')}</span>
+              <span className="text-sm">
+                {t("editor.editorLoadRetryNotice")}
+              </span>
             </div>
           </div>
         );
@@ -97,26 +107,33 @@ class EditorErrorBoundary extends Component<Props, State> {
               <line x1="12" x2="12" y1="8" y2="12" />
               <line x1="12" x2="12.01" y1="16" y2="16" />
             </svg>
-            <h3>{t('editor.editorLoadFailed')}</h3>
-            <p>{t('editor.loadErrorDetail', { count: MAX_RETRIES })}</p>
+            <h3>{t("editor.editorLoadFailed")}</h3>
+            <p>{t("editor.loadErrorDetail", { count: MAX_RETRIES })}</p>
             <ul className="text-xs list-disc list-inside text-left">
-              <li>{t('editor.loadErrorCache')}</li>
-              <li>{t('editor.loadErrorNetwork')}</li>
-              <li>{t('editor.loadErrorBrowserCache')}</li>
+              <li>{t("editor.loadErrorCache")}</li>
+              <li>{t("editor.loadErrorNetwork")}</li>
+              <li>{t("editor.loadErrorBrowserCache")}</li>
             </ul>
             <div className="rte-error-actions">
-              <button className="rte-btn rte-btn--sm" onClick={this.handleRefresh}>
-                {t('editor.refreshPage')}
+              <button
+                className="rte-btn rte-btn--sm"
+                onClick={this.handleRefresh}
+              >
+                {t("editor.refreshPage")}
               </button>
               <button
                 className="rte-btn rte-btn--primary rte-btn--sm"
                 onClick={() => {
                   const v = this.state.errorVersion;
-                  this.setState({ retries: 0, error: null, errorVersion: v + 1 });
+                  this.setState({
+                    retries: 0,
+                    error: null,
+                    errorVersion: v + 1,
+                  });
                   this.handleRetry();
                 }}
               >
-                {t('editor.retry')}
+                {t("editor.retry")}
               </button>
             </div>
             <pre>{error.message || String(error)}</pre>
@@ -133,7 +150,7 @@ class EditorErrorBoundary extends Component<Props, State> {
           <div className="rte-root">
             <div className="rte-loading">
               <div className="rte-spinner" />
-              <span>{t('editor.loadingEditor')}</span>
+              <span>{t("editor.loadingEditor")}</span>
             </div>
           </div>
         }
@@ -148,7 +165,9 @@ export interface EditorMountProps {
   adapter: PersistenceAdapter;
 }
 
-export default function EditorMount({ adapter }: EditorMountProps): ReactElement {
+export default function EditorMount({
+  adapter,
+}: EditorMountProps): ReactElement {
   const [docId, setDocId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -160,7 +179,7 @@ export default function EditorMount({ adapter }: EditorMountProps): ReactElement
       <div className="rte-root">
         <div className="rte-loading">
           <div className="rte-spinner" />
-          <span>{t('editor.loadingEditor')}</span>
+          <span>{t("editor.loadingEditor")}</span>
         </div>
       </div>
     );

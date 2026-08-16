@@ -260,7 +260,7 @@
   text-underline-offset: 2px;
   cursor: pointer;
 }
-.rte-editor-content [data-wiki-link][data-resolved=''] {
+.rte-editor-content [data-wiki-link][data-resolved=""] {
   color: var(--deep-text);
   text-decoration: underline dotted;
   text-decoration-color: var(--text-muted);

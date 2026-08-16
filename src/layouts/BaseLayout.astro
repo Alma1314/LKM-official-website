@@ -21,9 +21,6 @@ import { allMenuItems, officialDefaultNavItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
 import type { NavBarLink } from '~/types/config';
 
-// 注释下面这行以禁用 View Transitions
-import { ClientRouter } from 'astro:transitions';
-
 import type { MetaData as MetaDataType } from '~/types/core';
 
 export interface Props {
@@ -62,6 +59,21 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
         }
       })();
     </script>
+    <script is:inline>
+      // 侧边栏首帧宽度：桌面默认展开、移动端默认收起（SSR 首帧即正确，无收起→展开/展开→收起闪烁）。
+      // 用户显式持久化的 localStorage 值优先。加 html.sidebar-collapsed 标记由 CSS 兜底生效。
+      // 后续由 Sidebar 的脚本负责 class 与该标记保持同步。
+      (function () {
+        try {
+          const stored = localStorage.getItem('sidebar-expanded');
+          const mobile = window.matchMedia('(max-width: 767px)').matches;
+          const collapsed = stored !== null ? stored === 'false' : mobile;
+          if (collapsed) document.documentElement.classList.add('sidebar-collapsed');
+        } catch {
+          /* noop */
+        }
+      })();
+    </script>
     <SecurityHeaders />
     <Favicons />
     <CustomStyles />
@@ -79,8 +91,6 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
     <link rel="preconnect" href="https://api.simplesvg.com" />
     <link rel="preconnect" href="https://api.unisvg.com" />
 
-    <!-- 注释下面这行以禁用 View Transitions -->
-    <ClientRouter fallback="swap" />
     <script is:inline define:vars={{ baseUrl }}>
       window.__BASE_URL__ = baseUrl;
     </script>

@@ -116,7 +116,7 @@ const links: NavBarLink[] = Astro.props.links;
 
     <!-- 右侧：功能按钮组 -->
     <div class="flex justify-self-end items-center gap-1">
-      <SearchGlobalSearch client:idle />
+      <SearchGlobalSearch client:load />
       {
         !siteConfig.themeColor.fixed && (
           <button
@@ -128,10 +128,10 @@ const links: NavBarLink[] = Astro.props.links;
           </button>
         )
       }
-      <LightDarkSwitch client:only="vue" />
-      <LanguageSwitcher client:only="vue" />
-      <NotificationBell client:idle />
-      <UserAvatarMenu client:only="vue" base={url('/')} />
+      <LightDarkSwitch client:load />
+      <LanguageSwitcher client:load />
+      <NotificationBell client:load />
+      <UserAvatarMenu client:load base={url('/')} />
       <button
         aria-label="Menu"
         name="Nav Menu"
@@ -145,7 +145,7 @@ const links: NavBarLink[] = Astro.props.links;
         />
       </button>
     </div>
-    <DisplaySettings client:only="vue" />
+    <DisplaySettings client:load />
   </div>
 </div>
 <!-- Extracted reference: src/features/shell/scripts/navbar.ts (navbar scripts) -->
@@ -232,8 +232,6 @@ const links: NavBarLink[] = Astro.props.links;
 
   // 首次加载绑定
   bindNavbarButtons();
-  // View Transitions 导航后重新绑定
-  document.addEventListener('astro:after-swap', bindNavbarButtons);
 
   function updateProfileLink() {
     try {
@@ -253,7 +251,6 @@ const links: NavBarLink[] = Astro.props.links;
     }
   }
   updateProfileLink();
-  document.addEventListener('astro:after-swap', updateProfileLink);
 </script>
 
 {

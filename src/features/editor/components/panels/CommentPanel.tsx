@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, memo } from 'react';
-import type { PersistenceAdapter, CommentThread } from '../../engine/types';
-import ConfirmDialog from '../dialogs/ConfirmDialog';
-import { t } from '~/lib/i18n';
+import { useState, useEffect, useCallback, memo } from "react";
+import type { PersistenceAdapter, CommentThread } from "../../engine/types";
+import ConfirmDialog from "../dialogs/ConfirmDialog";
+import { t } from "~/lib/i18n";
 
 interface CommentPanelProps {
   documentId: string;
@@ -10,7 +10,12 @@ interface CommentPanelProps {
   onHighlightClick: (range: { from: number; to: number }) => void;
 }
 
-const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, onHighlightClick }: CommentPanelProps) {
+const CommentPanel = memo(function CommentPanel({
+  documentId,
+  adapter,
+  onClose,
+  onHighlightClick,
+}: CommentPanelProps) {
   const [threads, setThreads] = useState<CommentThread[]>([]);
   const [replyInput, setReplyInput] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
@@ -28,7 +33,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
     const text = replyInput[threadId]?.trim();
     if (text) {
       adapter.addReply?.(documentId, threadId, text);
-      setReplyInput((prev) => ({ ...prev, [threadId]: '' }));
+      setReplyInput((prev) => ({ ...prev, [threadId]: "" }));
       refresh();
     }
   };
@@ -58,18 +63,27 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
   return (
     <div className="rte-panel flex flex-col">
       <div className="flex items-center justify-between px-3 py-3 border-b border-surface-3">
-        <h3 className="text-sm font-semibold">{t('editor.comments')}</h3>
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onClose}>
+        <h3 className="text-sm font-semibold">{t("editor.comments")}</h3>
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs"
+          onClick={onClose}
+        >
           ×
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {threads.length === 0 ? (
-          <p className="text-xs text-deep-text/50 px-3 py-4">{t('editor.noComments')}</p>
+          <p className="text-xs text-deep-text/50 px-3 py-4">
+            {t("editor.noComments")}
+          </p>
         ) : (
           threads.map((thread) => (
-            <div key={thread.id} className={`border-b border-surface-3/50 ${thread.resolved ? 'opacity-60' : ''}`}>
+            <div
+              key={thread.id}
+              className={`border-b border-surface-3/50 ${thread.resolved ? "opacity-60" : ""}`}
+            >
               {/* Thread header */}
               <button
                 type="button"
@@ -78,7 +92,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
               >
                 <span className="font-mono text-deep-text/50 italic">
                   "{thread.text.slice(0, 60)}
-                  {thread.text.length > 60 ? '…' : ''}"
+                  {thread.text.length > 60 ? "…" : ""}"
                 </span>
               </button>
 
@@ -88,9 +102,13 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                   <div key={c.id} className="text-xs bg-card-bg rounded p-2">
                     <div className="flex items-center gap-1 mb-0.5">
                       <span className="font-medium">{c.author}</span>
-                      <span className="text-deep-text/40">{new Date(c.createdAt).toLocaleString('zh-CN')}</span>
+                      <span className="text-deep-text/40">
+                        {new Date(c.createdAt).toLocaleString("zh-CN")}
+                      </span>
                     </div>
-                    <div className="text-deep-text/80 whitespace-pre-wrap">{c.text}</div>
+                    <div className="text-deep-text/80 whitespace-pre-wrap">
+                      {c.text}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -101,11 +119,16 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                   <input
                     type="text"
                     className="rte-input flex-1"
-                    placeholder={t('editor.replyPlaceholder')}
-                    value={replyInput[thread.id] ?? ''}
-                    onChange={(e) => setReplyInput((prev) => ({ ...prev, [thread.id]: e.target.value }))}
+                    placeholder={t("editor.replyPlaceholder")}
+                    value={replyInput[thread.id] ?? ""}
+                    onChange={(e) =>
+                      setReplyInput((prev) => ({
+                        ...prev,
+                        [thread.id]: e.target.value,
+                      }))
+                    }
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleAddReply(thread.id);
+                      if (e.key === "Enter") handleAddReply(thread.id);
                     }}
                   />
                   <button
@@ -113,7 +136,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs"
                     onClick={() => handleAddReply(thread.id)}
                   >
-                    {t('editor.send')}
+                    {t("editor.send")}
                   </button>
                 </div>
               </div>
@@ -126,7 +149,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs"
                     onClick={() => handleReopen(thread.id)}
                   >
-                    {t('editor.reopen')}
+                    {t("editor.reopen")}
                   </button>
                 ) : (
                   <button
@@ -134,7 +157,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs text-success"
                     onClick={() => handleResolve(thread.id)}
                   >
-                    {t('editor.resolve')}
+                    {t("editor.resolve")}
                   </button>
                 )}
                 <button
@@ -142,7 +165,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                   className="rte-btn rte-btn--ghost rte-btn--xs text-error"
                   onClick={() => handleDelete(thread.id)}
                 >
-                  {t('editor.delete')}
+                  {t("editor.delete")}
                 </button>
               </div>
             </div>
@@ -152,7 +175,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
 
       {deleteTarget && (
         <ConfirmDialog
-          message={t('editor.confirmDeleteComment')}
+          message={t("editor.confirmDeleteComment")}
           danger
           onConfirm={handleDeleteConfirmed}
           onCancel={() => setDeleteTarget(null)}

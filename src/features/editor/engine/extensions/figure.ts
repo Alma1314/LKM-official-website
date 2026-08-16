@@ -1,11 +1,11 @@
-import { Node } from '@tiptap/core';
-import { ReactNodeViewRenderer } from '@tiptap/react';
-import FigureNodeView from '../../components/nodes/FigureNodeView';
-import { figurePropsSchema } from '../registry/schemas';
+import { Node } from "@tiptap/core";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import FigureNodeView from "../../components/nodes/FigureNodeView";
+import { figurePropsSchema } from "../registry/schemas";
 
 export const Figure = Node.create({
-  name: 'figure',
-  group: 'block',
+  name: "figure",
+  group: "block",
   atom: true,
   selectable: true,
   draggable: true,
@@ -13,24 +13,26 @@ export const Figure = Node.create({
 
   addAttributes() {
     return {
-      src: { default: '' },
-      alt: { default: '' },
-      caption: { default: '' },
+      src: { default: "" },
+      alt: { default: "" },
+      caption: { default: "" },
       width: { default: null },
-      align: { default: 'center' },
+      align: { default: "center" },
     };
   },
 
   parseHTML() {
-    return [{ tag: 'figure[data-figure]' }];
+    return [{ tag: "figure[data-figure]" }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['figure', { 'data-figure': '', ...HTMLAttributes }];
+    return ["figure", { "data-figure": "", ...HTMLAttributes }];
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(FigureNodeView as Parameters<typeof ReactNodeViewRenderer>[0]);
+    return ReactNodeViewRenderer(
+      FigureNodeView as Parameters<typeof ReactNodeViewRenderer>[0],
+    );
   },
 });
 
@@ -46,7 +48,7 @@ export function parseFigureProps(node: unknown): Record<string, unknown> {
 
   if (raw) {
     for (const attr of raw) {
-      if (attr.type === 'mdxJsxAttribute') {
+      if (attr.type === "mdxJsxAttribute") {
         attrs[attr.name] = attr.value;
       }
     }
@@ -58,11 +60,11 @@ export function parseFigureProps(node: unknown): Record<string, unknown> {
 export function serializeFigureProps(props: Record<string, unknown>): string {
   const valid = figurePropsSchema.parse(props);
   return Object.entries(valid)
-    .filter(([, v]) => v !== '' && v !== undefined && v !== null)
+    .filter(([, v]) => v !== "" && v !== undefined && v !== null)
     .map(([k, v]) => {
-      if (typeof v === 'string') return `${k}="${v}"`;
-      if (typeof v === 'number') return `${k}={${v}}`;
+      if (typeof v === "string") return `${k}="${v}"`;
+      if (typeof v === "number") return `${k}={${v}}`;
       return `${k}="${String(v)}"`;
     })
-    .join(' ');
+    .join(" ");
 }

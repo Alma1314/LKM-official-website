@@ -4,7 +4,9 @@
  */
 
 /** Scroll editor content into view when virtual keyboard appears on mobile */
-export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => void {
+export function setupKeyboardAutoScroll(
+  editorEl: HTMLElement | null,
+): () => void {
   if (!editorEl) return () => {};
 
   const vv = window.visualViewport;
@@ -20,19 +22,19 @@ export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => voi
           editorEl.style.paddingBottom = `${heightDiff}px`;
           const activeEl = document.activeElement as HTMLElement;
           if (activeEl && editorEl.contains(activeEl)) {
-            activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            activeEl.scrollIntoView({ block: "center", behavior: "smooth" });
           }
         } else {
           // 键盘收起
-          editorEl.style.paddingBottom = '';
+          editorEl.style.paddingBottom = "";
         }
       });
     };
 
-    vv.addEventListener('resize', handleResize);
+    vv.addEventListener("resize", handleResize);
     return () => {
-      vv.removeEventListener('resize', handleResize);
-      editorEl.style.paddingBottom = '';
+      vv.removeEventListener("resize", handleResize);
+      editorEl.style.paddingBottom = "";
       if (rafId) cancelAnimationFrame(rafId);
     };
   }
@@ -49,28 +51,28 @@ export function setupKeyboardAutoScroll(editorEl: HTMLElement | null): () => voi
       // If target is near the bottom half, scroll it up
       if (rect.bottom > viewportHeight * 0.4) {
         editorEl.style.paddingBottom = `${viewportHeight * 0.5}px`;
-        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        target.scrollIntoView({ block: "center", behavior: "smooth" });
       }
     }, 300);
   };
 
   const handleBlur = (): void => {
-    editorEl.style.paddingBottom = '';
+    editorEl.style.paddingBottom = "";
   };
 
-  editorEl.addEventListener('focusin', handleFocusIn);
-  editorEl.addEventListener('focusout', handleBlur);
+  editorEl.addEventListener("focusin", handleFocusIn);
+  editorEl.addEventListener("focusout", handleBlur);
 
   return () => {
-    editorEl.removeEventListener('focusin', handleFocusIn);
-    editorEl.removeEventListener('focusout', handleBlur);
-    editorEl.style.paddingBottom = '';
+    editorEl.removeEventListener("focusin", handleFocusIn);
+    editorEl.removeEventListener("focusout", handleBlur);
+    editorEl.style.paddingBottom = "";
   };
 }
 
 /** Mobile viewport: detect small screens */
 export function isMobile(): boolean {
-  return window.innerWidth < 768 || 'ontouchstart' in window;
+  return window.innerWidth < 768 || "ontouchstart" in window;
 }
 
 /** Add "swipe to dismiss" and "long press" handling on a container */
@@ -80,7 +82,7 @@ export function setupTouchGestures(
     onSwipeLeft?: () => void;
     onSwipeRight?: () => void;
     onLongPress?: (target: HTMLElement) => void;
-  }
+  },
 ): () => void {
   if (!container) return () => {};
 
@@ -125,12 +127,12 @@ export function setupTouchGestures(
     }
   };
 
-  container.addEventListener('touchstart', onTouchStart);
-  container.addEventListener('touchend', onTouchEnd);
+  container.addEventListener("touchstart", onTouchStart);
+  container.addEventListener("touchend", onTouchEnd);
 
   return () => {
-    container.removeEventListener('touchstart', onTouchStart);
-    container.removeEventListener('touchend', onTouchEnd);
+    container.removeEventListener("touchstart", onTouchStart);
+    container.removeEventListener("touchend", onTouchEnd);
     if (longPressTimer) clearTimeout(longPressTimer);
   };
 }

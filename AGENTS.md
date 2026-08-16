@@ -1,10 +1,14 @@
 # LKM 项目 AI Agent 指南
 
+> 新手从零部署环境 / 安装工具 / 上传改动，见 [GETTING_STARTED.md](./GETTING_STARTED.md)。代码格式与 CI 门槛见 [CODING_STANDARDS.md](./CODING_STANDARDS.md)。
+
 ## 项目概述
 
 LKM 官方网站，基于 **Astro v7 server 模式**、**Vue 3**、**React**（仅编辑器）和 **Tailwind CSS v4** 构建。仓库仅含前端，后端为**独立部署的真实服务**，通过 Astro 中间件反向代理 `/api/*` 与 `/graphql` 到由 `API_URL` 指定的真实后端。
 
-**技术栈：** Astro v7 server | Vue 3 + Composition API | React（编辑器）| Tailwind CSS v4 | TypeScript | FastAPI | SQLite（开发）/ PostgreSQL（生产）
+**技术栈：** Astro v7 server | Vue 3 + Composition API | React（编辑器）| Tailwind CSS v4 | TypeScript
+
+> 仅前端仓库；后端为独立部署的真实服务（FastAPI + SQLite 开发 / PostgreSQL 生产），不在此仓库内。
 
 ## 快速参考
 
@@ -42,7 +46,6 @@ lkm-official-website/
 │   ├── middleware.ts     # 反向代理 /api/* 与 /graphql → 真实后端
 │   └── content.config.ts # 内容集合配置
 ├── scripts/              # 构建/检查脚本
-├── docker-compose.yml    # Docker 生产部署
 ├── Dockerfile            # Astro SSR 部署镜像
 └── astro.config.ts       # Astro 配置（server 模式 + Vue/React 集成）
 ```
@@ -104,8 +107,8 @@ src/lib/api/
 使用 `~/` 从 `src/` 导入：
 
 ```typescript
-import { forumApi } from '~/lib/api';
-import { getPermalink } from '~/lib/utils/permalinks';
+import { forumApi } from "~/lib/api";
+import { getPermalink } from "~/lib/utils/permalinks";
 ```
 
 ## Tailwind CSS v4
@@ -167,13 +170,11 @@ import { getPermalink } from '~/lib/utils/permalinks';
 
 ## Docker 部署
 
-```yaml
-# docker-compose.yml
-services:
-  astro: # Node.js SSR 服务（端口 80）
-    environment:
-      - API_URL=${API_URL} # 由部署环境注入真实后端地址
-```
+仓库通过 `Dockerfile`（多阶段构建）产出 Astro SSR 镜像，`docker ignore` 见 `.dockerignore`：
+
+- 运行时监听端口 **4321**（`ENV PORT=4321`），以非 root 的 `node` 用户运行
+- 启动命令 `node dist/server/entry.mjs`（standalone 服务，`dist/` 由构建阶段产出，生产依赖经 `--prod` 阶段剥离 devDependencies）
+- **后端地址由运行时环境变量注入**：`-e API_URL=https://api.lkm.app`（服务端代码经 `process.env.API_URL` 读取，若不配置则前端不请求后端）
 
 ## 验证检查清单
 

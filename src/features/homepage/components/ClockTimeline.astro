@@ -165,10 +165,9 @@ const clockYears = items.map((i) => shortYear(i.year));
     update();
   }
 
-  document.addEventListener('astro:page-load', () => {
-    const schedule = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-    document.querySelectorAll('[data-clock-timeline]').forEach((el) => {
-      schedule(() => initClockTimeline(el as HTMLElement), { timeout: 3000 });
-    });
+  // ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+  const schedule = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+  document.querySelectorAll('[data-clock-timeline]').forEach((el) => {
+    schedule(() => initClockTimeline(el as HTMLElement), { timeout: 3000 });
   });
 </script>

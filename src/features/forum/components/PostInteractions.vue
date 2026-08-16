@@ -1,11 +1,20 @@
 <template>
-  <div class="flex items-center gap-1 border-t border-surface-3 bg-card-bg/95 backdrop-blur-sm px-2 py-2">
+  <div
+    class="flex items-center gap-1 border-t border-surface-3 bg-card-bg/95 backdrop-blur-sm px-2 py-2"
+  >
     <button
       class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors hover:bg-surface-3"
       :class="liked ? 'text-red-500' : 'text-text-muted'"
       @click="toggleLike"
     >
-      <Icon :icon="liked ? 'material-symbols:favorite' : 'material-symbols:favorite-outline'" class="w-5 h-5" />
+      <Icon
+        :icon="
+          liked
+            ? 'material-symbols:favorite'
+            : 'material-symbols:favorite-outline'
+        "
+        class="w-5 h-5"
+      />
       <span>{{ formatCount(likeCount) }}</span>
     </button>
 
@@ -14,7 +23,14 @@
       :class="bookmarked ? 'text-amber-500' : 'text-text-muted'"
       @click="toggleBookmark"
     >
-      <Icon :icon="bookmarked ? 'material-symbols:bookmark' : 'material-symbols:bookmark-outline'" class="w-5 h-5" />
+      <Icon
+        :icon="
+          bookmarked
+            ? 'material-symbols:bookmark'
+            : 'material-symbols:bookmark-outline'
+        "
+        class="w-5 h-5"
+      />
       <span>{{ formatCount(bookmarkCount) }}</span>
     </button>
 
@@ -31,7 +47,7 @@
       @click="showReport = true"
     >
       <Icon icon="material-symbols:flag-outline" class="w-5 h-5" />
-      <span class="hidden sm:inline">{{ t('community.forum.report') }}</span>
+      <span class="hidden sm:inline">{{ t("community.forum.report") }}</span>
     </button>
 
     <!-- 举报弹窗 -->
@@ -42,7 +58,9 @@
         @click.self="showReport = false"
       >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4">
-          <h3 class="text-lg font-semibold text-deep-text mb-4">{{ t('community.forum.reportTitle') }}</h3>
+          <h3 class="text-lg font-semibold text-deep-text mb-4">
+            {{ t("community.forum.reportTitle") }}
+          </h3>
           <div class="space-y-2">
             <button
               v-for="reason in reportReasons"
@@ -57,7 +75,7 @@
             class="w-full mt-4 px-4 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
             @click="showReport = false"
           >
-            {{ t('community.forum.cancel') }}
+            {{ t("community.forum.cancel") }}
           </button>
         </div>
       </div>
@@ -66,9 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { Icon } from '@iconify/vue';
-import { t } from '~/lib/i18n';
+import { ref, computed } from "vue";
+import { Icon } from "@iconify/vue";
+import { t } from "~/lib/i18n";
 
 const props = defineProps<{
   likeCount: number;
@@ -85,11 +103,11 @@ const bookmarkCount = ref(props.bookmarkCount);
 const forwardCount = ref(props.forwardCount);
 
 const reportReasons = computed(() => [
-  t('community.forum.reportSpam'),
-  t('community.forum.reportMisinformation'),
-  t('community.forum.reportHarassment'),
-  t('community.forum.reportInfringement'),
-  t('community.forum.reportOther'),
+  t("community.forum.reportSpam"),
+  t("community.forum.reportMisinformation"),
+  t("community.forum.reportHarassment"),
+  t("community.forum.reportInfringement"),
+  t("community.forum.reportOther"),
 ]);
 
 function toggleLike() {
@@ -105,13 +123,13 @@ function toggleBookmark() {
 function handleShare() {
   navigator.clipboard.writeText(window.location.href).then(() => {
     forwardCount.value += 1;
-    alert(t('community.forum.linkCopied'));
+    alert(t("community.forum.linkCopied"));
   });
 }
 
 function submitReport(reason: string) {
   showReport.value = false;
-  alert(t('community.forum.reportSubmitted', { reason }));
+  alert(t("community.forum.reportSubmitted", { reason }));
 }
 
 function formatCount(n: number): string {

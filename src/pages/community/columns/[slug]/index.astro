@@ -122,7 +122,7 @@ const metadata = { title: `${t(column.title)} —— LKM` };
 
     <!-- 文章列表 -->
     <div style="min-height: 400px">
-      <ColumnArticleList columnSlug={column.slug} client:only="vue" />
+      <ColumnArticleList columnSlug={column.slug} client:load />
     </div>
   </div>
 </Layout>

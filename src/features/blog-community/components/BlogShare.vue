@@ -2,12 +2,21 @@
   <div class="relative flex items-center gap-1.5">
     <dialog ref="wechatDialog" class="modal" @close="showWechatQR = false">
       <div class="modal-box max-w-xs text-center">
-        <p class="text-sm font-medium mb-3">{{ t('blog.share.wechatScanTitle') }}</p>
-        <div ref="qrContainer" class="bg-white/80 dark:bg-white/90 rounded-xl p-2 mx-auto mb-3 inline-block" />
-        <p class="text-xs text-deep-text/50 mb-3">{{ t('blog.share.wechatScanHint') }}</p>
+        <p class="text-sm font-medium mb-3">
+          {{ t("blog.share.wechatScanTitle") }}
+        </p>
+        <div
+          ref="qrContainer"
+          class="bg-white/80 dark:bg-white/90 rounded-xl p-2 mx-auto mb-3 inline-block"
+        />
+        <p class="text-xs text-deep-text/50 mb-3">
+          {{ t("blog.share.wechatScanHint") }}
+        </p>
         <div class="modal-action mt-0 justify-center">
           <form method="dialog">
-            <button class="btn btn-sm btn-outline">{{ t('common.close') }}</button>
+            <button class="btn btn-sm btn-outline">
+              {{ t("common.close") }}
+            </button>
           </form>
         </div>
       </div>
@@ -18,11 +27,13 @@
         v-if="showCopiedToast"
         class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-base-content text-base-100 text-xs rounded-full whitespace-nowrap shadow-lg"
       >
-        {{ t('blog.share.linkCopied') }}
+        {{ t("blog.share.linkCopied") }}
       </span>
     </Transition>
 
-    <span class="text-xs font-bold text-deep-text/60 mr-1">{{ t('blog.share.share') }}</span>
+    <span class="text-xs font-bold text-deep-text/60 mr-1">{{
+      t("blog.share.share")
+    }}</span>
 
     <button
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 dark:hover:bg-green-950/30 hover:text-green-500 text-deep-text/60"
@@ -110,8 +121,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, nextTick, watch } from 'vue';
-import { t } from '~/lib/i18n';
+import { ref, onUnmounted, nextTick, watch } from "vue";
+import { t } from "~/lib/i18n";
 
 const props = defineProps<{
   url: string;
@@ -124,7 +135,7 @@ const showCopiedToast = ref(false);
 const qrContainer = ref<HTMLElement | null>(null);
 const wechatDialog = ref<HTMLDialogElement | null>(null);
 
-const supportsWebShare = typeof navigator !== 'undefined' && !!navigator.share;
+const supportsWebShare = typeof navigator !== "undefined" && !!navigator.share;
 
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -149,35 +160,35 @@ function encodeURL(value: string) {
 async function loadQRCode() {
   if (!qrContainer.value) return;
   try {
-    const QRCode = await import('qrcode');
-    const canvas = document.createElement('canvas');
+    const QRCode = await import("qrcode");
+    const canvas = document.createElement("canvas");
     await QRCode.toCanvas(canvas, props.url, {
       width: 180,
       margin: 1,
-      color: { dark: '#000000', light: '#ffffff' },
+      color: { dark: "#000000", light: "#ffffff" },
     });
-    qrContainer.value.innerHTML = '';
+    qrContainer.value.innerHTML = "";
     qrContainer.value.appendChild(canvas);
   } catch {
     if (qrContainer.value) {
-      qrContainer.value.innerHTML = `<p class="text-sm text-deep-text/50">${t('blog.share.qrLoadFailed')}</p>`;
+      qrContainer.value.innerHTML = `<p class="text-sm text-deep-text/50">${t("blog.share.qrLoadFailed")}</p>`;
     }
   }
 }
 
 function shareToPlatform(platformUrl: string) {
-  window.open(platformUrl, '_blank', 'width=600,height=500');
+  window.open(platformUrl, "_blank", "width=600,height=500");
 }
 
 function shareToQQ() {
   shareToPlatform(
-    `https://connect.qq.com/widget/shareqq/index.html?url=${encodeURL(props.url)}&title=${encodeURL(props.title)}`
+    `https://connect.qq.com/widget/shareqq/index.html?url=${encodeURL(props.url)}&title=${encodeURL(props.title)}`,
   );
 }
 
 function shareToWeibo() {
   shareToPlatform(
-    `https://service.weibo.com/share/share.php?url=${encodeURL(props.url)}&title=${encodeURL(props.title)}`
+    `https://service.weibo.com/share/share.php?url=${encodeURL(props.url)}&title=${encodeURL(props.title)}`,
   );
 }
 
@@ -197,13 +208,13 @@ async function copyLink() {
   try {
     await navigator.clipboard.writeText(props.url);
   } catch {
-    const textarea = document.createElement('textarea');
+    const textarea = document.createElement("textarea");
     textarea.value = props.url;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
     document.body.appendChild(textarea);
     textarea.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     document.body.removeChild(textarea);
   }
   showCopiedToast.value = true;
@@ -240,7 +251,7 @@ onUnmounted(() => {
   position: relative;
 }
 .share-btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;

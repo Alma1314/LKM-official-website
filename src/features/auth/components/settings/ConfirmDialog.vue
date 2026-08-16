@@ -22,10 +22,18 @@
           tabindex="-1"
         >
           <h3 class="text-lg font-semibold mb-1">{{ title }}</h3>
-          <p v-if="message" class="text-sm text-text-muted mb-5">{{ message }}</p>
+          <p v-if="message" class="text-sm text-text-muted mb-5">
+            {{ message }}
+          </p>
 
           <div class="flex gap-3 justify-end">
-            <button type="button" class="btn btn-ghost btn-sm" @click="handleCancel">{{ cancelText }}</button>
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm"
+              @click="handleCancel"
+            >
+              {{ cancelText }}
+            </button>
             <button
               type="button"
               data-testid="confirm"
@@ -43,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, onBeforeUnmount, nextTick, ref } from 'vue';
+import { watch, onMounted, onBeforeUnmount, nextTick, ref } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -54,26 +62,26 @@ const props = withDefaults(
     cancelText?: string;
     danger?: boolean;
   }>(),
-  { title: '', message: '', confirmText: '', cancelText: '', danger: false }
+  { title: "", message: "", confirmText: "", cancelText: "", danger: false },
 );
 
 const emit = defineEmits<{
-  (e: 'confirm'): void;
-  (e: 'cancel'): void;
+  (e: "confirm"): void;
+  (e: "cancel"): void;
 }>();
 
 const overlayRef = ref<HTMLElement | null>(null);
 
 function handleConfirm() {
-  emit('confirm');
+  emit("confirm");
 }
 
 function handleCancel() {
-  emit('cancel');
+  emit("cancel");
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape' && props.open) handleCancel();
+  if (e.key === "Escape" && props.open) handleCancel();
 }
 
 // 打开后聚焦到对话框（供键盘/读屏访问），并监听 Escape 关闭
@@ -84,11 +92,11 @@ watch(
       await nextTick();
       overlayRef.value?.focus();
     }
-  }
+  },
 );
 
-onMounted(() => window.addEventListener('keydown', onKeydown));
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+onMounted(() => window.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 </script>
 
 <style scoped>

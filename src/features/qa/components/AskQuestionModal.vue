@@ -1,5 +1,7 @@
 <template>
-  <Teleport to="body">
+  <!-- Teleport + Transition 在 SSR 水合时会产生节点结构 mismatch（注释 vs 文本）。
+       mounted 前不渲染 Teleport，客户端水合一致，onMounted 后再挂载。 -->
+  <Teleport v-if="mounted" to="body">
     <!-- 提问弹窗 -->
     <Transition name="qa-modal">
       <div
@@ -9,13 +11,20 @@
         aria-modal="true"
         :aria-label="t('page.qa.askAria')"
       >
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="requestClose"></div>
+        <div
+          class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          @click="requestClose"
+        ></div>
 
         <div
           class="qa-card relative z-10 w-full max-w-lg flex flex-col max-h-[85vh] bg-card-bg rounded-[var(--radius-large)] border border-surface-3 shadow-xl dark:shadow-none"
         >
-          <div class="flex items-center justify-between px-6 py-4 border-b border-surface-3 shrink-0">
-            <h3 class="text-lg font-semibold text-deep-text">{{ t('page.qa.ask') }}</h3>
+          <div
+            class="flex items-center justify-between px-6 py-4 border-b border-surface-3 shrink-0"
+          >
+            <h3 class="text-lg font-semibold text-deep-text">
+              {{ t("page.qa.ask") }}
+            </h3>
             <button
               type="button"
               class="w-8 h-8 rounded-full flex items-center justify-center text-text-muted hover:text-deep-text hover:bg-surface-3 transition-colors"
@@ -28,18 +37,24 @@
 
           <div class="px-6 py-5 space-y-4 overflow-y-auto">
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.titleLabel') }}</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+                t("page.qa.titleLabel")
+              }}</label>
               <input
                 v-model="formModel.title"
                 class="qa-input"
                 :placeholder="t('page.qa.titlePlaceholder')"
                 @input="clearError('title')"
               />
-              <p v-if="errors.title" class="mt-1 text-xs text-error">{{ errors.title }}</p>
+              <p v-if="errors.title" class="mt-1 text-xs text-error">
+                {{ errors.title }}
+              </p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.situationLabel') }}</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+                t("page.qa.situationLabel")
+              }}</label>
               <textarea
                 v-model="formModel.situation"
                 rows="3"
@@ -47,11 +62,15 @@
                 :placeholder="t('page.qa.situationPlaceholder')"
                 @input="clearError('situation')"
               ></textarea>
-              <p v-if="errors.situation" class="mt-1 text-xs text-error">{{ errors.situation }}</p>
+              <p v-if="errors.situation" class="mt-1 text-xs text-error">
+                {{ errors.situation }}
+              </p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.detailLabel') }}</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+                t("page.qa.detailLabel")
+              }}</label>
               <textarea
                 v-model="formModel.detail"
                 rows="5"
@@ -62,20 +81,40 @@
                 @dragover.prevent
                 @drop.prevent="onDrop"
               ></textarea>
-              <p v-if="errors.detail" class="mt-1 text-xs text-error">{{ errors.detail }}</p>
+              <p v-if="errors.detail" class="mt-1 text-xs text-error">
+                {{ errors.detail }}
+              </p>
 
-              <button type="button" class="btn btn-ghost btn-sm mt-2" @click="triggerFilePicker">
-                {{ t('page.qa.insertImage') }}
+              <button
+                type="button"
+                class="btn btn-ghost btn-sm mt-2"
+                @click="triggerFilePicker"
+              >
+                {{ t("page.qa.insertImage") }}
               </button>
-              <input ref="fileInputRef" type="file" accept="image/*" multiple class="hidden" @change="onFileChange" />
+              <input
+                ref="fileInputRef"
+                type="file"
+                accept="image/*"
+                multiple
+                class="hidden"
+                @change="onFileChange"
+              />
 
-              <div v-if="formModel.images.length" class="grid grid-cols-3 gap-2 mt-2">
+              <div
+                v-if="formModel.images.length"
+                class="grid grid-cols-3 gap-2 mt-2"
+              >
                 <div
                   v-for="ref in formModel.images"
                   :key="ref"
                   class="group relative aspect-square rounded-[var(--radius-md)] overflow-hidden border border-surface-3 bg-base-200"
                 >
-                  <img :src="imageUrls[ref] ?? ''" class="w-full h-full object-cover" :alt="t('page.qa.imageAlt')" />
+                  <img
+                    :src="imageUrls[ref] ?? ''"
+                    class="w-full h-full object-cover"
+                    :alt="t('page.qa.imageAlt')"
+                  />
                   <button
                     type="button"
                     class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -90,9 +129,10 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-deep-text mb-1.5">{{
-                  t('page.qa.bountyPeopleLabel')
-                }}</label>
+                <label
+                  class="block text-sm font-medium text-deep-text mb-1.5"
+                  >{{ t("page.qa.bountyPeopleLabel") }}</label
+                >
                 <input
                   :value="formModel.bountyPeople ?? ''"
                   type="number"
@@ -102,12 +142,15 @@
                   :placeholder="t('page.qa.bountyMinPlaceholder')"
                   @input="onBountyPeopleInput"
                 />
-                <p v-if="errors.bountyPeople" class="mt-1 text-xs text-error">{{ errors.bountyPeople }}</p>
+                <p v-if="errors.bountyPeople" class="mt-1 text-xs text-error">
+                  {{ errors.bountyPeople }}
+                </p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-deep-text mb-1.5">{{
-                  t('page.qa.bountyPerPersonLabel')
-                }}</label>
+                <label
+                  class="block text-sm font-medium text-deep-text mb-1.5"
+                  >{{ t("page.qa.bountyPerPersonLabel") }}</label
+                >
                 <input
                   :value="formModel.bountyPerPerson ?? ''"
                   type="number"
@@ -117,19 +160,42 @@
                   :placeholder="t('page.qa.bountyMinPlaceholder')"
                   @input="onBountyPerPersonInput"
                 />
-                <p v-if="errors.bountyPerPerson" class="mt-1 text-xs text-error">{{ errors.bountyPerPerson }}</p>
+                <p
+                  v-if="errors.bountyPerPerson"
+                  class="mt-1 text-xs text-error"
+                >
+                  {{ errors.bountyPerPerson }}
+                </p>
               </div>
             </div>
 
             <div class="flex items-center justify-between text-sm pt-1">
-              <span class="text-text-muted">{{ t('page.qa.totalBountyLabel') }}</span>
-              <span class="font-semibold text-amber-500">{{ totalBounty }} {{ t('page.qa.points') }}</span>
+              <span class="text-text-muted">{{
+                t("page.qa.totalBountyLabel")
+              }}</span>
+              <span class="font-semibold text-amber-500"
+                >{{ totalBounty }} {{ t("page.qa.points") }}</span
+              >
             </div>
           </div>
 
-          <div class="flex justify-end gap-3 px-6 py-4 border-t border-surface-3 shrink-0">
-            <button type="button" class="btn btn-ghost" @click="handleSaveDraft">{{ t('page.qa.saveDraft') }}</button>
-            <button type="button" class="btn btn-primary" @click="handlePublish">{{ t('common.publish') }}</button>
+          <div
+            class="flex justify-end gap-3 px-6 py-4 border-t border-surface-3 shrink-0"
+          >
+            <button
+              type="button"
+              class="btn btn-ghost"
+              @click="handleSaveDraft"
+            >
+              {{ t("page.qa.saveDraft") }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="handlePublish"
+            >
+              {{ t("common.publish") }}
+            </button>
           </div>
         </div>
       </div>
@@ -143,17 +209,26 @@
         aria-modal="true"
         :aria-label="t('page.qa.exitConfirmAria')"
       >
-        <div class="absolute inset-0 bg-black/50" @click="confirmOpen = false"></div>
+        <div
+          class="absolute inset-0 bg-black/50"
+          @click="confirmOpen = false"
+        ></div>
         <div
           class="relative z-10 w-full max-w-sm bg-card-bg rounded-[var(--radius-large)] border border-surface-3 shadow-xl dark:shadow-none p-6"
         >
-          <p class="text-deep-text font-medium leading-relaxed">{{ t('page.qa.exitConfirmMessage') }}</p>
+          <p class="text-deep-text font-medium leading-relaxed">
+            {{ t("page.qa.exitConfirmMessage") }}
+          </p>
           <div class="flex justify-end gap-3 mt-5">
-            <button type="button" class="btn btn-ghost" @click="confirmOpen = false">
-              {{ t('page.qa.exitConfirmKeep') }}
+            <button
+              type="button"
+              class="btn btn-ghost"
+              @click="confirmOpen = false"
+            >
+              {{ t("page.qa.exitConfirmKeep") }}
             </button>
             <button type="button" class="btn btn-primary" @click="confirmExit">
-              {{ t('page.qa.exitConfirmExit') }}
+              {{ t("page.qa.exitConfirmExit") }}
             </button>
           </div>
         </div>
@@ -172,14 +247,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
-import { t } from '~/lib/i18n';
-import { QA_DRAFT_STORAGE_KEY, computeTotalBounty, parseDraft, serializeDraft } from '../lib/draft';
-import type { QaDraft } from '../lib/draft';
-import { deleteImageBlobs, resolveImageSrc, saveImageBlob } from '../../editor/persistence/image-store';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { t } from "~/lib/i18n";
+import {
+  QA_DRAFT_STORAGE_KEY,
+  computeTotalBounty,
+  parseDraft,
+  serializeDraft,
+} from "../lib/draft";
+import type { QaDraft } from "../lib/draft";
+import {
+  deleteImageBlobs,
+  resolveImageSrc,
+  saveImageBlob,
+} from "../../editor/persistence/image-store";
 
 const props = defineProps<{ show: boolean }>();
-const emit = defineEmits<{ 'update:show': [value: boolean] }>();
+const emit = defineEmits<{ "update:show": [value: boolean] }>();
 
 type FieldKey = keyof QaDraft;
 
@@ -187,21 +271,21 @@ const MAX_IMAGES = 6;
 const MAX_IMAGE_SIZE_BYTES = 20 * 1024 * 1024;
 
 const formModel = reactive<QaDraft>({
-  title: '',
-  situation: '',
-  detail: '',
+  title: "",
+  situation: "",
+  detail: "",
   bountyPeople: null,
   bountyPerPerson: null,
   images: [],
 });
 
 const errors = reactive<Record<FieldKey, string>>({
-  title: '',
-  situation: '',
-  detail: '',
-  bountyPeople: '',
-  bountyPerPerson: '',
-  images: '',
+  title: "",
+  situation: "",
+  detail: "",
+  bountyPeople: "",
+  bountyPerPerson: "",
+  images: "",
 });
 
 const imageUrls = reactive<Record<string, string>>({});
@@ -209,9 +293,12 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const confirmOpen = ref(false);
 const toast = ref<string | null>(null);
+const mounted = ref(false);
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
-const totalBounty = computed<number>(() => computeTotalBounty(formModel.bountyPeople, formModel.bountyPerPerson));
+const totalBounty = computed<number>(() =>
+  computeTotalBounty(formModel.bountyPeople, formModel.bountyPerPerson),
+);
 
 watch(
   () => props.show,
@@ -225,23 +312,26 @@ watch(
       } else {
         resetForm();
       }
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
       confirmOpen.value = false;
     }
-  }
+  },
 );
 
-onMounted(() => document.addEventListener('keydown', onKeydown));
+onMounted(() => {
+  mounted.value = true;
+  document.addEventListener("keydown", onKeydown);
+});
 onUnmounted(() => {
-  document.removeEventListener('keydown', onKeydown);
-  document.body.style.overflow = '';
+  document.removeEventListener("keydown", onKeydown);
+  document.body.style.overflow = "";
   if (toastTimer) clearTimeout(toastTimer);
 });
 
 function onKeydown(e: KeyboardEvent): void {
-  if (e.key !== 'Escape') return;
+  if (e.key !== "Escape") return;
   if (confirmOpen.value) {
     confirmOpen.value = false;
   } else if (props.show) {
@@ -250,9 +340,9 @@ function onKeydown(e: KeyboardEvent): void {
 }
 
 function resetForm(): void {
-  formModel.title = '';
-  formModel.situation = '';
-  formModel.detail = '';
+  formModel.title = "";
+  formModel.situation = "";
+  formModel.detail = "";
   formModel.bountyPeople = null;
   formModel.bountyPerPerson = null;
   formModel.images = [];
@@ -262,12 +352,12 @@ function resetForm(): void {
 
 function clearErrors(): void {
   (Object.keys(errors) as FieldKey[]).forEach((key) => {
-    errors[key] = '';
+    errors[key] = "";
   });
 }
 
 function clearError(key: FieldKey): void {
-  errors[key] = '';
+  errors[key] = "";
 }
 
 function loadDraft(): QaDraft | null {
@@ -284,19 +374,19 @@ function clearDraft(): void {
 
 function parseNumber(e: Event): number | null {
   const value = (e.target as HTMLInputElement).value;
-  if (value === '') return null;
+  if (value === "") return null;
   const n = Number(value);
   return Number.isNaN(n) ? null : n;
 }
 
 function onBountyPeopleInput(e: Event): void {
   formModel.bountyPeople = parseNumber(e);
-  clearError('bountyPeople');
+  clearError("bountyPeople");
 }
 
 function onBountyPerPersonInput(e: Event): void {
   formModel.bountyPerPerson = parseNumber(e);
-  clearError('bountyPerPerson');
+  clearError("bountyPerPerson");
 }
 
 function isPositiveInt(value: number | null): boolean {
@@ -305,12 +395,15 @@ function isPositiveInt(value: number | null): boolean {
 
 function validate(): boolean {
   clearErrors();
-  if (!formModel.title.trim()) errors.title = t('page.qa.titleRequired');
-  if (!formModel.situation.trim()) errors.situation = t('page.qa.situationRequired');
-  if (!formModel.detail.trim()) errors.detail = t('page.qa.detailRequired');
-  if (!isPositiveInt(formModel.bountyPeople)) errors.bountyPeople = t('page.qa.bountyPeopleInvalid');
-  if (!isPositiveInt(formModel.bountyPerPerson)) errors.bountyPerPerson = t('page.qa.bountyPerPersonInvalid');
-  return Object.values(errors).every((message) => message === '');
+  if (!formModel.title.trim()) errors.title = t("page.qa.titleRequired");
+  if (!formModel.situation.trim())
+    errors.situation = t("page.qa.situationRequired");
+  if (!formModel.detail.trim()) errors.detail = t("page.qa.detailRequired");
+  if (!isPositiveInt(formModel.bountyPeople))
+    errors.bountyPeople = t("page.qa.bountyPeopleInvalid");
+  if (!isPositiveInt(formModel.bountyPerPerson))
+    errors.bountyPerPerson = t("page.qa.bountyPerPersonInvalid");
+  return Object.values(errors).every((message) => message === "");
 }
 
 function triggerFilePicker(): void {
@@ -320,11 +413,13 @@ function triggerFilePicker(): void {
 function onFileChange(e: Event): void {
   const input = e.target as HTMLInputElement;
   if (input.files) void addFiles(Array.from(input.files));
-  input.value = '';
+  input.value = "";
 }
 
 function onPaste(e: ClipboardEvent): void {
-  const files = Array.from(e.clipboardData?.files ?? []).filter((file) => file.type.startsWith('image/'));
+  const files = Array.from(e.clipboardData?.files ?? []).filter((file) =>
+    file.type.startsWith("image/"),
+  );
   if (files.length) {
     e.preventDefault();
     void addFiles(files);
@@ -332,14 +427,16 @@ function onPaste(e: ClipboardEvent): void {
 }
 
 function onDrop(e: DragEvent): void {
-  const files = Array.from(e.dataTransfer?.files ?? []).filter((file) => file.type.startsWith('image/'));
+  const files = Array.from(e.dataTransfer?.files ?? []).filter((file) =>
+    file.type.startsWith("image/"),
+  );
   if (files.length) void addFiles(files);
 }
 
 async function addFiles(files: File[]): Promise<void> {
   for (const file of files) {
     if (formModel.images.length >= MAX_IMAGES) {
-      showToast(t('page.qa.maxImagesToast', { count: MAX_IMAGES }));
+      showToast(t("page.qa.maxImagesToast", { count: MAX_IMAGES }));
       break;
     }
     const error = validateImageFile(file);
@@ -352,8 +449,8 @@ async function addFiles(files: File[]): Promise<void> {
 }
 
 function validateImageFile(file: File): string | null {
-  if (!file.type.startsWith('image/')) return t('page.qa.imageOnlyToast');
-  if (file.size > MAX_IMAGE_SIZE_BYTES) return t('page.qa.imageTooLargeToast');
+  if (!file.type.startsWith("image/")) return t("page.qa.imageOnlyToast");
+  if (file.size > MAX_IMAGE_SIZE_BYTES) return t("page.qa.imageTooLargeToast");
   return null;
 }
 
@@ -378,7 +475,7 @@ async function refreshImageUrls(): Promise<void> {
 
 function handleSaveDraft(): void {
   saveDraft();
-  showToast(t('page.qa.draftSavedToast'));
+  showToast(t("page.qa.draftSavedToast"));
 }
 
 async function handlePublish(): Promise<void> {
@@ -386,8 +483,8 @@ async function handlePublish(): Promise<void> {
   const refs = [...formModel.images];
   clearDraft();
   resetForm();
-  showToast(t('page.qa.publishedToast'));
-  emit('update:show', false);
+  showToast(t("page.qa.publishedToast"));
+  emit("update:show", false);
   await deleteImageBlobs(refs);
 }
 
@@ -397,7 +494,7 @@ function requestClose(): void {
 
 function confirmExit(): void {
   confirmOpen.value = false;
-  emit('update:show', false);
+  emit("update:show", false);
 }
 
 function showToast(message: string): void {

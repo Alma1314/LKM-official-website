@@ -1,14 +1,24 @@
 <template>
   <!-- 违规内容举报弹窗 -->
-  <div v-if="modelValue" class="dialog-overlay" @click.self="$emit('update:modelValue', false)">
+  <div
+    v-if="modelValue"
+    class="dialog-overlay"
+    @click.self="$emit('update:modelValue', false)"
+  >
     <div class="dialog glass">
-      <h2>{{ t('treehole.report.title') }}</h2>
+      <h2>{{ t("treehole.report.title") }}</h2>
       <div class="report">
         <p class="report-target">
-          {{ t('treehole.report.targetLabel') }}<b>{{ target }}</b>
+          {{ t("treehole.report.targetLabel") }}<b>{{ target }}</b>
         </p>
         <div class="report-reasons">
-          <button v-for="r in reasons" :key="r" class="chip" :class="{ active: selected === r }" @click="selected = r">
+          <button
+            v-for="r in reasons"
+            :key="r"
+            class="chip"
+            :class="{ active: selected === r }"
+            @click="selected = r"
+          >
             {{ r }}
           </button>
         </div>
@@ -20,50 +30,54 @@
         />
       </div>
       <div class="dialog-footer">
-        <button class="chip" @click="$emit('update:modelValue', false)">{{ t('treehole.report.cancel') }}</button>
-        <button class="btn-grad" :disabled="!selected" @click="submit">{{ t('treehole.report.submit') }}</button>
+        <button class="chip" @click="$emit('update:modelValue', false)">
+          {{ t("treehole.report.cancel") }}
+        </button>
+        <button class="btn-grad" :disabled="!selected" @click="submit">
+          {{ t("treehole.report.submit") }}
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { addReported } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, watch, computed } from "vue";
+import { addReported } from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const props = defineProps({
   modelValue: Boolean,
-  target: { type: String, default: () => t('treehole.report.defaultTarget') },
-  targetId: { type: String, default: '' },
-  targetType: { type: String, default: 'letter' },
+  target: { type: String, default: () => t("treehole.report.defaultTarget") },
+  targetId: { type: String, default: "" },
+  targetType: { type: String, default: "letter" },
 });
-const emit = defineEmits(['update:modelValue', 'reported']);
+const emit = defineEmits(["update:modelValue", "reported"]);
 
 const reasons = computed(() => [
-  t('treehole.report.reasonPorn'),
-  t('treehole.report.reasonViolence'),
-  t('treehole.report.reasonAbuse'),
-  t('treehole.report.reasonSpam'),
-  t('treehole.report.reasonOther'),
+  t("treehole.report.reasonPorn"),
+  t("treehole.report.reasonViolence"),
+  t("treehole.report.reasonAbuse"),
+  t("treehole.report.reasonSpam"),
+  t("treehole.report.reasonOther"),
 ]);
-const selected = ref('');
-const detail = ref('');
+const selected = ref("");
+const detail = ref("");
 
 watch(
   () => props.modelValue,
   (v) => {
     if (v) {
-      selected.value = '';
-      detail.value = '';
+      selected.value = "";
+      detail.value = "";
     }
-  }
+  },
 );
 
 function submit() {
   addReported(props.targetId);
-  emit('reported');
-  emit('update:modelValue', false);
+  emit("reported");
+  emit("update:modelValue", false);
 }
 </script>
 

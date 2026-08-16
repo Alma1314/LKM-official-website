@@ -17,7 +17,7 @@ const emit = defineEmits<{
     :disabled="loading"
     @click="emit('toggle')"
   >
-    <span>{{ starred ? '★' : '☆' }}</span>
+    <span>{{ starred ? "★" : "☆" }}</span>
     <span>{{ starCount }}</span>
   </button>
 </template>

@@ -1,5 +1,5 @@
-import type { CommentReply, CommentThread } from '../engine/types';
-import { t } from '~/lib/i18n';
+import type { CommentReply, CommentThread } from "../engine/types";
+import { t } from "~/lib/i18n";
 
 function getKey(docId: string): string {
   return `lkm-editor-comments-${docId}`;
@@ -10,7 +10,7 @@ function read(docId: string): CommentThread[] {
     const raw = localStorage.getItem(getKey(docId));
     return raw ? JSON.parse(raw) : [];
   } catch (err) {
-    console.warn('[comment-store] 读取评论失败:', err);
+    console.warn("[comment-store] 读取评论失败:", err);
     return [];
   }
 }
@@ -27,7 +27,7 @@ export function addThread(
   docId: string,
   range: { from: number; to: number },
   text: string,
-  initialComment = ''
+  initialComment = "",
 ): CommentThread {
   const threads = read(docId);
   const thread: CommentThread = {
@@ -36,7 +36,14 @@ export function addThread(
     text,
     resolved: false,
     comments: initialComment
-      ? [{ id: crypto.randomUUID(), text: initialComment, author: t('editor.me'), createdAt: new Date().toISOString() }]
+      ? [
+          {
+            id: crypto.randomUUID(),
+            text: initialComment,
+            author: t("editor.me"),
+            createdAt: new Date().toISOString(),
+          },
+        ]
       : [],
     createdAt: new Date().toISOString(),
   };
@@ -45,14 +52,18 @@ export function addThread(
   return thread;
 }
 
-export function addReply(docId: string, threadId: string, text: string): CommentReply | null {
+export function addReply(
+  docId: string,
+  threadId: string,
+  text: string,
+): CommentReply | null {
   const threads = read(docId);
   const thread = threads.find((t) => t.id === threadId);
   if (!thread) return null;
   const reply: CommentReply = {
     id: crypto.randomUUID(),
     text,
-    author: t('editor.me'),
+    author: t("editor.me"),
     createdAt: new Date().toISOString(),
   };
   thread.comments.push(reply);

@@ -1,14 +1,14 @@
 <template>
   <div class="bottle-page">
-    <h1 class="page-title">🍶 {{ t('treehole.bottle.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.bottle.subtitle') }}</p>
+    <h1 class="page-title">🍶 {{ t("treehole.bottle.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.bottle.subtitle") }}</p>
     <Bottle />
   </div>
 </template>
 
 <script setup>
-import Bottle from '../components/Bottle.vue';
-import { t } from '~/lib/i18n';
+import Bottle from "../components/Bottle.vue";
+import { t } from "~/lib/i18n";
 </script>
 
 <style scoped>

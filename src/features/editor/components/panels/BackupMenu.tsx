@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import type { ReactElement } from 'react';
-import type { PersistenceAdapter, BackupEntry } from '../../engine/types';
-import { t } from '~/lib/i18n';
+import { useState, useRef, useEffect, useCallback } from "react";
+import type { ReactElement } from "react";
+import type { PersistenceAdapter, BackupEntry } from "../../engine/types";
+import { t } from "~/lib/i18n";
 
 interface BackupMenuProps {
   adapter: PersistenceAdapter;
@@ -21,14 +21,14 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         setShowBackups(false);
       }
     };
-    if (open) document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
   const handleExport = useCallback(async () => {
     const docs = await Promise.resolve(adapter.listDocuments());
     if (docs.length === 0) {
-      alert(t('editor.backup.noDocsToExport'));
+      alert(t("editor.backup.noDocsToExport"));
       return;
     }
     const fullDocs = [];
@@ -38,24 +38,24 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         doc || {
           id: meta.id,
           title: meta.title,
-          contentMdx: '',
+          contentMdx: "",
           editorJson: null,
           status: meta.status,
           version: meta.version,
           lastModified: meta.lastModified,
-          createdAt: '',
-          updatedAt: '',
-        }
+          createdAt: "",
+          updatedAt: "",
+        },
       );
     }
     const json = JSON.stringify(
       fullDocs.map(({ id: _id, ...rest }) => rest),
       null,
-      2
+      2,
     );
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `lkm-docs-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
@@ -86,30 +86,33 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         try {
           const parsed = JSON.parse(reader.result as string);
           if (!Array.isArray(parsed)) {
-            alert(t('editor.backup.invalidJsonFormat'));
+            alert(t("editor.backup.invalidJsonFormat"));
             return;
           }
           data = parsed;
         } catch (err) {
           alert(
-            t('editor.backup.jsonParseFailed', {
-              message: err instanceof Error ? err.message : t('editor.backup.formatError'),
-            })
+            t("editor.backup.jsonParseFailed", {
+              message:
+                err instanceof Error
+                  ? err.message
+                  : t("editor.backup.formatError"),
+            }),
           );
           return;
         }
         if (data.length === 0) {
-          alert(t('editor.backup.invalidJsonNoDocs'));
+          alert(t("editor.backup.invalidJsonNoDocs"));
           return;
         }
         const existing = await Promise.resolve(adapter.listDocuments());
         if (existing.length > 0) {
           if (
             !confirm(
-              t('editor.backup.importOverwrite', {
+              t("editor.backup.importOverwrite", {
                 importCount: data.length,
                 existingCount: existing.length,
-              })
+              }),
             )
           ) {
             return;
@@ -121,7 +124,8 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
             title: doc.title,
             contentMdx: doc.contentMdx,
             editorJson: doc.editorJson as Record<string, unknown>,
-            status: (doc.status as 'draft' | 'published' | 'archived') || 'draft',
+            status:
+              (doc.status as "draft" | "published" | "archived") || "draft",
             version: doc.version || 1,
             lastModified: doc.timestamp || new Date().toISOString(),
             createdAt: doc.timestamp || new Date().toISOString(),
@@ -135,15 +139,15 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               editorJson: doc.editorJson,
               status: doc.status,
               version: doc.version,
-            })
+            }),
           );
         }
-        alert(t('editor.backup.importSuccess', { count: data.length }));
+        alert(t("editor.backup.importSuccess", { count: data.length }));
         window.location.reload();
       };
       reader.readAsText(file);
     },
-    [adapter]
+    [adapter],
   );
 
   const handleShowBackups = useCallback(async () => {
@@ -153,25 +157,26 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
   }, [adapter]);
 
   const handleRestore = useCallback(async (docId: string, title: string) => {
-    if (!confirm(t('editor.backup.restoreConfirm', { title }))) return;
+    if (!confirm(t("editor.backup.restoreConfirm", { title }))) return;
     // Navigate to editor with this doc ID to load the backup content
     setShowBackups(false);
     setOpen(false);
-    const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
+    const base =
+      (window as unknown as Record<string, string>).__BASE_URL__ || "";
     // 同 DocumentEditor：base 为 '/' 时拼出 '//editor' 协议相对 URL，去尾部斜杠。
-    window.location.href = `${base.replace(/\/+$/, '')}/editor?id=${docId}`;
+    window.location.href = `${base.replace(/\/+$/, "")}/editor?id=${docId}`;
   }, []);
 
   return (
     <div ref={ref} className="relative">
       <button
         type="button"
-        className={`rte-btn rte-btn--ghost rte-btn--xs gap-1 ${open ? 'is-active' : ''}`}
+        className={`rte-btn rte-btn--ghost rte-btn--xs gap-1 ${open ? "is-active" : ""}`}
         onClick={() => {
           setOpen(!open);
           setShowBackups(false);
         }}
-        title={t('editor.backup.title')}
+        title={t("editor.backup.title")}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +193,9 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
           <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
           <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
         </svg>
-        <span className="hidden lg:inline text-xs">{t('editor.backup.backup')}</span>
+        <span className="hidden lg:inline text-xs">
+          {t("editor.backup.backup")}
+        </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"
@@ -226,7 +233,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" x2="12" y1="15" y2="3" />
             </svg>
-            {t('editor.backup.exportAll')}
+            {t("editor.backup.exportAll")}
           </button>
           <button
             type="button"
@@ -248,7 +255,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" x2="12" y1="3" y2="15" />
             </svg>
-            {t('editor.backup.importDocs')}
+            {t("editor.backup.importDocs")}
           </button>
           <button
             type="button"
@@ -270,7 +277,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <path d="M3 3v5h5" />
               <path d="M12 7v5l4 2" />
             </svg>
-            {t('editor.backup.restoreFromBackup')}
+            {t("editor.backup.restoreFromBackup")}
           </button>
         </div>
       )}
@@ -279,14 +286,20 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         <div className="absolute top-full right-0 mt-1 z-50 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-2 min-w-[260px] max-h-[300px] overflow-y-auto rte-dropdown">
           <div className="flex items-center justify-between mb-2 px-1">
             <span className="text-xs text-deep-text/70">
-              {t('editor.backup.availableBackups', { count: backups.length })}
+              {t("editor.backup.availableBackups", { count: backups.length })}
             </span>
-            <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setShowBackups(false)}>
-              {t('editor.backup.back')}
+            <button
+              type="button"
+              className="rte-btn rte-btn--ghost rte-btn--xs"
+              onClick={() => setShowBackups(false)}
+            >
+              {t("editor.backup.back")}
             </button>
           </div>
           {backups.length === 0 ? (
-            <p className="text-xs text-deep-text/50 px-1 py-4 text-center">{t('editor.backup.noBackups')}</p>
+            <p className="text-xs text-deep-text/50 px-1 py-4 text-center">
+              {t("editor.backup.noBackups")}
+            </p>
           ) : (
             backups.map((b) => (
               <button
@@ -297,11 +310,11 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               >
                 <span className="truncate">{b.title}</span>
                 <span className="text-deep-text/50 shrink-0 ml-2">
-                  {new Date(b.timestamp).toLocaleString('zh-CN', {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
+                  {new Date(b.timestamp).toLocaleString("zh-CN", {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
                 </span>
               </button>
@@ -310,7 +323,13 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         </div>
       )}
 
-      <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={handleFileChange} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        className="hidden"
+        onChange={handleFileChange}
+      />
     </div>
   );
 }

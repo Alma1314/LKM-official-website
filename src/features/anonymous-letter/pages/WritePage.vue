@@ -3,8 +3,8 @@
     <div class="container">
       <!-- 页面标题 -->
       <section class="write-header">
-        <h1 class="page-title grad-text">✍️ {{ t('treehole.write.title') }}</h1>
-        <p class="page-sub">{{ t('treehole.write.subtitle2') }}</p>
+        <h1 class="page-title grad-text">✍️ {{ t("treehole.write.title") }}</h1>
+        <p class="page-sub">{{ t("treehole.write.subtitle2") }}</p>
       </section>
 
       <!-- 双栏布局 -->
@@ -14,7 +14,13 @@
           <!-- 工具栏 -->
           <div class="editor-toolbar">
             <div class="tb-left">
-              <button class="tb-btn" @click="emojiOpen = !emojiOpen" :title="t('treehole.write.emoji')">😊</button>
+              <button
+                class="tb-btn"
+                @click="emojiOpen = !emojiOpen"
+                :title="t('treehole.write.emoji')"
+              >
+                😊
+              </button>
               <span class="tb-divider"></span>
               <button
                 class="tb-btn"
@@ -41,12 +47,18 @@
                 A<sup>+</sup>
               </button>
               <span class="tb-divider"></span>
-              <button class="tb-btn tb-btn-clear" @click="clearContent" :title="t('treehole.write.clearContentTitle')">
-                🗑️ {{ t('treehole.write.clearContent') }}
+              <button
+                class="tb-btn tb-btn-clear"
+                @click="clearContent"
+                :title="t('treehole.write.clearContentTitle')"
+              >
+                🗑️ {{ t("treehole.write.clearContent") }}
               </button>
             </div>
             <div class="tb-right">
-              <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }"
+              <span
+                class="char-counter"
+                :class="{ warn: charCount > 900, danger: charCount > 1000 }"
                 >{{ charCount }}/1000</span
               >
             </div>
@@ -55,7 +67,14 @@
           <!-- Emoji 面板 -->
           <transition name="slide-down">
             <div v-if="emojiOpen" class="emoji-panel">
-              <button v-for="e in EMOJIS" :key="e" class="emoji-btn" @click="insertEmoji(e)">{{ e }}</button>
+              <button
+                v-for="e in EMOJIS"
+                :key="e"
+                class="emoji-btn"
+                @click="insertEmoji(e)"
+              >
+                {{ e }}
+              </button>
             </div>
           </transition>
 
@@ -63,7 +82,9 @@
           <div
             class="paper-wrap"
             :style="{ background: selectedPaper.gradient }"
-            :class="{ 'is-night': app.isNight && selectedPaper.key === 'starry' }"
+            :class="{
+              'is-night': app.isNight && selectedPaper.key === 'starry',
+            }"
           >
             <textarea
               ref="textareaRef"
@@ -82,7 +103,7 @@
         <aside class="setup-panel">
           <!-- 分类 -->
           <div class="setup-card glass">
-            <div class="setup-label">📂 {{ t('treehole.write.category') }}</div>
+            <div class="setup-label">📂 {{ t("treehole.write.category") }}</div>
             <div class="cat-grid">
               <button
                 v-for="c in CATEGORIES"
@@ -98,7 +119,9 @@
 
           <!-- 隐私等级 -->
           <div class="setup-card glass">
-            <div class="setup-label">🔒 {{ t('treehole.write.privacyLevel') }}</div>
+            <div class="setup-label">
+              🔒 {{ t("treehole.write.privacyLevel") }}
+            </div>
             <div class="privacy-row">
               <button
                 v-for="p in PRIVACY"
@@ -116,7 +139,7 @@
 
           <!-- 匿名代号 -->
           <div class="setup-card glass">
-            <div class="setup-label">🎭 {{ t('treehole.write.codename') }}</div>
+            <div class="setup-label">🎭 {{ t("treehole.write.codename") }}</div>
             <div class="codename-row">
               <input
                 class="native-input"
@@ -124,13 +147,15 @@
                 :placeholder="t('treehole.write.codenamePlaceholder2')"
                 maxlength="20"
               />
-              <button class="chip" @click="form.codename = randomCodename()">{{ t('treehole.write.random') }}</button>
+              <button class="chip" @click="form.codename = randomCodename()">
+                {{ t("treehole.write.random") }}
+              </button>
             </div>
           </div>
 
           <!-- 心情标签 -->
           <div class="setup-card glass">
-            <div class="setup-label">💭 {{ t('treehole.write.moods') }}</div>
+            <div class="setup-label">💭 {{ t("treehole.write.moods") }}</div>
             <div class="chip-row">
               <button
                 v-for="m in MOODS"
@@ -146,7 +171,7 @@
 
           <!-- 内容标签 -->
           <div class="setup-card glass">
-            <div class="setup-label">🏷️ {{ t('treehole.write.tags') }}</div>
+            <div class="setup-label">🏷️ {{ t("treehole.write.tags") }}</div>
             <div class="chip-row">
               <button
                 v-for="tg in TAGS"
@@ -162,7 +187,7 @@
 
           <!-- 贴纸 -->
           <div class="setup-card glass">
-            <div class="setup-label">🌸 {{ t('treehole.write.sticker') }}</div>
+            <div class="setup-label">🌸 {{ t("treehole.write.sticker") }}</div>
             <div class="chip-row">
               <button
                 v-for="s in STICKERS"
@@ -178,7 +203,7 @@
 
           <!-- 信纸模板 -->
           <div class="setup-card glass">
-            <div class="setup-label">📄 {{ t('treehole.write.paper') }}</div>
+            <div class="setup-label">📄 {{ t("treehole.write.paper") }}</div>
             <div class="paper-row">
               <button
                 v-for="p in PAPERS"
@@ -195,14 +220,18 @@
 
           <!-- 定时发布 -->
           <div class="setup-card glass">
-            <div class="setup-label">⏰ {{ t('treehole.write.scheduled') }}</div>
+            <div class="setup-label">
+              ⏰ {{ t("treehole.write.scheduled") }}
+            </div>
             <div class="toggle-row">
               <label class="toggle-switch">
                 <input type="checkbox" v-model="scheduleEnabled" />
                 <span class="toggle-track"></span>
               </label>
               <span class="toggle-label">{{
-                scheduleEnabled ? t('treehole.write.enabled') : t('treehole.write.disabled')
+                scheduleEnabled
+                  ? t("treehole.write.enabled")
+                  : t("treehole.write.disabled")
               }}</span>
             </div>
             <input
@@ -215,14 +244,16 @@
 
           <!-- 限时封存 -->
           <div class="setup-card glass">
-            <div class="setup-label">🔐 {{ t('treehole.write.seal') }}</div>
+            <div class="setup-label">🔐 {{ t("treehole.write.seal") }}</div>
             <div class="toggle-row">
               <label class="toggle-switch">
                 <input type="checkbox" v-model="sealEnabled" />
                 <span class="toggle-track"></span>
               </label>
               <span class="toggle-label">{{
-                sealEnabled ? t('treehole.write.enabled') : t('treehole.write.disabled')
+                sealEnabled
+                  ? t("treehole.write.enabled")
+                  : t("treehole.write.disabled")
               }}</span>
             </div>
             <input
@@ -235,9 +266,11 @@
 
           <!-- 验证码 -->
           <div class="setup-card glass">
-            <div class="setup-label">🤖 {{ t('treehole.write.captcha') }}</div>
+            <div class="setup-label">🤖 {{ t("treehole.write.captcha") }}</div>
             <div class="captcha-row">
-              <div class="captcha-code" @click="genCaptcha">{{ captchaCode }}</div>
+              <div class="captcha-code" @click="genCaptcha">
+                {{ captchaCode }}
+              </div>
               <input
                 class="native-input captcha-input"
                 v-model="captchaInput"
@@ -249,12 +282,20 @@
 
           <!-- 操作按钮 -->
           <div class="submit-actions">
-            <button class="btn-grad btn-submit" @click="submitLetter" :disabled="submitting">
+            <button
+              class="btn-grad btn-submit"
+              @click="submitLetter"
+              :disabled="submitting"
+            >
               <span v-if="submitting" class="spinner-small"></span>
-              <span v-else>📮 {{ t('treehole.write.submit') }}</span>
+              <span v-else>📮 {{ t("treehole.write.submit") }}</span>
             </button>
-            <button class="btn-outline" @click="saveAsDraft">{{ t('treehole.write.saveDraft') }}</button>
-            <button class="btn-text" @click="clearAll">{{ t('treehole.write.clearAll') }}</button>
+            <button class="btn-outline" @click="saveAsDraft">
+              {{ t("treehole.write.saveDraft") }}
+            </button>
+            <button class="btn-text" @click="clearAll">
+              {{ t("treehole.write.clearAll") }}
+            </button>
           </div>
         </aside>
       </div>
@@ -262,15 +303,25 @@
 
     <!-- ==================== 成功弹窗 ==================== -->
     <transition name="dialog-fade">
-      <div v-if="showSuccess" class="modal-overlay" @click.self="showSuccess = false">
+      <div
+        v-if="showSuccess"
+        class="modal-overlay"
+        @click.self="showSuccess = false"
+      >
         <div class="modal-card pop-scale">
           <div class="modal-icon">✅</div>
-          <h2 class="modal-title">{{ t('treehole.write.successTitle') }}</h2>
+          <h2 class="modal-title">{{ t("treehole.write.successTitle") }}</h2>
           <p class="modal-desc">{{ successMsg }}</p>
           <div class="modal-actions">
-            <a :href="buildUrl('/community/treehole')" class="btn-grad">{{ t('treehole.write.backToSquare') }}</a>
-            <a :href="buildUrl('/community/treehole/mine')" class="chip">{{ t('treehole.write.myMailbox') }}</a>
-            <button class="btn-text" @click="writeAnother">{{ t('treehole.write.writeAnother') }}</button>
+            <a :href="buildUrl('/community/treehole')" class="btn-grad">{{
+              t("treehole.write.backToSquare")
+            }}</a>
+            <a :href="buildUrl('/community/treehole/mine')" class="chip">{{
+              t("treehole.write.myMailbox")
+            }}</a>
+            <button class="btn-text" @click="writeAnother">
+              {{ t("treehole.write.writeAnother") }}
+            </button>
           </div>
         </div>
       </div>
@@ -279,8 +330,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, nextTick } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
+import { ref, reactive, computed, onMounted, nextTick } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
 import {
   CATEGORIES,
   PRIVACY,
@@ -293,7 +344,7 @@ import {
   EMOJIS,
   SENSITIVE_WORDS,
   moodKey,
-} from '../stores/constants';
+} from "../stores/constants";
 import {
   addLetter,
   updateLetter,
@@ -303,11 +354,11 @@ import {
   logPost,
   logMood,
   saveSketch,
-} from '../stores/storage';
-import { randomCodename } from '../utils/codename';
-import { useApp } from '../stores/app';
-import { buildUrl } from '~/lib/utils/paths';
-import { t } from '~/lib/i18n';
+} from "../stores/storage";
+import { randomCodename } from "../utils/codename";
+import { useApp } from "../stores/app";
+import { buildUrl } from "~/lib/utils/paths";
+import { t } from "~/lib/i18n";
 
 const app = useApp();
 
@@ -315,43 +366,47 @@ const textareaRef = ref(null);
 
 // ---------- 表单状态 ----------
 const form = reactive({
-  category: 'confess',
-  privacy: 'public',
+  category: "confess",
+  privacy: "public",
   codename: randomCodename(),
   moods: /** @type {string[]} */ ([]),
   tags: /** @type {string[]} */ ([]),
-  sticker: '',
-  paper: 'paper',
-  scheduledAt: '',
-  sealUntil: '',
+  sticker: "",
+  paper: "paper",
+  scheduledAt: "",
+  sealUntil: "",
 });
 
-const content = ref('');
-const fontSize = ref('normal');
+const content = ref("");
+const fontSize = ref("normal");
 const emojiOpen = ref(false);
 const scheduleEnabled = ref(false);
 const sealEnabled = ref(false);
-const captchaCode = ref('');
-const captchaInput = ref('');
+const captchaCode = ref("");
+const captchaInput = ref("");
 const submitting = ref(false);
 const showSuccess = ref(false);
-const successMsg = ref('');
+const successMsg = ref("");
 
 // 编辑模式
-const editId = ref('');
+const editId = ref("");
 
 // ---------- 计算属性 ----------
 const charCount = computed(() => content.value.length);
 const fsValue = computed(() => {
-  return fontSize.value === 'small' ? '0.9em' : fontSize.value === 'large' ? '1.15em' : '1em';
+  return fontSize.value === "small"
+    ? "0.9em"
+    : fontSize.value === "large"
+      ? "1.15em"
+      : "1em";
 });
 const selectedPaper = computed(() => getPaper(form.paper));
 const selectedCategory = computed(() => getCategory(form.category));
 
 // ---------- 验证码 ----------
 function genCaptcha() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
   for (let i = 0; i < 4; i++) {
     code += chars[Math.floor(Math.random() * chars.length)];
   }
@@ -370,7 +425,7 @@ function insertEmoji(e) {
 }
 
 function clearContent() {
-  content.value = '';
+  content.value = "";
 }
 
 function onContentInput() {
@@ -378,7 +433,7 @@ function onContentInput() {
   const lower = content.value.toLowerCase();
   for (const w of SENSITIVE_WORDS) {
     if (lower.includes(w.toLowerCase())) {
-      content.value = content.value.replace(new RegExp(w, 'gi'), '***');
+      content.value = content.value.replace(new RegExp(w, "gi"), "***");
     }
   }
 }
@@ -408,40 +463,40 @@ function toggleTag(key) {
 
 // ---------- 清空 ----------
 function clearAll() {
-  content.value = '';
-  form.category = 'confess';
-  form.privacy = 'public';
+  content.value = "";
+  form.category = "confess";
+  form.privacy = "public";
   form.codename = randomCodename();
   form.moods = [];
   form.tags = [];
-  form.sticker = '';
-  form.paper = 'paper';
-  form.scheduledAt = '';
-  form.sealUntil = '';
+  form.sticker = "";
+  form.paper = "paper";
+  form.scheduledAt = "";
+  form.sealUntil = "";
   scheduleEnabled.value = false;
   sealEnabled.value = false;
-  captchaInput.value = '';
+  captchaInput.value = "";
   genCaptcha();
 }
 
 // ---------- 验证 ----------
 function validate() {
   if (!content.value.trim()) {
-    alert(t('treehole.write.emptyAlert'));
+    alert(t("treehole.write.emptyAlert"));
     return false;
   }
   if (charCount.value > 1000) {
-    alert(t('treehole.write.lengthAlert'));
+    alert(t("treehole.write.lengthAlert"));
     return false;
   }
   if (!canPost()) {
-    alert(t('treehole.write.rateAlert'));
+    alert(t("treehole.write.rateAlert"));
     return false;
   }
   if (captchaInput.value.toUpperCase() !== captchaCode.value) {
-    alert(t('treehole.write.captchaAlert'));
+    alert(t("treehole.write.captchaAlert"));
     genCaptcha();
-    captchaInput.value = '';
+    captchaInput.value = "";
     return false;
   }
   return true;
@@ -452,13 +507,13 @@ function buildLetter() {
   const now = Date.now();
   const status =
     scheduleEnabled.value && form.scheduledAt
-      ? 'scheduled'
+      ? "scheduled"
       : sealEnabled.value && form.sealUntil
-        ? 'published'
-        : 'published';
+        ? "published"
+        : "published";
 
   return {
-    id: editId.value || 'L_' + now + '_' + Math.floor(Math.random() * 10000),
+    id: editId.value || "L_" + now + "_" + Math.floor(Math.random() * 10000),
     content: content.value.trim(),
     category: form.category,
     categoryLabel: selectedCategory.value.label,
@@ -469,11 +524,17 @@ function buildLetter() {
     tags: form.tags.slice(),
     sticker: form.sticker,
     paper: form.paper,
-    scheduledAt: scheduleEnabled.value && form.scheduledAt ? new Date(form.scheduledAt).getTime() : undefined,
+    scheduledAt:
+      scheduleEnabled.value && form.scheduledAt
+        ? new Date(form.scheduledAt).getTime()
+        : undefined,
     scheduledPrivacy: scheduleEnabled.value ? form.privacy : undefined,
-    sealUntil: sealEnabled.value && form.sealUntil ? new Date(form.sealUntil).getTime() : undefined,
+    sealUntil:
+      sealEnabled.value && form.sealUntil
+        ? new Date(form.sealUntil).getTime()
+        : undefined,
     status,
-    publishedAt: status === 'published' ? now : undefined,
+    publishedAt: status === "published" ? now : undefined,
     createdAt: editId.value ? undefined : now,
     updatedAt: now,
     likes: 0,
@@ -504,14 +565,16 @@ function submitLetter() {
     }
 
     successMsg.value = editId.value
-      ? t('treehole.write.updatedTip2')
+      ? t("treehole.write.updatedTip2")
       : scheduleEnabled.value && form.scheduledAt
-        ? t('treehole.write.scheduledTip2', { time: new Date(form.scheduledAt).toLocaleString() })
-        : t('treehole.write.publishedTip2');
+        ? t("treehole.write.scheduledTip2", {
+            time: new Date(form.scheduledAt).toLocaleString(),
+          })
+        : t("treehole.write.publishedTip2");
 
     showSuccess.value = true;
   } catch {
-    alert(t('treehole.write.submitFail'));
+    alert(t("treehole.write.submitFail"));
   } finally {
     submitting.value = false;
   }
@@ -519,11 +582,11 @@ function submitLetter() {
 
 function saveAsDraft() {
   if (!content.value.trim()) {
-    alert(t('treehole.write.emptyDraftMsg2'));
+    alert(t("treehole.write.emptyDraftMsg2"));
     return;
   }
   const draft = {
-    id: editId.value || 'draft_' + Date.now(),
+    id: editId.value || "draft_" + Date.now(),
     content: content.value,
     category: form.category,
     privacy: form.privacy,
@@ -532,19 +595,19 @@ function saveAsDraft() {
     tags: form.tags.slice(),
     sticker: form.sticker,
     paper: form.paper,
-    scheduledAt: scheduleEnabled.value ? form.scheduledAt : '',
-    sealUntil: sealEnabled.value ? form.sealUntil : '',
+    scheduledAt: scheduleEnabled.value ? form.scheduledAt : "",
+    sealUntil: sealEnabled.value ? form.sealUntil : "",
     savedAt: Date.now(),
   };
   saveDraft(draft);
-  alert(t('treehole.write.draftSaved2'));
+  alert(t("treehole.write.draftSaved2"));
 }
 
 function writeAnother() {
   showSuccess.value = false;
   clearAll();
   nextTick(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
     textareaRef.value?.focus();
   });
 }
@@ -554,25 +617,27 @@ onMounted(() => {
   genCaptcha();
 
   // 尝试从 URL 参数加载编辑的信件
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
-    const letterId = params.get('edit');
+    const letterId = params.get("edit");
     if (letterId) {
       const letters = getLetters();
       const found = letters.find((l) => l.id === letterId);
       if (found) {
         editId.value = found.id;
-        content.value = found.content || '';
-        form.category = found.category || 'confess';
-        form.privacy = found.privacy || 'public';
+        content.value = found.content || "";
+        form.category = found.category || "confess";
+        form.privacy = found.privacy || "public";
         form.codename = found.codename || randomCodename();
         form.moods = found.moods ? found.moods.slice() : [];
         form.tags = found.tags ? found.tags.slice() : [];
-        form.sticker = found.sticker || '';
-        form.paper = found.paper || 'paper';
+        form.sticker = found.sticker || "";
+        form.paper = found.paper || "paper";
         if (found.scheduledAt) {
           scheduleEnabled.value = true;
-          form.scheduledAt = new Date(found.scheduledAt).toISOString().slice(0, 16);
+          form.scheduledAt = new Date(found.scheduledAt)
+            .toISOString()
+            .slice(0, 16);
         }
         if (found.sealUntil) {
           sealEnabled.value = true;
@@ -984,7 +1049,7 @@ onMounted(() => {
   transition: background 0.3s;
 }
 .toggle-track::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 18px;
   height: 18px;
@@ -1021,7 +1086,7 @@ onMounted(() => {
   letter-spacing: 6px;
   cursor: pointer;
   user-select: none;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   border: 1px solid var(--card-border);
   transition: transform 0.2s;
   flex-shrink: 0;

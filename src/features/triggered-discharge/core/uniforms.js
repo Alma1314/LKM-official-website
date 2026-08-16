@@ -4,10 +4,10 @@
    shaders/render/common.wgsl 中的 RenU 结构体一致 —— 改一处需同时改另一处。
    ---------------------------------------------------------------- */
 
-import { CELL_M, GH, GW } from '../config.js';
-import { bolt, rt, ui } from './state.js';
-import { canvas, prefersStill } from './dom.js';
-import { device, renUBuf, simUBuf } from './gpu.js';
+import { CELL_M, GH, GW } from "../config.js";
+import { bolt, rt, ui } from "./state.js";
+import { canvas, prefersStill } from "./dom.js";
+import { device, renUBuf, simUBuf } from "./gpu.js";
 
 export const simAB = new ArrayBuffer(64);
 export const simU32 = new Uint32Array(simAB),
@@ -51,7 +51,10 @@ export function writeRenU(_dt) {
   renF.set([bolt.simTime, e.leaderMul, e.branchFlash, ui.exposure], 48);
   renF.set([bolt.boltSeed, prefersStill ? 0 : 0.016, ui.bloom, 0.004], 52);
   renF.set([e.strokeType, e.tStroke, bolt.chanLen, e.tipPP], 56);
-  const spriteT = bolt.spriteV0 > 0 ? Math.min(1, Math.max(0, (bolt.simTime - bolt.spriteV0) / 1.1)) : 0;
+  const spriteT =
+    bolt.spriteV0 > 0
+      ? Math.min(1, Math.max(0, (bolt.simTime - bolt.spriteV0) / 1.1))
+      : 0;
   renF.set([s.i0a, s.t1a, s.t2a, 0], 60); // ha（windX 在二维中未使用）
   renF.set([s.i0b, s.t1b, s.t2b, 0], 64); // hb（windZ 在二维中未使用）
   renF.set([GW, GH, 1, CELL_M], 68); // dims（gd = 1）

@@ -4,33 +4,41 @@
     <div class="dialog glass">
       <div class="privacy">
         <div class="privacy-emoji">🔒</div>
-        <h2 class="grad-text">{{ t('treehole.privacy.title') }}</h2>
+        <h2 class="grad-text">{{ t("treehole.privacy.title") }}</h2>
         <p class="privacy-text">
-          {{ t('treehole.privacy.welcomePrefix') }} <b>{{ t('treehole.name') }}</b
-          >{{ t('treehole.privacy.welcomeMiddle') }} <b>{{ t('treehole.privacy.pureAnonymous') }}</b
-          >{{ t('treehole.privacy.welcomeSuffix') }}
+          {{ t("treehole.privacy.welcomePrefix") }}
+          <b>{{ t("treehole.name") }}</b
+          >{{ t("treehole.privacy.welcomeMiddle") }}
+          <b>{{ t("treehole.privacy.pureAnonymous") }}</b
+          >{{ t("treehole.privacy.welcomeSuffix") }}
         </p>
         <ul class="privacy-list">
           <li>
-            🌿 {{ t('treehole.privacy.li1Prefix') }}<b>{{ t('treehole.privacy.li1Bold') }}</b
-            >{{ t('treehole.privacy.li1Suffix') }}
+            🌿 {{ t("treehole.privacy.li1Prefix")
+            }}<b>{{ t("treehole.privacy.li1Bold") }}</b
+            >{{ t("treehole.privacy.li1Suffix") }}
           </li>
           <li>
-            🌿 {{ t('treehole.privacy.li2Prefix') }}<b>{{ t('treehole.privacy.li2Bold') }}</b
-            >{{ t('treehole.privacy.li2Suffix') }}
+            🌿 {{ t("treehole.privacy.li2Prefix")
+            }}<b>{{ t("treehole.privacy.li2Bold") }}</b
+            >{{ t("treehole.privacy.li2Suffix") }}
           </li>
           <li>
-            🌿 {{ t('treehole.privacy.li3Prefix') }}<b>{{ t('treehole.privacy.li3Bold') }}</b
-            >{{ t('treehole.privacy.li3Suffix') }}
+            🌿 {{ t("treehole.privacy.li3Prefix")
+            }}<b>{{ t("treehole.privacy.li3Bold") }}</b
+            >{{ t("treehole.privacy.li3Suffix") }}
           </li>
           <li>
-            🌿 {{ t('treehole.privacy.li4Prefix') }}<b>{{ t('treehole.privacy.li4Bold') }}</b
-            >{{ t('treehole.privacy.li4Suffix') }}
+            🌿 {{ t("treehole.privacy.li4Prefix")
+            }}<b>{{ t("treehole.privacy.li4Bold") }}</b
+            >{{ t("treehole.privacy.li4Suffix") }}
           </li>
         </ul>
-        <p class="privacy-tip">{{ t('treehole.privacy.tip') }}</p>
+        <p class="privacy-tip">{{ t("treehole.privacy.tip") }}</p>
         <div class="privacy-actions">
-          <button class="btn-grad" @click="accept">{{ t('treehole.privacy.accept') }}</button>
+          <button class="btn-grad" @click="accept">
+            {{ t("treehole.privacy.accept") }}
+          </button>
         </div>
       </div>
     </div>
@@ -38,15 +46,15 @@
 </template>
 
 <script setup lang="ts">
-import { useApp } from '../stores/app';
-import { t } from '~/lib/i18n';
+import { useApp } from "../stores/app";
+import { t } from "~/lib/i18n";
 const _props = defineProps({ modelValue: Boolean });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 const { acceptPrivacy } = useApp();
 
 function accept() {
   acceptPrivacy();
-  emit('update:modelValue', false);
+  emit("update:modelValue", false);
 }
 </script>
 

@@ -1,10 +1,10 @@
-import { memo, useState, useEffect, useRef } from 'react';
-import type { Node } from '@tiptap/pm/model';
-import type { Editor } from '@tiptap/core';
-import { NodeViewWrapper } from '@tiptap/react';
-import InlineInput from './InlineInput';
-import { resolveImageSrc } from '../../persistence/image-store';
-import { t } from '~/lib/i18n';
+import { memo, useState, useEffect, useRef } from "react";
+import type { Node } from "@tiptap/pm/model";
+import type { Editor } from "@tiptap/core";
+import { NodeViewWrapper } from "@tiptap/react";
+import InlineInput from "./InlineInput";
+import { resolveImageSrc } from "../../persistence/image-store";
+import { t } from "~/lib/i18n";
 
 interface ImageNodeViewProps {
   node: Node;
@@ -13,13 +13,18 @@ interface ImageNodeViewProps {
   updateAttributes: (attrs: Record<string, unknown>) => void;
 }
 
-const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, updateAttributes }: ImageNodeViewProps) {
+const ImageNodeView = memo(function ImageNodeView({
+  node,
+  editor,
+  getPos,
+  updateAttributes,
+}: ImageNodeViewProps) {
   const [showToolbar, setShowToolbar] = useState(false);
-  const [inlineMode, setInlineMode] = useState<'url' | 'alt' | null>(null);
+  const [inlineMode, setInlineMode] = useState<"url" | "alt" | null>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
-  const src = (node.attrs.src as string) ?? '';
+  const src = (node.attrs.src as string) ?? "";
   // 实际可展示的 src：blob 引用需从 IndexedDB 解析为 ObjectURL
-  const [displaySrc, setDisplaySrc] = useState<string>('');
+  const [displaySrc, setDisplaySrc] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
@@ -34,29 +39,32 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   useEffect(() => {
     if (!showToolbar) return;
     const handler = (e: MouseEvent): void => {
-      if (toolbarRef.current && !toolbarRef.current.contains(e.target as HTMLElement)) {
+      if (
+        toolbarRef.current &&
+        !toolbarRef.current.contains(e.target as HTMLElement)
+      ) {
         setShowToolbar(false);
         setInlineMode(null);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [showToolbar]);
-  const alt = (node.attrs.alt as string) ?? '';
-  const title = (node.attrs.title as string) ?? '';
+  const alt = (node.attrs.alt as string) ?? "";
+  const title = (node.attrs.title as string) ?? "";
   const width = (node.attrs.width as number) ?? undefined;
   const height = (node.attrs.height as number) ?? undefined;
-  const align = (node.attrs.align as string) ?? 'center';
+  const align = (node.attrs.align as string) ?? "center";
 
   const alignClasses: Record<string, string> = {
-    left: 'mr-auto',
-    center: 'mx-auto',
-    right: 'ml-auto',
+    left: "mr-auto",
+    center: "mx-auto",
+    right: "ml-auto",
   };
 
   return (
     <NodeViewWrapper
-      className={`relative inline-block group ${alignClasses[align] ?? ''}`}
+      className={`relative inline-block group ${alignClasses[align] ?? ""}`}
       contentEditable={false}
       data-image-node
     >
@@ -65,9 +73,9 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
         alt={alt}
         title={title || undefined}
         style={{
-          width: width ? `${width}px` : 'auto',
-          height: height ? `${height}px` : 'auto',
-          maxWidth: '100%',
+          width: width ? `${width}px` : "auto",
+          height: height ? `${height}px` : "auto",
+          maxWidth: "100%",
         }}
         className="rounded-md cursor-pointer border-2 border-transparent hover:border-primary/50 transition-colors"
         onClick={() => setShowToolbar(!showToolbar)}
@@ -90,58 +98,62 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           <input
             type="number"
             className="rte-input w-16"
-            value={width ?? ''}
-            placeholder={t('editor.imageNode.width')}
-            onChange={(e) => updateAttributes({ width: Number(e.target.value) || undefined })}
+            value={width ?? ""}
+            placeholder={t("editor.imageNode.width")}
+            onChange={(e) =>
+              updateAttributes({ width: Number(e.target.value) || undefined })
+            }
           />
           <input
             type="number"
             className="rte-input w-16"
-            value={height ?? ''}
-            placeholder={t('editor.imageNode.height')}
-            onChange={(e) => updateAttributes({ height: Number(e.target.value) || undefined })}
+            value={height ?? ""}
+            placeholder={t("editor.imageNode.height")}
+            onChange={(e) =>
+              updateAttributes({ height: Number(e.target.value) || undefined })
+            }
           />
           {/* Align buttons */}
-          {(['left', 'center', 'right'] as const).map((a) => (
+          {(["left", "center", "right"] as const).map((a) => (
             <button
               key={a}
               type="button"
-              className={`rte-toolbar-btn ${align === a ? 'is-active' : ''}`}
+              className={`rte-toolbar-btn ${align === a ? "is-active" : ""}`}
               onClick={() => updateAttributes({ align: a })}
               title={
-                a === 'left'
-                  ? t('editor.imageNode.alignLeft')
-                  : a === 'center'
-                    ? t('editor.imageNode.alignCenter')
-                    : t('editor.imageNode.alignRight')
+                a === "left"
+                  ? t("editor.imageNode.alignLeft")
+                  : a === "center"
+                    ? t("editor.imageNode.alignCenter")
+                    : t("editor.imageNode.alignRight")
               }
             >
-              {a === 'left' ? '←' : a === 'center' ? '↔' : '→'}
+              {a === "left" ? "←" : a === "center" ? "↔" : "→"}
             </button>
           ))}
           {/* Alt text */}
           <button
             type="button"
-            className={`rte-toolbar-btn ${inlineMode === 'alt' ? 'is-active' : ''}`}
-            title={t('editor.imageNode.altText')}
-            onClick={() => setInlineMode(inlineMode === 'alt' ? null : 'alt')}
+            className={`rte-toolbar-btn ${inlineMode === "alt" ? "is-active" : ""}`}
+            title={t("editor.imageNode.altText")}
+            onClick={() => setInlineMode(inlineMode === "alt" ? null : "alt")}
           >
             Alt
           </button>
           {/* URL insert */}
           <button
             type="button"
-            className={`rte-toolbar-btn ${inlineMode === 'url' ? 'is-active' : ''}`}
-            title={t('editor.imageNode.replaceImage')}
-            onClick={() => setInlineMode(inlineMode === 'url' ? null : 'url')}
+            className={`rte-toolbar-btn ${inlineMode === "url" ? "is-active" : ""}`}
+            title={t("editor.imageNode.replaceImage")}
+            onClick={() => setInlineMode(inlineMode === "url" ? null : "url")}
           >
-            {t('editor.imageNode.replace')}
+            {t("editor.imageNode.replace")}
           </button>
           {/* Delete */}
           <button
             type="button"
             className="rte-toolbar-btn text-error"
-            title={t('editor.imageNode.deleteImage')}
+            title={t("editor.imageNode.deleteImage")}
             onClick={() => {
               const pos = getPos();
               if (pos !== undefined) {
@@ -159,10 +171,10 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       )}
 
       {/* Inline input for URL or Alt */}
-      {inlineMode === 'url' && (
+      {inlineMode === "url" && (
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
           <InlineInput
-            placeholder={t('editor.imageNode.urlPlaceholder')}
+            placeholder={t("editor.imageNode.urlPlaceholder")}
             defaultValue={src}
             onConfirm={(val) => {
               updateAttributes({ src: val });
@@ -172,10 +184,10 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           />
         </div>
       )}
-      {inlineMode === 'alt' && (
+      {inlineMode === "alt" && (
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
           <InlineInput
-            placeholder={t('editor.imageNode.altPlaceholder')}
+            placeholder={t("editor.imageNode.altPlaceholder")}
             defaultValue={alt}
             onConfirm={(val) => {
               updateAttributes({ alt: val });
@@ -187,7 +199,9 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       )}
 
       {/* Caption */}
-      {title && <p className="text-xs text-center text-deep-text/60 mt-1">{title}</p>}
+      {title && (
+        <p className="text-xs text-center text-deep-text/60 mt-1">{title}</p>
+      )}
     </NodeViewWrapper>
   );
 });

@@ -1,2 +1,2 @@
-export { default as UserProfile } from './components/UserProfile.vue';
-export * from './titles';
+export { default as UserProfile } from "./components/UserProfile.vue";
+export * from "./titles";

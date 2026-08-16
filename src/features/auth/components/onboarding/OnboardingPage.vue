@@ -3,7 +3,10 @@
     <!-- 顶部精简步骤条 -->
     <div class="bg-card-bg border-b border-surface-3">
       <div class="max-w-xl mx-auto px-4 py-3">
-        <ol class="flex items-center justify-between" :aria-label="t('onboarding.stepsAria')">
+        <ol
+          class="flex items-center justify-between"
+          :aria-label="t('onboarding.stepsAria')"
+        >
           <li
             v-for="cfg in steps"
             :key="cfg.number"
@@ -25,7 +28,11 @@
               </div>
               <span
                 class="text-[11px] mt-1 whitespace-nowrap hidden sm:block"
-                :class="cfg.number <= flow.step ? 'text-deep-text font-medium' : 'text-text-muted'"
+                :class="
+                  cfg.number <= flow.step
+                    ? 'text-deep-text font-medium'
+                    : 'text-text-muted'
+                "
               >
                 {{ cfg.label }}
               </span>
@@ -49,7 +56,11 @@
         </div>
 
         <Transition name="step" mode="out-in">
-          <component :is="currentConfig.component" :key="flow.step" :ref="setStepRef" />
+          <component
+            :is="currentConfig.component"
+            :key="flow.step"
+            :ref="setStepRef"
+          />
         </Transition>
 
         <div class="flex justify-between mt-8">
@@ -60,7 +71,7 @@
             :disabled="flow.loading"
             @click="prev"
           >
-            {{ t('onboarding.prev') }}
+            {{ t("onboarding.prev") }}
           </button>
           <div v-else></div>
 
@@ -72,27 +83,35 @@
               :disabled="flow.loading"
               @click="skip"
             >
-              {{ t('onboarding.skipAll') }}
+              {{ t("onboarding.skipAll") }}
             </button>
             <button
               v-if="currentConfig.number < 4"
               type="button"
               class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold"
               :disabled="!canProceed || flow.loading"
-              :class="!canProceed || flow.loading ? 'opacity-50 cursor-not-allowed' : ''"
+              :class="
+                !canProceed || flow.loading
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              "
               @click="next"
             >
-              {{ currentConfig.buttonText || t('onboarding.next') }}
+              {{ currentConfig.buttonText || t("onboarding.next") }}
             </button>
             <button
               v-else
               type="button"
               class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold"
               :disabled="!canProceed || flow.loading"
-              :class="!canProceed || flow.loading ? 'opacity-50 cursor-not-allowed' : ''"
+              :class="
+                !canProceed || flow.loading
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              "
               @click="next"
             >
-              {{ t('onboarding.finish') }}
+              {{ t("onboarding.finish") }}
             </button>
           </div>
         </div>
@@ -106,18 +125,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { Icon } from '@iconify/vue';
-import { t } from '~/lib/i18n';
-import AuthCard from '../shared/AuthCard.vue';
-import AuthStatus from '../shared/AuthStatus.vue';
-import IdentityTags from './IdentityTags.vue';
-import FollowRecommend from './FollowRecommend.vue';
-import AnswerQuiz from './AnswerQuiz.vue';
-import NewbieTasks from './NewbieTasks.vue';
-import { useOnboardingFlow, type OnboardingStepNumber } from '~/features/auth/composables/useOnboardingFlow';
-import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
-import { buildUrl } from '~/lib/utils/paths';
+import { ref, computed, onMounted } from "vue";
+import { Icon } from "@iconify/vue";
+import { t } from "~/lib/i18n";
+import AuthCard from "../shared/AuthCard.vue";
+import AuthStatus from "../shared/AuthStatus.vue";
+import IdentityTags from "./IdentityTags.vue";
+import FollowRecommend from "./FollowRecommend.vue";
+import AnswerQuiz from "./AnswerQuiz.vue";
+import NewbieTasks from "./NewbieTasks.vue";
+import {
+  useOnboardingFlow,
+  type OnboardingStepNumber,
+} from "~/features/auth/composables/useOnboardingFlow";
+import { resolveSafeRedirect } from "~/features/auth/utils/safe-redirect";
+import { buildUrl } from "~/lib/utils/paths";
 
 interface StepConfig {
   number: OnboardingStepNumber;
@@ -134,34 +156,34 @@ const props = defineProps<{ redirect?: string | null }>();
 const steps: StepConfig[] = [
   {
     number: 1,
-    label: t('onboarding.identityTitle'),
+    label: t("onboarding.identityTitle"),
     component: IdentityTags,
     optional: true,
     required: false,
     skippable: true,
-    buttonText: t('onboarding.next'),
+    buttonText: t("onboarding.next"),
   },
   {
     number: 2,
-    label: t('onboarding.followTitle'),
+    label: t("onboarding.followTitle"),
     component: FollowRecommend,
     optional: false,
     required: true,
     skippable: true,
-    buttonText: t('onboarding.followAll'),
+    buttonText: t("onboarding.followAll"),
   },
   {
     number: 3,
-    label: t('onboarding.quizTitle'),
+    label: t("onboarding.quizTitle"),
     component: AnswerQuiz,
     optional: true,
     required: false,
     skippable: true,
-    buttonText: t('onboarding.submit'),
+    buttonText: t("onboarding.submit"),
   },
   {
     number: 4,
-    label: t('onboarding.tasksTitle'),
+    label: t("onboarding.tasksTitle"),
     component: NewbieTasks,
     optional: false,
     required: false,
@@ -171,10 +193,13 @@ const steps: StepConfig[] = [
 
 function navigate(dst: string): void {
   const url = buildUrl(dst);
-  if (typeof window !== 'undefined') window.location.href = url;
+  if (typeof window !== "undefined") window.location.href = url;
 }
 
-const flow = useOnboardingFlow({ redirect: props.redirect ?? null, onDone: navigate });
+const flow = useOnboardingFlow({
+  redirect: props.redirect ?? null,
+  onDone: navigate,
+});
 
 const stepRefs = ref<Record<number, Record<string, unknown>>>({});
 
@@ -182,26 +207,30 @@ function setStepRef(el: Record<string, unknown> | null): void {
   if (el) stepRefs.value[flow.step] = el;
 }
 
-const currentConfig = computed(() => steps.find((s) => s.number === flow.step) ?? steps[0]);
+const currentConfig = computed(
+  () => steps.find((s) => s.number === flow.step) ?? steps[0],
+);
 
 const stepNote = computed(() => {
-  if (currentConfig.value.optional) return t('onboarding.optionalNote');
-  if (currentConfig.value.required) return t('onboarding.requiredNote');
-  return '';
+  if (currentConfig.value.optional) return t("onboarding.optionalNote");
+  if (currentConfig.value.required) return t("onboarding.requiredNote");
+  return "";
 });
 
 const canProceed = computed(() => {
   const ref = stepRefs.value[flow.step];
   if (currentConfig.value.optional) return true;
-  if (ref && typeof ref.isComplete === 'function') return !!ref.isComplete();
+  if (ref && typeof ref.isComplete === "function") return !!ref.isComplete();
   return true;
 });
 
 async function collectData(): Promise<Record<string, unknown>> {
   const ref = stepRefs.value[flow.step];
-  if (ref && typeof ref.getData === 'function') {
+  if (ref && typeof ref.getData === "function") {
     const d = ref.getData();
-    return typeof d === 'object' && d !== null ? (d as Record<string, unknown>) : {};
+    return typeof d === "object" && d !== null
+      ? (d as Record<string, unknown>)
+      : {};
   }
   return {};
 }
@@ -230,7 +259,7 @@ async function skip(): Promise<void> {
 
 onMounted(async () => {
   // 已完成用户（存量 localStorage 兜底）不重走
-  if (localStorage.getItem('lkm-onboarding-done') === 'true') {
+  if (localStorage.getItem("lkm-onboarding-done") === "true") {
     navigate(resolveSafeRedirect(props.redirect ?? null));
     return;
   }
@@ -241,8 +270,9 @@ onMounted(async () => {
 });
 
 function dotClass(number: number): string {
-  if (number < flow.step || number === flow.step) return 'bg-primary text-on-primary';
-  return 'bg-surface-3 text-text-muted';
+  if (number < flow.step || number === flow.step)
+    return "bg-primary text-on-primary";
+  return "bg-surface-3 text-text-muted";
 }
 </script>
 

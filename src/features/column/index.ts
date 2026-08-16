@@ -1,1 +1,1 @@
-export * from './data/mock-columns';
+export * from "./data/mock-columns";

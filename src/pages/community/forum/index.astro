@@ -20,7 +20,7 @@ function gridCols(count: number): string {
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink('/forum')}
-  navItems={['社区主页', '博客', '资源', '我的']}
+  navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}
 >
   <div class="space-y-10">
     <div>
@@ -35,24 +35,27 @@ function gridCols(count: number): string {
 
         return (
           <section id={root.slug}>
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <a
+              href={getPermalink(`/forum/${root.slug}`)}
+              class="flex items-center gap-3 mb-4 rounded-xl p-2 -mx-2 group"
+            >
+              <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                 <Icon name={root.icon} class="w-6 h-6 text-primary" />
               </div>
-              <div>
-                <h2 class="text-xl font-bold text-deep-text">{t(root.name)}</h2>
+              <div class="min-w-0">
+                <h2 class="text-xl font-bold text-deep-text group-hover:text-primary transition-colors">
+                  {t(root.name)}
+                </h2>
                 <p class="text-sm text-text-muted">
                   {root.memberCount} {t('community.forum.members')} · {root.postCount} {t('community.forum.posts')} ·{' '}
                   {t('community.forum.todayPosts', { count: root.todayPostCount })}
                 </p>
               </div>
-              <a
-                href={getPermalink(`/forum/${root.slug}`)}
-                class="ml-auto text-sm text-primary hover:underline whitespace-nowrap shrink-0"
-              >
-                {t('community.forum.viewAll')} →
-              </a>
-            </div>
+              <span class="ml-auto text-sm text-primary group-hover:underline whitespace-nowrap shrink-0 inline-flex items-center gap-1">
+                {t('community.forum.viewAll')}
+                <Icon name="tabler:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </a>
 
             {showChildren ? (
               <div class:list={['grid gap-4', gridCols(children.length)]}>
@@ -84,18 +87,20 @@ function gridCols(count: number): string {
                 ))}
               </div>
             ) : (
-              <div class="bg-card-bg border border-surface-3 rounded-xl p-8 text-center">
+              <a
+                href={getPermalink(`/forum/${root.slug}`)}
+                class="block bg-card-bg border border-surface-3 rounded-xl p-8 text-center group hover:bg-surface-2/80 transition-colors"
+              >
+                <Icon name={root.icon} class="w-8 h-8 text-primary mx-auto mb-2" />
                 <p class="text-text-muted text-sm mb-2">{t(root.description)}</p>
+                <span class="inline-flex items-center gap-1 text-primary text-sm font-medium group-hover:underline">
+                  {t('community.forum.viewAll')}
+                  <Icon name="tabler:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
                 {root.slug === 'school-club' && (
-                  <a
-                    href={getPermalink('/contact')}
-                    class="inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline"
-                  >
-                    <Icon name="tabler:plus" class="w-4 h-4" />
-                    {t('community.forum.applyCollaboration')}
-                  </a>
+                  <span class="mt-3 block text-xs text-text-muted/70">{t('community.forum.applyCollaboration')}</span>
                 )}
-              </div>
+              </a>
             )}
           </section>
         );

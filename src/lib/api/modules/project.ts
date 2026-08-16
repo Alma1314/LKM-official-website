@@ -1,4 +1,4 @@
-import { get } from '../../http/client';
+import { get } from "../../http/client";
 
 export interface Project {
   id: string;
@@ -20,7 +20,8 @@ export interface PaginatedResponse<T> {
 }
 
 export const projectApi = {
-  getProjects: (page = 1, limit = 20) => get<PaginatedResponse<Project>>('/api/projects', { page, limit }),
+  getProjects: (page = 1, limit = 20) =>
+    get<PaginatedResponse<Project>>("/api/projects", { page, limit }),
 
   getProject: (id: string) => get<Project>(`/api/projects/${id}`),
 };

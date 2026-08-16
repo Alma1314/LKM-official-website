@@ -1,30 +1,30 @@
-import { Node, InputRule } from '@tiptap/core';
-import { ReactNodeViewRenderer } from '@tiptap/react';
-import BlockMathNodeView from '../../components/nodes/BlockMathNodeView';
+import { Node, InputRule } from "@tiptap/core";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import BlockMathNodeView from "../../components/nodes/BlockMathNodeView";
 
 export const BlockMath = Node.create({
-  name: 'blockMath',
-  group: 'block',
+  name: "blockMath",
+  group: "block",
   atom: true,
   selectable: true,
   draggable: true,
 
   addAttributes() {
     return {
-      latex: { default: '' },
+      latex: { default: "" },
     };
   },
 
   parseHTML() {
-    return [{ tag: 'div[data-block-math]' }];
+    return [{ tag: "div[data-block-math]" }];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      'div',
+      "div",
       {
-        'data-block-math': '',
-        class: 'my-4 text-center select-none cursor-pointer',
+        "data-block-math": "",
+        class: "my-4 text-center select-none cursor-pointer",
         ...HTMLAttributes,
       },
       0,
@@ -32,7 +32,9 @@ export const BlockMath = Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(BlockMathNodeView as Parameters<typeof ReactNodeViewRenderer>[0]);
+    return ReactNodeViewRenderer(
+      BlockMathNodeView as Parameters<typeof ReactNodeViewRenderer>[0],
+    );
   },
 
   // Obsidian 式 $$...$$ 输入即渲染（整段独占，输入成对闭包后转换）。
@@ -62,7 +64,7 @@ export const BlockMath = Node.create({
       new InputRule({
         find: /^\$\$([\s\S]*?)\$\$$/,
         handler: ({ state, range, match }) => {
-          const latex = (match[1] ?? '').trim();
+          const latex = (match[1] ?? "").trim();
           // 键入后光标必落在该段内，用它取段边界最可靠。
           const $cursor = state.selection.$from;
           const paragraphStart = $cursor.before($cursor.depth);

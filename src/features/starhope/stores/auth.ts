@@ -1,6 +1,6 @@
-import { computed, type ComputedRef } from 'vue';
-import { useAuthStore as usePiniaAuth } from '~/stores/auth';
-import type { UserInfo } from '~/lib/api/modules/auth';
+import { computed, type ComputedRef } from "vue";
+import { useAuthStore as usePiniaAuth } from "~/stores/auth";
+import type { UserInfo } from "~/lib/api/modules/auth";
 
 export function useAuthStore(): {
   isLoggedIn: ComputedRef<boolean>;

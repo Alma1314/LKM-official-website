@@ -2,7 +2,7 @@
   <!-- 月度情绪图表（纯 SVG，无第三方库） -->
   <div class="mood-chart glass">
     <div class="mc-head">
-      <span>{{ t('treehole.moodChart.monthlyMood') }}</span>
+      <span>{{ t("treehole.moodChart.monthlyMood") }}</span>
       <select v-model="month" class="mc-select">
         <option v-for="m in months" :key="m" :value="m">{{ m }}</option>
       </select>
@@ -31,33 +31,57 @@
             :fill="colorOf(d.mood)"
             class="mc-bar"
           />
-          <text :x="63 + i * 38" :y="h - 12" text-anchor="middle" font-size="9" fill="var(--text-sub)">
+          <text
+            :x="63 + i * 38"
+            :y="h - 12"
+            text-anchor="middle"
+            font-size="9"
+            fill="var(--text-sub)"
+          >
             {{ t(moodKey(d.mood)) }}
           </text>
-          <text :x="63 + i * 38" :y="d.y - 4" text-anchor="middle" font-size="9" fill="var(--text-main)">
+          <text
+            :x="63 + i * 38"
+            :y="d.y - 4"
+            text-anchor="middle"
+            font-size="9"
+            fill="var(--text-main)"
+          >
             {{ d.count }}
           </text>
         </g>
-        <line x1="40" :y1="h - 30" x2="310" :y2="h - 30" stroke="var(--text-sub)" stroke-width="1.5" />
+        <line
+          x1="40"
+          :y1="h - 30"
+          x2="310"
+          :y2="h - 30"
+          stroke="var(--text-sub)"
+          stroke-width="1.5"
+        />
       </svg>
       <p class="mc-tip">
-        {{ t('treehole.moodChart.recordPrefix') }}<b>{{ total }}</b
-        >{{ t('treehole.moodChart.recordMiddle') }}<b :style="{ color: topColor }">{{ t(moodKey(topMood)) }}</b>
+        {{ t("treehole.moodChart.recordPrefix") }}<b>{{ total }}</b
+        >{{ t("treehole.moodChart.recordMiddle")
+        }}<b :style="{ color: topColor }">{{ t(moodKey(topMood)) }}</b>
       </p>
     </div>
-    <EmptyState v-else :title="t('treehole.moodChart.emptyTitle')" :sub="t('treehole.moodChart.emptySub')" />
+    <EmptyState
+      v-else
+      :title="t('treehole.moodChart.emptyTitle')"
+      :sub="t('treehole.moodChart.emptySub')"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import EmptyState from './EmptyState.vue';
-import * as store from '../stores/storage';
-import { MOODS, moodKey } from '../stores/constants';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import EmptyState from "./EmptyState.vue";
+import * as store from "../stores/storage";
+import { MOODS, moodKey } from "../stores/constants";
+import { t } from "~/lib/i18n";
 
 const months = ref([]);
-const month = ref('');
+const month = ref("");
 const h = 200;
 const gridY = [30, 70, 110, 150];
 
@@ -79,10 +103,22 @@ const bars = computed(() => {
     y: h - 30 - (d.count / max) * (h - 60),
   }));
 });
-const topMood = computed(() => (data.value.slice().sort((a, b) => b.count - a.count)[0] || {}).mood || '-');
+const topMood = computed(
+  () =>
+    (data.value.slice().sort((a, b) => b.count - a.count)[0] || {}).mood || "-",
+);
 const topColor = computed(() => colorOf(topMood.value));
 
-const PALETTE = ['#e8a87c', '#c3aed6', '#a0c4ff', '#bdb2ff', '#ffd6a5', '#9bf6ff', '#ffc6ff', '#caffbf'];
+const PALETTE = [
+  "#e8a87c",
+  "#c3aed6",
+  "#a0c4ff",
+  "#bdb2ff",
+  "#ffd6a5",
+  "#9bf6ff",
+  "#ffc6ff",
+  "#caffbf",
+];
 function colorOf(mood) {
   const i = MOODS.indexOf(mood);
   return PALETTE[(i < 0 ? 0 : i) % PALETTE.length];

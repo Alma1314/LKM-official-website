@@ -7,11 +7,11 @@
 
 ```yaml
 ---
-title: '文章标题'
+title: "文章标题"
 published: 2026-01-15
-description: '文章描述'
-image: '~/assets/images/your-image.png'
-category: 'tutorials'
+description: "文章描述"
+image: "~/assets/images/your-image.png"
+category: "tutorials"
 tags:
   - astro
   - tailwind

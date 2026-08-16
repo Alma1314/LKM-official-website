@@ -6,21 +6,32 @@
         <span class="grad-text typewriter">{{ typed }}</span
         ><span class="caret">|</span>
       </h1>
-      <p class="hero-sub">{{ t('treehole.home.heroSubtitle') }}</p>
-      <div class="hero-quote"><span class="quote-mark">"</span>{{ t(quote) }}<span class="quote-mark">"</span></div>
+      <p class="hero-sub">{{ t("treehole.home.heroSubtitle") }}</p>
+      <div class="hero-quote">
+        <span class="quote-mark">"</span>{{ t(quote)
+        }}<span class="quote-mark">"</span>
+      </div>
       <div class="hero-acts">
-        <button class="btn-grad" @click="go('/write')">{{ t('treehole.writeLetter') }}</button>
-        <button class="chip" @click="go('/random')">{{ t('treehole.randomTreehole') }}</button>
+        <button class="btn-grad" @click="go('/write')">
+          {{ t("treehole.writeLetter") }}
+        </button>
+        <button class="chip" @click="go('/random')">
+          {{ t("treehole.randomTreehole") }}
+        </button>
       </div>
     </section>
 
     <!-- 筛选栏：分类 + 排序 -->
     <section class="filters glass">
       <div class="filter-row">
-        <span class="filter-label">{{ t('treehole.home.category') }}</span>
+        <span class="filter-label">{{ t("treehole.home.category") }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: activeCat === 'all' }" @click="setCat('all')">
-            {{ t('treehole.home.all') }}
+          <button
+            class="chip"
+            :class="{ active: activeCat === 'all' }"
+            @click="setCat('all')"
+          >
+            {{ t("treehole.home.all") }}
           </button>
           <button
             v-for="c in categories"
@@ -34,24 +45,40 @@
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">{{ t('treehole.home.sort') }}</span>
+        <span class="filter-label">{{ t("treehole.home.sort") }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: sort === 'new' }" @click="sort = 'new'">
-            {{ t('treehole.home.sortNew') }}
+          <button
+            class="chip"
+            :class="{ active: sort === 'new' }"
+            @click="sort = 'new'"
+          >
+            {{ t("treehole.home.sortNew") }}
           </button>
-          <button class="chip" :class="{ active: sort === 'hot' }" @click="sort = 'hot'">
-            {{ t('treehole.home.sortHot') }}
+          <button
+            class="chip"
+            :class="{ active: sort === 'hot' }"
+            @click="sort = 'hot'"
+          >
+            {{ t("treehole.home.sortHot") }}
           </button>
-          <button class="chip" :class="{ active: sort === 'random' }" @click="sort = 'random'">
-            {{ t('treehole.home.sortRandom') }}
+          <button
+            class="chip"
+            :class="{ active: sort === 'random' }"
+            @click="sort = 'random'"
+          >
+            {{ t("treehole.home.sortRandom") }}
           </button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">{{ t('treehole.home.tag') }}</span>
+        <span class="filter-label">{{ t("treehole.home.tag") }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: activeTag === '' }" @click="setTag('')">
-            {{ t('treehole.home.all') }}
+          <button
+            class="chip"
+            :class="{ active: activeTag === '' }"
+            @click="setTag('')"
+          >
+            {{ t("treehole.home.all") }}
           </button>
           <button
             v-for="tg in tags"
@@ -69,16 +96,25 @@
     <!-- 瀑布流信件广场 -->
     <section v-if="filtered.length" class="masonry">
       <div v-for="l in filtered" :key="l.id" class="masonry-col">
-        <LetterCard :letter="l" @like="onLike" @fav="onFav" @same-type="onSameType" />
+        <LetterCard
+          :letter="l"
+          @like="onLike"
+          @fav="onFav"
+          @same-type="onSameType"
+        />
       </div>
     </section>
-    <EmptyState v-else :title="t('treehole.home.emptyTitle')" :sub="t('treehole.home.emptySub')" />
+    <EmptyState
+      v-else
+      :title="t('treehole.home.emptyTitle')"
+      :sub="t('treehole.home.emptySub')"
+    />
 
     <!-- 心情云标签墙（折叠入口） -->
     <section class="mood-cloud glass">
       <div class="mc-head">
-        <span>{{ t('treehole.home.moodCloud') }}</span>
-        <span class="mc-hint">{{ t('treehole.home.moodCloudHint') }}</span>
+        <span>{{ t("treehole.home.moodCloud") }}</span>
+        <span class="mc-hint">{{ t("treehole.home.moodCloudHint") }}</span>
       </div>
       <div class="mc-tags">
         <button
@@ -96,29 +132,35 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import LetterCard from '../components/LetterCard.vue';
-import EmptyState from '../components/EmptyState.vue';
-import { CATEGORIES, TAGS, MOODS, randomQuote, moodKey } from '../stores/constants';
-import { getLetters, toggleFavorite } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import LetterCard from "../components/LetterCard.vue";
+import EmptyState from "../components/EmptyState.vue";
+import {
+  CATEGORIES,
+  TAGS,
+  MOODS,
+  randomQuote,
+  moodKey,
+} from "../stores/constants";
+import { getLetters, toggleFavorite } from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const router = useRouter();
 const categories = CATEGORIES;
 const tags = TAGS;
 
 const allLetters = ref([]);
-const activeCat = ref('all');
-const activeTag = ref('');
-const activeMood = ref('');
-const sort = ref('new');
+const activeCat = ref("all");
+const activeTag = ref("");
+const activeMood = ref("");
+const sort = ref("new");
 
 const quote = ref(randomQuote());
 
 // 打字机 slogan
-const SLOGAN = t('treehole.home.slogan');
-const typed = ref('');
+const SLOGAN = t("treehole.home.slogan");
+const typed = ref("");
 let ti = 0;
 function typeLoop() {
   if (ti <= SLOGAN.length) {
@@ -131,19 +173,21 @@ function typeLoop() {
 function load() {
   const all = getLetters();
   // 只展示已公开的信件
-  allLetters.value = all.filter((l) => l.status === 'published' && l.privacy === 'public');
+  allLetters.value = all.filter(
+    (l) => l.status === "published" && l.privacy === "public",
+  );
 }
 onMounted(() => {
   load();
   typeLoop();
 });
 // 监听 storage 事件以支持跨标签页同步
-window.addEventListener('storage', load);
+window.addEventListener("storage", load);
 
 const filtered = computed(() => {
   let list = allLetters.value.slice();
   // 分类筛选
-  if (activeCat.value !== 'all') {
+  if (activeCat.value !== "all") {
     list = list.filter((l) => l.category === activeCat.value);
   }
   // 心情筛选
@@ -155,9 +199,14 @@ const filtered = computed(() => {
     list = list.filter((l) => (l.tags || []).includes(activeTag.value));
   }
   // 排序
-  if (sort.value === 'hot') {
-    list.sort((a, b) => (b.likes || 0) + (b.favorites || 0) - ((a.likes || 0) + (a.favorites || 0)));
-  } else if (sort.value === 'random') {
+  if (sort.value === "hot") {
+    list.sort(
+      (a, b) =>
+        (b.likes || 0) +
+        (b.favorites || 0) -
+        ((a.likes || 0) + (a.favorites || 0)),
+    );
+  } else if (sort.value === "random") {
     list.sort(() => Math.random() - 0.5);
   } else {
     list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
@@ -170,7 +219,7 @@ const moodStats = computed(() => {
   allLetters.value.forEach((l) =>
     (l.moods || []).forEach((m) => {
       map[m] = (map[m] || 0) + 1;
-    })
+    }),
   );
   MOODS.forEach((m) => {
     if (!map[m]) map[m] = 1;
@@ -180,18 +229,18 @@ const moodStats = computed(() => {
 
 function setCat(c) {
   activeCat.value = c;
-  activeMood.value = '';
+  activeMood.value = "";
 }
 function setTag(t) {
   activeTag.value = t;
 }
 function filterByMood(m) {
-  activeMood.value = activeMood.value === m ? '' : m;
-  activeCat.value = 'all';
+  activeMood.value = activeMood.value === m ? "" : m;
+  activeCat.value = "all";
 }
 function onSameType(cat) {
   activeCat.value = cat;
-  activeMood.value = '';
+  activeMood.value = "";
 }
 
 function onLike(letter) {

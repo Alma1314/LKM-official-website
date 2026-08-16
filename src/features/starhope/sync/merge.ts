@@ -10,14 +10,17 @@ export interface TombstoneInput {
 export function mergePull(
   local: Record<string, unknown>[],
   items: Record<string, unknown>[],
-  tombstones: TombstoneInput[]
+  tombstones: TombstoneInput[],
 ): Record<string, unknown>[] {
   const byId = new Map(local.map((r) => [r.id as string, r]));
 
   for (const item of items) {
     const id = item.id as string;
     const existing = byId.get(id);
-    if (!existing || (item.updatedAt as string) >= (existing.updatedAt as string)) {
+    if (
+      !existing ||
+      (item.updatedAt as string) >= (existing.updatedAt as string)
+    ) {
       byId.set(id, item);
     }
   }

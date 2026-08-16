@@ -13,10 +13,10 @@
 // AI Client 使用 ~/lib/api 的 apiFetch wrapper（支持 AbortController/SSE）
 // ---------------------------------------------------------------------------
 
-import { ok, err } from 'neverthrow';
-import { apiFetch } from '~/lib/api';
-import type { Result } from 'neverthrow';
-import { t } from '~/lib/i18n';
+import { ok, err } from "neverthrow";
+import { apiFetch } from "~/lib/api";
+import type { Result } from "neverthrow";
+import { t } from "~/lib/i18n";
 
 // ---- Types -----------------------------------------------------------------
 
@@ -42,19 +42,19 @@ export interface AiCompletionOptions {
 // ---- Constants -------------------------------------------------------------
 
 const PROMPT_TEMPLATES: Record<string, string> = {
-  续写: '请续写以下内容，保持一致的风格和语气：\n\n{context}\n\n续写：',
-  总结: '请用简洁的语言总结以下内容，提取关键要点：\n\n{context}\n\n总结：',
-  翻译: '请将以下内容翻译为{language}：\n\n{context}\n\n翻译：',
-  改写: '请改写以下内容，使用更专业的语言表达：\n\n{context}\n\n改写：',
-  修复语法: '请修复以下内容的语法和拼写错误：\n\n{context}\n\n修复后：',
-  生成标题: '请根据以下内容生成一个简短的标题：\n\n{context}\n\n标题：',
+  续写: "请续写以下内容，保持一致的风格和语气：\n\n{context}\n\n续写：",
+  总结: "请用简洁的语言总结以下内容，提取关键要点：\n\n{context}\n\n总结：",
+  翻译: "请将以下内容翻译为{language}：\n\n{context}\n\n翻译：",
+  改写: "请改写以下内容，使用更专业的语言表达：\n\n{context}\n\n改写：",
+  修复语法: "请修复以下内容的语法和拼写错误：\n\n{context}\n\n修复后：",
+  生成标题: "请根据以下内容生成一个简短的标题：\n\n{context}\n\n标题：",
 };
 
-const DEFAULT_MODEL = 'gpt-3.5-turbo';
+const DEFAULT_MODEL = "gpt-3.5-turbo";
 const MAX_RESPONSE_BYTES = 262144; // 256 KiB
 
 /** Allowed protocols for the endpoint URL */
-const ALLOWED_PROTOCOLS = new Set(['https:']);
+const ALLOWED_PROTOCOLS = new Set(["https:"]);
 
 // ---- Module-level in-memory config (never persisted to storage or URL) -----
 
@@ -72,7 +72,7 @@ let _model: string = DEFAULT_MODEL;
  */
 export function validateAiEndpoint(raw: string): Result<URL, string> {
   if (!raw || raw.trim().length === 0) {
-    return err(t('editorData.errApiUrlRequired'));
+    return err(t("editorData.errApiUrlRequired"));
   }
 
   const trimmed = raw.trim();
@@ -81,21 +81,25 @@ export function validateAiEndpoint(raw: string): Result<URL, string> {
   try {
     url = new URL(trimmed);
   } catch {
-    return err(t('editorData.errApiUrlInvalid'));
+    return err(t("editorData.errApiUrlInvalid"));
   }
 
   if (!ALLOWED_PROTOCOLS.has(url.protocol)) {
-    return err(t('editorData.errHttpsOnly'));
+    return err(t("editorData.errHttpsOnly"));
   }
 
   if (url.username || url.password) {
-    return err(t('editorData.errCredentials'));
+    return err(t("editorData.errCredentials"));
   }
 
   // Block pseudo-protocols that the URL constructor might accept on some runtimes
   const lower = trimmed.toLowerCase();
-  if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('file:')) {
-    return err(t('editorData.errUnsupportedProtocol'));
+  if (
+    lower.startsWith("javascript:") ||
+    lower.startsWith("data:") ||
+    lower.startsWith("file:")
+  ) {
+    return err(t("editorData.errUnsupportedProtocol"));
   }
 
   return ok(url);
@@ -104,7 +108,11 @@ export function validateAiEndpoint(raw: string): Result<URL, string> {
 /**
  * Store AI config in module memory (NO localStorage / sessionStorage / URL).
  */
-export function setAiConfig(endpoint: string, apiKey: string, model: string): void {
+export function setAiConfig(
+  endpoint: string,
+  apiKey: string,
+  model: string,
+): void {
   _endpoint = endpoint;
   _apiKey = apiKey;
   _model = model || DEFAULT_MODEL;
@@ -140,48 +148,54 @@ export function getAiConfig(): { endpoint: string | null; model: string } {
  */
 export async function requestAiCompletion(
   input: AiCompletionInput,
-  options?: AiCompletionOptions
+  options?: AiCompletionOptions,
 ): Promise<Result<string, string>> {
   // ---- 1. Config check ----------------------------------------------------
   if (!_endpoint) {
-    return err(t('editorData.errNotConfigured'));
+    return err(t("editorData.errNotConfigured"));
   }
 
   const endpointValidation = validateAiEndpoint(_endpoint);
   if (endpointValidation.isErr()) {
-    return err(t('editorData.errConfigInvalid', { detail: endpointValidation.error }));
+    return err(
+      t("editorData.errConfigInvalid", { detail: endpointValidation.error }),
+    );
   }
 
   const endpoint = _endpoint;
-  const apiKey = _apiKey || '';
+  const apiKey = _apiKey || "";
   const model = _model;
 
   // ---- 2. Build prompt ----------------------------------------------------
-  let prompt = (PROMPT_TEMPLATES[input.operation] ?? '{context}').replace('{context}', input.context);
-  if (input.operation === '翻译') {
-    prompt = prompt.replace('{language}', input.language || '英文');
+  let prompt = (PROMPT_TEMPLATES[input.operation] ?? "{context}").replace(
+    "{context}",
+    input.context,
+  );
+  if (input.operation === "翻译") {
+    prompt = prompt.replace("{language}", input.language || "英文");
   }
   if (input.prompt) {
     prompt = input.prompt;
   }
 
   // ---- 3. Fetch (via unified apiFetch wrapper, handles timeout + abort) -----
-  const url = `${endpoint.replace(/\/$/, '')}/v1/chat/completions`;
+  const url = `${endpoint.replace(/\/$/, "")}/v1/chat/completions`;
 
   const fetchResult = await apiFetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
     },
     body: JSON.stringify({
       model,
       messages: [
         {
-          role: 'system',
-          content: '你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。',
+          role: "system",
+          content:
+            "你是一个专业的内容写作助手。请直接给出回答，不要多余的解释。",
         },
-        { role: 'user', content: prompt },
+        { role: "user", content: prompt },
       ],
       max_tokens: 2048,
       temperature: 0.7,
@@ -193,42 +207,50 @@ export async function requestAiCompletion(
     const message = fetchResult.error.message;
     // Never echo back anything that might contain secrets
     if (message.includes(apiKey) && apiKey.length > 4) {
-      return err(t('editorData.errNetworkFailed'));
+      return err(t("editorData.errNetworkFailed"));
     }
-    return err(t('editorData.errNetworkFailedDetail', { message: message.slice(0, 120) }));
+    return err(
+      t("editorData.errNetworkFailedDetail", {
+        message: message.slice(0, 120),
+      }),
+    );
   }
 
   const response = fetchResult.value;
 
   // ---- 5. Validate response metadata --------------------------------------
-  const contentType = response.headers.get('content-type') ?? '';
-  if (!contentType.includes('application/json')) {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
     // Consume the body so the connection can be reused
     await response.text().catch(() => {});
-    const statusPart = response.status ? t('editorData.errStatusCodeSuffix', { status: response.status }) : '';
-    return err(t('editorData.errUnexpectedContentType') + statusPart);
+    const statusPart = response.status
+      ? t("editorData.errStatusCodeSuffix", { status: response.status })
+      : "";
+    return err(t("editorData.errUnexpectedContentType") + statusPart);
   }
 
   // ---- 6. Check status code -----------------------------------------------
   if (!response.ok) {
-    let errorBody = '';
+    let errorBody = "";
     try {
       errorBody = await response.text();
       // Truncate error body to avoid leaking large responses
       if (errorBody.length > 300) {
-        errorBody = errorBody.slice(0, 300) + '…';
+        errorBody = errorBody.slice(0, 300) + "…";
       }
     } catch {
       // ignore
     }
 
     // Sanitize: never include the API key in error messages
-    let safeError = t('editorData.errServiceStatus', { status: response.status });
+    let safeError = t("editorData.errServiceStatus", {
+      status: response.status,
+    });
     if (errorBody && !errorBody.includes(apiKey) && apiKey.length > 0) {
       safeError += `：${errorBody.slice(0, 200)}`;
     } else if (errorBody) {
       // Body might contain the key – use a generic prefix
-      safeError += t('editorData.errCheckKey');
+      safeError += t("editorData.errCheckKey");
     }
 
     return err(safeError);
@@ -239,50 +261,57 @@ export async function requestAiCompletion(
   try {
     data = await response.json();
   } catch {
-    return err(t('editorData.errParseFailed'));
+    return err(t("editorData.errParseFailed"));
   }
 
-  if (data === null || data === undefined || typeof data !== 'object') {
-    return err(t('editorData.errInvalidDataFormat'));
+  if (data === null || data === undefined || typeof data !== "object") {
+    return err(t("editorData.errInvalidDataFormat"));
   }
 
   const obj = data as Record<string, unknown>;
 
   // ---- 8. Check for API-level errors --------------------------------------
-  if (obj.error && typeof obj.error === 'object') {
-    const errMsg = (obj.error as Record<string, unknown>).message ?? t('editorData.errUnknown');
+  if (obj.error && typeof obj.error === "object") {
+    const errMsg =
+      (obj.error as Record<string, unknown>).message ??
+      t("editorData.errUnknown");
     const safe = String(errMsg).slice(0, 200);
     if (safe.includes(apiKey) && apiKey.length > 4) {
-      return err(t('editorData.errApiKeyInvalid'));
+      return err(t("editorData.errApiKeyInvalid"));
     }
-    return err(t('editorData.errServiceError', { detail: safe }));
+    return err(t("editorData.errServiceError", { detail: safe }));
   }
 
   // ---- 9. Extract and validate text field ---------------------------------
   const choices = obj.choices;
   if (!Array.isArray(choices) || choices.length === 0) {
-    return err(t('editorData.errIncompleteReply'));
+    return err(t("editorData.errIncompleteReply"));
   }
 
   const firstChoice = choices[0] as Record<string, unknown> | undefined;
-  if (!firstChoice || typeof firstChoice !== 'object') {
-    return err(t('editorData.errIncomplete'));
+  if (!firstChoice || typeof firstChoice !== "object") {
+    return err(t("editorData.errIncomplete"));
   }
 
   const message = firstChoice.message as Record<string, unknown> | undefined;
-  if (!message || typeof message !== 'object') {
-    return err(t('editorData.errMissingMessage'));
+  if (!message || typeof message !== "object") {
+    return err(t("editorData.errMissingMessage"));
   }
 
   const content = message.content;
-  if (typeof content !== 'string' || content.length === 0) {
-    return err(t('editorData.errEmptyReply'));
+  if (typeof content !== "string" || content.length === 0) {
+    return err(t("editorData.errEmptyReply"));
   }
 
   // ---- 10. Enforce response size limit ------------------------------------
   const byteLength = new TextEncoder().encode(content).length;
   if (byteLength > MAX_RESPONSE_BYTES) {
-    return err(t('editorData.errTooLarge', { bytes: byteLength, max: MAX_RESPONSE_BYTES }));
+    return err(
+      t("editorData.errTooLarge", {
+        bytes: byteLength,
+        max: MAX_RESPONSE_BYTES,
+      }),
+    );
   }
 
   // ---- 11. Success --------------------------------------------------------

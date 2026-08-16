@@ -1,13 +1,19 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <h3 class="text-xl font-semibold text-deep-text">{{ t('onboarding.tags.title') }}</h3>
-      <p class="text-sm text-text-muted mt-1">{{ t('onboarding.tags.subtitle') }}</p>
+      <h3 class="text-xl font-semibold text-deep-text">
+        {{ t("onboarding.tags.title") }}
+      </h3>
+      <p class="text-sm text-text-muted mt-1">
+        {{ t("onboarding.tags.subtitle") }}
+      </p>
     </div>
 
     <!-- 年级 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.grade') }}</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{
+        t("onboarding.tags.grade")
+      }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="g in gradeOptions"
@@ -28,7 +34,9 @@
 
     <!-- 专业方向 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.major') }}</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{
+        t("onboarding.tags.major")
+      }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="m in majorOptions"
@@ -50,7 +58,9 @@
 
     <!-- 兴趣领域 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.interests') }}</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{
+        t("onboarding.tags.interests")
+      }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="item in interestOptions"
@@ -72,9 +82,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Icon } from '@iconify/vue';
-import { t, type TranslationKey } from '~/lib/i18n';
+import { ref } from "vue";
+import { Icon } from "@iconify/vue";
+import { t, type TranslationKey } from "~/lib/i18n";
 
 interface TagOption {
   value: string;
@@ -83,47 +93,83 @@ interface TagOption {
 }
 
 const gradeOptions: TagOption[] = [
-  { value: 'junior_high', labelKey: 'onboarding.tags.juniorHigh' },
-  { value: 'senior_high', labelKey: 'onboarding.tags.seniorHigh' },
-  { value: 'university', labelKey: 'onboarding.tags.university' },
-  { value: 'graduate', labelKey: 'onboarding.tags.graduate' },
-  { value: 'working', labelKey: 'onboarding.tags.working' },
+  { value: "junior_high", labelKey: "onboarding.tags.juniorHigh" },
+  { value: "senior_high", labelKey: "onboarding.tags.seniorHigh" },
+  { value: "university", labelKey: "onboarding.tags.university" },
+  { value: "graduate", labelKey: "onboarding.tags.graduate" },
+  { value: "working", labelKey: "onboarding.tags.working" },
 ];
 
 const majorOptions: TagOption[] = [
-  { value: 'math', labelKey: 'onboarding.tags.math', icon: 'tabler:math' },
-  { value: 'physics', labelKey: 'onboarding.tags.physics', icon: 'tabler:atom' },
-  { value: 'chemistry', labelKey: 'onboarding.tags.chemistry', icon: 'tabler:flask' },
-  { value: 'biology', labelKey: 'onboarding.tags.biology', icon: 'tabler:microscope' },
-  { value: 'astronomy', labelKey: 'onboarding.tags.astronomy', icon: 'tabler:telescope' },
-  { value: 'earth_science', labelKey: 'onboarding.tags.earthScience', icon: 'tabler:globe' },
-  { value: 'cs', labelKey: 'onboarding.tags.cs', icon: 'tabler:code' },
-  { value: 'ee', labelKey: 'onboarding.tags.ee', icon: 'tabler:bolt' },
-  { value: 'engineering', labelKey: 'onboarding.tags.engineering', icon: 'tabler:tools' },
-  { value: 'medicine', labelKey: 'onboarding.tags.medicine', icon: 'tabler:heartbeat' },
-  { value: 'social_science', labelKey: 'onboarding.tags.socialScience', icon: 'tabler:users' },
-  { value: 'literature', labelKey: 'onboarding.tags.literature', icon: 'tabler:book' },
+  { value: "math", labelKey: "onboarding.tags.math", icon: "tabler:math" },
+  {
+    value: "physics",
+    labelKey: "onboarding.tags.physics",
+    icon: "tabler:atom",
+  },
+  {
+    value: "chemistry",
+    labelKey: "onboarding.tags.chemistry",
+    icon: "tabler:flask",
+  },
+  {
+    value: "biology",
+    labelKey: "onboarding.tags.biology",
+    icon: "tabler:microscope",
+  },
+  {
+    value: "astronomy",
+    labelKey: "onboarding.tags.astronomy",
+    icon: "tabler:telescope",
+  },
+  {
+    value: "earth_science",
+    labelKey: "onboarding.tags.earthScience",
+    icon: "tabler:globe",
+  },
+  { value: "cs", labelKey: "onboarding.tags.cs", icon: "tabler:code" },
+  { value: "ee", labelKey: "onboarding.tags.ee", icon: "tabler:bolt" },
+  {
+    value: "engineering",
+    labelKey: "onboarding.tags.engineering",
+    icon: "tabler:tools",
+  },
+  {
+    value: "medicine",
+    labelKey: "onboarding.tags.medicine",
+    icon: "tabler:heartbeat",
+  },
+  {
+    value: "social_science",
+    labelKey: "onboarding.tags.socialScience",
+    icon: "tabler:users",
+  },
+  {
+    value: "literature",
+    labelKey: "onboarding.tags.literature",
+    icon: "tabler:book",
+  },
 ];
 
 const interestOptions: TagOption[] = [
-  { value: 'research', labelKey: 'onboarding.tags.research' },
-  { value: 'programming', labelKey: 'onboarding.tags.programming' },
-  { value: 'reading', labelKey: 'onboarding.tags.reading' },
-  { value: 'writing', labelKey: 'onboarding.tags.writing' },
-  { value: 'experiment', labelKey: 'onboarding.tags.experiment' },
-  { value: 'teaching', labelKey: 'onboarding.tags.teaching' },
-  { value: 'debate', labelKey: 'onboarding.tags.debate' },
-  { value: 'competition', labelKey: 'onboarding.tags.competition' },
-  { value: 'astronomy_hobby', labelKey: 'onboarding.tags.astronomyHobby' },
-  { value: 'model', labelKey: 'onboarding.tags.model' },
-  { value: 'game', labelKey: 'onboarding.tags.game' },
-  { value: 'music', labelKey: 'onboarding.tags.music' },
-  { value: 'sci_fi', labelKey: 'onboarding.tags.sciFi' },
-  { value: 'cooking', labelKey: 'onboarding.tags.cooking' },
-  { value: 'chess', labelKey: 'onboarding.tags.chess' },
+  { value: "research", labelKey: "onboarding.tags.research" },
+  { value: "programming", labelKey: "onboarding.tags.programming" },
+  { value: "reading", labelKey: "onboarding.tags.reading" },
+  { value: "writing", labelKey: "onboarding.tags.writing" },
+  { value: "experiment", labelKey: "onboarding.tags.experiment" },
+  { value: "teaching", labelKey: "onboarding.tags.teaching" },
+  { value: "debate", labelKey: "onboarding.tags.debate" },
+  { value: "competition", labelKey: "onboarding.tags.competition" },
+  { value: "astronomy_hobby", labelKey: "onboarding.tags.astronomyHobby" },
+  { value: "model", labelKey: "onboarding.tags.model" },
+  { value: "game", labelKey: "onboarding.tags.game" },
+  { value: "music", labelKey: "onboarding.tags.music" },
+  { value: "sci_fi", labelKey: "onboarding.tags.sciFi" },
+  { value: "cooking", labelKey: "onboarding.tags.cooking" },
+  { value: "chess", labelKey: "onboarding.tags.chess" },
 ];
 
-const selectedGrade = ref('');
+const selectedGrade = ref("");
 const selectedMajors = ref<string[]>([]);
 const selectedInterests = ref<string[]>([]);
 

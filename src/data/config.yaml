@@ -1,28 +1,28 @@
 site:
   name: 理科迷
-  site: 'https://lkm.s12mc.xyz'
-  base: '/'
+  site: "https://lkm.s12mc.xyz"
+  base: "/"
   trailingSlash: false
   googleSiteVerificationId: null
 
 metadata:
   title:
     default: 理科迷
-    template: '%s — LKM'
-  description: '理科迷 (LKM) — 创立于 2014 年的科技爱好者社区。覆盖数学、物理、化学、生物、信息技术等多个学科，由普罗大众组成，让科学回归每一个人。'
+    template: "%s — LKM"
+  description: "理科迷 (LKM) — 创立于 2014 年的科技爱好者社区。覆盖数学、物理、化学、生物、信息技术等多个学科，由普罗大众组成，让科学回归每一个人。"
   robots:
     index: true
     follow: true
   openGraph:
     site_name: LKM
     images:
-      - url: '~/assets/images/default.png'
+      - url: "~/assets/images/default.png"
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@lkm'
-    site: '@lkm'
+    handle: "@lkm"
+    site: "@lkm"
     cardType: summary_large_image
 
 i18n:
@@ -36,25 +36,25 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/blog/posts/%slug%'
+      permalink: "/blog/posts/%slug%"
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog'
+      pathname: "blog"
       robots:
         index: true
 
     category:
       isEnabled: true
-      pathname: 'category'
+      pathname: "category"
       robots:
         index: true
 
     tag:
       isEnabled: true
-      pathname: 'tag'
+      pathname: "tag"
       robots:
         index: false
 
@@ -67,7 +67,7 @@ analytics:
       id: null
 
 ui:
-  theme: 'system'
+  theme: "system"
 
 fuwari:
   site:
@@ -83,8 +83,8 @@ fuwari:
       position: center
       credit:
         enable: false
-        text: ''
-        url: ''
+        text: ""
+        url: ""
     toc:
       enable: true
       depth: 2

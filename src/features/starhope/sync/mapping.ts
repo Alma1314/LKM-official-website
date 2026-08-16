@@ -1,26 +1,29 @@
-export type StarHopeEntity = 'questions' | 'folders' | 'sessions' | 'agents';
+export type StarHopeEntity = "questions" | "folders" | "sessions" | "agents";
 
 const KEY_MAP: Record<string, string> = {
-  userId: 'user_id',
-  folderId: 'folder_id',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  questionIds: 'question_ids',
-  startedAt: 'started_at',
-  completedAt: 'completed_at',
-  timeLimit: 'time_limit',
-  passingGrade: 'passing_grade',
-  systemPrompt: 'system_prompt',
-  topP: 'top_p',
-  maxTokens: 'max_tokens',
-  parentId: 'parent_id',
+  userId: "user_id",
+  folderId: "folder_id",
+  createdAt: "created_at",
+  updatedAt: "updated_at",
+  questionIds: "question_ids",
+  startedAt: "started_at",
+  completedAt: "completed_at",
+  timeLimit: "time_limit",
+  passingGrade: "passing_grade",
+  systemPrompt: "system_prompt",
+  topP: "top_p",
+  maxTokens: "max_tokens",
+  parentId: "parent_id",
 };
 
 const REVERSE_KEY_MAP: Record<string, string> = Object.fromEntries(
-  Object.entries(KEY_MAP).map(([camel, snake]) => [snake, camel])
+  Object.entries(KEY_MAP).map(([camel, snake]) => [snake, camel]),
 );
 
-function mapKeys(obj: Record<string, unknown>, toSnake: boolean): Record<string, unknown> {
+function mapKeys(
+  obj: Record<string, unknown>,
+  toSnake: boolean,
+): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
     const mapped = toSnake ? (KEY_MAP[k] ?? k) : (REVERSE_KEY_MAP[k] ?? k);

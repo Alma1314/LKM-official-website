@@ -9,27 +9,27 @@
    Vite 插件 wgsl-raw 自动将 .wgsl 文件作为字符串导出，无需 ?raw 后缀。
    ---------------------------------------------------------------- */
 
-import simCommonSrc from './compute/common.wgsl';
-import selSrc from './compute/sel-struct.wgsl';
-import growMathSrc from './compute/growth-math.wgsl';
-import growResetSrc from './compute/growth-reset.wgsl';
-import growSelectSrc from './compute/growth-select.wgsl';
-import growResolveSrc from './compute/growth-resolve.wgsl';
-import upSelectSrc from './compute/upward-select.wgsl';
-import upResolveSrc from './compute/upward-resolve.wgsl';
-import jacobiSrc from './compute/jacobi.wgsl';
-import clearSrc from './compute/clear.wgsl';
-import residualSrc from './compute/residual.wgsl';
-import forkSrc from './compute/fork.wgsl';
-import renCommonSrc from './render/common.wgsl';
-import fSQuadSrc from './render/fullscreen.wgsl';
-import skySrc from './render/sky.wgsl';
-import terrainSrc from './render/terrain.wgsl';
-import splatSrc from './render/channel.wgsl';
-import downFirstSrc from './render/bloom-down-first.wgsl';
-import downSrc from './render/bloom-down.wgsl';
-import upSrc from './render/bloom-up.wgsl';
-import finalSrc from './render/composite.wgsl';
+import simCommonSrc from "./compute/common.wgsl";
+import selSrc from "./compute/sel-struct.wgsl";
+import growMathSrc from "./compute/growth-math.wgsl";
+import growResetSrc from "./compute/growth-reset.wgsl";
+import growSelectSrc from "./compute/growth-select.wgsl";
+import growResolveSrc from "./compute/growth-resolve.wgsl";
+import upSelectSrc from "./compute/upward-select.wgsl";
+import upResolveSrc from "./compute/upward-resolve.wgsl";
+import jacobiSrc from "./compute/jacobi.wgsl";
+import clearSrc from "./compute/clear.wgsl";
+import residualSrc from "./compute/residual.wgsl";
+import forkSrc from "./compute/fork.wgsl";
+import renCommonSrc from "./render/common.wgsl";
+import fSQuadSrc from "./render/fullscreen.wgsl";
+import skySrc from "./render/sky.wgsl";
+import terrainSrc from "./render/terrain.wgsl";
+import splatSrc from "./render/channel.wgsl";
+import downFirstSrc from "./render/bloom-down-first.wgsl";
+import downSrc from "./render/bloom-down.wgsl";
+import upSrc from "./render/bloom-up.wgsl";
+import finalSrc from "./render/composite.wgsl";
 
 export const wgslSimCommon = simCommonSrc;
 export const wgslSel = selSrc;

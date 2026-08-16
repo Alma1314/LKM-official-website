@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import { t } from "~/lib/i18n";
 const _uploadedFile = ref<File | null>(null);
-const _fileText = ref('');
-const _fileName = ref('');
+const _fileText = ref("");
+const _fileName = ref("");
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold text-deep-text mb-6">{{ t('starhope.reader.title') }}</h1>
+    <h1 class="text-2xl font-bold text-deep-text mb-6">
+      {{ t("starhope.reader.title") }}
+    </h1>
     <div class="card-base p-8 text-center text-text-muted">
       <div class="text-5xl mb-4">📖</div>
-      <p>{{ t('starhope.reader.emptyHint') }}</p>
+      <p>{{ t("starhope.reader.emptyHint") }}</p>
     </div>
   </div>
 </template>

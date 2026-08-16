@@ -1,4 +1,4 @@
-import { get } from '../../http/client';
+import { get } from "../../http/client";
 
 export interface Column {
   id: string;
@@ -27,10 +27,13 @@ export interface PaginatedResponse<T> {
 }
 
 export const columnApi = {
-  getColumns: (page = 1) => get<PaginatedResponse<Column>>('/api/columns', { page }),
+  getColumns: (page = 1) =>
+    get<PaginatedResponse<Column>>("/api/columns", { page }),
 
   getColumnBySlug: (slug: string) => get<Column>(`/api/columns/${slug}`),
 
   getArticles: (columnSlug: string, page = 1) =>
-    get<PaginatedResponse<Article>>(`/api/columns/${columnSlug}/articles`, { page }),
+    get<PaginatedResponse<Article>>(`/api/columns/${columnSlug}/articles`, {
+      page,
+    }),
 };

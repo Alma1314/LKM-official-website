@@ -4,7 +4,7 @@
  * 适合文章列表、标签列表等不频繁变化的数据。
  */
 
-import { t } from '~/lib/i18n';
+import { t } from "~/lib/i18n";
 
 interface CacheEntry<T> {
   data: T;
@@ -31,7 +31,11 @@ export function cacheGet<T>(key: string): T | null {
 }
 
 /** 写入缓存 */
-export function cacheSet<T>(key: string, data: T, ttlMs: number = DEFAULT_TTL_MS): void {
+export function cacheSet<T>(
+  key: string,
+  data: T,
+  ttlMs: number = DEFAULT_TTL_MS,
+): void {
   store.set(key, { data, expiresAt: now() + ttlMs });
 }
 
@@ -52,24 +56,34 @@ export function cacheClear(): void {
 export async function fetchWithCache<T>(
   url: string,
   cacheKey: string,
-  ttlMs: number = DEFAULT_TTL_MS
+  ttlMs: number = DEFAULT_TTL_MS,
 ): Promise<{ data: T | null; fromCache: boolean; error: string | null }> {
   // 先检查缓存（如果有直接返回，同时后台更新）
   const cached = cacheGet<T>(cacheKey);
 
-  const doFetch = async (): Promise<{ data: T | null; error: string | null }> => {
+  const doFetch = async (): Promise<{
+    data: T | null;
+    error: string | null;
+  }> => {
     try {
       // eslint-disable-next-line no-restricted-globals
       const res = await fetch(url);
-      if (!res.ok) return { data: null, error: t('messages.httpError', { status: res.status }) };
+      if (!res.ok)
+        return {
+          data: null,
+          error: t("messages.httpError", { status: res.status }),
+        };
       const json = await res.json();
       if (json.code === 0) {
         cacheSet(cacheKey, json.data as T, ttlMs);
         return { data: json.data as T, error: null };
       }
-      return { data: null, error: json.msg || t('messages.unknownError') };
+      return { data: null, error: json.msg || t("messages.unknownError") };
     } catch (err: unknown) {
-      return { data: null, error: err instanceof Error ? err.message : t('messages.networkError') };
+      return {
+        data: null,
+        error: err instanceof Error ? err.message : t("messages.networkError"),
+      };
     }
   };
 

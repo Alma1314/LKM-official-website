@@ -1,17 +1,17 @@
-import type { HTMLAttributes } from 'astro/types';
-import type { Item } from './widget';
+import type { HTMLAttributes } from "astro/types";
+import type { Item } from "./widget";
 
 export interface Image {
   src: string;
   alt?: string;
 }
 
-export interface CallToAction extends Omit<HTMLAttributes<'a'>, 'slot'> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'link';
+export interface CallToAction extends Omit<HTMLAttributes<"a">, "slot"> {
+  variant?: "primary" | "secondary" | "tertiary" | "link";
   text?: string;
   icon?: string;
   classes?: Record<string, string>;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
 }
 
 export interface Collapse {

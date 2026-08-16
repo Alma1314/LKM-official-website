@@ -1,35 +1,45 @@
 <template>
   <!-- 数据备份 / 导入导出 -->
   <div class="backup glass">
-    <h3>{{ t('treehole.backup.title') }}</h3>
-    <p class="bk-tip">{{ t('treehole.backup.desc') }}</p>
+    <h3>{{ t("treehole.backup.title") }}</h3>
+    <p class="bk-tip">{{ t("treehole.backup.desc") }}</p>
     <div class="bk-actions">
-      <button class="chip" @click="exportData">{{ t('treehole.backup.exportBtn') }}</button>
-      <button class="chip" @click="triggerImport">{{ t('treehole.backup.importBtn') }}</button>
-      <input ref="fileInput" type="file" accept="application/json" hidden @change="onImport" />
+      <button class="chip" @click="exportData">
+        {{ t("treehole.backup.exportBtn") }}
+      </button>
+      <button class="chip" @click="triggerImport">
+        {{ t("treehole.backup.importBtn") }}
+      </button>
+      <input
+        ref="fileInput"
+        type="file"
+        accept="application/json"
+        hidden
+        @change="onImport"
+      />
     </div>
     <div v-if="msg" class="bk-msg">{{ msg }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import * as store from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import * as store from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const fileInput = ref(null);
-const msg = ref('');
+const msg = ref("");
 
 function exportData() {
   const json = store.exportAll();
-  const blob = new Blob([json], { type: 'application/json' });
+  const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = `shiguang-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  msg.value = t('treehole.backup.exported');
+  msg.value = t("treehole.backup.exported");
 }
 function triggerImport() {
   fileInput.value?.click();
@@ -41,13 +51,13 @@ function onImport(e) {
   reader.onload = () => {
     try {
       store.importAll(reader.result);
-      msg.value = t('treehole.backup.importSuccess');
+      msg.value = t("treehole.backup.importSuccess");
     } catch {
-      msg.value = t('treehole.backup.importFail');
+      msg.value = t("treehole.backup.importFail");
     }
   };
   reader.readAsText(file);
-  e.target.value = '';
+  e.target.value = "";
 }
 </script>
 

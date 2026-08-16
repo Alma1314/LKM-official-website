@@ -1,3 +1,3 @@
-export { default as NotificationBell } from './components/NotificationBell.vue';
+export { default as NotificationBell } from "./components/NotificationBell.vue";
 
-export * from './data/mock-notifications';
+export * from "./data/mock-notifications";

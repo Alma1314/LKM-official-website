@@ -17,6 +17,6 @@ const metadata = { title: `${t('page.qa.title')} —— LKM` };
   <div class="space-y-6">
     <h1 class="text-3xl font-bold text-deep-text">{t('page.qa.title')}</h1>
     <p class="text-text-muted mt-2">{t('page.qa.subtitle')}</p>
-    <div style="min-height: 400px"><QAListPage client:only="vue" /></div>
+    <div style="min-height: 400px"><QAListPage client:load /></div>
   </div>
 </Layout>

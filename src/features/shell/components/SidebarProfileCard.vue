@@ -21,9 +21,17 @@
     </div>
 
     <div class="px-2">
-      <div class="font-bold text-xl text-center mb-1 dark:text-text-muted-50 transition">{{ displayName }}</div>
-      <div class="h-1 w-5 bg-primary mx-auto rounded-full mb-2 transition"></div>
-      <div v-if="bio" class="text-center text-text-muted-400 mb-2.5 transition">{{ bio }}</div>
+      <div
+        class="font-bold text-xl text-center mb-1 dark:text-text-muted-50 transition"
+      >
+        {{ displayName }}
+      </div>
+      <div
+        class="h-1 w-5 bg-primary mx-auto rounded-full mb-2 transition"
+      ></div>
+      <div v-if="bio" class="text-center text-text-muted-400 mb-2.5 transition">
+        {{ bio }}
+      </div>
       <div v-if="links.length" class="flex flex-wrap gap-2 justify-center mb-1">
         <a
           v-for="(l, idx) in links"
@@ -47,16 +55,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { Icon } from '@iconify/vue';
-import { profileConfig } from '~/lib/config';
-import { authApi } from '~/lib/api';
-import { buildUrl } from '~/lib/utils/paths';
-import type { ContactLink } from '~/lib/api/modules/auth';
+import { ref, computed, onMounted } from "vue";
+import { Icon } from "@iconify/vue";
+import { profileConfig } from "~/lib/config";
+import { authApi } from "~/lib/api";
+import { buildUrl } from "~/lib/utils/paths";
+import type { ContactLink } from "~/lib/api/modules/auth";
 
 const props = defineProps<{ username?: string }>();
 
-type UserCard = { nickname?: string | null; avatar?: string | null; contact_links?: ContactLink[] } & {
+type UserCard = {
+  nickname?: string | null;
+  avatar?: string | null;
+  contact_links?: ContactLink[];
+} & {
   username: string;
 };
 
@@ -67,17 +79,21 @@ const hasUserMode = computed(() => !!props.username);
 
 // 通用卡默认值 = 理科迷卡
 const displayName = computed(() =>
-  hasUserMode.value && user.value ? user.value.nickname || user.value.username || '?' : profileConfig.name || ''
+  hasUserMode.value && user.value
+    ? user.value.nickname || user.value.username || "?"
+    : profileConfig.name || "",
 );
-const bio = computed(() => (hasUserMode.value ? '' : profileConfig.bio || ''));
-const links = computed(() => (hasUserMode.value ? user.value?.contact_links || [] : profileConfig.links));
+const bio = computed(() => (hasUserMode.value ? "" : profileConfig.bio || ""));
+const links = computed(() =>
+  hasUserMode.value ? user.value?.contact_links || [] : profileConfig.links,
+);
 
 // 头像：http(s)/data: 直接用；否则 buildUrl 拼 base 前缀；空则空 → 首字
 const avatarSrc = computed(() => {
-  if (avatarFailed.value) return '';
+  if (avatarFailed.value) return "";
   const raw = hasUserMode.value ? user.value?.avatar : profileConfig.avatar;
-  if (!raw) return '';
-  if (/^https?:/i.test(raw) || raw.startsWith('data:')) return raw;
+  if (!raw) return "";
+  if (/^https?:/i.test(raw) || raw.startsWith("data:")) return raw;
   return buildUrl(raw);
 });
 const avatarLetter = computed(() => displayName.value.charAt(0).toUpperCase());
@@ -91,7 +107,7 @@ onMounted(async () => {
     },
     () => {
       /* user stays null → 回退理科迷卡 */
-    }
+    },
   );
 });
 </script>

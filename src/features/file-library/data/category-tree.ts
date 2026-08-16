@@ -9,34 +9,114 @@ export interface FileCategory {
 
 export const fileCategories: FileCategory[] = [
   // ─── 一级 ───
-  { id: 'basic-science', name: 'fileLibraryData.categories.basicScience', parentId: null },
-  { id: 'applied-science', name: 'fileLibraryData.categories.appliedScience', parentId: null },
-  { id: 'language', name: 'fileLibraryData.categories.language', parentId: null },
+  {
+    id: "basic-science",
+    name: "fileLibraryData.categories.basicScience",
+    parentId: null,
+  },
+  {
+    id: "applied-science",
+    name: "fileLibraryData.categories.appliedScience",
+    parentId: null,
+  },
+  {
+    id: "language",
+    name: "fileLibraryData.categories.language",
+    parentId: null,
+  },
 
   // ─── 二级（基础学科下）───
-  { id: 'math', name: 'fileLibraryData.categories.math', parentId: 'basic-science' },
-  { id: 'physics', name: 'fileLibraryData.categories.physics', parentId: 'basic-science' },
-  { id: 'chemistry', name: 'fileLibraryData.categories.chemistry', parentId: 'basic-science' },
-  { id: 'biology', name: 'fileLibraryData.categories.biology', parentId: 'basic-science' },
-  { id: 'earth-science', name: 'fileLibraryData.categories.earthScience', parentId: 'basic-science' },
-  { id: 'cosmos-astronomy', name: 'fileLibraryData.categories.cosmosAstronomy', parentId: 'basic-science' },
+  {
+    id: "math",
+    name: "fileLibraryData.categories.math",
+    parentId: "basic-science",
+  },
+  {
+    id: "physics",
+    name: "fileLibraryData.categories.physics",
+    parentId: "basic-science",
+  },
+  {
+    id: "chemistry",
+    name: "fileLibraryData.categories.chemistry",
+    parentId: "basic-science",
+  },
+  {
+    id: "biology",
+    name: "fileLibraryData.categories.biology",
+    parentId: "basic-science",
+  },
+  {
+    id: "earth-science",
+    name: "fileLibraryData.categories.earthScience",
+    parentId: "basic-science",
+  },
+  {
+    id: "cosmos-astronomy",
+    name: "fileLibraryData.categories.cosmosAstronomy",
+    parentId: "basic-science",
+  },
 
   // ─── 二级（应用学科下）───
-  { id: 'cs', name: 'fileLibraryData.categories.cs', parentId: 'applied-science' },
-  { id: 'ic-semiconductor', name: 'fileLibraryData.categories.icSemiconductor', parentId: 'applied-science' },
+  {
+    id: "cs",
+    name: "fileLibraryData.categories.cs",
+    parentId: "applied-science",
+  },
+  {
+    id: "ic-semiconductor",
+    name: "fileLibraryData.categories.icSemiconductor",
+    parentId: "applied-science",
+  },
 
   // ─── 二级（语言学习下）───
-  { id: 'lang-en', name: 'fileLibraryData.categories.langEn', parentId: 'language' },
+  {
+    id: "lang-en",
+    name: "fileLibraryData.categories.langEn",
+    parentId: "language",
+  },
 
   // ─── 三级（叶子，挂文件）───
-  { id: 'math-linear-algebra', name: 'fileLibraryData.categories.mathLinearAlgebra', parentId: 'math' },
-  { id: 'math-modeling', name: 'fileLibraryData.categories.mathModeling', parentId: 'math' },
-  { id: 'physics-quantum', name: 'fileLibraryData.categories.physicsQuantum', parentId: 'physics' },
-  { id: 'physics-astrophysics', name: 'fileLibraryData.categories.physicsAstrophysics', parentId: 'physics' },
-  { id: 'chemistry-organic', name: 'fileLibraryData.categories.chemistryOrganic', parentId: 'chemistry' },
-  { id: 'cs-python', name: 'fileLibraryData.categories.csPython', parentId: 'cs' },
-  { id: 'ic-design', name: 'fileLibraryData.categories.icDesign', parentId: 'ic-semiconductor' },
-  { id: 'lang-en-writing', name: 'fileLibraryData.categories.langEnWriting', parentId: 'lang-en' },
+  {
+    id: "math-linear-algebra",
+    name: "fileLibraryData.categories.mathLinearAlgebra",
+    parentId: "math",
+  },
+  {
+    id: "math-modeling",
+    name: "fileLibraryData.categories.mathModeling",
+    parentId: "math",
+  },
+  {
+    id: "physics-quantum",
+    name: "fileLibraryData.categories.physicsQuantum",
+    parentId: "physics",
+  },
+  {
+    id: "physics-astrophysics",
+    name: "fileLibraryData.categories.physicsAstrophysics",
+    parentId: "physics",
+  },
+  {
+    id: "chemistry-organic",
+    name: "fileLibraryData.categories.chemistryOrganic",
+    parentId: "chemistry",
+  },
+  {
+    id: "cs-python",
+    name: "fileLibraryData.categories.csPython",
+    parentId: "cs",
+  },
+  {
+    id: "ic-design",
+    name: "fileLibraryData.categories.icDesign",
+    parentId: "ic-semiconductor",
+  },
+  {
+    id: "lang-en-writing",
+    name: "fileLibraryData.categories.langEnWriting",
+    parentId: "lang-en",
+  },
 ];
 
 /** 按 id 查分类；不存在返回 undefined。 */
@@ -57,7 +137,8 @@ export function getCategoryPath(id: string): FileCategory[] {
   while (current && !seen.has(current.id)) {
     seen.add(current.id);
     path.unshift(current);
-    current = current.parentId === null ? undefined : getCategory(current.parentId);
+    current =
+      current.parentId === null ? undefined : getCategory(current.parentId);
   }
   return current ? [] : path; // 遇环或父缺省时返回空，回退到根
 }
@@ -68,9 +149,15 @@ export function isLeaf(id: string): boolean {
 }
 
 /** 递归统计该分类下（含子孙）的匹配文件总数。files 只需 categoryId 字段。 */
-export function countFilesInCategory(id: string, files: { categoryId: string }[]): number {
+export function countFilesInCategory(
+  id: string,
+  files: { categoryId: string }[],
+): number {
   const direct = files.filter((f) => f.categoryId === id).length;
   const children = getChildren(id);
   if (children.length === 0) return direct;
-  return direct + children.reduce((sum, c) => sum + countFilesInCategory(c.id, files), 0);
+  return (
+    direct +
+    children.reduce((sum, c) => sum + countFilesInCategory(c.id, files), 0)
+  );
 }

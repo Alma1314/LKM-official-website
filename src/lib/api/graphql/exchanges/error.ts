@@ -1,8 +1,12 @@
-import { mapExchange } from '@urql/core';
-import type { Operation } from '@urql/core';
-import { getHttpRefreshToken, setHttpTokens, clearHttpSession } from '~/lib/http/client';
+import { mapExchange } from "@urql/core";
+import type { Operation } from "@urql/core";
+import {
+  getHttpRefreshToken,
+  setHttpTokens,
+  clearHttpSession,
+} from "~/lib/http/client";
 // 循环依赖安全：graphqlClient 仅在异步刷新回调内访问，模块求值阶段不触碰
-import { graphqlClient } from '../client';
+import { graphqlClient } from "../client";
 
 // --- 401 刷新辅助函数 ---
 
@@ -11,16 +15,18 @@ async function tryRefreshToken(): Promise<boolean> {
   const rt = getHttpRefreshToken();
   if (!rt) return false;
   try {
-    const base = typeof window === 'undefined' ? process.env.API_URL || '' : '';
+    const base = typeof window === "undefined" ? process.env.API_URL || "" : "";
     // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${base}/api/v1/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refresh_token: rt }),
     });
     if (!res.ok) return false;
     const json = await res.json();
-    const data = (json as { data?: { access_token: string; refresh_token: string } }).data;
+    const data = (
+      json as { data?: { access_token: string; refresh_token: string } }
+    ).data;
     if (!data?.access_token) return false;
     // 统一通过 HTTP 会话适配器写入，与 axios 刷新路径共享同一状态源
     setHttpTokens(data.access_token, data.refresh_token);
@@ -60,7 +66,8 @@ export const errorExchange = mapExchange({
   onError(error, operation) {
     // 401 自动刷新 + 重发原请求
     if (isUnauthorized(error)) {
-      const retried = (operation.context as Record<string, unknown>)._retry === true;
+      const retried =
+        (operation.context as Record<string, unknown>)._retry === true;
       refreshOnce().then((ok) => {
         if (ok) {
           if (retried) return; // 已重试过仍 401，不再循环
@@ -75,7 +82,7 @@ export const errorExchange = mapExchange({
       return; // 已处理，跳过后续 console.warn
     }
     if (error.networkError) {
-      console.warn('[GraphQL] Network error:', error.networkError.message);
+      console.warn("[GraphQL] Network error:", error.networkError.message);
     }
     if (error.graphQLErrors.length > 0) {
       for (const gqlErr of error.graphQLErrors) {

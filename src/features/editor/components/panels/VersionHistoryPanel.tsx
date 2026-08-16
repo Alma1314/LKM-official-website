@@ -1,7 +1,7 @@
-import { useState, useEffect, memo } from 'react';
-import type { PersistenceAdapter, VersionEntry } from '../../engine/types';
-import ConfirmDialog from '../dialogs/ConfirmDialog';
-import { t } from '~/lib/i18n';
+import { useState, useEffect, memo } from "react";
+import type { PersistenceAdapter, VersionEntry } from "../../engine/types";
+import ConfirmDialog from "../dialogs/ConfirmDialog";
+import { t } from "~/lib/i18n";
 
 interface VersionHistoryPanelProps {
   documentId: string;
@@ -17,7 +17,9 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
   onClose,
 }: VersionHistoryPanelProps) {
   const [versions, setVersions] = useState<VersionEntry[]>([]);
-  const [selectedVersion, setSelectedVersion] = useState<VersionEntry | null>(null);
+  const [selectedVersion, setSelectedVersion] = useState<VersionEntry | null>(
+    null,
+  );
   const [confirmRestore, setConfirmRestore] = useState(false);
 
   useEffect(() => {
@@ -50,15 +52,21 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
   return (
     <div className="rte-panel flex flex-col">
       <div className="flex items-center justify-between px-3 py-3 border-b border-surface-3">
-        <h3 className="text-sm font-semibold">{t('editor.versionHistory')}</h3>
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onClose}>
+        <h3 className="text-sm font-semibold">{t("editor.versionHistory")}</h3>
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs"
+          onClick={onClose}
+        >
           ×
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {versions.length === 0 ? (
-          <p className="text-xs text-deep-text/50 px-3 py-4">{t('editor.noVersions')}</p>
+          <p className="text-xs text-deep-text/50 px-3 py-4">
+            {t("editor.noVersions")}
+          </p>
         ) : (
           versions.map((v) => (
             <button
@@ -66,14 +74,16 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
               type="button"
               className={`w-full text-left px-3 py-2 border-b border-surface-3/50 text-xs transition-colors ${
                 selectedVersion?.version === v.version
-                  ? 'bg-primary/10 border-l-2 border-l-[var(--primary)]'
-                  : 'hover:bg-page-bg border-l-2 border-l-transparent'
+                  ? "bg-primary/10 border-l-2 border-l-[var(--primary)]"
+                  : "hover:bg-page-bg border-l-2 border-l-transparent"
               }`}
               onClick={() => handleSelect(v.version)}
             >
               <div className="font-medium">v{v.version}</div>
               <div className="text-deep-text/50">{v.message}</div>
-              <div className="text-deep-text/40">{new Date(v.createdAt).toLocaleString('zh-CN')}</div>
+              <div className="text-deep-text/40">
+                {new Date(v.createdAt).toLocaleString("zh-CN")}
+              </div>
             </button>
           ))
         )}
@@ -83,17 +93,23 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
         <div className="border-t border-surface-3 p-3">
           <pre className="text-xs bg-surface-3/50 rounded p-2 mb-2 overflow-x-auto max-h-32 whitespace-pre-wrap font-mono">
             {selectedVersion.contentMdx.slice(0, 300)}
-            {selectedVersion.contentMdx.length > 300 ? '…' : ''}
+            {selectedVersion.contentMdx.length > 300 ? "…" : ""}
           </pre>
-          <button type="button" className="rte-btn rte-btn--primary rte-btn--xs w-full" onClick={handleRestore}>
-            {t('editor.restoreThisVersion')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--primary rte-btn--xs w-full"
+            onClick={handleRestore}
+          >
+            {t("editor.restoreThisVersion")}
           </button>
         </div>
       )}
 
       {confirmRestore && selectedVersion && (
         <ConfirmDialog
-          message={t('editor.confirmRestoreVersion', { version: selectedVersion.version })}
+          message={t("editor.confirmRestoreVersion", {
+            version: selectedVersion.version,
+          })}
           danger
           onConfirm={handleRestoreConfirmed}
           onCancel={() => setConfirmRestore(false)}

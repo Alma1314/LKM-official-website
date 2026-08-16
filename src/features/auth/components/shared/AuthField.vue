@@ -12,28 +12,43 @@
         :value="(modelValue as string | undefined) ?? ''"
         :autocomplete="autocomplete"
         :placeholder="placeholder"
-        :aria-describedby="error ? `${id}-error` : hint ? `${id}-hint` : undefined"
+        :aria-describedby="
+          error ? `${id}-error` : hint ? `${id}-hint` : undefined
+        "
         :aria-invalid="!!error"
-        @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @input="
+          emit('update:modelValue', ($event.target as HTMLInputElement).value)
+        "
       />
       <button
         v-if="type === 'password'"
         type="button"
         class="absolute right-2 inset-y-0 flex items-center px-2 text-text-muted"
         @click="showPassword = !showPassword"
-        :aria-label="showPassword ? t('auth.field.hidePassword') : t('auth.field.showPassword')"
+        :aria-label="
+          showPassword
+            ? t('auth.field.hidePassword')
+            : t('auth.field.showPassword')
+        "
       >
-        {{ showPassword ? t('auth.field.hide') : t('auth.field.show') }}
+        {{ showPassword ? t("auth.field.hide") : t("auth.field.show") }}
       </button>
     </div>
-    <span v-if="error" :id="`${id}-error`" class="label-text-alt text-error">{{ error }}</span>
-    <span v-else-if="hint" :id="`${id}-hint`" class="label-text-alt text-text-muted">{{ hint }}</span>
+    <span v-if="error" :id="`${id}-error`" class="label-text-alt text-error">{{
+      error
+    }}</span>
+    <span
+      v-else-if="hint"
+      :id="`${id}-hint`"
+      class="label-text-alt text-text-muted"
+      >{{ hint }}</span
+    >
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import { t } from "~/lib/i18n";
 
 withDefaults(
   defineProps<{
@@ -46,9 +61,9 @@ withDefaults(
     autocomplete?: string;
     placeholder?: string;
   }>(),
-  { type: 'text' }
+  { type: "text" },
 );
 
-const emit = defineEmits<(e: 'update:modelValue', v: string) => void>();
+const emit = defineEmits<(e: "update:modelValue", v: string) => void>();
 const showPassword = ref(false);
 </script>

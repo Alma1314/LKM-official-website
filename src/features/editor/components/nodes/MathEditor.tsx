@@ -1,7 +1,7 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import type { ReactElement } from 'react';
-import katex from 'katex';
-import { t } from '~/lib/i18n';
+import { useState, useCallback, useRef, useEffect } from "react";
+import type { ReactElement } from "react";
+import katex from "katex";
+import { t } from "~/lib/i18n";
 
 interface MathEditorProps {
   initialLatex: string;
@@ -10,7 +10,12 @@ interface MathEditorProps {
   onCancel: () => void;
 }
 
-export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel }: MathEditorProps): ReactElement {
+export default function MathEditor({
+  initialLatex,
+  isBlock,
+  onConfirm,
+  onCancel,
+}: MathEditorProps): ReactElement {
   const [latex, setLatex] = useState(initialLatex);
   const previewRef = useRef<HTMLSpanElement>(null);
 
@@ -24,45 +29,54 @@ export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel 
     if (!el) return;
     const tex = latex.trim();
     if (!tex) {
-      el.innerHTML = `<span class="text-deep-text/30 text-sm italic">${t('editor.math.enterFormulaPreview')}</span>`;
+      el.innerHTML = `<span class="text-deep-text/30 text-sm italic">${t("editor.math.enterFormulaPreview")}</span>`;
       return;
     }
     try {
-      el.innerHTML = katex.renderToString(tex, { displayMode: isBlock, throwOnError: false });
+      el.innerHTML = katex.renderToString(tex, {
+        displayMode: isBlock,
+        throwOnError: false,
+      });
     } catch (err) {
-      console.warn('[MathEditor] KaTeX 渲染失败:', err);
-      el.innerHTML = `<span class="text-error text-sm">${t('editor.math.latexSyntaxError')}</span>`;
+      console.warn("[MathEditor] KaTeX 渲染失败:", err);
+      el.innerHTML = `<span class="text-error text-sm">${t("editor.math.latexSyntaxError")}</span>`;
     }
   }, [latex, isBlock]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' && e.ctrlKey) {
+      if (e.key === "Enter" && e.ctrlKey) {
         handleConfirm();
       }
     },
-    [handleConfirm]
+    [handleConfirm],
   );
 
   return (
     <div className="rte-dialog-backdrop" onClick={onCancel}>
       <div className="rte-dialog" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold mb-4">
-          {isBlock ? t('editor.math.blockFormula') : t('editor.math.inlineFormula')}
+          {isBlock
+            ? t("editor.math.blockFormula")
+            : t("editor.math.inlineFormula")}
         </h3>
 
         <div className="mb-4">
-          <label className="text-sm font-medium text-deep-text/70 block mb-1">{t('editor.math.latexFormula')}</label>
+          <label className="text-sm font-medium text-deep-text/70 block mb-1">
+            {t("editor.math.latexFormula")}
+          </label>
           <textarea
             className="rte-textarea w-full font-mono text-sm"
             rows={3}
             value={latex}
             onChange={(e) => setLatex(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={t('editor.math.latexExample')}
+            placeholder={t("editor.math.latexExample")}
             autoFocus
           />
-          <p className="text-xs text-deep-text/50 mt-1">{t('editor.math.confirmShortcut')}</p>
+          <p className="text-xs text-deep-text/50 mt-1">
+            {t("editor.math.confirmShortcut")}
+          </p>
         </div>
 
         <div className="mb-4 p-4 bg-page-bg rounded-lg flex items-center justify-center min-h-[60px]">
@@ -70,11 +84,19 @@ export default function MathEditor({ initialLatex, isBlock, onConfirm, onCancel 
         </div>
 
         <div className="flex justify-end gap-2">
-          <button type="button" className="rte-btn rte-btn--ghost rte-btn--sm" onClick={onCancel}>
-            {t('editor.cancel')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--ghost rte-btn--sm"
+            onClick={onCancel}
+          >
+            {t("editor.cancel")}
           </button>
-          <button type="button" className="rte-btn rte-btn--primary rte-btn--sm" onClick={handleConfirm}>
-            {t('editor.confirm')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--primary rte-btn--sm"
+            onClick={handleConfirm}
+          >
+            {t("editor.confirm")}
           </button>
         </div>
       </div>

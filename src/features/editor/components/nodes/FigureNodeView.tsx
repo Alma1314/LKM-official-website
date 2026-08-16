@@ -1,9 +1,9 @@
-import { memo, useState, useEffect, useRef } from 'react';
-import type { Node } from '@tiptap/pm/model';
-import type { Editor } from '@tiptap/core';
-import { NodeViewWrapper } from '@tiptap/react';
-import { t } from '~/lib/i18n';
-import FigureView from '../shared/FigureView';
+import { memo, useState, useEffect, useRef } from "react";
+import type { Node } from "@tiptap/pm/model";
+import type { Editor } from "@tiptap/core";
+import { NodeViewWrapper } from "@tiptap/react";
+import { t } from "~/lib/i18n";
+import FigureView from "../shared/FigureView";
 
 interface FigureNodeViewProps {
   node: Node;
@@ -12,30 +12,49 @@ interface FigureNodeViewProps {
   updateAttributes: (attrs: Record<string, unknown>) => void;
 }
 
-const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, updateAttributes }: FigureNodeViewProps) {
+const FigureNodeView = memo(function FigureNodeView({
+  node,
+  editor,
+  getPos,
+  updateAttributes,
+}: FigureNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const src = (node.attrs.src as string) ?? '';
+  const src = (node.attrs.src as string) ?? "";
 
   useEffect(() => {
     if (!editing) return;
     const handler = (e: MouseEvent): void => {
-      if (panelRef.current && !panelRef.current.contains(e.target as HTMLElement)) {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(e.target as HTMLElement)
+      ) {
         setEditing(false);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [editing]);
-  const alt = (node.attrs.alt as string) ?? '';
-  const caption = (node.attrs.caption as string) ?? '';
+  const alt = (node.attrs.alt as string) ?? "";
+  const caption = (node.attrs.caption as string) ?? "";
   const width = (node.attrs.width as number) ?? undefined;
-  const align = (node.attrs.align as 'left' | 'center' | 'right') ?? 'center';
+  const align = (node.attrs.align as "left" | "center" | "right") ?? "center";
 
   return (
-    <NodeViewWrapper as="figure" className="relative my-4" contentEditable={false} data-figure>
+    <NodeViewWrapper
+      as="figure"
+      className="relative my-4"
+      contentEditable={false}
+      data-figure
+    >
       <div className="cursor-pointer" onClick={() => setEditing(!editing)}>
-        <FigureView src={src} alt={alt} caption={caption} width={width} align={align} />
+        <FigureView
+          src={src}
+          alt={alt}
+          caption={caption}
+          width={width}
+          align={align}
+        />
       </div>
 
       {editing && (
@@ -43,7 +62,9 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
           ref={panelRef}
           className="absolute top-full left-0 mt-1 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]"
         >
-          <label className="text-xs font-medium block mb-1">{t('editor.figure.imageUrl')}</label>
+          <label className="text-xs font-medium block mb-1">
+            {t("editor.figure.imageUrl")}
+          </label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
@@ -51,43 +72,55 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
             placeholder="https://..."
             onChange={(e) => updateAttributes({ src: e.target.value })}
           />
-          <label className="text-xs font-medium block mb-1">{t('editor.figure.altText')}</label>
+          <label className="text-xs font-medium block mb-1">
+            {t("editor.figure.altText")}
+          </label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={alt}
-            placeholder={t('editor.figure.imageDescription')}
+            placeholder={t("editor.figure.imageDescription")}
             onChange={(e) => updateAttributes({ alt: e.target.value })}
           />
-          <label className="text-xs font-medium block mb-1">{t('editor.figure.caption')}</label>
+          <label className="text-xs font-medium block mb-1">
+            {t("editor.figure.caption")}
+          </label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={caption}
-            placeholder={t('editor.figure.captionPlaceholder')}
+            placeholder={t("editor.figure.captionPlaceholder")}
             onChange={(e) => updateAttributes({ caption: e.target.value })}
           />
           <div className="flex gap-2 mb-2">
             <div className="flex-1">
-              <label className="text-xs font-medium block mb-1">{t('editor.figure.width')}</label>
+              <label className="text-xs font-medium block mb-1">
+                {t("editor.figure.width")}
+              </label>
               <input
                 type="number"
                 className="rte-input rte-input--sm w-full"
-                value={width ?? ''}
-                placeholder={t('editor.figure.auto')}
-                onChange={(e) => updateAttributes({ width: Number(e.target.value) || undefined })}
+                value={width ?? ""}
+                placeholder={t("editor.figure.auto")}
+                onChange={(e) =>
+                  updateAttributes({
+                    width: Number(e.target.value) || undefined,
+                  })
+                }
               />
             </div>
             <div className="flex-1">
-              <label className="text-xs font-medium block mb-1">{t('editor.figure.align')}</label>
+              <label className="text-xs font-medium block mb-1">
+                {t("editor.figure.align")}
+              </label>
               <select
                 className="rte-select rte-select--sm w-full"
                 value={align}
                 onChange={(e) => updateAttributes({ align: e.target.value })}
               >
-                <option value="left">{t('editor.figure.alignLeft')}</option>
-                <option value="center">{t('editor.figure.alignCenter')}</option>
-                <option value="right">{t('editor.figure.alignRight')}</option>
+                <option value="left">{t("editor.figure.alignLeft")}</option>
+                <option value="center">{t("editor.figure.alignCenter")}</option>
+                <option value="right">{t("editor.figure.alignRight")}</option>
               </select>
             </div>
           </div>
@@ -107,7 +140,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
                 }
               }}
             >
-              {t('editor.delete')}
+              {t("editor.delete")}
             </button>
             <button
               type="button"
@@ -117,7 +150,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
                 setEditing(false);
               }}
             >
-              {t('editor.confirm')}
+              {t("editor.confirm")}
             </button>
           </div>
         </div>

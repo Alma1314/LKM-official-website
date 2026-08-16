@@ -1,4 +1,4 @@
-import { buildAuthUrl } from '~/lib/utils/paths';
+import { buildAuthUrl } from "~/lib/utils/paths";
 
 declare global {
   interface Window {
@@ -7,10 +7,10 @@ declare global {
 }
 
 export function getBaseUrl(): string {
-  if (typeof window !== 'undefined' && window.__BASE_URL__) {
+  if (typeof window !== "undefined" && window.__BASE_URL__) {
     return window.__BASE_URL__;
   }
-  return '/';
+  return "/";
 }
 
 export function getAuthPath(path: string): string {

@@ -1,24 +1,65 @@
 <template>
   <div class="write">
-    <h1 class="page-title">✍️ {{ t('treehole.write.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.write.subtitle') }}</p>
+    <h1 class="page-title">✍️ {{ t("treehole.write.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.write.subtitle") }}</p>
 
     <div class="write-grid">
       <!-- 左：编辑器 -->
       <section class="editor-card glass">
         <!-- 工具栏 -->
         <div class="toolbar">
-          <button class="tb-btn" @click="insertEmoji" :title="t('treehole.write.emoji')">😊</button>
-          <button class="tb-btn" :class="{ on: recording }" @click="toggleVoice" :title="t('treehole.write.voice')">
+          <button
+            class="tb-btn"
+            @click="insertEmoji"
+            :title="t('treehole.write.emoji')"
+          >
+            😊
+          </button>
+          <button
+            class="tb-btn"
+            :class="{ on: recording }"
+            @click="toggleVoice"
+            :title="t('treehole.write.voice')"
+          >
             🎙️
           </button>
           <span class="tb-sep"></span>
-          <button class="tb-btn" :class="{ on: fontSize === 'small' }" @click="setFont('small')">A-</button>
-          <button class="tb-btn" :class="{ on: fontSize === 'normal' }" @click="setFont('normal')">A</button>
-          <button class="tb-btn" :class="{ on: fontSize === 'large' }" @click="setFont('large')">A+</button>
+          <button
+            class="tb-btn"
+            :class="{ on: fontSize === 'small' }"
+            @click="setFont('small')"
+          >
+            A-
+          </button>
+          <button
+            class="tb-btn"
+            :class="{ on: fontSize === 'normal' }"
+            @click="setFont('normal')"
+          >
+            A
+          </button>
+          <button
+            class="tb-btn"
+            :class="{ on: fontSize === 'large' }"
+            @click="setFont('large')"
+          >
+            A+
+          </button>
           <span class="tb-sep"></span>
-          <button class="tb-btn" @click="newLine" :title="t('treehole.write.newline')">↵</button>
-          <button class="tb-btn" @click="clearText" :title="t('treehole.write.clear')">🗑️</button>
+          <button
+            class="tb-btn"
+            @click="newLine"
+            :title="t('treehole.write.newline')"
+          >
+            ↵
+          </button>
+          <button
+            class="tb-btn"
+            @click="clearText"
+            :title="t('treehole.write.clear')"
+          >
+            🗑️
+          </button>
         </div>
 
         <!-- 信纸正文 -->
@@ -35,12 +76,21 @@
         </div>
 
         <!-- 字数 -->
-        <div class="counter" :class="{ over: content.length > 1000 }">{{ content.length }}/1000</div>
+        <div class="counter" :class="{ over: content.length > 1000 }">
+          {{ content.length }}/1000
+        </div>
 
         <!-- 表情面板 -->
         <transition name="dialog-fade">
           <div v-if="emojiOpen" class="emoji-pop glass">
-            <button v-for="e in emojis" :key="e" class="emoji-item" @click="pickEmoji(e)">{{ e }}</button>
+            <button
+              v-for="e in emojis"
+              :key="e"
+              class="emoji-item"
+              @click="pickEmoji(e)"
+            >
+              {{ e }}
+            </button>
           </div>
         </transition>
       </section>
@@ -49,7 +99,7 @@
       <aside class="setup glass">
         <!-- 分类 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.category') }}</label>
+          <label class="setup-label">{{ t("treehole.write.category") }}</label>
           <div class="cat-grid">
             <button
               v-for="c in categories"
@@ -66,7 +116,9 @@
 
         <!-- 保密等级 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.privacyLevel') }}</label>
+          <label class="setup-label">{{
+            t("treehole.write.privacyLevel")
+          }}</label>
           <div class="privacy-list">
             <button
               v-for="p in privacy"
@@ -83,18 +135,22 @@
 
         <!-- 匿名昵称 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.codename') }}</label>
+          <label class="setup-label">{{ t("treehole.write.codename") }}</label>
           <div class="nick-row">
-            <n-input v-model="codename" :placeholder="t('treehole.write.codenamePlaceholder')" size="large" />
+            <n-input
+              v-model="codename"
+              :placeholder="t('treehole.write.codenamePlaceholder')"
+              size="large"
+            />
             <button class="btn-grad ghost" @click="codename = randomCodename()">
-              {{ t('treehole.write.random') }}
+              {{ t("treehole.write.random") }}
             </button>
           </div>
         </div>
 
         <!-- 心情标签 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.moods') }}</label>
+          <label class="setup-label">{{ t("treehole.write.moods") }}</label>
           <div class="mood-pick">
             <button
               v-for="m in moods"
@@ -110,7 +166,7 @@
 
         <!-- 内容标签 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.tags') }}</label>
+          <label class="setup-label">{{ t("treehole.write.tags") }}</label>
           <div class="tag-pick">
             <button
               v-for="tg in tagsList"
@@ -123,15 +179,19 @@
               {{ tg.emoji }} {{ t(tg.label) }}
             </button>
           </div>
-          <small class="tag-hint">{{ t('treehole.write.tagsHint') }}</small>
+          <small class="tag-hint">{{ t("treehole.write.tagsHint") }}</small>
         </div>
 
         <!-- 背景贴纸 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.sticker') }}</label>
+          <label class="setup-label">{{ t("treehole.write.sticker") }}</label>
           <div class="sticker-pick">
-            <button class="sticker-btn" :class="{ active: !sticker }" @click="sticker = ''">
-              {{ t('treehole.write.none') }}
+            <button
+              class="sticker-btn"
+              :class="{ active: !sticker }"
+              @click="sticker = ''"
+            >
+              {{ t("treehole.write.none") }}
             </button>
             <button
               v-for="s in stickers"
@@ -147,7 +207,7 @@
 
         <!-- 信纸模板 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.paper') }}</label>
+          <label class="setup-label">{{ t("treehole.write.paper") }}</label>
           <div class="paper-pick">
             <button
               v-for="p in papers"
@@ -164,9 +224,17 @@
 
         <!-- 涂鸦手写信纸 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.doodle') }}</label>
-          <button class="chip" :class="{ active: doodleOn }" @click="toggleDoodle">
-            {{ doodleOn ? t('treehole.write.doodling') : t('treehole.write.openDoodle') }}
+          <label class="setup-label">{{ t("treehole.write.doodle") }}</label>
+          <button
+            class="chip"
+            :class="{ active: doodleOn }"
+            @click="toggleDoodle"
+          >
+            {{
+              doodleOn
+                ? t("treehole.write.doodling")
+                : t("treehole.write.openDoodle")
+            }}
           </button>
           <div v-if="doodleOn" class="doodle-wrap">
             <canvas
@@ -183,18 +251,28 @@
             ></canvas>
             <div class="doodle-tools">
               <input type="color" v-model="doodleColor" class="doodle-color" />
-              <button class="mini" @click="clearDoodle">{{ t('treehole.write.clearDoodle') }}</button>
-              <button class="mini" @click="saveDoodle">{{ t('treehole.write.saveToPaper') }}</button>
+              <button class="mini" @click="clearDoodle">
+                {{ t("treehole.write.clearDoodle") }}
+              </button>
+              <button class="mini" @click="saveDoodle">
+                {{ t("treehole.write.saveToPaper") }}
+              </button>
             </div>
           </div>
         </div>
 
         <!-- 定时发布 / 限时封存 -->
         <div class="setup-block">
-          <label class="setup-label">{{ t('treehole.write.scheduleSeal') }}</label>
+          <label class="setup-label">{{
+            t("treehole.write.scheduleSeal")
+          }}</label>
           <div class="toggle-row">
-            <span>{{ t('treehole.write.scheduled') }}</span>
-            <button class="switch" :class="{ on: scheduledOn }" @click="scheduledOn = !scheduledOn">
+            <span>{{ t("treehole.write.scheduled") }}</span>
+            <button
+              class="switch"
+              :class="{ on: scheduledOn }"
+              @click="scheduledOn = !scheduledOn"
+            >
               <span class="knob"></span>
             </button>
           </div>
@@ -207,8 +285,14 @@
             size="large"
           />
           <div class="toggle-row" style="margin-top: 8px">
-            <span>{{ t('treehole.write.seal') }}</span>
-            <button class="switch" :class="{ on: sealOn }" @click="sealOn = !sealOn"><span class="knob"></span></button>
+            <span>{{ t("treehole.write.seal") }}</span>
+            <button
+              class="switch"
+              :class="{ on: sealOn }"
+              @click="sealOn = !sealOn"
+            >
+              <span class="knob"></span>
+            </button>
           </div>
           <n-date-picker
             v-if="sealOn"
@@ -223,28 +307,49 @@
         <!-- 敏感词提示 -->
         <transition name="dialog-fade">
           <div v-if="sensitiveHit.length" class="warn">
-            ⚠️ {{ t('treehole.write.sensitiveHit', { words: sensitiveHit.join('、') }) }}
+            ⚠️
+            {{
+              t("treehole.write.sensitiveHit", {
+                words: sensitiveHit.join("、"),
+              })
+            }}
           </div>
         </transition>
 
         <!-- 验证码防刷 -->
         <div class="setup-block captcha-block">
-          <label class="setup-label">{{ t('treehole.write.captcha') }}</label>
+          <label class="setup-label">{{ t("treehole.write.captcha") }}</label>
           <div class="captcha-row">
-            <div class="captcha-code" @click="refreshCaptcha">{{ captcha }}</div>
-            <n-input v-model="captchaInput" :placeholder="t('treehole.write.captchaPlaceholder')" size="large" />
+            <div class="captcha-code" @click="refreshCaptcha">
+              {{ captcha }}
+            </div>
+            <n-input
+              v-model="captchaInput"
+              :placeholder="t('treehole.write.captchaPlaceholder')"
+              size="large"
+            />
           </div>
         </div>
 
         <!-- 操作 -->
         <div class="setup-actions">
-          <button class="chip" @click="saveDraft">{{ t('treehole.write.saveDraft') }}</button>
-          <button class="chip" @click="clearAll">{{ t('treehole.write.clearAll') }}</button>
-          <button class="btn-grad submit" :disabled="!canSubmit" @click="submit">
-            {{ t('treehole.write.submit') }}
+          <button class="chip" @click="saveDraft">
+            {{ t("treehole.write.saveDraft") }}
+          </button>
+          <button class="chip" @click="clearAll">
+            {{ t("treehole.write.clearAll") }}
+          </button>
+          <button
+            class="btn-grad submit"
+            :disabled="!canSubmit"
+            @click="submit"
+          >
+            {{ t("treehole.write.submit") }}
           </button>
         </div>
-        <p v-if="!canSubmit" class="hint">{{ t('treehole.write.submitHint') }}</p>
+        <p v-if="!canSubmit" class="hint">
+          {{ t("treehole.write.submitHint") }}
+        </p>
       </aside>
     </div>
 
@@ -258,36 +363,50 @@
     >
       <div class="success glass">
         <div class="success-ring">✓</div>
-        <h2 class="grad-text">{{ t('treehole.write.successTitle') }}</h2>
-        <p>{{ t('treehole.write.successPrefix') }}{{ successTip }}</p>
+        <h2 class="grad-text">{{ t("treehole.write.successTitle") }}</h2>
+        <p>{{ t("treehole.write.successPrefix") }}{{ successTip }}</p>
         <div class="success-acts">
-          <button class="chip" @click="toShare">{{ t('treehole.write.shareImage') }}</button>
-          <button class="btn-grad" @click="afterSubmit">{{ t('treehole.write.writeAnother') }}</button>
+          <button class="chip" @click="toShare">
+            {{ t("treehole.write.shareImage") }}
+          </button>
+          <button class="btn-grad" @click="afterSubmit">
+            {{ t("treehole.write.writeAnother") }}
+          </button>
         </div>
       </div>
     </n-modal>
 
     <!-- 分享图弹窗 -->
-    <n-modal v-model:show="shareVisible" preset="card" :show-icon="false" style="width: min(380px, 92vw)">
+    <n-modal
+      v-model:show="shareVisible"
+      preset="card"
+      :show-icon="false"
+      style="width: min(380px, 92vw)"
+    >
       <div class="share-card" ref="shareRef" :style="{ background: paperBg }">
-        <div class="share-head">{{ t('treehole.write.shareBrand') }}</div>
-        <div class="share-cat">{{ getCategory(category).emoji }} {{ t(getCategory(category).label) }}</div>
+        <div class="share-head">{{ t("treehole.write.shareBrand") }}</div>
+        <div class="share-cat">
+          {{ getCategory(category).emoji }} {{ t(getCategory(category).label) }}
+        </div>
         <p class="share-content">{{ content }}</p>
         <div class="share-foot">
-          {{ codename || t('treehole.write.anonymous') }} · {{ new Date().toLocaleDateString() }}
+          {{ codename || t("treehole.write.anonymous") }} ·
+          {{ new Date().toLocaleDateString() }}
         </div>
       </div>
       <template #footer>
-        <button class="btn-grad" @click="downloadShare">{{ t('treehole.write.saveImage') }}</button>
+        <button class="btn-grad" @click="downloadShare">
+          {{ t("treehole.write.saveImage") }}
+        </button>
       </template>
     </n-modal>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useMessage } from 'naive-ui';
+import { ref, computed, onMounted, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useMessage } from "naive-ui";
 import {
   CATEGORIES,
   PRIVACY,
@@ -300,10 +419,10 @@ import {
   getCategory,
   getPaper,
   moodKey,
-} from '../stores/constants';
-import * as store from '../stores/storage';
-import { randomCodename } from '../utils/codename';
-import { t } from '~/lib/i18n';
+} from "../stores/constants";
+import * as store from "../stores/storage";
+import { randomCodename } from "../utils/codename";
+import { t } from "~/lib/i18n";
 
 const route = useRoute();
 const router = useRouter();
@@ -317,24 +436,30 @@ const emojis = EMOJIS;
 const tagsList = TAGS;
 
 const ta = ref(null);
-const content = ref('');
-const fontSize = ref('normal');
-const fontPx = computed(() => (fontSize.value === 'small' ? '14px' : fontSize.value === 'large' ? '19px' : '16px'));
-const category = ref('heart');
-const privacyLevel = ref('public');
-const codename = ref('');
+const content = ref("");
+const fontSize = ref("normal");
+const fontPx = computed(() =>
+  fontSize.value === "small"
+    ? "14px"
+    : fontSize.value === "large"
+      ? "19px"
+      : "16px",
+);
+const category = ref("heart");
+const privacyLevel = ref("public");
+const codename = ref("");
 const selectedMoods = ref([]);
 const selectedTags = ref([]);
-const sticker = ref('');
-const paper = ref('paper');
+const sticker = ref("");
+const paper = ref("paper");
 const paperBg = computed(() => getPaper(paper.value).gradient);
 
 const emojiOpen = ref(false);
-const captcha = ref('');
-const captchaInput = ref('');
+const captcha = ref("");
+const captchaInput = ref("");
 
 const successVisible = ref(false);
-const successTip = ref('');
+const successTip = ref("");
 const shareVisible = ref(false);
 const shareRef = ref(null);
 const lastLetter = ref(null);
@@ -342,7 +467,7 @@ const lastLetter = ref(null);
 // 新功能状态
 const doodleOn = ref(false);
 const doodleCanvas = ref(null);
-const doodleColor = ref('#5a4a3f');
+const doodleColor = ref("#5a4a3f");
 let drawing = false;
 const scheduledOn = ref(false);
 const scheduledAt = ref(null);
@@ -353,18 +478,18 @@ let mediaRec = null;
 let _recTimer = null;
 
 // 编辑草稿 / 未公开信件带入
-const editingId = ref('');
+const editingId = ref("");
 function hydrate(d) {
   if (!d) return;
-  editingId.value = d.id || '';
-  content.value = d.content || '';
-  category.value = d.category || 'heart';
-  privacyLevel.value = d.privacyLevel || d.privacy || 'public';
-  codename.value = d.codename || '';
+  editingId.value = d.id || "";
+  content.value = d.content || "";
+  category.value = d.category || "heart";
+  privacyLevel.value = d.privacyLevel || d.privacy || "public";
+  codename.value = d.codename || "";
   selectedMoods.value = d.selectedMoods || d.moods || [];
   selectedTags.value = d.selectedTags || d.tags || [];
-  sticker.value = d.sticker || '';
-  paper.value = d.paper || 'paper';
+  sticker.value = d.sticker || "";
+  paper.value = d.paper || "paper";
 }
 async function hydrateFromQuery() {
   const { draftId, letterId } = route.query;
@@ -379,9 +504,10 @@ async function hydrateFromQuery() {
 onMounted(hydrateFromQuery);
 
 function genCaptcha() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = '';
-  for (let i = 0; i < 4; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let s = "";
+  for (let i = 0; i < 4; i++)
+    s += chars[Math.floor(Math.random() * chars.length)];
   return s;
 }
 function refreshCaptcha() {
@@ -389,25 +515,27 @@ function refreshCaptcha() {
 }
 onMounted(refreshCaptcha);
 
-const sensitiveHit = computed(() => SENSITIVE_WORDS.filter((w) => content.value.includes(w)));
+const sensitiveHit = computed(() =>
+  SENSITIVE_WORDS.filter((w) => content.value.includes(w)),
+);
 
 const canSubmit = computed(
   () =>
     content.value.trim().length > 0 &&
     content.value.length <= 1000 &&
     captchaInput.value.toUpperCase() === captcha.value.toUpperCase() &&
-    sensitiveHit.value.length === 0
+    sensitiveHit.value.length === 0,
 );
 
 function setFont(f) {
   fontSize.value = f;
 }
 function newLine() {
-  content.value += '\n';
+  content.value += "\n";
   ta.value?.focus();
 }
 function clearText() {
-  content.value = '';
+  content.value = "";
   ta.value?.focus();
 }
 function onInput() {
@@ -434,13 +562,13 @@ function toggleTag(t) {
 }
 
 function clearAll() {
-  content.value = '';
-  codename.value = '';
+  content.value = "";
+  codename.value = "";
   selectedMoods.value = [];
   selectedTags.value = [];
-  sticker.value = '';
-  fontSize.value = 'normal';
-  captchaInput.value = '';
+  sticker.value = "";
+  fontSize.value = "normal";
+  captchaInput.value = "";
   refreshCaptcha();
   scheduledOn.value = false;
   scheduledAt.value = null;
@@ -452,11 +580,11 @@ function clearAll() {
 
 function saveDraft() {
   if (!content.value.trim()) {
-    message.info(t('treehole.write.emptyDraftMsg'));
+    message.info(t("treehole.write.emptyDraftMsg"));
     return;
   }
   store.saveDraft({
-    id: 'draft_' + Date.now(),
+    id: "draft_" + Date.now(),
     content: content.value,
     category: category.value,
     privacyLevel: privacyLevel.value,
@@ -471,7 +599,7 @@ function saveDraft() {
     sealUntil: sealUntil.value || null,
     updatedAt: Date.now(),
   });
-  message.success(t('treehole.write.draftSaved'));
+  message.success(t("treehole.write.draftSaved"));
 }
 
 // 语音转文字（Web Speech API，自动降级）
@@ -482,24 +610,25 @@ function toggleVoice() {
   }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    message.info(t('treehole.write.noVoiceSupport'));
+    message.info(t("treehole.write.noVoiceSupport"));
     return;
   }
   const rec = new SR();
-  rec.lang = 'zh-CN';
+  rec.lang = "zh-CN";
   rec.interimResults = true;
   rec.continuous = false;
   rec.onresult = (e) => {
-    let txt = '';
-    for (let i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript;
-    content.value = (content.value ? content.value + ' ' : '') + txt;
+    let txt = "";
+    for (let i = 0; i < e.results.length; i++)
+      txt += e.results[i][0].transcript;
+    content.value = (content.value ? content.value + " " : "") + txt;
   };
   rec.onend = () => {
     recording.value = false;
   };
   rec.onerror = () => {
     recording.value = false;
-    message.info(t('treehole.write.voiceEnd'));
+    message.info(t("treehole.write.voiceEnd"));
   };
   try {
     rec.start();
@@ -525,13 +654,16 @@ function toggleDoodle() {
 }
 function getCtx() {
   const c = doodleCanvas.value;
-  return c ? c.getContext('2d') : null;
+  return c ? c.getContext("2d") : null;
 }
 function pos(e) {
   const c = doodleCanvas.value;
   const r = c.getBoundingClientRect();
   const t = e.touches ? e.touches[0] : e;
-  return { x: (t.clientX - r.left) * (c.width / r.width), y: (t.clientY - r.top) * (c.height / r.height) };
+  return {
+    x: (t.clientX - r.left) * (c.width / r.width),
+    y: (t.clientY - r.top) * (c.height / r.height),
+  };
 }
 function startDraw(e) {
   drawing = true;
@@ -546,7 +678,7 @@ function draw(e) {
   const ctx = getCtx();
   ctx.strokeStyle = doodleColor.value;
   ctx.lineWidth = 2.4;
-  ctx.lineCap = 'round';
+  ctx.lineCap = "round";
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
 }
@@ -561,19 +693,19 @@ function clearDoodle() {
 function saveDoodle() {
   const c = doodleCanvas.value;
   if (!c) return;
-  const dataUrl = c.toDataURL('image/png');
+  const dataUrl = c.toDataURL("image/png");
   store.saveSketch(dataUrl);
-  content.value += `\n${t('treehole.write.doodleSavedText')}`;
-  message.success(t('treehole.write.doodleSavedMsg'));
+  content.value += `\n${t("treehole.write.doodleSavedText")}`;
+  message.success(t("treehole.write.doodleSavedMsg"));
 }
 
 function submit() {
   if (sensitiveHit.value.length) {
-    message.warning(t('treehole.write.sensitiveWarning'));
+    message.warning(t("treehole.write.sensitiveWarning"));
     return;
   }
   if (!store.canPost()) {
-    message.warning(t('treehole.write.rateLimitWarning'));
+    message.warning(t("treehole.write.rateLimitWarning"));
     return;
   }
   const finalContent = content.value.trim();
@@ -581,13 +713,15 @@ function submit() {
   const isScheduled = scheduledOn.value && scheduledAt.value;
   const now = Date.now();
   const letter = {
-    id: editingId.value || 'letter_' + now + '_' + Math.floor(Math.random() * 10000),
-    userId: 'local',
+    id:
+      editingId.value ||
+      "letter_" + now + "_" + Math.floor(Math.random() * 10000),
+    userId: "local",
     content: finalContent,
     encrypted: 0,
     category: category.value,
     privacy: privacyLevel.value,
-    status: isScheduled ? 'scheduled' : 'published',
+    status: isScheduled ? "scheduled" : "published",
     scheduledPrivacy: isScheduled ? privacyLevel.value : null,
     scheduledAt: isScheduled ? scheduledAt.value : null,
     sealUntil: sealOn.value && sealUntil.value ? sealUntil.value : null,
@@ -604,16 +738,16 @@ function submit() {
   };
   if (editingId.value) {
     store.updateLetter(editingId.value, letter);
-    successTip.value = t('treehole.write.updatedTip');
+    successTip.value = t("treehole.write.updatedTip");
   } else {
     store.addLetter(letter);
     store.logPost();
     lastLetter.value = letter;
     successTip.value = isScheduled
-      ? t('treehole.write.scheduledTip')
-      : privacyLevel.value === 'public'
-        ? t('treehole.write.publishedTip')
-        : t('treehole.write.privateTip');
+      ? t("treehole.write.scheduledTip")
+      : privacyLevel.value === "public"
+        ? t("treehole.write.publishedTip")
+        : t("treehole.write.privateTip");
   }
   // 记录心情
   if (selectedMoods.value.length) {
@@ -625,7 +759,7 @@ function submit() {
 function afterSubmit() {
   successVisible.value = false;
   clearAll();
-  router.push('/');
+  router.push("/");
 }
 function toShare() {
   shareVisible.value = true;
@@ -637,14 +771,14 @@ function downloadShare() {
   const clone = node.cloneNode(true);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="${Math.max(420, node.scrollHeight)}">
     <foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml">${clone.outerHTML}</div></foreignObject></svg>`;
-  const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = `${t('treehole.write.shareFilename')}.svg`;
+  a.download = `${t("treehole.write.shareFilename")}.svg`;
   a.click();
   URL.revokeObjectURL(url);
-  message.success(t('treehole.write.shareSaved'));
+  message.success(t("treehole.write.shareSaved"));
 }
 </script>
 

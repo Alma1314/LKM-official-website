@@ -23,9 +23,15 @@
     <div class="flex-1">
       <div class="flex items-center justify-between mb-4">
         <span class="text-sm text-text-muted">{{
-          t('community.competition.questionOf', { current: currentIndex + 1, total: questions.length })
+          t("community.competition.questionOf", {
+            current: currentIndex + 1,
+            total: questions.length,
+          })
         }}</span>
-        <span class="text-sm font-mono font-bold" :class="remaining < 300 ? 'text-red-500' : 'text-primary'">
+        <span
+          class="text-sm font-mono font-bold"
+          :class="remaining < 300 ? 'text-red-500' : 'text-primary'"
+        >
           {{ formatTime(remaining) }}
         </span>
       </div>
@@ -44,28 +50,40 @@
             "
             @click="answers[currentIndex] = i"
           >
-            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ t(opt) }}
+            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span
+            >{{ t(opt) }}
           </button>
         </div>
       </div>
 
       <div class="flex justify-between mt-4">
-        <button class="btn-ghost text-sm px-4 py-2" :disabled="currentIndex === 0" @click="currentIndex--">
-          {{ t('community.competition.previous') }}
+        <button
+          class="btn-ghost text-sm px-4 py-2"
+          :disabled="currentIndex === 0"
+          @click="currentIndex--"
+        >
+          {{ t("community.competition.previous") }}
         </button>
         <div class="flex gap-2">
           <span class="text-xs text-text-muted self-center">{{
-            t('community.competition.answered', { count: answeredCount, total: questions.length })
+            t("community.competition.answered", {
+              count: answeredCount,
+              total: questions.length,
+            })
           }}</span>
           <button
             v-if="currentIndex < questions.length - 1"
             class="btn-primary px-5 py-2 rounded-lg text-sm"
             @click="currentIndex++"
           >
-            {{ t('community.competition.next') }}
+            {{ t("community.competition.next") }}
           </button>
-          <button v-else class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" @click="submit">
-            {{ t('community.competition.submitExam') }}
+          <button
+            v-else
+            class="btn-primary px-5 py-2 rounded-lg text-sm font-bold"
+            @click="submit"
+          >
+            {{ t("community.competition.submitExam") }}
           </button>
         </div>
       </div>
@@ -74,21 +92,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { mockQuestions } from '../data/mock-competitions';
-import { buildUrl } from '~/lib/utils/paths';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { mockQuestions } from "../data/mock-competitions";
+import { buildUrl } from "~/lib/utils/paths";
+import { t } from "~/lib/i18n";
 
 const questions = ref(mockQuestions.slice(0, 8));
-const answers = ref<(number | undefined)[]>(new Array(questions.value.length).fill(undefined));
+const answers = ref<(number | undefined)[]>(
+  new Array(questions.value.length).fill(undefined),
+);
 const currentIndex = ref(0);
 const remaining = ref(7200); // 120 minutes
 let timer: ReturnType<typeof setInterval>;
 
 const currentQ = computed(() => questions.value[currentIndex.value]);
-const answeredCount = computed(() => answers.value.filter((a) => a !== undefined).length);
+const answeredCount = computed(
+  () => answers.value.filter((a) => a !== undefined).length,
+);
 
-const labels = ['A', 'B', 'C', 'D'];
+const labels = ["A", "B", "C", "D"];
 
 onMounted(() => {
   timer = setInterval(() => {
@@ -101,19 +123,21 @@ onUnmounted(() => clearInterval(timer));
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
   const sec = s % 60;
-  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
 function submit() {
-  const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
+  const correct = answers.value.filter(
+    (a, i) => a === questions.value[i].answer,
+  ).length;
   clearInterval(timer);
   alert(
-    t('community.competition.examSubmitted', {
+    t("community.competition.examSubmitted", {
       correct,
       total: questions.length,
       percent: Math.round((correct / questions.length) * 100),
-    })
+    }),
   );
-  window.location.href = buildUrl('/competition');
+  window.location.href = buildUrl("/competition");
 }
 </script>

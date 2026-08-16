@@ -1,4 +1,4 @@
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from "sanitize-html";
 
 /**
  * 统一的内容 HTML 消毒配置：允许常用富文本标签，外加 img 及必要属性。
@@ -6,10 +6,10 @@ import sanitizeHtml from 'sanitize-html';
  */
 export function sanitizeHtmlContent(html: string): string {
   return sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
-      img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+      img: ["src", "alt", "title", "width", "height", "loading"],
     },
   });
 }

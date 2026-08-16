@@ -3,18 +3,30 @@
     <div class="container">
       <!-- 头部 -->
       <section class="bottle-head glass float-up">
-        <h1 class="page-title">🍶 {{ t('treehole.bottle.title') }}</h1>
-        <button class="btn-grad" @click="throwDialogOpen = true">{{ t('treehole.bottle.throwBtn') }}</button>
+        <h1 class="page-title">🍶 {{ t("treehole.bottle.title") }}</h1>
+        <button class="btn-grad" @click="throwDialogOpen = true">
+          {{ t("treehole.bottle.throwBtn") }}
+        </button>
       </section>
 
       <!-- 无漂流瓶状态 -->
       <section v-if="!currentBottle" class="bottle-empty glass float-up">
         <div class="bottle-sea">
           <div class="sea-emoji">🌊</div>
-          <p class="sea-text">{{ t('treehole.bottle.seaText', { count: bottleCount }) }}</p>
-          <p class="sea-sub">{{ t('treehole.bottle.seaSub') }}</p>
-          <button class="btn-grad" @click="pickBottleHandler" :disabled="picking || bottleCount === 0">
-            {{ picking ? t('treehole.bottle.picking') : t('treehole.bottle.pickBtn') }}
+          <p class="sea-text">
+            {{ t("treehole.bottle.seaText", { count: bottleCount }) }}
+          </p>
+          <p class="sea-sub">{{ t("treehole.bottle.seaSub") }}</p>
+          <button
+            class="btn-grad"
+            @click="pickBottleHandler"
+            :disabled="picking || bottleCount === 0"
+          >
+            {{
+              picking
+                ? t("treehole.bottle.picking")
+                : t("treehole.bottle.pickBtn")
+            }}
           </button>
         </div>
       </section>
@@ -26,9 +38,13 @@
           <div class="bottle-text">{{ currentBottle.text }}</div>
           <div class="bottle-meta">
             <span class="bottle-from">{{
-              t('treehole.bottle.from', { name: currentBottle.from || t('treehole.bottle.stranger') })
+              t("treehole.bottle.from", {
+                name: currentBottle.from || t("treehole.bottle.stranger"),
+              })
             }}</span>
-            <span class="bottle-date">{{ formatDate(currentBottle.createdAt) }}</span>
+            <span class="bottle-date">{{
+              formatDate(currentBottle.createdAt)
+            }}</span>
           </div>
         </div>
 
@@ -48,21 +64,33 @@
                 replyText = '';
               "
             >
-              {{ t('treehole.bottle.switchBottle') }}
+              {{ t("treehole.bottle.switchBottle") }}
             </button>
-            <button class="btn-grad btn-sm" @click="sendBottleReply" :disabled="!replyText.trim()">
-              {{ t('treehole.bottle.sendReply') }}
+            <button
+              class="btn-grad btn-sm"
+              @click="sendBottleReply"
+              :disabled="!replyText.trim()"
+            >
+              {{ t("treehole.bottle.sendReply") }}
             </button>
           </div>
-          <p v-if="replyOk" class="reply-ok">{{ t('treehole.bottle.replySent') }}</p>
+          <p v-if="replyOk" class="reply-ok">
+            {{ t("treehole.bottle.replySent") }}
+          </p>
         </div>
       </section>
 
       <!-- 扔漂流瓶弹窗 -->
-      <div v-if="throwDialogOpen" class="dialog-overlay" @click.self="throwDialogOpen = false">
+      <div
+        v-if="throwDialogOpen"
+        class="dialog-overlay"
+        @click.self="throwDialogOpen = false"
+      >
         <div class="dialog-box glass">
-          <h3 class="dialog-title">🍶 {{ t('treehole.bottle.throwDialogTitle') }}</h3>
-          <p class="dialog-desc">{{ t('treehole.bottle.throwDialogDesc') }}</p>
+          <h3 class="dialog-title">
+            🍶 {{ t("treehole.bottle.throwDialogTitle") }}
+          </h3>
+          <p class="dialog-desc">{{ t("treehole.bottle.throwDialogDesc") }}</p>
           <textarea
             v-model="throwText"
             class="dialog-textarea"
@@ -77,10 +105,14 @@
                 throwText = '';
               "
             >
-              {{ t('treehole.bottle.cancel') }}
+              {{ t("treehole.bottle.cancel") }}
             </button>
-            <button class="btn-grad btn-sm" @click="throwBottle" :disabled="!throwText.trim()">
-              {{ t('treehole.bottle.throwBtn2') }}
+            <button
+              class="btn-grad btn-sm"
+              @click="throwBottle"
+              :disabled="!throwText.trim()"
+            >
+              {{ t("treehole.bottle.throwBtn2") }}
             </button>
           </div>
         </div>
@@ -90,18 +122,23 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
-import { getBottles, addBottle, pickBottle, markBottlePicked } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
+import {
+  getBottles,
+  addBottle,
+  pickBottle,
+  markBottlePicked,
+} from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const allBottles = ref([]);
 const currentBottle = ref(null);
 const picking = ref(false);
-const replyText = ref('');
+const replyText = ref("");
 const replyOk = ref(false);
 const throwDialogOpen = ref(false);
-const throwText = ref('');
+const throwText = ref("");
 
 const bottleCount = computed(() => {
   return allBottles.value.filter((b) => !b.picked).length;
@@ -113,7 +150,7 @@ function loadBottles() {
 
 function pickBottleHandler() {
   picking.value = true;
-  replyText.value = '';
+  replyText.value = "";
   replyOk.value = false;
   setTimeout(() => {
     const bottle = pickBottle();
@@ -129,7 +166,7 @@ function sendBottleReply() {
   loadBottles();
   setTimeout(() => {
     currentBottle.value = null;
-    replyText.value = '';
+    replyText.value = "";
     replyOk.value = false;
   }, 1500);
 }
@@ -137,22 +174,26 @@ function sendBottleReply() {
 function throwBottle() {
   if (!throwText.value.trim()) return;
   addBottle({
-    id: 'bottle_' + Date.now(),
+    id: "bottle_" + Date.now(),
     text: throwText.value.trim(),
-    from: t('treehole.bottle.stranger'),
+    from: t("treehole.bottle.stranger"),
     createdAt: Date.now(),
     picked: false,
-    ownerId: 'me_local',
+    ownerId: "me_local",
   });
-  throwText.value = '';
+  throwText.value = "";
   throwDialogOpen.value = false;
   loadBottles();
 }
 
 function formatDate(ts) {
-  if (!ts) return '';
+  if (!ts) return "";
   const d = new Date(ts);
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return d.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 }
 
 onMounted(() => {
@@ -227,7 +268,11 @@ onMounted(() => {
   gap: 18px;
 }
 .bottle-display {
-  background: linear-gradient(135deg, rgba(173, 216, 230, 0.2), rgba(221, 160, 221, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(173, 216, 230, 0.2),
+    rgba(221, 160, 221, 0.15)
+  );
   padding: 28px 24px;
   border-radius: 16px;
   text-align: center;

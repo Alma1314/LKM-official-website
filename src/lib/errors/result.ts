@@ -3,4 +3,11 @@
 // 用法：
 //   import { ok, err, type Result } from '~/lib/errors/result';
 //   function doThing(): Result<Data, AppError> { ... }
-export { ok, err, okAsync, errAsync, type Result, type ResultAsync } from 'neverthrow';
+export {
+  ok,
+  err,
+  okAsync,
+  errAsync,
+  type Result,
+  type ResultAsync,
+} from "neverthrow";

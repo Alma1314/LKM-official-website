@@ -6,16 +6,21 @@
         <div
           class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl"
         >
-          {{ t('contribution.me') }}
+          {{ t("contribution.me") }}
         </div>
         <div class="flex-1">
-          <h1 class="text-xl font-bold text-deep-text">{{ t('contribution.title') }}</h1>
+          <h1 class="text-xl font-bold text-deep-text">
+            {{ t("contribution.title") }}
+          </h1>
           <div class="flex items-center gap-3 mt-1 text-sm">
-            <span class="text-text-muted">{{ t('contribution.currentPoints') }}</span>
-            <span class="text-2xl font-bold text-primary">12,500</span>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{{
-              t('contribution.columnAuthor')
+            <span class="text-text-muted">{{
+              t("contribution.currentPoints")
             }}</span>
+            <span class="text-2xl font-bold text-primary">12,500</span>
+            <span
+              class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary"
+              >{{ t("contribution.columnAuthor") }}</span
+            >
           </div>
         </div>
       </div>
@@ -28,7 +33,9 @@
         :key="tab.key"
         class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors shrink-0"
         :class="
-          activeTab === tab.key ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
+          activeTab === tab.key
+            ? 'bg-primary text-on-primary'
+            : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
         "
         @click="activeTab = tab.key"
       >
@@ -38,58 +45,92 @@
     </div>
 
     <!-- 成就墙 -->
-    <div v-if="activeTab === 'achievements'" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    <div
+      v-if="activeTab === 'achievements'"
+      class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
+    >
       <div
         v-for="ach in allAchievements"
         :key="ach.id"
         class="rounded-xl p-4 text-center transition-colors"
         :class="
-          ach.unlocked ? 'bg-card-bg border border-surface-3' : 'bg-surface-3/30 border border-surface-3 opacity-50'
+          ach.unlocked
+            ? 'bg-card-bg border border-surface-3'
+            : 'bg-surface-3/30 border border-surface-3 opacity-50'
         "
       >
         <div
           class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2"
-          :class="ach.unlocked ? 'bg-primary/10 text-primary' : 'bg-surface-3 text-text-muted'"
+          :class="
+            ach.unlocked
+              ? 'bg-primary/10 text-primary'
+              : 'bg-surface-3 text-text-muted'
+          "
         >
           <Icon :icon="ach.icon" class="w-6 h-6" />
         </div>
-        <div class="font-semibold text-sm" :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'">
+        <div
+          class="font-semibold text-sm"
+          :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'"
+        >
           {{ t(ach.name) }}
         </div>
-        <div class="text-xs text-text-muted/60 mt-1">{{ t(ach.description) }}</div>
+        <div class="text-xs text-text-muted/60 mt-1">
+          {{ t(ach.description) }}
+        </div>
         <div v-if="!ach.unlocked" class="mt-2">
           <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden">
-            <div class="h-full rounded-full bg-primary/40" :style="{ width: ach.progressPercent + '%' }"></div>
+            <div
+              class="h-full rounded-full bg-primary/40"
+              :style="{ width: ach.progressPercent + '%' }"
+            ></div>
           </div>
-          <div class="text-xs text-text-muted/50 mt-0.5">{{ ach.progress }}/{{ ach.threshold }}</div>
+          <div class="text-xs text-text-muted/50 mt-0.5">
+            {{ ach.progress }}/{{ ach.threshold }}
+          </div>
         </div>
       </div>
     </div>
 
     <!-- 积分明细 -->
-    <div v-if="activeTab === 'points'" class="bg-card-bg border border-surface-3 rounded-2xl overflow-hidden">
+    <div
+      v-if="activeTab === 'points'"
+      class="bg-card-bg border border-surface-3 rounded-2xl overflow-hidden"
+    >
       <div class="divide-y divide-surface-3">
-        <div v-for="log in pointLogs" :key="log.id" class="flex items-center justify-between px-5 py-3">
+        <div
+          v-for="log in pointLogs"
+          :key="log.id"
+          class="flex items-center justify-between px-5 py-3"
+        >
           <div>
             <div class="text-sm text-deep-text">{{ t(log.reason) }}</div>
             <div class="text-xs text-text-muted/60">{{ log.createdAt }}</div>
           </div>
-          <span class="text-sm font-semibold" :class="log.amount > 0 ? 'text-green-500' : 'text-red-500'">
-            {{ log.amount > 0 ? '+' : '' }}{{ log.amount }}
+          <span
+            class="text-sm font-semibold"
+            :class="log.amount > 0 ? 'text-green-500' : 'text-red-500'"
+          >
+            {{ log.amount > 0 ? "+" : "" }}{{ log.amount }}
           </span>
         </div>
       </div>
     </div>
 
     <!-- 排行榜 -->
-    <div v-if="activeTab === 'leaderboard'" class="bg-card-bg border border-surface-3 rounded-2xl overflow-hidden">
+    <div
+      v-if="activeTab === 'leaderboard'"
+      class="bg-card-bg border border-surface-3 rounded-2xl overflow-hidden"
+    >
       <div class="flex border-b border-surface-3">
         <button
           v-for="p in ['daily', 'weekly', 'total']"
           :key="p"
           class="flex-1 px-4 py-3 text-sm font-medium transition-colors"
           :class="
-            leaderboardPeriod === p ? 'text-primary border-b-2 border-primary' : 'text-text-muted hover:text-deep-text'
+            leaderboardPeriod === p
+              ? 'text-primary border-b-2 border-primary'
+              : 'text-text-muted hover:text-deep-text'
           "
           @click="leaderboardPeriod = p"
         >
@@ -97,7 +138,11 @@
         </button>
       </div>
       <div class="divide-y divide-surface-3">
-        <div v-for="entry in currentLeaderboard" :key="entry.username" class="flex items-center gap-3 px-5 py-3">
+        <div
+          v-for="entry in currentLeaderboard"
+          :key="entry.username"
+          class="flex items-center gap-3 px-5 py-3"
+        >
           <span
             class="w-8 text-center font-bold text-sm"
             :class="
@@ -110,7 +155,15 @@
                     : 'text-text-muted/60'
             "
           >
-            {{ entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : entry.rank === 3 ? '🥉' : entry.rank }}
+            {{
+              entry.rank === 1
+                ? "🥇"
+                : entry.rank === 2
+                  ? "🥈"
+                  : entry.rank === 3
+                    ? "🥉"
+                    : entry.rank
+            }}
           </span>
           <div
             class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm"
@@ -118,18 +171,25 @@
             {{ entry.displayName.charAt(0) }}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-deep-text truncate">{{ t(entry.displayName) }}</div>
+            <div class="text-sm font-medium text-deep-text truncate">
+              {{ t(entry.displayName) }}
+            </div>
             <div class="text-xs text-text-muted/60">{{ t(entry.title) }}</div>
           </div>
           <span class="text-sm font-semibold text-primary">{{
-            t('contribution.pointsSuffix', { points: entry.points.toLocaleString() })
+            t("contribution.pointsSuffix", {
+              points: entry.points.toLocaleString(),
+            })
           }}</span>
         </div>
       </div>
     </div>
 
     <!-- 兑换区 -->
-    <div v-if="activeTab === 'exchange'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div
+      v-if="activeTab === 'exchange'"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
       <div
         v-for="item in exchangeItems"
         :key="item.id"
@@ -144,24 +204,36 @@
                 : 'bg-amber-100 dark:bg-amber-950/30 text-amber-500'
             "
           >
-            {{ item.isVirtual ? t('contribution.virtual') : t('contribution.physical') }}
+            {{
+              item.isVirtual
+                ? t("contribution.virtual")
+                : t("contribution.physical")
+            }}
           </span>
-          <span v-if="item.stock > 0 && item.stock < 20" class="text-xs text-red-500">{{
-            t('contribution.lowStock', { stock: item.stock })
-          }}</span>
+          <span
+            v-if="item.stock > 0 && item.stock < 20"
+            class="text-xs text-red-500"
+            >{{ t("contribution.lowStock", { stock: item.stock }) }}</span
+          >
         </div>
         <h3 class="font-semibold text-deep-text mb-1">{{ t(item.name) }}</h3>
-        <p class="text-xs text-text-muted mb-3 flex-1">{{ t(item.description) }}</p>
+        <p class="text-xs text-text-muted mb-3 flex-1">
+          {{ t(item.description) }}
+        </p>
         <div class="flex items-center justify-between">
           <span class="text-sm font-bold text-primary">{{
-            t('contribution.pointsCost', { points: item.pointsCost })
+            t("contribution.pointsCost", { points: item.pointsCost })
           }}</span>
           <button
             class="btn-primary px-4 py-1.5 rounded-lg text-sm font-medium"
             :disabled="item.stock === 0"
             @click="handleExchange(item)"
           >
-            {{ item.stock === 0 ? t('contribution.soldOut') : t('contribution.exchange') }}
+            {{
+              item.stock === 0
+                ? t("contribution.soldOut")
+                : t("contribution.exchange")
+            }}
           </button>
         </div>
       </div>
@@ -170,23 +242,35 @@
     <!-- 任务中心 -->
     <div v-if="activeTab === 'tasks'" class="space-y-4">
       <!-- 打卡 -->
-      <div class="bg-card-bg border border-surface-3 rounded-2xl p-6 text-center">
+      <div
+        class="bg-card-bg border border-surface-3 rounded-2xl p-6 text-center"
+      >
         <div class="text-4xl mb-2">📅</div>
-        <h3 class="text-lg font-semibold text-deep-text">{{ t('contribution.dailyCheckin') }}</h3>
-        <p class="text-sm text-text-muted mb-3">{{ t('contribution.checkinStreak', { days: 7 }) }}</p>
+        <h3 class="text-lg font-semibold text-deep-text">
+          {{ t("contribution.dailyCheckin") }}
+        </h3>
+        <p class="text-sm text-text-muted mb-3">
+          {{ t("contribution.checkinStreak", { days: 7 }) }}
+        </p>
         <button
           class="btn-primary px-8 py-3 rounded-xl text-base font-semibold"
           :class="dailyCheckedIn ? 'opacity-50 cursor-not-allowed' : ''"
           :disabled="dailyCheckedIn"
           @click="doCheckin"
         >
-          {{ dailyCheckedIn ? t('contribution.checkedIn') : t('contribution.checkinReward', { points: 5 }) }}
+          {{
+            dailyCheckedIn
+              ? t("contribution.checkedIn")
+              : t("contribution.checkinReward", { points: 5 })
+          }}
         </button>
       </div>
 
       <!-- 任务列表 -->
       <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
-        <h3 class="font-semibold text-deep-text mb-4">{{ t('contribution.dailyTasks') }}</h3>
+        <h3 class="font-semibold text-deep-text mb-4">
+          {{ t("contribution.dailyTasks") }}
+        </h3>
         <div class="space-y-3">
           <div
             v-for="task in tasks"
@@ -206,26 +290,45 @@
                   : 'border-surface-3 text-transparent'
               "
             >
-              <Icon v-if="task.completed" icon="material-symbols:check" class="w-3 h-3" />
+              <Icon
+                v-if="task.completed"
+                icon="material-symbols:check"
+                class="w-3 h-3"
+              />
             </div>
             <div class="flex-1 min-w-0">
               <div
                 class="text-sm font-medium"
-                :class="task.completed ? 'text-text-muted line-through' : 'text-deep-text'"
+                :class="
+                  task.completed
+                    ? 'text-text-muted line-through'
+                    : 'text-deep-text'
+                "
               >
                 {{ t(task.title) }}
               </div>
               <div class="text-xs text-text-muted/60 mt-0.5">
-                {{ t(task.description) }} · {{ t('contribution.taskReward', { points: task.rewardPoints }) }}
+                {{ t(task.description) }} ·
+                {{
+                  t("contribution.taskReward", { points: task.rewardPoints })
+                }}
               </div>
               <div class="mt-1.5">
-                <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden w-32">
+                <div
+                  class="h-1.5 rounded-full bg-surface-3 overflow-hidden w-32"
+                >
                   <div
                     class="h-full rounded-full bg-primary transition-all"
-                    :style="{ width: (task.currentProgress / task.requirementCount) * 100 + '%' }"
+                    :style="{
+                      width:
+                        (task.currentProgress / task.requirementCount) * 100 +
+                        '%',
+                    }"
                   ></div>
                 </div>
-                <span class="text-xs text-text-muted/50">{{ task.currentProgress }}/{{ task.requirementCount }}</span>
+                <span class="text-xs text-text-muted/50"
+                  >{{ task.currentProgress }}/{{ task.requirementCount }}</span
+                >
               </div>
             </div>
           </div>
@@ -236,8 +339,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { Icon } from '@iconify/vue';
+import { ref, computed } from "vue";
+import { Icon } from "@iconify/vue";
 import {
   achievements,
   userAchievements,
@@ -245,25 +348,37 @@ import {
   leaderboard,
   tasks,
   exchangeItems,
-} from '../data/mock-contribution';
-import { t } from '~/lib/i18n';
+} from "../data/mock-contribution";
+import { t } from "~/lib/i18n";
 
-const activeTab = ref('achievements');
-const leaderboardPeriod = ref<'daily' | 'weekly' | 'total'>('weekly');
+const activeTab = ref("achievements");
+const leaderboardPeriod = ref<"daily" | "weekly" | "total">("weekly");
 const dailyCheckedIn = ref(false);
 
 const pageTabs = [
-  { key: 'achievements', label: t('contribution.tabAchievements'), icon: 'tabler:trophy' },
-  { key: 'points', label: t('contribution.tabPoints'), icon: 'tabler:coin' },
-  { key: 'leaderboard', label: t('contribution.tabLeaderboard'), icon: 'tabler:chart-bar' },
-  { key: 'exchange', label: t('contribution.tabExchange'), icon: 'tabler:gift' },
-  { key: 'tasks', label: t('contribution.tabTasks'), icon: 'tabler:checklist' },
+  {
+    key: "achievements",
+    label: t("contribution.tabAchievements"),
+    icon: "tabler:trophy",
+  },
+  { key: "points", label: t("contribution.tabPoints"), icon: "tabler:coin" },
+  {
+    key: "leaderboard",
+    label: t("contribution.tabLeaderboard"),
+    icon: "tabler:chart-bar",
+  },
+  {
+    key: "exchange",
+    label: t("contribution.tabExchange"),
+    icon: "tabler:gift",
+  },
+  { key: "tasks", label: t("contribution.tabTasks"), icon: "tabler:checklist" },
 ] as const;
 
 const periodLabels = {
-  daily: t('contribution.periodDaily'),
-  weekly: t('contribution.periodWeekly'),
-  total: t('contribution.periodTotal'),
+  daily: t("contribution.periodDaily"),
+  weekly: t("contribution.periodWeekly"),
+  total: t("contribution.periodTotal"),
 };
 
 const allAchievements = computed(() =>
@@ -274,9 +389,12 @@ const allAchievements = computed(() =>
       unlocked: ua?.unlocked ?? false,
       progress: ua?.progress ?? 0,
       threshold: ach.requirement.threshold,
-      progressPercent: Math.min(100, ((ua?.progress ?? 0) / ach.requirement.threshold) * 100),
+      progressPercent: Math.min(
+        100,
+        ((ua?.progress ?? 0) / ach.requirement.threshold) * 100,
+      ),
     };
-  })
+  }),
 );
 
 const currentLeaderboard = computed(() => leaderboard[leaderboardPeriod.value]);
@@ -286,6 +404,11 @@ function doCheckin() {
 }
 
 function handleExchange(item: (typeof exchangeItems)[0]) {
-  alert(t('contribution.exchangeSuccess', { points: item.pointsCost, name: t(item.name) }));
+  alert(
+    t("contribution.exchangeSuccess", {
+      points: item.pointsCost,
+      name: t(item.name),
+    }),
+  );
 }
 </script>

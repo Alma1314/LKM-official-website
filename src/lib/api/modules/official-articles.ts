@@ -4,8 +4,8 @@
 // 此处提供统一的类型与聚合函数，供 文章列表 / 所有分类 / 归档 / 新闻资讯 等 SSR 页面复用。
 // 与 Vue 博客（/api/v1/blog/*）相互独立。
 
-import { ssrFetch } from '~/lib/fetch-ssr';
-import { t } from '~/lib/i18n';
+import { ssrFetch } from "~/lib/fetch-ssr";
+import { t } from "~/lib/i18n";
 
 /** 官方文章列表项 */
 export interface OfficialArticle {
@@ -45,15 +45,15 @@ export interface OfficialArticleCategory {
 
 /** 后端分类 slug → 翻译 key（未知 slug 直接回退为 slug） */
 const ARTICLE_CATEGORY_KEYS: Record<string, string> = {
-  announcement: 'messages.articles.categories.announcement',
-  architecture: 'messages.articles.categories.architecture',
-  security: 'messages.articles.categories.security',
-  engineering: 'messages.articles.categories.engineering',
-  ai: 'messages.articles.categories.ai',
-  community: 'messages.articles.categories.community',
-  culture: 'messages.articles.categories.culture',
-  news: 'messages.articles.categories.news',
-  science: 'messages.articles.categories.science',
+  announcement: "messages.articles.categories.announcement",
+  architecture: "messages.articles.categories.architecture",
+  security: "messages.articles.categories.security",
+  engineering: "messages.articles.categories.engineering",
+  ai: "messages.articles.categories.ai",
+  community: "messages.articles.categories.community",
+  culture: "messages.articles.categories.culture",
+  news: "messages.articles.categories.news",
+  science: "messages.articles.categories.science",
 };
 
 /** 分类 slug → 显示名 */
@@ -68,7 +68,7 @@ export function categoryLabel(slug: string): string {
  */
 export async function fetchAllArticles(
   pageSize = 100,
-  maxPages = 20
+  maxPages = 20,
 ): Promise<{ articles: OfficialArticle[]; error: string | null }> {
   const articles: OfficialArticle[] = [];
 
@@ -77,7 +77,7 @@ export async function fetchAllArticles(
       `/api/v1/articles?page=${page}&page_size=${pageSize}`,
       {
         fallback: null,
-      }
+      },
     );
 
     if (error || !data) {
@@ -103,10 +103,9 @@ export async function fetchArticleCategories(): Promise<{
   categories: OfficialArticleCategory[];
   error: string | null;
 }> {
-  const { data, error } = await ssrFetch<{ items: OfficialArticleCategory[] } | OfficialArticleCategory[]>(
-    '/api/v1/articles/categories',
-    { fallback: null }
-  );
+  const { data, error } = await ssrFetch<
+    { items: OfficialArticleCategory[] } | OfficialArticleCategory[]
+  >("/api/v1/articles/categories", { fallback: null });
 
   if (!error && data) {
     const items = Array.isArray(data) ? data : data.items;
@@ -123,11 +122,18 @@ export async function fetchArticleCategories(): Promise<{
   const countBySlug = new Map<string, number>();
   for (const article of articles) {
     if (!article.category) continue;
-    countBySlug.set(article.category, (countBySlug.get(article.category) ?? 0) + 1);
+    countBySlug.set(
+      article.category,
+      (countBySlug.get(article.category) ?? 0) + 1,
+    );
   }
 
   const categories = Array.from(countBySlug.entries())
-    .map(([slug, count]) => ({ slug, name: categoryLabel(slug), article_count: count }))
+    .map(([slug, count]) => ({
+      slug,
+      name: categoryLabel(slug),
+      article_count: count,
+    }))
     .sort((a, b) => b.article_count - a.article_count);
 
   return { categories, error: null };

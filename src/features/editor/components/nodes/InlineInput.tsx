@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import type { ReactElement } from 'react';
-import { t } from '~/lib/i18n';
+import { useState, useRef, useEffect } from "react";
+import type { ReactElement } from "react";
+import { t } from "~/lib/i18n";
 
 interface InlineInputProps {
   placeholder?: string;
@@ -11,7 +11,7 @@ interface InlineInputProps {
 
 export default function InlineInput({
   placeholder,
-  defaultValue = '',
+  defaultValue = "",
   onConfirm,
   onCancel,
 }: InlineInputProps): ReactElement {
@@ -22,12 +22,15 @@ export default function InlineInput({
   useEffect(() => {
     inputRef.current?.focus();
     const handler = (e: MouseEvent): void => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         onCancel();
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [onCancel]);
 
   const handleSubmit = (): void => {
@@ -51,14 +54,22 @@ export default function InlineInput({
         placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') handleSubmit();
-          if (e.key === 'Escape') onCancel();
+          if (e.key === "Enter") handleSubmit();
+          if (e.key === "Escape") onCancel();
         }}
       />
-      <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handleSubmit}>
-        {t('editor.confirm')}
+      <button
+        type="button"
+        className="rte-btn rte-btn--primary rte-btn--xs"
+        onClick={handleSubmit}
+      >
+        {t("editor.confirm")}
       </button>
-      <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onCancel}>
+      <button
+        type="button"
+        className="rte-btn rte-btn--ghost rte-btn--xs"
+        onClick={onCancel}
+      >
         ×
       </button>
     </div>

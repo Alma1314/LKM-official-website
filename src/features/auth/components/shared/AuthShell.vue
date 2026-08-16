@@ -11,6 +11,6 @@ withDefaults(
   defineProps<{
     maxWidth?: string;
   }>(),
-  { maxWidth: '440px' }
+  { maxWidth: "440px" },
 );
 </script>

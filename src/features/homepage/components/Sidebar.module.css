@@ -1,31 +1,25 @@
-/* ── 侧边栏容器 ── */
+/* ── 侧边栏容器 ──
+   宽度由 .expanded 状态切换（width），其余壳层定位/背景/边框/内边距/溢出
+   已在 Sidebar.astro 用 Tailwind 原子类实现，此处只保留依赖展开状态的宽度与移动端覆盖。 */
 .shell {
-  position: fixed;
-  top: 72px;
-  left: 0;
-  width: 67px;
-  height: calc(100vh - 72px);
-  background: var(--color-base-100);
-  z-index: 10;
-  transition: width 0.5s;
-  padding-left: 8px;
-  overflow: hidden;
-  border-right: 1px solid var(--color-base-300);
+  width: 240px;
 }
 
-.shell:global(.expanded) {
-  width: 240px;
+.shell:global(.collapsed),
+:global(html.sidebar-collapsed [data-sidebar]) {
+  width: 67px;
 }
 
 /* 移动端：侧边栏更窄，顶部位置调整 */
 @media (max-width: 767px) {
   .shell {
-    width: 50px;
-    padding-left: 4px;
+    width: 200px;
   }
 
-  .shell:global(.expanded) {
-    width: 200px;
+  .shell:global(.collapsed),
+  :global(html.sidebar-collapsed [data-sidebar]) {
+    width: 50px;
+    padding-left: 4px;
   }
 
   .icon {
@@ -145,7 +139,7 @@
 }
 
 .nav li:global(.active)::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -19px;
   right: 0;
@@ -157,7 +151,7 @@
 }
 
 .nav li:global(.active)::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -19px;
   right: 0;
@@ -208,30 +202,34 @@
   transition: 0.3s;
 }
 
-/* 展开态：箭头旋转 180° */
-.shell:global(.expanded) .toggle svg {
+/* 展开态（默认）：箭头旋转 180° */
+.shell .toggle svg {
   transform: rotate(180deg);
 }
 
-/* 主内容容器默认偏移，匹配侧边栏收起宽度 */
+.shell:global(.collapsed) .toggle svg {
+  transform: none;
+}
+
+/* 主内容容器默认偏移，匹配侧边栏展开宽度 */
 [data-main-content] {
-  padding-left: 67px;
+  padding-left: 240px;
 }
 
 /* 收起态：居中显示，隐藏文字 */
-.shell:not(:global(.expanded)) .toggle {
+.shell:global(.collapsed) .toggle {
   width: 36px;
   border-radius: 50%;
   gap: 0;
 }
 
-.shell:not(:global(.expanded)) .toggleText {
+.shell:global(.collapsed) .toggleText {
   display: none;
 }
 
 /* ── Active 图标 — 圆形边框 ── */
 .nav li:global(.active) .icon::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;

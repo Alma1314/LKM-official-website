@@ -2,20 +2,25 @@
  * BlogLayout 页面初始化：主题、色相、滚动条、Banner、滚动/窗口事件
  */
 
-import 'overlayscrollbars/overlayscrollbars.css';
-import { OverlayScrollbars } from 'overlayscrollbars';
-import { getHue, getStoredTheme, setHue, setTheme } from '~/lib/utils/setting-utils';
+import "overlayscrollbars/overlayscrollbars.css";
+import { OverlayScrollbars } from "overlayscrollbars";
+import {
+  getHue,
+  getStoredTheme,
+  setHue,
+  setTheme,
+} from "~/lib/utils/setting-utils";
 import {
   BANNER_HEIGHT,
   BANNER_HEIGHT_EXTEND,
   BANNER_HEIGHT_HOME,
   MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
-} from '~/lib/constants/constants';
-import { siteConfig } from '~/lib/config';
+} from "~/lib/constants/constants";
+import { siteConfig } from "~/lib/config";
 
 /* ---------- 点击外部关闭面板 ---------- */
 function setClickOutsideToClose(panel: string, ignores: string[]): void {
-  document.addEventListener('click', (event) => {
+  document.addEventListener("click", (event) => {
     const panelDom = document.getElementById(panel);
     const tDom = event.target;
     if (!(tDom instanceof Node)) return;
@@ -25,11 +30,18 @@ function setClickOutsideToClose(panel: string, ignores: string[]): void {
         return;
       }
     }
-    panelDom?.classList.add('float-panel-closed');
+    panelDom?.classList.add("float-panel-closed");
   });
 }
-setClickOutsideToClose('display-setting', ['display-setting', 'display-settings-switch']);
-setClickOutsideToClose('search-panel', ['search-panel', 'search-bar', 'search-switch']);
+setClickOutsideToClose("display-setting", [
+  "display-setting",
+  "display-settings-switch",
+]);
+setClickOutsideToClose("search-panel", [
+  "search-panel",
+  "search-bar",
+  "search-switch",
+]);
 
 /* ---------- 主题与色相 ---------- */
 function loadTheme(): void {
@@ -43,7 +55,7 @@ function loadHue(): void {
 
 /* ---------- 自定义滚动条 ---------- */
 export function initCustomScrollbar(): void {
-  const bodyElement = document.querySelector('body');
+  const bodyElement = document.querySelector("body");
   if (!bodyElement) return;
   OverlayScrollbars(
     {
@@ -54,37 +66,39 @@ export function initCustomScrollbar(): void {
     },
     {
       scrollbars: {
-        theme: 'scrollbar-base scrollbar-auto py-1',
-        autoHide: 'move',
+        theme: "scrollbar-base scrollbar-auto py-1",
+        autoHide: "move",
         autoHideDelay: 500,
         autoHideSuspend: false,
       },
-    }
+    },
   );
 
-  const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
+  const katexElements = document.querySelectorAll(
+    ".katex-display",
+  ) as NodeListOf<HTMLElement>;
 
   const processKatexElement = (element: HTMLElement): void => {
     if (!element.parentNode) return;
-    if (element.hasAttribute('data-scrollbar-initialized')) return;
+    if (element.hasAttribute("data-scrollbar-initialized")) return;
 
-    const container = document.createElement('div');
-    container.className = 'katex-display-container';
-    container.setAttribute('aria-label', 'scrollable container for formulas');
+    const container = document.createElement("div");
+    container.className = "katex-display-container";
+    container.setAttribute("aria-label", "scrollable container for formulas");
 
     element.parentNode.insertBefore(container, element);
     container.appendChild(element);
 
     OverlayScrollbars(container, {
       scrollbars: {
-        theme: 'scrollbar-base scrollbar-auto',
-        autoHide: 'leave',
+        theme: "scrollbar-base scrollbar-auto",
+        autoHide: "leave",
         autoHideDelay: 500,
         autoHideSuspend: false,
       },
     });
 
-    element.setAttribute('data-scrollbar-initialized', 'true');
+    element.setAttribute("data-scrollbar-initialized", "true");
   };
 
   const katexObserver = new IntersectionObserver(
@@ -98,9 +112,9 @@ export function initCustomScrollbar(): void {
     },
     {
       root: null,
-      rootMargin: '100px',
+      rootMargin: "100px",
       threshold: 0.1,
-    }
+    },
   );
 
   katexElements.forEach((element) => {
@@ -111,36 +125,42 @@ export function initCustomScrollbar(): void {
 /* ---------- Banner 显示 ---------- */
 export function showBanner(): void {
   if (!siteConfig.banner.enable) return;
-  const banner = document.getElementById('banner');
+  const banner = document.getElementById("banner");
   if (!banner) {
-    console.error('Banner element not found');
+    console.error("Banner element not found");
     return;
   }
-  banner.classList.remove('opacity-0', 'scale-105');
+  banner.classList.remove("opacity-0", "scale-105");
 }
 
 /* ---------- 滚动处理 ---------- */
-const backToTopBtn = document.getElementById('back-to-top-btn');
-const toc = document.getElementById('toc-wrapper');
-const navbar = document.getElementById('navbar-wrapper');
-const bannerEnabled = !!document.getElementById('banner-wrapper');
+const backToTopBtn = document.getElementById("back-to-top-btn");
+const toc = document.getElementById("toc-wrapper");
+const navbar = document.getElementById("navbar-wrapper");
+const bannerEnabled = !!document.getElementById("banner-wrapper");
 
 function handleScroll(): void {
   const bannerHeight = window.innerHeight * (BANNER_HEIGHT / 100);
 
   if (backToTopBtn) {
-    if (document.body.scrollTop > bannerHeight || document.documentElement.scrollTop > bannerHeight) {
-      backToTopBtn.classList.remove('hide');
+    if (
+      document.body.scrollTop > bannerHeight ||
+      document.documentElement.scrollTop > bannerHeight
+    ) {
+      backToTopBtn.classList.remove("hide");
     } else {
-      backToTopBtn.classList.add('hide');
+      backToTopBtn.classList.add("hide");
     }
   }
 
   if (bannerEnabled && toc) {
-    if (document.body.scrollTop > bannerHeight || document.documentElement.scrollTop > bannerHeight) {
-      toc.classList.remove('toc-hide');
+    if (
+      document.body.scrollTop > bannerHeight ||
+      document.documentElement.scrollTop > bannerHeight
+    ) {
+      toc.classList.remove("toc-hide");
     } else {
-      toc.classList.add('toc-hide');
+      toc.classList.add("toc-hide");
     }
   }
 
@@ -149,25 +169,38 @@ function handleScroll(): void {
     const NAVBAR_HEIGHT = 72;
     const MAIN_PANEL_EXCESS_HEIGHT = MAIN_PANEL_OVERLAPS_BANNER_HEIGHT * 16;
     let bannerH = BANNER_HEIGHT;
-    if (document.body.classList.contains('lg:is-home') && window.innerWidth >= 1024) {
+    if (
+      document.body.classList.contains("lg:is-home") &&
+      window.innerWidth >= 1024
+    ) {
       bannerH = BANNER_HEIGHT_HOME;
     }
-    const threshold = window.innerHeight * (bannerH / 100) - NAVBAR_HEIGHT - MAIN_PANEL_EXCESS_HEIGHT - 16;
-    if (document.body.scrollTop >= threshold || document.documentElement.scrollTop >= threshold) {
-      navbar.classList.add('navbar-hidden');
+    const threshold =
+      window.innerHeight * (bannerH / 100) -
+      NAVBAR_HEIGHT -
+      MAIN_PANEL_EXCESS_HEIGHT -
+      16;
+    if (
+      document.body.scrollTop >= threshold ||
+      document.documentElement.scrollTop >= threshold
+    ) {
+      navbar.classList.add("navbar-hidden");
     } else {
-      navbar.classList.remove('navbar-hidden');
+      navbar.classList.remove("navbar-hidden");
     }
   }
 }
-window.addEventListener('scroll', handleScroll, { passive: true });
+window.addEventListener("scroll", handleScroll, { passive: true });
 
 function handleResize(): void {
   let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
   offset = offset - (offset % 4);
-  document.documentElement.style.setProperty('--banner-height-extend', `${offset}px`);
+  document.documentElement.style.setProperty(
+    "--banner-height-extend",
+    `${offset}px`,
+  );
 }
-window.addEventListener('resize', handleResize);
+window.addEventListener("resize", handleResize);
 
 /* ---------- 初始化 ---------- */
 function init(): void {
@@ -177,10 +210,10 @@ function init(): void {
   showBanner();
 
   // 设置初始 content-delay 用于入场动画
-  document.documentElement.style.setProperty('--content-delay', '300ms');
+  document.documentElement.style.setProperty("--content-delay", "300ms");
 }
 
-if ('requestIdleCallback' in window) {
+if ("requestIdleCallback" in window) {
   requestIdleCallback(init, { timeout: 2000 });
 } else {
   setTimeout(init, 1);

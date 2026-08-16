@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4">
-    <h3 class="text-lg font-semibold">{{ t('settings.passkey.title') }}</h3>
+    <h3 class="text-lg font-semibold">{{ t("settings.passkey.title") }}</h3>
 
     <AuthStatus v-if="error" type="error" :message="error" class="text-xs" />
 
@@ -12,20 +12,32 @@
         class="input input-bordered input-sm flex-1"
         :placeholder="t('settings.passkey.namePlaceholder')"
       />
-      <button type="submit" class="btn btn-primary btn-sm" :disabled="creating || !newName">
+      <button
+        type="submit"
+        class="btn btn-primary btn-sm"
+        :disabled="creating || !newName"
+      >
         <span v-if="creating" class="loading loading-spinner loading-xs"></span>
-        <template v-else>{{ t('common.create') }}</template>
+        <template v-else>{{ t("common.create") }}</template>
       </button>
     </form>
 
-    <div v-if="loadingList" class="py-4 text-center text-sm text-text-muted">{{ t('common.loading') }}</div>
+    <div v-if="loadingList" class="py-4 text-center text-sm text-text-muted">
+      {{ t("common.loading") }}
+    </div>
 
     <!-- 列表 -->
     <ul v-else class="space-y-2">
-      <li v-for="pk in passkeys" :key="pk.id" class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3">
+      <li
+        v-for="pk in passkeys"
+        :key="pk.id"
+        class="flex items-center justify-between p-3 bg-page-bg rounded-lg gap-3"
+      >
         <div class="flex-1 min-w-0">
           <span class="font-medium block truncate">{{ pk.device_name }}</span>
-          <span class="text-xs text-text-muted">{{ pk.credential_id.slice(0, 12) }}…</span>
+          <span class="text-xs text-text-muted"
+            >{{ pk.credential_id.slice(0, 12) }}…</span
+          >
         </div>
         <div class="flex gap-1 shrink-0">
           <button
@@ -34,11 +46,13 @@
             :disabled="deletingId === pk.id"
             @click="confirmDelete = pk.id"
           >
-            {{ t('common.delete') }}
+            {{ t("common.delete") }}
           </button>
         </div>
       </li>
-      <li v-if="!passkeys.length" class="text-sm text-text-muted py-2">{{ t('settings.passkey.empty') }}</li>
+      <li v-if="!passkeys.length" class="text-sm text-text-muted py-2">
+        {{ t("settings.passkey.empty") }}
+      </li>
     </ul>
 
     <ConfirmDialog
@@ -54,14 +68,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { authApi } from '~/lib/api/modules/auth';
-import { t } from '~/lib/i18n';
-import type { PasskeyCredential } from '~/lib/api/modules/auth';
-import type { User } from '~/types/auth';
-import AuthStatus from '../shared/AuthStatus.vue';
-import ConfirmDialog from './ConfirmDialog.vue';
-import { registerNew } from '../../lib/webauthn';
+import { ref, onMounted } from "vue";
+import { authApi } from "~/lib/api/modules/auth";
+import { t } from "~/lib/i18n";
+import type { PasskeyCredential } from "~/lib/api/modules/auth";
+import type { User } from "~/types/auth";
+import AuthStatus from "../shared/AuthStatus.vue";
+import ConfirmDialog from "./ConfirmDialog.vue";
+import { registerNew } from "../../lib/webauthn";
 
 defineProps<{
   user: User;
@@ -69,15 +83,15 @@ defineProps<{
 
 const passkeys = ref<PasskeyCredential[]>([]);
 const loadingList = ref(false);
-const error = ref('');
-const newName = ref('');
+const error = ref("");
+const newName = ref("");
 const creating = ref(false);
 const confirmDelete = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 
 async function load() {
   loadingList.value = true;
-  error.value = '';
+  error.value = "";
   try {
     const r = await authApi.listPasskeys();
     if (r.isErr()) {
@@ -92,7 +106,7 @@ async function load() {
 
 // 创建通行密钥：begin → 浏览器 WebAuthn → registerComplete
 async function createPasskey() {
-  error.value = '';
+  error.value = "";
   const name = newName.value.trim();
   if (!name) return;
   creating.value = true;
@@ -107,7 +121,7 @@ async function createPasskey() {
       serialized.rawId,
       begin.value.challenge_id,
       serialized.response,
-      name
+      name,
     );
     if (done.isErr()) {
       error.value = done.error.message;
@@ -115,9 +129,10 @@ async function createPasskey() {
     }
     // 重新拉取列表以获得后端分配的 id / created_at
     await load();
-    newName.value = '';
+    newName.value = "";
   } catch (e) {
-    error.value = e instanceof Error ? e.message : t('settings.passkey.createFail');
+    error.value =
+      e instanceof Error ? e.message : t("settings.passkey.createFail");
   } finally {
     creating.value = false;
   }
@@ -126,7 +141,7 @@ async function createPasskey() {
 async function doDelete(id: number) {
   confirmDelete.value = null;
   deletingId.value = id;
-  error.value = '';
+  error.value = "";
   try {
     const r = await authApi.deletePasskey(id);
     if (r.isErr()) {

@@ -109,5 +109,6 @@ const { items } = Astro.props;
     });
   }
 
-  document.addEventListener('astro:page-load', initTimelines);
+  // ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+  initTimelines();
 </script>

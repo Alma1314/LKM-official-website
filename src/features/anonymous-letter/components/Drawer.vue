@@ -2,12 +2,21 @@
   <!-- 平滑滑入抽屉（右侧） -->
   <teleport to="body">
     <transition name="drawer-mask">
-      <div v-if="modelValue" class="drawer-mask" @click.self="$emit('update:modelValue', false)">
+      <div
+        v-if="modelValue"
+        class="drawer-mask"
+        @click.self="$emit('update:modelValue', false)"
+      >
         <transition name="drawer" appear>
           <aside v-if="modelValue" class="drawer glass" :class="side">
             <header class="drawer-head">
               <b>{{ title }}</b>
-              <button class="drawer-close" @click="$emit('update:modelValue', false)">✕</button>
+              <button
+                class="drawer-close"
+                @click="$emit('update:modelValue', false)"
+              >
+                ✕
+              </button>
             </header>
             <div class="drawer-body">
               <slot />
@@ -20,8 +29,12 @@
 </template>
 
 <script setup lang="ts">
-defineProps({ modelValue: Boolean, title: { type: String, default: '' }, side: { type: String, default: 'right' } });
-defineEmits(['update:modelValue']);
+defineProps({
+  modelValue: Boolean,
+  title: { type: String, default: "" },
+  side: { type: String, default: "right" },
+});
+defineEmits(["update:modelValue"]);
 </script>
 
 <style scoped>

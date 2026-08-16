@@ -1,15 +1,15 @@
-import { ref, computed, type Ref, type ComputedRef } from 'vue';
-import { db } from './db';
-import { useAuthStore } from './auth';
-import { enqueue } from '../sync/sync';
-import type { Question, Folder } from '~/features/starhope/types';
+import { ref, computed, type Ref, type ComputedRef } from "vue";
+import { db } from "./db";
+import { useAuthStore } from "./auth";
+import { enqueue } from "../sync/sync";
+import type { Question, Folder } from "~/features/starhope/types";
 
 const questions = ref<Question[]>([]);
 const folders = ref<Folder[]>([]);
 const currentFolderId = ref<string | null>(null);
 const selectedIds = ref<Set<string>>(new Set());
-const sortKey = ref<'createdAt' | 'difficulty' | 'type'>('createdAt');
-const searchQuery = ref('');
+const sortKey = ref<"createdAt" | "difficulty" | "type">("createdAt");
+const searchQuery = ref("");
 const error = ref<string | null>(null);
 
 export function useQuestionBankStore(): {
@@ -17,13 +17,15 @@ export function useQuestionBankStore(): {
   folders: Ref<Folder[]>;
   currentFolderId: Ref<string | null>;
   selectedIds: Ref<Set<string>>;
-  sortKey: Ref<'createdAt' | 'difficulty' | 'type'>;
+  sortKey: Ref<"createdAt" | "difficulty" | "type">;
   searchQuery: Ref<string>;
   error: Ref<string | null>;
   filteredQuestions: ComputedRef<Question[]>;
   loadQuestions: () => Promise<void>;
   loadFolders: () => Promise<void>;
-  createQuestion: (data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => Promise<Question>;
+  createQuestion: (
+    data: Omit<Question, "id" | "userId" | "createdAt" | "updatedAt">,
+  ) => Promise<Question>;
   updateQuestion: (id: string, data: Partial<Question>) => Promise<void>;
   deleteQuestions: (ids: string[]) => Promise<void>;
   createFolder: (name: string, parentId?: string | null) => Promise<Folder>;
@@ -39,7 +41,9 @@ export function useQuestionBankStore(): {
     if (searchQuery.value) {
       const q = searchQuery.value.toLowerCase();
       list = list.filter(
-        (item) => item.content.toLowerCase().includes(q) || item.tags.some((t) => t.toLowerCase().includes(q))
+        (item) =>
+          item.content.toLowerCase().includes(q) ||
+          item.tags.some((t) => t.toLowerCase().includes(q)),
       );
     }
     return list;
@@ -47,18 +51,24 @@ export function useQuestionBankStore(): {
 
   async function loadQuestions(): Promise<void> {
     if (!auth.isLoggedIn.value) return;
-    let query = db.questions.where('userId').equals(auth.userId.value!);
-    if (currentFolderId.value) query = query.and((q: Question) => q.folderId === currentFolderId.value);
+    let query = db.questions.where("userId").equals(auth.userId.value!);
+    if (currentFolderId.value)
+      query = query.and((q: Question) => q.folderId === currentFolderId.value);
     questions.value = await query.toArray();
     applySort();
   }
 
   async function loadFolders(): Promise<void> {
     if (!auth.isLoggedIn.value) return;
-    folders.value = await db.folders.where('userId').equals(auth.userId.value!).toArray();
+    folders.value = await db.folders
+      .where("userId")
+      .equals(auth.userId.value!)
+      .toArray();
   }
 
-  async function createQuestion(data: Omit<Question, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Question> {
+  async function createQuestion(
+    data: Omit<Question, "id" | "userId" | "createdAt" | "updatedAt">,
+  ): Promise<Question> {
     const q: Question = {
       ...data,
       id: crypto.randomUUID(),
@@ -67,26 +77,35 @@ export function useQuestionBankStore(): {
       updatedAt: new Date().toISOString(),
     };
     await db.questions.put(q);
-    enqueue('questions', q.id, 'upsert', q);
+    enqueue("questions", q.id, "upsert", q);
     await loadQuestions();
     return q;
   }
 
-  async function updateQuestion(id: string, data: Partial<Question>): Promise<void> {
-    await db.questions.update(id, { ...data, updatedAt: new Date().toISOString() });
+  async function updateQuestion(
+    id: string,
+    data: Partial<Question>,
+  ): Promise<void> {
+    await db.questions.update(id, {
+      ...data,
+      updatedAt: new Date().toISOString(),
+    });
     await loadQuestions();
     const updated = await db.questions.get(id);
-    if (updated) enqueue('questions', id, 'upsert', updated);
+    if (updated) enqueue("questions", id, "upsert", updated);
   }
 
   async function deleteQuestions(ids: string[]): Promise<void> {
     await db.questions.bulkDelete(ids);
-    ids.forEach((id) => enqueue('questions', id, 'delete'));
+    ids.forEach((id) => enqueue("questions", id, "delete"));
     selectedIds.value = new Set();
     await loadQuestions();
   }
 
-  async function createFolder(name: string, parentId: string | null = null): Promise<Folder> {
+  async function createFolder(
+    name: string,
+    parentId: string | null = null,
+  ): Promise<Folder> {
     const folder: Folder = {
       id: crypto.randomUUID(),
       userId: String(auth.userId.value!),
@@ -96,7 +115,7 @@ export function useQuestionBankStore(): {
       updatedAt: new Date().toISOString(),
     };
     await db.folders.put(folder);
-    enqueue('folders', folder.id, 'upsert', folder);
+    enqueue("folders", folder.id, "upsert", folder);
     await loadFolders();
     return folder;
   }
@@ -105,18 +124,38 @@ export function useQuestionBankStore(): {
     const now = new Date().toISOString();
     // 级联变更也要同步：先查出受影响子项，本地 reparent/清 folderId 后逐条入队，
     // 否则其他设备 pull 到 folder 的 tombstone 后仍残留 dangling folder_id/parent_id。
-    const childFolders = await db.folders.where('parentId').equals(id).toArray();
-    const affectedQuestions = await db.questions.where('folderId').equals(id).toArray();
+    const childFolders = await db.folders
+      .where("parentId")
+      .equals(id)
+      .toArray();
+    const affectedQuestions = await db.questions
+      .where("folderId")
+      .equals(id)
+      .toArray();
 
-    await db.folders.where('parentId').equals(id).modify({ parentId: null, updatedAt: now });
-    await db.questions.where('folderId').equals(id).modify({ folderId: undefined, updatedAt: now });
+    await db.folders
+      .where("parentId")
+      .equals(id)
+      .modify({ parentId: null, updatedAt: now });
+    await db.questions
+      .where("folderId")
+      .equals(id)
+      .modify({ folderId: undefined, updatedAt: now });
     await db.folders.delete(id);
-    enqueue('folders', id, 'delete');
+    enqueue("folders", id, "delete");
     for (const child of childFolders) {
-      enqueue('folders', child.id, 'upsert', { ...child, parentId: null, updatedAt: now });
+      enqueue("folders", child.id, "upsert", {
+        ...child,
+        parentId: null,
+        updatedAt: now,
+      });
     }
     for (const q of affectedQuestions) {
-      enqueue('questions', q.id, 'upsert', { ...q, folderId: undefined, updatedAt: now });
+      enqueue("questions", q.id, "upsert", {
+        ...q,
+        folderId: undefined,
+        updatedAt: now,
+      });
     }
     await loadFolders();
     await loadQuestions();
@@ -138,13 +177,13 @@ export function useQuestionBankStore(): {
 
   function applySort(): void {
     switch (sortKey.value) {
-      case 'createdAt':
+      case "createdAt":
         questions.value.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
         break;
-      case 'difficulty':
+      case "difficulty":
         questions.value.sort((a, b) => b.difficulty - a.difficulty);
         break;
-      case 'type':
+      case "type":
         questions.value.sort((a, b) => a.type.localeCompare(b.type));
         break;
     }

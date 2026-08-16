@@ -1,7 +1,7 @@
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-import type { MarkdownHeading } from 'astro';
-import type { ImageMetadata } from 'astro';
-import type { Taxonomy, MetaData } from './metadata';
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import type { MarkdownHeading } from "astro";
+import type { ImageMetadata } from "astro";
+import type { Taxonomy, MetaData } from "./metadata";
 
 export type { ImageMetadata };
 

@@ -1,6 +1,6 @@
-import { mapExchange } from '@urql/core';
-import { getHttpAccessToken } from '~/lib/http/client';
-import { getSsrCookie } from '~/lib/ssr-context';
+import { mapExchange } from "@urql/core";
+import { getHttpAccessToken } from "~/lib/http/client";
+import { getSsrCookie } from "~/lib/ssr-context";
 
 /**
  * 自动附加认证信息到 GraphQL 请求头。
@@ -15,22 +15,25 @@ export const authExchange = mapExchange({
       const headers: Record<string, string> = {};
       const token = getHttpAccessToken();
       if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
+        headers["Authorization"] = `Bearer ${token}`;
       }
       // SSR：无浏览器 token，转发当前请求 Cookie
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         const cookie = getSsrCookie();
-        if (cookie) headers['Cookie'] = cookie;
+        if (cookie) headers["Cookie"] = cookie;
       }
 
       const prevFetchOptions =
-        typeof operation.context.fetchOptions === 'function'
+        typeof operation.context.fetchOptions === "function"
           ? operation.context.fetchOptions()
           : operation.context.fetchOptions;
       operation.context.fetchOptions = {
         ...prevFetchOptions,
         headers: {
-          ...((prevFetchOptions as RequestInit)?.headers as Record<string, string>),
+          ...((prevFetchOptions as RequestInit)?.headers as Record<
+            string,
+            string
+          >),
           ...headers,
         },
       };

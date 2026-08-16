@@ -1,8 +1,8 @@
-import type { Editor } from '@tiptap/core';
-import type { ReactNode } from 'react';
+import type { Editor } from "@tiptap/core";
+import type { ReactNode } from "react";
 
-export type SaveStatus = 'saved' | 'unsaved' | 'saving' | 'error' | 'conflict';
-export type EditorMode = 'richtext' | 'source' | 'preview';
+export type SaveStatus = "saved" | "unsaved" | "saving" | "error" | "conflict";
+export type EditorMode = "richtext" | "source" | "preview";
 export type FrontmatterValues = Record<string, unknown>;
 
 export interface ToolbarItem {
@@ -10,7 +10,7 @@ export interface ToolbarItem {
   icon: ReactNode;
   label: string;
   title: string;
-  group: 'format' | 'heading' | 'block' | 'list' | 'insert' | 'history';
+  group: "format" | "heading" | "block" | "list" | "insert" | "history";
   action: (editor: Editor) => void;
   isActive: (editor: Editor) => boolean;
 }
@@ -19,7 +19,7 @@ export interface DocumentMeta {
   id: string;
   title: string;
   lastModified: string;
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
   version: number;
   /** 发布时生成的永久链接片段 `/docs/<slug>`，供 wiki 双链解析；索引需在写盘时一并落 slug */
   slug?: string;
@@ -43,7 +43,7 @@ export interface AutosavePayload {
 export interface AutosaveResponse {
   ok: boolean;
   version: number;
-  code?: 'VERSION_CONFLICT';
+  code?: "VERSION_CONFLICT";
   currentVersion?: number;
 }
 
@@ -66,7 +66,7 @@ export interface DocumentSummary extends DocumentMeta {
   id: string;
   title: string;
   lastModified: string;
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
   version: number;
 }
 
@@ -106,16 +106,32 @@ export interface PersistenceAdapter {
   saveDocument(doc: DocumentData): Promise<boolean> | boolean | void;
   deleteDocument(id: string): Promise<boolean> | boolean | void;
   listDocuments(): Promise<DocumentSummary[]> | DocumentSummary[];
-  saveVersion(docId: string, doc: DocumentData, message?: string): Promise<boolean> | boolean | void;
+  saveVersion(
+    docId: string,
+    doc: DocumentData,
+    message?: string,
+  ): Promise<boolean> | boolean | void;
   getVersions(docId: string): Promise<VersionEntry[]> | VersionEntry[];
   createBackup(
     docId: string,
-    data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }
+    data: {
+      docId: string;
+      title: string;
+      contentMdx: string;
+      editorJson: unknown;
+      status: string;
+      version: number;
+    },
   ): Promise<boolean> | boolean | void;
   getBackups(): Promise<BackupEntry[]> | BackupEntry[];
   saveComment?(thread: CommentThread): void;
   getComments?(docId: string): CommentThread[];
-  addThread?(docId: string, range: { from: number; to: number }, text: string, initialComment?: string): CommentThread;
+  addThread?(
+    docId: string,
+    range: { from: number; to: number },
+    text: string,
+    initialComment?: string,
+  ): CommentThread;
   addReply?(docId: string, threadId: string, text: string): CommentReply | null;
   resolveThread?(docId: string, threadId: string): void;
   reopenThread?(docId: string, threadId: string): void;

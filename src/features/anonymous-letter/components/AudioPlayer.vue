@@ -4,20 +4,33 @@
     <button
       class="audio-btn"
       @click="toggle"
-      :title="playing ? t('treehole.audio.closeTitle') : t('treehole.audio.openTitle')"
+      :title="
+        playing ? t('treehole.audio.closeTitle') : t('treehole.audio.openTitle')
+      "
     >
-      <span class="audio-icon">{{ playing ? '🔊' : '🔈' }}</span>
+      <span class="audio-icon">{{ playing ? "🔊" : "🔈" }}</span>
     </button>
-    <span class="audio-label">{{ playing ? t('treehole.audio.rainLabel') : t('treehole.audio.mutedLabel') }}</span>
-    <input v-if="playing" class="audio-vol" type="range" min="0" max="1" step="0.05" :value="volume" @input="onVol" />
+    <span class="audio-label">{{
+      playing ? t("treehole.audio.rainLabel") : t("treehole.audio.mutedLabel")
+    }}</span>
+    <input
+      v-if="playing"
+      class="audio-vol"
+      type="range"
+      min="0"
+      max="1"
+      step="0.05"
+      :value="volume"
+      @input="onVol"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useApp } from '../stores/app';
-import * as store from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, onMounted, onUnmounted } from "vue";
+import { useApp } from "../stores/app";
+import * as store from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const { state, lowPerf } = useApp();
 const playing = ref(false);
@@ -38,13 +51,14 @@ function start() {
     const bufferSize = 2 * ctx.sampleRate;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
+    for (let i = 0; i < bufferSize; i++)
+      data[i] = (Math.random() * 2 - 1) * 0.5;
     node = ctx.createBufferSource();
     node.buffer = buffer;
     node.loop = true;
     // 低通滤波，模拟柔和雨声
     const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
+    filter.type = "lowpass";
     filter.frequency.value = 800;
     gain = ctx.createGain();
     gain.gain.value = volume.value;

@@ -1,6 +1,6 @@
 export interface ParsedMdx {
   frontmatter: Record<string, unknown>;
-  root: import('mdast').Root;
+  root: import("mdast").Root;
 }
 
 export interface MdxExport {
@@ -11,6 +11,6 @@ export interface MdxExport {
 export interface ValidationIssue {
   message: string;
   nodeType: string;
-  severity: 'warning' | 'error';
+  severity: "warning" | "error";
   details?: string;
 }

@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
-import { t } from '~/lib/i18n';
-import { Icon } from '@iconify/vue';
-import { applyThemeToDocument, getStoredTheme, setTheme } from '~/lib/utils/setting-utils';
-import type { LIGHT_DARK_MODE } from '~/types/config';
+import { ref, onMounted } from "vue";
+import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from "~/lib/constants/constants";
+import { t } from "~/lib/i18n";
+import { Icon } from "@iconify/vue";
+import {
+  applyThemeToDocument,
+  getStoredTheme,
+  setTheme,
+} from "~/lib/utils/setting-utils";
+import type { LIGHT_DARK_MODE } from "~/types/config";
 
 const seq: LIGHT_DARK_MODE[] = [LIGHT_MODE, DARK_MODE, AUTO_MODE];
 const mode = ref<LIGHT_DARK_MODE>(AUTO_MODE);
 
 onMounted(() => {
   mode.value = getStoredTheme();
-  const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)');
+  const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
   const changeThemeWhenSchemeChanged = () => {
     applyThemeToDocument(mode.value);
   };
-  darkModePreference.addEventListener('change', changeThemeWhenSchemeChanged);
+  darkModePreference.addEventListener("change", changeThemeWhenSchemeChanged);
 });
 
 function switchScheme(newMode: LIGHT_DARK_MODE) {
@@ -29,13 +33,13 @@ function toggleScheme() {
 }
 
 function showPanel() {
-  const panel = document.querySelector('#light-dark-panel');
-  panel?.classList.remove('float-panel-closed');
+  const panel = document.querySelector("#light-dark-panel");
+  panel?.classList.remove("float-panel-closed");
 }
 
 function hidePanel() {
-  const panel = document.querySelector('#light-dark-panel');
-  panel?.classList.add('float-panel-closed');
+  const panel = document.querySelector("#light-dark-panel");
+  panel?.classList.add("float-panel-closed");
 }
 </script>
 
@@ -50,19 +54,40 @@ function hidePanel() {
       @click="toggleScheme"
       @mouseenter="showPanel"
     >
-      <div class="absolute transition-opacity duration-200" :class="{ 'opacity-0': mode !== LIGHT_MODE }">
-        <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem]" />
+      <div
+        class="absolute transition-opacity duration-200"
+        :class="{ 'opacity-0': mode !== LIGHT_MODE }"
+      >
+        <Icon
+          icon="material-symbols:wb-sunny-outline-rounded"
+          class="text-[1.25rem]"
+        />
       </div>
-      <div class="absolute transition-opacity duration-200" :class="{ 'opacity-0': mode !== DARK_MODE }">
-        <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem]" />
+      <div
+        class="absolute transition-opacity duration-200"
+        :class="{ 'opacity-0': mode !== DARK_MODE }"
+      >
+        <Icon
+          icon="material-symbols:dark-mode-outline-rounded"
+          class="text-[1.25rem]"
+        />
       </div>
-      <div class="absolute transition-opacity duration-200" :class="{ 'opacity-0': mode !== AUTO_MODE }">
-        <Icon icon="material-symbols:radio-button-partial" class="text-[1.25rem]" />
+      <div
+        class="absolute transition-opacity duration-200"
+        :class="{ 'opacity-0': mode !== AUTO_MODE }"
+      >
+        <Icon
+          icon="material-symbols:radio-button-partial"
+          class="text-[1.25rem]"
+        />
       </div>
     </button>
 
     <!-- 下拉面板 -->
-    <div id="light-dark-panel" class="hidden lg:block absolute transition float-panel-closed top-11 -right-2 pt-5">
+    <div
+      id="light-dark-panel"
+      class="hidden lg:block absolute transition float-panel-closed top-11 -right-2 pt-5"
+    >
       <div
         class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] border border-black/5 dark:border-white/10 rounded-[var(--radius-large)] overflow-hidden shadow-lg dark:shadow-none float-panel p-1.5"
       >
@@ -76,8 +101,11 @@ function hidePanel() {
           "
           @click="switchScheme(LIGHT_MODE)"
         >
-          <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem] mr-2.5" />
-          {{ t('theme.light') }}
+          <Icon
+            icon="material-symbols:wb-sunny-outline-rounded"
+            class="text-[1.25rem] mr-2.5"
+          />
+          {{ t("theme.light") }}
         </button>
 
         <!-- 暗色模式选项 -->
@@ -90,8 +118,11 @@ function hidePanel() {
           "
           @click="switchScheme(DARK_MODE)"
         >
-          <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem] mr-2.5" />
-          {{ t('theme.dark') }}
+          <Icon
+            icon="material-symbols:dark-mode-outline-rounded"
+            class="text-[1.25rem] mr-2.5"
+          />
+          {{ t("theme.dark") }}
         </button>
 
         <!-- 跟随系统选项 -->
@@ -104,8 +135,11 @@ function hidePanel() {
           "
           @click="switchScheme(AUTO_MODE)"
         >
-          <Icon icon="material-symbols:radio-button-partial" class="text-[1.25rem] mr-2.5" />
-          {{ t('theme.system') }}
+          <Icon
+            icon="material-symbols:radio-button-partial"
+            class="text-[1.25rem] mr-2.5"
+          />
+          {{ t("theme.system") }}
         </button>
       </div>
     </div>

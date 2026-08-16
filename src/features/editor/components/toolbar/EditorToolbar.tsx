@@ -1,11 +1,11 @@
-import { useState, useMemo, useRef, useEffect, useCallback, memo } from 'react';
-import type { ReactNode } from 'react';
-import type { Editor } from '@tiptap/core';
-import EditorToolbarButton from './EditorToolbarButton';
-import MathEditor from '../nodes/MathEditor';
-import ImageUrlPopover from '../dialogs/ImageUrlPopover';
-import LinkEditPopover from '../dialogs/LinkEditPopover';
-import { t } from '~/lib/i18n';
+import { useState, useMemo, useRef, useEffect, useCallback, memo } from "react";
+import type { ReactNode } from "react";
+import type { Editor } from "@tiptap/core";
+import EditorToolbarButton from "./EditorToolbarButton";
+import MathEditor from "../nodes/MathEditor";
+import ImageUrlPopover from "../dialogs/ImageUrlPopover";
+import LinkEditPopover from "../dialogs/LinkEditPopover";
+import { t } from "~/lib/i18n";
 
 interface MathDraft {
   isBlock: boolean;
@@ -17,7 +17,14 @@ interface ToolbarItemDef {
   icon: ReactNode;
   label: string;
   title: string;
-  group: 'format' | 'heading' | 'block' | 'list' | 'insert' | 'component' | 'history';
+  group:
+    | "format"
+    | "heading"
+    | "block"
+    | "list"
+    | "insert"
+    | "component"
+    | "history";
   action: (editor: Editor) => void;
   isActive: (editor: Editor) => boolean;
 }
@@ -374,189 +381,189 @@ const Redo = (
 function buildToolbarItems(): ToolbarItemDef[] {
   return [
     {
-      key: 'h1',
+      key: "h1",
       icon: H1,
-      label: 'H1',
-      title: t('editor.heading1'),
-      group: 'heading',
+      label: "H1",
+      title: t("editor.heading1"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 1 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 1 }),
+      isActive: (e) => e.isActive("heading", { level: 1 }),
     },
     {
-      key: 'h2',
+      key: "h2",
       icon: H2,
-      label: 'H2',
-      title: t('editor.heading2'),
-      group: 'heading',
+      label: "H2",
+      title: t("editor.heading2"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 2 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 2 }),
+      isActive: (e) => e.isActive("heading", { level: 2 }),
     },
     {
-      key: 'h3',
+      key: "h3",
       icon: H3,
-      label: 'H3',
-      title: t('editor.heading3'),
-      group: 'heading',
+      label: "H3",
+      title: t("editor.heading3"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 3 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 3 }),
+      isActive: (e) => e.isActive("heading", { level: 3 }),
     },
     {
-      key: 'h4',
+      key: "h4",
       icon: H4,
-      label: 'H4',
-      title: t('editor.heading4'),
-      group: 'heading',
+      label: "H4",
+      title: t("editor.heading4"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 4 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 4 }),
+      isActive: (e) => e.isActive("heading", { level: 4 }),
     },
     {
-      key: 'h5',
+      key: "h5",
       icon: H5,
-      label: 'H5',
-      title: t('editor.heading5'),
-      group: 'heading',
+      label: "H5",
+      title: t("editor.heading5"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 5 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 5 }),
+      isActive: (e) => e.isActive("heading", { level: 5 }),
     },
     {
-      key: 'h6',
+      key: "h6",
       icon: H6,
-      label: 'H6',
-      title: t('editor.heading6'),
-      group: 'heading',
+      label: "H6",
+      title: t("editor.heading6"),
+      group: "heading",
       action: (e) => e.chain().focus().toggleHeading({ level: 6 }).run(),
-      isActive: (e) => e.isActive('heading', { level: 6 }),
+      isActive: (e) => e.isActive("heading", { level: 6 }),
     },
     {
-      key: 'bold',
+      key: "bold",
       icon: B,
-      label: t('editor.bold'),
-      title: t('editor.boldShortcut'),
-      group: 'format',
+      label: t("editor.bold"),
+      title: t("editor.boldShortcut"),
+      group: "format",
       action: (e) => e.chain().focus().toggleBold().run(),
-      isActive: (e) => e.isActive('bold'),
+      isActive: (e) => e.isActive("bold"),
     },
     {
-      key: 'italic',
+      key: "italic",
       icon: I,
-      label: t('editor.italic'),
-      title: t('editor.italicShortcut'),
-      group: 'format',
+      label: t("editor.italic"),
+      title: t("editor.italicShortcut"),
+      group: "format",
       action: (e) => e.chain().focus().toggleItalic().run(),
-      isActive: (e) => e.isActive('italic'),
+      isActive: (e) => e.isActive("italic"),
     },
     {
-      key: 'underline',
+      key: "underline",
       icon: U,
-      label: t('editor.underline'),
-      title: t('editor.underlineShortcut'),
-      group: 'format',
+      label: t("editor.underline"),
+      title: t("editor.underlineShortcut"),
+      group: "format",
       action: (e) => e.chain().focus().toggleUnderline().run(),
-      isActive: (e) => e.isActive('underline'),
+      isActive: (e) => e.isActive("underline"),
     },
     {
-      key: 'strike',
+      key: "strike",
       icon: S,
-      label: t('editor.strike'),
-      title: t('editor.strike'),
-      group: 'format',
+      label: t("editor.strike"),
+      title: t("editor.strike"),
+      group: "format",
       action: (e) => e.chain().focus().toggleStrike().run(),
-      isActive: (e) => e.isActive('strike'),
+      isActive: (e) => e.isActive("strike"),
     },
     {
-      key: 'code',
+      key: "code",
       icon: Code,
-      label: t('editor.inlineCode'),
-      title: t('editor.inlineCode'),
-      group: 'format',
+      label: t("editor.inlineCode"),
+      title: t("editor.inlineCode"),
+      group: "format",
       action: (e) => e.chain().focus().toggleCode().run(),
-      isActive: (e) => e.isActive('code'),
+      isActive: (e) => e.isActive("code"),
     },
     {
-      key: 'link',
+      key: "link",
       icon: Link,
-      label: t('editor.link'),
-      title: t('editor.insertLink'),
-      group: 'insert',
+      label: t("editor.link"),
+      title: t("editor.insertLink"),
+      group: "insert",
       action: () => {
         // 链接由 dispatchAction 拦截：有链接则移除，无链接则打开 LinkEditPopover
       },
-      isActive: (e) => e.isActive('link'),
+      isActive: (e) => e.isActive("link"),
     },
     {
-      key: 'blockquote',
+      key: "blockquote",
       icon: Blockquote,
-      label: t('editor.blockquote'),
-      title: t('editor.blockquoteTitle'),
-      group: 'block',
+      label: t("editor.blockquote"),
+      title: t("editor.blockquoteTitle"),
+      group: "block",
       action: (e) => e.chain().focus().toggleBlockquote().run(),
-      isActive: (e) => e.isActive('blockquote'),
+      isActive: (e) => e.isActive("blockquote"),
     },
     {
-      key: 'bulletList',
+      key: "bulletList",
       icon: Ul,
-      label: t('editor.bulletList'),
-      title: t('editor.bulletList'),
-      group: 'list',
+      label: t("editor.bulletList"),
+      title: t("editor.bulletList"),
+      group: "list",
       action: (e) => e.chain().focus().toggleBulletList().run(),
-      isActive: (e) => e.isActive('bulletList'),
+      isActive: (e) => e.isActive("bulletList"),
     },
     {
-      key: 'orderedList',
+      key: "orderedList",
       icon: Ol,
-      label: t('editor.orderedList'),
-      title: t('editor.orderedList'),
-      group: 'list',
+      label: t("editor.orderedList"),
+      title: t("editor.orderedList"),
+      group: "list",
       action: (e) => e.chain().focus().toggleOrderedList().run(),
-      isActive: (e) => e.isActive('orderedList'),
+      isActive: (e) => e.isActive("orderedList"),
     },
     {
-      key: 'taskList',
+      key: "taskList",
       icon: TaskList,
-      label: t('editor.taskList'),
-      title: t('editor.taskList'),
-      group: 'list',
+      label: t("editor.taskList"),
+      title: t("editor.taskList"),
+      group: "list",
       action: (e) => e.chain().focus().toggleTaskList().run(),
-      isActive: (e) => e.isActive('taskList'),
+      isActive: (e) => e.isActive("taskList"),
     },
     {
-      key: 'codeBlock',
+      key: "codeBlock",
       icon: CodeBlock,
-      label: t('editor.codeBlock'),
-      title: t('editor.codeBlock'),
-      group: 'block',
+      label: t("editor.codeBlock"),
+      title: t("editor.codeBlock"),
+      group: "block",
       action: (e) => e.chain().focus().toggleCodeBlock().run(),
-      isActive: (e) => e.isActive('codeBlock'),
+      isActive: (e) => e.isActive("codeBlock"),
     },
     {
-      key: 'horizontalRule',
+      key: "horizontalRule",
       icon: Hr,
-      label: t('editor.horizontalRule'),
-      title: t('editor.horizontalRule'),
-      group: 'insert',
+      label: t("editor.horizontalRule"),
+      title: t("editor.horizontalRule"),
+      group: "insert",
       action: (e) => e.chain().focus().setHorizontalRule().run(),
       isActive: () => false,
     },
     {
-      key: 'undo',
+      key: "undo",
       icon: Undo,
-      label: t('editor.undo'),
-      title: t('editor.undoShortcut'),
-      group: 'history',
+      label: t("editor.undo"),
+      title: t("editor.undoShortcut"),
+      group: "history",
       action: (e) => e.chain().focus().undo().run(),
       isActive: () => false,
     },
     {
-      key: 'redo',
+      key: "redo",
       icon: Redo,
-      label: t('editor.redo'),
-      title: t('editor.redoShortcut'),
-      group: 'history',
+      label: t("editor.redo"),
+      title: t("editor.redoShortcut"),
+      group: "history",
       action: (e) => e.chain().focus().redo().run(),
       isActive: () => false,
     },
     {
-      key: 'image',
+      key: "image",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -574,16 +581,16 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
         </svg>
       ),
-      label: t('editor.image'),
-      title: t('editor.insertImage'),
-      group: 'insert',
+      label: t("editor.image"),
+      title: t("editor.insertImage"),
+      group: "insert",
       action: () => {
         // 图片由 dispatchAction 拦截：打开 ImageUrlPopover
       },
       isActive: () => false,
     },
     {
-      key: 'inlineMath',
+      key: "inlineMath",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -601,16 +608,16 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M18 20c-1.7 0-3-1.3-3-3V4" />
         </svg>
       ),
-      label: t('editor.inlineMath'),
-      title: t('editor.insertInlineMath'),
-      group: 'insert',
+      label: t("editor.inlineMath"),
+      title: t("editor.insertInlineMath"),
+      group: "insert",
       action: () => {
         // 行内公式由 dispatchAction 拦截：打开 MathEditor
       },
       isActive: () => false,
     },
     {
-      key: 'blockMath',
+      key: "blockMath",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -626,16 +633,16 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a2 2 0 0 1 0 2.4l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2" />
         </svg>
       ),
-      label: t('editor.blockMath'),
-      title: t('editor.insertBlockMath'),
-      group: 'insert',
+      label: t("editor.blockMath"),
+      title: t("editor.insertBlockMath"),
+      group: "insert",
       action: () => {
         // 块级公式由 dispatchAction 拦截：打开 MathEditor
       },
       isActive: () => false,
     },
     {
-      key: 'table',
+      key: "table",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -654,16 +661,19 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M12 3v18" />
         </svg>
       ),
-      label: t('editor.table'),
-      title: t('editor.insertTable3x3'),
-      group: 'insert',
+      label: t("editor.table"),
+      title: t("editor.insertTable3x3"),
+      group: "insert",
       action: (e) => {
-        e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+        e.chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run();
       },
       isActive: () => false,
     },
     {
-      key: 'callout',
+      key: "callout",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -681,19 +691,19 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       ),
-      label: 'Callout',
-      title: t('editor.insertCallout'),
-      group: 'component',
+      label: "Callout",
+      title: t("editor.insertCallout"),
+      group: "component",
       action: (e) => {
         e.chain()
           .focus()
-          .insertContent({ type: 'callout', attrs: { type: 'info' } })
+          .insertContent({ type: "callout", attrs: { type: "info" } })
           .run();
       },
       isActive: () => false,
     },
     {
-      key: 'figure',
+      key: "figure",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -711,11 +721,11 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
         </svg>
       ),
-      label: 'Figure',
-      title: t('editor.insertFigure'),
-      group: 'component',
+      label: "Figure",
+      title: t("editor.insertFigure"),
+      group: "component",
       action: (e) => {
-        e.chain().focus().insertContent({ type: 'figure', attrs: {} }).run();
+        e.chain().focus().insertContent({ type: "figure", attrs: {} }).run();
       },
       isActive: () => false,
     },
@@ -723,9 +733,17 @@ function buildToolbarItems(): ToolbarItemDef[] {
 }
 
 const ITEMS = buildToolbarItems();
-const GROUPS = ['heading', 'format', 'insert', 'block', 'list', 'component', 'history'] as const;
+const GROUPS = [
+  "heading",
+  "format",
+  "insert",
+  "block",
+  "list",
+  "component",
+  "history",
+] as const;
 // Groups that go into "more" menu on small screens
-const MORE_GROUPS = new Set(['component', 'history']);
+const MORE_GROUPS = new Set(["component", "history"]);
 
 interface EditorToolbarProps {
   editor: Editor;
@@ -740,23 +758,23 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
 
   const dispatchAction = useCallback(
     (item: ToolbarItemDef) => {
-      if (item.key === 'inlineMath') {
-        setMathDraft({ isBlock: false, initialLatex: 'x^2' });
-      } else if (item.key === 'blockMath') {
-        setMathDraft({ isBlock: true, initialLatex: '\\sum_{i=1}^{n} x_i' });
-      } else if (item.key === 'link') {
-        if (editor.isActive('link')) {
-          editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      if (item.key === "inlineMath") {
+        setMathDraft({ isBlock: false, initialLatex: "x^2" });
+      } else if (item.key === "blockMath") {
+        setMathDraft({ isBlock: true, initialLatex: "\\sum_{i=1}^{n} x_i" });
+      } else if (item.key === "link") {
+        if (editor.isActive("link")) {
+          editor.chain().focus().extendMarkRange("link").unsetLink().run();
         } else {
           setLinkOpen(true);
         }
-      } else if (item.key === 'image') {
+      } else if (item.key === "image") {
         setImageOpen(true);
       } else {
         item.action(editor);
       }
     },
-    [editor]
+    [editor],
   );
 
   // 移动端：当前激活按钮变化时自动滚动到可视区域（rAF 防抖）
@@ -768,9 +786,13 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
     const scrollActive = (): void => {
       if (!pending) return;
       pending = false;
-      const activeBtn = bar.querySelector('.is-active') as HTMLElement | null;
+      const activeBtn = bar.querySelector(".is-active") as HTMLElement | null;
       if (activeBtn) {
-        activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+        activeBtn.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+          behavior: "smooth",
+        });
       }
     };
     pending = true;
@@ -803,7 +825,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           </div>
         );
       }),
-    [editor, dispatchAction]
+    [editor, dispatchAction],
   );
 
   const mobileContent = useMemo(
@@ -829,7 +851,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           </div>
         );
       }),
-    [editor, dispatchAction]
+    [editor, dispatchAction],
   );
 
   const moreItems = useMemo(
@@ -837,7 +859,7 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
       GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
         <div key={group} className="mb-1 last:mb-0">
           <div className="text-xs text-deep-text/50 px-1 mb-0.5">
-            {group === 'component' ? t('editor.component') : t('editor.action')}
+            {group === "component" ? t("editor.component") : t("editor.action")}
           </div>
           <div className="flex flex-wrap gap-0.5">
             {ITEMS.filter((i) => i.group === group).map((item) => (
@@ -853,19 +875,24 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           </div>
         </div>
       )),
-    [editor, dispatchAction]
+    [editor, dispatchAction],
   );
 
   return (
     <div className="rte-toolbar">
-      <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">{desktopContent}</div>
+      <div className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 p-2">
+        {desktopContent}
+      </div>
 
-      <div ref={mobileBarRef} className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none">
+      <div
+        ref={mobileBarRef}
+        className="flex md:hidden items-center gap-x-0.5 p-1.5 overflow-x-auto scrollbar-none"
+      >
         {mobileContent}
         <div className="relative shrink-0">
           <button
             type="button"
-            className={`rte-btn rte-btn--ghost rte-btn--sm gap-1 ${moreOpen ? 'is-active' : ''}`}
+            className={`rte-btn rte-btn--ghost rte-btn--sm gap-1 ${moreOpen ? "is-active" : ""}`}
             onClick={() => setMoreOpen(!moreOpen)}
           >
             <svg
@@ -897,12 +924,20 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
           isBlock={mathDraft.isBlock}
           onConfirm={(latex) => {
             if (mathDraft.isBlock) {
-              editor.chain().focus().insertContent({ type: 'blockMath', attrs: { latex } }).run();
+              editor
+                .chain()
+                .focus()
+                .insertContent({ type: "blockMath", attrs: { latex } })
+                .run();
             } else {
               editor
                 .chain()
                 .focus()
-                .insertContent({ type: 'text', text: latex, marks: [{ type: 'inlineMath', attrs: { latex } }] })
+                .insertContent({
+                  type: "text",
+                  text: latex,
+                  marks: [{ type: "inlineMath", attrs: { latex } }],
+                })
                 .run();
             }
             setMathDraft(null);

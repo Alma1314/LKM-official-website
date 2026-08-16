@@ -1,5 +1,7 @@
 # LKM 项目代码规范
 
+> 新手从零部署环境 / 安装工具 / 上传改动，见 [GETTING_STARTED.md](./GETTING_STARTED.md)。项目架构与开发要求见 [AGENTS.md](./AGENTS.md)。
+
 ## 工具链
 
 | 工具         | 用途                                           |
@@ -60,19 +62,14 @@ pnpm run build    # 生产构建（CI 会同时运行 check）
 
 ## CI 流程
 
-GitHub Actions 配置了一个工作流文件：
+GitHub Actions 配置了一个工作流文件（`.github/workflows/actions.yaml`），内含 4 个 job：
 
-### actions.yaml — PR 与 Push 检查 + 部署
-
-| Job      | 触发                                   | 内容                                                            |
-| -------- | -------------------------------------- | --------------------------------------------------------------- |
-| `build`  | PR 到 main / Push 到 main              | `pnpm run build` 生产构建                                       |
-| `check`  | PR 到 main / Push 到 main              | `pnpm run check`（check:astro + check:eslint + check:prettier） |
-| `deploy` | Push 到 main（build + check 都通过后） | 构建部署至生产环境                                              |
-
-### 部署
-
-部署通过 `actions.yaml` 中的 `deploy` job 完成：Push 到 main 分支时（build + check 通过后）完成部署。
+| Job             | 触发              | 内容                                                            |
+| --------------- | ----------------- | --------------------------------------------------------------- |
+| `build`         | PR / Push 到 main | `pnpm install` + `pnpm run build` 生产构建                      |
+| `artifacts`     | PR / Push 到 main | 构建后运行 `check:seo` / `check:links` / `check:budget`         |
+| `check`         | PR / Push 到 main | `pnpm run check`（check:astro + check:eslint + check:prettier） |
+| `test-frontend` | PR / Push 到 main | `pnpm run test`（Vitest 单元测试）                              |
 
 ### 通过 CI 的门槛
 
@@ -81,7 +78,9 @@ GitHub Actions 配置了一个工作流文件：
    - `astro check` — Astro 类型检查
    - `eslint .` — ESLint 代码规范检查（零 error）
    - `prettier --check .` — Prettier 格式检查（零 warn）
-3. **deploy job 依赖 build 和 check 都通过** — 任一失败则不会部署
+3. **`artifacts`（SEO/links/budget）与 `test-frontend`（单测）必须通过**
+
+> 本仓库的 CI 仅负责构建与检查，**不包含自动部署 job**；实际部署由外层编排（见根目录仓库的部署流程）完成。
 
 ## 开发流程
 
@@ -138,8 +137,8 @@ const items = ['A', 'B', 'C'];
 使用 `~/` 替代 `src/`：
 
 ```typescript
-import Image from '~/ui/primitives/Image.astro';
-import { siteConfig } from '~/lib/config';
+import Image from "~/components/primitives/Image.astro";
+import { siteConfig } from "~/lib/config";
 ```
 
 ## 运行环境
@@ -168,7 +167,7 @@ import { siteConfig } from '~/lib/config';
 站点元数据集中在 `src/data/config.yaml` 中管理，通过 `~/lib/config` 导入：
 
 ```typescript
-import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
+import { siteConfig, navBarConfig, profileConfig } from "~/lib/config";
 ```
 
 | 字段        | 说明                                          |
@@ -185,62 +184,33 @@ import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
 
 ## 导航配置
 
-页头和页脚链接在 `src/navigation.ts` 中统一管理：
+页头和页脚链接在 `src/lib/navigation.ts` 中统一管理：
 
 - `headerData` — 顶部导航栏（含嵌套下拉菜单）
 - `footerData` — 底部链接、社交图标、版权信息
 - 所有链接必须使用 `getPermalink()` 生成，不能硬编码路径
 
-## 内容集合（博客文章）
+## 博客内容
 
-### 文件位置
+博客采用 **Astro content collections**（`src/content.config.ts`，当前集合为空），正式博客内容来自独立部署的真实后端：
 
-博客文章放在 `src/content/posts/`，支持 `.md` 和 `.mdx` 格式。
-
-### 必需字段
-
-| 字段        | 类型     | 说明               |
-| ----------- | -------- | ------------------ |
-| `title`     | `string` | **必填**，文章标题 |
-| `published` | `Date`   | 发布日期           |
-
-### 可选字段
-
-| 字段          | 类型       | 说明                     |
-| ------------- | ---------- | ------------------------ |
-| `updated`     | `Date`     | 更新日期                 |
-| `draft`       | `boolean`  | 草稿模式（默认 `false`） |
-| `description` | `string`   | 文章描述                 |
-| `image`       | `string`   | 封面图路径               |
-| `category`    | `string`   | 分类                     |
-| `tags`        | `string[]` | 标签列表                 |
-| `lang`        | `string`   | 语言                     |
-
-### 示例
-
-```markdown
----
-title: 我的第一篇文章
-published: 2026-07-04
-description: 这是一篇示例文章。
-category: tutorials
-tags: [astro, tailwind]
----
-```
+- 社区博客为 Vue SPA，路由 `src/pages/blog/`（`index.astro` / `[...slug].astro`）
+- 文章正文经 `useBlogPost`（`src/features/blog-community/composables/useBlogPost.ts`）用 `@mdx-js/mdx` 的 `evaluate()` 在客户端编译（MDX 原文由 `blogApi` 从后端 / Git 仓库源码获取），再经共享 `Callout`/`Figure` 组件映射渲染
+- 不在前端以 `.md` 文件形式管理博客正文；前端不维护内容集合的 posts 目录
 
 ## 性能规范
 
-### Lighthouse 性能分析
+### 产物检查
 
-项目通过 `scripts/lighthouse-report.mjs` 进行全站 Lighthouse 分析：
+CI 的 `artifacts` job 会在构建后运行产物检查（`pnpm run build` 后依次执行）：
 
-```bash
-pnpm run build                         # 1. 确保 dist/ 是最新构建
-node scripts/lighthouse-report.mjs     # 2. 运行 Lighthouse（20 个抽样页面）
-# 报告输出到 reports/lighthouse/summary.md
-```
+| 命令                    | 说明                                                     |
+| ----------------------- | -------------------------------------------------------- |
+| `pnpm run check:seo`    | SEO 输出检查（`scripts/check-seo-output.mjs`）           |
+| `pnpm run check:links`  | 内部链接有效性检查（`scripts/check-links.mjs`）          |
+| `pnpm run check:budget` | Bundle 体积预算检查（`scripts/check-bundle-budget.mjs`） |
 
-**性能目标：**
+**性能质量要求（开发时自查）：**
 
 | 指标                 | 目标  |
 | -------------------- | ----- |

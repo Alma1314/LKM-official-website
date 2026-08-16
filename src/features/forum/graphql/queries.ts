@@ -1,5 +1,5 @@
-import { graphql } from '~/lib/api/graphql';
-import type { TypedDocumentNode } from '@urql/core';
+import { graphql } from "~/lib/api/graphql";
+import type { TypedDocumentNode } from "@urql/core";
 
 export interface GqlPost {
   id: number;
@@ -54,7 +54,10 @@ export const PostListQuery = graphql(`
       }
     }
   }
-`) as TypedDocumentNode<{ posts: GqlPostConnection }, { categoryId?: string; page: number; pageSize: number }>;
+`) as TypedDocumentNode<
+  { posts: GqlPostConnection },
+  { categoryId?: string; page: number; pageSize: number }
+>;
 
 export const PostDetailQuery = graphql(`
   query PostDetail($id: ID!) {

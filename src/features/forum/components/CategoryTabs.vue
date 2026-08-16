@@ -6,7 +6,9 @@
       type="button"
       class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors shrink-0"
       :class="
-        activeTab === tab.key ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
+        activeTab === tab.key
+          ? 'bg-primary text-on-primary'
+          : 'bg-surface-3 text-text-muted hover:bg-surface-3/70'
       "
       @click="$emit('change', tab.key)"
     >
