@@ -24,7 +24,14 @@ interface Props {
 const { logo, groups = [], currentPath = '' } = Astro.props;
 ---
 
-<nav class={styles.shell} aria-label="Sidebar navigation" data-sidebar>
+<nav
+  class:list={[
+    styles.shell,
+    'fixed top-[72px] left-0 h-[calc(100vh-72px)] bg-base-100 z-10 pl-2 overflow-hidden border-r border-base-300',
+  ]}
+  aria-label="Sidebar navigation"
+  data-sidebar
+>
   <ul class={styles.nav}>
     {
       logo && (

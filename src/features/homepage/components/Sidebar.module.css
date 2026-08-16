@@ -1,15 +1,8 @@
-/* ── 侧边栏容器 ── */
+/* ── 侧边栏容器 ──
+   宽度由 .expanded 状态切换（width），其余壳层定位/背景/边框/内边距/溢出
+   已在 Sidebar.astro 用 Tailwind 原子类实现，此处只保留依赖展开状态的宽度与移动端覆盖。 */
 .shell {
-  position: fixed;
-  top: 72px;
-  left: 0;
   width: 67px;
-  height: calc(100vh - 72px);
-  background: var(--color-base-100);
-  z-index: 10;
-  padding-left: 8px;
-  overflow: hidden;
-  border-right: 1px solid var(--color-base-300);
 }
 
 .shell:global(.expanded) {
