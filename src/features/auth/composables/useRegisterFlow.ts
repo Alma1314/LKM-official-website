@@ -1,6 +1,7 @@
 import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
+import { t } from '~/lib/i18n';
 import { useVerificationCountdown } from './useVerificationCountdown';
 
 export type RegisterType = 'normal' | 'local';
@@ -83,7 +84,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
 
   // ── 帮助函数（喵，工具人上线！） ──
   function fail(msg?: string): void {
-    error.value = msg ?? '操作失败，请重试';
+    error.value = msg ?? t('messages.operationFailed');
   }
 
   function succeed(): void {
@@ -99,22 +100,23 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
     // ── 前端校验层（喵，把坏东西挡在外面！） ──
     // 用户名（喵，起个好名字很重要！）
     const trimmedUsername = username.value.trim();
-    if (trimmedUsername.length < 3) return fail('用户名至少 3 个字符');
-    if (trimmedUsername.length > 50) return fail('用户名不能超过 50 个字符');
-    if (/[<>/]/.test(trimmedUsername)) return fail('用户名不能包含特殊字符（如 < > /）');
+    if (trimmedUsername.length < 3) return fail(t('messages.register.usernameTooShort'));
+    if (trimmedUsername.length > 50) return fail(t('messages.register.usernameTooLong'));
+    if (/[<>/]/.test(trimmedUsername)) return fail(t('messages.register.usernameSpecialChars'));
 
     // 密码（不净化，保留原始输入交给后端 bcrypt，喵，密码要保护好！）
-    if (password.value.length < 6) return fail('密码长度不能少于 6 位');
-    if (password.value.length > 128) return fail('密码长度不能超过 128 位');
-    if (password.value !== confirm.value) return fail('两次输入的密码不一致');
+    if (password.value.length < 6) return fail(t('messages.register.passwordTooShort'));
+    if (password.value.length > 128) return fail(t('messages.register.passwordTooLong'));
+    if (password.value !== confirm.value) return fail(t('messages.register.passwordMismatch'));
 
     // 联系方式（仅普通账户必填，喵，不然找不到人！）
     if (type.value === 'normal') {
       const trimmedContact = contact.value.trim();
-      if (!trimmedContact) return fail(useEmail.value ? '请输入邮箱' : '请输入手机号');
-      if (/[<>/]/.test(trimmedContact)) return fail('联系方式不能包含特殊字符');
-      if (useEmail.value && !EMAIL_RE.test(trimmedContact)) return fail('请输入有效的邮箱地址');
-      if (!useEmail.value && !PHONE_RE.test(trimmedContact)) return fail('请输入有效的手机号');
+      if (!trimmedContact)
+        return fail(useEmail.value ? t('messages.register.enterEmail') : t('messages.register.enterPhone'));
+      if (/[<>/]/.test(trimmedContact)) return fail(t('messages.register.contactSpecialChars'));
+      if (useEmail.value && !EMAIL_RE.test(trimmedContact)) return fail(t('messages.register.invalidEmail'));
+      if (!useEmail.value && !PHONE_RE.test(trimmedContact)) return fail(t('messages.register.invalidPhone'));
     }
 
     loading.value = true;
@@ -141,7 +143,7 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
 
       // 防御：确保 txn_id 存在（喵，后端没返回就报错！）
       if (!r.value?.txn_id) {
-        return fail('获取验证码失败，请重试');
+        return fail(t('messages.register.codeRequestFailed'));
       }
       txnId.value = r.value.txn_id;
       stage.value = 'verify';
@@ -154,10 +156,10 @@ export function useRegisterFlow(options: RegisterFlowOptions = {}): RegisterFlow
   // ── 提交验证码（喵，对暗号！） ──
   async function submitCode(): Promise<void> {
     error.value = null;
-    if (!txnId.value) return fail('注册会话已失效，请重新提交');
-    if (code.value.length < 1) return fail('请输入验证码');
-    if (code.value.length > 10) return fail('验证码长度不正确');
-    if (!/^\d+$/.test(code.value)) return fail('验证码格式不正确');
+    if (!txnId.value) return fail(t('messages.register.sessionExpired'));
+    if (code.value.length < 1) return fail(t('messages.recovery.enterCode'));
+    if (code.value.length > 10) return fail(t('messages.register.invalidCodeLength'));
+    if (!/^\d+$/.test(code.value)) return fail(t('messages.register.invalidCodeFormat'));
 
     loading.value = true;
     try {

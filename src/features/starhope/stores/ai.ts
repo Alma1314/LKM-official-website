@@ -3,6 +3,7 @@ import { db } from './db';
 import { useAuthStore } from './auth';
 import { enqueue } from '../sync/sync';
 import type { AiAgent, AiMessage } from '~/features/starhope/types';
+import { t } from '~/lib/i18n';
 
 const agents = ref<AiAgent[]>([]);
 const currentAgentId = ref<string | null>(null);
@@ -44,7 +45,7 @@ export function useAiStore(): {
         await loadMessages();
       }
     } catch (e) {
-      error.value = '加载 AI 助手失败';
+      error.value = t('starhopeData.ai.loadFail');
       console.error('loadAgents failed:', e);
     }
   }
@@ -53,7 +54,7 @@ export function useAiStore(): {
     const agent: AiAgent = {
       id: crypto.randomUUID(),
       userId: String(auth.userId.value!),
-      name: '通用助手',
+      name: t('starhopeData.ai.defaultAgentName'),
       systemPrompt: '你是一个有用的学习助手。请用中文回答。',
       service: 'openai',
       model: 'gpt-4o',
@@ -83,7 +84,7 @@ export function useAiStore(): {
       await loadAgents();
       return agent;
     } catch {
-      error.value = '创建 AI 助手失败';
+      error.value = t('starhopeData.ai.createFail');
     }
   }
 
@@ -158,7 +159,9 @@ export function useAiStore(): {
         id: crypto.randomUUID(),
         agentId: currentAgentId.value,
         role: 'assistant',
-        content: `错误: ${e instanceof Error ? e.message : '未知错误'}`,
+        content: t('starhopeData.ai.errorPrefix', {
+          message: e instanceof Error ? e.message : t('starhopeData.ai.unknownError'),
+        }),
         timestamp: new Date().toISOString(),
       };
       await db.aiMessages.put(errorMsg);
@@ -177,7 +180,10 @@ export function useAiStore(): {
 
   async function mockAiResponse(agent: AiAgent, userMessage: string): Promise<string> {
     await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
-    return `作为你的**${agent.name}**，关于"${userMessage.slice(0, 30)}"这个问题：\n\n这是一个很好的学习问题。建议从基础概念入手，逐步深入理解。\n\n> 💡 你可以继续追问具体细节。`;
+    return t('starhopeData.ai.mockResponse', {
+      name: agent.name,
+      question: userMessage.slice(0, 30),
+    });
   }
 
   return {

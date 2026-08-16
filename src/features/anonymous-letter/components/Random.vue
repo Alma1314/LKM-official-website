@@ -18,10 +18,10 @@
     <section v-else class="reader glass float-up">
       <button class="reader-back" @click="current = null">{{ t('treehole.random.back') }}</button>
       <div class="reader-paper" :style="{ background: paperBg }">
-        <div class="reader-cat">{{ category.emoji }} {{ category.label }}</div>
+        <div class="reader-cat">{{ category.emoji }} {{ t(category.label) }}</div>
         <p class="reader-content">{{ current.content }}</p>
         <div class="reader-moods" v-if="current.moods && current.moods.length">
-          <span v-for="m in current.moods" :key="m" class="reader-mood">#{{ m }}</span>
+          <span v-for="m in current.moods" :key="m" class="reader-mood">#{{ t(moodKey(m)) }}</span>
         </div>
         <div class="reader-foot">{{ current.codename }} · {{ timeText }}</div>
       </div>
@@ -50,7 +50,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useMessage } from 'naive-ui';
-import { getCategory, getPaper } from '../stores/constants';
+import { getCategory, getPaper, moodKey } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
 import { t } from '~/lib/i18n';
 

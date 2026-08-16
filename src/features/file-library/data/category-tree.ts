@@ -1,4 +1,5 @@
 // 文件库三级学科分类树（纯前端静态数据）。parentId 为 null 表示一级（根）。
+// 用户可见字段（name）已替换为 i18n key，渲染时需用 t(field) 显示。
 
 export interface FileCategory {
   id: string;
@@ -8,34 +9,34 @@ export interface FileCategory {
 
 export const fileCategories: FileCategory[] = [
   // ─── 一级 ───
-  { id: 'basic-science', name: '基础学科', parentId: null },
-  { id: 'applied-science', name: '应用学科', parentId: null },
-  { id: 'language', name: '语言学习', parentId: null },
+  { id: 'basic-science', name: 'fileLibraryData.categories.basicScience', parentId: null },
+  { id: 'applied-science', name: 'fileLibraryData.categories.appliedScience', parentId: null },
+  { id: 'language', name: 'fileLibraryData.categories.language', parentId: null },
 
   // ─── 二级（基础学科下）───
-  { id: 'math', name: '数学', parentId: 'basic-science' },
-  { id: 'physics', name: '物理学', parentId: 'basic-science' },
-  { id: 'chemistry', name: '化学', parentId: 'basic-science' },
-  { id: 'biology', name: '生命学科', parentId: 'basic-science' },
-  { id: 'earth-science', name: '地球科学', parentId: 'basic-science' },
-  { id: 'cosmos-astronomy', name: '宇宙与天文学', parentId: 'basic-science' },
+  { id: 'math', name: 'fileLibraryData.categories.math', parentId: 'basic-science' },
+  { id: 'physics', name: 'fileLibraryData.categories.physics', parentId: 'basic-science' },
+  { id: 'chemistry', name: 'fileLibraryData.categories.chemistry', parentId: 'basic-science' },
+  { id: 'biology', name: 'fileLibraryData.categories.biology', parentId: 'basic-science' },
+  { id: 'earth-science', name: 'fileLibraryData.categories.earthScience', parentId: 'basic-science' },
+  { id: 'cosmos-astronomy', name: 'fileLibraryData.categories.cosmosAstronomy', parentId: 'basic-science' },
 
   // ─── 二级（应用学科下）───
-  { id: 'cs', name: '信息科学与技术', parentId: 'applied-science' },
-  { id: 'ic-semiconductor', name: '集成电路与半导体', parentId: 'applied-science' },
+  { id: 'cs', name: 'fileLibraryData.categories.cs', parentId: 'applied-science' },
+  { id: 'ic-semiconductor', name: 'fileLibraryData.categories.icSemiconductor', parentId: 'applied-science' },
 
   // ─── 二级（语言学习下）───
-  { id: 'lang-en', name: '英语', parentId: 'language' },
+  { id: 'lang-en', name: 'fileLibraryData.categories.langEn', parentId: 'language' },
 
   // ─── 三级（叶子，挂文件）───
-  { id: 'math-linear-algebra', name: '线性代数', parentId: 'math' },
-  { id: 'math-modeling', name: '数学建模', parentId: 'math' },
-  { id: 'physics-quantum', name: '量子力学', parentId: 'physics' },
-  { id: 'physics-astrophysics', name: '天体物理', parentId: 'physics' },
-  { id: 'chemistry-organic', name: '有机化学', parentId: 'chemistry' },
-  { id: 'cs-python', name: 'Python 数据分析', parentId: 'cs' },
-  { id: 'ic-design', name: '芯片设计', parentId: 'ic-semiconductor' },
-  { id: 'lang-en-writing', name: '学术写作', parentId: 'lang-en' },
+  { id: 'math-linear-algebra', name: 'fileLibraryData.categories.mathLinearAlgebra', parentId: 'math' },
+  { id: 'math-modeling', name: 'fileLibraryData.categories.mathModeling', parentId: 'math' },
+  { id: 'physics-quantum', name: 'fileLibraryData.categories.physicsQuantum', parentId: 'physics' },
+  { id: 'physics-astrophysics', name: 'fileLibraryData.categories.physicsAstrophysics', parentId: 'physics' },
+  { id: 'chemistry-organic', name: 'fileLibraryData.categories.chemistryOrganic', parentId: 'chemistry' },
+  { id: 'cs-python', name: 'fileLibraryData.categories.csPython', parentId: 'cs' },
+  { id: 'ic-design', name: 'fileLibraryData.categories.icDesign', parentId: 'ic-semiconductor' },
+  { id: 'lang-en-writing', name: 'fileLibraryData.categories.langEnWriting', parentId: 'lang-en' },
 ];
 
 /** 按 id 查分类；不存在返回 undefined。 */

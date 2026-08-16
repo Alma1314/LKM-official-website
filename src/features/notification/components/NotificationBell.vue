@@ -138,10 +138,10 @@ onUnmounted(() => {
           <div
             class="text-sm font-medium text-neutral-800 dark:text-neutral-100 truncate group-hover:text-primary transition-colors"
           >
-            {{ n.title }}
+            {{ t(n.title) }}
           </div>
           <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-2 leading-relaxed">
-            {{ n.content }}
+            {{ t(n.content) }}
           </div>
           <div class="text-xs text-neutral-400 dark:text-neutral-500/80 mt-1">
             {{ timeAgo(n.createdAt) }}

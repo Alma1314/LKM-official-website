@@ -59,7 +59,7 @@
               :style="{ '--c': c.color }"
               @click="category = c.key"
             >
-              {{ c.emoji }} {{ c.label }}
+              {{ c.emoji }} {{ t(c.label) }}
             </button>
           </div>
         </div>
@@ -75,8 +75,8 @@
               :class="{ active: privacyLevel === p.key }"
               @click="privacyLevel = p.key"
             >
-              <b>{{ p.label }}</b
-              ><small>{{ p.desc }}</small>
+              <b>{{ t(p.label) }}</b
+              ><small>{{ t(p.desc) }}</small>
             </button>
           </div>
         </div>
@@ -103,7 +103,7 @@
               :class="{ active: selectedMoods.includes(m) }"
               @click="toggleMood(m)"
             >
-              {{ m }}
+              {{ t(moodKey(m)) }}
             </button>
           </div>
         </div>
@@ -113,14 +113,14 @@
           <label class="setup-label">{{ t('treehole.write.tags') }}</label>
           <div class="tag-pick">
             <button
-              v-for="t in tagsList"
-              :key="t.key"
+              v-for="tg in tagsList"
+              :key="tg.key"
               class="tag-btn"
-              :class="{ active: selectedTags.includes(t.key) }"
-              :style="{ '--tg': t.color }"
-              @click="toggleTag(t.key)"
+              :class="{ active: selectedTags.includes(tg.key) }"
+              :style="{ '--tg': tg.color }"
+              @click="toggleTag(tg.key)"
             >
-              {{ t.emoji }} {{ t.label }}
+              {{ tg.emoji }} {{ t(tg.label) }}
             </button>
           </div>
           <small class="tag-hint">{{ t('treehole.write.tagsHint') }}</small>
@@ -157,7 +157,7 @@
               :style="{ background: p.gradient }"
               @click="paper = p.key"
             >
-              {{ p.label }}
+              {{ t(p.label) }}
             </button>
           </div>
         </div>
@@ -271,7 +271,7 @@
     <n-modal v-model:show="shareVisible" preset="card" :show-icon="false" style="width: min(380px, 92vw)">
       <div class="share-card" ref="shareRef" :style="{ background: paperBg }">
         <div class="share-head">{{ t('treehole.write.shareBrand') }}</div>
-        <div class="share-cat">{{ getCategory(category).emoji }} {{ getCategory(category).label }}</div>
+        <div class="share-cat">{{ getCategory(category).emoji }} {{ t(getCategory(category).label) }}</div>
         <p class="share-content">{{ content }}</p>
         <div class="share-foot">
           {{ codename || t('treehole.write.anonymous') }} · {{ new Date().toLocaleDateString() }}
@@ -299,6 +299,7 @@ import {
   SENSITIVE_WORDS,
   getCategory,
   getPaper,
+  moodKey,
 } from '../stores/constants';
 import * as store from '../stores/storage';
 import { randomCodename } from '../utils/codename';

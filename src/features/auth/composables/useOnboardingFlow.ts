@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
 import { resolveSafeRedirect } from '~/features/auth/utils/safe-redirect';
+import { t } from '~/lib/i18n';
 
 export type OnboardingStepNumber = 1 | 2 | 3 | 4;
 
@@ -46,7 +47,7 @@ export function useOnboardingFlow(options: OnboardingFlowOptions = {}): Onboardi
   const dataByStep = ref<Record<number, Record<string, unknown>>>({});
 
   function setError(msg?: string): void {
-    error.value = msg ?? '操作失败，请重试';
+    error.value = msg ?? t('messages.operationFailed');
   }
 
   function finish(): void {

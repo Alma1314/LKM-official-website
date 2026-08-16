@@ -21,7 +21,7 @@
           <div class="letter-meta">
             <span class="letter-cat">
               <span class="cat-emoji">{{ catInfo.emoji }}</span>
-              {{ catInfo.label }}
+              {{ t(catInfo.label) }}
             </span>
           </div>
 
@@ -32,7 +32,7 @@
 
           <!-- 心情标签 -->
           <div v-if="current.moods && current.moods.length" class="letter-moods">
-            <span v-for="m in current.moods" :key="m" class="mood-tag">#{{ m }}</span>
+            <span v-for="m in current.moods" :key="m" class="mood-tag">#{{ t(moodKey(m)) }}</span>
           </div>
 
           <!-- 署名 + 日期 -->
@@ -78,7 +78,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
-import { getCategory, getPaper } from '../stores/constants';
+import { getCategory, getPaper, moodKey } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
 import { useApp } from '../stores/app';
 import { t } from '~/lib/i18n';

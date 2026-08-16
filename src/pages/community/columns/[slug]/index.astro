@@ -21,7 +21,7 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-const metadata = { title: `${column.title} —— LKM` };
+const metadata = { title: `${t(column.title)} —— LKM` };
 ---
 
 <Layout
@@ -41,7 +41,7 @@ const metadata = { title: `${column.title} —— LKM` };
         </div>
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-1">
-            <h1 class="text-2xl font-bold text-deep-text">{column.title}</h1>
+            <h1 class="text-2xl font-bold text-deep-text">{t(column.title)}</h1>
             {
               column.isVerified && (
                 <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
@@ -51,9 +51,11 @@ const metadata = { title: `${column.title} —— LKM` };
               )
             }
           </div>
-          <p class="text-sm text-text-muted mt-1">{column.description}</p>
+          <p class="text-sm text-text-muted mt-1">{t(column.description)}</p>
           <div class="flex flex-wrap items-center gap-3 mt-3 text-sm text-text-muted/60">
-            <span>{t('page.communityDetail.authorBy', { name: column.authorName, title: column.authorTitle })}</span>
+            <span
+              >{t('page.communityDetail.authorBy', { name: t(column.authorName), title: t(column.authorTitle) })}</span
+            >
             <span>{t('page.communityDetail.followers', { count: column.followerCount.toLocaleString() })}</span>
             <span>{t('page.communityDetail.articleCount', { count: column.articleCount })}</span>
           </div>
@@ -75,9 +77,9 @@ const metadata = { title: `${column.title} —— LKM` };
               <div class="profile-inner p-5 flex gap-4">
                 <div class="flex-1 min-w-0">
                   <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-                    {art.title}
+                    {t(art.title)}
                   </h3>
-                  <p class="text-sm text-text-muted mt-1 line-clamp-2">{art.excerpt}</p>
+                  <p class="text-sm text-text-muted mt-1 line-clamp-2">{t(art.excerpt)}</p>
                   <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60">
                     <span>{formatDate(art.createdAt)}</span>
                     <span>{t('page.communityDetail.readCount', { count: art.viewCount })}</span>

@@ -7,7 +7,7 @@
         ><span class="caret">|</span>
       </h1>
       <p class="hero-sub">{{ t('treehole.home.heroSubtitle') }}</p>
-      <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
+      <div class="hero-quote"><span class="quote-mark">"</span>{{ t(quote) }}<span class="quote-mark">"</span></div>
       <div class="hero-acts">
         <button class="btn-grad" @click="go('/write')">{{ t('treehole.writeLetter') }}</button>
         <button class="chip" @click="go('/random')">{{ t('treehole.randomTreehole') }}</button>
@@ -29,7 +29,7 @@
             :class="{ active: activeCat === c.key }"
             @click="setCat(c.key)"
           >
-            {{ c.emoji }} {{ c.label }}
+            {{ c.emoji }} {{ t(c.label) }}
           </button>
         </div>
       </div>
@@ -60,7 +60,7 @@
             :class="{ active: activeTag === tg.key }"
             @click="setTag(tg.key)"
           >
-            {{ tg.emoji }} {{ tg.label }}
+            {{ tg.emoji }} {{ t(tg.label) }}
           </button>
         </div>
       </div>
@@ -88,7 +88,7 @@
           :style="{ fontSize: 12 + Math.min(cnt, 8) + 'px' }"
           @click="filterByMood(m)"
         >
-          #{{ m }}
+          #{{ t(moodKey(m)) }}
         </button>
       </div>
     </section>
@@ -100,7 +100,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
+import { CATEGORIES, TAGS, MOODS, randomQuote, moodKey } from '../stores/constants';
 import { getLetters, toggleFavorite } from '../stores/storage';
 import { t } from '~/lib/i18n';
 

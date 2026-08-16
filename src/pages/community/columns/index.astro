@@ -37,14 +37,14 @@ const metadata = { title: `${t('community.columns.title')} —— LKM` };
             </div>
             <div class="p-5 flex flex-col gap-2 flex-1">
               <h3 class="font-bold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-                {col.title}
+                {t(col.title)}
               </h3>
               <div class="flex items-center gap-2 text-xs text-text-muted/60">
-                <span>{col.authorName}</span>
+                <span>{t(col.authorName)}</span>
                 <span>·</span>
-                <span class="text-text-muted">{col.authorTitle}</span>
+                <span class="text-text-muted">{t(col.authorTitle)}</span>
               </div>
-              <p class="text-sm text-text-muted line-clamp-2 leading-relaxed flex-1">{col.description}</p>
+              <p class="text-sm text-text-muted line-clamp-2 leading-relaxed flex-1">{t(col.description)}</p>
               <div class="flex items-center justify-between text-xs text-text-muted/60 pt-2 border-t border-surface-3">
                 <span>
                   {col.articleCount} {t('community.columns.articles')}

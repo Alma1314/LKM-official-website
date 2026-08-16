@@ -27,6 +27,89 @@ export const en = {
     today: 'Today',
   },
 
+  messages: {
+    networkError: 'Network connection failed, please try again later',
+    requestFailed: 'Request failed ({status})',
+    requestTimeout: 'Request timed out',
+    timeoutOrCancelled: 'Request timed out or was cancelled',
+    networkRequestFailed: 'Network request failed: {error}',
+    unknownError: 'Unknown error',
+    unknownNetworkError: 'Unknown network error',
+    httpError: 'HTTP {status}',
+    operationFailed: 'Operation failed, please try again',
+    auth: {
+      wrongCredentials: 'Incorrect account or password',
+      loginSuccess: 'Logged in',
+      codeSent: 'Verification code sent, please check your inbox',
+      magicLinkSent: 'Magic Link sent, please check your inbox',
+      passkeyFirstTime2fa: 'This is your first login and 2FA setup is required. Please scan the QR code.',
+      githubAuthorizationFailed: 'Failed to start GitHub authorization',
+      passkeyLoginFailed: 'Passkey login failed',
+      missingTempToken: 'Missing temporary session token, please log in again',
+      passkeyViaLoginPage: 'Please use the "Passkey" method on the login page to complete authentication',
+      unsupportedLoginMethod: 'Unsupported login method',
+      unsupportedRegisterType: 'Unsupported registration type',
+    },
+    recovery: {
+      enterAccount: 'Enter the email or phone number you registered with',
+      enterCode: 'Please enter the verification code',
+      missingSessionToken: 'Missing temporary session token, please start recovery again',
+      enterSixDigitTotp: 'Please enter the 6-digit one-time code',
+      passwordTooShort: 'Password must be at least 6 characters',
+      passwordMismatch: 'The two passwords do not match',
+      resetSuccess: 'Password reset, please log in',
+    },
+    register: {
+      usernameTooShort: 'Username must be at least 3 characters',
+      usernameTooLong: 'Username cannot exceed 50 characters',
+      usernameSpecialChars: 'Username cannot contain special characters (such as < > /)',
+      passwordTooShort: 'Password must be at least 6 characters',
+      passwordTooLong: 'Password cannot exceed 128 characters',
+      passwordMismatch: 'The two passwords do not match',
+      enterEmail: 'Please enter your email',
+      enterPhone: 'Please enter your phone number',
+      contactSpecialChars: 'Contact info cannot contain special characters',
+      invalidEmail: 'Please enter a valid email address',
+      invalidPhone: 'Please enter a valid phone number',
+      codeRequestFailed: 'Failed to get the verification code, please try again',
+      sessionExpired: 'Registration session expired, please resubmit',
+      invalidCodeLength: 'Incorrect verification code length',
+      invalidCodeFormat: 'Incorrect verification code format',
+    },
+    webauthn: {
+      browserOnly:
+        'WebAuthn is only available in a browser environment. Please use a supported browser with HTTPS or localhost.',
+      createFailed: 'Failed to create passkey',
+      authenticateFailed: 'Passkey authentication failed',
+    },
+    blog: {
+      fetchSeriesFailed: 'Failed to load blog series: {error}',
+    },
+    articles: {
+      categories: {
+        announcement: 'Announcement',
+        architecture: 'Architecture',
+        security: 'Security',
+        engineering: 'Engineering',
+        ai: 'AI',
+        community: 'Community',
+        culture: 'Culture',
+        news: 'Tech News',
+        science: 'Science',
+      },
+    },
+    admin: {
+      sessionExpired: 'Admin session expired',
+      requestFailed: 'Request failed',
+      requestFailedStatus: 'Request failed ({status})',
+    },
+    errorBoundary: {
+      title: 'Failed to load the page',
+      message: 'Please refresh the page and try again',
+      reload: 'Refresh',
+    },
+  },
+
   nav: {
     home: 'Home',
     about: 'About',
@@ -62,6 +145,8 @@ export const en = {
     blog: 'Blog',
     blogList: 'Blog list',
     aboutBlog: 'About blog',
+    community: 'Community',
+    communityHome: 'Community Home',
     forum: 'Forum',
     columns: 'Columns',
     fileLibrary: 'Files',
@@ -73,6 +158,16 @@ export const en = {
     profile: 'Profile',
     contribution: 'Contribution',
     settings: 'Settings',
+  },
+
+  footer: {
+    community: 'Community',
+    pages: 'Pages',
+    legal: 'Legal',
+    supportUs: 'Support Us',
+    privacyPolicy: 'Privacy Policy',
+    terms: 'Terms of Service',
+    copyright: 'LKM &copy; 2026 · All rights reserved.',
   },
 
   blog: {
@@ -297,6 +392,475 @@ export const en = {
     clickToCopy: 'Click to copy',
     copied: 'Copied!',
     channelId: 'Channel ID: ',
+    communities: {
+      general: {
+        label: 'General Enthusiasts Group',
+        intro:
+          'A big family that belongs to no specific major, with no restrictions on job type, grade level, or skill level — everyone is welcome to join! Chat about everyday life, actively discuss problems when they come up, and feel free to share your studies and life~',
+        oneGroup: {
+          name: 'Group 1',
+          desc: 'This is the LKM main discussion group, one of the official groups of the Tencent Physics Tribe. It is a very large general group, welcoming students, teachers, engineers, professionals from all walks of life, science communicators, and researchers who are interested in science and engineering. Here you can discuss academic subjects, popular science, studies and life, thoughts and culture — let us learn and grow together~',
+        },
+        twoGroup: {
+          name: 'Group 2',
+        },
+        qqChannel: {
+          name: 'QQ Channel',
+          desc: 'The official QQ Channel, created to ease the pressure on the large QQ community. Use it to ask questions and share your daily life and check-ins~~',
+        },
+      },
+      grades: {
+        label: 'Grade-based Groups',
+        intro:
+          'The organization has members at all different stages of learning. So that everyone can find people to talk to, we have separate junior high and senior high groups; university students can join the major-specific groups as needed.',
+        junior: {
+          name: 'Junior High',
+          desc: 'The kids in the junior high group are quite active — interesting and fun, a bunch of very lovely kids, and some of them are even far ahead of high schoolers. If you strike up a conversation with them, they will be more than happy to respond. The organization provides problem-solving help, middle school exam guidance, and tutoring for junior high students, helping them face the first big selection exam of their lives.',
+        },
+        junior2: {
+          name: 'Junior High Group 2',
+          desc: 'Group 1 was so active that letting more people in would hurt the current comfort level, so everyone is welcome to join Junior High Group 2! The group is new, but its admins are quite dedicated. Come on in and have fun!',
+        },
+        senior: {
+          name: 'Senior High (Group 1 is full)',
+          desc: 'High schoolers in this group are a bit more serious and focused on their studies, discussing high school life and topics related to the college entrance exam. The organization offers major recommendations, academic planning, and analysis of past exam papers for senior high students.',
+        },
+        senior2: {
+          name: 'Senior High Group 2',
+          desc: 'The file folder in Group 1 is currently full, so if you need to share files, head over to Group 2. Group 2 may have fewer members, but most of them are active. Group 2 is still under construction — everyone is welcome to build and share together!',
+        },
+        senior3: {
+          name: 'Senior High Group 3',
+          desc: 'Group 3 has its own distinctive character. A mature and proactive management team is frequently online, and the group is very active. It is perfect for those who want company through exams or to share their high school life. Welcome aboard!',
+        },
+      },
+      groups: {
+        label: 'Groups by Community Role',
+        intro:
+          'All are welcome — science communicators, researchers, educators, engineers from every industry, companies, and social organizations. In the future we aim to drive research commercialization, project facilitation, and incubation. Groups are organized by ideas or industry to give everyone a better space to discuss.',
+        academic: {
+          name: 'Academic Exchange Group',
+          desc: 'Welcome to those with academic ambitions who want to enter research, or who are already in research. We plan to host academic lectures and same-field exchanges in the future. However, since this group currently mixes many disciplines and its supporting structure is not yet complete, we suggest joining the corresponding major-specific groups instead.',
+        },
+        language: {
+          name: 'Language Society for International Science Exchange',
+          desc: 'This group is mainly for language exchange and learning, such as the English, Russian, and German skills needed for reading literature. As the group grows, it will be split further by language. International students, exchange students, foreign friends, and those aspiring to careers in translation or diplomacy are all welcome. In the future this will serve science and technology exchange at home and abroad.',
+        },
+      },
+      basic: {
+        label: 'Natural / Basic Sciences Central Group',
+        intro:
+          'The natural and basic sciences are the foundation of everything; applied sciences take root here and branch out into countless fields. Science enthusiasts interested in the basic sciences are welcome to join!',
+        math: {
+          name: 'Mathematics',
+          desc: 'For those interested in mathematics or working in the field. Math enthusiasts can discuss their favorite mathematical topics and cutting-edge content here. The group is generally active with solid expertise. Everyone is welcome to join in learning, discussion, and chat!',
+        },
+        physics: {
+          name: 'Physics & Astronomy',
+          desc: "For those interested in physics and astronomy or working in the field — e.g., physics, applied physics, acoustics, systems science and engineering, quantum science, astrophysics, astrometry, and celestial mechanics. The group's expertise is top-notch. Members may be busy and the group can seem quiet, but the file and knowledge repositories are rich, and someone will always answer your questions.",
+        },
+        chemistry: {
+          name: 'Chemistry',
+          desc: 'For those interested in chemistry or working in the field — e.g., chemistry, applied chemistry, chemical biology, molecular science and engineering, energy science, molecular metrology and technology, and resource chemistry. Chemistry enthusiasts can discuss freely. Though the group is small and its most skilled members are busy, questions are almost always answered.',
+        },
+        biology: {
+          name: 'Life Sciences',
+          desc: 'The life sciences cover a very broad range of fields, including biology, medicine, agriculture, environmental science, and more. Currently the group has few members, but they are very focused. Once publicity reaches the right audience, medicine will be split into its own group.',
+        },
+        earth: {
+          name: 'Earth Sciences General Group',
+          desc: 'Earth science is a comprehensive discipline covering many basic sciences and interdisciplinary fields. It focuses on the processes, changes, and interactions within the Earth system (atmosphere, hydrosphere, lithosphere, biosphere, and the Sun–Earth space). Related fields include geology, geophysics, geochemistry, geography, atmospheric science, and oceanography.',
+        },
+        social: {
+          name: 'Social Sciences',
+          desc: 'Mainly covers philosophy, politics, history, economics, and law. The ideological leaning is largely Marxist-Leninist-Maoist, encouraging study and engagement — connecting theory with practice in reality. Intellectuals, workers, comrades, teachers, researchers, and enthusiasts interested in these topics are all welcome.',
+        },
+        literature: {
+          name: 'Literature',
+          desc: 'A newly founded group, mainly giving literature-loving members a place to discuss. Here you can talk about literary works, appreciate the classics, and brainstorm your own writing. Those who have been eagerly waiting for a literature group finally have a home — welcome aboard!',
+        },
+      },
+      applied: {
+        label: 'Applied Sciences',
+        intro:
+          'The applied sciences are still under construction with few members. If you want to lead a subject area and build up and promote the topics you are passionate about in your field, feel free to reach out and join the LKM team! LKM needs you!',
+        info: {
+          name: 'Information Science and Technology General Group',
+          desc: 'The ACM general group, covering computer science, the internet, software development, algorithm research, large models, data processing, cybersecurity, and more. Anyone interested is welcome to join! In the future we will also develop more content, such as programming tutorials and hands-on projects.',
+        },
+        ieee: {
+          name: 'IEEE General Group',
+          desc: "IEEE is the Institute of Electrical and Electronics Engineers, the world's largest technical professional organization. This group welcomes professionals in electrical engineering, automation, communications engineering, electronic science and technology, optics and optoelectronics, and related fields to join the discussion!",
+        },
+        chip: {
+          name: 'Integrated Circuits and Semiconductors',
+          desc: 'Integrated circuits and semiconductors form a hardcore circle with extremely high technical barriers and strong professional specialization, so they have their own group. Chip design, wafer fabrication, packaging and design, semiconductor, and IC enthusiasts and professionals are all welcome!',
+        },
+        engineering: {
+          name: 'Engineering General Group',
+          desc: 'Engineering is fundamentally about applying mathematics, the natural sciences, economics, and sociology to industrial and agricultural production in order to design, build, and optimize useful objects, systems, or structures. It covers civil engineering, mechanical engineering, transportation, and safety science and engineering. As the group grows, more specialized engineering subgroups will be created under the general group. Stay tuned~',
+        },
+        agriculture: {
+          name: 'Agronomy and Food Science General Group',
+          desc: 'Agronomy focuses on crop production and genetic breeding, while food science emphasizes food processing and safety control. It covers agronomy, applied bioscience, food science, agricultural engineering, and more. Anyone interested is welcome to join!',
+        },
+        energy: {
+          name: 'Environmental and Energy Science General Group',
+          desc: 'A general group combining environmental science and energy science. It covers environmental science, energy engineering, resource recycling, emerging interdisciplinary fields, and more. Both the interested and the professionally trained are welcome!',
+        },
+        lightIndustry: {
+          name: 'Light Industry General Group',
+          desc: 'This is the LKM · Academic · Applied Sciences · Light Industry General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes students, teachers, light industry professionals, researchers, science communicators, and technology enthusiasts who are interested in or study textiles, light industry engineering, packaging engineering, flavor and fragrance technology engineering, cosmetics technology engineering, biomass energy and materials, biomass technology and engineering, and more.',
+        },
+        geoscience: {
+          name: 'Geoscience Engineering General Group',
+          desc: 'This is the LKM · Academic · Applied Sciences · Geoscience General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes majors, teachers, geoscience professionals, researchers, science communicators, and technology enthusiasts who are interested in or study surveying and mapping, geology, mining, safety science and engineering, and more.',
+        },
+        medicine: {
+          name: 'Medicine Headquarters',
+          desc: 'This is the LKM · Academic · Medicine · Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, medical imaging, anesthesiology, and forensic medicine.',
+        },
+        clinical: {
+          name: 'Clinical Medicine School',
+          desc: 'This is the LKM · Academic · Medicine · Clinical Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study clinical medicine, anesthesiology, medical imaging, ophthalmology and optometry, psychiatry, radiation medicine, pediatrics, and more.',
+        },
+        tcm: {
+          name: 'Traditional Chinese Medicine School',
+          desc: 'This is the LKM · Academic · Medicine · Traditional Chinese Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study basic theory of TCM, diagnostics of TCM, internal medicine of TCM, surgery of TCM, osteology and traumatology of TCM, gynecology of TCM, pediatrics of TCM, otorhinolaryngology of TCM, acupuncture-moxibustion and tuina, and ethnic medicine.',
+        },
+      },
+      hobby: {
+        label: 'Interest Group Clubs',
+        intro:
+          'Clubs formed around the various hobbies of our members. If any of these interest you, join in the fun! There are activities every winter and summer break.',
+        chess: {
+          name: 'Chess & Cards Club',
+          desc: 'Discuss traditional, competitive, casual, and other board games, including (but not limited to) Chinese chess, Go, Gomoku, checkers, and Ludo. Discussions of strategy and the finer points of the games are also welcome — this is a place for players to spar and talk. As for cards, there are poker, traditional Chinese playing cards, modern trading card games (TCG) and tabletop card games, traditional dominoes, and more. Chess and card players, welcome aboard!',
+        },
+        game: {
+          name: 'Game Club',
+          desc: 'Mainly discusses gaming topics — consoles like PS, Xbox, and Switch; PC platforms like Steam and the Epic Games Store; and online games such as HoYoverse open-world titles. It is a space to talk games, make gaming friends, and team up for sessions~',
+        },
+        scifi: {
+          name: 'Science Fiction Literature Club',
+          desc: 'Our love for and pursuit of technology has never stopped, and neither has our imagination of the sci-fi world — what would the world really be like in an age of extreme technological advancement? Come discuss your ideas and sci-fi writing here! Join the Sci-Fi Club — it is all part of the plan!',
+        },
+        rhythm: {
+          name: 'Rhythm Game Club (Anime-style)',
+          desc: 'The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.',
+        },
+        cooking: {
+          name: 'Cooking Club',
+          desc: 'The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.',
+        },
+        music: {
+          name: 'Tubie Music Club',
+          desc: 'This group is not limited to LKM members themselves — others and professional music lovers are also welcome to discuss music theory and vocal basics, instrument exchange and teaching, music creation, music appreciation, and related topics. The group also organizes LKM galas and various event preparations, giving everyone a bigger and better stage~~',
+        },
+      },
+      events: {
+        label: 'Recurring Activity Groups',
+        summerCompetition: {
+          name: 'Summer Competition Activity Group',
+          desc: 'A group for preparing and announcing competitions. Every holiday, different contests are announced here. If you are interested in competitions, join and wait for the announcements.',
+        },
+        checkin: {
+          name: 'Self-discipline Check-ins & Study Rooms',
+          desc: 'Self-discipline check-ins and study rooms are also recurring activities of ours. Everyone is welcome to keep up self-discipline, health, and good daily routines here, and to study, exchange ideas, and discuss together.',
+        },
+      },
+      legacy: {
+        label: 'Legacy Groups',
+        intro:
+          "This group cannot change its owner right now, meaning the management team cannot be replaced, so it feels a bit ancient and deserted. But it holds great sentimental value — LKM's rise in 2014 was built on the promotion of the Physics Tribe.",
+        physicsTribe: {
+          name: 'Physics Tribe',
+        },
+      },
+    },
+    roles: {
+      founder: 'Founder',
+      regular: 'Resident',
+      leader: 'Leader',
+      president: 'President',
+      groupLeader: 'Group Leader',
+      generalMember: 'General Affairs Group Member',
+      affairsSupervisor: 'Community Affairs Supervisor',
+      specialist: 'Specialist',
+      specialistAdvisor: 'Specialist / Advisory Group Member',
+      affairsGroupLeader: 'Community Affairs Group Leader',
+      level18Admin: 'Level-18 Admin',
+      infoGroupAdmin: 'Information Group Admin',
+      affairsMember: 'Community Affairs Group Member',
+      generalSpecialist: 'General Affairs Specialist',
+      advisorMember: 'Advisory Group Member',
+    },
+    members: {
+      keke: {
+        desc: "On August 1, 2014, Ke Qi founded the very first group chat — the LKM Homestead. He is the original founder of LKM; much of what the group has today — its systems and frameworks — was built on what he did. Ke Qi founded Tencent's Physics Tribe and the WeChat official account, attracting a large number of tech enthusiasts, and put together the first LKM subgroup system and the July Team management structure. In 2018 he gradually stepped back for academic reasons, but everything about LKM stems from what he started.",
+        quote: "「Ke Qi may not be here now, but he is without a doubt LKM's original founder.」",
+        dream: 'Dream: Let knowledge flow into every household',
+      },
+      julyHua: {
+        desc: 'A PhD with a vision',
+        dream: 'Dream: Every child can be exposed to science',
+      },
+      julyRobin: {
+        desc: 'To be filled in — still a student settling in (let us look forward to their growth~',
+      },
+      julyAhong: {
+        desc: 'To be filled in — still a student settling in (let us look forward to their growth~',
+      },
+      julyMoran: {
+        desc: 'Physics from a non-elite university, currently switching fields',
+        dream: 'Dream: I will surely be buried deep in snow',
+        quote: '— For three thousand days of patience and resolve, buried deep in snow until turning to gold',
+      },
+      julyYouzhi: {
+        desc: 'A little black cat, former member of the Event Planning Group and executive of the junior high seminars',
+        dream: 'Dream: Eat well, drink well, sleep well, and have fun',
+        quote: '— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease',
+      },
+      julyKomoyume: {
+        desc: 'Roboticist',
+        dream: 'Dream: Technology changes the world',
+        quote: '— A salute to you, who still holds such hope for this world',
+      },
+      julyQianxun: {
+        desc: 'Joined LKM in 2019 while in the second year of junior high. Now I am a soon-to-be wage worker. Though I too was full of dreams back then, not everyone can become a scientist~˶>ᗜ<˶ Whether it is the seniors from back then or the juniors younger than me now, I do not want my regrets to fall on them. I also hope more people in the future will come to love science and engineering and will not give up on them as easily as I did.',
+        dream:
+          'Dream: The long-term vision is to make LKM bigger and stronger, achieve its ultimate goals, and live out its mission. But the immediate priority is the short-term goal — building a mature and complete online management team.',
+      },
+      julyZhishui: {
+        desc: 'Studying hard~',
+      },
+      julyQinghan: {
+        desc: 'Classified awa',
+        dream: 'Dream: No obligation to disclose',
+        quote: '— WELCOME TO OUR KINGDOM!',
+      },
+      julyXia: {
+        desc: 'I am a little Xia',
+        dream: 'Dream: Become an encyclopedia',
+        quote: '— To the imperfect tomorrow',
+      },
+      julyQingqian: {
+        desc: 'A bit of a lurker with not much knowledge in stock (',
+        dream: 'Dream: Become a researcher',
+      },
+      julyMk: {
+        desc: 'Born in the 2010s, just call me MK. Currently learning Japanese and love math (not a pro, meow). My favorite anime character is Elaina from "Wandering Witch: The Journey of Elaina". Bilibili UID: 1929696645',
+        dream: 'Dream: An UP with a million followers',
+        quote: '— You should... Never Give Up!',
+      },
+      julyLiunian: {
+        desc: '15 years old. Passed the high school entrance exam and finished the transition. Balanced in arts and sciences, fairly resilient. Looking for friends to grow together.',
+        dream: 'Dream: Aiming for NUDT, and doing my part to make LKM bigger and stronger√',
+        quote: '— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease',
+      },
+      julyBadragon: {
+        desc: 'Follow LKM, thank you, meow',
+      },
+      julySanqi: {
+        desc: 'A vow made rashly invites misfortune',
+        dream: 'Dream: Keep a little cat',
+      },
+      julyEcho: {
+        desc: 'Analytic number theory enthusiast',
+      },
+      julyYuli: {
+        desc: 'Like the breeze of July, carrying a touch of warmth and gentleness. As the leader of the Community Affairs Group, I am committed to tending every little detail of our groups so that this becomes the most comfortable corner for everyone to chat in.',
+        quote: '— Nothing about community affairs is trivial; with care, everything becomes a beautiful scene',
+      },
+      julyShiyi: {
+        desc: "Bachelor's degree in a field related to economics, with wide-ranging interests.",
+      },
+      julyYanzimo: {
+        desc: 'Trained in Chinese language and literature',
+        dream: 'Dream: Become a philosopher and a mathematician',
+        quote: '— Drift with the wind to faraway places.',
+      },
+      julySuibian: {
+        desc: 'A lazy person who wants to learn everything they find interesting.',
+        dream: 'Dream: Secret for now',
+        quote: '— Move forward; even if you never reach the end, moving forward itself has meaning',
+      },
+      julyChi: {
+        desc: 'Graduated from a provincial key high school in Liaoning; targeting a 985 university in Northeast China for the 2026 exam',
+        dream: 'Dream: Become a master craftsman of the nation',
+        quote: '— Do earth-shaking deeds; remain a nameless hero',
+      },
+      julyCaotiling: {
+        desc: "A person who doesn't exist, but wishes to bless everyone.",
+        dream: "Dream: Make everyone happy and reach the edge of knowledge's Sekai.",
+        quote: '— We must know, we will know.',
+      },
+      julyYiqian: {
+        desc: 'I am Yiqian from the Press Office',
+      },
+      julySun: {
+        desc: 'Use the skills in my hands to serve more people in need. A kid from the Production Group.',
+        dream: 'Dream: Raise my education level and meet more people.',
+        quote: '— No one holds up my lofty ambitions; I will tread through the snow to the mountain top myself.',
+      },
+      julyXingran: {
+        desc: 'Member of the public-welfare science communication community and president of the Shuxing Science Club. Has worked in public-interest science communication for over three years. Led the Year of the Dragon Sci-Fi Contest and the first Earth-Moon Award sci-fi essay competition, co-organized the 2nd, 3rd, 4th, and 5th Xunyi Award science writing competitions, and co-created excellent science videos such as "Geological Hammer" with the UP Feicun Science Wall.',
+        dream: 'Dream: Spread science culture',
+        quote: '— As Marx said, science and technology are productive forces.',
+      },
+      julyUpogg: {
+        desc: 'Student',
+        quote: '— I take all knowledge as my domain',
+      },
+      julyKefenshulie: {
+        desc: 'An ordinary ICPCer',
+      },
+      julyA: {
+        desc: 'The main workhorse of website development',
+        dream: 'I do not want to be a workhorse in the future',
+      },
+      julyBcent: {
+        desc: 'A human being',
+      },
+      julyAleng: {
+        desc: 'An undergraduate math major at a Tier-2 school, math enthusiast whose favorite areas are analysis and number theory',
+        dream: 'Dream: Get recommended for graduate study and keep researching math',
+        quote: '— All is number',
+      },
+      julyBifang: {
+        desc: "A master's student in analysis and numerical computation",
+      },
+      julyYouzhu: {
+        desc: 'Possibly human (maybe not?)',
+        quote: '— Being alive beats being dead',
+      },
+      julyLichlet: {
+        desc: 'A freshman math student',
+      },
+      julyHubingyang: {
+        desc: "Male, 23 years old, bachelor's degree...",
+        dream: 'Dream: The dream is to become a mathematician',
+        quote:
+          '— Diligence is the path up the mountain of books; hard work is the boat across the boundless sea of learning.',
+      },
+      julyO: {
+        desc: 'PhD at the National Astronomical Observatories of the Chinese Academy of Sciences. Research: gravitational wave theory, black hole physics, general relativity',
+        dream: 'Dream: Do research I love',
+        quote: '— Learn from the past, enjoy the present, look forward to the future',
+      },
+      julyQishui: {
+        desc: 'A freshman in fluid mechanics at LMU Munich',
+        dream: "Dream: Contribute to China's fluid mechanics",
+        quote: '— Effort always pays off',
+      },
+      julyXinghe: {
+        desc: 'A high school OIer and physics/chemistry/politics student, a noob (feel free to follow wang12345566 on Luogu), who stumbled into this heavenly family by accident after making some vicious middle school problems',
+        dream: 'Dream: Bring everyone more tricks and inspiration, while admiring even more masters',
+        quote: '— Even those not standing in the light have their own sparkle — from hjh on Luogu',
+      },
+      julyTetro: {
+        desc: 'A graduate student in organic chemistry and former chemistry competition participant. My online handle is Tetrodotoxin, a structurally elegant organic small molecule and a classic in the history of total synthesis (though I actually do methodology). Privately, I am a not-too-heavy anime fan and a pseudo-intellectual art lover.',
+      },
+      julyDili: {
+        desc: 'You can call me Yang Xiangqing, a chemistry competition participant with a personal best of 7th in the district and 347th nationally in the middle school essay contest. I love studying chemistry and literature',
+        dream: 'Dream: Become an excellent teacher',
+        quote: "— A true master always keeps an apprentice's heart",
+      },
+      julyWen: {
+        desc: 'A great player at going limp',
+        dream: 'Dream: Do nothing whenever I want to do nothing',
+      },
+      julySanchishui: {
+        desc: 'Chemistry, love love love it! (A fervent chemistry fanatic)',
+      },
+      julyJimi: {
+        desc: 'An 11th-grade international student in New Zealand, majoring in the sciences with English as a weak point. I am currently taking physics, biology, and math — basically at a high school level, but I will keep working to improve! I like writing my own things, and if there are any issues, thanks in advance for correcting me! I like summarizing my notes and hope they will be helpful to everyone! I also like sharing bits of my daily life or posting abstract stuff, sometimes with a fair amount of negativity... Thank you all!!!',
+        dream:
+          "Dream: Finish next year's coursework this year, secure a scholarship next year, and hopefully get into the University of Auckland?",
+        quote: '— Attention, attention, a huge surge is coming',
+      },
+      julyYuye: {
+        desc: 'A 10th grader with 3 years of group management experience, exposed to traditional Chinese medicine since age 6. Comes from a TCM family',
+        dream: 'Dream: Have a stable job',
+        quote: '— Chase the wind and the road without stopping; beyond the flat wilderness lie the spring hills.',
+      },
+      julyDaxiong: {
+        desc: 'Curious about a little bit of everything',
+        dream: 'Dream: Too many ideals',
+      },
+      julyJoshua: {
+        desc: 'A math lover who wants everyone to learn math with ease',
+      },
+      julyPlain: {
+        desc: 'Eat, drink, and the basics of life',
+        dream: 'Dream: Become verity',
+        quote: '— Oh my god',
+      },
+    },
+    subGroups: {
+      affairsHigh: {
+        label: 'Senior High',
+      },
+      affairsHigh3: {
+        label: 'Senior High Group 3',
+      },
+      affairsJunior: {
+        label: 'Junior High',
+      },
+      affairsJunior2: {
+        label: 'Junior High Group 2',
+      },
+      affairsSocial: {
+        label: 'Social Sciences',
+      },
+      affairsLanguage: {
+        label: 'Language Society for International Science Exchange',
+      },
+      affairsChess: {
+        label: 'Interest - Chess & Cards Club',
+      },
+      affairsMusic: {
+        label: 'Interest - Tubie Music Club',
+      },
+      newsProduction: {
+        label: 'Production Group',
+        desc: 'Responsible for promotional production across platforms and events, such as UI design, poster making, visualization, and more. Certain design skills are required, making it suitable for those with the relevant abilities.',
+      },
+      newsPromotion: {
+        label: 'Promotion Group',
+        desc: 'Responsible for promotion and continuous operations across platforms, external outreach, and handling cooperation matters. Members need solid professional knowledge, public relations skills, and proficiency in two or more languages.',
+      },
+      newsScience: {
+        label: 'Science Communication Group',
+        desc: 'Responsible for science content collection and dissemination across platforms. Members need professional knowledge and know-how to create engaging science content, and stay in touch with the specialized committee. The development of project groups is also carried out by the Science Communication Group.',
+      },
+      profMath: {
+        label: 'Mathematics Group',
+      },
+      profPhysics: {
+        label: 'Physics Group',
+      },
+      profChemistry: {
+        label: 'Chemistry Group',
+      },
+      profBiology: {
+        label: 'Biology Group',
+      },
+      profGeneral: {
+        label: 'General',
+      },
+      profMedicine: {
+        label: 'Medicine Group - TCM',
+      },
+      projTextbooks: {
+        label: 'Textbook Project Group',
+        desc: 'Committed to writing high-quality science textbooks, integrating the body of knowledge, and providing learners with systematic learning resources.',
+      },
+      projScience: {
+        label: 'Science Communication Project Group',
+        desc: 'Responsible for science content collection and dissemination across platforms, turning professional knowledge into accessible science content and promoting the popularization of scientific knowledge.',
+      },
+    },
   },
 
   officialArticles: {
@@ -991,6 +1555,415 @@ export const en = {
       deleteTitle: 'Delete passkey',
       deleteMessage: 'Are you sure you want to delete this passkey? This action cannot be undone.',
       createFail: 'Failed to create passkey',
+    },
+  },
+
+  forumData: {
+    categories: {
+      basicScience: {
+        name: 'Basic Sciences',
+        description:
+          'Discussion area for foundational sciences such as mathematics, physics, chemistry, biology and astronomy. It is the root of all things — applied disciplines sprout from here and extend into many fields.',
+      },
+      appliedScience: {
+        name: 'Applied Sciences',
+        description:
+          'Applied fields such as computer science, electronics & electrical engineering, engineering and medicine — the bridge connecting theory to practice.',
+      },
+      language: {
+        name: 'Language Learning',
+        description:
+          'Language study area needed for reading papers and international exchange, finely divided by language.',
+      },
+      hobby: {
+        name: 'Interest Clubs',
+        description:
+          "Clubs formed from members' various interests; every winter and summer break features exciting activities.",
+      },
+      group: {
+        name: 'Community Groups',
+        description:
+          'Divided by member background and profession, giving members of different backgrounds a better space to discuss.',
+      },
+      schoolClub: {
+        name: 'School Clubs',
+        description: 'Boards for partner school clubs of LKM; apply for collaboration to open your dedicated area.',
+      },
+      friendshipOrganization: {
+        name: 'Partner Organizations',
+        description: 'Boards for partner organizations of LKM; apply for collaboration to open your dedicated area.',
+      },
+      friendshipEnterprise: {
+        name: 'Partner Enterprises',
+        description: 'Boards for partner tech companies of LKM; apply for collaboration to open your dedicated area.',
+      },
+      math: {
+        name: 'Mathematics',
+        description:
+          'A gathering place for those interested in or professionally involved in mathematics, where math lovers can discuss mathematical knowledge and frontier content.',
+      },
+      physics: {
+        name: 'Physics',
+        description:
+          'Debates on fundamental theory and its historical evolution, quantum mechanics and frontier physics, condensed matter and materials science.',
+      },
+      cosmosAstronomy: {
+        name: 'Cosmology & Astronomy',
+        description:
+          'Astronomy is a natural science that studies celestial bodies in space and the structure and development of the universe.',
+      },
+      chemistry: {
+        name: 'Chemistry',
+        description:
+          'Chemistry, applied chemistry, chemical biology, molecular science and engineering. Few in number but high level, with requests basically always fulfilled.',
+      },
+      biology: {
+        name: 'Life Sciences',
+        description:
+          'Multiple branches including biology, medicine, agriculture and environmental science; members are focused, and medicine will get its own board later.',
+      },
+      earthScience: {
+        name: 'Earth Sciences',
+        description:
+          'Comprehensive disciplines such as geology, geophysics, geography, atmospheric science and marine science.',
+      },
+      psychology: {
+        name: 'Psychology',
+        description: 'Exchange and discussion across all branches of psychology.',
+      },
+      socialScience: {
+        name: 'Social Sciences',
+        description:
+          'Philosophy, politics, history, economics and law — encouraging learning and exposure, combining theory with practice.',
+      },
+      literature: {
+        name: 'Literature',
+        description:
+          'Literary discussion, appreciation of classics and literary creation. All literature lovers are welcome.',
+      },
+      cs: {
+        name: 'Computer Science & Technology',
+        description:
+          'ACM, computer science, internet, software development, algorithm research, large models and network security.',
+      },
+      ee: {
+        name: 'Electronics & Electrical Engineering',
+        description:
+          'IEEE, electrical engineering, automation, communication engineering, electronic science & technology and optoelectronics.',
+      },
+      icSemiconductor: {
+        name: 'Integrated Circuits & Semiconductors',
+        description:
+          'Chip design, wafer fabrication, packaging and testing — a hardcore circle with extremely high technical barriers.',
+      },
+      engineering: {
+        name: 'Engineering',
+        description:
+          'Civil, mechanical, transportation, safety science and engineering, etc. More engineering sub-groups will come later.',
+      },
+      agriFood: {
+        name: 'Agriculture & Food Science',
+        description:
+          'Agriculture focuses on crop production and genetics & breeding; food science focuses on food processing and safety control.',
+      },
+      envEnergy: {
+        name: 'Environment & Energy Sciences',
+        description:
+          'Environmental science, energy engineering, resource recycling and emerging interdisciplinary fields.',
+      },
+      lightIndustry: {
+        name: 'Light Industry',
+        description:
+          'Textiles, light industry engineering, packaging engineering, flavors & fragrances and cosmetics technology.',
+      },
+      geoEngineering: {
+        name: 'Geoscience Engineering',
+        description: 'Surveying, geology, mining, safety science and engineering.',
+      },
+      medicine: {
+        name: 'Medicine HQ',
+        description:
+          'Traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, imaging, anesthesiology and forensic medicine.',
+      },
+      clinicalMedicine: {
+        name: 'School of Clinical Medicine',
+        description:
+          'Clinical medicine, anesthesiology, medical imaging, ophthalmology & optometry, psychiatry, radiation medicine and pediatrics.',
+      },
+      tcm: {
+        name: 'School of Traditional Chinese Medicine',
+        description:
+          'The essence of traditional medicine — TCM basic theory, TCM internal medicine, acupuncture & tuina and ethnic medicine.',
+      },
+      langEn: {
+        name: 'English',
+        description: 'The common language of international academic exchange.',
+      },
+      langRu: {
+        name: 'Russian',
+        description: 'Reading Russian scientific literature.',
+      },
+      langDe: {
+        name: 'German',
+        description: 'German engineering and technology literature.',
+      },
+      langZh: {
+        name: 'Chinese',
+        description: 'Chinese linguistics and Chinese culture.',
+      },
+      langJa: {
+        name: 'Japanese',
+        description: 'Japanese scientific literature and cultural exchange.',
+      },
+      langKo: {
+        name: 'Korean',
+        description: 'Korean science, technology and cultural exchange.',
+      },
+      hobbyChess: {
+        name: 'Chess & Cards Club',
+        description:
+          'Chinese chess, Go, Gomoku, checkers, Flying Chess and other traditional and competitive games, plus poker, TCG and tabletop cards.',
+      },
+      hobbyGame: {
+        name: 'Gaming Club',
+        description: 'Console (PS/Xbox/Switch), PC (Steam/Epic) and mobile games — game topics and squad forming.',
+      },
+      hobbySciFi: {
+        name: 'Sci-Fi Literature Club',
+        description: 'Imagining the sci-fi world and literary creation — this is part of the plan!',
+      },
+      hobbyMusicGame: {
+        name: 'Anime Rhythm Game Club',
+        description: 'Discuss rhythm games, share charts and techniques.',
+      },
+      hobbyCooking: {
+        name: 'Culinary Club',
+        description:
+          'Discuss cooking and the chemistry behind it, share culinary skills and showcase dishes. Teaching livestreams may come later.',
+      },
+      hobbyMusic: {
+        name: 'Tubie Music Club',
+        description:
+          'Music theory discussions, instrument learning and exchange, music creation and appreciation, and various music topics.',
+      },
+      groupInternational: {
+        name: 'International',
+        description:
+          'Exchange area for international students, overseas students and foreign friends — used for domestic and international tech exchange.',
+      },
+      groupJuniorHigh: {
+        name: 'Junior High Students',
+        description:
+          'Discussion of arts and sciences learning at junior high level, preparing for the high school entrance exam.',
+      },
+      groupSeniorHighSchool: {
+        name: 'Senior High Students',
+        description:
+          'Discussion of arts and sciences learning at senior high level, preparing for the college entrance exam.',
+      },
+      groupTeacher: {
+        name: 'Educators',
+        description: 'A dedicated exchange area for educators, sharing teaching experience and resources.',
+      },
+      groupScientist: {
+        name: 'Science Popularization Workers',
+        description:
+          'A dedicated exchange area for science popularization workers, sharing scientific knowledge and resources.',
+      },
+    },
+  },
+
+  columnData: {
+    columns: {
+      col1: {
+        authorName: 'July O',
+        authorTitle: 'PhD, National Astronomical Observatories of China',
+        authorBio: 'Focusing on gravitational waves and black hole physics, dedicated to astrophysics popularization',
+        title: 'Cosmic Exploration Notes',
+        description:
+          'Recording the frontiers of astrophysics research and sharing the marvelous journey of cosmic exploration. From gravitational waves to black holes, from dark matter to the large-scale structure of the universe.',
+      },
+      col2: {
+        authorName: 'July Hua',
+        authorTitle: 'PhD in Science Education',
+        authorBio: 'A PhD with ideals — dreaming that every child can access science',
+        title: "The Educator's Laboratory",
+        description:
+          'Theory and practice of science education — deep reflections on curriculum design, teaching methods and science writing.',
+      },
+      col3: {
+        authorName: 'Prof. Li',
+        authorTitle: 'Professor of Physics, Fudan University',
+        authorBio: 'Condensed matter physics research, academic writing mentoring',
+        title: 'The Way of Academic Writing',
+        description:
+          'Sharing hardcore content on paper-writing skills, academic English expression and research methodology.',
+      },
+      col4: {
+        authorName: 'Old Wang the Coder',
+        authorTitle: 'Senior Algorithm Engineer',
+        authorBio: '10 years of algorithm competition and engineering experience',
+        title: 'The Beauty of Algorithms',
+        description:
+          'Explaining algorithms and data structures in an accessible way — from LeetCode to ACM, from engineering practice to theoretical derivation.',
+      },
+    },
+    articles: {
+      art1: {
+        title: 'Gravitational-Wave Astronomy: Listening to the "Voice" of the Universe',
+        excerpt:
+          'Since the first detection of GW150914 in 2015, gravitational-wave astronomy has become a brand-new window into the universe.',
+        tags: {
+          a: 'Gravitational Waves',
+          b: 'Astrophysics',
+          c: 'LIGO',
+        },
+      },
+      art2: {
+        title: "The Black Hole Information Paradox: One of Physics' Greatest Mysteries",
+        excerpt:
+          'The discovery of Hawking radiation raised a profound question: where does the information that falls into a black hole go?',
+        tags: {
+          a: 'Black Holes',
+          b: 'Hawking Radiation',
+          c: 'Quantum Gravity',
+        },
+      },
+      art3: {
+        title: 'How to Design a Captivating Science Course',
+        excerpt:
+          'Exploring the core principles of science course design based on cognitive science and teaching practice.',
+        tags: {
+          a: 'Science Education',
+          b: 'Course Design',
+          c: 'Popularization',
+        },
+      },
+      art4: {
+        title: 'The Golden Rules of Writing a Paper Abstract',
+        excerpt:
+          'The abstract is the "advertisement" of a paper — a good abstract can decide a paper\'s citation rate and influence.',
+        tags: {
+          a: 'Academic Writing',
+          b: 'Papers',
+          c: 'Abstract',
+        },
+      },
+      art5: {
+        title: 'Dynamic Programming: A Thinking Framework from Beginner to Advanced',
+        excerpt: 'Dynamic programming is not an algorithm, but a way of thinking about problems.',
+        tags: {
+          a: 'Algorithms',
+          b: 'Dynamic Programming',
+          c: 'Python',
+        },
+      },
+    },
+  },
+
+  fileLibraryData: {
+    categories: {
+      basicScience: 'Basic Sciences',
+      appliedScience: 'Applied Sciences',
+      language: 'Language Learning',
+      math: 'Mathematics',
+      physics: 'Physics',
+      chemistry: 'Chemistry',
+      biology: 'Life Sciences',
+      earthScience: 'Earth Sciences',
+      cosmosAstronomy: 'Cosmology & Astronomy',
+      cs: 'Computer Science & Technology',
+      icSemiconductor: 'Integrated Circuits & Semiconductors',
+      langEn: 'English',
+      mathLinearAlgebra: 'Linear Algebra',
+      mathModeling: 'Mathematical Modeling',
+      physicsQuantum: 'Quantum Mechanics',
+      physicsAstrophysics: 'Astrophysics',
+      chemistryOrganic: 'Organic Chemistry',
+      csPython: 'Python Data Analysis',
+      icDesign: 'Chip Design',
+      langEnWriting: 'Academic Writing',
+    },
+    uploaders: {
+      qiyueO: 'July O',
+      qiyueMoran: 'July Moran',
+      qiyueHua: 'July Hua',
+      chemistryFan: 'Chemistry Enthusiast',
+      chipEngineer: 'Chip Engineer',
+      overseasStudentXiaoMing: 'Student Xiaoming',
+    },
+    files: {
+      file1: {
+        description:
+          'Curated public astrophysics datasets including SDSS, Gaia DR3 and LIGO event data, suitable for learning and research.',
+        tags: {
+          a: 'Astrophysics',
+          b: 'Datasets',
+          c: 'Astronomy',
+        },
+      },
+      file2: {
+        description:
+          'Quantum mechanics course notes from the Chinese Academy of Sciences, covering everything from wave functions to perturbation theory.',
+        tags: {
+          a: 'Quantum Mechanics',
+          b: 'Lecture Notes',
+          c: 'Physics',
+        },
+      },
+      file3: {
+        description:
+          'Classic linear algebra exercise sets with detailed solutions and problem-solving analysis, suitable for final review and graduate school preparation.',
+        tags: {
+          a: 'Linear Algebra',
+          b: 'Exercises',
+          c: 'Mathematics',
+        },
+      },
+      file4: {
+        description:
+          'Illustrated mechanisms of common organic chemistry reactions, including nucleophilic substitution, elimination and addition reactions.',
+        tags: {
+          a: 'Organic Chemistry',
+          b: 'Reaction Mechanisms',
+          c: 'Illustrated',
+        },
+      },
+      file5: {
+        description: 'Hands-on code and data files that accompany the Pandas/NumPy/Matplotlib tutorials.',
+        tags: {
+          a: 'Python',
+          b: 'Data Analysis',
+          c: 'Code',
+        },
+      },
+      file6: {
+        description:
+          'A collection of excellent papers from the past three years of the National College Mathematical Contest in Modeling, with expert commentary.',
+        tags: {
+          a: 'Mathematical Modeling',
+          b: 'Competition',
+          c: 'Paper Collection',
+        },
+      },
+      file7: {
+        description:
+          'A chip design tutorial from scratch, covering the full flow from Verilog basics, synthesis to placement and routing.',
+        tags: {
+          a: 'Integrated Circuits',
+          b: 'Chip Design',
+          c: 'Verilog',
+        },
+      },
+      file8: {
+        description:
+          'An academic writing guide for non-native English speakers, including common sentence patterns and sample essays.',
+        tags: {
+          a: 'English',
+          b: 'Academic Writing',
+          c: 'Guide',
+        },
+      },
     },
   },
 
@@ -2434,6 +3407,28 @@ export const en = {
     heading3: 'Heading 3',
     addComment: 'Add comment',
     clickToEditFormula: 'Click to edit formula',
+    me: 'Me',
+
+    persistence: {
+      writeFailed: 'Failed to write the document',
+      writeIndexFailed: 'Failed to write the document index',
+      createFailed: 'Failed to create the document',
+      updateFailed: 'Failed to update the document',
+      deleteFailed: 'Failed to delete the document',
+      indexedDbUnavailable: 'IndexedDB is unavailable',
+      backupFailed: 'Failed to write the backup',
+      readBackupsFailed: 'Failed to read the backup list',
+      readBackupFailed: 'Failed to read the backup',
+      exportJsonFailed: 'Failed to export JSON',
+      importJsonFailed: 'Failed to import JSON: {message}',
+      saveVersionFailed: 'Failed to save the version',
+      versionMessage: 'Version {version}',
+    },
+
+    validation: {
+      esmForbidden: 'MDX ESM imports/exports are not allowed for security reasons',
+      disallowedProtocol: 'Disallowed URL protocol in {nodeType}: {url}',
+    },
 
     slash: {
       heading1Desc: 'Heading 1',
@@ -2721,5 +3716,550 @@ export const en = {
       message: 'StarHope uses the unified LKM website account. Please log in before using the learning assistant.',
       goLogin: 'Go to log in',
     },
+  },
+
+  competitionData: {
+    competitions: {
+      comp1: {
+        title: '2026 Summer Physics Competition',
+        description:
+          'Covers mechanics, electromagnetism, thermodynamics, optics, and modern physics. Suitable for senior high school students and above.',
+        category: 'Physics',
+      },
+      comp2: {
+        title: '2026 Mathematical Modeling Challenge',
+        description: 'Teams of three solve real-world problems and submit a paper.',
+        category: 'Mathematics',
+      },
+      comp3: {
+        title: '2026 Coding Marathon',
+        description: 'A 48-hour extreme coding challenge with no language or tool restrictions.',
+        category: 'Computer Science',
+      },
+      comp4: {
+        title: '2026 Chemical Equation Balancing Contest',
+        description: 'A timed challenge to balance chemical equations.',
+        category: 'Chemistry',
+      },
+    },
+    questions: {
+      q1: {
+        stem: 'What is the approximate speed of light in a vacuum?',
+        option0: '3×10⁶ m/s',
+        option1: '3×10⁷ m/s',
+        option2: '3×10⁸ m/s',
+        option3: '3×10⁹ m/s',
+        explanation: 'The speed of light is c = 299,792,458 m/s ≈ 3×10⁸ m/s',
+      },
+      q2: {
+        stem: 'Which of the following forces is not a fundamental force?',
+        option0: 'Gravity',
+        option1: 'Electromagnetic force',
+        option2: 'Friction',
+        option3: 'Strong nuclear force',
+        explanation:
+          'Friction is a macroscopic manifestation of the electromagnetic force, not a fundamental force. The four fundamental forces are gravity, the electromagnetic force, the strong interaction, and the weak interaction.',
+      },
+      q3: {
+        stem: 'A 2 kg object is acted on by a 10 N force. What is its acceleration?',
+        option0: '2 m/s²',
+        option1: '5 m/s²',
+        option2: '10 m/s²',
+        option3: '20 m/s²',
+        explanation: 'F = ma, so a = F/m = 10/2 = 5 m/s²',
+      },
+      q4: {
+        stem: 'Sound can travel in a vacuum.',
+        option0: 'True',
+        option1: 'False',
+        explanation: 'Sound is a mechanical wave and needs a medium to propagate, so it cannot travel in a vacuum.',
+      },
+      q5: {
+        stem: 'Which of the following is a vector quantity?',
+        option0: 'Mass',
+        option1: 'Temperature',
+        option2: 'Velocity',
+        option3: 'Time',
+        explanation:
+          'A vector has both magnitude and direction. Velocity has both, while mass and temperature only have magnitude.',
+      },
+      q6: {
+        stem: 'In a closed circuit, when the resistance increases, the current will:',
+        option0: 'Increase',
+        option1: 'Decrease',
+        option2: 'Stay the same',
+        option3: 'Increase first, then decrease',
+        explanation: "Ohm's law: I = U/R. When the voltage is constant, a larger resistance means a smaller current.",
+      },
+      q7: {
+        stem: 'The value of π (pi) is closest to:',
+        option0: '3.12',
+        option1: '3.14',
+        option2: '3.16',
+        option3: '3.18',
+        explanation: 'π ≈ 3.14159...',
+      },
+      q8: {
+        stem: 'Which of the following algorithms has the lowest time complexity?',
+        option0: 'O(n²)',
+        option1: 'O(n log n)',
+        option2: 'O(log n)',
+        option3: 'O(2ⁿ)',
+        explanation: 'O(log n) grows the slowest. Ordering: O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)',
+      },
+    },
+  },
+
+  qaData: {
+    questions: {
+      q1: {
+        title: 'Recommended books for getting started with quantum mechanics?',
+        content:
+          'I am a freshman in the physics department and want to get a head start on quantum mechanics. Are there any beginner-friendly introductory textbooks to recommend? Ideally with a Chinese edition.',
+      },
+      q2: {
+        title: 'What materials do I need to prepare for the Graduate Entrance Exam Math I?',
+        content:
+          'Preparing for the 2027 graduate entrance exam, targeting a 985 university. Which reference books and problem sets do I need for Math I? How should I plan my timeline?',
+      },
+      q3: {
+        title: 'College application advice: Physics vs Computer Science',
+        content:
+          'Province: Guangdong\nScore/Rank: 640 / Provincial rank 12000\nSubjects: Physics + Chemistry + Biology\nInterest: Physics, Computer Science\nFamily: Ordinary family, hoping for good job prospects',
+      },
+      q4: {
+        title: 'Python Data Analysis: running out of memory with Pandas?',
+        content:
+          'I always run out of memory when processing a 5GB CSV file with Pandas. I have already used chunked reading, but the subsequent aggregation operations still exhaust the memory. Is there a better approach?',
+      },
+      q5: {
+        title: 'Looking for a lab safety regulation document',
+        content:
+          'I need a template for chemistry laboratory safety regulations, for the safety training of new graduate students. Preferably a standard version commonly used by universities.',
+      },
+    },
+    answers: {
+      a1: {
+        content:
+          'I recommend Griffiths\' "Introduction to Quantum Mechanics" — a Chinese translation is available. If your math foundation is not solid enough, you can start with the Chinese edition "Introduction to Quantum Mechanics" (by David J. Griffiths, translated by Jia Yu). I also recommend reading Volume III of Feynman\'s Lectures on Physics alongside — the physical picture is very clear.',
+      },
+      a2: {
+        content:
+          'If you just want a preliminary understanding, I recommend "Does God Play Dice? The History of Quantum Physics" — a very accessible popular-science book. After reading it, you will have a good feel for the ins and outs of quantum mechanics, and then you can move on to textbooks.',
+      },
+      a3: {
+        content:
+          'A provincial rank of 12000 in Guangdong is a very good ranking. Physics and computer science are both good choices. From a job-prospect perspective, computer science has a wider job market and a higher starting salary; but if you truly love physics research, you can also major in physics and take computer science courses on the side — the two directions do not conflict. You could consider computer science or physics programs at South China University of Technology or Sun Yat-sen University.',
+      },
+      a4: {
+        content:
+          'For a 5GB CSV, I suggest switching tools. If you insist on Python, you can try: 1) Dask DataFrame (almost the same API as Pandas, but distributed) 2) Polars (much more memory-efficient than Pandas) 3) For aggregation, try SQLite (Pandas can write SQL directly). Chunked reading plus chunk-wise aggregation can work, but watch out for the complexity of the aggregation.',
+      },
+    },
+    askers: {
+      physicsNewbie: 'Physics Newbie',
+      examPrepper: 'Exam Prep Student',
+      chen: 'Xiao Chen, Grade 12',
+      dataNewbie: 'Data Analysis Newbie',
+      labWorker: 'Chemistry Lab Assistant',
+    },
+    authors: {
+      qiyueO: 'July O',
+      physicsTeacher: 'Physics Teacher',
+      qiyueHua: 'July Hua',
+      zhang: 'Engineer Zhang',
+    },
+    tags: {
+      physics: 'Physics',
+      quantum: 'Quantum Mechanics',
+      recommendation: 'Recommendations',
+      math: 'Mathematics',
+      exam: 'Graduate Exam',
+      studyPlan: 'Study Planning',
+      volunteer: 'College Application',
+      gaokao: 'Gaokao',
+      guangdong: 'Guangdong',
+      python: 'Python',
+      dataProcessing: 'Data Processing',
+      bigData: 'Big Data',
+      chemistry: 'Chemistry',
+      laboratory: 'Laboratory',
+      documents: 'Documents',
+    },
+  },
+
+  projectData: {
+    projects: {
+      proj1: {
+        name: 'Quantum Computing Simulation Platform',
+        background:
+          'Quantum computing is an important direction for future computing. We plan to build a web-based quantum computing simulation platform to help learners intuitively understand quantum algorithms.',
+        goals:
+          'Build an 8-qubit quantum circuit simulator that runs in the browser, supporting common quantum gates and measurement.',
+        requirements: 'Need 1-2 frontend developers (React/TypeScript), 1 quantum physics advisor, and 1 UI designer.',
+        teamIntro:
+          'The initiator July O is a PhD at the Chinese Academy of Sciences in quantum physics. A backend algorithm prototype already exists.',
+      },
+      proj2: {
+        name: 'LKM Knowledge Graph',
+        background:
+          'A lot of high-quality content is scattered across various boards in the community. We want to organize it through a knowledge graph to make it easier to search and learn.',
+        goals:
+          'Build an LKM community knowledge graph supporting keyword search, related recommendations, and learning path generation.',
+        requirements:
+          'Need 1 backend developer (Python/graph database), 1 frontend developer (visualization), and several content editors.',
+        teamIntro: '',
+      },
+      proj3: {
+        name: 'Popular Science Video Series',
+        background:
+          'Create a popular-science video series for middle school students, explaining scientific principles with vivid and interesting animation and stories.',
+        goals:
+          'Produce 12 episodes of popular-science videos and publish them on Bilibili and YouTube, aiming for 100k plays.',
+        requirements: '',
+        teamIntro:
+          'A cross-disciplinary team including members from physics, chemistry, and biology. 5 episodes have been published.',
+      },
+      proj4: {
+        name: 'Astronomical Observation Data Visualization Project',
+        background: 'Use public astronomical data to create interactive astronomical data visualization works.',
+        goals:
+          'Build 3 interactive visualization works: a full-sky star catalog, a 3D model of the Milky Way, and a gravitational wave event timeline.',
+        requirements: '',
+        teamIntro: 'Composed of astronomy enthusiasts from the community, using a Python + Three.js tech stack.',
+      },
+    },
+    roles: {
+      frontend: 'Frontend Developer',
+      uiDesigner: 'UI Designer',
+      backend: 'Backend Developer',
+      contentEditor: 'Content Editor',
+    },
+    teamRoles: {
+      initiator: 'Initiator',
+      generalPlanner: 'General Planner',
+      animation: 'Animation',
+      voice: 'Voice',
+      dataProcessing: 'Data Processing',
+    },
+    names: {
+      qiyueO: 'July O',
+      qiyueMoran: 'July Moran',
+      qiyueHua: 'July Hua',
+      astronomyFan: 'Astronomy Enthusiast',
+      wang: 'Animator Wang',
+      li: 'Voice Actor Li',
+      zhang: 'Engineer Zhang',
+    },
+    tags: {
+      quantumComputing: 'Quantum Computing',
+      webDev: 'Web Development',
+      education: 'Education',
+      knowledgeGraph: 'Knowledge Graph',
+      python: 'Python',
+      community: 'Community',
+      popularScience: 'Popular Science',
+      video: 'Video',
+      astronomy: 'Astronomy',
+      dataVisualization: 'Data Visualization',
+      threeJs: 'Three.js',
+    },
+    reports: {
+      proj1r0: {
+        title: 'Project kickoff & requirements analysis complete',
+        content:
+          'Completed the technical research on quantum circuit simulation, decided the tech stack and architecture, and the backend algorithm prototype is ready.',
+      },
+      proj1r1: {
+        title: 'Revision 1: Basic UI framework in place',
+        content:
+          'Completed the frontend base framework and implemented visualization of single-qubit operations. Recruiting frontend developers to help refine multi-qubit simulation.',
+      },
+      proj2r0: {
+        title: 'Project kickoff',
+        content:
+          'Decided on the Neo4j-based technical solution and preliminarily organized the content taxonomy of the mathematics board.',
+      },
+      proj3r0: {
+        title: 'Initial version: first 3 episodes released',
+        content:
+          '"The Wonderful Journey of Light", "Secrets of the Atom" and "What is a Chemical Reaction" are online on Bilibili, with a total of 35k plays.',
+      },
+      proj3r1: {
+        title: 'Revision 1: Mid-term review',
+        content:
+          'Episodes 4-5 are released, and total plays exceed 80k. Received positive audience feedback; started optimizing the scripts and animation style.',
+      },
+      proj4r0: {
+        title: 'Initial version: tech selection & data collection',
+        content: 'Decided to use Three.js for 3D rendering and selected Gaia DR3 stellar data.',
+      },
+      proj4r1: {
+        title: 'Revision 1: Full-sky star catalog complete',
+        content: 'The first work is online, showing the distribution of about 1 million stars.',
+      },
+      proj4r2: {
+        title: 'Revision 2: 3D Milky Way model complete',
+        content:
+          'The second work is online — users can rotate/zoom to explore the structure of the Milky Way. Currently working on the gravitational wave timeline.',
+      },
+    },
+  },
+
+  contributionData: {
+    achievements: {
+      a1: { name: 'Newcomer', description: 'Complete the onboarding tutorial' },
+      a2: { name: 'First Post', description: 'Publish your first post' },
+      a3: { name: 'Ten Posts', description: 'Publish 10 posts in total' },
+      a4: { name: 'Featured Author', description: 'Get a post featured' },
+      a5: { name: 'Century Posts', description: 'Publish 100 posts in total' },
+      a6: { name: 'Helpful', description: 'Get 5 answers accepted' },
+      a7: { name: 'Hardcore Answerer', description: 'Get 20 answers accepted' },
+      a8: { name: 'File Expert', description: 'Get 10 uploaded files approved' },
+      a9: { name: '7-Day Streak', description: 'Check in for 7 consecutive days' },
+      a10: { name: '30-Day Streak', description: 'Check in for 30 consecutive days' },
+      a11: { name: 'Project Pioneer', description: 'Join 3 projects' },
+      a12: { name: 'Column Author', description: 'Publish 5 column articles' },
+    },
+    pointLogs: {
+      checkin: 'Daily check-in',
+      post: 'Post: Quantum Mechanics Introduction',
+      comment: 'Comment reply',
+      answerAccepted: 'Answer accepted',
+      fileApproved: 'File upload approved',
+      competition: 'Competition award',
+      dailyTask: 'Daily task completed',
+    },
+    leaderboard: {
+      names: {
+        qiyueHua: 'July Hua',
+        qiyueO: 'July O',
+        physicsLover: 'Physics Enthusiast',
+        mathGenius: 'Math Genius',
+        chemMaster: 'Chemistry Master',
+        qiyueMoran: 'July Moran',
+        qiyueYuli: 'July Yuli',
+        astronomyFan: 'Astronomy Fan',
+        codeWizard: 'Code Wizard',
+        qiyueYouzhi: 'July Youzhi',
+      },
+      titles: {
+        hardcore: 'Hardcore Answerer',
+        columnAuthor: 'Column Author',
+        active: 'Active User',
+        newcomer: 'Newcomer',
+        fileExpert: 'File Expert',
+      },
+    },
+    tasks: {
+      t1: { title: 'Daily check-in', description: 'Come check in today' },
+      t2: { title: 'Post 1 article', description: 'Share your knowledge and insights' },
+      t3: { title: 'Answer 3 questions', description: 'Help others solve problems' },
+      t4: { title: 'Like 10 posts', description: 'Like quality content' },
+      t5: { title: 'Upload 1 file', description: 'Enrich the community resource library' },
+    },
+    exchangeItems: {
+      e1: { name: 'LKM Custom Badge (Virtual)', description: 'Exclusive badge shown on your profile page' },
+      e2: { name: 'Exclusive Title Color', description: 'Unlock gold title display' },
+      e3: {
+        name: 'Column Article Promotion Slot',
+        description: 'Show your column article in the homepage recommendations for 7 days',
+      },
+      e4: { name: 'LKM Custom Notebook', description: 'Limited-edition LKM-themed notebook' },
+      e5: { name: 'LKM Physical Badge', description: 'LKM metal badge' },
+      e6: { name: 'T-shirt Voucher', description: 'LKM-themed T-shirt' },
+    },
+  },
+
+  notificationData: {
+    titles: {
+      reply: 'New Reply',
+      like: 'New Like',
+      follow: 'New Follower',
+      fileApproved: 'File Approved',
+      system: 'System Announcement',
+    },
+    contents: {
+      n1: 'Zhang San replied to your post "Quantum Mechanics Introduction"',
+      n2: 'Li Si liked your comment',
+      n3: 'Wang Wu followed you',
+      n4: 'Your uploaded file "Astrophysics Dataset.zip" has been approved',
+      n5: 'The LKM 2026 summer competition is about to start — come join!',
+      n6: 'Zhao Liu liked your post "Mathematical Modeling Experience"',
+    },
+  },
+
+  treeholeData: {
+    categories: {
+      confess: 'Confession',
+      heart: 'Inner thoughts',
+      roast: 'Rant',
+      help: 'Seeking help',
+      campus: 'Campus',
+      work: 'Work',
+      crush: 'Secret crush',
+      heal: 'Healing',
+      fun: 'Fun',
+      insight: 'Reflections',
+    },
+    tags: {
+      academic: { label: 'Academic', desc: 'Research / grad students / grad school worries' },
+      campus: { label: 'Campus' },
+      work: { label: 'Work' },
+      growth: { label: 'Growth' },
+      love: { label: 'Love' },
+      family: { label: 'Family' },
+      life: { label: 'Life' },
+    },
+    privacy: {
+      public: { label: 'Publicly visible', desc: 'Shown on the treehole square' },
+      self: { label: 'Visible to me only', desc: 'Kept only on this device' },
+      random: { label: 'Random anonymous delivery', desc: 'Randomly sent to a stranger' },
+    },
+    moods: {
+      happy: 'Happy',
+      sad: 'Sad',
+      emo: 'Emo',
+      calm: 'Calm',
+      anxious: 'Anxious',
+      expecting: 'Anticipating',
+      relieved: 'Relieved',
+      lonely: 'Lonely',
+      crush: 'Smitten',
+      tired: 'Tired',
+      brave: 'Brave',
+      lost: 'Lost',
+      grateful: 'Grateful',
+      wronged: 'Wronged',
+      healed: 'Healed',
+      confused: 'Confused',
+    },
+    papers: {
+      paper: 'Letter',
+      starry: 'Starry sky',
+      minimal: 'Minimal',
+      art: 'Literary',
+      campus: 'Campus',
+    },
+    quotes: {
+      q1: "You don't need to be great to start, but you need to start to be great.",
+      q2: "Let today's unhappiness end here; tomorrow will shine as ever.",
+      q3: 'Everything has cracks — that is where the light gets in.',
+      q4: 'Take it slow; all good things happen in the fireworks of life, and in its quiet moments.',
+      q5: 'You are one of a kind, like the quietest star in the night sky.',
+      q6: 'Allowing yourself to wilt now and then is how you grow back stronger.',
+      q7: 'The world is loud, but your heart can stay still.',
+      q8: 'Tell your worries to the wind — it will keep your secret.',
+      q9: 'Gentle people will always be treated gently by the world.',
+      q10: 'Free means undefined.',
+      q11: 'Trust that after winter, spring will surely come.',
+      q12: "Today's effort is the seed of tomorrow's luck.",
+      q13: 'The moon has no light of its own; borrowing the sun, so can you.',
+      q14: "Don't rush for answers; time will reveal them for you.",
+      q15: 'Life is bright, everything is lovely, and the world is worth it.',
+    },
+    messages: {
+      recalled: 'The other person recalled a message',
+      decryptFail: '[Decryption failed: wrong password or not encrypted]',
+    },
+  },
+
+  starhopeData: {
+    ai: {
+      loadFail: 'Failed to load AI assistants',
+      createFail: 'Failed to create AI assistant',
+      defaultAgentName: 'General Assistant',
+      mockResponse:
+        'As your **{name}**, regarding "{question}":\n\nThis is a good learning question. Start from the basics and build up gradually.\n\n> 💡 You can keep asking about the details.',
+      errorPrefix: 'Error: {message}',
+      unknownError: 'Unknown error',
+    },
+  },
+
+  profileTitles: {
+    newbie: 'Newcomer',
+    active: 'Active User',
+    hardcore: 'Hardcore Answerer',
+    fileMaster: 'File Master',
+    projectPioneer: 'Project Pioneer',
+    columnist: 'Columnist',
+  },
+
+  adminData: {
+    stats: {
+      users: 'Registered Users',
+      posts: 'Total Posts',
+      pendingFiles: 'Pending Files',
+      pendingReports: 'Pending Reports',
+      usersChange: '+12 this week',
+      postsChange: '+8 this week',
+      filesChange: '3 new',
+    },
+    categories: {
+      physicsAstro: 'Physics & Astronomy',
+      infoScience: 'Computer Science',
+      math: 'Mathematics',
+      socialScience: 'Social Sciences',
+      integratedCircuit: 'Integrated Circuits',
+      english: 'English',
+    },
+    reasons: {
+      spam: 'Spam / ads',
+      violation: 'Rule-violating content',
+      harassment: 'Personal attack',
+      infringement: 'Infringing content',
+    },
+    posts: {
+      titleQuantum: 'Quantum Mechanics Intro: From Wave Functions to the Schrödinger Equation',
+      titlePython: 'Python Data Analysis in Practice',
+      titleSpam: 'Add WeChat xxx, earn 1000 a day',
+      titleSensitive: 'Sensitive content title',
+    },
+    files: {
+      astroDataset: 'Astrophysics Dataset (2026).zip',
+      chipTutorial: 'Chip Design Intro Tutorial.pdf',
+      academicWriting: 'English Academic Writing Guide.pdf',
+      crackTutorial: 'Cracked Software Tutorial.zip',
+    },
+    reports: {
+      targetSpam: 'Add WeChat xxx, earn 1000 a day',
+      targetComment: 'Uncivil comment',
+      targetFile: 'Suspected infringing file.pdf',
+      reporterEnthusiast: 'Enthusiastic user',
+      reporterAnonymous: 'Anonymous',
+      reporterCopyright: 'Copyright holder',
+    },
+  },
+
+  newsSections: {
+    announcement: 'Announcements',
+    news: 'Tech News',
+    science: 'Science',
+  },
+
+  editorData: {
+    errApiUrlRequired: 'Please enter the API URL',
+    errApiUrlInvalid: 'Invalid API URL format, please enter a complete HTTPS address',
+    errHttpsOnly: 'Only HTTPS addresses are supported',
+    errCredentials: 'The API URL cannot contain a username or password. Please enter the API Key separately below.',
+    errUnsupportedProtocol: 'Unsupported protocol',
+    errNotConfigured: 'Please configure the AI endpoint first. Click "Settings" to enter the API URL and Key.',
+    errConfigInvalid: 'Invalid AI endpoint configuration: {detail}',
+    errNetworkFailed: 'Network request failed',
+    errNetworkFailedDetail: 'Network request failed: {message}',
+    errUnexpectedContentType: 'The server returned an unexpected content type',
+    errStatusCodeSuffix: ' (status code {status})',
+    errServiceStatus: 'AI service returned an error (status code {status})',
+    errCheckKey: ', please check whether the API Key and endpoint configuration are correct',
+    errParseFailed: 'Failed to parse the data returned by the AI service',
+    errInvalidDataFormat: 'The AI service returned an invalid data format',
+    errUnknown: 'Unknown error',
+    errApiKeyInvalid: 'The AI service returned an error. Please check whether the API Key is valid.',
+    errServiceError: 'AI service returned an error: {detail}',
+    errIncompleteReply: 'The AI service returned incomplete data (missing reply content)',
+    errIncomplete: 'The AI service returned incomplete data',
+    errMissingMessage: 'The AI service returned incomplete data (missing message content)',
+    errEmptyReply: 'The AI service returned an empty reply',
+    errTooLarge: 'The AI response is too large ({bytes} bytes), exceeding the {max}-byte limit',
   },
 } as const;

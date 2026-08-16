@@ -16,6 +16,7 @@
 import { ok, err } from 'neverthrow';
 import { apiFetch } from '~/lib/api';
 import type { Result } from 'neverthrow';
+import { t } from '~/lib/i18n';
 
 // ---- Types -----------------------------------------------------------------
 
@@ -71,7 +72,7 @@ let _model: string = DEFAULT_MODEL;
  */
 export function validateAiEndpoint(raw: string): Result<URL, string> {
   if (!raw || raw.trim().length === 0) {
-    return err('请输入 API 地址');
+    return err(t('editorData.errApiUrlRequired'));
   }
 
   const trimmed = raw.trim();
@@ -80,21 +81,21 @@ export function validateAiEndpoint(raw: string): Result<URL, string> {
   try {
     url = new URL(trimmed);
   } catch {
-    return err('API 地址格式无效，请输入完整的 HTTPS 地址');
+    return err(t('editorData.errApiUrlInvalid'));
   }
 
   if (!ALLOWED_PROTOCOLS.has(url.protocol)) {
-    return err('仅支持 HTTPS 地址');
+    return err(t('editorData.errHttpsOnly'));
   }
 
   if (url.username || url.password) {
-    return err('API 地址不能包含用户名或密码，请在下方单独输入 API Key');
+    return err(t('editorData.errCredentials'));
   }
 
   // Block pseudo-protocols that the URL constructor might accept on some runtimes
   const lower = trimmed.toLowerCase();
   if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('file:')) {
-    return err('不支持的协议');
+    return err(t('editorData.errUnsupportedProtocol'));
   }
 
   return ok(url);
@@ -143,12 +144,12 @@ export async function requestAiCompletion(
 ): Promise<Result<string, string>> {
   // ---- 1. Config check ----------------------------------------------------
   if (!_endpoint) {
-    return err('请先配置 AI 接口。点击"设置"输入 API 地址和 Key。');
+    return err(t('editorData.errNotConfigured'));
   }
 
   const endpointValidation = validateAiEndpoint(_endpoint);
   if (endpointValidation.isErr()) {
-    return err(`AI 接口配置无效：${endpointValidation.error}`);
+    return err(t('editorData.errConfigInvalid', { detail: endpointValidation.error }));
   }
 
   const endpoint = _endpoint;
@@ -192,9 +193,9 @@ export async function requestAiCompletion(
     const message = fetchResult.error.message;
     // Never echo back anything that might contain secrets
     if (message.includes(apiKey) && apiKey.length > 4) {
-      return err('网络请求失败');
+      return err(t('editorData.errNetworkFailed'));
     }
-    return err(`网络请求失败：${message.slice(0, 120)}`);
+    return err(t('editorData.errNetworkFailedDetail', { message: message.slice(0, 120) }));
   }
 
   const response = fetchResult.value;
@@ -204,7 +205,8 @@ export async function requestAiCompletion(
   if (!contentType.includes('application/json')) {
     // Consume the body so the connection can be reused
     await response.text().catch(() => {});
-    return err(`服务器返回了意外的内容类型${response.status ? `（状态码 ${response.status}）` : ''}`);
+    const statusPart = response.status ? t('editorData.errStatusCodeSuffix', { status: response.status }) : '';
+    return err(t('editorData.errUnexpectedContentType') + statusPart);
   }
 
   // ---- 6. Check status code -----------------------------------------------
@@ -221,12 +223,12 @@ export async function requestAiCompletion(
     }
 
     // Sanitize: never include the API key in error messages
-    let safeError = `AI 服务返回错误（状态码 ${response.status}）`;
+    let safeError = t('editorData.errServiceStatus', { status: response.status });
     if (errorBody && !errorBody.includes(apiKey) && apiKey.length > 0) {
       safeError += `：${errorBody.slice(0, 200)}`;
     } else if (errorBody) {
       // Body might contain the key – use a generic prefix
-      safeError += '，请检查 API Key 和端点配置是否正确';
+      safeError += t('editorData.errCheckKey');
     }
 
     return err(safeError);
@@ -237,50 +239,50 @@ export async function requestAiCompletion(
   try {
     data = await response.json();
   } catch {
-    return err('无法解析 AI 服务返回的数据');
+    return err(t('editorData.errParseFailed'));
   }
 
   if (data === null || data === undefined || typeof data !== 'object') {
-    return err('AI 服务返回了无效的数据格式');
+    return err(t('editorData.errInvalidDataFormat'));
   }
 
   const obj = data as Record<string, unknown>;
 
   // ---- 8. Check for API-level errors --------------------------------------
   if (obj.error && typeof obj.error === 'object') {
-    const errMsg = (obj.error as Record<string, unknown>).message ?? '未知错误';
+    const errMsg = (obj.error as Record<string, unknown>).message ?? t('editorData.errUnknown');
     const safe = String(errMsg).slice(0, 200);
     if (safe.includes(apiKey) && apiKey.length > 4) {
-      return err('AI 服务返回错误，请检查 API Key 是否有效');
+      return err(t('editorData.errApiKeyInvalid'));
     }
-    return err(`AI 服务返回错误：${safe}`);
+    return err(t('editorData.errServiceError', { detail: safe }));
   }
 
   // ---- 9. Extract and validate text field ---------------------------------
   const choices = obj.choices;
   if (!Array.isArray(choices) || choices.length === 0) {
-    return err('AI 服务返回数据不完整（缺少回复内容）');
+    return err(t('editorData.errIncompleteReply'));
   }
 
   const firstChoice = choices[0] as Record<string, unknown> | undefined;
   if (!firstChoice || typeof firstChoice !== 'object') {
-    return err('AI 服务返回数据不完整');
+    return err(t('editorData.errIncomplete'));
   }
 
   const message = firstChoice.message as Record<string, unknown> | undefined;
   if (!message || typeof message !== 'object') {
-    return err('AI 服务返回数据不完整（缺少消息内容）');
+    return err(t('editorData.errMissingMessage'));
   }
 
   const content = message.content;
   if (typeof content !== 'string' || content.length === 0) {
-    return err('AI 服务返回了空白的回复内容');
+    return err(t('editorData.errEmptyReply'));
   }
 
   // ---- 10. Enforce response size limit ------------------------------------
   const byteLength = new TextEncoder().encode(content).length;
   if (byteLength > MAX_RESPONSE_BYTES) {
-    return err(`AI 返回内容过大（${byteLength} 字节），已超过 ${MAX_RESPONSE_BYTES} 字节上限`);
+    return err(t('editorData.errTooLarge', { bytes: byteLength, max: MAX_RESPONSE_BYTES }));
   }
 
   // ---- 11. Success --------------------------------------------------------

@@ -40,7 +40,7 @@ function gridCols(count: number): string {
                 <Icon name={root.icon} class="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h2 class="text-xl font-bold text-deep-text">{root.name}</h2>
+                <h2 class="text-xl font-bold text-deep-text">{t(root.name)}</h2>
                 <p class="text-sm text-text-muted">
                   {root.memberCount} {t('community.forum.members')} · {root.postCount} {t('community.forum.posts')} ·{' '}
                   {t('community.forum.todayPosts', { count: root.todayPostCount })}
@@ -62,10 +62,10 @@ function gridCols(count: number): string {
                       <div class="flex items-center gap-2">
                         <Icon name={child.icon} class="w-5 h-5 text-primary shrink-0" />
                         <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
-                          {child.name}
+                          {t(child.name)}
                         </h3>
                       </div>
-                      <p class="text-xs text-text-muted line-clamp-2 leading-relaxed flex-1">{child.description}</p>
+                      <p class="text-xs text-text-muted line-clamp-2 leading-relaxed flex-1">{t(child.description)}</p>
                       <div class="flex items-center justify-between text-xs text-text-muted/60 pt-1 border-t border-surface-3">
                         <span>
                           {child.memberCount} {t('community.forum.members')}
@@ -85,7 +85,7 @@ function gridCols(count: number): string {
               </div>
             ) : (
               <div class="bg-card-bg border border-surface-3 rounded-xl p-8 text-center">
-                <p class="text-text-muted text-sm mb-2">{root.description}</p>
+                <p class="text-text-muted text-sm mb-2">{t(root.description)}</p>
                 {root.slug === 'school-club' && (
                   <a
                     href={getPermalink('/contact')}

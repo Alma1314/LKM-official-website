@@ -8,7 +8,7 @@
       <div class="bg-card-bg rounded-2xl shadow-2xl w-full max-w-2xl mx-4 mb-12">
         <!-- Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-surface-3">
-          <h2 class="text-lg font-semibold text-deep-text">{{ t('forum.createPostTitle') }}</h2>
+          <h2 class="text-lg font-semibold text-deep-text">{{ t('community.forum.createPostTitle') }}</h2>
           <button
             class="btn-plain w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-3"
             @click="close"
@@ -21,12 +21,14 @@
         <div class="px-6 py-4 space-y-4">
           <!-- 选择板块 -->
           <div>
-            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('forum.categoryLabel') }}</label>
+            <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+              t('community.forum.categoryLabel')
+            }}</label>
             <select
               v-model="selectedCategory"
               class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             >
-              <option value="">{{ t('forum.selectCategory') }}</option>
+              <option value="">{{ t('community.forum.selectCategory') }}</option>
               <optgroup v-for="root in rootCategories" :key="root.id" :label="root.name">
                 <option v-for="child in getChildren(root.id)" :key="child.id" :value="child.id">
                   {{ child.name }}
@@ -37,19 +39,19 @@
 
           <!-- 标题 -->
           <div>
-            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('forum.titleLabel') }}</label>
+            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('community.forum.titleLabel') }}</label>
             <input
               v-model="title"
               type="text"
               class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-              :placeholder="t('forum.titlePlaceholder')"
+              :placeholder="t('community.forum.titlePlaceholder')"
               maxlength="100"
             />
           </div>
 
           <!-- 标签 -->
           <div>
-            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('forum.tagsLabel') }}</label>
+            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('community.forum.tagsLabel') }}</label>
             <div class="flex flex-wrap gap-1.5 mb-2">
               <span
                 v-for="(tag, i) in tags"
@@ -64,35 +66,37 @@
               v-model="tagInput"
               type="text"
               class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-              :placeholder="t('forum.tagsPlaceholder')"
+              :placeholder="t('community.forum.tagsPlaceholder')"
               @keydown.enter.prevent="addTag"
             />
           </div>
 
           <!-- 正文 -->
           <div>
-            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('forum.bodyLabel') }}</label>
+            <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('community.forum.bodyLabel') }}</label>
             <textarea
               v-model="content"
               rows="10"
               class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none font-mono"
-              :placeholder="t('forum.bodyPlaceholder')"
+              :placeholder="t('community.forum.bodyPlaceholder')"
             ></textarea>
           </div>
         </div>
 
         <!-- Footer -->
         <div class="flex items-center justify-between px-6 py-4 border-t border-surface-3">
-          <div class="text-xs text-text-muted/60">{{ t('forum.markdownHint') }}</div>
+          <div class="text-xs text-text-muted/60">{{ t('community.forum.markdownHint') }}</div>
           <div class="flex gap-2">
-            <button class="btn-ghost px-4 py-2 rounded-lg text-sm" @click="close">{{ t('forum.cancel') }}</button>
+            <button class="btn-ghost px-4 py-2 rounded-lg text-sm" @click="close">
+              {{ t('community.forum.cancel') }}
+            </button>
             <button
               class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold"
               :disabled="!canSubmit"
               :class="!canSubmit ? 'opacity-50 cursor-not-allowed' : ''"
               @click="submit"
             >
-              {{ t('forum.publish') }}
+              {{ t('community.forum.publish') }}
             </button>
           </div>
         </div>
@@ -138,10 +142,10 @@ function close() {
 function submit() {
   if (!canSubmit.value) return;
   alert(
-    t('forum.publishSuccess', {
+    t('community.forum.publishSuccess', {
       title: title.value,
       category: selectedCategory.value,
-      tags: tags.value.join(', ') || t('forum.none'),
+      tags: tags.value.join(', ') || t('community.forum.none'),
     })
   );
   // 重置表单

@@ -32,7 +32,7 @@
             class="mc-bar"
           />
           <text :x="63 + i * 38" :y="h - 12" text-anchor="middle" font-size="9" fill="var(--text-sub)">
-            {{ d.mood }}
+            {{ t(moodKey(d.mood)) }}
           </text>
           <text :x="63 + i * 38" :y="d.y - 4" text-anchor="middle" font-size="9" fill="var(--text-main)">
             {{ d.count }}
@@ -42,7 +42,7 @@
       </svg>
       <p class="mc-tip">
         {{ t('treehole.moodChart.recordPrefix') }}<b>{{ total }}</b
-        >{{ t('treehole.moodChart.recordMiddle') }}<b :style="{ color: topColor }">{{ topMood }}</b>
+        >{{ t('treehole.moodChart.recordMiddle') }}<b :style="{ color: topColor }">{{ t(moodKey(topMood)) }}</b>
       </p>
     </div>
     <EmptyState v-else :title="t('treehole.moodChart.emptyTitle')" :sub="t('treehole.moodChart.emptySub')" />
@@ -53,7 +53,7 @@
 import { ref, computed, onMounted } from 'vue';
 import EmptyState from './EmptyState.vue';
 import * as store from '../stores/storage';
-import { MOODS } from '../stores/constants';
+import { MOODS, moodKey } from '../stores/constants';
 import { t } from '~/lib/i18n';
 
 const months = ref([]);

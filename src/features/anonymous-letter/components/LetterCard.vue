@@ -2,7 +2,7 @@
   <div class="letter-card glass glass-hover float-up" :style="{ '--card-grad': grad }">
     <!-- 顶部：分类 + 代号 + 时间 -->
     <div class="lc-head">
-      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ category.label }}</span>
+      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ t(category.label) }}</span>
       <span class="lc-code">{{ letter.codename }}</span>
     </div>
 
@@ -18,12 +18,12 @@
 
     <!-- 心情标签 -->
     <div class="lc-moods" v-if="letter.moods && letter.moods.length">
-      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ m }}</span>
+      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ t(moodKey(m)) }}</span>
     </div>
     <!-- 内容标签 -->
     <div class="lc-tags" v-if="letter.tags && letter.tags.length">
-      <span v-for="t in letter.tags" :key="t" class="lc-tag" :style="{ background: tagColor(t) }"
-        >{{ tagEmoji(t) }} {{ tagLabel(t) }}</span
+      <span v-for="tg in letter.tags" :key="tg" class="lc-tag" :style="{ background: tagColor(tg) }"
+        >{{ tagEmoji(tg) }} {{ t(tagLabel(tg)) }}</span
       >
     </div>
     <slot name="extra" />
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { getCategory, getPaper, getTag } from '../stores/constants';
+import { getCategory, getPaper, getTag, moodKey } from '../stores/constants';
 import { toggleFavorite } from '../stores/storage';
 import ReportDialog from './ReportDialog.vue';
 import { t } from '~/lib/i18n';
@@ -128,7 +128,7 @@ function onFav() {
   props.letter.favorites = Math.max(0, (props.letter.favorites || 0) + (added ? 1 : -1));
 }
 async function onCopy() {
-  const text = `${t('treehole.letterCard.sharePrefix')}${category.value.label} · ${props.letter.codename}\n${props.letter.content}`;
+  const text = `${t('treehole.letterCard.sharePrefix')}${t(category.value.label)} · ${props.letter.codename}\n${props.letter.content}`;
   try {
     await navigator.clipboard.writeText(text);
   } catch {

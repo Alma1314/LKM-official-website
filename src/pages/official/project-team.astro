@@ -64,16 +64,16 @@ const sidebarLinks = [
   metadata={metadata}
   sidebarLinks={sidebarLinks}
   currentPath={getPermalink('/official/project-team')}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <!-- 项目小组 -->
   {
     groups.map((group) => (
       <DepartmentSection
         id={group.key}
-        title={group.label}
+        title={t(group.label)}
         borderColor={group.key === 'textbooks' ? '#14b8a6' : '#a855f7'}
-        desc={group.desc ?? ''}
+        desc={t(group.desc ?? '')}
       >
         {group.members.length > 0 ? (
           <>

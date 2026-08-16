@@ -2,6 +2,7 @@ import type { DocumentData, VersionEntry } from '../engine/types';
 import { ok, err } from 'neverthrow';
 import type { Result } from 'neverthrow';
 import { AppError } from './document-store';
+import { t } from '~/lib/i18n';
 
 const MAX_VERSIONS = 50;
 
@@ -26,7 +27,7 @@ export function saveVersion(docId: string, doc: DocumentData, message = ''): Res
       version: doc.version,
       contentMdx: doc.contentMdx,
       editorJson: doc.editorJson ?? {},
-      message: message || `版本 ${doc.version}`,
+      message: message || t('editor.persistence.versionMessage', { version: doc.version }),
       createdAt: new Date().toISOString(),
     };
 
@@ -40,7 +41,7 @@ export function saveVersion(docId: string, doc: DocumentData, message = ''): Res
     return ok(undefined);
   } catch (e) {
     console.warn('[version-store] 保存版本失败:', e);
-    return err(new AppError('VERSION_SAVE_FAILED', '保存版本失败', e));
+    return err(new AppError('VERSION_SAVE_FAILED', t('editor.persistence.saveVersionFailed'), e));
   }
 }
 

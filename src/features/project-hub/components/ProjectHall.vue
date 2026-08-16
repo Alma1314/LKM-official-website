@@ -67,9 +67,9 @@
             </span>
           </div>
           <h3 class="font-bold text-deep-text group-hover:text-primary transition-colors">
-            {{ proj.name }}
+            {{ t(proj.name) }}
           </h3>
-          <p class="text-xs text-text-muted">{{ t('projectHub.initiatedBy', { name: proj.initiatorName }) }}</p>
+          <p class="text-xs text-text-muted">{{ t('projectHub.initiatedBy', { name: t(proj.initiatorName) }) }}</p>
           <div class="mt-1">
             <div class="h-1.5 rounded-full bg-surface-3">
               <div class="h-full rounded-full bg-primary transition-all" :style="{ width: proj.progress + '%' }" />
@@ -87,7 +87,7 @@
               :key="r"
               class="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary"
             >
-              {{ t('projectHub.roleMissing', { role: r }) }}
+              {{ t('projectHub.roleMissing', { role: t(r) }) }}
             </span>
           </div>
         </div>

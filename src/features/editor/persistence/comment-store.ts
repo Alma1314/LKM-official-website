@@ -1,4 +1,5 @@
 import type { CommentReply, CommentThread } from '../engine/types';
+import { t } from '~/lib/i18n';
 
 function getKey(docId: string): string {
   return `lkm-editor-comments-${docId}`;
@@ -35,7 +36,7 @@ export function addThread(
     text,
     resolved: false,
     comments: initialComment
-      ? [{ id: crypto.randomUUID(), text: initialComment, author: '我', createdAt: new Date().toISOString() }]
+      ? [{ id: crypto.randomUUID(), text: initialComment, author: t('editor.me'), createdAt: new Date().toISOString() }]
       : [],
     createdAt: new Date().toISOString(),
   };
@@ -51,7 +52,7 @@ export function addReply(docId: string, threadId: string, text: string): Comment
   const reply: CommentReply = {
     id: crypto.randomUUID(),
     text,
-    author: '我',
+    author: t('editor.me'),
     createdAt: new Date().toISOString(),
   };
   thread.comments.push(reply);

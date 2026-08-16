@@ -91,7 +91,7 @@
                 :class="{ active: form.category === c.key }"
                 @click="form.category = c.key"
               >
-                {{ c.emoji }} {{ c.label }}
+                {{ c.emoji }} {{ t(c.label) }}
               </button>
             </div>
           </div>
@@ -108,8 +108,8 @@
                 @click="form.privacy = p.key"
               >
                 <span class="privacy-dot" :class="p.key"></span>
-                <span class="privacy-label">{{ p.label }}</span>
-                <span class="privacy-desc">{{ p.desc }}</span>
+                <span class="privacy-label">{{ t(p.label) }}</span>
+                <span class="privacy-desc">{{ t(p.desc) }}</span>
               </button>
             </div>
           </div>
@@ -139,7 +139,7 @@
                 :class="{ active: form.moods.includes(m) }"
                 @click="toggleMood(m)"
               >
-                #{{ m }}
+                #{{ t(moodKey(m)) }}
               </button>
             </div>
           </div>
@@ -155,7 +155,7 @@
                 :class="{ active: form.tags.includes(tg.key) }"
                 @click="toggleTag(tg.key)"
               >
-                {{ tg.emoji }} {{ tg.label }}
+                {{ tg.emoji }} {{ t(tg.label) }}
               </button>
             </div>
           </div>
@@ -188,7 +188,7 @@
                 :style="{ background: p.gradient }"
                 @click="form.paper = p.key"
               >
-                {{ p.label }}
+                {{ t(p.label) }}
               </button>
             </div>
           </div>
@@ -292,6 +292,7 @@ import {
   TAGS,
   EMOJIS,
   SENSITIVE_WORDS,
+  moodKey,
 } from '../stores/constants';
 import {
   addLetter,

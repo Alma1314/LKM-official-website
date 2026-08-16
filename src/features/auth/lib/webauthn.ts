@@ -3,6 +3,8 @@
 // navigator.credentials 的 options，并把浏览器返回的凭据序列化为后端
 // complete 接口所需的 payload。仅在浏览器环境中可用，SSR/Node 下应提前短路。
 
+import { t } from '~/lib/i18n';
+
 export interface SerializedAttestation {
   rawId: string;
   response: {
@@ -29,7 +31,7 @@ function isBrowser(): boolean {
 /** 非浏览器环境下抛出可读错误（避免 RawError 泄漏）。 */
 function requireBrowser(): void {
   if (!isBrowser()) {
-    throw new Error('WebAuthn 仅在浏览器环境可用，请使用支持的浏览器并确保 HTTPS 或 localhost');
+    throw new Error(t('messages.webauthn.browserOnly'));
   }
 }
 
@@ -140,7 +142,7 @@ export async function registerNew(pk: Record<string, unknown>): Promise<Serializ
   const credential = (await navigator.credentials.create({
     publicKey: options,
   })) as PublicKeyCredential & { response: AuthenticatorAttestationResponse };
-  if (!credential) throw new Error('创建通行密钥失败');
+  if (!credential) throw new Error(t('messages.webauthn.createFailed'));
   return serializeAttestation(credential);
 }
 
@@ -151,6 +153,6 @@ export async function authenticate(pk: Record<string, unknown>): Promise<Seriali
   const credential = (await navigator.credentials.get({
     publicKey: options,
   })) as PublicKeyCredential & { response: AuthenticatorAssertionResponse };
-  if (!credential) throw new Error('通行密钥认证失败');
+  if (!credential) throw new Error(t('messages.webauthn.authenticateFailed'));
   return serializeAssertion(credential);
 }

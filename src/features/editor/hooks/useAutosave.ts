@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SaveStatus, PersistenceAdapter, DocumentData } from '../engine/types';
 import { exportMdx } from '../engine/mdx/index';
+import { t } from '~/lib/i18n';
 
 const FALLBACK_PREFIX = 'autosave_fallback_';
 
@@ -98,7 +99,7 @@ export function useAutoSave(
 
         const doc: DocumentData = {
           id: documentId,
-          title: existing?.title ?? '无标题文档',
+          title: existing?.title ?? t('editor.untitled'),
           contentMdx: mdxContent,
           editorJson: content,
           status: existing?.status ?? 'draft',

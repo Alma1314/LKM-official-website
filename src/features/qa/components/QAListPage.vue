@@ -40,10 +40,10 @@
             </span>
           </div>
           <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-            {{ q.title }}
+            {{ t(q.title) }}
           </h3>
           <div class="flex items-center justify-between text-xs text-text-muted/60">
-            <span>{{ q.askerName }} · {{ formatTime(q.createdAt) }}</span>
+            <span>{{ t(q.askerName) }} · {{ formatTime(q.createdAt) }}</span>
             <span>
               {{ t('page.qa.answers', { count: q.answerCount }) }} · {{ t('page.qa.views', { count: q.viewCount }) }}
             </span>

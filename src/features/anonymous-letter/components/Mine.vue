@@ -38,7 +38,7 @@
           <div v-for="l in letters" :key="l.id" class="item glass">
             <div class="item-head">
               <span class="item-cat" :style="{ background: getCategory(l.category).color }"
-                >{{ getCategory(l.category).emoji }} {{ getCategory(l.category).label }}</span
+                >{{ getCategory(l.category).emoji }} {{ t(getCategory(l.category).label) }}</span
               >
               <span class="item-status" :class="l.status">{{ statusLabel(l.status) }}</span>
             </div>

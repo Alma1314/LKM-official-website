@@ -9,7 +9,7 @@
       <input
         v-model="searchQuery"
         type="search"
-        :placeholder="t('fileLibrary.searchPlaceholder')"
+        :placeholder="t('community.fileLibrary.searchPlaceholder')"
         class="w-full pl-10 pr-9 py-2.5 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text placeholder:text-text-muted/60 focus:border-primary outline-none"
       />
       <button
@@ -17,7 +17,7 @@
         type="button"
         class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md flex items-center justify-center text-text-muted hover:text-deep-text hover:bg-surface-3 transition-colors"
         @click="searchQuery = ''"
-        :title="t('fileLibrary.clearSearch')"
+        :title="t('community.fileLibrary.clearSearch')"
       >
         <Icon icon="material-symbols:close" class="w-4 h-4" />
       </button>
@@ -31,14 +31,16 @@
       <div v-if="childFolders.length > 0">
         <FolderGrid :folders="childFolders" :file-counts="folderFileCounts" @open="openFolder" />
       </div>
-      <div v-else class="text-center py-12 text-sm text-text-muted">{{ t('fileLibrary.noSubcategories') }}</div>
+      <div v-else class="text-center py-12 text-sm text-text-muted">
+        {{ t('community.fileLibrary.noSubcategories') }}
+      </div>
     </template>
 
     <!-- 文件层（叶子，或全局搜索态）：筛选 + 列表/卡片；数据经 filteredFiles 已切到 searchResults -->
     <template v-else>
       <!-- 搜索态头标题（仅搜索时显示） -->
       <div v-if="isSearching" class="text-sm text-text-muted">
-        {{ t('fileLibrary.searchResults', { query: searchQuery, count: searchResults.length }) }}
+        {{ t('community.fileLibrary.searchResults', { query: searchQuery, count: searchResults.length }) }}
       </div>
       <!-- 筛选器 -->
       <div class="flex flex-wrap items-center gap-3">
@@ -46,33 +48,33 @@
           v-model="filterType"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="">{{ t('fileLibrary.allTypes') }}</option>
+          <option value="">{{ t('community.fileLibrary.allTypes') }}</option>
           <option value="pdf">PDF</option>
-          <option value="zip">{{ t('fileLibrary.zipType') }}</option>
-          <option value="other">{{ t('fileLibrary.otherType') }}</option>
+          <option value="zip">{{ t('community.fileLibrary.zipType') }}</option>
+          <option value="other">{{ t('community.fileLibrary.otherType') }}</option>
         </select>
         <select
           v-model="filterStatus"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="">{{ t('fileLibrary.allStatuses') }}</option>
-          <option value="approved">{{ t('fileLibrary.statusApproved') }}</option>
-          <option value="pending">{{ t('fileLibrary.statusPending') }}</option>
-          <option value="rejected">{{ t('fileLibrary.statusRejected') }}</option>
+          <option value="">{{ t('community.fileLibrary.allStatuses') }}</option>
+          <option value="approved">{{ t('community.fileLibrary.statusApproved') }}</option>
+          <option value="pending">{{ t('community.fileLibrary.statusPending') }}</option>
+          <option value="rejected">{{ t('community.fileLibrary.statusRejected') }}</option>
         </select>
         <select
           v-model="sortBy"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="newest">{{ t('fileLibrary.sortNewest') }}</option>
-          <option value="downloads">{{ t('fileLibrary.sortMostDownloaded') }}</option>
+          <option value="newest">{{ t('community.fileLibrary.sortNewest') }}</option>
+          <option value="downloads">{{ t('community.fileLibrary.sortMostDownloaded') }}</option>
         </select>
         <div class="flex gap-1 ml-auto">
           <button
             class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
             :class="viewMode === 'list' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted'"
             @click="viewMode = 'list'"
-            :title="t('fileLibrary.listView')"
+            :title="t('community.fileLibrary.listView')"
           >
             <Icon icon="material-symbols:list" class="w-5 h-5" />
           </button>
@@ -80,7 +82,7 @@
             class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
             :class="viewMode === 'grid' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted'"
             @click="viewMode = 'grid'"
-            :title="t('fileLibrary.cardView')"
+            :title="t('community.fileLibrary.cardView')"
           >
             <Icon icon="material-symbols:grid-view" class="w-5 h-5" />
           </button>
@@ -104,9 +106,9 @@
                 {{ file.originalName }}
               </a>
               <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-text-muted/60">
-                <span>{{ file.uploaderName }}</span>
+                <span>{{ t(file.uploaderName) }}</span>
                 <span>{{ formatSize(file.size) }}</span>
-                <span>{{ t('fileLibrary.downloadCount', { count: file.downloadCount }) }}</span>
+                <span>{{ t('community.fileLibrary.downloadCount', { count: file.downloadCount }) }}</span>
                 <span class="text-text-muted">{{ file.createdAt }}</span>
               </div>
             </div>
@@ -115,7 +117,7 @@
                 {{ statusLabel(file.status) }}
               </span>
               <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium">{{
-                t('fileLibrary.view')
+                t('community.fileLibrary.view')
               }}</a>
             </div>
           </div>
@@ -141,21 +143,23 @@
             </div>
           </div>
           <div class="text-xs text-text-muted/60 space-y-1 flex-1">
-            <div>{{ file.uploaderName }} · {{ formatSize(file.size) }}</div>
-            <div>{{ t('fileLibrary.downloadCount', { count: file.downloadCount }) }} · {{ file.createdAt }}</div>
+            <div>{{ t(file.uploaderName) }} · {{ formatSize(file.size) }}</div>
+            <div>
+              {{ t('community.fileLibrary.downloadCount', { count: file.downloadCount }) }} · {{ file.createdAt }}
+            </div>
           </div>
           <div class="flex items-center justify-between mt-3 pt-3 border-t border-surface-3">
             <span class="text-xs px-2 py-0.5 rounded-full font-medium" :class="statusClass(file.status)">
               {{ statusLabel(file.status) }}
             </span>
-            <span class="text-xs text-primary font-medium">{{ t('fileLibrary.viewDetails') }}</span>
+            <span class="text-xs text-primary font-medium">{{ t('community.fileLibrary.viewDetails') }}</span>
           </div>
         </a>
       </div>
 
       <!-- 空状态 -->
       <div v-if="filteredFiles.length === 0" class="text-center py-12 text-sm text-text-muted">
-        {{ t('fileLibrary.noMatchingFiles') }}
+        {{ t('community.fileLibrary.noMatchingFiles') }}
       </div>
     </template>
 
@@ -175,43 +179,45 @@
         @click.self="showUpload = false"
       >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
-          <h3 class="text-lg font-semibold text-deep-text mb-4">{{ t('fileLibrary.uploadTitle') }}</h3>
+          <h3 class="text-lg font-semibold text-deep-text mb-4">{{ t('community.fileLibrary.uploadTitle') }}</h3>
           <div class="space-y-4">
             <div
               class="border-2 border-dashed border-surface-3 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer"
             >
               <Icon icon="material-symbols:cloud-upload-outline" class="w-10 h-10 text-text-muted/40 mx-auto mb-2" />
-              <p class="text-sm text-text-muted">{{ t('fileLibrary.uploadDropHint') }}</p>
-              <p class="text-xs text-text-muted/50 mt-1">{{ t('fileLibrary.uploadFormats') }}</p>
+              <p class="text-sm text-text-muted">{{ t('community.fileLibrary.uploadDropHint') }}</p>
+              <p class="text-xs text-text-muted/50 mt-1">{{ t('community.fileLibrary.uploadFormats') }}</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1">{{ t('fileLibrary.categoryLabel') }}</label>
+              <label class="block text-sm font-medium text-deep-text mb-1">{{
+                t('community.fileLibrary.categoryLabel')
+              }}</label>
               <select
                 v-model="uploadCategory"
                 class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
               >
-                <option value="">{{ t('fileLibrary.selectCategory') }}</option>
-                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                <option value="">{{ t('community.fileLibrary.selectCategory') }}</option>
+                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ t(cat.name) }}</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-deep-text mb-1">{{
-                t('fileLibrary.descriptionLabel')
+                t('community.fileLibrary.descriptionLabel')
               }}</label>
               <textarea
                 v-model="uploadDesc"
                 rows="2"
                 class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none resize-none"
-                :placeholder="t('fileLibrary.descriptionPlaceholder')"
+                :placeholder="t('community.fileLibrary.descriptionPlaceholder')"
               ></textarea>
             </div>
           </div>
           <div class="flex gap-2 justify-end mt-4">
             <button class="btn-ghost px-4 py-2 rounded-lg text-sm" @click="showUpload = false">
-              {{ t('fileLibrary.cancel') }}
+              {{ t('community.fileLibrary.cancel') }}
             </button>
             <button class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold" @click="doUpload">
-              {{ t('fileLibrary.submitUpload') }}
+              {{ t('community.fileLibrary.submitUpload') }}
             </button>
           </div>
         </div>
@@ -297,11 +303,11 @@ function formatSize(bytes: number): string {
 function statusLabel(status: string): string {
   switch (status) {
     case 'approved':
-      return t('fileLibrary.statusApproved');
+      return t('community.fileLibrary.statusApproved');
     case 'pending':
-      return t('fileLibrary.statusPending');
+      return t('community.fileLibrary.statusPending');
     case 'rejected':
-      return t('fileLibrary.statusRejected');
+      return t('community.fileLibrary.statusRejected');
     default:
       return status;
   }
@@ -322,6 +328,6 @@ function statusClass(status: string): string {
 
 function doUpload() {
   showUpload.value = false;
-  alert(t('fileLibrary.uploadSubmitted'));
+  alert(t('community.fileLibrary.uploadSubmitted'));
 }
 </script>

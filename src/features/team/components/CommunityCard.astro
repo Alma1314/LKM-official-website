@@ -14,7 +14,7 @@ const { name, qqGroup, desc, isQQChannel = false } = Astro.props;
 <div class="profile-card">
   <div class="profile-inner p-5 flex flex-col gap-3">
     <div class="flex items-center justify-between gap-2">
-      <h4 class="font-bold text-base text-deep-text">{name}</h4>
+      <h4 class="font-bold text-base text-deep-text">{t(name)}</h4>
       {
         qqGroup && (
           <span
@@ -42,7 +42,7 @@ const { name, qqGroup, desc, isQQChannel = false } = Astro.props;
         )
       }
     </div>
-    {desc && <p class="text-xs text-text-muted leading-relaxed">{desc}</p>}
+    {desc && <p class="text-xs text-text-muted leading-relaxed">{t(desc)}</p>}
   </div>
 </div>
 

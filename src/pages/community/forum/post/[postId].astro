@@ -58,7 +58,7 @@ const authorName = post.author?.displayName ?? t('page.communityDetail.forum.ano
         category && (
           <>
             <a href={getPermalink(`/forum/${category.slug}`)} class="hover:text-primary transition-colors">
-              {category.name}
+              {t(category.name)}
             </a>
             <Icon name="tabler:chevron-right" class="w-3.5 h-3.5" />
           </>

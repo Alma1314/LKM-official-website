@@ -13,24 +13,24 @@
         v-model="filterDifficulty"
         class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
       >
-        <option value="0">{{ t('competition.allDifficulties') }}</option>
-        <option value="1">{{ t('competition.difficultyEasy') }}</option>
-        <option value="2">{{ t('competition.difficultyMedium') }}</option>
-        <option value="3">{{ t('competition.difficultyHard') }}</option>
+        <option value="0">{{ t('community.competition.allDifficulties') }}</option>
+        <option value="1">{{ t('community.competition.difficultyEasy') }}</option>
+        <option value="2">{{ t('community.competition.difficultyMedium') }}</option>
+        <option value="3">{{ t('community.competition.difficultyHard') }}</option>
       </select>
     </div>
     <div class="space-y-3">
       <div v-for="q in filteredQuestions" :key="q.id" class="bg-card-bg border border-surface-3 rounded-xl p-4">
         <div class="flex items-start gap-2 mb-2">
           <span class="text-xs px-1.5 py-0.5 rounded-full bg-surface-3 text-text-muted shrink-0">{{
-            q.type === 'single' ? t('competition.singleChoice') : t('competition.trueFalse')
+            q.type === 'single' ? t('community.competition.singleChoice') : t('community.competition.trueFalse')
           }}</span>
-          <span class="text-sm font-medium text-deep-text">{{ q.stem }}</span>
+          <span class="text-sm font-medium text-deep-text">{{ t(q.stem) }}</span>
         </div>
         <div class="text-xs text-text-muted/60 mt-2">
-          {{ t('competition.answer') }}
+          {{ t('community.competition.answer') }}
           {{ Array.isArray(q.answer) ? q.answer.map((i: number) => 'ABCD'[i]).join(', ') : 'ABCD'[q.answer as number] }}
-          <span class="mx-2">|</span> {{ t('competition.explanation') }}{{ q.explanation }}
+          <span class="mx-2">|</span> {{ t('community.competition.explanation') }}{{ t(q.explanation) }}
         </div>
       </div>
     </div>

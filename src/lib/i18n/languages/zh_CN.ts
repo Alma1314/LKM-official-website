@@ -30,6 +30,88 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     today: '今天',
   },
 
+  messages: {
+    networkError: '网络连接失败，请稍后重试',
+    requestFailed: '请求失败 ({status})',
+    requestTimeout: '请求超时',
+    timeoutOrCancelled: '请求超时或已取消',
+    networkRequestFailed: '网络请求失败：{error}',
+    unknownError: '未知错误',
+    unknownNetworkError: '未知网络错误',
+    httpError: 'HTTP {status}',
+    operationFailed: '操作失败，请重试',
+    auth: {
+      wrongCredentials: '账号或密码错误',
+      loginSuccess: '登录成功',
+      codeSent: '验证码已发送，请查收',
+      magicLinkSent: 'Magic Link 已发送，请查收邮箱',
+      passkeyFirstTime2fa: '账号首次登录需先完成 2FA 设置，请配合扫码',
+      githubAuthorizationFailed: '发起 GitHub 授权失败',
+      passkeyLoginFailed: '通行密钥登录失败',
+      missingTempToken: '缺少临时会话令牌，请重新登录',
+      passkeyViaLoginPage: '请使用登录页的「通行密钥」方式完成认证',
+      unsupportedLoginMethod: '不支持的登录方式',
+      unsupportedRegisterType: '不支持的注册类型',
+    },
+    recovery: {
+      enterAccount: '请输入注册时使用的邮箱或手机号',
+      enterCode: '请输入验证码',
+      missingSessionToken: '缺少临时会话令牌，请重新发起找回',
+      enterSixDigitTotp: '请输入 6 位动态验证码',
+      passwordTooShort: '密码长度不能少于 6 位',
+      passwordMismatch: '两次输入的密码不一致',
+      resetSuccess: '密码已重置，请登录',
+    },
+    register: {
+      usernameTooShort: '用户名至少 3 个字符',
+      usernameTooLong: '用户名不能超过 50 个字符',
+      usernameSpecialChars: '用户名不能包含特殊字符（如 < > /）',
+      passwordTooShort: '密码长度不能少于 6 位',
+      passwordTooLong: '密码长度不能超过 128 位',
+      passwordMismatch: '两次输入的密码不一致',
+      enterEmail: '请输入邮箱',
+      enterPhone: '请输入手机号',
+      contactSpecialChars: '联系方式不能包含特殊字符',
+      invalidEmail: '请输入有效的邮箱地址',
+      invalidPhone: '请输入有效的手机号',
+      codeRequestFailed: '获取验证码失败，请重试',
+      sessionExpired: '注册会话已失效，请重新提交',
+      invalidCodeLength: '验证码长度不正确',
+      invalidCodeFormat: '验证码格式不正确',
+    },
+    webauthn: {
+      browserOnly: 'WebAuthn 仅在浏览器环境可用，请使用支持的浏览器并确保 HTTPS 或 localhost',
+      createFailed: '创建通行密钥失败',
+      authenticateFailed: '通行密钥认证失败',
+    },
+    blog: {
+      fetchSeriesFailed: '获取博客系列失败：{error}',
+    },
+    articles: {
+      categories: {
+        announcement: '公告',
+        architecture: '架构',
+        security: '安全',
+        engineering: '工程',
+        ai: 'AI',
+        community: '社区',
+        culture: '文化',
+        news: '科技新闻',
+        science: '科普相关',
+      },
+    },
+    admin: {
+      sessionExpired: '后台登录态失效',
+      requestFailed: '请求失败',
+      requestFailedStatus: '请求失败 ({status})',
+    },
+    errorBoundary: {
+      title: '页面加载出错',
+      message: '请刷新页面重试',
+      reload: '刷新页面',
+    },
+  },
+
   nav: {
     home: '主页',
     about: '关于',
@@ -65,6 +147,8 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     blog: '博客',
     blogList: '博客列表',
     aboutBlog: '关于博客',
+    community: '社区主页',
+    communityHome: '社区首页',
     forum: '板块广场',
     columns: '专栏',
     fileLibrary: '文件库',
@@ -76,6 +160,16 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     profile: '个人主页',
     contribution: '贡献系统',
     settings: '设置',
+  },
+
+  footer: {
+    community: '社区',
+    pages: '页面',
+    legal: '法律',
+    supportUs: '支持我们',
+    privacyPolicy: '隐私政策',
+    terms: '使用条款',
+    copyright: '理科迷 LKM © 2026 · 保留所有权利。',
   },
 
   blog: {
@@ -299,7 +393,472 @@ export const zh_CN: DeepStringRecord<typeof en> = {
   team: {
     clickToCopy: '点击复制',
     copied: '已复制！',
-    channelId: '频道ID: ',
+    channelId: '频道 ID：',
+    communities: {
+      general: {
+        label: '爱好者总群',
+        intro:
+          '不属于特定专业、不限工作种类、不限年级阶段、不限水平，所有人都可以加入的大家庭！日常吹水聊天，遇到问题时大家积极讨论，欢迎分享学习和生活～',
+        oneGroup: {
+          name: '一群',
+          desc: '这是理科迷·中心群·交流群，【腾讯物理部落】官方群之一，是非常大的总群，欢迎各对理工科感兴趣和研究的学生、教师、工程师、各行各业的从业者、科普工作者、科研工作者等等。在这里交流学术专业、科普知识、学习生活、思想文化等相关话题，共同学习进步，一起成长～',
+        },
+        twoGroup: {
+          name: '二群',
+        },
+        qqChannel: {
+          name: 'QQ频道',
+          desc: 'QQ官方频道，用于缓解QQ社群庞大的压力，可以用来提问问题，以及分享自己每天生活的日常和打卡～～',
+        },
+      },
+      grades: {
+        label: '年级分段分群',
+        intro:
+          '组织里有各个不同学习阶段的成员，为了大家能够具体聊得开来，分有初中和高中阶段，大学可按照自己所需加入专业群。',
+        junior: {
+          name: '初中',
+          desc: '初中群的孩子们相当活跃，很有意思、很好玩，是一群非常可爱的娃娃们，而且水平有一些能够远超高中生。如果和他们有所探讨，他们一定会很乐意回应。组织会为初中生群体做问题答疑解析、中考交流以及辅导工作，帮助学生面对人生中第一次分流考试。',
+        },
+        junior2: {
+          name: '初中二群',
+          desc: '初中一群活跃度太高，再开上线会影响现有舒适程度，所以欢迎大家进入初中二群！群很新，但群里面的管理员相当尽责，欢迎各位小伙伴们进群玩。',
+        },
+        senior: {
+          name: '高中（一群已满）',
+          desc: '高中群里的孩子会有些严肃，更加专注于学业，讨论高中生活以及高考相关内容。组织会为高中群体做专业推荐、学业规划和高考真题解析。',
+        },
+        senior2: {
+          name: '高中二群',
+          desc: '目前高中一群的文件夹已满，有分享文件需求可去二群。二群虽然人少，但基本上都是活跃人员，二群也在建设当中，欢迎大家共建共享！',
+        },
+        senior3: {
+          name: '高中三群',
+          desc: '高中三群极具特色，成熟积极的管理团队经常在线，群里面也很活跃。对于想要陪伴考试、分享高中生活都极其合适，欢迎大家加入！',
+        },
+      },
+      groups: {
+        label: '群体分类分群',
+        intro:
+          '欢迎各路人员——科普工作者、科研工作者、教育工作者、各行各业的工程师、企业等以及各社会组织加入。未来立志于科研转化、项目促成以及孵化等。按照不同想法或行业分类，给大家更好的探讨空间。',
+        academic: {
+          name: '学术交流群',
+          desc: '欢迎有学术想法、想走上科研道路，或已走上科研道路的群体。设想未来开办学术讲座及同专业学术交流。但因该群现专业复杂，配套暂未完善，建议各位加入相应的专业分群。',
+        },
+        language: {
+          name: '国际科技交流语言学习社',
+          desc: '本群主要为语言类交流与学习，如英语、俄语、德语等文献阅读所需语言知识储备，群变大后会按语言精细分。欢迎国际生、留学生、外国友人、未来想做翻译及外交等群体，未来用于国内外科技交流。',
+        },
+      },
+      basic: {
+        label: '自然/基础学科中心群',
+        intro: '自然/基础学科是万物根本，应用学科从此生根发芽延伸到诸多领域。欢迎对基础学科感兴趣的"理科迷"们加入！',
+        math: {
+          name: '数学',
+          desc: '对数学感兴趣或专业相关人员，在这里数学爱好者们可以共同探讨喜欢的数学知识和前沿相关内容。总体活跃，水平在线，欢迎大家加入学习、探讨和聊天！',
+        },
+        physics: {
+          name: '物理学&天文学',
+          desc: '对物理学与天文学感兴趣或专业相关人员，如物理学、应用物理学、声学、系统科学与工程、量子科学、天体物理、天体测量与天体力学等。群水平极其在线，大家虽然都很忙显得冷清，但群里面的文件和知识储备相当充足，有问题一定有人回答。',
+        },
+        chemistry: {
+          name: '化学',
+          desc: '对化学感兴趣或是专业相关人员，如化学、应用化学、化学生物学、分子科学与工程、能源科学、分子测量学与技术、资源化学等。化学爱好者们可以共同探讨，虽然人数较少，大多数水平较高的很忙，但基本上有求必应。',
+        },
+        biology: {
+          name: '生命学科',
+          desc: '生命学科研究领域十分广泛，包括生物学、医学、农学、环境科学等多个分支。目前人员较少，但非常聚集，后续宣传到位后医学会进行单开。',
+        },
+        earth: {
+          name: '地球科学总群',
+          desc: '地球科学是综合性学科，涵盖多个基础学科和交叉领域。主要探讨地球系统（大气圈、水圈、岩石圈、生物圈和日地空间）的过程与变化及其相互作用。相关专业：地质学、地球物理学、地球化学、地理学、大气科学、海洋科学等。',
+        },
+        social: {
+          name: '社会科学',
+          desc: '主要有哲学、政治、历史、经济和法律等相关内容，意识形态主要集中为马列毛主义，鼓励学习和接触、理论和实践于现实。对此感兴趣的知识分子、工人、同志、老师、研究者或爱好者等群体均可加入。',
+        },
+        literature: {
+          name: '文学',
+          desc: '刚成立的新群，主要是给群里面对于文学感兴趣的小伙伴们一个讨论的地方。可以在群里面讨论文学作品、赏析经典、构思文学创作。那些满心欢喜期待文学群的人已经有了着落，欢迎大家加入！',
+        },
+      },
+      applied: {
+        label: '应用科学',
+        intro:
+          '应用学科尚在建设中，人还很少。如果想当学科负责人，把自己专业感兴趣的内容建设好并发扬光大，欢迎联系并加入理科迷团队！理科迷需要你！',
+        info: {
+          name: '信息科学与技术总群',
+          desc: 'ACM总群，包含计算机、互联网、软件开发、算法研究、大模型、数据处理及网络安全等专业和内容。对此感兴趣的都欢迎加入！未来也会开发更多相关内容，如编程教学、落实项目等。',
+        },
+        ieee: {
+          name: 'IEEE总群',
+          desc: 'IEEE是电气电子工程师学会，全球最大的专业技术组织。本群欢迎电气工程、自动化、通信工程、电子科学与技术、光与光电子等专业相关人员加入交流和讨论！',
+        },
+        chip: {
+          name: '集成电路与半导体',
+          desc: '集成电路与半导体是技术壁垒极高、专业属性极强的一个硬核圈子，单开一群。欢迎芯片设计、晶圆制造、封装与设计、半导体、集成电路感兴趣和专业相关的人进入！',
+        },
+        engineering: {
+          name: '工程学总群',
+          desc: '工程学核心是将数学、自然科学以及经济学、社会学等应用到工农业生产中，以设计、制造和优化有用的物体、系统或结构。包含土木、机械、交通运输、安全科学与工程等。未来人员变多后工程学总群下会细分更多工程类分群，敬请期待～',
+        },
+        agriculture: {
+          name: '农学与食品科学总群',
+          desc: '农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。包含农学、应用生物科学、食品科学、农业工程等专业和方向。对此感兴趣的欢迎入群！',
+        },
+        energy: {
+          name: '环境与能源科学总群',
+          desc: '环境科学与能源科学合二为一的总群。包含环境科学、能源工程、资源循环、新型交叉学科等相关内容。对此感兴趣或专业大类的都欢迎加入！',
+        },
+        lightIndustry: {
+          name: '轻工业总群',
+          desc: '这里是理科迷·学术专业·应用科学·轻工业总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对纺织、轻工工程、包装工程、香料香精技术工程、化妆品技术工程、生物质能源与材料、生物质技术与工程等等，感兴趣和研究的学生、老师、轻工从业者、科研工作者、科普工作者、科技爱好者等人员。',
+        },
+        geoscience: {
+          name: '地学工程总群',
+          desc: '这里是理科迷·学术专业·应用科学·地学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对测绘、地质、矿业、安全，科学与工程等等，感兴趣和研究的本专业学生、医学老师、地学相关从业者、科研工作者、科普工作者、科技爱好者等人员。',
+        },
+        medicine: {
+          name: '医学总部',
+          desc: '这里是理科迷·学术专业·医学大类·医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医学、临床医学、药学、护理系、口腔医学、影像学、麻醉学、法医学感兴趣和研究的医学生、教师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。',
+        },
+        clinical: {
+          name: '临床医学院',
+          desc: '这里是理科迷·学术专业·医学大类·临床医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。',
+        },
+        tcm: {
+          name: '中医学院',
+          desc: '这里是理科迷·学术专业·医学大类·中医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医基础理论、中医诊断学、中医内科学、中医外科学、中医骨伤科学、中医妇科学、中医儿科学、中医五官科学、针灸推拿学、民族医学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。',
+        },
+      },
+      hobby: {
+        label: '兴趣板块社团',
+        intro: '群友各种兴趣爱好组成的社团。小伙伴们如果有所感兴趣欢迎加入一起玩，每逢寒暑假群里面都会有活动。',
+        chess: {
+          name: '棋牌社',
+          desc: '讨论传统棋类、竞技棋类、休闲棋类和其他棋类，包括不限于象棋、围棋、五子棋、跳棋、飞行棋等。也欢迎讨论下棋技巧、学问等，为各位棋友提供切磋和讨论场地。同时关于牌类也有扑克牌类、中国传统纸牌类、现代集换式卡牌（TCG）与桌游卡牌、传统骨牌类等，感兴趣的棋友牌友欢迎加入！',
+        },
+        game: {
+          name: '游戏社',
+          desc: '主要讨论游戏相关内容，如主机PS、Xbox、Switch；PC端Steam、Epic Games Store等，同时包括网络游戏如米哈游开放大世界等。主要是给大家一个讨论游戏话题的区域，结交游戏好友，游戏组局～',
+        },
+        scifi: {
+          name: '科幻文学社',
+          desc: '对于科技的热爱与追求从未停止过，人们从未停止对科幻世界的想象——在科技极度发达的时代世界究竟是什么样子？欢迎在这讨论你的小巧思和科幻文学创作！加入科幻社吧，这是计划的一部分！',
+        },
+        rhythm: {
+          name: '二次元的音游社',
+          desc: '料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。',
+        },
+        cooking: {
+          name: '料理学社',
+          desc: '料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。',
+        },
+        music: {
+          name: '土鳖音乐社',
+          desc: '本群不限理科迷本体，同时欢迎其他人或专业音乐爱好者在此讨论乐理与声乐基础、乐器交流与教学、音乐创作以及音乐赏析等相关话题。同时本群将组织理科迷联欢晚会和各类活动筹备！给大家更多更好的展示舞台～～',
+        },
+      },
+      events: {
+        label: '常驻活动板块分群',
+        summerCompetition: {
+          name: '夏日竞赛活动群',
+          desc: '竞赛活动的筹备和通知群，每到假期时都会有不同竞赛在这个群里面公布。如果对竞赛活动感兴趣，可以加入等待通知。',
+        },
+        checkin: {
+          name: '自律打卡与自习室',
+          desc: '自律打卡和自习室也是我们常驻的活动，欢迎大家一起在这里保持自律、健康和良好的作息习惯，一起学习、交流和探讨。',
+        },
+      },
+      legacy: {
+        label: '原始老群',
+        intro:
+          '这个群目前换不了群主，也就是说无法更换新的管理团队，所以有点远古和落寞。但纪念意义很强，可以说2014年理科迷兴起就是靠着物理部落的宣传。',
+        physicsTribe: {
+          name: '物理部落',
+        },
+      },
+    },
+    roles: {
+      founder: '创始人',
+      regular: '常驻',
+      leader: '团长',
+      president: '会长',
+      groupLeader: '组长',
+      generalMember: '总务组成员',
+      affairsSupervisor: '群务组监督',
+      specialist: '专务',
+      specialistAdvisor: '专务 / 顾问组成员',
+      affairsGroupLeader: '群务组组长',
+      level18Admin: '18级管理',
+      infoGroupAdmin: '信息群管理',
+      affairsMember: '群务组成员',
+      generalSpecialist: '总务组专务',
+      advisorMember: '顾问组成员',
+    },
+    members: {
+      keke: {
+        desc: '2014年8月1日，可琪创立了最初群聊——〔理科迷宅基地〕。他是理科迷最初的创始者，群里现有很多现有事物和框架，都是在他所做的事情之上建立起来的。可琪创立了腾讯「物理部落」和微信公众号，吸引了大量科技爱好者；组建了最初的理科迷分群体系和七月团队管理架构。2018年因学业原因逐渐淡出，但理科迷的一切，都源于他的开创。',
+        quote: '「可琪现在不在，但他确确实实是理科迷最初的创始者。」',
+        dream: '梦想：让知识流入千家万户',
+      },
+      julyHua: {
+        desc: '一个有理想的PHD',
+        dream: '梦想：每个孩子都能接触科学',
+      },
+      julyRobin: {
+        desc: '待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～',
+      },
+      julyAhong: {
+        desc: '待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～',
+      },
+      julyMoran: {
+        desc: '双非物理，目前正跑路中',
+        dream: '梦想：我必将大雪深埋',
+        quote: '—— 卧薪尝胆三千日，大雪深埋终成金',
+      },
+      julyYouzhi: {
+        desc: '小黑猫，前活动策划组组员，初中研讨会执行员',
+        dream: '梦想：吃好喝好睡好玩好',
+        quote: '—— 且停且忘且随风，且行且看且从容',
+      },
+      julyKomoyume: {
+        desc: '机器人学家',
+        dream: '梦想：科技改变世界',
+        quote: '—— 致敬对这个世界满怀期待的你',
+      },
+      julyQianxun: {
+        desc: '19年初二时加入理科迷，现在我是一个待打工人，虽然在过去也是很饱含着梦想，但不是每个人都能当科学家的啦～˶>ᗜ<˶无论是过去的哥哥姐姐们，还是现在比我小的弟弟妹妹们，我都不希望我的遗憾能够出现在他们身上，也希望在未来更多的人能够喜欢理工科，不会像我一样轻易的放弃他们。',
+        dream:
+          '梦想：未来的理想是让理科迷能够做大做强，能够实现它的最终目标，践行宗旨。但最眼前的还是要实行短期目标，建设一个成熟完整的线上管理团队。',
+      },
+      julyZhishui: {
+        desc: '努力学习中～',
+      },
+      julyQinghan: {
+        desc: '保密awa',
+        dream: '梦想：无义务告知',
+        quote: '—— WELCOME TO OUR KINGDOM ！',
+      },
+      julyXia: {
+        desc: '是一只小夏',
+        dream: '梦想：成为一本百科全书',
+        quote: '—— 敬不完美的明天',
+      },
+      julyQingqian: {
+        desc: '略微潜水人，知识储量不丰富（',
+        dream: '梦想：成为一名科研工作者',
+      },
+      julyMk: {
+        desc: '10后，叫我MK就行。正在学习日语，喜欢数学（不是大佬喵）。最喜欢的动漫角色是《魔女之旅》的伊蕾娜。B站UID:1929696645',
+        dream: '梦想：拥有百万粉丝的UP',
+        quote: '—— 你应当……ネバー•ギブ•アップ！',
+      },
+      julyLiunian: {
+        desc: '15岁。中考已过，衔接完毕。文理均衡，韧性较强。求友共进。',
+        dream: '梦想：目标国防科大，以己力助理科迷做大做强√',
+        quote: '—— 且行且忘且随风，且行且看且从容',
+      },
+      julyBadragon: {
+        desc: '关注理科迷谢谢喵',
+      },
+      julySanqi: {
+        desc: '妄立誓则祸近',
+        dream: '梦想：养一只小猫',
+      },
+      julyEcho: {
+        desc: '解析数论爱好者',
+      },
+      julyYuli: {
+        desc: '像七月的风一样，带着几分热忱与温柔。作为群务组组长，我致力于为大家打理好群里的"一草一木"，让这里成为大家交流时最舒适的角落。',
+        quote: '—— 群务无小事，用心皆风景',
+      },
+      julyShiyi: {
+        desc: '经济类相关本科毕业，兴趣爱好涉猎广泛。',
+      },
+      julyYanzimo: {
+        desc: '汉语言文学专业出身',
+        dream: '梦想：当哲学家和数学家',
+        quote: '—— 随风漂泊到远方。',
+      },
+      julySuibian: {
+        desc: '一个想学会所有感兴趣的东西的懒鬼。',
+        dream: '梦想：暂时保密',
+        quote: '—— 前进吧，就算到不了尽头，前进本身就有意义',
+      },
+      julyChi: {
+        desc: '辽宁省某省重点高中毕业，26年报考目标东北地区985高校',
+        dream: '梦想：做一名大国工匠',
+        quote: '—— 干惊天动地事，做隐姓埋名人',
+      },
+      julyCaotiling: {
+        desc: '一个不存在,但是希望祝福大家的人.',
+        dream: '梦想：让大家开心,到达知识的Sekai边缘.',
+        quote: '—— We must know,we will know.',
+      },
+      julyYiqian: {
+        desc: '我是新闻办的一前',
+      },
+      julySun: {
+        desc: '用好手中的技术，服务更多有需要的人。制作组小朋友一枚。',
+        dream: '梦想：多提升学历，多认识点人。',
+        quote: '—— 无人扶我青云志，我自踏雪至山巅。',
+      },
+      julyXingran: {
+        desc: '公益科普产业共同体成员，曙星科普社社长。从事公益科普事业三年余。曾领导主办龙年科幻大赛、第一届地月奖科幻征文，曾参与协办第二、三、四、五届寻翊奖科普征文，与up非村科普墙联创地质锤等优秀科普视频。',
+        dream: '梦想：传播科学文化',
+        quote: '—— 马克思说过，科学技术是生产力。',
+      },
+      julyUpogg: {
+        desc: '学生',
+        quote: '—— 我以全部知识作为我的领域',
+      },
+      julyKefenshulie: {
+        desc: '平凡的ICPCer',
+      },
+      julyA: {
+        desc: '网站开发的主要牛马',
+        dream: '以后不要当牛马',
+      },
+      julyBcent: {
+        desc: '一名人类',
+      },
+      julyAleng: {
+        desc: '某2数学专业本科生，数学爱好者，爱好方向是分析学和数论',
+        dream: '梦想：保研对面那个华一继续研究数学',
+        quote: '—— 万物皆数',
+      },
+      julyBifang: {
+        desc: '分析与数值计算方向的硕士',
+      },
+      julyYouzhu: {
+        desc: '可能是人（未必？）',
+        quote: '—— 活着大于死了',
+      },
+      julyLichlet: {
+        desc: '大一数学系学生',
+      },
+      julyHubingyang: {
+        desc: '男， 23 岁，本科学历……',
+        dream: '梦想：理想是成为一名数学家',
+        quote: '—— 书山有路勤为径，学海无涯苦作舟。',
+      },
+      julyO: {
+        desc: '中国科学院国家天文台博士，研究方向：引力波理论、黑洞物理、广义相对论',
+        dream: '梦想：能做自己喜欢的研究',
+        quote: '—— 学习过去，享受现在，期待未来',
+      },
+      julyQishui: {
+        desc: '慕尼黑大学流体力学专业大一在读学生',
+        dream: '梦想：为中国流体出一份力',
+        quote: '—— 努力总会有收获',
+      },
+      julyXinghe: {
+        desc: '高中OIer+物化政er，蒟蒻一枚（欢迎关注洛谷wang12345566），因出了一些初中毒瘤题而误闯天家',
+        dream: '梦想：为大家带来更多的tricks与灵感，同时膜拜更多大佬',
+        quote: '—— 没有站在光里的人，也有自己的闪光点——from hjh in luogu',
+      },
+      julyTetro: {
+        desc: '有机化学方向研究生在读，前化学竞赛生。网名是河豚毒素，一个结构优雅的有机小分子，全合成史上的经典之作（虽然我本人其实是做方法学的）。私下大概算是不太重度的二次元，附庸风雅的艺术爱好者。',
+      },
+      julyDili: {
+        desc: '可以叫杨向青，化学竞赛生，历史最高全区第七名，中学生作文大赛最高国排347，喜欢研究化学与文学',
+        dream: '梦想：成为一名优秀的教师',
+        quote: '—— 真正的大师，永远都怀着一颗学徒的心',
+      },
+      julyWen: {
+        desc: '打摆子的好选手',
+        dream: '梦想：想不干嘛就不干嘛',
+      },
+      julySanchishui: {
+        desc: '化学，爱爱爱它！（化学的狂热热爱者）',
+      },
+      julyJimi: {
+        desc: '新西兰11年级在读留学生，主修理科，英语弱项。目前学的理科是物理生物数学，基本知识水平也就高中生水平吧，但是我会努力提升自己的！喜欢写点自己的东西，有问题感谢大家指正！喜欢自己总结笔记等等，希望能对大家有所帮助！喜欢发一些自己的日常或者搞抽象什么的，有的时候会携带一定量的负面情绪... 感谢大家！！！',
+        dream: '梦想：今年把明年的课学完，明年得吃奖学金，争取考上奥大？',
+        quote: '—— 注意注意超大区来袭',
+      },
+      julyYuye: {
+        desc: '高一在读，3年群管理经验，6岁开始接触中医学。中医世家',
+        dream: '梦想：有一份稳定工作',
+        quote: '—— 追风赶路莫停留，平芜尽处是春山。',
+      },
+      julyDaxiong: {
+        desc: '什么都好奇一点',
+        dream: '梦想：理想很多',
+      },
+      julyJoshua: {
+        desc: '一位数学爱好者，想让所有人都能轻松学上数学',
+      },
+      julyPlain: {
+        desc: '吃喝拉撒',
+        dream: '梦想：成为verity',
+        quote: '—— 哎呦我去',
+      },
+    },
+    subGroups: {
+      affairsHigh: {
+        label: '高中',
+      },
+      affairsHigh3: {
+        label: '高中三群',
+      },
+      affairsJunior: {
+        label: '初中',
+      },
+      affairsJunior2: {
+        label: '初中二群',
+      },
+      affairsSocial: {
+        label: '社会科学',
+      },
+      affairsLanguage: {
+        label: '国际科技交流语言学习社',
+      },
+      affairsChess: {
+        label: '兴趣-棋牌社',
+      },
+      affairsMusic: {
+        label: '兴趣-土鳖音乐社',
+      },
+      newsProduction: {
+        label: '制作组',
+        desc: '负责各平台、各活动关于宣传相关的制作，如有UI设计，海报制作，可视化等等，对于美工会有一定的要求，适合有相应能力的人加入。',
+      },
+      newsPromotion: {
+        label: '宣传组',
+        desc: '负责各平台的宣传以及持续的运营，外交打理，以及处理合作相关事宜，需要成员具备一定的专业知识，以及公关，并需要具备两种以上语言能力。',
+      },
+      newsScience: {
+        label: '科普组',
+        desc: '负责各平台的科普征集，科普传播，同时也需要成员具有一定的专业知识，且知道如何做出有趣的科普内容，并和专业委员会成员有所交流，而关于项目组的发展则交由科普组进行落实。',
+      },
+      profMath: {
+        label: '数学组',
+      },
+      profPhysics: {
+        label: '物理组',
+      },
+      profChemistry: {
+        label: '化学组',
+      },
+      profBiology: {
+        label: '生物组',
+      },
+      profGeneral: {
+        label: '综合',
+      },
+      profMedicine: {
+        label: '医学组-中医',
+      },
+      projTextbooks: {
+        label: '教材项目组',
+        desc: '致力于编写高质量的理科教材，整合知识体系，为学习者提供系统化的学习资源。',
+      },
+      projScience: {
+        label: '科普项目组',
+        desc: '负责各平台的科普征集与传播，将专业知识转化为通俗易懂的科普内容，促进科学知识普及。',
+      },
+    },
   },
 
   officialArticles: {
@@ -985,6 +1544,371 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       deleteTitle: '删除通行密钥',
       deleteMessage: '确定删除该通行密钥吗？此操作不可撤销。',
       createFail: '创建通行密钥失败',
+    },
+  },
+
+  forumData: {
+    categories: {
+      basicScience: {
+        name: '基础学科',
+        description:
+          '数学、物理、化学、生物、天文、地球科学等基础科学讨论区，是万物根本，应用学科从此生根发芽延伸至诸多领域。',
+      },
+      appliedScience: {
+        name: '应用学科',
+        description: '信息科学、电子电气、工程学、医学等应用领域，连接理论与实践的桥梁。',
+      },
+      language: {
+        name: '语言学习',
+        description: '阅读论文、国际交流所需的语言学习区，按语种精细分类。',
+      },
+      hobby: {
+        name: '兴趣板块',
+        description: '由群友各种兴趣爱好组成的社团区，每逢寒暑假都有精彩活动。',
+      },
+      group: {
+        name: '群体板块',
+        description: '按群体来源和职业划分，给不同背景的成员更好的探讨空间。',
+      },
+      schoolClub: {
+        name: '学校社团',
+        description: '与理科迷合作的各大学校社团板块，申请合作即可开放专属区域。',
+      },
+      friendshipOrganization: {
+        name: '友情组织',
+        description: '与理科迷合作的各大组织板块，申请合作即可开放专属区域。',
+      },
+      friendshipEnterprise: {
+        name: '友情企业',
+        description: '与理科迷合作的各大科技企业板块，申请合作即可开放专属区域。',
+      },
+      math: {
+        name: '数学',
+        description: '对数学感兴趣或专业相关人员交流园地。数学爱好者们共同探讨数学知识和前沿内容。',
+      },
+      physics: {
+        name: '物理学',
+        description: '基础理论争议与历史演进、量子力学与前沿物理、凝聚态与物质科学',
+      },
+      cosmosAstronomy: {
+        name: '宇宙与天文学',
+        description: '天文学是一门研究宇宙空间天体、宇宙的结构和发展的自然科学。',
+      },
+      chemistry: {
+        name: '化学',
+        description: '化学、应用化学、化学生物学、分子科学与工程等。人数虽少但水平高，有求必应。',
+      },
+      biology: {
+        name: '生命学科',
+        description: '生物学、医学、农学、环境科学等多个分支，人员聚集，后续医学会单开。',
+      },
+      earthScience: {
+        name: '地球科学',
+        description: '地质学、地球物理学、地理学、大气科学、海洋科学等综合性学科。',
+      },
+      psychology: {
+        name: '心理学',
+        description: '心理学各分支领域的交流与探讨。',
+      },
+      socialScience: {
+        name: '社会科学',
+        description: '哲学、政治、历史、经济、法律等，鼓励学习和接触，理论与实践结合。',
+      },
+      literature: {
+        name: '文学',
+        description: '文学作品讨论、经典赏析、文学创作构思，欢迎所有文学爱好者加入。',
+      },
+      cs: {
+        name: '信息科学与技术',
+        description: 'ACM，计算机、互联网、软件开发、算法研究、大模型、网络安全等。',
+      },
+      ee: {
+        name: '电子与电气科学',
+        description: 'IEEE，电气工程、自动化、通信工程、电子科学与技术、光电子等。',
+      },
+      icSemiconductor: {
+        name: '集成电路与半导体',
+        description: '芯片设计、晶圆制造、封装测试，技术壁垒极高的硬核圈子。',
+      },
+      engineering: {
+        name: '工程学',
+        description: '土木、机械、交通运输、安全科学与工程等，未来细分更多工程类分群。',
+      },
+      agriFood: {
+        name: '农学与食品科学',
+        description: '农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。',
+      },
+      envEnergy: {
+        name: '环境与能源科学',
+        description: '环境科学、能源工程、资源循环、新型交叉学科等。',
+      },
+      lightIndustry: {
+        name: '轻工业',
+        description: '纺织、轻工工程、包装工程、香料香精、化妆品技术等。',
+      },
+      geoEngineering: {
+        name: '地学工程',
+        description: '测绘、地质、矿业、安全科学与工程等。',
+      },
+      medicine: {
+        name: '医学总部',
+        description: '中医学、临床医学、药学、护理、口腔、影像、麻醉、法医学等。',
+      },
+      clinicalMedicine: {
+        name: '临床医学院',
+        description: '临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等。',
+      },
+      tcm: {
+        name: '中医学院',
+        description: '中医基础理论、中医内科学、针灸推拿学、民族医学等传统医学精华。',
+      },
+      langEn: {
+        name: '英语',
+        description: '国际学术交流通用语言',
+      },
+      langRu: {
+        name: '俄语',
+        description: '俄罗斯科技文献阅读',
+      },
+      langDe: {
+        name: '德语',
+        description: '德国工程技术文献',
+      },
+      langZh: {
+        name: '汉语',
+        description: '汉语语言学与中国文化',
+      },
+      langJa: {
+        name: '日语',
+        description: '日本科技文献与文化交流',
+      },
+      langKo: {
+        name: '韩语',
+        description: '韩国科技与文化交流',
+      },
+      hobbyChess: {
+        name: '棋牌社',
+        description: '象棋、围棋、五子棋、跳棋、飞行棋等传统与竞技棋类，及扑克、TCG、桌游卡牌等。',
+      },
+      hobbyGame: {
+        name: '游戏社',
+        description: '主机PS/Xbox/Switch、PC端Steam/Epic、手游等，游戏话题讨论与组队。',
+      },
+      hobbySciFi: {
+        name: '科幻文学社',
+        description: '科幻世界的想象与文学创作，这是计划的一部分！',
+      },
+      hobbyMusicGame: {
+        name: '二次元音游社',
+        description: '讨论音游相关内容，分享谱面与技巧。',
+      },
+      hobbyCooking: {
+        name: '料理学社',
+        description: '探讨做饭和料理学化学反应，交流厨艺，展示成果。未来可能出教学直播。',
+      },
+      hobbyMusic: {
+        name: '土鳖音乐社',
+        description: '乐理讨论、乐器学习交流、音乐创作与赏析，以及音乐相关的各种话题。',
+      },
+      groupInternational: {
+        name: '国际体系',
+        description: '国际生、留学生、外国友人交流区，用于国内外科技交流。',
+      },
+      groupJuniorHigh: {
+        name: '初中学生',
+        description: '初中阶段文理学习讨论，备战中考。',
+      },
+      groupSeniorHighSchool: {
+        name: '高中学生',
+        description: '高中阶段文理学习讨论，备战高考。',
+      },
+      groupTeacher: {
+        name: '教育工作者',
+        description: '教育工作者的专属交流区，分享教学经验与资源。',
+      },
+      groupScientist: {
+        name: '科普工作者',
+        description: '科普工作者的专属交流区，分享科学知识与资源。',
+      },
+    },
+  },
+
+  columnData: {
+    columns: {
+      col1: {
+        authorName: '七月O',
+        authorTitle: '中国科学院国家天文台博士',
+        authorBio: '引力波与黑洞物理方向，致力于天体物理科普',
+        title: '宇宙探索笔记',
+        description: '记录天体物理研究前沿，分享宇宙探索的奇妙旅程。从引力波到黑洞，从暗物质到宇宙大尺度结构。',
+      },
+      col2: {
+        authorName: '七月花',
+        authorTitle: '科学教育博士',
+        authorBio: '有理想的博士，梦想每个孩子都能接触科学',
+        title: '教育者的实验室',
+        description: '科学教育的理论与实践，课程设计、教学方法、科普写作的深度思考。',
+      },
+      col3: {
+        authorName: '李教授',
+        authorTitle: '复旦大学物理学教授',
+        authorBio: '凝聚态物理研究，学术写作指导',
+        title: '学术写作之道',
+        description: '分享论文写作技巧、学术英语表达、科研方法论等硬核内容。',
+      },
+      col4: {
+        authorName: '码农老王',
+        authorTitle: '资深算法工程师',
+        authorBio: '10年算法竞赛与工程经验',
+        title: '算法之美',
+        description: '深入浅出讲解算法与数据结构，从 LeetCode 到 ACM，从工程实践到理论推导。',
+      },
+    },
+    articles: {
+      art1: {
+        title: '引力波天文学：聆听宇宙的"声音"',
+        excerpt: '从2015年GW150914首次探测至今，引力波天文学已经成为了解宇宙的全新窗口。',
+        tags: {
+          a: '引力波',
+          b: '天体物理',
+          c: 'LIGO',
+        },
+      },
+      art2: {
+        title: '黑洞信息悖论：物理学的最大谜题之一',
+        excerpt: '霍金辐射的发现引发了一个深刻的问题：掉入黑洞的信息去哪了？',
+        tags: {
+          a: '黑洞',
+          b: '霍金辐射',
+          c: '量子引力',
+        },
+      },
+      art3: {
+        title: '如何设计一门引人入胜的科普课程',
+        excerpt: '基于认知科学和教学实践经验，探讨科普课程设计的核心原则。',
+        tags: {
+          a: '科学教育',
+          b: '课程设计',
+          c: '科普',
+        },
+      },
+      art4: {
+        title: '学术论文摘要写作的黄金法则',
+        excerpt: '摘要是论文的"广告"，好的摘要能决定论文的引用率和影响力。',
+        tags: {
+          a: '学术写作',
+          b: '论文',
+          c: '摘要',
+        },
+      },
+      art5: {
+        title: '动态规划：从入门到进阶的思维框架',
+        excerpt: '动态规划不是一种算法，而是一种解决问题的思维方式。',
+        tags: {
+          a: '算法',
+          b: '动态规划',
+          c: 'Python',
+        },
+      },
+    },
+  },
+
+  fileLibraryData: {
+    categories: {
+      basicScience: '基础学科',
+      appliedScience: '应用学科',
+      language: '语言学习',
+      math: '数学',
+      physics: '物理学',
+      chemistry: '化学',
+      biology: '生命学科',
+      earthScience: '地球科学',
+      cosmosAstronomy: '宇宙与天文学',
+      cs: '信息科学与技术',
+      icSemiconductor: '集成电路与半导体',
+      langEn: '英语',
+      mathLinearAlgebra: '线性代数',
+      mathModeling: '数学建模',
+      physicsQuantum: '量子力学',
+      physicsAstrophysics: '天体物理',
+      chemistryOrganic: '有机化学',
+      csPython: 'Python 数据分析',
+      icDesign: '芯片设计',
+      langEnWriting: '学术写作',
+    },
+    uploaders: {
+      qiyueO: '七月O',
+      qiyueMoran: '七月墨染',
+      qiyueHua: '七月花',
+      chemistryFan: '化学爱好者',
+      chipEngineer: '芯片工程师',
+      overseasStudentXiaoMing: '留学生小明',
+    },
+    files: {
+      file1: {
+        description: '整理的天体物理公开数据集，包含 SDSS、Gaia DR3 和 LIGO 事件数据，适用于学习和研究。',
+        tags: {
+          a: '天体物理',
+          b: '数据集',
+          c: '天文',
+        },
+      },
+      file2: {
+        description: '中国科学院量子力学课程讲义，涵盖从波函数到微扰论的完整内容。',
+        tags: {
+          a: '量子力学',
+          b: '讲义',
+          c: '物理',
+        },
+      },
+      file3: {
+        description: '线性代数经典习题集，含详细解答和解题思路分析，适合期末复习和考研备考。',
+        tags: {
+          a: '线性代数',
+          b: '习题',
+          c: '数学',
+        },
+      },
+      file4: {
+        description: '图解常见有机化学反应机理，包括亲核取代、消除反应、加成反应等。',
+        tags: {
+          a: '有机化学',
+          b: '反应机理',
+          c: '图解',
+        },
+      },
+      file5: {
+        description: '配套 Pandas/NumPy/Matplotlib 教程的实战代码和数据文件。',
+        tags: {
+          a: 'Python',
+          b: '数据分析',
+          c: '代码',
+        },
+      },
+      file6: {
+        description: '近三年全国大学生数学建模竞赛优秀论文汇编，含专家点评。',
+        tags: {
+          a: '数学建模',
+          b: '竞赛',
+          c: '论文集',
+        },
+      },
+      file7: {
+        description: '从零开始的芯片设计入门教程，涵盖 Verilog 基础、综合、布局布线全流程。',
+        tags: {
+          a: '集成电路',
+          b: '芯片设计',
+          c: 'Verilog',
+        },
+      },
+      file8: {
+        description: '针对非英语母语研究者的学术写作指南，包含常用句式和范文。',
+        tags: {
+          a: '英语',
+          b: '学术写作',
+          c: '指南',
+        },
+      },
     },
   },
 
@@ -2392,6 +3316,28 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     heading3: '标题 3',
     addComment: '添加评论',
     clickToEditFormula: '点击编辑公式',
+    me: '我',
+
+    persistence: {
+      writeFailed: '写入文档失败',
+      writeIndexFailed: '写入索引失败',
+      createFailed: '创建文档失败',
+      updateFailed: '更新文档失败',
+      deleteFailed: '删除文档失败',
+      indexedDbUnavailable: 'IndexedDB 不可用',
+      backupFailed: '备份写入失败',
+      readBackupsFailed: '读取备份列表失败',
+      readBackupFailed: '读取备份失败',
+      exportJsonFailed: '导出 JSON 失败',
+      importJsonFailed: '导入 JSON 失败: {message}',
+      saveVersionFailed: '保存版本失败',
+      versionMessage: '版本 {version}',
+    },
+
+    validation: {
+      esmForbidden: 'MDX ESM 导入/导出出于安全原因不允许',
+      disallowedProtocol: '{nodeType} 中使用了不允许的 URL 协议: {url}',
+    },
 
     slash: {
       heading1Desc: '标题 1',
@@ -2677,5 +3623,526 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       message: 'StarHope 使用 LKM 网站统一账户，请先登录后再使用学习助手。',
       goLogin: '前往登录',
     },
+  },
+
+  competitionData: {
+    competitions: {
+      comp1: {
+        title: '2026 暑假物理竞赛',
+        description: '涵盖力学、电磁学、热学、光学、近代物理等，适合高中及以上学生参加。',
+        category: '物理',
+      },
+      comp2: {
+        title: '2026 数学建模挑战赛',
+        description: '三人组队参赛，解决实际问题并提交论文。',
+        category: '数学',
+      },
+      comp3: {
+        title: '2026 编程马拉松',
+        description: '48 小时极限编程挑战，不限语言和工具。',
+        category: '信息科学',
+      },
+      comp4: {
+        title: '2026 化学方程式平衡大赛',
+        description: '限时完成化学方程式配平挑战。',
+        category: '化学',
+      },
+    },
+    questions: {
+      q1: {
+        stem: '光速在真空中约为？',
+        option0: '3×10⁶ m/s',
+        option1: '3×10⁷ m/s',
+        option2: '3×10⁸ m/s',
+        option3: '3×10⁹ m/s',
+        explanation: '光速 c = 299,792,458 m/s ≈ 3×10⁸ m/s',
+      },
+      q2: {
+        stem: '以下哪种力不是基本力？',
+        option0: '引力',
+        option1: '电磁力',
+        option2: '摩擦力',
+        option3: '强相互作用力',
+        explanation: '摩擦力是电磁力的宏观表现，不是基本力。四种基本力是：引力、电磁力、强相互作用、弱相互作用。',
+      },
+      q3: {
+        stem: '一个质量为 2kg 的物体，受到 10N 的力，加速度是多少？',
+        option0: '2 m/s²',
+        option1: '5 m/s²',
+        option2: '10 m/s²',
+        option3: '20 m/s²',
+        explanation: 'F=ma，a=F/m=10/2=5 m/s²',
+      },
+      q4: {
+        stem: '声音可以在真空中传播。',
+        option0: '正确',
+        option1: '错误',
+        explanation: '声音是机械波，需要介质传播，真空无法传声。',
+      },
+      q5: {
+        stem: '下列哪个是矢量？',
+        option0: '质量',
+        option1: '温度',
+        option2: '速度',
+        option3: '时间',
+        explanation: '矢量有大小和方向。速度有大小和方向，质量和温度只有大小。',
+      },
+      q6: {
+        stem: '闭合电路中，电阻增加时电流会？',
+        option0: '增加',
+        option1: '减小',
+        option2: '不变',
+        option3: '先增后减',
+        explanation: '欧姆定律：I=U/R，电压不变时，电阻越大电流越小。',
+      },
+      q7: {
+        stem: 'π (pi) 的值最接近？',
+        option0: '3.12',
+        option1: '3.14',
+        option2: '3.16',
+        option3: '3.18',
+        explanation: 'π ≈ 3.14159...',
+      },
+      q8: {
+        stem: '以下哪个算法的时间复杂度最低？',
+        option0: 'O(n²)',
+        option1: 'O(n log n)',
+        option2: 'O(log n)',
+        option3: 'O(2ⁿ)',
+        explanation: 'O(log n) 增长最慢。排序：O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)',
+      },
+    },
+  },
+
+  qaData: {
+    questions: {
+      q1: {
+        title: '量子力学入门有什么推荐的书？',
+        content: '我是物理系大一新生，想提前了解一下量子力学。有没有适合初学者的入门教材推荐？最好有中文版的。',
+      },
+      q2: {
+        title: '考研数学一需要准备哪些资料？',
+        content: '准备 2027 年考研，目标是 985 院校。数学一需要买哪些参考书和习题集？时间线怎么安排比较合理？',
+      },
+      q3: {
+        title: '高考志愿推荐：物理 vs 计算机',
+        content:
+          '省份：广东\n分数/排名：640分 / 省排 12000\n选科：物理+化学+生物\n兴趣方向：物理学、计算机科学\n家庭情况：普通家庭，希望好就业',
+      },
+      q4: {
+        title: 'Python 数据分析：Pandas 内存不足怎么办？',
+        content:
+          '在用 Pandas 处理一个 5GB 的 CSV 文件时总是内存不足。已经用了分块读取，但后续的聚合操作还是会爆内存。有没有更好的方案？',
+      },
+      q5: {
+        title: '实验室安全规范文档求助',
+        content: '需要一份化学实验室安全规范的文档模板，用于给新来的研究生做安全培训。最好是高校通用的标准版本。',
+      },
+    },
+    answers: {
+      a1: {
+        content:
+          '推荐 Griffiths 的《Introduction to Quantum Mechanics》，有中文译本。如果数学基础还不太够，可以先看《量子力学概论》（David J. Griffiths 著，贾瑜 译）。另外推荐配套看 Feynman 物理学讲义第三卷，物理图像非常清晰。',
+      },
+      a2: {
+        content:
+          '如果只想初步了解，推荐《上帝掷骰子吗？量子物理史话》，非常通俗易懂的科普，读完会对量子力学的来龙去脉有很好的感觉。然后再看教材。',
+      },
+      a3: {
+        content:
+          '广东省排 12000 是一个很不错的排名。物理和计算机都是好选择。建议从就业角度看，计算机就业面更广、起薪更高；但如果真心热爱物理研究，也可以选择物理专业后辅修计算机课程，这两个方向并不冲突。具体可以考虑华南理工或中山大学的计算机/物理相关专业。',
+      },
+      a4: {
+        content:
+          '5GB CSV 建议换工具。如果坚持用 Python，可以试试：1) Dask DataFrame（和 Pandas API 几乎一样但是分布式的）2) Polars（比 Pandas 内存效率高很多）3) 如果是聚合操作，试试 SQLite（pandas 可以直接写 SQL）。分块读取 + 逐块聚合其实可行，但要注意聚合的复杂度。',
+      },
+    },
+    askers: {
+      physicsNewbie: '物理萌新',
+      examPrepper: '考研党',
+      chen: '高三学生小陈',
+      dataNewbie: '数据分析新手',
+      labWorker: '化学实验员',
+    },
+    authors: {
+      qiyueO: '七月O',
+      physicsTeacher: '物理教师',
+      qiyueHua: '七月花',
+      zhang: '数据工程师小张',
+    },
+    tags: {
+      physics: '物理学',
+      quantum: '量子力学',
+      recommendation: '推荐',
+      math: '数学',
+      exam: '考研',
+      studyPlan: '学习规划',
+      volunteer: '志愿推荐',
+      gaokao: '高考',
+      guangdong: '广东',
+      python: 'Python',
+      dataProcessing: '数据处理',
+      bigData: '大数据',
+      chemistry: '化学',
+      laboratory: '实验室',
+      documents: '文档',
+    },
+  },
+
+  projectData: {
+    projects: {
+      proj1: {
+        name: '量子计算模拟平台',
+        background:
+          '量子计算是未来计算的重要方向。我们计划开发一个基于 Web 的量子计算模拟平台，帮助学习者直观理解量子算法。',
+        goals: '开发一个可在浏览器中运行 8-qubit 量子电路模拟器，支持常用量子门操作和测量。',
+        requirements: '需要前端开发（React/TypeScript）1-2 人、量子物理顾问 1 人、UI 设计师 1 人。',
+        teamIntro: '发起人七月O为中科院博士，量子物理方向。已有后端算法原型。',
+      },
+      proj2: {
+        name: '理科迷知识图谱',
+        background: '社区里有大量优质内容散落在各板块，希望通过知识图谱的方式组织起来，方便检索和学习。',
+        goals: '构建理科迷社区知识图谱，支持关键词检索、关联推荐、学习路径生成。',
+        requirements: '需要后端开发 1 人（Python/图数据库）、前端 1 人（可视化）、内容编辑若干。',
+        teamIntro: '',
+      },
+      proj3: {
+        name: '科普视频系列制作',
+        background: '制作面向中学生的科普系列视频，用生动有趣的动画和故事讲解科学原理。',
+        goals: '完成 12 集科普视频制作并在 B站和 YouTube 发布，目标覆盖 10 万播放。',
+        requirements: '',
+        teamIntro: '跨学科团队，包括物理、化学、生物各专业成员。已发布 5 集。',
+      },
+      proj4: {
+        name: '天体观测数据可视化项目',
+        background: '利用公开天文数据，制作交互式天体数据可视化作品。',
+        goals: '实现 3 个交互式可视化作品：星表全景图、银河系 3D 模型、引力波事件时间线。',
+        requirements: '',
+        teamIntro: '由社区天文爱好者组成，使用 Python + Three.js 技术栈。',
+      },
+    },
+    roles: {
+      frontend: '前端开发',
+      uiDesigner: 'UI 设计师',
+      backend: '后端开发',
+      contentEditor: '内容编辑',
+    },
+    teamRoles: {
+      initiator: '发起人',
+      generalPlanner: '总策划',
+      animation: '动画制作',
+      voice: '配音',
+      dataProcessing: '数据处理',
+    },
+    names: {
+      qiyueO: '七月O',
+      qiyueMoran: '七月墨染',
+      qiyueHua: '七月花',
+      astronomyFan: '天文爱好者',
+      wang: '动画师小王',
+      li: '配音员小李',
+      zhang: '数据工程师小张',
+    },
+    tags: {
+      quantumComputing: '量子计算',
+      webDev: 'Web 开发',
+      education: '教育',
+      knowledgeGraph: '知识图谱',
+      python: 'Python',
+      community: '社区',
+      popularScience: '科普',
+      video: '视频',
+      astronomy: '天文',
+      dataVisualization: '数据可视化',
+      threeJs: 'Three.js',
+    },
+    reports: {
+      proj1r0: {
+        title: '项目启动 & 需求分析完成',
+        content: '完成了量子电路模拟的技术调研，确定了技术栈和架构方案，后端算法原型已就绪。',
+      },
+      proj1r1: {
+        title: '一改：基础 UI 框架搭建',
+        content: '完成了前端基础框架搭建，实现了单 qubit 操作的可视化。正在招募前端开发协助完善多 qubit 模拟。',
+      },
+      proj2r0: {
+        title: '项目启动',
+        content: '确定了基于 Neo4j 的技术方案，初步梳理了数学板块的内容分类体系。',
+      },
+      proj3r0: {
+        title: '初版：前 3 集发布',
+        content: '《光的奇妙旅程》《原子的秘密》《化学反应是什么》三集已上线B站，累计播放 3.5 万。',
+      },
+      proj3r1: {
+        title: '一改：中期评估',
+        content: '第 4-5 集已发布，总播放量突破 8 万。收到观众积极反馈，开始优化文案和动画风格。',
+      },
+      proj4r0: {
+        title: '初版：技术选型与数据采集',
+        content: '确定使用 Three.js 进行 3D 渲染，选取 Gaia DR3 恒星数据。',
+      },
+      proj4r1: {
+        title: '一改：星表全景图完成',
+        content: '第一个作品上线，展示约 100 万颗恒星的分布。',
+      },
+      proj4r2: {
+        title: '二改：银河系 3D 模型完成',
+        content: '第二个作品上线，用户可旋转/缩放查看银河系结构。目前正在做引力波时间线。',
+      },
+    },
+  },
+
+  contributionData: {
+    achievements: {
+      a1: { name: '初来乍到', description: '完成新手引导' },
+      a2: { name: '首帖', description: '发布第一篇帖子' },
+      a3: { name: '十帖', description: '累计发布 10 篇帖子' },
+      a4: { name: '精华作者', description: '帖子被加精' },
+      a5: { name: '百帖达人', description: '累计发布 100 篇帖子' },
+      a6: { name: '助人为乐', description: '回答被采纳 5 次' },
+      a7: { name: '硬核答主', description: '回答被采纳 20 次' },
+      a8: { name: '文件达人', description: '上传文件通过审核 10 个' },
+      a9: { name: '连续打卡 7 天', description: '连续签到 7 天' },
+      a10: { name: '连续打卡 30 天', description: '连续签到 30 天' },
+      a11: { name: '项目先锋', description: '参与项目 3 个' },
+      a12: { name: '专栏作者', description: '发布专栏文章 5 篇' },
+    },
+    pointLogs: {
+      checkin: '每日打卡',
+      post: '发帖：量子力学入门',
+      comment: '评论回复',
+      answerAccepted: '回答被采纳',
+      fileApproved: '文件上传通过审核',
+      competition: '竞赛获奖',
+      dailyTask: '完成每日任务',
+    },
+    leaderboard: {
+      names: {
+        qiyueHua: '七月花',
+        qiyueO: '七月O',
+        physicsLover: '物理爱好者',
+        mathGenius: '数学天才',
+        chemMaster: '化学达人',
+        qiyueMoran: '七月墨染',
+        qiyueYuli: '七月郁离',
+        astronomyFan: '天文迷',
+        codeWizard: '代码巫师',
+        qiyueYouzhi: '七月有枝',
+      },
+      titles: {
+        hardcore: '硬核答主',
+        columnAuthor: '专栏作者',
+        active: '活跃用户',
+        newcomer: '初来乍到',
+        fileExpert: '文件达人',
+      },
+    },
+    tasks: {
+      t1: { title: '每日打卡', description: '今天来签到吧' },
+      t2: { title: '发表 1 篇帖子', description: '分享你的知识与见解' },
+      t3: { title: '回答 3 个问题', description: '帮助他人解决问题' },
+      t4: { title: '点赞 10 次', description: '为优质内容点赞' },
+      t5: { title: '上传 1 个文件', description: '充实社区资源库' },
+    },
+    exchangeItems: {
+      e1: { name: '理科迷定制徽章（虚拟）', description: '个人主页专属展示徽章' },
+      e2: { name: '专属称号颜色', description: '解锁金色称号显示' },
+      e3: { name: '专栏文章推广位', description: '在首页推荐区展示你的专栏文章 7 天' },
+      e4: { name: '理科迷定制笔记本', description: '限量版理科迷主题笔记本' },
+      e5: { name: 'LKM 徽章实物', description: '理科迷金属徽章' },
+      e6: { name: 'T恤兑换券', description: '理科迷主题T恤' },
+    },
+  },
+
+  notificationData: {
+    titles: {
+      reply: '新回复',
+      like: '获得点赞',
+      follow: '新关注',
+      fileApproved: '文件审核通过',
+      system: '系统公告',
+    },
+    contents: {
+      n1: '张三 回复了你的帖子《量子力学入门》',
+      n2: '李四 赞了你的评论',
+      n3: '王五 关注了你',
+      n4: '你上传的《天体物理数据集.zip》已通过审核',
+      n5: '理科迷社区 2026 暑假竞赛即将开始，快来参加！',
+      n6: '赵六 赞了你的帖子《数学建模经验分享》',
+    },
+  },
+
+  treeholeData: {
+    categories: {
+      confess: '表白',
+      heart: '心事',
+      roast: '吐槽',
+      help: '求助',
+      campus: '校园',
+      work: '职场',
+      crush: '暗恋',
+      heal: '治愈',
+      fun: '趣事',
+      insight: '感悟',
+    },
+    tags: {
+      academic: { label: '学术', desc: '科研 / 硕博 / 研究生烦恼' },
+      campus: { label: '校园' },
+      work: { label: '职场' },
+      growth: { label: '成长' },
+      love: { label: '情感' },
+      family: { label: '家庭' },
+      life: { label: '生活' },
+    },
+    privacy: {
+      public: { label: '公开可见', desc: '展示在树洞广场' },
+      self: { label: '仅自己可见', desc: '只保存在本地' },
+      random: { label: '随机匿名推送', desc: '随机发给陌生人' },
+    },
+    moods: {
+      happy: '开心',
+      sad: '难过',
+      emo: 'emo',
+      calm: '平静',
+      anxious: '焦虑',
+      expecting: '期待',
+      relieved: '释怀',
+      lonely: '孤独',
+      crush: '心动',
+      tired: '疲惫',
+      brave: '勇敢',
+      lost: '迷茫',
+      grateful: '感恩',
+      wronged: '委屈',
+      healed: '治愈',
+      confused: '懵圈',
+    },
+    papers: {
+      paper: '信纸',
+      starry: '星空',
+      minimal: '简约',
+      art: '文艺',
+      campus: '校园',
+    },
+    quotes: {
+      q1: '你不需要很厉害才能开始，但你需要开始才能很厉害。',
+      q2: '今天的不开心就到此为止吧，明天依旧光芒万丈。',
+      q3: '万物皆有裂痕，那是光照进来的地方。',
+      q4: '慢慢来，所有的好戏都在烟火里，也在平淡里。',
+      q5: '你是独一无二的，像夜空里最安静的那颗星。',
+      q6: '允许自己偶尔枯萎，是为了更好地重新生长。',
+      q7: '世界很吵，但你的心可以很静。',
+      q8: '把心事说给风听，风会替你保守秘密。',
+      q9: '温柔的人，终会被世界温柔以待。',
+      q10: '不被定义，才自由。',
+      q11: '请相信，冬天走了，春天一定会来。',
+      q12: '你今天的努力，是幸运的伏笔。',
+      q13: '月亮本无光，借了太阳的光，你亦可。',
+      q14: '不要急着要答案，时间会替你慢慢揭晓。',
+      q15: '生活明朗，万物可爱，人间值得。',
+    },
+    messages: {
+      recalled: '对方撤回了一条消息',
+      decryptFail: '【解密失败：密码错误或未加密】',
+    },
+  },
+
+  starhopeData: {
+    ai: {
+      loadFail: '加载 AI 助手失败',
+      createFail: '创建 AI 助手失败',
+      defaultAgentName: '通用助手',
+      mockResponse:
+        '作为你的**{name}**，关于"{question}"这个问题：\n\n这是一个很好的学习问题。建议从基础概念入手，逐步深入理解。\n\n> 💡 你可以继续追问具体细节。',
+      errorPrefix: '错误：{message}',
+      unknownError: '未知错误',
+    },
+  },
+
+  profileTitles: {
+    newbie: '初来乍到',
+    active: '活跃用户',
+    hardcore: '硬核答主',
+    fileMaster: '文件达人',
+    projectPioneer: '项目先锋',
+    columnist: '专栏作者',
+  },
+
+  adminData: {
+    stats: {
+      users: '注册用户',
+      posts: '帖子总数',
+      pendingFiles: '待审核文件',
+      pendingReports: '待处理举报',
+      usersChange: '+12 本周',
+      postsChange: '+8 本周',
+      filesChange: '3 新增',
+    },
+    categories: {
+      physicsAstro: '物理学&天文学',
+      infoScience: '信息科学',
+      math: '数学',
+      socialScience: '社会科学',
+      integratedCircuit: '集成电路',
+      english: '英语',
+    },
+    reasons: {
+      spam: '垃圾广告',
+      violation: '违规内容',
+      harassment: '人身攻击',
+      infringement: '侵权内容',
+    },
+    posts: {
+      titleQuantum: '量子力学入门：从波函数到薛定谔方程',
+      titlePython: 'Python数据分析实战',
+      titleSpam: '加微信xxx日赚千元',
+      titleSensitive: '敏感内容标题',
+    },
+    files: {
+      astroDataset: '天体物理数据集（2026版）.zip',
+      chipTutorial: '芯片设计入门教程.pdf',
+      academicWriting: '英语学术写作指南.pdf',
+      crackTutorial: '破解软件教程.zip',
+    },
+    reports: {
+      targetSpam: '加微信xxx日赚千元',
+      targetComment: '不文明评论',
+      targetFile: '疑似侵权文件.pdf',
+      reporterEnthusiast: '热心用户',
+      reporterAnonymous: '匿名',
+      reporterCopyright: '版权方',
+    },
+  },
+
+  newsSections: {
+    announcement: '官方公告',
+    news: '科技新闻',
+    science: '科普相关',
+  },
+
+  editorData: {
+    errApiUrlRequired: '请输入 API 地址',
+    errApiUrlInvalid: 'API 地址格式无效，请输入完整的 HTTPS 地址',
+    errHttpsOnly: '仅支持 HTTPS 地址',
+    errCredentials: 'API 地址不能包含用户名或密码，请在下方单独输入 API Key',
+    errUnsupportedProtocol: '不支持的协议',
+    errNotConfigured: '请先配置 AI 接口。点击"设置"输入 API 地址和 Key。',
+    errConfigInvalid: 'AI 接口配置无效：{detail}',
+    errNetworkFailed: '网络请求失败',
+    errNetworkFailedDetail: '网络请求失败：{message}',
+    errUnexpectedContentType: '服务器返回了意外的内容类型',
+    errStatusCodeSuffix: '（状态码 {status}）',
+    errServiceStatus: 'AI 服务返回错误（状态码 {status}）',
+    errCheckKey: '，请检查 API Key 和端点配置是否正确',
+    errParseFailed: '无法解析 AI 服务返回的数据',
+    errInvalidDataFormat: 'AI 服务返回了无效的数据格式',
+    errUnknown: '未知错误',
+    errApiKeyInvalid: 'AI 服务返回错误，请检查 API Key 是否有效',
+    errServiceError: 'AI 服务返回错误：{detail}',
+    errIncompleteReply: 'AI 服务返回数据不完整（缺少回复内容）',
+    errIncomplete: 'AI 服务返回数据不完整',
+    errMissingMessage: 'AI 服务返回数据不完整（缺少消息内容）',
+    errEmptyReply: 'AI 服务返回了空白的回复内容',
+    errTooLarge: 'AI 返回内容过大（{bytes} 字节），已超过 {max} 字节上限',
   },
 };

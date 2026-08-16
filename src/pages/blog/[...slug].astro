@@ -6,6 +6,6 @@ const basePath = new URL(import.meta.env.BASE_URL, 'http://x').pathname.replace(
 const initialPath = (Astro.url.pathname + Astro.url.search).replace(basePath, '') || '/';
 ---
 
-<Layout navItems={['社区主页', '博客', '资源', '我的']}>
+<Layout navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}>
   <BlogApp initialPath={initialPath} client:only="vue" />
 </Layout>

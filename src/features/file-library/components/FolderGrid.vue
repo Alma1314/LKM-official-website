@@ -14,11 +14,11 @@
           <Icon icon="material-symbols:folder" />
         </span>
         <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-1 text-sm">
-          {{ folder.name }}
+          {{ t(folder.name) }}
         </h3>
       </div>
       <div class="text-xs text-text-muted/60">
-        {{ t('fileLibrary.fileCount', { count: fileCounts[folder.id] ?? 0 }) }}
+        {{ t('community.fileLibrary.fileCount', { count: fileCounts[folder.id] ?? 0 }) }}
       </div>
     </button>
   </div>

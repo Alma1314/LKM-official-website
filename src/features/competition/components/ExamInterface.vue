@@ -23,7 +23,7 @@
     <div class="flex-1">
       <div class="flex items-center justify-between mb-4">
         <span class="text-sm text-text-muted">{{
-          t('competition.questionOf', { current: currentIndex + 1, total: questions.length })
+          t('community.competition.questionOf', { current: currentIndex + 1, total: questions.length })
         }}</span>
         <span class="text-sm font-mono font-bold" :class="remaining < 300 ? 'text-red-500' : 'text-primary'">
           {{ formatTime(remaining) }}
@@ -31,7 +31,7 @@
       </div>
 
       <div class="bg-card-bg border border-surface-3 rounded-xl p-6">
-        <p class="text-deep-text font-medium mb-4">{{ currentQ.stem }}</p>
+        <p class="text-deep-text font-medium mb-4">{{ t(currentQ.stem) }}</p>
         <div class="space-y-2">
           <button
             v-for="(opt, i) in currentQ.options"
@@ -44,28 +44,28 @@
             "
             @click="answers[currentIndex] = i"
           >
-            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ opt }}
+            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ t(opt) }}
           </button>
         </div>
       </div>
 
       <div class="flex justify-between mt-4">
         <button class="btn-ghost text-sm px-4 py-2" :disabled="currentIndex === 0" @click="currentIndex--">
-          {{ t('competition.previous') }}
+          {{ t('community.competition.previous') }}
         </button>
         <div class="flex gap-2">
           <span class="text-xs text-text-muted self-center">{{
-            t('competition.answered', { count: answeredCount, total: questions.length })
+            t('community.competition.answered', { count: answeredCount, total: questions.length })
           }}</span>
           <button
             v-if="currentIndex < questions.length - 1"
             class="btn-primary px-5 py-2 rounded-lg text-sm"
             @click="currentIndex++"
           >
-            {{ t('competition.next') }}
+            {{ t('community.competition.next') }}
           </button>
           <button v-else class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" @click="submit">
-            {{ t('competition.submitExam') }}
+            {{ t('community.competition.submitExam') }}
           </button>
         </div>
       </div>
@@ -108,7 +108,7 @@ function submit() {
   const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
   clearInterval(timer);
   alert(
-    t('competition.examSubmitted', {
+    t('community.competition.examSubmitted', {
       correct,
       total: questions.length,
       percent: Math.round((correct / questions.length) * 100),

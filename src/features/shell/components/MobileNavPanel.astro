@@ -56,7 +56,7 @@ const { id, links = [], title = t('nav.navigation') } = Astro.props;
                       data-nav-accordion-trigger
                       class="flex items-center justify-between w-full px-5 py-3 text-left font-semibold text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                     >
-                      <span>{link.name}</span>
+                      <span>{t(link.name)}</span>
                       <Icon
                         name="material-symbols:keyboard-arrow-down-rounded"
                         class="text-[1.25rem] text-text-muted transition-transform duration-200"
@@ -73,7 +73,7 @@ const { id, links = [], title = t('nav.navigation') } = Astro.props;
                             class="flex items-center gap-2 px-8 py-2.5 text-[15px] text-text-muted hover:text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                             data-nav-link
                           >
-                            {child.name}
+                            {t(child.name)}
                             {child.external && (
                               <Icon
                                 name="fa6-solid:arrow-up-right-from-square"
@@ -93,7 +93,7 @@ const { id, links = [], title = t('nav.navigation') } = Astro.props;
                     class="flex items-center gap-2 px-5 py-3 font-semibold text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                     data-nav-link
                   >
-                    {link.name}
+                    {t(link.name)}
                     {link.external && (
                       <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] text-text-muted" />
                     )}

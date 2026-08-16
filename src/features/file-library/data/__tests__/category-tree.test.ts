@@ -61,7 +61,11 @@ describe('getCategoryPath', () => {
   it('叶子分类回溯到根（四层路径）', () => {
     const path = getCategoryPath('math-linear-algebra');
     expect(path.map((c) => c.id)).toEqual(['basic-science', 'math', 'math-linear-algebra']);
-    expect(path.map((c: FileCategory) => c.name)).toEqual(['基础学科', '数学', '线性代数']);
+    expect(path.map((c: FileCategory) => c.name)).toEqual([
+      'fileLibraryData.categories.basicScience',
+      'fileLibraryData.categories.math',
+      'fileLibraryData.categories.mathLinearAlgebra',
+    ]);
   });
 
   it('不存在的 id 返回空数组', () => {

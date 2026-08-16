@@ -47,7 +47,7 @@ function interpolate(template: string, params?: TranslationParams): string {
 export function useI18n(): {
   locale: import('vue').Ref<Locale>;
   setLocale: (next: Locale) => void;
-  t: (key: TranslationKey, params?: TranslationParams) => string;
+  t: (key: TranslationKey | string | undefined | null, params?: TranslationParams) => string;
 } {
   const locale = ref<Locale>(resolveInitialLocale());
 
@@ -63,7 +63,8 @@ export function useI18n(): {
     window.dispatchEvent(new CustomEvent('lkm:locale-change', { detail: { locale: next } }));
   }
 
-  const t = (key: TranslationKey, params?: TranslationParams): string => {
+  const t = (key: TranslationKey | string | undefined | null, params?: TranslationParams): string => {
+    if (!key) return '';
     const template = DICTS[locale.value][key] ?? DICTS.en[key] ?? key;
     return interpolate(template, params);
   };

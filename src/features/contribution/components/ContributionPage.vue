@@ -54,9 +54,9 @@
           <Icon :icon="ach.icon" class="w-6 h-6" />
         </div>
         <div class="font-semibold text-sm" :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'">
-          {{ ach.name }}
+          {{ t(ach.name) }}
         </div>
-        <div class="text-xs text-text-muted/60 mt-1">{{ ach.description }}</div>
+        <div class="text-xs text-text-muted/60 mt-1">{{ t(ach.description) }}</div>
         <div v-if="!ach.unlocked" class="mt-2">
           <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden">
             <div class="h-full rounded-full bg-primary/40" :style="{ width: ach.progressPercent + '%' }"></div>
@@ -71,7 +71,7 @@
       <div class="divide-y divide-surface-3">
         <div v-for="log in pointLogs" :key="log.id" class="flex items-center justify-between px-5 py-3">
           <div>
-            <div class="text-sm text-deep-text">{{ log.reason }}</div>
+            <div class="text-sm text-deep-text">{{ t(log.reason) }}</div>
             <div class="text-xs text-text-muted/60">{{ log.createdAt }}</div>
           </div>
           <span class="text-sm font-semibold" :class="log.amount > 0 ? 'text-green-500' : 'text-red-500'">
@@ -118,8 +118,8 @@
             {{ entry.displayName.charAt(0) }}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-deep-text truncate">{{ entry.displayName }}</div>
-            <div class="text-xs text-text-muted/60">{{ entry.title }}</div>
+            <div class="text-sm font-medium text-deep-text truncate">{{ t(entry.displayName) }}</div>
+            <div class="text-xs text-text-muted/60">{{ t(entry.title) }}</div>
           </div>
           <span class="text-sm font-semibold text-primary">{{
             t('contribution.pointsSuffix', { points: entry.points.toLocaleString() })
@@ -150,8 +150,8 @@
             t('contribution.lowStock', { stock: item.stock })
           }}</span>
         </div>
-        <h3 class="font-semibold text-deep-text mb-1">{{ item.name }}</h3>
-        <p class="text-xs text-text-muted mb-3 flex-1">{{ item.description }}</p>
+        <h3 class="font-semibold text-deep-text mb-1">{{ t(item.name) }}</h3>
+        <p class="text-xs text-text-muted mb-3 flex-1">{{ t(item.description) }}</p>
         <div class="flex items-center justify-between">
           <span class="text-sm font-bold text-primary">{{
             t('contribution.pointsCost', { points: item.pointsCost })
@@ -213,10 +213,10 @@
                 class="text-sm font-medium"
                 :class="task.completed ? 'text-text-muted line-through' : 'text-deep-text'"
               >
-                {{ task.title }}
+                {{ t(task.title) }}
               </div>
               <div class="text-xs text-text-muted/60 mt-0.5">
-                {{ task.description }} · {{ t('contribution.taskReward', { points: task.rewardPoints }) }}
+                {{ t(task.description) }} · {{ t('contribution.taskReward', { points: task.rewardPoints }) }}
               </div>
               <div class="mt-1.5">
                 <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden w-32">
@@ -286,6 +286,6 @@ function doCheckin() {
 }
 
 function handleExchange(item: (typeof exchangeItems)[0]) {
-  alert(t('contribution.exchangeSuccess', { points: item.pointsCost, name: item.name }));
+  alert(t('contribution.exchangeSuccess', { points: item.pointsCost, name: t(item.name) }));
 }
 </script>

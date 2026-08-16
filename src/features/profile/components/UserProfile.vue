@@ -18,7 +18,7 @@
               class="text-sm px-2 py-0.5 rounded-full font-medium"
               :style="{ color: titleInfo.color, background: `color-mix(in srgb, ${titleInfo.color} 15%, transparent)` }"
             >
-              {{ titleInfo.name }}
+              {{ t(titleInfo.name) }}
             </span>
           </div>
           <p class="text-sm text-text-muted mt-1">@{{ user.username }}</p>

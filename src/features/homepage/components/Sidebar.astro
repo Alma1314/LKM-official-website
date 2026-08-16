@@ -55,7 +55,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
               <div class={styles.icon}>
                 <Icon name={icon} />
               </div>
-              <div class={styles.text}>{text}</div>
+              <div class={styles.text}>{t(text)}</div>
             </a>
           </li>
         );

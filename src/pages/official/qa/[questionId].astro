@@ -26,14 +26,14 @@ function formatDate(dateStr: string): string {
   });
 }
 
-const metadata = { title: `${question.title} —— LKM` };
+const metadata = { title: `${t(question.title)} —— LKM` };
 ---
 
 <Layout
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink(`/qa/${questionId}`)}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <div class="space-y-6 max-w-3xl">
     <!-- 问题 -->
@@ -55,9 +55,9 @@ const metadata = { title: `${question.title} —— LKM` };
           )
         }
       </div>
-      <h1 class="text-2xl font-bold text-deep-text">{question.title}</h1>
+      <h1 class="text-2xl font-bold text-deep-text">{t(question.title)}</h1>
       <div class="flex items-center gap-2 mt-2 text-sm text-text-muted/60">
-        <span>{question.askerName}</span>
+        <span>{t(question.askerName)}</span>
         <span>·</span>
         <span>{formatDate(question.createdAt)}</span>
         <span>·</span>
@@ -66,12 +66,12 @@ const metadata = { title: `${question.title} —— LKM` };
       <div class="flex flex-wrap gap-1 mt-2">
         {
           question.tags.map((tag) => (
-            <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{tag}</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{t(tag)}</span>
           ))
         }
       </div>
       <div class="mt-4 p-4 bg-card-bg border border-surface-3 rounded-xl text-sm text-deep-text leading-relaxed">
-        {question.content}
+        {t(question.content)}
       </div>
     </div>
 
@@ -93,9 +93,9 @@ const metadata = { title: `${question.title} —— LKM` };
                   <Icon name="material-symbols:check-circle" class="w-3.5 h-3.5" /> {t('page.qa.accepted')}
                 </div>
               )}
-              <div class="text-sm text-deep-text leading-relaxed">{a.content}</div>
+              <div class="text-sm text-deep-text leading-relaxed">{t(a.content)}</div>
               <div class="flex items-center gap-3 mt-3 text-xs text-text-muted/60">
-                <span>{a.authorName}</span>
+                <span>{t(a.authorName)}</span>
                 <span>{formatDate(a.createdAt)}</span>
                 <span>{t('page.qa.likes', { count: a.likeCount })}</span>
               </div>

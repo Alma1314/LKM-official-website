@@ -4,30 +4,31 @@
       <h2 class="text-lg font-semibold text-deep-text mb-3">{{ statusLabel(group.status) }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div v-for="comp in group.items" :key="comp.id" class="bg-card-bg border border-surface-3 rounded-xl p-5">
-          <h3 class="font-bold text-lg text-deep-text">{{ comp.title }}</h3>
-          <p class="text-sm text-text-muted mt-1">{{ comp.description }}</p>
+          <h3 class="font-bold text-lg text-deep-text">{{ t(comp.title) }}</h3>
+          <p class="text-sm text-text-muted mt-1">{{ t(comp.description) }}</p>
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-text-muted/60">
-            <span>{{ t('competition.startsAt') }}{{ comp.startDate }}</span>
-            <span>{{ t('competition.endsAt') }}{{ comp.endDate }}</span>
+            <span>{{ t('community.competition.startsAt') }}{{ comp.startDate }}</span>
+            <span>{{ t('community.competition.endsAt') }}{{ comp.endDate }}</span>
             <span v-if="comp.status === 'ongoing'"
-              >{{ t('competition.duration') }} {{ t('competition.durationMinutes', { count: comp.duration }) }}</span
+              >{{ t('community.competition.duration') }}
+              {{ t('community.competition.durationMinutes', { count: comp.duration }) }}</span
             >
           </div>
           <div class="flex items-center justify-between mt-4">
             <span class="text-sm text-text-muted" v-if="comp.participantCount > 0"
-              >{{ t('competition.participants') }}{{ comp.participantCount }}</span
+              >{{ t('community.competition.participants') }}{{ comp.participantCount }}</span
             >
-            <span v-else class="text-sm text-text-muted">{{ t('competition.upcoming') }}</span>
+            <span v-else class="text-sm text-text-muted">{{ t('community.competition.upcoming') }}</span>
             <a
               v-if="comp.status === 'ongoing'"
               :href="buildUrl(`/competition/${comp.id}/exam`)"
               class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold"
-              >{{ t('competition.enterExam') }}</a
+              >{{ t('community.competition.enterExam') }}</a
             >
             <span v-else-if="comp.status === 'upcoming'" class="text-sm text-primary font-medium">{{
-              t('competition.upcoming')
+              t('community.competition.upcoming')
             }}</span>
-            <span v-else class="text-sm text-text-muted/60">{{ t('competition.ended') }}</span>
+            <span v-else class="text-sm text-text-muted/60">{{ t('community.competition.ended') }}</span>
           </div>
         </div>
       </div>
@@ -53,11 +54,11 @@ const groupedCompetitions = computed(() => {
 function statusLabel(s: string) {
   switch (s) {
     case 'ongoing':
-      return t('competition.ongoing');
+      return t('community.competition.ongoing');
     case 'upcoming':
-      return t('competition.upcoming');
+      return t('community.competition.upcoming');
     case 'ended':
-      return t('competition.ended');
+      return t('community.competition.ended');
     default:
       return s;
   }

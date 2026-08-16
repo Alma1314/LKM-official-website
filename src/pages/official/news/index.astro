@@ -13,7 +13,7 @@ logSsrError('新闻资讯分类', error);
 const sections = NEWS_SECTIONS.map((section) => {
   const matched = categories.find((c) => c.name === section.label);
   const resolved: { label: string; slug: string; count: number } = {
-    label: section.label,
+    label: t(section.labelKey),
     slug: matched?.slug ?? section.fallbackSlug,
     count: matched?.article_count ?? 0,
   };
@@ -27,7 +27,7 @@ const metadata = { title: `${t('page.news.title')} —— LKM` };
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink('/official/news')}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <div class="space-y-6">
     <header>

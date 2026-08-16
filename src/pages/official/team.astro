@@ -126,7 +126,7 @@ const sidebarLinks = [
   metadata={metadata}
   sidebarLinks={sidebarLinks}
   currentPath={getPermalink('/official/team')}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <!-- 创始人 -->
   <Section title={t('page.official.team.founderTitle')} subtitle={t('page.official.team.founderSubtitle')} id="founder">
@@ -178,7 +178,7 @@ const sidebarLinks = [
     {
       Object.entries(affairsSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
@@ -240,9 +240,9 @@ const sidebarLinks = [
     {
       Object.entries(newsSubGroupsMap).map(([, group]) => (
         <div class="mt-8">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[13px] text-text-muted leading-relaxed">
-            {group.desc}
+            {t(group.desc)}
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
@@ -292,7 +292,7 @@ const sidebarLinks = [
     {
       Object.entries(professionalSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard

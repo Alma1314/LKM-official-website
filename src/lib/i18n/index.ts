@@ -85,8 +85,9 @@ function interpolate(template: string, params?: TranslationParams): string {
   return template.replace(/\{(\w+)\}/g, (match, key: string) => (key in params ? String(params[key]) : match));
 }
 
-/** 翻译入口 */
-export function t(key: TranslationKey, params?: TranslationParams): string {
+/** 翻译入口。key 类型为 TranslationKey（字典路径），但运行时也支持任意字符串（未命中时原样返回）。 */
+export function t(key: TranslationKey | string | undefined | null, params?: TranslationParams): string {
+  if (!key) return '';
   const locale = getLocale();
   const template = DICTS[locale][key] ?? DICTS.en[key] ?? key;
   return interpolate(template, params);

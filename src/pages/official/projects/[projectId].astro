@@ -27,14 +27,14 @@ const revisionLabel = (rev: number) =>
         ? t('page.projects.revisionTwo')
         : t('page.projects.revisionN', { n: rev });
 
-const metadata = { title: `${proj.name} —— LKM` };
+const metadata = { title: `${t(proj.name)} —— LKM` };
 ---
 
 <Layout
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink(`/projects/${projectId}`)}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <div class="space-y-6">
     <!-- 头部 -->
@@ -70,9 +70,9 @@ const metadata = { title: `${proj.name} —— LKM` };
           }
         </span>
       </div>
-      <h1 class="text-3xl font-bold text-deep-text">{proj.name}</h1>
+      <h1 class="text-3xl font-bold text-deep-text">{t(proj.name)}</h1>
       <p class="text-sm text-text-muted mt-2">
-        {t('page.projects.initiator', { name: proj.initiatorName, date: formatDate(proj.createdAt) })}
+        {t('page.projects.initiator', { name: t(proj.initiatorName), date: formatDate(proj.createdAt) })}
       </p>
     </div>
 
@@ -95,7 +95,7 @@ const metadata = { title: `${proj.name} —— LKM` };
           <div>
             <>
               <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.background')}</h3>
-              <p class="text-text-muted leading-relaxed">{proj.background}</p>
+              <p class="text-text-muted leading-relaxed">{t(proj.background)}</p>
             </>
           </div>
         )
@@ -105,7 +105,7 @@ const metadata = { title: `${proj.name} —— LKM` };
           <div>
             <>
               <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.goals')}</h3>
-              <p class="text-text-muted leading-relaxed">{proj.goals}</p>
+              <p class="text-text-muted leading-relaxed">{t(proj.goals)}</p>
             </>
           </div>
         )
@@ -115,7 +115,7 @@ const metadata = { title: `${proj.name} —— LKM` };
           <div>
             <>
               <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.requirements')}</h3>
-              <p class="text-text-muted leading-relaxed">{proj.requirements}</p>
+              <p class="text-text-muted leading-relaxed">{t(proj.requirements)}</p>
             </>
           </div>
         )
@@ -125,7 +125,7 @@ const metadata = { title: `${proj.name} —— LKM` };
           <div>
             <>
               <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.teamIntro')}</h3>
-              <p class="text-text-muted leading-relaxed">{proj.teamIntro}</p>
+              <p class="text-text-muted leading-relaxed">{t(proj.teamIntro)}</p>
             </>
           </div>
         )
@@ -138,7 +138,7 @@ const metadata = { title: `${proj.name} —— LKM` };
               <div class="flex flex-wrap gap-2">
                 {proj.team.map((m) => (
                   <span class="text-xs px-2 py-1 rounded-full bg-surface-3 text-text-muted">
-                    {m.name} · {m.role}
+                    {t(m.name)} · {t(m.role)}
                   </span>
                 ))}
               </div>
@@ -154,7 +154,7 @@ const metadata = { title: `${proj.name} —— LKM` };
               <div class="flex flex-wrap gap-2">
                 {proj.recruitingRoles.map((r) => (
                   <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">
-                    {t('page.projects.roleMissing', { name: r })}
+                    {t('page.projects.roleMissing', { name: t(r) })}
                   </span>
                 ))}
               </div>
@@ -166,7 +166,7 @@ const metadata = { title: `${proj.name} —— LKM` };
         proj.tags.length > 0 && (
           <div class="flex flex-wrap gap-1">
             {proj.tags.map((tag) => (
-              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{tag}</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{t(tag)}</span>
             ))}
           </div>
         )
@@ -187,8 +187,8 @@ const metadata = { title: `${proj.name} —— LKM` };
                   </span>
                   <span class="text-xs text-text-muted/60">{r.date}</span>
                 </div>
-                <h4 class="font-medium text-deep-text">{r.title}</h4>
-                <p class="text-sm text-text-muted mt-1 leading-relaxed">{r.content}</p>
+                <h4 class="font-medium text-deep-text">{t(r.title)}</h4>
+                <p class="text-sm text-text-muted mt-1 leading-relaxed">{t(r.content)}</p>
               </div>
             ))}
           </div>

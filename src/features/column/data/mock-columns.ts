@@ -1,3 +1,8 @@
+/**
+ * 专栏 mock 数据 — 用户可见字段（title/description/excerpt/author 信息/tags）已替换为 i18n key，
+ * 渲染时需用 t(field) 显示。article.content 为正文 Markdown，保持原文。
+ */
+
 export interface MockColumn {
   id: string;
   authorId: string;
@@ -32,12 +37,12 @@ export const mockColumns: MockColumn[] = [
   {
     id: 'col-1',
     authorId: 'user-qiyue-o',
-    authorName: '七月O',
-    authorTitle: '中国科学院国家天文台博士',
-    authorBio: '引力波与黑洞物理方向，致力于天体物理科普',
-    title: '宇宙探索笔记',
+    authorName: 'columnData.columns.col1.authorName',
+    authorTitle: 'columnData.columns.col1.authorTitle',
+    authorBio: 'columnData.columns.col1.authorBio',
+    title: 'columnData.columns.col1.title',
     slug: 'cosmic-notes',
-    description: '记录天体物理研究前沿，分享宇宙探索的奇妙旅程。从引力波到黑洞，从暗物质到宇宙大尺度结构。',
+    description: 'columnData.columns.col1.description',
     isVerified: true,
     followerCount: 1200,
     articleCount: 15,
@@ -45,12 +50,12 @@ export const mockColumns: MockColumn[] = [
   {
     id: 'col-2',
     authorId: 'user-qiyue-hua',
-    authorName: '七月花',
-    authorTitle: '科学教育博士',
-    authorBio: '有理想的博士，梦想每个孩子都能接触科学',
-    title: '教育者的实验室',
+    authorName: 'columnData.columns.col2.authorName',
+    authorTitle: 'columnData.columns.col2.authorTitle',
+    authorBio: 'columnData.columns.col2.authorBio',
+    title: 'columnData.columns.col2.title',
     slug: 'edu-lab',
-    description: '科学教育的理论与实践，课程设计、教学方法、科普写作的深度思考。',
+    description: 'columnData.columns.col2.description',
     isVerified: true,
     followerCount: 890,
     articleCount: 8,
@@ -58,12 +63,12 @@ export const mockColumns: MockColumn[] = [
   {
     id: 'col-3',
     authorId: 'user-col-3',
-    authorName: '李教授',
-    authorTitle: '复旦大学物理学教授',
-    authorBio: '凝聚态物理研究，学术写作指导',
-    title: '学术写作之道',
+    authorName: 'columnData.columns.col3.authorName',
+    authorTitle: 'columnData.columns.col3.authorTitle',
+    authorBio: 'columnData.columns.col3.authorBio',
+    title: 'columnData.columns.col3.title',
     slug: 'academic-writing',
-    description: '分享论文写作技巧、学术英语表达、科研方法论等硬核内容。',
+    description: 'columnData.columns.col3.description',
     isVerified: true,
     followerCount: 650,
     articleCount: 12,
@@ -71,12 +76,12 @@ export const mockColumns: MockColumn[] = [
   {
     id: 'col-4',
     authorId: 'user-col-4',
-    authorName: '码农老王',
-    authorTitle: '资深算法工程师',
-    authorBio: '10年算法竞赛与工程经验',
-    title: '算法之美',
+    authorName: 'columnData.columns.col4.authorName',
+    authorTitle: 'columnData.columns.col4.authorTitle',
+    authorBio: 'columnData.columns.col4.authorBio',
+    title: 'columnData.columns.col4.title',
     slug: 'algorithm-beauty',
-    description: '深入浅出讲解算法与数据结构，从 LeetCode 到 ACM，从工程实践到理论推导。',
+    description: 'columnData.columns.col4.description',
     isVerified: false,
     followerCount: 450,
     articleCount: 20,
@@ -88,8 +93,8 @@ export const mockColumnArticles: MockColumnArticle[] = [
     id: 'art-1',
     columnId: 'col-1',
     columnSlug: 'cosmic-notes',
-    title: '引力波天文学：聆听宇宙的"声音"',
-    excerpt: '从2015年GW150914首次探测至今，引力波天文学已经成为了解宇宙的全新窗口。',
+    title: 'columnData.articles.art1.title',
+    excerpt: 'columnData.articles.art1.excerpt',
     content: `## 引力波天文学：聆听宇宙的"声音"
 
 2015年9月14日，LIGO探测器首次直接探测到引力波信号——GW150914。这是两个约30倍太阳质量的黑洞合并产生的时空涟漪。
@@ -111,7 +116,7 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 - 中子星-黑洞合并
 
 引力波天文学已经从一个"梦想"变成了一个蓬勃发展的领域。`,
-    tags: ['引力波', '天体物理', 'LIGO'],
+    tags: ['columnData.articles.art1.tags.a', 'columnData.articles.art1.tags.b', 'columnData.articles.art1.tags.c'],
     viewCount: 3400,
     likeCount: 256,
     commentCount: 42,
@@ -121,8 +126,8 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
     id: 'art-2',
     columnId: 'col-1',
     columnSlug: 'cosmic-notes',
-    title: '黑洞信息悖论：物理学的最大谜题之一',
-    excerpt: '霍金辐射的发现引发了一个深刻的问题：掉入黑洞的信息去哪了？',
+    title: 'columnData.articles.art2.title',
+    excerpt: 'columnData.articles.art2.excerpt',
     content: `## 黑洞信息悖论
 
 ### 问题的起源
@@ -140,7 +145,7 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 ### 最新进展
 
 近年来，通过全息对偶、纠缠熵等工具，理论物理学家在解决这一悖论上取得了重大进展。黑洞信息悖论的研究正在改写我们对时空和量子力学的基本理解。`,
-    tags: ['黑洞', '霍金辐射', '量子引力'],
+    tags: ['columnData.articles.art2.tags.a', 'columnData.articles.art2.tags.b', 'columnData.articles.art2.tags.c'],
     viewCount: 2800,
     likeCount: 198,
     commentCount: 35,
@@ -150,8 +155,8 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
     id: 'art-3',
     columnId: 'col-2',
     columnSlug: 'edu-lab',
-    title: '如何设计一门引人入胜的科普课程',
-    excerpt: '基于认知科学和教学实践经验，探讨科普课程设计的核心原则。',
+    title: 'columnData.articles.art3.title',
+    excerpt: 'columnData.articles.art3.excerpt',
     content: `## 如何设计一门引人入胜的科普课程
 
 ### 核心理念：好奇驱动
@@ -169,7 +174,7 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 ### 实践案例
 
 我在设计"光的奇妙世界"课程时，第一节课不是讲麦克斯韦方程组，而是让学生在暗室中用三棱镜分解白光，看到彩虹的瞬间，所有孩子的眼睛都亮了。`,
-    tags: ['科学教育', '课程设计', '科普'],
+    tags: ['columnData.articles.art3.tags.a', 'columnData.articles.art3.tags.b', 'columnData.articles.art3.tags.c'],
     viewCount: 1800,
     likeCount: 145,
     commentCount: 22,
@@ -179,8 +184,8 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
     id: 'art-4',
     columnId: 'col-3',
     columnSlug: 'academic-writing',
-    title: '学术论文摘要写作的黄金法则',
-    excerpt: '摘要是论文的"广告"，好的摘要能决定论文的引用率和影响力。',
+    title: 'columnData.articles.art4.title',
+    excerpt: 'columnData.articles.art4.excerpt',
     content: `## 学术论文摘要写作的黄金法则
 
 ### 摘要的五个要素
@@ -204,7 +209,7 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
 > [方法] 本文提出了一种XXX方法，通过YYY手段解决上述问题。
 > [结果] 实验结果表明，该方法在ZZZ指标上提升了XX%。
 > [意义] 这一发现为AAA领域的进一步研究奠定了基础。`,
-    tags: ['学术写作', '论文', '摘要'],
+    tags: ['columnData.articles.art4.tags.a', 'columnData.articles.art4.tags.b', 'columnData.articles.art4.tags.c'],
     viewCount: 4200,
     likeCount: 312,
     commentCount: 28,
@@ -214,8 +219,8 @@ LIGO使用激光干涉仪，两条4公里长的臂垂直排列。当引力波经
     id: 'art-5',
     columnId: 'col-4',
     columnSlug: 'algorithm-beauty',
-    title: '动态规划：从入门到进阶的思维框架',
-    excerpt: '动态规划不是一种算法，而是一种解决问题的思维方式。',
+    title: 'columnData.articles.art5.title',
+    excerpt: 'columnData.articles.art5.excerpt',
     content: `## 动态规划：思维框架
 
 ### 什么是动态规划？
@@ -250,7 +255,7 @@ def length_of_lis(nums):
 3. 能用数组/哈希表存储子问题解吗？
 
 如果三个问题都回答"是"，那么动态规划大概率可行。`,
-    tags: ['算法', '动态规划', 'Python'],
+    tags: ['columnData.articles.art5.tags.a', 'columnData.articles.art5.tags.b', 'columnData.articles.art5.tags.c'],
     viewCount: 5600,
     likeCount: 423,
     commentCount: 56,
