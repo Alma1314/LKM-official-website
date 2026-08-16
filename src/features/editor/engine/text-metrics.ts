@@ -2,7 +2,7 @@
  * 用 pretext 计算纯文本的字数和字符数，完全不触碰 DOM。
  * 仅计算 editor 中 text 节点的内容，跳过非文本节点（图片、公式等）。
  */
-import { prepare } from '@chenglou/pretext';
+import { prepare } from "@chenglou/pretext";
 
 interface TextMetrics {
   characters: number;
@@ -10,7 +10,10 @@ interface TextMetrics {
 }
 
 // 简单缓存：相同文本不重复 prepare
-const cache = new Map<string, { prepared: ReturnType<typeof prepare>; result: TextMetrics }>();
+const cache = new Map<
+  string,
+  { prepared: ReturnType<typeof prepare>; result: TextMetrics }
+>();
 const MAX_CACHE_SIZE = 20;
 
 /**
@@ -20,7 +23,7 @@ const MAX_CACHE_SIZE = 20;
 function extractText(doc: Record<string, unknown>): string {
   const parts: string[] = [];
   const walk = (node: Record<string, unknown>): void => {
-    if (node.type === 'text' && typeof node.text === 'string') {
+    if (node.type === "text" && typeof node.text === "string") {
       parts.push(node.text);
     }
     if (Array.isArray(node.content)) {
@@ -30,7 +33,7 @@ function extractText(doc: Record<string, unknown>): string {
     }
   };
   walk(doc);
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 /**
@@ -41,16 +44,19 @@ function countWords(text: string): number {
   const trimmed = text.trim();
   if (!trimmed) return 0;
   // 检测是否主要包含 CJK 字符
-  const cjkCount = (trimmed.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
+  const cjkCount = (trimmed.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || [])
+    .length;
   if (cjkCount > trimmed.length * 0.5) {
     // CJK 文本：字数 = 字符数（标点和空白不计）
-    return trimmed.replace(/\s/g, '').length;
+    return trimmed.replace(/\s/g, "").length;
   }
   // 非 CJK 文本：按空白分词
   return trimmed.split(/\s+/).length;
 }
 
-export function computeTextMetrics(doc: Record<string, unknown> | null): TextMetrics {
+export function computeTextMetrics(
+  doc: Record<string, unknown> | null,
+): TextMetrics {
   if (!doc) return { characters: 0, words: 0 };
 
   const text = extractText(doc);
@@ -61,7 +67,9 @@ export function computeTextMetrics(doc: Record<string, unknown> | null): TextMet
 
   let characters: number;
   try {
-    const prepared = prepare(text, '16px / Inter, sans-serif', { whiteSpace: 'pre-wrap' });
+    const prepared = prepare(text, "16px / Inter, sans-serif", {
+      whiteSpace: "pre-wrap",
+    });
     // pretext 的 prepared 对象内部有分段信息，但我们只需要字符数
     // 直接用文本长度作为字符数（pretext 的 prepare 验证了文本可处理性）
     characters = text.length;
@@ -72,7 +80,7 @@ export function computeTextMetrics(doc: Record<string, unknown> | null): TextMet
     }
     cache.set(text, { prepared, result: { characters, words: 0 } });
   } catch (err) {
-    console.warn('[text-metrics] pretext prepare 失败:', err);
+    console.warn("[text-metrics] pretext prepare 失败:", err);
     characters = text.length;
   }
 

@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { SaveStatus, PersistenceAdapter, DocumentData } from '../engine/types';
-import { exportMdx } from '../engine/mdx/index';
-import { t } from '~/lib/i18n';
+import { useCallback, useEffect, useRef, useState } from "react";
+import type {
+  SaveStatus,
+  PersistenceAdapter,
+  DocumentData,
+} from "../engine/types";
+import { exportMdx } from "../engine/mdx/index";
+import { t } from "~/lib/i18n";
 
-const FALLBACK_PREFIX = 'autosave_fallback_';
+const FALLBACK_PREFIX = "autosave_fallback_";
 
 function writeFallback(docId: string, data: unknown): void {
   try {
@@ -31,19 +35,19 @@ export function useAutoSave(
   documentId: string,
   adapter: PersistenceAdapter,
   debounceMs = 1000,
-  getFrontmatter?: () => Record<string, unknown>
+  getFrontmatter?: () => Record<string, unknown>,
 ): {
   saveStatus: SaveStatus;
   triggerSave: (content: Record<string, unknown>) => void;
   loadDraft: () => Promise<DocumentData | null>;
   flushImmediate: (content: Record<string, unknown>) => void;
 } {
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
   const hasUnsavedRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const baseVersionRef = useRef(1);
   const savedCallbackRef = useRef<(() => void) | null>(null);
-  const lastSavedJsonHashRef = useRef<string>('');
+  const lastSavedJsonHashRef = useRef<string>("");
   const lastVersionSaveRef = useRef<number>(0);
 
   const loadDraft = useCallback(async () => {
@@ -51,8 +55,8 @@ export function useAutoSave(
     if (doc) {
       baseVersionRef.current = doc.version;
       const fallback = readFallback(documentId);
-      if (fallback && typeof fallback === 'object') {
-        console.info('[autosave] 从兜底备份恢复文档:', documentId);
+      if (fallback && typeof fallback === "object") {
+        console.info("[autosave] 从兜底备份恢复文档:", documentId);
         if (doc.editorJson) {
           return { ...doc, editorJson: fallback as Record<string, unknown> };
         }
@@ -65,16 +69,16 @@ export function useAutoSave(
 
   const doSave = useCallback(
     async (content: Record<string, unknown>) => {
-      setSaveStatus('saving');
+      setSaveStatus("saving");
       try {
         const jsonStr = JSON.stringify(content);
         if (jsonStr === lastSavedJsonHashRef.current) {
-          setSaveStatus('saved');
+          setSaveStatus("saved");
           hasUnsavedRef.current = false;
           return;
         }
 
-        let mdxContent = '';
+        let mdxContent = "";
         try {
           const json = content as { content?: Array<Record<string, unknown>> };
           const nodes = json.content ?? [];
@@ -83,14 +87,16 @@ export function useAutoSave(
           const result = exportMdx(nodes, frontmatter);
           mdxContent = result.mdx;
         } catch (err) {
-          console.warn('[autosave] MDX 导出失败:', err);
-          mdxContent = '';
+          console.warn("[autosave] MDX 导出失败:", err);
+          mdxContent = "";
         }
 
-        const existing = (await adapter.loadDocument(documentId)) as DocumentData | null;
+        const existing = (await adapter.loadDocument(
+          documentId,
+        )) as DocumentData | null;
 
         if (existing && existing.version !== baseVersionRef.current) {
-          setSaveStatus('conflict');
+          setSaveStatus("conflict");
           return;
         }
 
@@ -99,10 +105,10 @@ export function useAutoSave(
 
         const doc: DocumentData = {
           id: documentId,
-          title: existing?.title ?? t('editor.untitled'),
+          title: existing?.title ?? t("editor.untitled"),
           contentMdx: mdxContent,
           editorJson: content,
-          status: existing?.status ?? 'draft',
+          status: existing?.status ?? "draft",
           version: newVersion,
           lastModified: now,
           createdAt: existing?.createdAt ?? now,
@@ -113,7 +119,7 @@ export function useAutoSave(
 
         baseVersionRef.current = newVersion;
         lastSavedJsonHashRef.current = jsonStr;
-        setSaveStatus('saved');
+        setSaveStatus("saved");
         hasUnsavedRef.current = false;
         savedCallbackRef.current?.();
 
@@ -128,7 +134,11 @@ export function useAutoSave(
             version: newVersion,
           });
         } catch {
-          writeFallback(documentId, { content, mdxContent, version: newVersion });
+          writeFallback(documentId, {
+            content,
+            mdxContent,
+            version: newVersion,
+          });
         }
 
         // 版本快照节流：同一文档同一分钟内最多一次
@@ -137,25 +147,25 @@ export function useAutoSave(
           lastVersionSaveRef.current = nowTs;
           try {
             if (mdxContent) {
-              await adapter.saveVersion(documentId, doc, '');
+              await adapter.saveVersion(documentId, doc, "");
             }
           } catch (err) {
-            console.warn('[autosave] 版本存储异常:', err);
+            console.warn("[autosave] 版本存储异常:", err);
           }
         }
       } catch (err) {
-        console.warn('[autosave] 保存失败:', err);
+        console.warn("[autosave] 保存失败:", err);
         writeFallback(documentId, { content });
-        setSaveStatus('error');
+        setSaveStatus("error");
       }
     },
-    [documentId, adapter, getFrontmatter]
+    [documentId, adapter, getFrontmatter],
   );
 
   const triggerSave = useCallback(
     (content: Record<string, unknown>) => {
       hasUnsavedRef.current = true;
-      setSaveStatus('unsaved');
+      setSaveStatus("unsaved");
 
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -165,7 +175,7 @@ export function useAutoSave(
         doSave(content);
       }, debounceMs);
     },
-    [debounceMs, doSave]
+    [debounceMs, doSave],
   );
 
   const flushImmediate = useCallback(
@@ -178,7 +188,7 @@ export function useAutoSave(
         doSave(content);
       }
     },
-    [doSave]
+    [doSave],
   );
 
   useEffect(() => {
@@ -187,8 +197,8 @@ export function useAutoSave(
         e.preventDefault();
       }
     };
-    window.addEventListener('beforeunload', onBeforeUnload);
-    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);
 
   useEffect(() => {

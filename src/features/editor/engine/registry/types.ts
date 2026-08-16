@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export interface MdxComponentDefinition<Props = Record<string, unknown>> {
   name: string;
-  kind: 'inline' | 'block';
+  kind: "inline" | "block";
   schemaVersion: number;
   propsSchema: z.ZodSchema<Props>;
   /** 在 Tiptap 编辑器 NodeView 中渲染的 React 组件 */

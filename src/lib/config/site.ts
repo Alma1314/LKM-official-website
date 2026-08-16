@@ -1,4 +1,4 @@
-import projectConfigRaw from 'virtual:config';
+import projectConfigRaw from "virtual:config";
 
 // virtual:config 运行时数据无编译期类型 —— 在此唯一断言一次
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,7 +62,11 @@ interface MetaDataConfig {
   title: { default: string; template: string };
   description: string;
   robots: { index: boolean; follow: boolean };
-  openGraph: { type: string; site_name?: string; images?: { url: string; width: number; height: number }[] };
+  openGraph: {
+    type: string;
+    site_name?: string;
+    images?: { url: string; width: number; height: number }[];
+  };
   twitter: { handle?: string; site?: string; cardType?: string };
 }
 
@@ -71,10 +75,26 @@ interface AppBlogConfig {
   postsPerPage: number;
   isRelatedPostsEnabled: boolean;
   relatedPostsCount: number;
-  post: { isEnabled: boolean; permalink: string; robots: { index: boolean; follow: boolean } };
-  list: { isEnabled: boolean; pathname: string; robots: { index: boolean; follow: boolean } };
-  category: { isEnabled: boolean; pathname: string; robots: { index: boolean; follow: boolean } };
-  tag: { isEnabled: boolean; pathname: string; robots: { index: boolean; follow: boolean } };
+  post: {
+    isEnabled: boolean;
+    permalink: string;
+    robots: { index: boolean; follow: boolean };
+  };
+  list: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: { index: boolean; follow: boolean };
+  };
+  category: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: { index: boolean; follow: boolean };
+  };
+  tag: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: { index: boolean; follow: boolean };
+  };
 }
 
 interface SharedUIConfig {
@@ -94,33 +114,33 @@ const uiCfg = projectConfig.ui ?? {};
 const analyticsCfg = projectConfig.analytics ?? {};
 
 export const SITE: SharedSiteConfig = {
-  name: site.name ?? 'Website',
+  name: site.name ?? "Website",
   site: site.site ?? undefined,
-  base: site.base ?? '/',
+  base: site.base ?? "/",
   trailingSlash: site.trailingSlash ?? false,
   googleSiteVerificationId: site.googleSiteVerificationId ?? undefined,
 };
 
 export const I18N: I18NConfig = {
-  language: i18n.language ?? 'en',
-  textDirection: i18n.textDirection ?? 'ltr',
+  language: i18n.language ?? "en",
+  textDirection: i18n.textDirection ?? "ltr",
 };
 
 export const METADATA: MetaDataConfig = {
   title: {
     default: metadata.title?.default ?? SITE.name,
-    template: metadata.title?.template ?? '%s',
+    template: metadata.title?.template ?? "%s",
   },
-  description: metadata.description ?? '',
+  description: metadata.description ?? "",
   robots: {
     index: metadata.robots?.index ?? false,
     follow: metadata.robots?.follow ?? false,
   },
   openGraph: {
-    type: metadata.openGraph?.type ?? 'website',
+    type: metadata.openGraph?.type ?? "website",
     site_name: metadata.openGraph?.site_name,
     images: metadata.openGraph?.images?.map((img) => ({
-      url: img.url ?? '',
+      url: img.url ?? "",
       width: img.width ?? 0,
       height: img.height ?? 0,
     })),
@@ -139,28 +159,40 @@ export const APP_BLOG: AppBlogConfig = {
   relatedPostsCount: blog.relatedPostsCount ?? 4,
   post: {
     isEnabled: blog.post?.isEnabled ?? true,
-    permalink: blog.post?.permalink ?? '/blog/posts/%slug%',
-    robots: { index: blog.post?.robots?.index ?? true, follow: blog.post?.robots?.follow ?? true },
+    permalink: blog.post?.permalink ?? "/blog/posts/%slug%",
+    robots: {
+      index: blog.post?.robots?.index ?? true,
+      follow: blog.post?.robots?.follow ?? true,
+    },
   },
   list: {
     isEnabled: blog.list?.isEnabled ?? true,
-    pathname: blog.list?.pathname ?? 'blog',
-    robots: { index: blog.list?.robots?.index ?? true, follow: blog.list?.robots?.follow ?? true },
+    pathname: blog.list?.pathname ?? "blog",
+    robots: {
+      index: blog.list?.robots?.index ?? true,
+      follow: blog.list?.robots?.follow ?? true,
+    },
   },
   category: {
     isEnabled: blog.category?.isEnabled ?? true,
-    pathname: blog.category?.pathname ?? 'category',
-    robots: { index: blog.category?.robots?.index ?? true, follow: blog.category?.robots?.follow ?? true },
+    pathname: blog.category?.pathname ?? "category",
+    robots: {
+      index: blog.category?.robots?.index ?? true,
+      follow: blog.category?.robots?.follow ?? true,
+    },
   },
   tag: {
     isEnabled: blog.tag?.isEnabled ?? true,
-    pathname: blog.tag?.pathname ?? 'tag',
-    robots: { index: blog.tag?.robots?.index ?? false, follow: blog.tag?.robots?.follow ?? true },
+    pathname: blog.tag?.pathname ?? "tag",
+    robots: {
+      index: blog.tag?.robots?.index ?? false,
+      follow: blog.tag?.robots?.follow ?? true,
+    },
   },
 };
 
 export const UI: SharedUIConfig = {
-  theme: uiCfg.theme ?? 'system',
+  theme: uiCfg.theme ?? "system",
 };
 
 export const ANALYTICS: SharedAnalyticsConfig = {

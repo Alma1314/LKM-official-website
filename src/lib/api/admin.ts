@@ -11,10 +11,10 @@
 //  - 路径前缀用 /api/v1/admin：src/middleware.ts 只代理 /api/ 开头并**原样转发**路径，
 //    与仓库其余调用一致（如 /api/v1/forum/...），cookie Path=/api/v1/admin 也与之匹配。
 
-import { apiFetch } from '~/lib/api/fetch';
-import { t } from '~/lib/i18n';
-import type { AppError } from '~/lib/errors/error-codes';
-import type { Result } from '~/lib/errors/result';
+import { apiFetch } from "~/lib/api/fetch";
+import { t } from "~/lib/i18n";
+import type { AppError } from "~/lib/errors/error-codes";
+import type { Result } from "~/lib/errors/result";
 
 export interface AdminUser {
   id: number;
@@ -24,13 +24,13 @@ export interface AdminUser {
 
 export class AdminAuthError extends Error {
   constructor() {
-    super(t('messages.admin.sessionExpired'));
-    this.name = 'AdminAuthError';
+    super(t("messages.admin.sessionExpired"));
+    this.name = "AdminAuthError";
   }
 }
 
 let redirecting = false;
-let redirectTarget = '/admin/login';
+let redirectTarget = "/admin/login";
 
 /** 登录成功 / 页面进入后台前调用，清掉重入锁，避免后续 401 不再触发跳转。 */
 export function resetRedirectGuard(): void {
@@ -43,7 +43,8 @@ export function setRedirectTarget(target: string): void {
 }
 
 function toLogin(): void {
-  if (redirecting || window.location.pathname.startsWith(redirectTarget)) return;
+  if (redirecting || window.location.pathname.startsWith(redirectTarget))
+    return;
   redirecting = true;
   window.location.replace(redirectTarget); // replace：不进前进历史
 }
@@ -55,7 +56,10 @@ function toLogin(): void {
  *   src/middleware.ts 按 /api/ 原样转发到后端，与仓库其余调用一致。
  *   401/403 触发守卫跳登录，调用方 catch AdminAuthError 静默即可，勿各自跳转。
  */
-export async function adminFetch(path: string, init?: RequestInit): Promise<Response> {
+export async function adminFetch(
+  path: string,
+  init?: RequestInit,
+): Promise<Response> {
   const result: Result<Response, AppError> = await apiFetch(path, init);
   if (result.isErr()) {
     // 网络/超时等 AppError：不让守卫跳登录，交由调用方/网络层统一报错
@@ -70,13 +74,27 @@ export async function adminFetch(path: string, init?: RequestInit): Promise<Resp
 }
 
 /** 解析 @respond 包络 {code, msg, data} 的 JSON；失败抛错。 */
-export async function readAdminResp(res: Response): Promise<{ code: number; msg: string; data: unknown }> {
+export async function readAdminResp(
+  res: Response,
+): Promise<{ code: number; msg: string; data: unknown }> {
   if (!res.ok) {
-    const body = (await res.json().catch(() => ({}))) as { detail?: string; msg?: string };
-    throw new Error(body.msg || body.detail || t('messages.admin.requestFailedStatus', { status: res.status }));
+    const body = (await res.json().catch(() => ({}))) as {
+      detail?: string;
+      msg?: string;
+    };
+    throw new Error(
+      body.msg ||
+        body.detail ||
+        t("messages.admin.requestFailedStatus", { status: res.status }),
+    );
   }
-  const json = (await res.json()) as { code: number; msg: string; data: unknown };
-  if (json.code !== 0) throw new Error(json.msg || t('messages.admin.requestFailed'));
+  const json = (await res.json()) as {
+    code: number;
+    msg: string;
+    data: unknown;
+  };
+  if (json.code !== 0)
+    throw new Error(json.msg || t("messages.admin.requestFailed"));
   return json;
 }
 
@@ -86,11 +104,14 @@ export interface AdminLoginResult {
 }
 
 /** 后台登录；成功后 cookie 已由 Set-Cookie 写入，清守卫并返回用户信息。 */
-export async function adminLogin(username: string, password: string): Promise<AdminLoginResult> {
+export async function adminLogin(
+  username: string,
+  password: string,
+): Promise<AdminLoginResult> {
   resetRedirectGuard();
-  const res = await adminFetch('/api/v1/admin/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await adminFetch("/api/v1/admin/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
   const body = await readAdminResp(res);
@@ -100,7 +121,9 @@ export async function adminLogin(username: string, password: string): Promise<Ad
 /** 后台登出：撤销 refresh 会话并清 cookie。 */
 export async function adminLogout(): Promise<void> {
   try {
-    const res = await adminFetch('/api/v1/admin/auth/logout', { method: 'POST' });
+    const res = await adminFetch("/api/v1/admin/auth/logout", {
+      method: "POST",
+    });
     await readAdminResp(res);
   } catch {
     // 即使后端不可用也清本地姿态，让守卫复位
@@ -116,7 +139,7 @@ export async function adminLogout(): Promise<void> {
 export async function bootAdminSession(): Promise<AdminUser | null> {
   resetRedirectGuard();
   try {
-    const res = await adminFetch('/api/v1/admin/auth/me');
+    const res = await adminFetch("/api/v1/admin/auth/me");
     const body = await readAdminResp(res);
     return (body.data as unknown as AdminUser) ?? null;
   } catch (e) {

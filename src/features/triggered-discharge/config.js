@@ -5,7 +5,8 @@
 
 /* 手机 GPU 使用更粗的晶格；物理计算与分辨率无关，
    因为所有速率都通过 CELL_M 以米和秒来表达 */
-export const MOBILE = matchMedia('(pointer:coarse)').matches || innerWidth < 830;
+export const MOBILE =
+  matchMedia("(pointer:coarse)").matches || innerWidth < 830;
 export const GW = MOBILE ? 128 : 192,
   GH = MOBILE ? 192 : 288;
 export const N = GW * GH;

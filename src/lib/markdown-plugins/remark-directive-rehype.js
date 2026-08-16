@@ -1,16 +1,24 @@
-import { h } from 'hastscript';
-import { visit } from 'unist-util-visit';
+import { h } from "hastscript";
+import { visit } from "unist-util-visit";
 
 export function parseDirectiveNode() {
   return (tree) => {
     visit(tree, (node) => {
-      if (node.type === 'containerDirective' || node.type === 'leafDirective' || node.type === 'textDirective') {
+      if (
+        node.type === "containerDirective" ||
+        node.type === "leafDirective" ||
+        node.type === "textDirective"
+      ) {
         // biome-ignore lint/suspicious/noAssignInExpressions: <check later>
         const data = node.data || (node.data = {});
         node.attributes = node.attributes || {};
-        if (node.children.length > 0 && node.children[0].data && node.children[0].data.directiveLabel) {
+        if (
+          node.children.length > 0 &&
+          node.children[0].data &&
+          node.children[0].data.directiveLabel
+        ) {
           // 给节点添加标记，表明它有指令标签
-          node.attributes['has-directive-label'] = true;
+          node.attributes["has-directive-label"] = true;
         }
         const hast = h(node.name, node.attributes);
 

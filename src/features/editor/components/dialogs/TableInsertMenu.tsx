@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ReactElement } from 'react';
-import { t } from '~/lib/i18n';
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { ReactElement } from "react";
+import { t } from "~/lib/i18n";
 
 interface TableInsertMenuProps {
   onInsert: (rows: number, cols: number) => void;
@@ -14,7 +14,10 @@ function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
 
-export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuProps): ReactElement {
+export default function TableInsertMenu({
+  onInsert,
+  onClose,
+}: TableInsertMenuProps): ReactElement {
   const [hoverRow, setHoverRow] = useState(0);
   const [hoverCol, setHoverCol] = useState(0);
   const [focusRow, setFocusRow] = useState(0);
@@ -26,7 +29,10 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
     gridRef.current?.focus();
   }, []);
 
-  const getCellId = useCallback((r: number, c: number) => `table-cell-${r}-${c}`, []);
+  const getCellId = useCallback(
+    (r: number, c: number) => `table-cell-${r}-${c}`,
+    [],
+  );
 
   const moveFocus = useCallback((dr: number, dc: number) => {
     setFocusRow((r) => clamp(r + dr, 0, MAX_ROWS - 1));
@@ -36,37 +42,37 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       switch (e.key) {
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           moveFocus(-1, 0);
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           moveFocus(1, 0);
           break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
           e.preventDefault();
           moveFocus(0, -1);
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           e.preventDefault();
           moveFocus(0, 1);
           break;
-        case 'Enter':
-        case ' ':
+        case "Enter":
+        case " ":
           e.preventDefault();
           if (focusRow > 0 && focusCol > 0) {
             onInsert(focusRow + 1, focusCol + 1);
             onClose();
           }
           break;
-        case 'Escape':
+        case "Escape":
           e.preventDefault();
           onClose();
           break;
       }
     },
-    [focusRow, focusCol, onInsert, onClose, moveFocus]
+    [focusRow, focusCol, onInsert, onClose, moveFocus],
   );
 
   // 同步 focus -> hover 展示选中区域
@@ -77,13 +83,16 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
     <div className="rte-link-popover">
       <p className="text-xs text-deep-text/60 mb-2">
         {activeRows > 0 && activeCols > 0
-          ? t('editor.tableInsert.tableLabel', { rows: activeRows, cols: activeCols })
-          : t('editor.tableInsert.selectSize')}
+          ? t("editor.tableInsert.tableLabel", {
+              rows: activeRows,
+              cols: activeCols,
+            })
+          : t("editor.tableInsert.selectSize")}
       </p>
       <div
         ref={gridRef}
         role="grid"
-        aria-label={t('editor.tableInsert.gridLabel')}
+        aria-label={t("editor.tableInsert.gridLabel")}
         className="rte-table-menu outline-none"
         style={{ gridTemplateColumns: `repeat(${MAX_COLS}, 24px)` }}
         tabIndex={-1}
@@ -95,16 +104,21 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
       >
         {Array.from({ length: MAX_ROWS }, (_, r) =>
           Array.from({ length: MAX_COLS }, (_, c) => {
-            const isActive = (hoverRow > 0 && r < hoverRow && c < hoverCol) || (r <= focusRow && c <= focusCol);
+            const isActive =
+              (hoverRow > 0 && r < hoverRow && c < hoverCol) ||
+              (r <= focusRow && c <= focusCol);
             const isFocused = r === focusRow && c === focusCol;
             return (
               <button
                 key={getCellId(r, c)}
                 role="gridcell"
                 type="button"
-                className={`rte-table-cell ${isActive ? 'is-active' : ''}`}
+                className={`rte-table-cell ${isActive ? "is-active" : ""}`}
                 tabIndex={isFocused ? 0 : -1}
-                aria-label={t('editor.tableInsert.cellLabel', { rows: r + 1, cols: c + 1 })}
+                aria-label={t("editor.tableInsert.cellLabel", {
+                  rows: r + 1,
+                  cols: c + 1,
+                })}
                 onMouseEnter={() => {
                   setFocusRow(r);
                   setFocusCol(c);
@@ -121,7 +135,7 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
                 }}
               />
             );
-          })
+          }),
         )}
       </div>
     </div>

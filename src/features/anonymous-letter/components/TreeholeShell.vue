@@ -2,7 +2,10 @@
   <NMessageProvider>
     <NDialogProvider>
       <NModalProvider>
-        <div class="th-app" :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }">
+        <div
+          class="th-app"
+          :class="{ 'low-perf': lowPerf, 'high-contrast': highContrast }"
+        >
           <div class="app-root">
             <!-- 背景层 -->
             <div class="bg-flow" aria-hidden="true"></div>
@@ -16,7 +19,11 @@
             <header class="top-nav glass">
               <div class="nav-inner">
                 <div class="nav-left">
-                  <a :href="buildUrl('/apps')" class="nav-exit-btn" :title="t('treehole.backToSite')">
+                  <a
+                    :href="buildUrl('/apps')"
+                    class="nav-exit-btn"
+                    :title="t('treehole.backToSite')"
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -36,7 +43,9 @@
                     :aria-label="t('treehole.homeAriaLabel')"
                   >
                     <span class="brand-icon">&#x1F333;</span>
-                    <span class="brand-text grad-text">{{ t('treehole.name') }}</span>
+                    <span class="brand-text grad-text">{{
+                      t("treehole.name")
+                    }}</span>
                   </a>
                 </div>
 
@@ -45,45 +54,51 @@
                     :href="buildUrl('/community/treehole')"
                     class="nav-link"
                     :class="{ active: activeNav === 'home' }"
-                    >{{ t('treehole.nav.square') }}</a
+                    >{{ t("treehole.nav.square") }}</a
                   >
                   <a
                     :href="buildUrl('/community/treehole/random')"
                     class="nav-link"
                     :class="{ active: activeNav === 'random' }"
-                    >{{ t('treehole.nav.random') }}</a
+                    >{{ t("treehole.nav.random") }}</a
                   >
                   <a
                     :href="buildUrl('/community/treehole/bottle')"
                     class="nav-link"
                     :class="{ active: activeNav === 'bottle' }"
-                    >{{ t('treehole.nav.bottle') }}</a
+                    >{{ t("treehole.nav.bottle") }}</a
                   >
                   <a
                     :href="buildUrl('/community/treehole/wish')"
                     class="nav-link"
                     :class="{ active: activeNav === 'wish' }"
-                    >{{ t('treehole.nav.wish') }}</a
+                    >{{ t("treehole.nav.wish") }}</a
                   >
                   <a
                     :href="buildUrl('/community/treehole/rank')"
                     class="nav-link"
                     :class="{ active: activeNav === 'rank' }"
-                    >{{ t('treehole.nav.rank') }}</a
+                    >{{ t("treehole.nav.rank") }}</a
                   >
                 </nav>
 
                 <!-- 右侧操作 -->
                 <div class="nav-actions">
-                  <a :href="buildUrl('/community/treehole/write')" class="btn-grad nav-write-btn"
-                    >&#x270D;&#xFE0F; {{ t('treehole.nav.write') }}</a
+                  <a
+                    :href="buildUrl('/community/treehole/write')"
+                    class="btn-grad nav-write-btn"
+                    >&#x270D;&#xFE0F; {{ t("treehole.nav.write") }}</a
                   >
                   <button
                     class="nav-icon-btn"
                     @click="app.toggleTheme()"
-                    :aria-label="app.isNight ? t('treehole.switchDay') : t('treehole.switchNight')"
+                    :aria-label="
+                      app.isNight
+                        ? t('treehole.switchDay')
+                        : t('treehole.switchNight')
+                    "
                   >
-                    {{ app.isNight ? '&#x2600;&#xFE0F;' : '&#x1F319;' }}
+                    {{ app.isNight ? "&#x2600;&#xFE0F;" : "&#x1F319;" }}
                   </button>
                   <button
                     class="nav-icon-btn hamburger"
@@ -108,55 +123,55 @@
                   :href="buildUrl('/community/treehole')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'home' }"
-                  >&#x1F3E0; {{ t('treehole.nav.square') }}</a
+                  >&#x1F3E0; {{ t("treehole.nav.square") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/write')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'write' }"
-                  >&#x270D;&#xFE0F; {{ t('treehole.nav.write') }}</a
+                  >&#x270D;&#xFE0F; {{ t("treehole.nav.write") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/random')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'random' }"
-                  >&#x1F3B2; {{ t('treehole.nav.randomTreehole') }}</a
+                  >&#x1F3B2; {{ t("treehole.nav.randomTreehole") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/bottle')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'bottle' }"
-                  >&#x1F37E; {{ t('treehole.nav.bottle') }}</a
+                  >&#x1F37E; {{ t("treehole.nav.bottle") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/wish')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'wish' }"
-                  >&#x2B50; {{ t('treehole.nav.wish') }}</a
+                  >&#x2B50; {{ t("treehole.nav.wish") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/rank')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'rank' }"
-                  >&#x1F3C6; {{ t('treehole.nav.rank') }}</a
+                  >&#x1F3C6; {{ t("treehole.nav.rank") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/mine')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'mine' }"
-                  >&#x1F4EC; {{ t('treehole.nav.myMailbox') }}</a
+                  >&#x1F4EC; {{ t("treehole.nav.myMailbox") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/messages')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'messages' }"
-                  >&#x1F4AC; {{ t('treehole.nav.messages') }}</a
+                  >&#x1F4AC; {{ t("treehole.nav.messages") }}</a
                 >
                 <a
                   :href="buildUrl('/community/treehole/settings')"
                   class="mobile-nav-link"
                   :class="{ active: activeNav === 'settings' }"
-                  >&#x2699;&#xFE0F; {{ t('treehole.nav.settings') }}</a
+                  >&#x2699;&#xFE0F; {{ t("treehole.nav.settings") }}</a
                 >
               </nav>
             </transition>
@@ -167,10 +182,17 @@
             </main>
 
             <!-- ==================== 移动端底部导航栏 ==================== -->
-            <nav class="bottom-nav glass" :aria-label="t('treehole.nav.bottomAria')">
-              <a :href="buildUrl('/community/treehole')" class="bn-item" :class="{ active: activeNav === 'home' }">
+            <nav
+              class="bottom-nav glass"
+              :aria-label="t('treehole.nav.bottomAria')"
+            >
+              <a
+                :href="buildUrl('/community/treehole')"
+                class="bn-item"
+                :class="{ active: activeNav === 'home' }"
+              >
                 <span class="bn-icon">&#x1F3E0;</span>
-                <span class="bn-label">{{ t('treehole.nav.square') }}</span>
+                <span class="bn-label">{{ t("treehole.nav.square") }}</span>
               </a>
               <a
                 :href="buildUrl('/community/treehole/random')"
@@ -178,7 +200,7 @@
                 :class="{ active: activeNav === 'random' }"
               >
                 <span class="bn-icon">&#x1F3B2;</span>
-                <span class="bn-label">{{ t('treehole.nav.random') }}</span>
+                <span class="bn-label">{{ t("treehole.nav.random") }}</span>
               </a>
               <a
                 :href="buildUrl('/community/treehole/write')"
@@ -193,11 +215,15 @@
                 :class="{ active: activeNav === 'bottle' }"
               >
                 <span class="bn-icon">&#x1F37E;</span>
-                <span class="bn-label">{{ t('treehole.nav.bottle') }}</span>
+                <span class="bn-label">{{ t("treehole.nav.bottle") }}</span>
               </a>
-              <a :href="buildUrl('/community/treehole/mine')" class="bn-item" :class="{ active: activeNav === 'mine' }">
+              <a
+                :href="buildUrl('/community/treehole/mine')"
+                class="bn-item"
+                :class="{ active: activeNav === 'mine' }"
+              >
                 <span class="bn-icon">&#x1F4EC;</span>
-                <span class="bn-label">{{ t('treehole.nav.mailbox') }}</span>
+                <span class="bn-label">{{ t("treehole.nav.mailbox") }}</span>
               </a>
             </nav>
           </div>
@@ -208,12 +234,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { NMessageProvider, NDialogProvider, NModalProvider } from 'naive-ui';
-import Particles from './Particles.vue';
-import { useApp } from '../stores/app';
-import { buildUrl } from '~/lib/utils/paths';
-import { t } from '~/lib/i18n';
+import { ref, onMounted, onUnmounted } from "vue";
+import { NMessageProvider, NDialogProvider, NModalProvider } from "naive-ui";
+import Particles from "./Particles.vue";
+import { useApp } from "../stores/app";
+import { buildUrl } from "~/lib/utils/paths";
+import { t } from "~/lib/i18n";
 
 defineProps<{
   activeNav?: string;
@@ -229,19 +255,21 @@ let synced = false;
 function forceSync() {
   if (synced) return;
   // 同步主题
-  const htmlDark = document.documentElement.classList.contains('dark');
+  const htmlDark = document.documentElement.classList.contains("dark");
   const expectedDark =
-    localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    localStorage.theme === "dark" ||
+    (!localStorage.theme &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
   // 同步色相
-  const hue = localStorage.getItem('hue');
-  if (hue) document.documentElement.style.setProperty('--hue', hue);
+  const hue = localStorage.getItem("hue");
+  if (hue) document.documentElement.style.setProperty("--hue", hue);
   // 主题不匹配则 reload
   if (htmlDark !== expectedDark) {
     location.reload();
     return;
   }
   synced = true;
-  app.setTheme(htmlDark ? 'night' : 'day');
+  app.setTheme(htmlDark ? "night" : "day");
 }
 
 onMounted(forceSync);

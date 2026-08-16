@@ -1,8 +1,8 @@
-import { ref, type Ref } from 'vue';
-import { blogApi } from '~/lib/api';
-import type { BlogStarStatus } from '../types/blog';
-import type { Result } from '~/lib/errors/result';
-import type { AppError } from '~/lib/errors/error-codes';
+import { ref, type Ref } from "vue";
+import { blogApi } from "~/lib/api";
+import type { BlogStarStatus } from "../types/blog";
+import type { Result } from "~/lib/errors/result";
+import type { AppError } from "~/lib/errors/error-codes";
 
 export function useBlogStar(seriesId: number): {
   starred: Ref<boolean>;

@@ -1,4 +1,4 @@
-import '@vue/test-utils';
+import "@vue/test-utils";
 
 // happy-dom v20 的 localStorage 仅在 BrowserWindow 上提供，vitest 使用的基础 Window
 // 不包含它，这里用内存版 Storage 顶替。
@@ -30,11 +30,11 @@ class MemoryStorage implements Storage {
   }
 }
 
-Object.defineProperty(globalThis, 'localStorage', {
+Object.defineProperty(globalThis, "localStorage", {
   value: new MemoryStorage(),
   configurable: true,
   writable: true,
 });
 
 // 站点配置默认语言为 zh-CN，测试断言基于中文文案；预置 locale 使 i18n 解析一致。
-localStorage.setItem('lkm-locale', 'zh-CN');
+localStorage.setItem("lkm-locale", "zh-CN");

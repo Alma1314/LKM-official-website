@@ -1,28 +1,49 @@
 <template>
-  <div class="letter-card glass glass-hover float-up" :style="{ '--card-grad': grad }">
+  <div
+    class="letter-card glass glass-hover float-up"
+    :style="{ '--card-grad': grad }"
+  >
     <!-- 顶部：分类 + 代号 + 时间 -->
     <div class="lc-head">
-      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ t(category.label) }}</span>
+      <span class="lc-cat" :style="{ background: category.color }"
+        >{{ category.emoji }} {{ t(category.label) }}</span
+      >
       <span class="lc-code">{{ letter.codename }}</span>
     </div>
 
     <!-- 信纸背景正文 -->
     <div class="lc-body" :style="{ background: paperBg }" :class="{ expanded }">
       <div v-if="letter.sticker" class="lc-sticker">{{ letter.sticker }}</div>
-      <p class="lc-content" :class="{ clamped: !expanded && isLong }">{{ letter.content }}</p>
+      <p class="lc-content" :class="{ clamped: !expanded && isLong }">
+        {{ letter.content }}
+      </p>
       <div v-if="!expanded && isLong" class="lc-fade"></div>
     </div>
-    <button v-if="isLong && (!letter.encrypted || decrypted)" class="lc-toggle" @click="expanded = !expanded">
-      {{ expanded ? t('treehole.letterCard.collapse') : t('treehole.letterCard.expand') }}
+    <button
+      v-if="isLong && (!letter.encrypted || decrypted)"
+      class="lc-toggle"
+      @click="expanded = !expanded"
+    >
+      {{
+        expanded
+          ? t("treehole.letterCard.collapse")
+          : t("treehole.letterCard.expand")
+      }}
     </button>
 
     <!-- 心情标签 -->
     <div class="lc-moods" v-if="letter.moods && letter.moods.length">
-      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ t(moodKey(m)) }}</span>
+      <span v-for="m in letter.moods" :key="m" class="lc-mood"
+        >#{{ t(moodKey(m)) }}</span
+      >
     </div>
     <!-- 内容标签 -->
     <div class="lc-tags" v-if="letter.tags && letter.tags.length">
-      <span v-for="tg in letter.tags" :key="tg" class="lc-tag" :style="{ background: tagColor(tg) }"
+      <span
+        v-for="tg in letter.tags"
+        :key="tg"
+        class="lc-tag"
+        :style="{ background: tagColor(tg) }"
         >{{ tagEmoji(tg) }} {{ t(tagLabel(tg)) }}</span
       >
     </div>
@@ -33,22 +54,28 @@
       <button class="lc-act" :class="{ liked: letter.liked }" @click="onLike">
         <span class="lc-ic" :class="{ 'heart-burst': burst }">❤️</span
         ><span v-if="burst" class="heart-particles"
-          ><span v-for="n in 6" :key="n" :style="particleStyle(n)">💗</span></span
+          ><span v-for="n in 6" :key="n" :style="particleStyle(n)"
+            >💗</span
+          ></span
         >{{ letter.likes || 0 }}
       </button>
       <button class="lc-act" :class="{ favd: isFav }" @click="onFav">
-        <span class="lc-ic">{{ isFav ? '⭐' : '☆' }}</span
+        <span class="lc-ic">{{ isFav ? "⭐" : "☆" }}</span
         >{{ favCount }}
       </button>
-      <button class="lc-act" @click="onCopy"><span class="lc-ic">📋</span>{{ t('treehole.letterCard.copy') }}</button>
+      <button class="lc-act" @click="onCopy">
+        <span class="lc-ic">📋</span>{{ t("treehole.letterCard.copy") }}
+      </button>
       <button class="lc-act" @click="onReport">
-        <span class="lc-ic">⚠️</span>{{ t('treehole.letterCard.report') }}
+        <span class="lc-ic">⚠️</span>{{ t("treehole.letterCard.report") }}
       </button>
     </div>
 
     <div class="lc-foot">
       <span>{{ formatTime(letter.createdAt) }}</span>
-      <button class="lc-same" @click="onSameType">{{ t('treehole.letterCard.sameType') }}</button>
+      <button class="lc-same" @click="onSameType">
+        {{ t("treehole.letterCard.sameType") }}
+      </button>
     </div>
 
     <ReportDialog
@@ -62,33 +89,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { getCategory, getPaper, getTag, moodKey } from '../stores/constants';
-import { toggleFavorite } from '../stores/storage';
-import ReportDialog from './ReportDialog.vue';
-import { t } from '~/lib/i18n';
+import { ref, computed } from "vue";
+import { getCategory, getPaper, getTag, moodKey } from "../stores/constants";
+import { toggleFavorite } from "../stores/storage";
+import ReportDialog from "./ReportDialog.vue";
+import { t } from "~/lib/i18n";
 
 const props = defineProps({ letter: { type: Object, required: true } });
-const emit = defineEmits(['like', 'fav', 'same-type']);
+const emit = defineEmits(["like", "fav", "same-type"]);
 
 const category = computed(() => getCategory(props.letter.category));
 const paperBg = computed(() => getPaper(props.letter.paper).gradient);
 const grad = computed(() => category.value.color);
 function tagColor(k) {
-  return (getTag(k) || {}).color || '#8e7cff';
+  return (getTag(k) || {}).color || "#8e7cff";
 }
 function tagLabel(k) {
   return (getTag(k) || {}).label || k;
 }
 function tagEmoji(k) {
-  return (getTag(k) || {}).emoji || '🏷️';
+  return (getTag(k) || {}).emoji || "🏷️";
 }
 
 const expanded = ref(false);
-const isLong = computed(() => (props.letter.content || '').length > 90);
+const isLong = computed(() => (props.letter.content || "").length > 90);
 
 const isFav = ref(false);
-const favCount = computed(() => (props.letter.favorites || 0) + (isFav.value ? 1 : 0));
+const favCount = computed(
+  () => (props.letter.favorites || 0) + (isFav.value ? 1 : 0),
+);
 
 const reportVisible = ref(false);
 const burst = ref(false);
@@ -97,23 +126,32 @@ function particleStyle(n) {
   const angle = (n / 6) * Math.PI * 2;
   const dist = 22 + Math.random() * 10;
   return {
-    '--dx': Math.cos(angle) * dist + 'px',
-    '--dy': Math.sin(angle) * dist + 'px',
-    animationDelay: n * 0.02 + 's',
+    "--dx": Math.cos(angle) * dist + "px",
+    "--dy": Math.sin(angle) * dist + "px",
+    animationDelay: n * 0.02 + "s",
   };
 }
 
 function formatTime(ts) {
   const d = new Date(ts);
   const diff = Date.now() - ts;
-  if (diff < 60000) return t('treehole.letterCard.justNow');
-  if (diff < 3600000) return t('treehole.letterCard.minutesAgo', { count: Math.floor(diff / 60000) });
-  if (diff < 86400000) return t('treehole.letterCard.hoursAgo', { count: Math.floor(diff / 3600000) });
-  return t('treehole.letterCard.date', { month: d.getMonth() + 1, day: d.getDate() });
+  if (diff < 60000) return t("treehole.letterCard.justNow");
+  if (diff < 3600000)
+    return t("treehole.letterCard.minutesAgo", {
+      count: Math.floor(diff / 60000),
+    });
+  if (diff < 86400000)
+    return t("treehole.letterCard.hoursAgo", {
+      count: Math.floor(diff / 3600000),
+    });
+  return t("treehole.letterCard.date", {
+    month: d.getMonth() + 1,
+    day: d.getDate(),
+  });
 }
 
 function onLike() {
-  emit('like', props.letter);
+  emit("like", props.letter);
   if (!props.letter.liked) {
     burst.value = false;
     requestAnimationFrame(() => {
@@ -125,10 +163,13 @@ function onLike() {
 function onFav() {
   const added = toggleFavorite(props.letter.id);
   isFav.value = added;
-  props.letter.favorites = Math.max(0, (props.letter.favorites || 0) + (added ? 1 : -1));
+  props.letter.favorites = Math.max(
+    0,
+    (props.letter.favorites || 0) + (added ? 1 : -1),
+  );
 }
 async function onCopy() {
-  const text = `${t('treehole.letterCard.sharePrefix')}${t(category.value.label)} · ${props.letter.codename}\n${props.letter.content}`;
+  const text = `${t("treehole.letterCard.sharePrefix")}${t(category.value.label)} · ${props.letter.codename}\n${props.letter.content}`;
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -142,7 +183,7 @@ function onReported() {
   props.letter.reported = true;
 }
 function onSameType() {
-  emit('same-type', props.letter.category);
+  emit("same-type", props.letter.category);
 }
 </script>
 

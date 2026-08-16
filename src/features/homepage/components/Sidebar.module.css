@@ -139,7 +139,7 @@
 }
 
 .nav li:global(.active)::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -19px;
   right: 0;
@@ -151,7 +151,7 @@
 }
 
 .nav li:global(.active)::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -19px;
   right: 0;
@@ -229,7 +229,7 @@
 
 /* ── Active 图标 — 圆形边框 ── */
 .nav li:global(.active) .icon::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;

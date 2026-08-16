@@ -1,9 +1,9 @@
-import type { JSONContent } from '@tiptap/core';
-import { parseMdxString } from './parse-mdx';
-import { normalizeMDAST } from './normalize';
-import { validateMDAST } from './validate';
-import { mdastToTiptap } from './mdast-to-tiptap';
-import type { ParsedMdx, ValidationIssue } from './types';
+import type { JSONContent } from "@tiptap/core";
+import { parseMdxString } from "./parse-mdx";
+import { normalizeMDAST } from "./normalize";
+import { validateMDAST } from "./validate";
+import { mdastToTiptap } from "./mdast-to-tiptap";
+import type { ParsedMdx, ValidationIssue } from "./types";
 
 export interface ImportResult {
   content: JSONContent[];
@@ -16,17 +16,17 @@ export function importMdx(mdx: string): ImportResult {
   const normalized = normalizeMDAST(parsed.root);
   const issues = validateMDAST(normalized);
 
-  const hasErrors = issues.some((i) => i.severity === 'error');
+  const hasErrors = issues.some((i) => i.severity === "error");
   if (hasErrors) {
     throw Object.assign(
       new Error(
-        'MDX contains security issues: ' +
+        "MDX contains security issues: " +
           issues
-            .filter((i) => i.severity === 'error')
+            .filter((i) => i.severity === "error")
             .map((i) => i.message)
-            .join('; ')
+            .join("; "),
       ),
-      { issues }
+      { issues },
     );
   }
 

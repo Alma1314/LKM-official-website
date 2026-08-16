@@ -1,21 +1,28 @@
-import { useEffect, useState, useCallback, useRef, memo } from 'react';
-import type { Editor } from '@tiptap/core';
-import LinkEditPopover from '../dialogs/LinkEditPopover';
-import { t } from '~/lib/i18n';
+import { useEffect, useState, useCallback, useRef, memo } from "react";
+import type { Editor } from "@tiptap/core";
+import LinkEditPopover from "../dialogs/LinkEditPopover";
+import { t } from "~/lib/i18n";
 
 interface BubbleMenuWrapperProps {
   editor: Editor;
   onComment?: (from: number, to: number, text: string) => void;
 }
 
-const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }: BubbleMenuWrapperProps) {
+const BubbleMenuWrapper = memo(function BubbleMenuWrapper({
+  editor,
+  onComment,
+}: BubbleMenuWrapperProps) {
   const [show, setShow] = useState(false);
   const [linkOpen, setLinkOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const rafRef = useRef<number | null>(null);
-  const lastSelectionRef = useRef<{ from: number; to: number; empty: boolean } | null>(null);
+  const lastSelectionRef = useRef<{
+    from: number;
+    to: number;
+    empty: boolean;
+  } | null>(null);
 
   const update = useCallback(() => {
     // requestAnimationFrame 防抖：连续 selectionUpdate 合并为一次更新
@@ -24,7 +31,12 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       const { from, to, empty } = editor.state.selection;
       // 去重：选区坐标未变化时跳过 layout 计算
       const prev = lastSelectionRef.current;
-      if (prev && prev.from === from && prev.to === to && prev.empty === empty) {
+      if (
+        prev &&
+        prev.from === from &&
+        prev.to === to &&
+        prev.empty === empty
+      ) {
         return;
       }
       lastSelectionRef.current = { from, to, empty };
@@ -37,30 +49,33 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       const end = editor.view.coordsAtPos(to);
       setPos({
         top: Math.max(8, start.top - 44),
-        left: Math.min(window.innerWidth - 80, Math.max(80, (start.left + end.right) / 2)),
+        left: Math.min(
+          window.innerWidth - 80,
+          Math.max(80, (start.left + end.right) / 2),
+        ),
       });
       setShow(true);
     });
   }, [editor]);
 
   useEffect(() => {
-    editor.on('selectionUpdate', update);
+    editor.on("selectionUpdate", update);
     // Listen to scroll within the editor's parent for position updates
     const scrollHandler = (): void => update();
     const editorDom = editor.view.dom;
     const scrollParent = editorDom.closest('[class*="overflow"]') || window;
-    scrollParent.addEventListener('scroll', scrollHandler, { passive: true });
+    scrollParent.addEventListener("scroll", scrollHandler, { passive: true });
 
     const handleBlur = (): void => {
       lastSelectionRef.current = null;
       blurTimerRef.current = setTimeout(() => setShow(false), 200);
     };
-    editor.on('blur', handleBlur);
+    editor.on("blur", handleBlur);
 
     return () => {
-      editor.off('selectionUpdate', update);
-      editor.off('blur', handleBlur);
-      scrollParent.removeEventListener('scroll', scrollHandler);
+      editor.off("selectionUpdate", update);
+      editor.off("blur", handleBlur);
+      scrollParent.removeEventListener("scroll", scrollHandler);
       if (blurTimerRef.current) {
         clearTimeout(blurTimerRef.current);
         blurTimerRef.current = null;
@@ -75,12 +90,15 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
   if (!show && !linkOpen) return null;
 
   return (
-    <div className="rte-bubble-menu" style={{ top: pos.top, left: pos.left, transform: 'translateX(-50%)' }}>
+    <div
+      className="rte-bubble-menu"
+      style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
+    >
       <button
         type="button"
-        aria-label={t('editor.bold')}
-        title={t('editor.bold')}
-        className={`rte-toolbar-btn ${editor.isActive('bold') ? 'is-active' : ''}`}
+        aria-label={t("editor.bold")}
+        title={t("editor.bold")}
+        className={`rte-toolbar-btn ${editor.isActive("bold") ? "is-active" : ""}`}
         onMouseDown={(e) => {
           e.preventDefault();
           editor.chain().focus().toggleBold().run();
@@ -90,9 +108,9 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
-        aria-label={t('editor.italic')}
-        title={t('editor.italic')}
-        className={`rte-toolbar-btn ${editor.isActive('italic') ? 'is-active' : ''}`}
+        aria-label={t("editor.italic")}
+        title={t("editor.italic")}
+        className={`rte-toolbar-btn ${editor.isActive("italic") ? "is-active" : ""}`}
         onMouseDown={(e) => {
           e.preventDefault();
           editor.chain().focus().toggleItalic().run();
@@ -102,9 +120,9 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
-        aria-label={t('editor.underline')}
-        title={t('editor.underline')}
-        className={`rte-toolbar-btn ${editor.isActive('underline') ? 'is-active' : ''}`}
+        aria-label={t("editor.underline")}
+        title={t("editor.underline")}
+        className={`rte-toolbar-btn ${editor.isActive("underline") ? "is-active" : ""}`}
         onMouseDown={(e) => {
           e.preventDefault();
           editor.chain().focus().toggleUnderline().run();
@@ -114,9 +132,9 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
-        aria-label={t('editor.strike')}
-        title={t('editor.strike')}
-        className={`rte-toolbar-btn ${editor.isActive('strike') ? 'is-active' : ''}`}
+        aria-label={t("editor.strike")}
+        title={t("editor.strike")}
+        className={`rte-toolbar-btn ${editor.isActive("strike") ? "is-active" : ""}`}
         onMouseDown={(e) => {
           e.preventDefault();
           editor.chain().focus().toggleStrike().run();
@@ -126,22 +144,22 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
       </button>
       <button
         type="button"
-        aria-label={t('editor.inlineCode')}
-        title={t('editor.inlineCode')}
-        className={`rte-toolbar-btn ${editor.isActive('code') ? 'is-active' : ''}`}
+        aria-label={t("editor.inlineCode")}
+        title={t("editor.inlineCode")}
+        className={`rte-toolbar-btn ${editor.isActive("code") ? "is-active" : ""}`}
         onMouseDown={(e) => {
           e.preventDefault();
           editor.chain().focus().toggleCode().run();
         }}
       >
-        {'</>'}
+        {"</>"}
       </button>
       <div className="relative">
         <button
           type="button"
-          aria-label={t('editor.link')}
-          title={t('editor.link')}
-          className={`rte-toolbar-btn ${editor.isActive('link') ? 'is-active' : ''}`}
+          aria-label={t("editor.link")}
+          title={t("editor.link")}
+          className={`rte-toolbar-btn ${editor.isActive("link") ? "is-active" : ""}`}
           onMouseDown={(e) => {
             e.preventDefault();
             setLinkOpen(true);
@@ -151,7 +169,10 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
         </button>
         {linkOpen && (
           <div className="absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1">
-            <LinkEditPopover editor={editor} onClose={() => setLinkOpen(false)} />
+            <LinkEditPopover
+              editor={editor}
+              onClose={() => setLinkOpen(false)}
+            />
           </div>
         )}
       </div>
@@ -159,12 +180,12 @@ const BubbleMenuWrapper = memo(function BubbleMenuWrapper({ editor, onComment }:
         <button
           type="button"
           className="rte-toolbar-btn"
-          aria-label={t('editor.addComment')}
-          title={t('editor.addComment')}
+          aria-label={t("editor.addComment")}
+          title={t("editor.addComment")}
           onMouseDown={(e) => {
             e.preventDefault();
             const { from, to } = editor.state.selection;
-            const text = editor.state.doc.textBetween(from, to, ' ');
+            const text = editor.state.doc.textBetween(from, to, " ");
             if (text.trim()) {
               onComment(from, to, text);
             }

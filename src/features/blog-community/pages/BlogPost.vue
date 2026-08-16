@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
-import { useBlogPost } from '../composables/useBlogPost';
-import { useBlogComments } from '../composables/useBlogComments';
-import { useBlogStar } from '../composables/useBlogStar';
-import { useAuth } from '~/features/auth/composables/useAuth';
-import BlogCommentList from './BlogCommentList.vue';
-import BlogCommentForm from './BlogCommentForm.vue';
-import BlogStarButton from './BlogStarButton.vue';
-import { t } from '~/lib/i18n';
+import { onMounted, ref, computed } from "vue";
+import { useBlogPost } from "../composables/useBlogPost";
+import { useBlogComments } from "../composables/useBlogComments";
+import { useBlogStar } from "../composables/useBlogStar";
+import { useAuth } from "~/features/auth/composables/useAuth";
+import BlogCommentList from "./BlogCommentList.vue";
+import BlogCommentForm from "./BlogCommentForm.vue";
+import BlogStarButton from "./BlogStarButton.vue";
+import { t } from "~/lib/i18n";
 
 const props = defineProps<{
   seriesId: number;
   filepath: string;
 }>();
 
-const { MDXComponent, loading: postLoading, error: postError, fetchAndCompile } = useBlogPost();
+const {
+  MDXComponent,
+  loading: postLoading,
+  error: postError,
+  fetchAndCompile,
+} = useBlogPost();
 const {
   comments,
   loading: commentsLoading,
@@ -22,7 +27,12 @@ const {
   addComment,
   removeComment,
 } = useBlogComments(props.seriesId);
-const { starred, starCount, loading: starLoading, toggle: toggleStar } = useBlogStar(props.seriesId);
+const {
+  starred,
+  starCount,
+  loading: starLoading,
+  toggle: toggleStar,
+} = useBlogStar(props.seriesId);
 
 // Derive current user ID from auth state (persisted in localStorage)
 const _auth = useAuth();
@@ -35,9 +45,9 @@ const replyParentId = ref<number | null>(null);
 const submitting = ref(false);
 
 const replyTarget = computed(() => {
-  if (replyParentId.value === null) return '';
+  if (replyParentId.value === null) return "";
   const parent = comments.value.find((c) => c.id === replyParentId.value);
-  return parent ? parent.profile.nickname : '';
+  return parent ? parent.profile.nickname : "";
 });
 
 function handleReply(parentId: number) {
@@ -60,7 +70,7 @@ async function handleSubmit(contentStr: string) {
 
 async function handleStar() {
   const result = await toggleStar();
-  if (result.isErr() && result.error.message.includes('401')) {
+  if (result.isErr() && result.error.message.includes("401")) {
     // 引导登录
   }
 }
@@ -74,25 +84,37 @@ onMounted(async () => {
 <template>
   <div class="blog-post">
     <div v-if="postLoading" class="flex justify-center py-16">
-      <div class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+      <div
+        class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"
+      />
     </div>
 
     <div v-else-if="postError" class="text-center py-16">
       <p class="text-red-500 mb-4">{{ postError }}</p>
-      <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="fetchAndCompile(seriesId, filepath)">
-        {{ t('common.retry') }}
+      <button
+        class="btn-plain rounded-lg px-4 py-2 bg-primary text-white"
+        @click="fetchAndCompile(seriesId, filepath)"
+      >
+        {{ t("common.retry") }}
       </button>
     </div>
 
     <article v-else-if="MDXComponent" class="prose max-w-none">
       <div class="mb-6 flex items-center gap-4">
-        <BlogStarButton :starred="starred" :starCount="starCount" :loading="starLoading" @toggle="handleStar" />
+        <BlogStarButton
+          :starred="starred"
+          :starCount="starCount"
+          :loading="starLoading"
+          @toggle="handleStar"
+        />
       </div>
       <MDXComponent />
     </article>
 
     <section class="mt-12 pt-8 border-t border-border">
-      <h2 class="text-xl font-semibold mb-6">{{ t('blog.commentsCount', { count: comments.length }) }}</h2>
+      <h2 class="text-xl font-semibold mb-6">
+        {{ t("blog.commentsCount", { count: comments.length }) }}
+      </h2>
       <BlogCommentList
         v-if="comments.length > 0"
         :comments="comments"
@@ -100,7 +122,9 @@ onMounted(async () => {
         :onDelete="handleDelete"
         :currentUserId="currentUserId"
       />
-      <p v-else-if="!commentsLoading" class="text-text-muted text-sm">{{ t('blog.noComments') }}</p>
+      <p v-else-if="!commentsLoading" class="text-text-muted text-sm">
+        {{ t("blog.noComments") }}
+      </p>
       <BlogCommentForm
         :replyTo="replyTarget"
         :isLoggedIn="!!currentUserId"

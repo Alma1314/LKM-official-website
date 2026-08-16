@@ -1,22 +1,28 @@
-import { useMemo } from 'react';
-import type { ReactElement } from 'react';
-import { renderNode } from '../panels/PreviewPanel';
-import type { JSONContent } from '@tiptap/core';
-import { t } from '~/lib/i18n';
+import { useMemo } from "react";
+import type { ReactElement } from "react";
+import { renderNode } from "../panels/PreviewPanel";
+import type { JSONContent } from "@tiptap/core";
+import { t } from "~/lib/i18n";
 
 interface ExportPdfPageProps {
   content: JSONContent[];
   title?: string;
 }
 
-export default function ExportPdfPage({ content, title }: ExportPdfPageProps): ReactElement {
-  const nodes = useMemo(() => content.map((n, i) => renderNode(n, i)), [content]);
+export default function ExportPdfPage({
+  content,
+  title,
+}: ExportPdfPageProps): ReactElement {
+  const nodes = useMemo(
+    () => content.map((n, i) => renderNode(n, i)),
+    [content],
+  );
 
   return (
     <html>
       <head>
         <meta charSet="utf-8" />
-        <title>{title || t('editor.exportDocument')}</title>
+        <title>{title || t("editor.exportDocument")}</title>
         <style>{`
           @page {
             size: A4;

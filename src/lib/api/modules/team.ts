@@ -1,4 +1,4 @@
-import { get } from '../../http/client';
+import { get } from "../../http/client";
 
 /** 团队成员（字段与后端 members.Member 对齐） */
 export interface TeamMember {
@@ -31,8 +31,10 @@ export interface ListData<T> {
  */
 export const teamApi = {
   /** 直接成员列表（memberLists 类型） */
-  getMembers: (type: string) => get<ListData<TeamMember>>(`/api/v1/members`, { type }),
+  getMembers: (type: string) =>
+    get<ListData<TeamMember>>(`/api/v1/members`, { type }),
 
   /** 子组集合完整分组结构（subGroupMaps 类型） */
-  getSubGroups: (type: string) => get<ListData<TeamSubGroup>>(`/api/v1/members/subgroups`, { type }),
+  getSubGroups: (type: string) =>
+    get<ListData<TeamSubGroup>>(`/api/v1/members/subgroups`, { type }),
 };

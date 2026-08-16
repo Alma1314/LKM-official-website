@@ -6,7 +6,7 @@
    `rt`   每帧运行时标志（进行中的回读等）
    ---------------------------------------------------------------- */
 
-import { GW, JACOBI_ITERS, PHYS } from '../config.js';
+import { GW, JACOBI_ITERS, PHYS } from "../config.js";
 
 export const ui = {
   eta: 2.0,
@@ -21,8 +21,8 @@ export const ui = {
 };
 
 export const bolt = {
-  phase: 'grow',
-  label: 'STEPPED LEADER',
+  phase: "grow",
+  label: "STEPPED LEADER",
   tReal: 0,
   phaseTR: 0,
   phaseTV: 0,

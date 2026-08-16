@@ -9,7 +9,11 @@
       @keydown.esc="close"
     >
       <!-- 遮罩：点击关闭 -->
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-auth-close @click="close"></div>
+      <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        data-auth-close
+        @click="close"
+      ></div>
 
       <!-- 定位容器（居中卡片，模态卡片直接内嵌，无「卡中套卡」） -->
       <div class="relative z-10 w-full max-w-md mx-4">
@@ -33,28 +37,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { t } from '~/lib/i18n';
-import LoginPage from './login/LoginPage.vue';
-import RegisterPage from './register/RegisterPage.vue';
-import RecoveryPage from './recovery/RecoveryPage.vue';
+import { ref, onMounted, onUnmounted } from "vue";
+import { t } from "~/lib/i18n";
+import LoginPage from "./login/LoginPage.vue";
+import RegisterPage from "./register/RegisterPage.vue";
+import RecoveryPage from "./recovery/RecoveryPage.vue";
 
-type View = 'login' | 'register' | 'recovery';
+type View = "login" | "register" | "recovery";
 
 const isOpen = ref(false);
-const view = ref<View>('login');
+const view = ref<View>("login");
 
 // 触发元素：关闭后恢复焦点
 let triggerElement: HTMLElement | null = null;
 
-const VALID_VIEWS: View[] = ['login', 'register', 'recovery'];
+const VALID_VIEWS: View[] = ["login", "register", "recovery"];
 
-function open(nextView: View = 'login') {
-  triggerElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+function open(nextView: View = "login") {
+  triggerElement =
+    document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
   view.value = nextView;
   isOpen.value = true;
   // 滚动锁定
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = "hidden";
   // 打开后聚焦首个可聚焦元素
   nextTickFocus();
 }
@@ -63,7 +70,7 @@ function close() {
   if (!isOpen.value) return;
   isOpen.value = false;
   // 复原滚动
-  document.body.style.overflow = '';
+  document.body.style.overflow = "";
   // 焦点还原到触发元素
   triggerElement?.focus?.();
   triggerElement = null;
@@ -72,14 +79,19 @@ function close() {
 function nextTickFocus() {
   requestAnimationFrame(() => {
     const modal = document.querySelector('[role="dialog"][aria-modal="true"]');
-    const focusable = modal?.querySelector<HTMLElement>('input, button, select, textarea, a[href], [tabindex]');
+    const focusable = modal?.querySelector<HTMLElement>(
+      "input, button, select, textarea, a[href], [tabindex]",
+    );
     if (focusable) focusable.focus();
   });
 }
 
 function onOpenAuth(e: Event) {
   const detail = (e as CustomEvent).detail as { view?: string } | undefined;
-  const target = detail?.view && VALID_VIEWS.includes(detail.view as View) ? (detail.view as View) : 'login';
+  const target =
+    detail?.view && VALID_VIEWS.includes(detail.view as View)
+      ? (detail.view as View)
+      : "login";
   open(target);
 }
 
@@ -88,22 +100,22 @@ function onCloseAuth() {
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape' && isOpen.value) {
+  if (e.key === "Escape" && isOpen.value) {
     close();
   }
 }
 
 onMounted(() => {
-  window.addEventListener('open-auth-modal', onOpenAuth);
-  window.addEventListener('close-auth-modal', onCloseAuth);
-  document.addEventListener('keydown', onKeydown);
+  window.addEventListener("open-auth-modal", onOpenAuth);
+  window.addEventListener("close-auth-modal", onCloseAuth);
+  document.addEventListener("keydown", onKeydown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('open-auth-modal', onOpenAuth);
-  window.removeEventListener('close-auth-modal', onCloseAuth);
-  document.removeEventListener('keydown', onKeydown);
+  window.removeEventListener("open-auth-modal", onOpenAuth);
+  window.removeEventListener("close-auth-modal", onCloseAuth);
+  document.removeEventListener("keydown", onKeydown);
   // 卸载时确保滚动解锁
-  document.body.style.overflow = '';
+  document.body.style.overflow = "";
 });
 </script>

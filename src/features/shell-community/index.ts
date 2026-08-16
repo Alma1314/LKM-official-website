@@ -35,9 +35,9 @@ export {
   ShellDisplaySettings,
   ShellUserAvatarMenu,
   ShellMobileNavPanel,
-} from '~/features/shell';
+} from "~/features/shell";
 
-export * from '~/features/shell/common/shell-events';
+export * from "~/features/shell/common/shell-events";
 
 // 差异化组件
-export { communitySidebarLinks } from './data/community-sidebar';
+export { communitySidebarLinks } from "./data/community-sidebar";

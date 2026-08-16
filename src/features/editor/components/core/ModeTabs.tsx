@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import type { ReactElement } from 'react';
-import type { EditorMode } from '../../engine/types';
-import { t } from '~/lib/i18n';
+import { memo } from "react";
+import type { ReactElement } from "react";
+import type { EditorMode } from "../../engine/types";
+import { t } from "~/lib/i18n";
 
 interface ModeTabsProps {
   mode: EditorMode;
@@ -9,13 +9,13 @@ interface ModeTabsProps {
 }
 
 const TABS: { mode: EditorMode; label: string }[] = [
-  { mode: 'richtext', label: t('editor.modeRichtext') },
-  { mode: 'source', label: t('editor.modeSource') },
-  { mode: 'preview', label: t('editor.modePreview') },
+  { mode: "richtext", label: t("editor.modeRichtext") },
+  { mode: "source", label: t("editor.modeSource") },
+  { mode: "preview", label: t("editor.modePreview") },
 ];
 
 function ModeIcon({ mode }: { mode: EditorMode }): ReactElement {
-  if (mode === 'source') {
+  if (mode === "source") {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ function ModeIcon({ mode }: { mode: EditorMode }): ReactElement {
       </svg>
     );
   }
-  if (mode === 'preview') {
+  if (mode === "preview") {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ const ModeTabs = memo(function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
           <button
             key={tab.mode}
             type="button"
-            className={`rte-mode-tab ${mode === tab.mode ? 'is-active' : ''}`}
+            className={`rte-mode-tab ${mode === tab.mode ? "is-active" : ""}`}
             onClick={() => onModeChange(tab.mode)}
             title={tab.label}
           >

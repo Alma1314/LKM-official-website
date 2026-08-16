@@ -1,11 +1,11 @@
-import { Node } from '@tiptap/core';
-import { ReactNodeViewRenderer } from '@tiptap/react';
-import CalloutNodeView from '../../components/nodes/CalloutNodeView';
-import { calloutPropsSchema } from '../registry/schemas';
+import { Node } from "@tiptap/core";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import CalloutNodeView from "../../components/nodes/CalloutNodeView";
+import { calloutPropsSchema } from "../registry/schemas";
 
 export const Callout = Node.create({
-  name: 'callout',
-  group: 'block',
+  name: "callout",
+  group: "block",
   atom: true,
   selectable: true,
   draggable: true,
@@ -13,21 +13,23 @@ export const Callout = Node.create({
 
   addAttributes() {
     return {
-      type: { default: 'info' },
-      title: { default: '' },
+      type: { default: "info" },
+      title: { default: "" },
     };
   },
 
   parseHTML() {
-    return [{ tag: 'div[data-callout]' }];
+    return [{ tag: "div[data-callout]" }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', { 'data-callout': '', ...HTMLAttributes }];
+    return ["div", { "data-callout": "", ...HTMLAttributes }];
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(CalloutNodeView as Parameters<typeof ReactNodeViewRenderer>[0]);
+    return ReactNodeViewRenderer(
+      CalloutNodeView as Parameters<typeof ReactNodeViewRenderer>[0],
+    );
   },
 });
 
@@ -41,7 +43,7 @@ export function parseCalloutProps(node: unknown): Record<string, unknown> {
   }>;
 
   for (const attr of attributes) {
-    if (attr.type === 'mdxJsxAttribute') {
+    if (attr.type === "mdxJsxAttribute") {
       attrs[attr.name] = attr.value;
     }
   }
@@ -52,11 +54,11 @@ export function parseCalloutProps(node: unknown): Record<string, unknown> {
 export function serializeCalloutProps(props: Record<string, unknown>): string {
   const valid = calloutPropsSchema.parse(props);
   return Object.entries(valid)
-    .filter(([, v]) => v !== '' && v !== undefined && v !== null)
+    .filter(([, v]) => v !== "" && v !== undefined && v !== null)
     .map(([k, v]) => {
-      if (typeof v === 'string') return `${k}="${v}"`;
-      if (typeof v === 'number') return `${k}={${v}}`;
+      if (typeof v === "string") return `${k}="${v}"`;
+      if (typeof v === "number") return `${k}={${v}}`;
       return `${k}="${String(v)}"`;
     })
-    .join(' ');
+    .join(" ");
 }

@@ -18,11 +18,18 @@
         v-for="tab in tabs"
         :key="tab.key"
         class="px-4 py-3 text-sm font-medium transition-colors relative"
-        :class="activeTab === tab.key ? 'text-primary' : 'text-text-muted hover:text-deep-text'"
+        :class="
+          activeTab === tab.key
+            ? 'text-primary'
+            : 'text-text-muted hover:text-deep-text'
+        "
         @click="activeTab = tab.key"
       >
         {{ t(tab.label) }}
-        <div v-if="activeTab === tab.key" class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full" />
+        <div
+          v-if="activeTab === tab.key"
+          class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full"
+        />
       </button>
 
       <div class="ml-auto flex gap-2">
@@ -31,14 +38,14 @@
           class="px-4 py-2 text-sm font-medium rounded-xl backdrop-blur-md bg-white/30 border border-white/40 text-black shadow-md hover:bg-white/50 hover:border-amber-400/70 hover:scale-105 hover:shadow-lg transition-all duration-300"
           @click="openApplyModal"
         >
-          {{ t('projectHub.apply') }}
+          {{ t("projectHub.apply") }}
         </button>
         <button
           :aria-label="t('projectHub.createAria')"
           class="px-4 py-2 text-sm font-medium rounded-xl backdrop-blur-md bg-white/30 border border-white/40 text-black shadow-md hover:bg-white/50 hover:border-amber-400/70 hover:scale-105 hover:shadow-lg transition-all duration-300"
           @click="openProjectModal"
         >
-          {{ t('projectHub.create') }}
+          {{ t("projectHub.create") }}
         </button>
       </div>
     </div>
@@ -57,29 +64,46 @@
               v-if="proj.isPinned"
               class="text-xs px-1.5 py-0.5 rounded font-medium bg-red-100 dark:bg-red-950/30 text-red-600"
             >
-              {{ t('projectHub.pinned') }}
+              {{ t("projectHub.pinned") }}
             </span>
             <span
               v-if="proj.isIncubated"
               class="text-xs px-1.5 py-0.5 rounded font-medium bg-amber-100 dark:bg-amber-950/30 text-amber-600"
             >
-              {{ t('projectHub.incubated') }}
+              {{ t("projectHub.incubated") }}
             </span>
           </div>
-          <h3 class="font-bold text-deep-text group-hover:text-primary transition-colors">
+          <h3
+            class="font-bold text-deep-text group-hover:text-primary transition-colors"
+          >
             {{ t(proj.name) }}
           </h3>
-          <p class="text-xs text-text-muted">{{ t('projectHub.initiatedBy', { name: t(proj.initiatorName) }) }}</p>
+          <p class="text-xs text-text-muted">
+            {{ t("projectHub.initiatedBy", { name: t(proj.initiatorName) }) }}
+          </p>
           <div class="mt-1">
             <div class="h-1.5 rounded-full bg-surface-3">
-              <div class="h-full rounded-full bg-primary transition-all" :style="{ width: proj.progress + '%' }" />
+              <div
+                class="h-full rounded-full bg-primary transition-all"
+                :style="{ width: proj.progress + '%' }"
+              />
             </div>
           </div>
           <div class="flex items-center justify-between text-xs">
-            <span :class="proj.isRecruiting ? 'text-green-500' : 'text-text-muted/60'">
-              {{ proj.isRecruiting ? t('projectHub.recruiting') : t('projectHub.showcase') }}
+            <span
+              :class="
+                proj.isRecruiting ? 'text-green-500' : 'text-text-muted/60'
+              "
+            >
+              {{
+                proj.isRecruiting
+                  ? t("projectHub.recruiting")
+                  : t("projectHub.showcase")
+              }}
             </span>
-            <span class="text-text-muted/60">{{ t('projectHub.progressValue', { progress: proj.progress }) }}</span>
+            <span class="text-text-muted/60">{{
+              t("projectHub.progressValue", { progress: proj.progress })
+            }}</span>
           </div>
           <div v-if="proj.recruitingRoles.length" class="flex flex-wrap gap-1">
             <span
@@ -87,15 +111,18 @@
               :key="r"
               class="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary"
             >
-              {{ t('projectHub.roleMissing', { role: t(r) }) }}
+              {{ t("projectHub.roleMissing", { role: t(r) }) }}
             </span>
           </div>
         </div>
       </a>
     </div>
 
-    <div v-if="filteredProjects.length === 0" class="text-center py-12 text-sm text-text-muted">
-      {{ t('projectHub.noProjects') }}
+    <div
+      v-if="filteredProjects.length === 0"
+      class="text-center py-12 text-sm text-text-muted"
+    >
+      {{ t("projectHub.noProjects") }}
     </div>
 
     <!-- ==================== 模态框1：发言 / 报名 ==================== -->
@@ -115,8 +142,11 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h2 id="apply-modal-title" class="text-xl font-bold text-deep-text dark:text-white">
-            {{ t('projectHub.apply') }}
+          <h2
+            id="apply-modal-title"
+            class="text-xl font-bold text-deep-text dark:text-white"
+          >
+            {{ t("projectHub.apply") }}
           </h2>
           <button
             :aria-label="t('projectHub.closeDialogAria')"
@@ -129,8 +159,11 @@
 
         <form class="space-y-4" @submit.prevent="handleApplySubmit">
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-nickname">
-              {{ t('projectHub.nickname') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="apply-nickname"
+            >
+              {{ t("projectHub.nickname") }} <span class="text-red-500">*</span>
             </label>
             <input
               id="apply-nickname"
@@ -147,8 +180,12 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-progress">
-              {{ t('projectHub.currentProgress') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="apply-progress"
+            >
+              {{ t("projectHub.currentProgress") }}
+              <span class="text-red-500">*</span>
             </label>
             <select
               id="apply-progress"
@@ -156,13 +193,23 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('progress')"
             >
-              <option value="">{{ t('projectHub.selectPlaceholder') }}</option>
-              <option value="idea">{{ t('projectHub.progressIdea') }}</option>
-              <option value="planning">{{ t('projectHub.progressPlanning') }}</option>
-              <option value="prototype">{{ t('projectHub.progressPrototype') }}</option>
-              <option value="developing">{{ t('projectHub.progressDeveloping') }}</option>
-              <option value="testing">{{ t('projectHub.progressTesting') }}</option>
-              <option value="launched">{{ t('projectHub.progressLaunched') }}</option>
+              <option value="">{{ t("projectHub.selectPlaceholder") }}</option>
+              <option value="idea">{{ t("projectHub.progressIdea") }}</option>
+              <option value="planning">
+                {{ t("projectHub.progressPlanning") }}
+              </option>
+              <option value="prototype">
+                {{ t("projectHub.progressPrototype") }}
+              </option>
+              <option value="developing">
+                {{ t("projectHub.progressDeveloping") }}
+              </option>
+              <option value="testing">
+                {{ t("projectHub.progressTesting") }}
+              </option>
+              <option value="launched">
+                {{ t("projectHub.progressLaunched") }}
+              </option>
             </select>
             <p v-if="applyErrors.progress" class="mt-1 text-xs text-red-500">
               {{ applyErrors.progress }}
@@ -170,8 +217,12 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-group">
-              {{ t('projectHub.joinGroup') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="apply-group"
+            >
+              {{ t("projectHub.joinGroup") }}
+              <span class="text-red-500">*</span>
             </label>
             <select
               id="apply-group"
@@ -179,11 +230,19 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('group')"
             >
-              <option value="">{{ t('projectHub.selectPlaceholder') }}</option>
-              <option value="quantum">{{ t('projectHub.groupQuantum') }}</option>
-              <option value="knowledge-graph">{{ t('projectHub.groupKnowledgeGraph') }}</option>
-              <option value="astronomy">{{ t('projectHub.groupAstronomy') }}</option>
-              <option value="science-video">{{ t('projectHub.groupScienceVideo') }}</option>
+              <option value="">{{ t("projectHub.selectPlaceholder") }}</option>
+              <option value="quantum">
+                {{ t("projectHub.groupQuantum") }}
+              </option>
+              <option value="knowledge-graph">
+                {{ t("projectHub.groupKnowledgeGraph") }}
+              </option>
+              <option value="astronomy">
+                {{ t("projectHub.groupAstronomy") }}
+              </option>
+              <option value="science-video">
+                {{ t("projectHub.groupScienceVideo") }}
+              </option>
             </select>
             <p v-if="applyErrors.group" class="mt-1 text-xs text-red-500">
               {{ applyErrors.group }}
@@ -197,14 +256,20 @@
               type="checkbox"
               class="w-4 h-4 text-primary rounded border-surface-3 focus:ring-primary"
             />
-            <label for="apply-incubator" class="text-sm font-medium text-deep-text dark:text-white">
-              {{ t('projectHub.applyIncubator') }}
+            <label
+              for="apply-incubator"
+              class="text-sm font-medium text-deep-text dark:text-white"
+            >
+              {{ t("projectHub.applyIncubator") }}
             </label>
           </div>
 
           <div v-if="applyForm.applyIncubator">
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-contact">
-              {{ t('projectHub.contact') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="apply-contact"
+            >
+              {{ t("projectHub.contact") }} <span class="text-red-500">*</span>
             </label>
             <input
               id="apply-contact"
@@ -226,14 +291,18 @@
               class="px-4 py-2 text-sm font-medium rounded-lg bg-surface-3 text-deep-text hover:bg-surface-4 transition-colors"
               @click="closeApplyModal"
             >
-              {{ t('common.cancel') }}
+              {{ t("common.cancel") }}
             </button>
             <button
               type="submit"
               :disabled="isSubmittingApply"
               class="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-60"
             >
-              {{ isSubmittingApply ? t('projectHub.submitting') : t('projectHub.submitApply') }}
+              {{
+                isSubmittingApply
+                  ? t("projectHub.submitting")
+                  : t("projectHub.submitApply")
+              }}
             </button>
           </div>
         </form>
@@ -257,8 +326,11 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h2 id="project-modal-title" class="text-xl font-bold text-deep-text dark:text-white">
-            {{ t('projectHub.createTitle') }}
+          <h2
+            id="project-modal-title"
+            class="text-xl font-bold text-deep-text dark:text-white"
+          >
+            {{ t("projectHub.createTitle") }}
           </h2>
           <button
             :aria-label="t('projectHub.closeDialogAria')"
@@ -271,8 +343,12 @@
 
         <form class="space-y-4" @submit.prevent="handleProjectSubmit">
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-name">
-              {{ t('projectHub.projectName') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="project-name"
+            >
+              {{ t("projectHub.projectName") }}
+              <span class="text-red-500">*</span>
             </label>
             <input
               id="project-name"
@@ -289,8 +365,12 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-description">
-              {{ t('projectHub.projectDescription') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="project-description"
+            >
+              {{ t("projectHub.projectDescription") }}
+              <span class="text-red-500">*</span>
             </label>
             <textarea
               id="project-description"
@@ -301,14 +381,20 @@
               :placeholder="t('projectHub.projectDescriptionPlaceholder')"
               @blur="validateProjectField('description')"
             />
-            <p v-if="projectErrors.description" class="mt-1 text-xs text-red-500">
+            <p
+              v-if="projectErrors.description"
+              class="mt-1 text-xs text-red-500"
+            >
               {{ projectErrors.description }}
             </p>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-roles">
-              {{ t('projectHub.recruitingRoles') }}
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="project-roles"
+            >
+              {{ t("projectHub.recruitingRoles") }}
             </label>
             <input
               id="project-roles"
@@ -321,8 +407,11 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-contact">
-              {{ t('projectHub.contact') }} <span class="text-red-500">*</span>
+            <label
+              class="block text-sm font-medium text-deep-text dark:text-white mb-1"
+              for="project-contact"
+            >
+              {{ t("projectHub.contact") }} <span class="text-red-500">*</span>
             </label>
             <input
               id="project-contact"
@@ -344,14 +433,18 @@
               class="px-4 py-2 text-sm font-medium rounded-lg bg-surface-3 text-deep-text hover:bg-surface-4 transition-colors"
               @click="closeProjectModal"
             >
-              {{ t('common.cancel') }}
+              {{ t("common.cancel") }}
             </button>
             <button
               type="submit"
               :disabled="isSubmittingProject"
               class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-60"
             >
-              {{ isSubmittingProject ? t('projectHub.submitting') : t('projectHub.create') }}
+              {{
+                isSubmittingProject
+                  ? t("projectHub.submitting")
+                  : t("projectHub.create")
+              }}
             </button>
           </div>
         </form>
@@ -361,17 +454,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, watch, nextTick } from 'vue';
-import { t } from '~/lib/i18n';
-import { mockProjects } from '../data/mock-projects';
-import { buildUrl } from '~/lib/utils/paths';
-import { apiFetch } from '~/lib/api';
+import { ref, computed, reactive, watch, nextTick } from "vue";
+import { t } from "~/lib/i18n";
+import { mockProjects } from "../data/mock-projects";
+import { buildUrl } from "~/lib/utils/paths";
+import { apiFetch } from "~/lib/api";
 
 // ==================== 类型 ====================
 interface Project {
   id: string | number;
   name: string;
-  type: 'recruiting' | 'showcase';
+  type: "recruiting" | "showcase";
   isPinned: boolean;
   isIncubated: boolean;
   initiatorName: string;
@@ -397,23 +490,25 @@ interface ProjectForm {
 
 // ==================== 校验工具 ====================
 const isValidPhone = (v: string): boolean => /^1[3-9]\d{9}$/.test(v);
-const isValidEmail = (v: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-const isValidContact = (v: string): boolean => isValidPhone(v) || isValidEmail(v);
-const sanitizeInput = (v: string): string => v.replace(/<[^>]*>/g, '').trim();
+const isValidEmail = (v: string): boolean =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isValidContact = (v: string): boolean =>
+  isValidPhone(v) || isValidEmail(v);
+const sanitizeInput = (v: string): string => v.replace(/<[^>]*>/g, "").trim();
 
 // ==================== HTTP（无 fetch） ====================
 const getErrorMessage = (status: number): string => {
   switch (status) {
     case 400:
-      return t('projectHub.err400');
+      return t("projectHub.err400");
     case 401:
-      return t('projectHub.err401');
+      return t("projectHub.err401");
     case 403:
-      return t('projectHub.err403');
+      return t("projectHub.err403");
     case 500:
-      return t('projectHub.err500');
+      return t("projectHub.err500");
     default:
-      return t('projectHub.errGeneric');
+      return t("projectHub.errGeneric");
   }
 };
 
@@ -421,8 +516,8 @@ const api = {
   async post<T>(endpoint: string, payload: unknown): Promise<T> {
     try {
       const response = await apiFetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -435,7 +530,7 @@ const api = {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error(t('projectHub.errGeneric'), { cause: error });
+      throw new Error(t("projectHub.errGeneric"), { cause: error });
     }
   },
 };
@@ -443,33 +538,33 @@ const api = {
 // ==================== Toast（无 alert / any） ====================
 const toast = {
   success: (m: string) => {
-    const el = document.createElement('div');
+    const el = document.createElement("div");
     el.textContent = m;
     Object.assign(el.style, {
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      background: '#16a34a',
-      color: 'white',
-      padding: '8px 14px',
-      borderRadius: '8px',
-      zIndex: '9999',
+      position: "fixed",
+      bottom: "20px",
+      right: "20px",
+      background: "#16a34a",
+      color: "white",
+      padding: "8px 14px",
+      borderRadius: "8px",
+      zIndex: "9999",
     });
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 2000);
   },
   error: (m: string) => {
-    const el = document.createElement('div');
+    const el = document.createElement("div");
     el.textContent = m;
     Object.assign(el.style, {
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      background: '#dc2626',
-      color: 'white',
-      padding: '8px 14px',
-      borderRadius: '8px',
-      zIndex: '9999',
+      position: "fixed",
+      bottom: "20px",
+      right: "20px",
+      background: "#dc2626",
+      color: "white",
+      padding: "8px 14px",
+      borderRadius: "8px",
+      zIndex: "9999",
     });
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 2000);
@@ -478,14 +573,16 @@ const toast = {
 
 // ==================== Tab & 列表 ====================
 const tabs = [
-  { key: 'recruiting' as const, label: 'projectHub.tabRecruiting' },
-  { key: 'showcase' as const, label: 'projectHub.tabShowcase' },
+  { key: "recruiting" as const, label: "projectHub.tabRecruiting" },
+  { key: "showcase" as const, label: "projectHub.tabShowcase" },
 ];
 
-const activeTab = ref<'recruiting' | 'showcase'>('recruiting');
+const activeTab = ref<"recruiting" | "showcase">("recruiting");
 
 const filteredProjects = computed<Project[]>(() =>
-  mockProjects.filter((p) => p.type === activeTab.value).sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
+  mockProjects
+    .filter((p) => p.type === activeTab.value)
+    .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0)),
 );
 
 // ==================== 模态框1：发言 / 报名 ====================
@@ -494,44 +591,50 @@ const isSubmittingApply = ref(false);
 const applyModalRootRef = ref<HTMLElement | null>(null);
 
 const applyForm = reactive<ApplyForm>({
-  nickname: '',
-  progress: '',
-  group: '',
+  nickname: "",
+  progress: "",
+  group: "",
   applyIncubator: false,
-  contact: '',
+  contact: "",
 });
 
-const applyErrors = reactive<Record<keyof Omit<ApplyForm, 'applyIncubator'>, string>>({
-  nickname: '',
-  progress: '',
-  group: '',
-  contact: '',
+const applyErrors = reactive<
+  Record<keyof Omit<ApplyForm, "applyIncubator">, string>
+>({
+  nickname: "",
+  progress: "",
+  group: "",
+  contact: "",
 });
 
 const validateApplyField = (field: keyof typeof applyErrors): void => {
-  if (field === 'nickname') {
+  if (field === "nickname") {
     const v = applyForm.nickname.trim();
     applyErrors.nickname = !v
-      ? t('projectHub.errNicknameRequired')
+      ? t("projectHub.errNicknameRequired")
       : v.length < 2
-        ? t('projectHub.errNicknameMinLength')
+        ? t("projectHub.errNicknameMinLength")
         : /[<>/]/.test(v)
-          ? t('projectHub.errNicknameInvalid')
-          : '';
+          ? t("projectHub.errNicknameInvalid")
+          : "";
   }
-  if (field === 'progress') applyErrors.progress = applyForm.progress ? '' : t('projectHub.errProgressRequired');
-  if (field === 'group') applyErrors.group = applyForm.group ? '' : t('projectHub.errGroupRequired');
-  if (field === 'contact') {
+  if (field === "progress")
+    applyErrors.progress = applyForm.progress
+      ? ""
+      : t("projectHub.errProgressRequired");
+  if (field === "group")
+    applyErrors.group = applyForm.group ? "" : t("projectHub.errGroupRequired");
+  if (field === "contact") {
     if (!applyForm.applyIncubator) {
-      applyErrors.contact = '';
+      applyErrors.contact = "";
       return;
     }
     const v = applyForm.contact.trim();
     applyErrors.contact = !v
-      ? t('projectHub.errContactRequired')
+      ? t("projectHub.errContactRequired")
       : !isValidContact(v)
-        ? t('projectHub.errContactInvalid')
-        : '';
+        ? t("projectHub.errContactInvalid")
+        : "";
   }
 };
 
@@ -542,28 +645,36 @@ const openApplyModal = () => {
 const closeApplyModal = () => {
   showApplyModal.value = false;
   isSubmittingApply.value = false;
-  applyForm.nickname = applyForm.progress = applyForm.group = applyForm.contact = '';
+  applyForm.nickname =
+    applyForm.progress =
+    applyForm.group =
+    applyForm.contact =
+      "";
   applyForm.applyIncubator = false;
-  Object.keys(applyErrors).forEach((k) => (applyErrors[k as keyof typeof applyErrors] = ''));
+  Object.keys(applyErrors).forEach(
+    (k) => (applyErrors[k as keyof typeof applyErrors] = ""),
+  );
 };
 
 const handleApplySubmit = async (): Promise<void> => {
-  (['nickname', 'progress', 'group', 'contact'] as const).forEach(validateApplyField);
+  (["nickname", "progress", "group", "contact"] as const).forEach(
+    validateApplyField,
+  );
   if (Object.values(applyErrors).some(Boolean)) return;
   isSubmittingApply.value = true;
   try {
-    await api.post('/api/projects/apply', {
+    await api.post("/api/projects/apply", {
       nickname: sanitizeInput(applyForm.nickname),
       progress: applyForm.progress,
       group: applyForm.group,
       applyIncubator: applyForm.applyIncubator,
       contact: sanitizeInput(applyForm.contact),
-      source: 'project-hall',
+      source: "project-hall",
     });
-    toast.success(t('projectHub.applySuccess'));
+    toast.success(t("projectHub.applySuccess"));
     closeApplyModal();
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : t('projectHub.applyFailed');
+    const msg = e instanceof Error ? e.message : t("projectHub.applyFailed");
     toast.error(msg);
   } finally {
     isSubmittingApply.value = false;
@@ -575,39 +686,46 @@ const showProjectModal = ref(false);
 const isSubmittingProject = ref(false);
 const projectModalRootRef = ref<HTMLElement | null>(null);
 
-const projectForm = reactive<ProjectForm>({ name: '', description: '', roles: '', contact: '' });
-const projectErrors = reactive<Record<'name' | 'description' | 'contact', string>>({
-  name: '',
-  description: '',
-  contact: '',
+const projectForm = reactive<ProjectForm>({
+  name: "",
+  description: "",
+  roles: "",
+  contact: "",
+});
+const projectErrors = reactive<
+  Record<"name" | "description" | "contact", string>
+>({
+  name: "",
+  description: "",
+  contact: "",
 });
 
 const validateProjectField = (field: keyof typeof projectErrors): void => {
-  if (field === 'name') {
+  if (field === "name") {
     const v = projectForm.name.trim();
     projectErrors.name = !v
-      ? t('projectHub.errNameRequired')
+      ? t("projectHub.errNameRequired")
       : v.length > 50
-        ? t('projectHub.errNameTooLong')
+        ? t("projectHub.errNameTooLong")
         : /[<>/]/.test(v)
-          ? t('projectHub.errNameInvalid')
-          : '';
+          ? t("projectHub.errNameInvalid")
+          : "";
   }
-  if (field === 'description') {
+  if (field === "description") {
     const v = projectForm.description.trim();
     projectErrors.description = !v
-      ? t('projectHub.errDescRequired')
+      ? t("projectHub.errDescRequired")
       : v.length > 200
-        ? t('projectHub.errDescTooLong')
-        : '';
+        ? t("projectHub.errDescTooLong")
+        : "";
   }
-  if (field === 'contact') {
+  if (field === "contact") {
     const v = projectForm.contact.trim();
     projectErrors.contact = !v
-      ? t('projectHub.errContactRequired')
+      ? t("projectHub.errContactRequired")
       : !isValidContact(v)
-        ? t('projectHub.errContactInvalid')
-        : '';
+        ? t("projectHub.errContactInvalid")
+        : "";
   }
 };
 
@@ -618,26 +736,32 @@ const openProjectModal = () => {
 const closeProjectModal = () => {
   showProjectModal.value = false;
   isSubmittingProject.value = false;
-  projectForm.name = projectForm.description = projectForm.roles = projectForm.contact = '';
-  Object.keys(projectErrors).forEach((k) => (projectErrors[k as keyof typeof projectErrors] = ''));
+  projectForm.name =
+    projectForm.description =
+    projectForm.roles =
+    projectForm.contact =
+      "";
+  Object.keys(projectErrors).forEach(
+    (k) => (projectErrors[k as keyof typeof projectErrors] = ""),
+  );
 };
 
 const handleProjectSubmit = async (): Promise<void> => {
-  (['name', 'description', 'contact'] as const).forEach(validateProjectField);
+  (["name", "description", "contact"] as const).forEach(validateProjectField);
   if (Object.values(projectErrors).some(Boolean)) return;
   isSubmittingProject.value = true;
   try {
-    await api.post('/api/projects/create', {
+    await api.post("/api/projects/create", {
       name: sanitizeInput(projectForm.name),
       description: sanitizeInput(projectForm.description),
-      roles: projectForm.roles.split(',').map(sanitizeInput).filter(Boolean),
+      roles: projectForm.roles.split(",").map(sanitizeInput).filter(Boolean),
       contact: sanitizeInput(projectForm.contact),
-      source: 'project-hall',
+      source: "project-hall",
     });
-    toast.success(t('projectHub.createSuccess'));
+    toast.success(t("projectHub.createSuccess"));
     closeProjectModal();
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : t('projectHub.createFailed');
+    const msg = e instanceof Error ? e.message : t("projectHub.createFailed");
     toast.error(msg);
   } finally {
     isSubmittingProject.value = false;
@@ -652,11 +776,12 @@ watch(
   async (el) => {
     if (el) {
       await nextTick();
-      const firstInput = el.querySelector<HTMLInputElement>('input[type="text"]');
+      const firstInput =
+        el.querySelector<HTMLInputElement>('input[type="text"]');
       firstInput?.focus();
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 watch(
@@ -664,11 +789,12 @@ watch(
   async (el) => {
     if (el) {
       await nextTick();
-      const firstInput = el.querySelector<HTMLInputElement>('input[type="text"]');
+      const firstInput =
+        el.querySelector<HTMLInputElement>('input[type="text"]');
       firstInput?.focus();
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

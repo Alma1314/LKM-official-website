@@ -1,9 +1,9 @@
-import { memo, useState, useEffect, useRef } from 'react';
-import type { Node } from '@tiptap/pm/model';
-import type { Editor } from '@tiptap/core';
-import { NodeViewWrapper } from '@tiptap/react';
-import { t } from '~/lib/i18n';
-import CalloutView from '../shared/CalloutView';
+import { memo, useState, useEffect, useRef } from "react";
+import type { Node } from "@tiptap/pm/model";
+import type { Editor } from "@tiptap/core";
+import { NodeViewWrapper } from "@tiptap/react";
+import { t } from "~/lib/i18n";
+import CalloutView from "../shared/CalloutView";
 
 interface CalloutNodeViewProps {
   node: Node;
@@ -14,14 +14,16 @@ interface CalloutNodeViewProps {
 
 /** option 标签 key（值走 i18n 展示） */
 const TYPE_LABEL_KEYS: Record<string, string> = {
-  info: 'editor.callout.info',
-  warning: 'editor.callout.warning',
-  error: 'editor.callout.error',
-  success: 'editor.callout.success',
+  info: "editor.callout.info",
+  warning: "editor.callout.warning",
+  error: "editor.callout.error",
+  success: "editor.callout.success",
 };
 
 function typeLabel(type: string): string {
-  return t((TYPE_LABEL_KEYS[type] ?? 'editor.callout.info') as Parameters<typeof t>[0]);
+  return t(
+    (TYPE_LABEL_KEYS[type] ?? "editor.callout.info") as Parameters<typeof t>[0],
+  );
 }
 
 const CalloutNodeView = memo(function CalloutNodeView({
@@ -32,22 +34,30 @@ const CalloutNodeView = memo(function CalloutNodeView({
 }: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const ctype = ((node.attrs.type as string) || 'info') as 'info' | 'warning' | 'error' | 'success';
+  const ctype = ((node.attrs.type as string) || "info") as
+    "info" | "warning" | "error" | "success";
 
   useEffect(() => {
     if (!editing) return;
     const handler = (e: MouseEvent): void => {
-      if (panelRef.current && !panelRef.current.contains(e.target as HTMLElement)) {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(e.target as HTMLElement)
+      ) {
         setEditing(false);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [editing]);
-  const title = (node.attrs.title as string) || '';
+  const title = (node.attrs.title as string) || "";
 
   return (
-    <NodeViewWrapper className="relative my-2" contentEditable={false} data-callout>
+    <NodeViewWrapper
+      className="relative my-2"
+      contentEditable={false}
+      data-callout
+    >
       <div className="cursor-pointer" onClick={() => setEditing(!editing)}>
         <CalloutView type={ctype} title={title || undefined} />
       </div>
@@ -57,7 +67,9 @@ const CalloutNodeView = memo(function CalloutNodeView({
           ref={panelRef}
           className="absolute top-full left-0 mt-1 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
         >
-          <label className="text-xs font-medium block mb-1">{t('editor.callout.type')}</label>
+          <label className="text-xs font-medium block mb-1">
+            {t("editor.callout.type")}
+          </label>
           <select
             className="rte-select rte-select--sm w-full mb-2"
             value={ctype}
@@ -69,12 +81,14 @@ const CalloutNodeView = memo(function CalloutNodeView({
               </option>
             ))}
           </select>
-          <label className="text-xs font-medium block mb-1">{t('editor.callout.titleOptional')}</label>
+          <label className="text-xs font-medium block mb-1">
+            {t("editor.callout.titleOptional")}
+          </label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={title}
-            placeholder={t('editor.callout.titlePlaceholder')}
+            placeholder={t("editor.callout.titlePlaceholder")}
             onChange={(e) => updateAttributes({ title: e.target.value })}
           />
           <div className="flex gap-1 justify-end">
@@ -93,7 +107,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 }
               }}
             >
-              {t('editor.delete')}
+              {t("editor.delete")}
             </button>
             <button
               type="button"
@@ -103,7 +117,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 setEditing(false);
               }}
             >
-              {t('editor.confirm')}
+              {t("editor.confirm")}
             </button>
           </div>
         </div>

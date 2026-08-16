@@ -7,17 +7,17 @@
  */
 
 export function applyTheme(defaultTheme: string): void {
-  const stored = localStorage.getItem('theme');
+  const stored = localStorage.getItem("theme");
   const theme = stored || defaultTheme;
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
+  if (theme === "dark") {
+    document.documentElement.classList.add("dark");
   } else {
-    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove("dark");
   }
 }
 
 export function toggleTheme(): void {
-  document.documentElement.classList.toggle('dark');
-  const isDark = document.documentElement.classList.contains('dark');
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  document.documentElement.classList.toggle("dark");
+  const isDark = document.documentElement.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 }

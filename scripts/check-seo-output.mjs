@@ -3,11 +3,11 @@
  * SEO 检查脚本（server 模式）
  * 启动/复用 astro preview，对关键页面与产物做基本 SEO 检查。
  */
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { withPreview } from './lib/start-preview.mjs';
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { withPreview } from "./lib/start-preview.mjs";
 
-const DIST = resolve(import.meta.dirname, '..', 'dist', 'client');
+const DIST = resolve(import.meta.dirname, "..", "dist", "client");
 
 function contains(pattern, content) {
   if (pattern instanceof RegExp) return pattern.test(content);
@@ -32,37 +32,42 @@ async function checkPage(base, path, checks) {
 }
 
 async function main() {
-  if (!existsSync(resolve(import.meta.dirname, '..', 'dist'))) {
-    console.error('ERROR: dist/ 目录不存在，请先运行 pnpm build');
+  if (!existsSync(resolve(import.meta.dirname, "..", "dist"))) {
+    console.error("ERROR: dist/ 目录不存在，请先运行 pnpm build");
     process.exit(1);
   }
 
   let errors = 0;
   await withPreview(async (base) => {
-    errors += await checkPage(base, '/', {
-      '<title>': /<title>[^<]+<\/title>/,
+    errors += await checkPage(base, "/", {
+      "<title>": /<title>[^<]+<\/title>/,
       canonical: /rel="canonical"/,
-      'meta description': /name="description"/,
-      '<h1>': /<h1[^>]*>/,
-      '<main>': /<main[^>]*>/,
+      "meta description": /name="description"/,
+      "<h1>": /<h1[^>]*>/,
+      "<main>": /<main[^>]*>/,
     });
 
     // robots.txt
-    const robotsRes = await fetch(base + '/robots.txt');
-    const robotsContent = robotsRes.ok ? await robotsRes.text() : '';
-    if (!robotsContent.includes('Sitemap') && !robotsContent.includes('sitemap')) {
-      console.error('  FAIL: robots.txt 缺失或缺少 Sitemap 声明');
+    const robotsRes = await fetch(base + "/robots.txt");
+    const robotsContent = robotsRes.ok ? await robotsRes.text() : "";
+    if (
+      !robotsContent.includes("Sitemap") &&
+      !robotsContent.includes("sitemap")
+    ) {
+      console.error("  FAIL: robots.txt 缺失或缺少 Sitemap 声明");
       errors++;
     }
 
     // sitemap 静态产物
-    const sitemapFile = resolve(DIST, 'sitemap-index.xml');
+    const sitemapFile = resolve(DIST, "sitemap-index.xml");
     if (!existsSync(sitemapFile)) {
-      console.error('  FAIL: 缺少 sitemap-index.xml');
+      console.error("  FAIL: 缺少 sitemap-index.xml");
       errors++;
     } else {
-      const sitemapRaw = readFileSync(sitemapFile, 'utf-8');
-      const urls = [...sitemapRaw.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+      const sitemapRaw = readFileSync(sitemapFile, "utf-8");
+      const urls = [...sitemapRaw.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+        (m) => m[1],
+      );
       console.log(`  Sitemap 包含 ${urls.length} 个条目`);
     }
   });

@@ -1,18 +1,24 @@
-import { db } from '../stores/db';
-import type { StarHopeEntity } from './mapping';
-import { fromSnake, toSnake } from './mapping';
-import { starhopeApi } from './api';
-import { mergePull } from './merge';
+import { db } from "../stores/db";
+import type { StarHopeEntity } from "./mapping";
+import { fromSnake, toSnake } from "./mapping";
+import { starhopeApi } from "./api";
+import { mergePull } from "./merge";
 
-const ENTITIES: StarHopeEntity[] = ['questions', 'folders', 'sessions', 'agents'];
+const ENTITIES: StarHopeEntity[] = [
+  "questions",
+  "folders",
+  "sessions",
+  "agents",
+];
 const TABLE_BY_ENTITY: Record<StarHopeEntity, keyof typeof db> = {
-  questions: 'questions',
-  folders: 'folders',
-  sessions: 'practiceSessions',
-  agents: 'aiAgents',
+  questions: "questions",
+  folders: "folders",
+  sessions: "practiceSessions",
+  agents: "aiAgents",
 };
 
-const LAST_SYNC_KEY = (e: StarHopeEntity): string => `starhope-sync:${e}:lastSyncAt`;
+const LAST_SYNC_KEY = (e: StarHopeEntity): string =>
+  `starhope-sync:${e}:lastSyncAt`;
 
 function getLastSync(entity: StarHopeEntity): string | undefined {
   return localStorage.getItem(LAST_SYNC_KEY(entity)) ?? undefined;
@@ -41,7 +47,7 @@ export async function pullAll(): Promise<void> {
     const merged = mergePull(
       local,
       remote,
-      data.tombstones.map((t) => ({ id: t.id, deleted_at: t.deleted_at }))
+      data.tombstones.map((t) => ({ id: t.id, deleted_at: t.deleted_at })),
     );
     await table.bulkPut(merged.map((r) => toSnake(r)));
     setLastSync(entity, data.server_time);
@@ -49,7 +55,12 @@ export async function pullAll(): Promise<void> {
 }
 
 /** 记录一条待推送操作，debounce 后 flush。 */
-export function enqueue(entity: StarHopeEntity, entityId: string, op: 'upsert' | 'delete', payload?: unknown): void {
+export function enqueue(
+  entity: StarHopeEntity,
+  entityId: string,
+  op: "upsert" | "delete",
+  payload?: unknown,
+): void {
   void db.syncOps.add({
     entity,
     entityId,
@@ -85,7 +96,7 @@ async function doFlush(): Promise<void> {
     const upserts: Record<string, unknown>[] = [];
     const deletes: { id: string; deleted_at: string }[] = [];
     for (const op of entityOps) {
-      if (op.op === 'delete') {
+      if (op.op === "delete") {
         deletes.push({ id: op.entityId, deleted_at: op.updatedAt });
       } else {
         const row = op.payload ?? (await table.get(op.entityId));

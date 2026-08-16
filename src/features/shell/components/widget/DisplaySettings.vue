@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { t } from '~/lib/i18n';
-import { Icon } from '@iconify/vue';
-import { getDefaultHue, getHue, setHue } from '~/lib/utils/setting-utils';
+import { ref, watch, onMounted } from "vue";
+import { t } from "~/lib/i18n";
+import { Icon } from "@iconify/vue";
+import { getDefaultHue, getHue, setHue } from "~/lib/utils/setting-utils";
 
 // SSR 与客户端水合都用固定初始值 250，避免 hydration mismatch；
 // 真实 hue 在 onMounted（仅客户端）再同步，面板默认隐藏，跳变不可见。
@@ -26,12 +26,15 @@ watch(hue, (val) => {
 </script>
 
 <template>
-  <div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-4">
+  <div
+    id="display-setting"
+    class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-4"
+  >
     <div class="flex flex-row gap-2 mb-3 items-center justify-between">
       <div
         class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)] before:absolute before:-left-3 before:top-[0.33rem]"
       >
-        {{ t('theme.color') }}
+        {{ t("theme.color") }}
         <button
           aria-label="Reset to Default"
           class="btn-regular w-7 h-7 rounded-md active:scale-90 will-change-transform"
@@ -52,7 +55,9 @@ watch(hue, (val) => {
         </div>
       </div>
     </div>
-    <div class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded select-none">
+    <div
+      class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded select-none"
+    >
       <input
         :aria-label="t('theme.color')"
         type="range"
@@ -69,13 +74,13 @@ watch(hue, (val) => {
 </template>
 
 <style scoped>
-#display-setting input[type='range'] {
+#display-setting input[type="range"] {
   -webkit-appearance: none;
   height: 1.5rem;
   background-image: var(--color-selection-bar);
   transition: background-image 0.15s ease-in-out;
 }
-#display-setting input[type='range']::-webkit-slider-thumb {
+#display-setting input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 1rem;
   width: 0.5rem;
@@ -83,13 +88,13 @@ watch(hue, (val) => {
   background: rgba(255, 255, 255, 0.7);
   box-shadow: none;
 }
-#display-setting input[type='range']::-webkit-slider-thumb:hover {
+#display-setting input[type="range"]::-webkit-slider-thumb:hover {
   background: rgba(255, 255, 255, 0.8);
 }
-#display-setting input[type='range']::-webkit-slider-thumb:active {
+#display-setting input[type="range"]::-webkit-slider-thumb:active {
   background: rgba(255, 255, 255, 0.6);
 }
-#display-setting input[type='range']::-moz-range-thumb {
+#display-setting input[type="range"]::-moz-range-thumb {
   height: 1rem;
   width: 0.5rem;
   border-radius: 0.125rem;
@@ -97,10 +102,10 @@ watch(hue, (val) => {
   background: rgba(255, 255, 255, 0.7);
   box-shadow: none;
 }
-#display-setting input[type='range']::-moz-range-thumb:hover {
+#display-setting input[type="range"]::-moz-range-thumb:hover {
   background: rgba(255, 255, 255, 0.8);
 }
-#display-setting input[type='range']::-moz-range-thumb:active {
+#display-setting input[type="range"]::-moz-range-thumb:active {
   background: rgba(255, 255, 255, 0.6);
 }
 </style>

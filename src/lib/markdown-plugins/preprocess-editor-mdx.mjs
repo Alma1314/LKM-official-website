@@ -12,16 +12,16 @@
  */
 
 const CALLOUT_ICONS = {
-  info: 'ℹ',
-  warning: '⚠',
-  error: '✕',
-  success: '✓',
+  info: "ℹ",
+  warning: "⚠",
+  error: "✕",
+  success: "✓",
 };
 const CALLOUT_LABELS = {
-  info: '信息',
-  warning: '警告',
-  error: '错误',
-  success: '成功',
+  info: "信息",
+  warning: "警告",
+  error: "错误",
+  success: "成功",
 };
 
 /** 自闭合 Callout：`<Callout  attrs  />`（attrs 内不再含 `>`） */
@@ -37,9 +37,11 @@ const FIGURE_SELF = /<Figure\s+([^>]*?)\/>/g;
 export function preprocessEditorMdx(md) {
   return md
     .replace(CALLOUT_SELF, (_match, attrsStr) => {
-      const type = parseAttr(attrsStr, 'type') || 'info';
-      const title = parseAttr(attrsStr, 'title');
-      const body = title ? `<h4>${title}</h4>` : `<p>${CALLOUT_LABELS[type] || type}</p>`;
+      const type = parseAttr(attrsStr, "type") || "info";
+      const title = parseAttr(attrsStr, "title");
+      const body = title
+        ? `<h4>${title}</h4>`
+        : `<p>${CALLOUT_LABELS[type] || type}</p>`;
       return (
         `<div class="lkm-callout lkm-callout-${type}">` +
         `<span class="lkm-callout-icon">${CALLOUT_ICONS[type] || CALLOUT_ICONS.info}</span>` +
@@ -48,15 +50,17 @@ export function preprocessEditorMdx(md) {
       );
     })
     .replace(FIGURE_SELF, (_match, attrsStr) => {
-      const align = parseAttr(attrsStr, 'align') || 'center';
-      const src = parseAttr(attrsStr, 'src');
-      const caption = parseAttr(attrsStr, 'caption');
-      const width = parseAttr(attrsStr, 'width');
-      const widthAttr = width ? ` style="width:${width}px"` : '';
+      const align = parseAttr(attrsStr, "align") || "center";
+      const src = parseAttr(attrsStr, "src");
+      const caption = parseAttr(attrsStr, "caption");
+      const width = parseAttr(attrsStr, "width");
+      const widthAttr = width ? ` style="width:${width}px"` : "";
       const img = src
-        ? `<img src="${src}" alt="${parseAttr(attrsStr, 'alt') || ''}"${widthAttr} />`
+        ? `<img src="${src}" alt="${parseAttr(attrsStr, "alt") || ""}"${widthAttr} />`
         : `<span class="lkm-figure-placeholder">暂无图片</span>`;
-      const captionHtml = caption ? `<figcaption class="lkm-figure-caption">${caption}</figcaption>` : '';
+      const captionHtml = caption
+        ? `<figcaption class="lkm-figure-caption">${caption}</figcaption>`
+        : "";
       return `<figure class="lkm-figure lkm-figure-${align}">${img}${captionHtml}</figure>`;
     });
 }
@@ -70,8 +74,8 @@ export function preprocessEditorMdx(md) {
 function parseAttr(attrsStr, name) {
   const re = new RegExp(`\\b${name}=("([^"]*)"|'([^']*)')`);
   const m = re.exec(attrsStr);
-  if (!m) return '';
-  return m[2] ?? m[3] ?? '';
+  if (!m) return "";
+  return m[2] ?? m[3] ?? "";
 }
 
 export default preprocessEditorMdx;

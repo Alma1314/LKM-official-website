@@ -1,7 +1,7 @@
-import { getImage } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import type { MetaDataOpenGraph } from '~/types/core';
-import { buildUrl } from './paths';
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { MetaDataOpenGraph } from "~/types/core";
+import { buildUrl } from "./paths";
 
 type ImageSrc = string | ImageMetadata | null | undefined;
 
@@ -12,13 +12,13 @@ const loadLocalImages = (): Record<string, () => Promise<unknown>> => {
   if (_localImages) return _localImages;
   try {
     _localImages = import.meta.glob([
-      '~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}',
+      "~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}",
       // member-optimized 目录的头像由页面自行 glob，不在此全局范围
-      '!~/assets/images/member/**',
-      '!~/assets/images/member-optimized/**',
+      "!~/assets/images/member/**",
+      "!~/assets/images/member-optimized/**",
     ]);
   } catch (err) {
-    console.warn('[images] 图片 glob 加载失败:', err);
+    console.warn("[images] 图片 glob 加载失败:", err);
     _localImages = {};
   }
   return _localImages;
@@ -33,16 +33,17 @@ const loadLocalImages = (): Record<string, () => Promise<unknown>> => {
  *   - `"~/assets/images/…"`        → 通过 glob 解析为 ImageMetadata
  */
 export const findImage = async (imagePath?: ImageSrc): Promise<ImageSrc> => {
-  if (typeof imagePath !== 'string') return imagePath;
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-  if (imagePath.startsWith('/')) return buildUrl(imagePath);
-  if (!imagePath.startsWith('~/assets/images')) return imagePath;
+  if (typeof imagePath !== "string") return imagePath;
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://"))
+    return imagePath;
+  if (imagePath.startsWith("/")) return buildUrl(imagePath);
+  if (!imagePath.startsWith("~/assets/images")) return imagePath;
 
   const images = loadLocalImages();
-  const key = imagePath.replace('~/', '/src/');
+  const key = imagePath.replace("~/", "/src/");
   const loader = images[key];
 
-  if (typeof loader !== 'function') return null;
+  if (typeof loader !== "function") return null;
   return ((await loader()) as { default: ImageMetadata }).default;
 };
 
@@ -55,16 +56,16 @@ const OG_HEIGHT = 626;
  */
 export const adaptOpenGraphImages = async (
   openGraph: MetaDataOpenGraph = {},
-  astroSite: URL | undefined = new URL('')
+  astroSite: URL | undefined = new URL(""),
 ): Promise<MetaDataOpenGraph> => {
   if (!openGraph?.images?.length) return openGraph;
 
   const adaptedImages = await Promise.all(
     openGraph.images.map(async (image) => {
-      if (!image?.url) return { url: '' };
+      if (!image?.url) return { url: "" };
 
       const resolved = await findImage(image.url);
-      if (!resolved) return { url: '' };
+      if (!resolved) return { url: "" };
 
       // 通过 Astro 的图片服务（默认 Sharp）生成优化后的 JPG。
       const optimized = await getImage({
@@ -72,7 +73,7 @@ export const adaptOpenGraphImages = async (
         src: resolved as any,
         width: OG_WIDTH,
         height: OG_HEIGHT,
-        format: 'jpg',
+        format: "jpg",
       });
 
       return {
@@ -80,7 +81,7 @@ export const adaptOpenGraphImages = async (
         width: Number(optimized.attributes.width) || OG_WIDTH,
         height: Number(optimized.attributes.height) || OG_HEIGHT,
       };
-    })
+    }),
   );
 
   return { ...openGraph, images: adaptedImages };

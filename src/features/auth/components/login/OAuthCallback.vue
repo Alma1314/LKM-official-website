@@ -3,16 +3,16 @@
     <AuthStatus v-if="error" type="error" :message="error" class="mb-4" />
     <div v-else class="flex flex-col items-center gap-3 py-6">
       <span class="loading loading-spinner loading-lg text-primary"></span>
-      <p class="text-sm text-text-muted">{{ t('auth.oauth.completing') }}</p>
+      <p class="text-sm text-text-muted">{{ t("auth.oauth.completing") }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useAuthStore } from '~/stores/auth';
-import { t } from '~/lib/i18n';
-import AuthStatus from '../shared/AuthStatus.vue';
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import { t } from "~/lib/i18n";
+import AuthStatus from "../shared/AuthStatus.vue";
 
 /**
  * OAuth 回调处理页。
@@ -31,16 +31,21 @@ const error = ref<string | null>(null);
 
 onMounted(() => {
   // 令牌在 #fragment 中。去除开头的 # 后按 query 语法解析。
-  const raw = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
+  const raw = window.location.hash.startsWith("#")
+    ? window.location.hash.slice(1)
+    : window.location.hash;
   const params = new URLSearchParams(raw);
-  const token = params.get('access_token');
-  const refreshToken = params.get('refresh_token');
-  const tempToken = params.get('temp_token');
-  const requires2FA = params.get('requires_2fa') === '1' || params.get('requires_2fa') === 'true';
-  const setupRequired = params.get('setup_required') === '1' || params.get('setup_required') === 'true';
+  const token = params.get("access_token");
+  const refreshToken = params.get("refresh_token");
+  const tempToken = params.get("temp_token");
+  const requires2FA =
+    params.get("requires_2fa") === "1" || params.get("requires_2fa") === "true";
+  const setupRequired =
+    params.get("setup_required") === "1" ||
+    params.get("setup_required") === "true";
 
   if (token) {
-    store.setTokens(token, refreshToken ?? '');
+    store.setTokens(token, refreshToken ?? "");
   }
   if (requires2FA || setupRequired) {
     store.holdPending2FA(tempToken ?? null);
@@ -48,11 +53,11 @@ onMounted(() => {
 
   // 清理 URL 中的敏感参数，避免 token 留在地址栏/历史记录
   if (token || tempToken) {
-    window.history.replaceState({}, '', window.location.pathname);
+    window.history.replaceState({}, "", window.location.pathname);
   }
 
   const finish = () => {
-    window.dispatchEvent(new CustomEvent('close-auth-modal'));
+    window.dispatchEvent(new CustomEvent("close-auth-modal"));
   };
 
   // 有 token：立即同步用户并视为已登录
@@ -61,11 +66,11 @@ onMounted(() => {
       .fetchMe()
       .then(() => {
         finish();
-        window.location.replace('/');
+        window.location.replace("/");
       })
       .catch(() => {
         finish();
-        window.location.replace('/login');
+        window.location.replace("/login");
       });
     return;
   }
@@ -73,10 +78,10 @@ onMounted(() => {
   // 需 2FA：跳转登录页进入 2FA 验证
   if (requires2FA || setupRequired) {
     finish();
-    window.location.replace('/login?2fa=1');
+    window.location.replace("/login?2fa=1");
     return;
   }
 
-  error.value = t('auth.oauth.failed');
+  error.value = t("auth.oauth.failed");
 });
 </script>

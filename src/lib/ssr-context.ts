@@ -26,7 +26,10 @@ export function setSsrStore(store: AsyncStore): void {
 }
 
 /** 在上下文中执行回调；未注入 store（如浏览器）时直接执行。 */
-export async function runWithRequest<T>(headers: Headers, callback: () => T | Promise<T>): Promise<T> {
+export async function runWithRequest<T>(
+  headers: Headers,
+  callback: () => T | Promise<T>,
+): Promise<T> {
   if (!_store) return await callback();
   return await _store.run({ headers }, () => callback());
 }
@@ -35,5 +38,5 @@ export async function runWithRequest<T>(headers: Headers, callback: () => T | Pr
 export function getSsrCookie(): string | null {
   const store = _store?.getStore();
   if (!store) return null;
-  return store.headers.get('cookie');
+  return store.headers.get("cookie");
 }

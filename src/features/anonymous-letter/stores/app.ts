@@ -2,15 +2,15 @@
 // 全局响应式状态 (composable)
 // 主题跟随主站 .dark class，不自行管理 data-theme
 // =============================================================
-import { reactive, computed, watch, type ComputedRef } from 'vue';
-import * as store from './storage';
-import type { TreeholeSettings } from './storage';
+import { reactive, computed, watch, type ComputedRef } from "vue";
+import * as store from "./storage";
+import type { TreeholeSettings } from "./storage";
 
 interface AppState {
   settings: TreeholeSettings;
 }
 
-const isClient = typeof document !== 'undefined';
+const isClient = typeof document !== "undefined";
 
 export function useApp(): {
   state: AppState;
@@ -18,9 +18,9 @@ export function useApp(): {
   lowPerf: ComputedRef<boolean>;
   highContrast: ComputedRef<boolean>;
   toggleTheme: () => void;
-  setTheme: (t: 'day' | 'night') => void;
+  setTheme: (t: "day" | "night") => void;
   toggleMuted: () => void;
-  setFontScale: (s: 'small' | 'normal' | 'large') => void;
+  setFontScale: (s: "small" | "normal" | "large") => void;
   setAccent: (a: string, b: string) => void;
   toggleLowPerf: () => void;
   toggleHighContrast: () => void;
@@ -30,13 +30,17 @@ export function useApp(): {
   const settings = store.getSettings();
   // 始终从主站 .dark class 同步初始主题，不被 localStorage 覆盖
   if (isClient) {
-    settings.theme = document.documentElement.classList.contains('dark') ? 'night' : 'day';
+    settings.theme = document.documentElement.classList.contains("dark")
+      ? "night"
+      : "day";
   }
 
   const state = reactive<AppState>({ settings });
 
-  const isNight = computed(() => state.settings.theme === 'night');
-  const lowPerf = computed(() => state.settings.lowPerf || state.settings.muted);
+  const isNight = computed(() => state.settings.theme === "night");
+  const lowPerf = computed(
+    () => state.settings.lowPerf || state.settings.muted,
+  );
   const highContrast = computed(() => state.settings.highContrast);
 
   // 字体大小 -> 写入根节点 css 变量
@@ -45,53 +49,54 @@ export function useApp(): {
     (s) => {
       if (isClient) {
         document.documentElement.style.setProperty(
-          '--font-scale',
-          s === 'small' ? '0.9' : s === 'large' ? '1.15' : '1'
+          "--font-scale",
+          s === "small" ? "0.9" : s === "large" ? "1.15" : "1",
         );
       }
     },
-    { immediate: true }
+    { immediate: true },
   );
 
   // 高对比度护眼模式
   watch(
     () => state.settings.highContrast,
     (on) => {
-      if (isClient) document.documentElement.classList.toggle('high-contrast', !!on);
+      if (isClient)
+        document.documentElement.classList.toggle("high-contrast", !!on);
     },
-    { immediate: true }
+    { immediate: true },
   );
 
   // 低性能设备：关闭重特效
   watch(
     () => state.settings.lowPerf,
     (on) => {
-      if (isClient) document.documentElement.classList.toggle('low-perf', !!on);
+      if (isClient) document.documentElement.classList.toggle("low-perf", !!on);
     },
-    { immediate: true }
+    { immediate: true },
   );
 
   // 同步设置到存储
   watch(
     () => state.settings,
     (s) => store.saveSettings(s),
-    { deep: true }
+    { deep: true },
   );
 
   function toggleTheme(): void {
-    const next = isNight.value ? 'day' : 'night';
+    const next = isNight.value ? "day" : "night";
     state.settings.theme = next;
-    document.documentElement.classList.toggle('dark', next === 'night');
-    localStorage.theme = next === 'night' ? 'dark' : 'light';
+    document.documentElement.classList.toggle("dark", next === "night");
+    localStorage.theme = next === "night" ? "dark" : "light";
   }
 
-  function setTheme(t: 'day' | 'night'): void {
+  function setTheme(t: "day" | "night"): void {
     state.settings.theme = t;
   }
   function toggleMuted(): void {
     state.settings.muted = !state.settings.muted;
   }
-  function setFontScale(s: 'small' | 'normal' | 'large'): void {
+  function setFontScale(s: "small" | "normal" | "large"): void {
     state.settings.fontScale = s;
   }
   function setAccent(a: string, b: string): void {

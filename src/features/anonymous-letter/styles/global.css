@@ -6,7 +6,7 @@
 
 /* 确保 --hue 有初始值（与主站 tailwind.css 一致） */
 @property --hue {
-  syntax: '<number>';
+  syntax: "<number>";
   initial-value: 250;
   inherits: true;
 }
@@ -60,7 +60,9 @@ body {
   padding: 0;
 }
 body {
-  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', 'Helvetica Neue', system-ui, sans-serif;
+  font-family:
+    "PingFang SC", "Noto Sans SC", "Microsoft YaHei", "Helvetica Neue",
+    system-ui, sans-serif;
   color: var(--text-main);
   font-size: calc(15px * var(--font-scale));
   line-height: 1.7;
@@ -119,8 +121,16 @@ body {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(40% 55% at 12% 8%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
-    radial-gradient(45% 50% at 90% 12%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 70%);
+    radial-gradient(
+      40% 55% at 12% 8%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 50% at 90% 12%,
+      color-mix(in srgb, var(--accent-2) 10%, transparent),
+      transparent 70%
+    );
   background-color: var(--bg-1);
   animation: bgShift 24s ease-in-out infinite alternate;
   transition: background-color 0.4s ease;
@@ -327,7 +337,8 @@ body {
   }
   100% {
     opacity: 0;
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1);
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+      scale(1);
   }
 }
 
@@ -342,7 +353,7 @@ body {
   }
 }
 .send-ripple::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;

@@ -5,7 +5,7 @@
 export interface Question {
   id: string;
   userId: string;
-  type: 'single' | 'multiple' | 'true-false' | 'essay' | 'fill';
+  type: "single" | "multiple" | "true-false" | "essay" | "fill";
   content: string;
   options?: string[];
   answer: string | string[];
@@ -29,12 +29,12 @@ export interface Folder {
 export interface PracticeSession {
   id: string;
   userId: string;
-  type: 'practice' | 'exam';
-  mode: 'realtime' | 'batch';
+  type: "practice" | "exam";
+  mode: "realtime" | "batch";
   questionIds: string[];
   answers: Record<string, string | string[]>;
   results?: Record<string, { correct: boolean; score?: number }>;
-  status: 'ongoing' | 'paused' | 'completed';
+  status: "ongoing" | "paused" | "completed";
   startedAt: string;
   completedAt?: string;
   timeLimit?: number;
@@ -48,7 +48,7 @@ export interface AiAgent {
   name: string;
   avatar?: string;
   systemPrompt: string;
-  service: 'openai' | 'ollama';
+  service: "openai" | "ollama";
   model: string;
   temperature: number;
   topP: number;
@@ -60,7 +60,7 @@ export interface AiAgent {
 export interface AiMessage {
   id: string;
   agentId: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   attachments?: { name: string; data: string; type: string }[];
   timestamp: string;
@@ -68,9 +68,9 @@ export interface AiMessage {
 
 export interface SyncOp {
   id?: number;
-  entity: 'questions' | 'folders' | 'sessions' | 'agents';
+  entity: "questions" | "folders" | "sessions" | "agents";
   entityId: string;
-  op: 'upsert' | 'delete';
+  op: "upsert" | "delete";
   payload?: unknown;
   updatedAt: string;
 }

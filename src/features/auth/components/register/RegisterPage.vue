@@ -4,9 +4,18 @@
     :max-width="mode === 'modal' ? undefined : '440px'"
     :class="mode === 'modal' ? 'w-full' : undefined"
   >
-    <AuthCard :title="t('auth.register.title')" :subtitle="t('auth.register.subtitle')" :mode="mode">
+    <AuthCard
+      :title="t('auth.register.title')"
+      :subtitle="t('auth.register.subtitle')"
+      :mode="mode"
+    >
       <!-- 状态提示 -->
-      <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
+      <AuthStatus
+        v-if="flow.error"
+        type="error"
+        class="mb-4"
+        :message="flow.error"
+      />
 
       <!-- Docker / done -->
       <div v-if="flow.stage === 'done'" class="text-center space-y-4">
@@ -24,8 +33,10 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <p class="text-xl font-semibold">{{ t('auth.register.success') }}</p>
-        <a :href="getAuthPath('')" class="btn btn-primary btn-sm w-full">{{ t('auth.register.backHome') }}</a>
+        <p class="text-xl font-semibold">{{ t("auth.register.success") }}</p>
+        <a :href="getAuthPath('')" class="btn btn-primary btn-sm w-full">{{
+          t("auth.register.backHome")
+        }}</a>
       </div>
 
       <template v-else>
@@ -47,17 +58,27 @@
         <template v-if="flow.stage === 'form'">
           <div class="my-6 flex items-center gap-3">
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
-            <span class="text-xs text-text-muted">{{ t('auth.register.or') }}</span>
+            <span class="text-xs text-text-muted">{{
+              t("auth.register.or")
+            }}</span>
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
           </div>
-          <AuthMethodButton :label="t('auth.register.githubRegister')" :disabled="flow.loading" @click="handleGithub" />
+          <AuthMethodButton
+            :label="t('auth.register.githubRegister')"
+            :disabled="flow.loading"
+            @click="handleGithub"
+          />
         </template>
 
         <!-- 已有账号 -->
         <p class="mt-6 text-center text-[13px] text-text-muted">
-          {{ t('auth.register.haveAccount') }}
-          <button type="button" class="text-primary font-semibold hover:underline" @click="switchToLogin">
-            {{ t('auth.register.loginNow') }}
+          {{ t("auth.register.haveAccount") }}
+          <button
+            type="button"
+            class="text-primary font-semibold hover:underline"
+            @click="switchToLogin"
+          >
+            {{ t("auth.register.loginNow") }}
           </button>
         </p>
       </template>
@@ -66,42 +87,50 @@
 </template>
 
 <script setup lang="ts">
-import { useRegisterFlow, type RegisterType } from '~/features/auth/composables/useRegisterFlow';
-import { getAuthPath } from '~/features/auth/constants/auth-paths';
-import { t } from '~/lib/i18n';
-import AuthShell from '../shared/AuthShell.vue';
-import AuthCard from '../shared/AuthCard.vue';
-import AuthSegmentedControl from '../shared/AuthSegmentedControl.vue';
-import AuthStatus from '../shared/AuthStatus.vue';
-import AuthMethodButton from '../shared/AuthMethodButton.vue';
-import LocalRegister from './LocalRegister.vue';
-import NormalRegister from './NormalRegister.vue';
+import {
+  useRegisterFlow,
+  type RegisterType,
+} from "~/features/auth/composables/useRegisterFlow";
+import { getAuthPath } from "~/features/auth/constants/auth-paths";
+import { t } from "~/lib/i18n";
+import AuthShell from "../shared/AuthShell.vue";
+import AuthCard from "../shared/AuthCard.vue";
+import AuthSegmentedControl from "../shared/AuthSegmentedControl.vue";
+import AuthStatus from "../shared/AuthStatus.vue";
+import AuthMethodButton from "../shared/AuthMethodButton.vue";
+import LocalRegister from "./LocalRegister.vue";
+import NormalRegister from "./NormalRegister.vue";
 
-withDefaults(defineProps<{ mode?: 'page' | 'modal' }>(), { mode: 'page' });
+withDefaults(defineProps<{ mode?: "page" | "modal" }>(), { mode: "page" });
 
-const redirectRaw = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('redirect') : null;
+const redirectRaw =
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("redirect")
+    : null;
 
 const flow = useRegisterFlow({
-  redirect: redirectRaw || '/',
+  redirect: redirectRaw || "/",
   onSuccess: (dst) => {
-    window.dispatchEvent(new CustomEvent('close-auth-modal'));
+    window.dispatchEvent(new CustomEvent("close-auth-modal"));
     window.location.href = dst;
   },
 });
 
 const segmentedOptions = [
-  { key: 'normal' as RegisterType, label: t('auth.register.normalAccount') },
-  { key: 'local' as RegisterType, label: t('auth.register.localAccount') },
+  { key: "normal" as RegisterType, label: t("auth.register.normalAccount") },
+  { key: "local" as RegisterType, label: t("auth.register.localAccount") },
 ];
 
 function handleGithub() {
-  alert(t('auth.register.githubNotSupported'));
+  alert(t("auth.register.githubNotSupported"));
 }
 
 function switchToLogin() {
-  window.dispatchEvent(new CustomEvent('close-auth-modal'));
+  window.dispatchEvent(new CustomEvent("close-auth-modal"));
   setTimeout(() => {
-    window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { view: 'login' } }));
+    window.dispatchEvent(
+      new CustomEvent("open-auth-modal", { detail: { view: "login" } }),
+    );
   }, 150);
 }
 </script>

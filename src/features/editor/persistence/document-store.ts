@@ -1,22 +1,28 @@
-import { ok, err } from 'neverthrow';
-import type { Result } from 'neverthrow';
-import { t } from '~/lib/i18n';
+import { ok, err } from "neverthrow";
+import type { Result } from "neverthrow";
+import { t } from "~/lib/i18n";
 
 export class AppError extends Error {
   constructor(
     public code: string,
     message: string,
-    public cause?: unknown
+    public cause?: unknown,
   ) {
     super(message);
-    this.name = 'AppError';
+    this.name = "AppError";
   }
 }
 
-import type { DocumentData, DocumentMeta, DocumentSummary, AutosavePayload, AutosaveResponse } from '../engine/types';
+import type {
+  DocumentData,
+  DocumentMeta,
+  DocumentSummary,
+  AutosavePayload,
+  AutosaveResponse,
+} from "../engine/types";
 
-const DRAFTS_KEY = 'lkm-editor-drafts';
-const DRAFTS_INDEX_KEY = 'lkm-editor-drafts-index';
+const DRAFTS_KEY = "lkm-editor-drafts";
+const DRAFTS_INDEX_KEY = "lkm-editor-drafts-index";
 
 // 内存缓存：减少 autosave 高频触发的 JSON.parse 开销
 let draftsCache: Record<string, DocumentData> | null = null;
@@ -28,19 +34,23 @@ function readDrafts(): Record<string, DocumentData> {
     const raw = localStorage.getItem(DRAFTS_KEY);
     draftsCache = raw ? JSON.parse(raw) : {};
   } catch (err) {
-    console.warn('[document-api] readDrafts 失败:', err);
+    console.warn("[document-api] readDrafts 失败:", err);
     draftsCache = {};
   }
   return draftsCache ?? {};
 }
 
-function writeDrafts(drafts: Record<string, DocumentData>): Result<void, AppError> {
+function writeDrafts(
+  drafts: Record<string, DocumentData>,
+): Result<void, AppError> {
   try {
     draftsCache = drafts;
     localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
     return ok(undefined);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.writeFailed'), e));
+    return err(
+      new AppError("DB_WRITE_FAILED", t("editor.persistence.writeFailed"), e),
+    );
   }
 }
 
@@ -50,7 +60,7 @@ function readIndex(): DocumentMeta[] {
     const raw = localStorage.getItem(DRAFTS_INDEX_KEY);
     indexCache = raw ? JSON.parse(raw) : [];
   } catch (err) {
-    console.warn('[document-api] readIndex 失败:', err);
+    console.warn("[document-api] readIndex 失败:", err);
     indexCache = [];
   }
   return indexCache ?? [];
@@ -62,7 +72,13 @@ function writeIndex(index: DocumentMeta[]): Result<void, AppError> {
     localStorage.setItem(DRAFTS_INDEX_KEY, JSON.stringify(index));
     return ok(undefined);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.writeIndexFailed'), e));
+    return err(
+      new AppError(
+        "DB_WRITE_FAILED",
+        t("editor.persistence.writeIndexFailed"),
+        e,
+      ),
+    );
   }
 }
 
@@ -71,7 +87,7 @@ export function getDocument(id: string): DocumentData | null {
     const drafts = readDrafts();
     return drafts[id] ?? null;
   } catch (e) {
-    console.warn('[document-api] getDocument 失败:', e);
+    console.warn("[document-api] getDocument 失败:", e);
     return null;
   }
 }
@@ -85,10 +101,10 @@ export function createDocument(title?: string): Result<DocumentData, AppError> {
     const now = new Date().toISOString();
     const doc: DocumentData = {
       id: crypto.randomUUID(),
-      title: title ?? t('editor.untitled'),
-      contentMdx: '',
+      title: title ?? t("editor.untitled"),
+      contentMdx: "",
       editorJson: null,
-      status: 'draft',
+      status: "draft",
       version: 1,
       lastModified: now,
       createdAt: now,
@@ -113,11 +129,16 @@ export function createDocument(title?: string): Result<DocumentData, AppError> {
     writeIndex(index);
     return ok(doc);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.createFailed'), e));
+    return err(
+      new AppError("DB_WRITE_FAILED", t("editor.persistence.createFailed"), e),
+    );
   }
 }
 
-export function updateDocument(id: string, data: Partial<DocumentData>): Result<DocumentData | null, AppError> {
+export function updateDocument(
+  id: string,
+  data: Partial<DocumentData>,
+): Result<DocumentData | null, AppError> {
   try {
     const drafts = readDrafts();
     const existing = drafts[id];
@@ -150,16 +171,26 @@ export function updateDocument(id: string, data: Partial<DocumentData>): Result<
 
     return ok(updated);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.updateFailed'), e));
+    return err(
+      new AppError("DB_WRITE_FAILED", t("editor.persistence.updateFailed"), e),
+    );
   }
 }
 
-export function autosave(id: string, payload: AutosavePayload): AutosaveResponse {
+export function autosave(
+  id: string,
+  payload: AutosavePayload,
+): AutosaveResponse {
   const drafts = readDrafts();
   const existing = drafts[id];
 
   if (existing && existing.version !== payload.baseVersion) {
-    return { ok: false, version: existing.version, code: 'VERSION_CONFLICT', currentVersion: existing.version };
+    return {
+      ok: false,
+      version: existing.version,
+      code: "VERSION_CONFLICT",
+      currentVersion: existing.version,
+    };
   }
 
   const now = new Date().toISOString();
@@ -167,10 +198,10 @@ export function autosave(id: string, payload: AutosavePayload): AutosaveResponse
 
   const doc: DocumentData = {
     id,
-    title: existing?.title ?? t('editor.untitled'),
+    title: existing?.title ?? t("editor.untitled"),
     contentMdx: payload.contentMdx,
     editorJson: payload.editorJson,
-    status: existing?.status ?? 'draft',
+    status: existing?.status ?? "draft",
     // 保留既有 slug，autosave 不丢发布信息
     slug: existing?.slug,
     version: newVersion,
@@ -211,6 +242,8 @@ export function deleteDocument(id: string): Result<void, AppError> {
     const index = readIndex();
     return writeIndex(index.filter((m) => m.id !== id));
   } catch (e) {
-    return err(new AppError('DB_DELETE_FAILED', t('editor.persistence.deleteFailed'), e));
+    return err(
+      new AppError("DB_DELETE_FAILED", t("editor.persistence.deleteFailed"), e),
+    );
   }
 }

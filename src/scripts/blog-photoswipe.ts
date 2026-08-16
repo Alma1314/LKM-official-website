@@ -3,15 +3,15 @@
  * 使用 Astro 原生 View Transitions 生命周期事件管理
  */
 
-import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import 'photoswipe/style.css';
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import "photoswipe/style.css";
 
 let lightbox: PhotoSwipeLightbox;
 
 function createPhotoSwipe(): void {
   lightbox = new PhotoSwipeLightbox({
-    gallery: '.custom-md img, #post-cover img',
-    pswpModule: () => import('photoswipe'),
+    gallery: ".custom-md img, #post-cover img",
+    pswpModule: () => import("photoswipe"),
     closeSVG:
       '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>',
     zoomSVG:
@@ -20,12 +20,12 @@ function createPhotoSwipe(): void {
     wheelToZoom: true,
     arrowPrev: false,
     arrowNext: false,
-    imageClickAction: 'close',
-    tapAction: 'close',
-    doubleTapAction: 'zoom',
+    imageClickAction: "close",
+    tapAction: "close",
+    doubleTapAction: "zoom",
   });
 
-  lightbox.addFilter('domItemData', (itemData, element) => {
+  lightbox.addFilter("domItemData", (itemData, element) => {
     if (element instanceof HTMLImageElement) {
       itemData.src = element.src;
       itemData.w = Number(element.naturalWidth || window.innerWidth);

@@ -1,15 +1,23 @@
 <template>
   <div class="messages">
-    <h1 class="page-title">💬 {{ t('treehole.messages.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.messages.subtitle') }}</p>
+    <h1 class="page-title">💬 {{ t("treehole.messages.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.messages.subtitle") }}</p>
 
     <div class="msg-layout">
       <!-- 会话列表 -->
       <aside class="conv-list glass">
         <div class="conv-head">
-          <span>{{ t('treehole.messages.conversations', { count: conversations.length }) }}</span>
-          <button class="chip" @click="clearAllRead" v-if="conversations.length">
-            {{ t('treehole.messages.markRead') }}
+          <span>{{
+            t("treehole.messages.conversations", {
+              count: conversations.length,
+            })
+          }}</span>
+          <button
+            class="chip"
+            @click="clearAllRead"
+            v-if="conversations.length"
+          >
+            {{ t("treehole.messages.markRead") }}
           </button>
         </div>
         <div v-if="conversations.length" class="conv-items">
@@ -25,7 +33,9 @@
               <b>{{ c.peerCodename }}</b>
               <small>{{ lastMsg(c) }}</small>
             </div>
-            <span v-if="c.blocked" class="conv-blocked">{{ t('treehole.messages.blocked') }}</span>
+            <span v-if="c.blocked" class="conv-blocked">{{
+              t("treehole.messages.blocked")
+            }}</span>
           </div>
         </div>
         <EmptyState
@@ -42,15 +52,25 @@
             <div class="conv-avatar">{{ active.peerCodename.charAt(0) }}</div>
             <div>
               <b>{{ active.peerCodename }}</b>
-              <small>{{ t('treehole.messages.myCodename', { name: active.myCodename }) }}</small>
+              <small>{{
+                t("treehole.messages.myCodename", { name: active.myCodename })
+              }}</small>
             </div>
           </div>
           <div class="chat-acts">
-            <button class="mini" @click="blockConv" v-if="!active.blocked">{{ t('treehole.messages.block') }}</button>
-            <button class="mini" @click="clearConv" v-if="active.messages.length">
-              {{ t('treehole.messages.clear') }}
+            <button class="mini" @click="blockConv" v-if="!active.blocked">
+              {{ t("treehole.messages.block") }}
             </button>
-            <button class="mini danger" @click="delConv">{{ t('treehole.messages.delete') }}</button>
+            <button
+              class="mini"
+              @click="clearConv"
+              v-if="active.messages.length"
+            >
+              {{ t("treehole.messages.clear") }}
+            </button>
+            <button class="mini danger" @click="delConv">
+              {{ t("treehole.messages.delete") }}
+            </button>
           </div>
         </div>
 
@@ -60,13 +80,20 @@
               v-for="(m, i) in active.messages"
               :key="m.id || i"
               class="bubble"
-              :class="[m.from === 'me' ? 'mine' : 'peer', { recalled: m.recalled }]"
+              :class="[
+                m.from === 'me' ? 'mine' : 'peer',
+                { recalled: m.recalled },
+              ]"
             >
               <template v-if="m.recalled">{{ m.text }}</template>
               <template v-else>
                 <span class="bubble-text">{{ m.text }}</span>
-                <button v-if="m.from === 'me' && !m.recalled" class="bubble-recall" @click="recall(active.id, m)">
-                  {{ t('treehole.messages.recall') }}
+                <button
+                  v-if="m.from === 'me' && !m.recalled"
+                  class="bubble-recall"
+                  @click="recall(active.id, m)"
+                >
+                  {{ t("treehole.messages.recall") }}
                 </button>
               </template>
             </div>
@@ -87,30 +114,40 @@
             :class="{ 'send-ripple': rippling }"
             @animationend="rippling = false"
           ></textarea>
-          <button class="btn-grad" :disabled="!text.trim()" @click="send">{{ t('treehole.messages.send') }}</button>
+          <button class="btn-grad" :disabled="!text.trim()" @click="send">
+            {{ t("treehole.messages.send") }}
+          </button>
         </div>
-        <div v-else class="chat-blocked">{{ t('treehole.messages.blockedHint') }}</div>
+        <div v-else class="chat-blocked">
+          {{ t("treehole.messages.blockedHint") }}
+        </div>
       </section>
 
-      <EmptyState v-else class="chat-empty" :title="t('treehole.messages.selectConvHint')" />
+      <EmptyState
+        v-else
+        class="chat-empty"
+        :title="t('treehole.messages.selectConvHint')"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue';
-import { useMessage } from 'naive-ui';
-import EmptyState from '../components/EmptyState.vue';
-import * as store from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted, nextTick } from "vue";
+import { useMessage } from "naive-ui";
+import EmptyState from "../components/EmptyState.vue";
+import * as store from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const message = useMessage();
 const conversations = ref([]);
-const activeId = ref('');
-const text = ref('');
+const activeId = ref("");
+const text = ref("");
 const rippling = ref(false);
 
-const active = computed(() => conversations.value.find((c) => c.id === activeId.value) || null);
+const active = computed(
+  () => conversations.value.find((c) => c.id === activeId.value) || null,
+);
 
 onMounted(() => {
   conversations.value = store.getReplies();
@@ -118,11 +155,14 @@ onMounted(() => {
 });
 
 function lastMsg(c) {
-  if (!c.messages.length) return t('treehole.messages.noMsg');
+  if (!c.messages.length) return t("treehole.messages.noMsg");
   const m = c.messages[c.messages.length - 1];
   return (
-    (m.recalled ? t('treehole.messages.recalledPrefix') : m.from === 'me' ? t('treehole.messages.mePrefix') : '') +
-    m.text
+    (m.recalled
+      ? t("treehole.messages.recalledPrefix")
+      : m.from === "me"
+        ? t("treehole.messages.mePrefix")
+        : "") + m.text
   );
 }
 
@@ -132,26 +172,26 @@ function selectConv(c) {
 function send() {
   if (!text.value.trim() || !active.value) return;
   const msg = {
-    id: 'm_' + Date.now() + Math.floor(Math.random() * 100),
-    from: 'me',
+    id: "m_" + Date.now() + Math.floor(Math.random() * 100),
+    from: "me",
     text: text.value.trim(),
     at: Date.now(),
   };
   store.appendMessage(activeId.value, msg);
   conversations.value = store.getReplies();
-  text.value = '';
+  text.value = "";
   rippling.value = true;
   nextTick(scrollBottom);
 }
 function recall(convId, msg) {
   store.recallMessage(convId, msg.id);
   conversations.value = store.getReplies();
-  message.success(t('treehole.messages.recalledMsg'));
+  message.success(t("treehole.messages.recalledMsg"));
 }
 function blockConv() {
   store.blockConversation(activeId.value);
   conversations.value = store.getReplies();
-  message.success(t('treehole.messages.blockedMsg'));
+  message.success(t("treehole.messages.blockedMsg"));
 }
 function clearConv() {
   store.clearConversation(activeId.value);
@@ -160,14 +200,14 @@ function clearConv() {
 function delConv() {
   store.deleteConversation(activeId.value);
   conversations.value = store.getReplies();
-  activeId.value = conversations.value[0]?.id || '';
+  activeId.value = conversations.value[0]?.id || "";
 }
 function clearAllRead() {
   store.clearInbox();
-  message.success(t('treehole.messages.allReadMsg'));
+  message.success(t("treehole.messages.allReadMsg"));
 }
 function scrollBottom() {
-  const el = document.querySelector('.chat-body');
+  const el = document.querySelector(".chat-body");
   if (el) el.scrollTop = el.scrollHeight;
 }
 </script>

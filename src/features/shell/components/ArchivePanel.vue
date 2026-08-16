@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import { t } from '~/lib/i18n';
-import { getPostUrlBySlug } from '~/lib/utils/url-utils';
+import { ref, watchEffect } from "vue";
+import { t } from "~/lib/i18n";
+import { getPostUrlBySlug } from "~/lib/utils/url-utils";
 
 const props = withDefaults(
   defineProps<{
@@ -13,7 +13,7 @@ const props = withDefaults(
     tags: () => [],
     categories: () => [],
     sortedPosts: () => [],
-  }
+  },
 );
 
 interface Post {
@@ -32,20 +32,22 @@ interface Group {
 }
 
 const params = new URLSearchParams(window.location.search);
-const tags = params.has('tag') ? params.getAll('tag') : props.tags;
-const categories = params.has('category') ? params.getAll('category') : props.categories;
-const uncategorized = params.get('uncategorized');
+const tags = params.has("tag") ? params.getAll("tag") : props.tags;
+const categories = params.has("category")
+  ? params.getAll("category")
+  : props.categories;
+const uncategorized = params.get("uncategorized");
 
 const groups = ref<Group[]>([]);
 
 function formatDate(date: Date) {
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
   return `${month}-${day}`;
 }
 
 function formatTag(tagList: string[]) {
-  return tagList.map((t) => `#${t}`).join(' ');
+  return tagList.map((t) => `#${t}`).join(" ");
 }
 
 watchEffect(() => {
@@ -53,12 +55,16 @@ watchEffect(() => {
 
   if (tags.length > 0) {
     filteredPosts = filteredPosts.filter(
-      (post) => Array.isArray(post.data.tags) && post.data.tags.some((tag) => tags.includes(tag))
+      (post) =>
+        Array.isArray(post.data.tags) &&
+        post.data.tags.some((tag) => tags.includes(tag)),
     );
   }
 
   if (categories.length > 0) {
-    filteredPosts = filteredPosts.filter((post) => post.data.category && categories.includes(post.data.category));
+    filteredPosts = filteredPosts.filter(
+      (post) => post.data.category && categories.includes(post.data.category),
+    );
   }
 
   if (uncategorized) {
@@ -74,7 +80,7 @@ watchEffect(() => {
       acc[year].push(post);
       return acc;
     },
-    {} as Record<number, Post[]>
+    {} as Record<number, Post[]>,
   );
 
   const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
@@ -94,7 +100,9 @@ watchEffect(() => {
   >
     <div v-for="group in groups" :key="group.year">
       <div class="flex flex-row w-full items-center h-[3.75rem]">
-        <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-75">
+        <div
+          class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-75"
+        >
           {{ group.year }}
         </div>
         <div class="w-[15%] md:w-[10%]">
@@ -103,7 +111,10 @@ watchEffect(() => {
           ></div>
         </div>
         <div class="w-[70%] md:w-[80%] transition text-left text-50">
-          {{ group.posts.length }} {{ t(group.posts.length === 1 ? 'blog.postCount' : 'blog.postsCount') }}
+          {{ group.posts.length }}
+          {{
+            t(group.posts.length === 1 ? "blog.postCount" : "blog.postsCount")
+          }}
         </div>
       </div>
 
@@ -119,7 +130,9 @@ watchEffect(() => {
             {{ formatDate(post.data.published) }}
           </div>
 
-          <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
+          <div
+            class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center"
+          >
             <div
               class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5 bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-[var(--primary)] outline outline-4 z-50 outline-[var(--card-bg)] group-hover:outline-[var(--btn-plain-bg-hover)] group-active:outline-[var(--btn-plain-bg-active)]"
             ></div>

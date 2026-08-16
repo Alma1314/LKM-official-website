@@ -1,7 +1,7 @@
-import { ref, type Ref } from 'vue';
-import { blogApi } from '~/lib/api';
-import { t } from '~/lib/i18n';
-import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
+import { ref, type Ref } from "vue";
+import { blogApi } from "~/lib/api";
+import { t } from "~/lib/i18n";
+import type { BlogArticle, BlogSeriesInfo } from "../types/blog";
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;
 
@@ -17,8 +17,11 @@ export function useBlogArticles(): {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  function extractArticles(series: BlogSeriesInfo, filepath: string): BlogArticle {
-    const parts = filepath.split('/');
+  function extractArticles(
+    series: BlogSeriesInfo,
+    filepath: string,
+  ): BlogArticle {
+    const parts = filepath.split("/");
     return {
       seriesId: series.id,
       seriesTitle: series.title,
@@ -31,15 +34,15 @@ export function useBlogArticles(): {
 
   function flattenFileTree(
     series: BlogSeriesInfo,
-    nodes: import('../types/blog').FileTreeNode[],
-    prefix = ''
+    nodes: import("../types/blog").FileTreeNode[],
+    prefix = "",
   ): BlogArticle[] {
     const result: BlogArticle[] = [];
     for (const node of nodes) {
       const fullPath = prefix ? `${prefix}/${node.name}` : node.name;
-      if (node.type === 'blob' && MDX_EXTENSIONS.test(node.name)) {
+      if (node.type === "blob" && MDX_EXTENSIONS.test(node.name)) {
         result.push(extractArticles(series, fullPath));
-      } else if (node.type === 'tree' && node.children) {
+      } else if (node.type === "tree" && node.children) {
         result.push(...flattenFileTree(series, node.children, fullPath));
       }
     }
@@ -52,12 +55,16 @@ export function useBlogArticles(): {
 
     const listResult = await blogApi.listSeries();
     if (listResult.isErr()) {
-      error.value = t('messages.blog.fetchSeriesFailed', { error: listResult.error.message });
+      error.value = t("messages.blog.fetchSeriesFailed", {
+        error: listResult.error.message,
+      });
       loading.value = false;
       return;
     }
 
-    const seriesData = listResult.value.items.filter((s) => s.status === 'active');
+    const seriesData = listResult.value.items.filter(
+      (s) => s.status === "active",
+    );
     seriesList.value = seriesData;
 
     const allArticles: BlogArticle[] = [];
@@ -67,7 +74,9 @@ export function useBlogArticles(): {
       if (detailResult.isErr()) continue;
       if (!detailResult.value.file_tree) continue;
 
-      allArticles.push(...flattenFileTree(series, detailResult.value.file_tree));
+      allArticles.push(
+        ...flattenFileTree(series, detailResult.value.file_tree),
+      );
     }
 
     // 按文件名倒序排序（假设文件名含日期前缀如 2026-01-01.md）

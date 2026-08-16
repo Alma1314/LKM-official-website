@@ -6,14 +6,21 @@
  * 用法: node scripts/optimize-avatars.mjs
  */
 
-import { readdir, mkdir } from 'node:fs/promises';
-import { join, extname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
+import { readdir, mkdir } from "node:fs/promises";
+import { join, extname } from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const INPUT_DIR = join(__dirname, '..', 'src', 'assets', 'images', 'member');
-const OUTPUT_DIR = join(__dirname, '..', 'src', 'assets', 'images', 'member-optimized');
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const INPUT_DIR = join(__dirname, "..", "src", "assets", "images", "member");
+const OUTPUT_DIR = join(
+  __dirname,
+  "..",
+  "src",
+  "assets",
+  "images",
+  "member-optimized",
+);
 
 const MAX_SIZE = 192; // 2x DPR for 96px max display
 const QUALITY = 80;
@@ -21,7 +28,7 @@ const QUALITY = 80;
 async function main() {
   const files = (await readdir(INPUT_DIR)).filter((f) => {
     const ext = extname(f).toLowerCase();
-    return ext === '.jpg' || ext === '.jpeg' || ext === '.png';
+    return ext === ".jpg" || ext === ".jpeg" || ext === ".png";
   });
 
   console.log(`Found ${files.length} images to optimize\n`);
@@ -33,12 +40,12 @@ async function main() {
 
   for (const file of files) {
     const inputPath = join(INPUT_DIR, file);
-    const outputFile = file.replace(/\.(jpe?g|png)$/i, '.webp');
+    const outputFile = file.replace(/\.(jpe?g|png)$/i, ".webp");
     const outputPath = join(OUTPUT_DIR, outputFile);
 
     try {
       await sharp(inputPath)
-        .resize(MAX_SIZE, MAX_SIZE, { fit: 'cover', position: 'center' })
+        .resize(MAX_SIZE, MAX_SIZE, { fit: "cover", position: "center" })
         .webp({ quality: QUALITY })
         .toFile(outputPath);
 
@@ -52,15 +59,18 @@ async function main() {
       totalInput += inSize;
       totalOutput += outSize;
 
-      const reduction = inSize > 0 ? ((1 - outSize / inSize) * 100).toFixed(1) : '0';
-      console.log(`  ${file}  →  ${outputFile}  (${(outSize / 1024).toFixed(1)}KB, -${reduction}%)`);
+      const reduction =
+        inSize > 0 ? ((1 - outSize / inSize) * 100).toFixed(1) : "0";
+      console.log(
+        `  ${file}  →  ${outputFile}  (${(outSize / 1024).toFixed(1)}KB, -${reduction}%)`,
+      );
     } catch (err) {
       console.error(`  FAILED: ${file} — ${err.message}`);
     }
   }
 
   console.log(
-    `\nTotal: ${(totalInput / 1024 / 1024).toFixed(1)}MB → ${(totalOutput / 1024 / 1024).toFixed(1)}MB (${((1 - totalOutput / totalInput) * 100).toFixed(1)}% reduction)`
+    `\nTotal: ${(totalInput / 1024 / 1024).toFixed(1)}MB → ${(totalOutput / 1024 / 1024).toFixed(1)}MB (${((1 - totalOutput / totalInput) * 100).toFixed(1)}% reduction)`,
   );
 }
 

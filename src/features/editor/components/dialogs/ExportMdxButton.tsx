@@ -1,18 +1,18 @@
-import type { Editor } from '@tiptap/core';
-import type { JSONContent } from '@tiptap/core';
-import { t } from '~/lib/i18n';
-import { exportMdx } from '../../engine/mdx/index';
-import { serializeMarkdown } from '../../engine/serialize-markdown';
+import type { Editor } from "@tiptap/core";
+import type { JSONContent } from "@tiptap/core";
+import { t } from "~/lib/i18n";
+import { exportMdx } from "../../engine/mdx/index";
+import { serializeMarkdown } from "../../engine/serialize-markdown";
 
 function getContent(editor: Editor): JSONContent[] {
   const json = editor.getJSON();
   return (json?.content ?? []) as JSONContent[];
 }
 
-function downloadText(text: string, extension: 'md' | 'mdx'): void {
-  const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+function downloadText(text: string, extension: "md" | "mdx"): void {
+  const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = `document.${extension}`;
   a.click();
@@ -23,9 +23,9 @@ function downloadText(text: string, extension: 'md' | 'mdx'): void {
 export function handleExportMdx(editor: Editor): void {
   try {
     const { mdx } = exportMdx(getContent(editor));
-    downloadText(mdx, 'mdx');
+    downloadText(mdx, "mdx");
   } catch (err) {
-    alert(t('editor.exportFailed', { message: (err as Error).message }));
+    alert(t("editor.exportFailed", { message: (err as Error).message }));
   }
 }
 
@@ -33,8 +33,8 @@ export function handleExportMdx(editor: Editor): void {
 export function handleExportMd(editor: Editor): void {
   try {
     const md = serializeMarkdown(getContent(editor));
-    downloadText(md, 'md');
+    downloadText(md, "md");
   } catch (err) {
-    alert(t('editor.exportFailed', { message: (err as Error).message }));
+    alert(t("editor.exportFailed", { message: (err as Error).message }));
   }
 }

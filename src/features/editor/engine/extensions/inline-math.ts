@@ -1,27 +1,27 @@
-import { Mark } from '@tiptap/core';
+import { Mark } from "@tiptap/core";
 
 export const InlineMath = Mark.create({
-  name: 'inlineMath',
+  name: "inlineMath",
   priority: 200,
 
   addAttributes() {
     return {
-      latex: { default: '' },
+      latex: { default: "" },
     };
   },
 
   parseHTML() {
-    return [{ tag: 'span[data-inline-math]' }];
+    return [{ tag: "span[data-inline-math]" }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    const latex = (HTMLAttributes.latex as string) || '';
+    const latex = (HTMLAttributes.latex as string) || "";
     return [
-      'span',
+      "span",
       {
-        'data-inline-math': '',
-        'data-latex': latex,
-        class: 'katex-inline cursor-pointer',
+        "data-inline-math": "",
+        "data-latex": latex,
+        class: "katex-inline cursor-pointer",
         ...HTMLAttributes,
       },
     ];

@@ -1,8 +1,17 @@
 <template>
-  <section class="card-base relative w-full p-6 sm:p-8" :class="{ 'rounded-2xl': mode === 'page' }" role="group">
+  <section
+    class="card-base relative w-full p-6 sm:p-8"
+    :class="{ 'rounded-2xl': mode === 'page' }"
+    role="group"
+  >
     <!-- 标题区 -->
     <header v-if="title || subtitle" class="mb-6">
-      <h2 v-if="title" class="text-xl font-semibold text-deep-text leading-tight">{{ title }}</h2>
+      <h2
+        v-if="title"
+        class="text-xl font-semibold text-deep-text leading-tight"
+      >
+        {{ title }}
+      </h2>
       <p v-if="subtitle" class="mt-1 text-sm text-text-muted">{{ subtitle }}</p>
     </header>
 
@@ -18,8 +27,8 @@ withDefaults(
   defineProps<{
     title?: string;
     subtitle?: string;
-    mode?: 'page' | 'modal';
+    mode?: "page" | "modal";
   }>(),
-  { mode: 'page' }
+  { mode: "page" },
 );
 </script>

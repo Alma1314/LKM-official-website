@@ -47,7 +47,7 @@
       @apply bg-[var(--inline-code-bg)] text-[var(--inline-code-color)] px-1 py-0.5 rounded-md overflow-hidden;
 
       font-family:
-        'JetBrains Mono Variable',
+        "JetBrains Mono Variable",
         ui-monospace,
         SFMono-Regular,
         Menlo,
@@ -91,8 +91,8 @@
       background: oklch(0.15 0.02 var(--hue)) !important;
       color: oklch(0.95 0.01 var(--hue));
       font-family:
-        'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-        'Courier New', monospace;
+        "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 0.8125rem;
       font-weight: 500;
       padding: 0.45rem 1rem;

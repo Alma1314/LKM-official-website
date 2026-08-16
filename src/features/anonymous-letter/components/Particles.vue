@@ -1,21 +1,36 @@
 <template>
   <!-- 背景柔和漂浮粒子：星光 / 花瓣 / 气泡 + 星点闪烁 -->
-  <div class="particles" :class="{ muted, 'low-perf': lowPerf }" aria-hidden="true">
+  <div
+    class="particles"
+    :class="{ muted, 'low-perf': lowPerf }"
+    aria-hidden="true"
+  >
     <!-- 上升漂浮粒子（星光/花瓣/气泡） -->
-    <span v-for="p in particles" :key="'f' + p.id" class="particle" :style="p.style">{{ p.symbol }}</span>
+    <span
+      v-for="p in particles"
+      :key="'f' + p.id"
+      class="particle"
+      :style="p.style"
+      >{{ p.symbol }}</span
+    >
     <!-- 角落星点闪烁 -->
-    <i v-for="s in stars" :key="'s' + s.id" class="star-dot" :style="s.style"></i>
+    <i
+      v-for="s in stars"
+      :key="'s' + s.id"
+      class="star-dot"
+      :style="s.style"
+    ></i>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useApp } from '../stores/app';
+import { ref, onMounted, computed } from "vue";
+import { useApp } from "../stores/app";
 
 const { state, lowPerf } = useApp();
 const muted = computed(() => state.settings.muted);
 
-const SYMBOLS = ['✨', '🌸', '🫧', '⭐', '🌿', '💫', '🍃', '🕯️'];
+const SYMBOLS = ["✨", "🌸", "🫧", "⭐", "🌿", "💫", "🍃", "🕯️"];
 
 const particles = ref([]);
 const stars = ref([]);
@@ -30,11 +45,11 @@ function makeParticles() {
       id: i,
       symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
       style: {
-        left: Math.random() * 100 + '%',
-        bottom: -30 + 'px',
-        fontSize: size + 'px',
-        animationDuration: 14 + Math.random() * 16 + 's',
-        animationDelay: -Math.random() * 20 + 's',
+        left: Math.random() * 100 + "%",
+        bottom: -30 + "px",
+        fontSize: size + "px",
+        animationDuration: 14 + Math.random() * 16 + "s",
+        animationDelay: -Math.random() * 20 + "s",
         opacity: 0.3 + Math.random() * 0.5,
       },
     });
@@ -47,12 +62,12 @@ function makeParticles() {
     sarr.push({
       id: i,
       style: {
-        left: Math.random() * 100 + '%',
-        top: Math.random() * 100 + '%',
-        width: 2 + Math.random() * 2 + 'px',
-        height: 2 + Math.random() * 2 + 'px',
-        animationDuration: 2.5 + Math.random() * 3 + 's',
-        animationDelay: -Math.random() * 5 + 's',
+        left: Math.random() * 100 + "%",
+        top: Math.random() * 100 + "%",
+        width: 2 + Math.random() * 2 + "px",
+        height: 2 + Math.random() * 2 + "px",
+        animationDuration: 2.5 + Math.random() * 3 + "s",
+        animationDelay: -Math.random() * 5 + "s",
       },
     });
   }

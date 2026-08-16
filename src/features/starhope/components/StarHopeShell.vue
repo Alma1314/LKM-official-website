@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import StarHopeLayout from './StarHopeLayout.vue';
-import StarHopeRouter from './StarHopeRouter.vue';
-import { useAuthStore } from '../stores/auth';
-import { pullAll } from '../sync/sync';
+import { watch } from "vue";
+import StarHopeLayout from "./StarHopeLayout.vue";
+import StarHopeRouter from "./StarHopeRouter.vue";
+import { useAuthStore } from "../stores/auth";
+import { pullAll } from "../sync/sync";
 
 const { isLoggedIn, restore } = useAuthStore();
 
@@ -15,7 +15,7 @@ watch(
   (loggedIn) => {
     if (loggedIn) void pullAll();
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

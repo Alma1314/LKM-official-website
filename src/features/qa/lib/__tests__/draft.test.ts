@@ -1,63 +1,63 @@
-import { describe, expect, it } from 'vitest';
-import { computeTotalBounty, parseDraft, serializeDraft } from '../draft';
+import { describe, expect, it } from "vitest";
+import { computeTotalBounty, parseDraft, serializeDraft } from "../draft";
 
-describe('parseDraft', () => {
-  it('空输入返回 null', () => {
+describe("parseDraft", () => {
+  it("空输入返回 null", () => {
     expect(parseDraft(null)).toBeNull();
-    expect(parseDraft('')).toBeNull();
+    expect(parseDraft("")).toBeNull();
   });
 
-  it('非法 JSON 返回 null', () => {
-    expect(parseDraft('{bad json')).toBeNull();
+  it("非法 JSON 返回 null", () => {
+    expect(parseDraft("{bad json")).toBeNull();
   });
 
-  it('非对象输入返回 null', () => {
-    expect(parseDraft('42')).toBeNull();
+  it("非对象输入返回 null", () => {
+    expect(parseDraft("42")).toBeNull();
   });
 
-  it('缺失字段回填默认值', () => {
+  it("缺失字段回填默认值", () => {
     expect(parseDraft('{"title":"t"}')).toEqual({
-      title: 't',
-      situation: '',
-      detail: '',
+      title: "t",
+      situation: "",
+      detail: "",
       bountyPeople: null,
       bountyPerPerson: null,
       images: [],
     });
   });
 
-  it('images 回填并过滤非字符串项', () => {
+  it("images 回填并过滤非字符串项", () => {
     expect(parseDraft('{"images":["blob:a", 1, null, "blob:b"]}')).toEqual({
-      title: '',
-      situation: '',
-      detail: '',
+      title: "",
+      situation: "",
+      detail: "",
       bountyPeople: null,
       bountyPerPerson: null,
-      images: ['blob:a', 'blob:b'],
+      images: ["blob:a", "blob:b"],
     });
   });
 });
 
-describe('serializeDraft', () => {
-  it('序列化后可被 parseDraft 还原', () => {
+describe("serializeDraft", () => {
+  it("序列化后可被 parseDraft 还原", () => {
     const draft = {
-      title: 't',
-      situation: 's',
-      detail: 'd',
+      title: "t",
+      situation: "s",
+      detail: "d",
       bountyPeople: 3,
       bountyPerPerson: 10,
-      images: ['blob:a', 'blob:b'],
+      images: ["blob:a", "blob:b"],
     };
     expect(parseDraft(serializeDraft(draft))).toEqual(draft);
   });
 });
 
-describe('computeTotalBounty', () => {
-  it('人数 × 人均', () => {
+describe("computeTotalBounty", () => {
+  it("人数 × 人均", () => {
     expect(computeTotalBounty(3, 10)).toBe(30);
   });
 
-  it('null 视为 0', () => {
+  it("null 视为 0", () => {
     expect(computeTotalBounty(null, 10)).toBe(0);
     expect(computeTotalBounty(3, null)).toBe(0);
   });

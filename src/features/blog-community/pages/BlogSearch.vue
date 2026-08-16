@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useBlogArticles } from '../composables/useBlogArticles';
-import BlogArticleCard from './BlogArticleCard.vue';
-import { t } from '~/lib/i18n';
+import { ref, onMounted, computed } from "vue";
+import { useBlogArticles } from "../composables/useBlogArticles";
+import BlogArticleCard from "./BlogArticleCard.vue";
+import { t } from "~/lib/i18n";
 
 const { articles, fetchAll } = useBlogArticles();
-const query = ref('');
+const query = ref("");
 const searched = ref(false);
 
 onMounted(() => {
@@ -19,14 +19,18 @@ function doSearch() {
 const filteredArticles = computed(() => {
   if (!query.value.trim()) return articles.value;
   const q = query.value.toLowerCase();
-  return articles.value.filter((a) => a.filename.toLowerCase().includes(q) || a.seriesTitle.toLowerCase().includes(q));
+  return articles.value.filter(
+    (a) =>
+      a.filename.toLowerCase().includes(q) ||
+      a.seriesTitle.toLowerCase().includes(q),
+  );
 });
 </script>
 
 <template>
   <div class="blog-search">
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-4">{{ t('blog.searchTitle') }}</h1>
+      <h1 class="text-3xl font-bold mb-4">{{ t("blog.searchTitle") }}</h1>
       <div class="flex gap-2">
         <input
           v-model="query"
@@ -39,15 +43,20 @@ const filteredArticles = computed(() => {
           class="rounded-lg bg-primary px-6 py-2 text-white text-sm font-medium hover:opacity-90 transition-opacity"
           @click="doSearch"
         >
-          {{ t('common.search') }}
+          {{ t("common.search") }}
         </button>
       </div>
     </div>
 
-    <div v-if="!searched" class="text-text-muted text-center py-8">{{ t('blog.searchHint') }}</div>
+    <div v-if="!searched" class="text-text-muted text-center py-8">
+      {{ t("blog.searchHint") }}
+    </div>
 
-    <div v-else-if="filteredArticles.length === 0" class="text-text-muted text-center py-8">
-      {{ t('blog.searchNoResults') }}
+    <div
+      v-else-if="filteredArticles.length === 0"
+      class="text-text-muted text-center py-8"
+    >
+      {{ t("blog.searchNoResults") }}
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

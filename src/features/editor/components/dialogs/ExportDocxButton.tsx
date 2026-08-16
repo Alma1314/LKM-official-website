@@ -1,12 +1,14 @@
-import type { Editor } from '@tiptap/core';
-import type { ReactElement } from 'react';
-import { t } from '~/lib/i18n';
-import { serializeHtml } from '../../engine/serialize-html';
+import type { Editor } from "@tiptap/core";
+import type { ReactElement } from "react";
+import { t } from "~/lib/i18n";
+import { serializeHtml } from "../../engine/serialize-html";
 
 export function handleExportDocx(editor: Editor): void {
   try {
     const json = editor.getJSON();
-    const content = (json?.content ?? []) as Parameters<typeof serializeHtml>[0];
+    const content = (json?.content ?? []) as Parameters<
+      typeof serializeHtml
+    >[0];
     const html = serializeHtml(content);
 
     // Microsoft Word compatible HTML format
@@ -23,17 +25,17 @@ export function handleExportDocx(editor: Editor): void {
 <body>${html}</body>
 </html>`;
 
-    const blob = new Blob(['\ufeff' + wordHtml], {
-      type: 'application/msword',
+    const blob = new Blob(["\ufeff" + wordHtml], {
+      type: "application/msword",
     });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'document.doc';
+    a.download = "document.doc";
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
-    alert(t('editor.exportFailed', { message: (err as Error).message }));
+    alert(t("editor.exportFailed", { message: (err as Error).message }));
   }
 }
 
@@ -41,12 +43,14 @@ interface ExportDocxButtonProps {
   editor: Editor;
 }
 
-export default function ExportDocxButton({ editor }: ExportDocxButtonProps): ReactElement {
+export default function ExportDocxButton({
+  editor,
+}: ExportDocxButtonProps): ReactElement {
   return (
     <button
       type="button"
       className="rte-btn rte-btn--ghost rte-btn--xs"
-      title={t('editor.exportDocxTitle')}
+      title={t("editor.exportDocxTitle")}
       onClick={() => handleExportDocx(editor)}
     >
       DOC

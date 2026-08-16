@@ -1,17 +1,17 @@
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { authApi } from '~/lib/api/modules/auth';
-import { AppError, ErrorCode } from '~/lib/errors/error-codes';
-import { ok, err } from '~/lib/errors/result';
-import type { Result } from '~/lib/errors/result';
-import type { UserInfo, MessageResponse } from '~/lib/api/modules/auth';
-import type { SessionStatus } from '~/types/auth';
+import { defineStore } from "pinia";
+import { ref, computed } from "vue";
+import { authApi } from "~/lib/api/modules/auth";
+import { AppError, ErrorCode } from "~/lib/errors/error-codes";
+import { ok, err } from "~/lib/errors/result";
+import type { Result } from "~/lib/errors/result";
+import type { UserInfo, MessageResponse } from "~/lib/api/modules/auth";
+import type { SessionStatus } from "~/types/auth";
 
-export const useAuthStore = defineStore('auth', () => {
+export const useAuthStore = defineStore("auth", () => {
   // ── State（单一状态源：session 驱动） ──
   const user = ref<UserInfo | null>(null);
   const isLoggedIn = ref(false);
-  const session = ref<SessionStatus>('anonymous');
+  const session = ref<SessionStatus>("anonymous");
   const _token = ref<string | null>(null);
   const _refreshToken = ref<string | null>(null);
   const onboardingCompleted = ref(false);
@@ -31,19 +31,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── Getters ──
-  const accountLevel = computed(() => user.value?.account_level ?? 'local');
-  const username = computed(() => user.value?.username ?? '');
+  const accountLevel = computed(() => user.value?.account_level ?? "local");
+  const username = computed(() => user.value?.username ?? "");
 
   // ── API: 获取当前用户 ──
   async function fetchMe(): Promise<Result<UserInfo, AppError>> {
     if (!_token.value) {
-      return err(new AppError(ErrorCode.AUTH_ERROR, 'no token'));
+      return err(new AppError(ErrorCode.AUTH_ERROR, "no token"));
     }
     const result = await authApi.getMe();
     if (result.isOk()) {
       user.value = result.value;
       isLoggedIn.value = true;
-      session.value = 'authenticated';
+      session.value = "authenticated";
     }
     return result;
   }
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
   // ── 从 localStorage 恢复到内存 ──
   function restoreFromStorage(): void {
     try {
-      const saved = localStorage.getItem('lkm-auth-store');
+      const saved = localStorage.getItem("lkm-auth-store");
       if (saved) {
         const data = JSON.parse(saved);
         if (data.user && data.isLoggedIn) {
@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
       }
     } catch {
-      localStorage.removeItem('lkm-auth-store');
+      localStorage.removeItem("lkm-auth-store");
     }
   }
 
@@ -71,20 +71,20 @@ export const useAuthStore = defineStore('auth', () => {
   async function restoreAndValidate(): Promise<Result<boolean, AppError>> {
     restoreFromStorage();
     if (!_token.value) {
-      session.value = 'anonymous';
+      session.value = "anonymous";
       return ok(false);
     }
-    session.value = 'restoring';
+    session.value = "restoring";
     const r = await fetchMe();
     if (r.isOk()) {
-      session.value = 'authenticated';
+      session.value = "authenticated";
       return ok(true);
     }
-    session.value = 'anonymous';
+    session.value = "anonymous";
     isLoggedIn.value = false;
     user.value = null;
     clearTokens();
-    localStorage.removeItem('lkm-auth-store');
+    localStorage.removeItem("lkm-auth-store");
     return ok(false);
   }
 
@@ -92,11 +92,13 @@ export const useAuthStore = defineStore('auth', () => {
   // 关键：登录成功的持久化必须发生在 user/isLoggedIn/session 都就绪之后。
   // 各登录接口会在 setTokens 后先 persist 一次（那时 user 尚空），故这里成功后再 persist，
   // 确保 localStorage 写入完整会话，刷新/restoreFromStorage 才能恢复登录态。
-  async function fetchMeAfterLogin(_userId: number): Promise<Result<AuthSuccess, AppError>> {
+  async function fetchMeAfterLogin(
+    _userId: number,
+  ): Promise<Result<AuthSuccess, AppError>> {
     const meResult = await fetchMe();
     if (meResult.isOk()) {
       isLoggedIn.value = true;
-      session.value = 'authenticated';
+      session.value = "authenticated";
       persistToStorage();
       return ok({});
     }
@@ -107,25 +109,28 @@ export const useAuthStore = defineStore('auth', () => {
   function persistToStorage(): void {
     if (_token.value) {
       localStorage.setItem(
-        'lkm-auth-store',
+        "lkm-auth-store",
         JSON.stringify({
           user: user.value,
           isLoggedIn: true,
           _token: _token.value,
           _refreshToken: _refreshToken.value,
           onboardingCompleted: onboardingCompleted.value,
-        })
+        }),
       );
     } else {
-      localStorage.removeItem('lkm-auth-store');
+      localStorage.removeItem("lkm-auth-store");
     }
   }
 
   // ── API: 密码登录 ──
-  async function loginPassword(account: string, password: string): Promise<Result<AuthSuccess, AppError>> {
+  async function loginPassword(
+    account: string,
+    password: string,
+  ): Promise<Result<AuthSuccess, AppError>> {
     const result = await authApi.loginPassword(account, password);
     if (result.isErr()) {
-      session.value = 'anonymous';
+      session.value = "anonymous";
       return err(result.error);
     }
 
@@ -133,7 +138,10 @@ export const useAuthStore = defineStore('auth', () => {
     if (data.requires_2fa || data.setup_required) {
       // 暂存 temp_token，供后续 2FA 验证（submit2FA）使用
       _pendingTempToken.value = data.temp_token ?? null;
-      return ok({ requires2FA: data.requires_2fa, requires2FASetup: data.setup_required });
+      return ok({
+        requires2FA: data.requires_2fa,
+        requires2FASetup: data.setup_required,
+      });
     }
 
     if (data.access_token) {
@@ -145,7 +153,10 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── API: 注册本地账户 ──
-  async function registerLocal(username: string, password: string): Promise<Result<AuthSuccess, AppError>> {
+  async function registerLocal(
+    username: string,
+    password: string,
+  ): Promise<Result<AuthSuccess, AppError>> {
     const result = await authApi.registerLocal(username, password);
     if (result.isErr()) return err(result.error);
     if (result.value.access_token) {
@@ -160,21 +171,31 @@ export const useAuthStore = defineStore('auth', () => {
     username: string,
     password: string,
     email?: string,
-    phone?: string
-  ): Promise<Result<{ txn_id: string; email_sent: boolean; phone_sent: boolean }, AppError>> {
-    return authApi.registerNormal(username, password, email ?? null, phone ?? null);
+    phone?: string,
+  ): Promise<
+    Result<
+      { txn_id: string; email_sent: boolean; phone_sent: boolean },
+      AppError
+    >
+  > {
+    return authApi.registerNormal(
+      username,
+      password,
+      email ?? null,
+      phone ?? null,
+    );
   }
 
   // ── API: 验证并完成普通账户注册 ──
   async function verifyNormalRegister(
     txnId: string,
     code: string,
-    type: 'email' | 'phone'
+    type: "email" | "phone",
   ): Promise<Result<AuthSuccess, AppError>> {
     const result = await authApi.registerNormalVerify(
       txnId,
-      type === 'email' ? code : null,
-      type === 'phone' ? code : null
+      type === "email" ? code : null,
+      type === "phone" ? code : null,
     );
     if (result.isErr()) return err(result.error);
     if (result.value.access_token) {
@@ -185,21 +206,29 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── API: 短信/邮箱验证码登录（发送验证码） ──
-  async function requestLoginCode(contact: string): Promise<Result<MessageResponse, AppError>> {
+  async function requestLoginCode(
+    contact: string,
+  ): Promise<Result<MessageResponse, AppError>> {
     return authApi.requestLoginCode(contact);
   }
 
   // ── API: 短信/邮箱验证码登录（验证） ──
-  async function loginCode(contact: string, code: string): Promise<Result<AuthSuccess, AppError>> {
+  async function loginCode(
+    contact: string,
+    code: string,
+  ): Promise<Result<AuthSuccess, AppError>> {
     const result = await authApi.loginCode(contact, code);
     if (result.isErr()) {
-      session.value = 'anonymous';
+      session.value = "anonymous";
       return err(result.error);
     }
     if (result.value.requires_2fa || result.value.setup_required) {
       // 暂存 temp_token，供后续 2FA 验证
       _pendingTempToken.value = result.value.temp_token ?? null;
-      return ok({ requires2FA: result.value.requires_2fa, requires2FASetup: result.value.setup_required });
+      return ok({
+        requires2FA: result.value.requires_2fa,
+        requires2FASetup: result.value.setup_required,
+      });
     }
     if (result.value.access_token) {
       setTokens(result.value.access_token, result.value.refresh_token);
@@ -209,15 +238,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ── API: Magic Link 请求 ──
-  async function requestMagicLink(email: string): Promise<Result<MessageResponse, AppError>> {
+  async function requestMagicLink(
+    email: string,
+  ): Promise<Result<MessageResponse, AppError>> {
     return authApi.requestMagicLink(email);
   }
 
   // ── API: Magic Link 验证 ──
-  async function verifyMagicLink(token: string): Promise<Result<AuthSuccess, AppError>> {
+  async function verifyMagicLink(
+    token: string,
+  ): Promise<Result<AuthSuccess, AppError>> {
     const result = await authApi.verifyMagicLink(token);
     if (result.isErr()) {
-      session.value = 'anonymous';
+      session.value = "anonymous";
       return err(result.error);
     }
     if (result.value.access_token) {
@@ -237,8 +270,8 @@ export const useAuthStore = defineStore('auth', () => {
     clearTokens();
     isLoggedIn.value = false;
     user.value = null;
-    session.value = 'anonymous';
-    localStorage.removeItem('lkm-auth-store');
+    session.value = "anonymous";
+    localStorage.removeItem("lkm-auth-store");
   }
 
   // ── 更新用户 ──
@@ -262,7 +295,7 @@ export const useAuthStore = defineStore('auth', () => {
   function resetState(): void {
     user.value = null;
     isLoggedIn.value = false;
-    session.value = 'anonymous';
+    session.value = "anonymous";
     clearTokens();
     clearPending2FA();
   }

@@ -2,22 +2,37 @@
   <!-- 许愿墙 -->
   <div class="wish-wall">
     <div class="ww-head">
-      <h3>🌟 {{ t('treehole.wish.title') }}</h3>
-      <button class="btn-grad" @click="openMake = true">{{ t('treehole.wish.makeWish') }}</button>
+      <h3>🌟 {{ t("treehole.wish.title") }}</h3>
+      <button class="btn-grad" @click="openMake = true">
+        {{ t("treehole.wish.makeWish") }}
+      </button>
     </div>
     <div class="ww-grid">
-      <div v-for="w in wishes" :key="w.id" class="wish-note glass glass-hover" :style="{ '--wc': colorOf(w.id) }">
+      <div
+        v-for="w in wishes"
+        :key="w.id"
+        class="wish-note glass glass-hover"
+        :style="{ '--wc': colorOf(w.id) }"
+      >
         <p class="wish-text">{{ w.text }}</p>
         <div class="wish-foot">
-          <span class="wish-light" @click="light(w)">🕯️ {{ w.lights || 0 }}</span>
+          <span class="wish-light" @click="light(w)"
+            >🕯️ {{ w.lights || 0 }}</span
+          >
           <span class="wish-date">{{ dateText(w.createdAt) }}</span>
         </div>
         <div v-if="canManage(w)" class="wish-acts">
-          <button class="mini" @click="openEdit(w)">{{ t('treehole.wish.edit') }}</button>
-          <button class="mini danger" @click="remove(w)">{{ t('treehole.wish.delete') }}</button>
+          <button class="mini" @click="openEdit(w)">
+            {{ t("treehole.wish.edit") }}
+          </button>
+          <button class="mini danger" @click="remove(w)">
+            {{ t("treehole.wish.delete") }}
+          </button>
         </div>
       </div>
-      <div v-if="!wishes.length" class="wish-empty">{{ t('treehole.wish.empty') }}</div>
+      <div v-if="!wishes.length" class="wish-empty">
+        {{ t("treehole.wish.empty") }}
+      </div>
     </div>
 
     <n-modal
@@ -34,7 +49,9 @@
         :placeholder="t('treehole.wish.makePlaceholder')"
       />
       <template #footer>
-        <button class="btn-grad" :disabled="!text.trim()" @click="make">{{ t('treehole.wish.lightWishBtn') }}</button>
+        <button class="btn-grad" :disabled="!text.trim()" @click="make">
+          {{ t("treehole.wish.lightWishBtn") }}
+        </button>
       </template>
     </n-modal>
 
@@ -52,28 +69,37 @@
         :placeholder="t('treehole.wish.editPlaceholder')"
       />
       <template #footer>
-        <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">{{ t('treehole.wish.save') }}</button>
+        <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">
+          {{ t("treehole.wish.save") }}
+        </button>
       </template>
     </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
-import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, onMounted } from "vue";
+import { useDialog, useMessage } from "naive-ui";
+import { getWishes, addWish, lightWish, saveWishes } from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const message = useMessage();
 const dialog = useDialog();
 const wishes = ref([]);
 const openMake = ref(false);
-const text = ref('');
+const text = ref("");
 const openEditBox = ref(false);
-const editText = ref('');
-const editId = ref('');
+const editText = ref("");
+const editId = ref("");
 
-const COLORS = ['#ffd6a5', '#caffbf', '#a0c4ff', '#ffc6ff', '#bdb2ff', '#9bf6ff'];
+const COLORS = [
+  "#ffd6a5",
+  "#caffbf",
+  "#a0c4ff",
+  "#ffc6ff",
+  "#bdb2ff",
+  "#9bf6ff",
+];
 function colorOf(id) {
   return COLORS[Math.abs(hash(id)) % COLORS.length];
 }
@@ -94,7 +120,7 @@ function dateText(ts) {
 }
 
 function canManage(w) {
-  return w.userId === 'local' || w.ownerId === 'local';
+  return w.userId === "local" || w.ownerId === "local";
 }
 
 function light(w) {
@@ -106,17 +132,17 @@ function light(w) {
 function make() {
   if (!text.value.trim()) return;
   const w = addWish({
-    id: 'wish_' + Date.now() + '_' + Math.floor(Math.random() * 10000),
+    id: "wish_" + Date.now() + "_" + Math.floor(Math.random() * 10000),
     text: text.value.trim(),
     lights: 0,
-    status: 'published',
+    status: "published",
     createdAt: Date.now(),
-    ownerId: 'local',
+    ownerId: "local",
   });
   wishes.value.unshift(w);
-  text.value = '';
+  text.value = "";
   openMake.value = false;
-  message.success(t('treehole.wish.lightSuccess'));
+  message.success(t("treehole.wish.lightSuccess"));
 }
 
 function openEdit(w) {
@@ -135,20 +161,20 @@ function saveEdit() {
   }
   wishes.value = list;
   openEditBox.value = false;
-  message.success(t('treehole.wish.updateSuccess'));
+  message.success(t("treehole.wish.updateSuccess"));
 }
 
 function remove(w) {
   dialog.warning({
-    title: t('treehole.wish.confirmDelete'),
-    content: t('treehole.wish.confirmDeleteWish'),
-    positiveText: t('treehole.wish.delete'),
-    negativeText: t('treehole.wish.cancel'),
+    title: t("treehole.wish.confirmDelete"),
+    content: t("treehole.wish.confirmDeleteWish"),
+    positiveText: t("treehole.wish.delete"),
+    negativeText: t("treehole.wish.cancel"),
     onPositiveClick: () => {
       const list = getWishes().filter((x) => x.id !== w.id);
       saveWishes(list);
       wishes.value = list;
-      message.success(t('treehole.wish.deleted'));
+      message.success(t("treehole.wish.deleted"));
     },
   });
 }

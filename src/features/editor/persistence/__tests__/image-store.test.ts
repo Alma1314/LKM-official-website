@@ -1,53 +1,59 @@
 // node 测试环境无原生 IndexedDB，用 fake-indexeddb 提供，使 Dexie 持久化可用于集成式断言
-import 'fake-indexeddb/auto';
-import { describe, it, expect, beforeEach } from 'vitest';
-import Dexie from 'dexie';
-import { collectImageSrcs, saveImageBlob, findImageByOrgName } from '../image-store';
+import "fake-indexeddb/auto";
+import { describe, it, expect, beforeEach } from "vitest";
+import Dexie from "dexie";
+import {
+  collectImageSrcs,
+  saveImageBlob,
+  findImageByOrgName,
+} from "../image-store";
 
-describe('image-store 纯逻辑', () => {
-  it('collectImageSrcs 收集嵌套 image 节点 src', () => {
+describe("image-store 纯逻辑", () => {
+  it("collectImageSrcs 收集嵌套 image 节点 src", () => {
     const json = {
-      type: 'doc',
+      type: "doc",
       content: [
-        { type: 'image', attrs: { src: 'blob:a', alt: '' } },
+        { type: "image", attrs: { src: "blob:a", alt: "" } },
         {
-          type: 'paragraph',
-          content: [{ type: 'image', attrs: { src: 'http://x/y.png', alt: '' } }],
+          type: "paragraph",
+          content: [
+            { type: "image", attrs: { src: "http://x/y.png", alt: "" } },
+          ],
         },
-        { type: 'text', text: 'no img' },
+        { type: "text", text: "no img" },
       ],
     };
-    expect(collectImageSrcs(json)).toEqual(['blob:a', 'http://x/y.png']);
+    expect(collectImageSrcs(json)).toEqual(["blob:a", "http://x/y.png"]);
   });
 
-  it('对空/无图片文档返回空数组', () => {
-    expect(collectImageSrcs({ type: 'doc', content: [] })).toEqual([]);
+  it("对空/无图片文档返回空数组", () => {
+    expect(collectImageSrcs({ type: "doc", content: [] })).toEqual([]);
     expect(collectImageSrcs(null)).toEqual([]);
     expect(collectImageSrcs(undefined)).toEqual([]);
   });
 });
 
-describe('image-store orgName 索引', () => {
+describe("image-store orgName 索引", () => {
   beforeEach(async () => {
-    await Dexie.delete('lkm-editor-images');
+    await Dexie.delete("lkm-editor-images");
   });
 
-  it('saveImageBlob 带 orgName 后可按名查询', async () => {
-    const blob = new Blob(['x'], { type: 'image/png' });
-    const ref = await saveImageBlob(blob, 'pic.png');
-    const found = await findImageByOrgName('pic.png');
+  it("saveImageBlob 带 orgName 后可按名查询", async () => {
+    const blob = new Blob(["x"], { type: "image/png" });
+    const ref = await saveImageBlob(blob, "pic.png");
+    const found = await findImageByOrgName("pic.png");
     expect(found).toBe(ref);
     expect(sortedPrefixRef(found)).toBe(true);
   });
 
-  it('无 orgName 时 findImageByOrgName 返回 null', async () => {
-    const blob = new Blob(['x'], { type: 'image/png' });
+  it("无 orgName 时 findImageByOrgName 返回 null", async () => {
+    const blob = new Blob(["x"], { type: "image/png" });
     await saveImageBlob(blob);
-    const found = await findImageByOrgName('pic.png');
+    const found = await findImageByOrgName("pic.png");
     expect(found).toBeNull();
   });
 });
 
 function sortedPrefixRef(x: string | null): boolean {
-  return typeof x === 'string' && x.startsWith('blob:');
+  return typeof x === "string" && x.startsWith("blob:");
 }

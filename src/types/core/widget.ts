@@ -1,5 +1,5 @@
-import type { Image } from './component';
-import type { CallToAction } from './component';
+import type { Image } from "./component";
+import type { CallToAction } from "./component";
 
 export interface Widget {
   id?: string;
@@ -65,51 +65,52 @@ export interface Testimonial {
 }
 
 // 页面部件
-export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' | 'classes'> {
+export interface Hero
+  extends Omit<Headline, "classes">, Omit<Widget, "isDark" | "classes"> {
   content?: string;
   actions?: string | CallToAction[];
   image?: string | unknown;
   nextSectionId?: string;
 }
 
-export interface Team extends Omit<Headline, 'classes'>, Widget {
+export interface Team extends Omit<Headline, "classes">, Widget {
   team?: Array<TeamMember>;
 }
 
-export interface Stats extends Omit<Headline, 'classes'>, Widget {
+export interface Stats extends Omit<Headline, "classes">, Widget {
   stats?: Array<Stat>;
 }
 
-export interface Pricing extends Omit<Headline, 'classes'>, Widget {
+export interface Pricing extends Omit<Headline, "classes">, Widget {
   prices?: Array<Price>;
 }
 
-export interface Testimonials extends Omit<Headline, 'classes'>, Widget {
+export interface Testimonials extends Omit<Headline, "classes">, Widget {
   testimonials?: Array<Testimonial>;
   callToAction?: CallToAction;
 }
 
-export interface Brands extends Omit<Headline, 'classes'>, Widget {
+export interface Brands extends Omit<Headline, "classes">, Widget {
   icons?: Array<string>;
   images?: Array<Image>;
 }
 
-export interface Features extends Omit<Headline, 'classes'>, Widget {
+export interface Features extends Omit<Headline, "classes">, Widget {
   image?: string | unknown;
   items?: Array<Item>;
   columns?: number;
   defaultIcon?: string;
   isBeforeContent?: boolean;
   isAfterContent?: boolean;
-  variant?: 'card' | 'inline';
+  variant?: "card" | "inline";
 }
 
-export interface Faqs extends Omit<Headline, 'classes'>, Widget {
+export interface Faqs extends Omit<Headline, "classes">, Widget {
   items?: Array<Item>;
   columns?: number;
 }
 
-export interface Content extends Omit<Headline, 'classes'>, Widget {
+export interface Content extends Omit<Headline, "classes">, Widget {
   content?: string;
   image?: string | unknown;
   items?: Array<Item>;
@@ -127,7 +128,7 @@ export interface TimelineData {
   iconColor?: string;
 }
 
-export interface Contact extends Omit<Headline, 'classes'>, Widget {
+export interface Contact extends Omit<Headline, "classes">, Widget {
   inputs?: Array<{
     type: string;
     name: string;

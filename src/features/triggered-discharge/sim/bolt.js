@@ -3,22 +3,33 @@
    追踪被击中的路径、采样声源，并为这次闪电构建回击调度表。
    ---------------------------------------------------------------- */
 
-import { $ } from '../core/dom.js';
-import { CELL_M, GH, GW, idxToWorld, LIST_CAP, N, SND_C } from '../config.js';
-import { bgClear, device, listBuf, pathPosBuf, plClear, selBuf, upSelBuf } from '../core/gpu.js';
-import { bolt, rt, ui } from '../core/state.js';
-import { thunder } from '../audio/thunder.js';
-import { writeSimU } from '../core/uniforms.js';
+import { $ } from "../core/dom.js";
+import { CELL_M, GH, GW, idxToWorld, LIST_CAP, N, SND_C } from "../config.js";
+import {
+  bgClear,
+  device,
+  listBuf,
+  pathPosBuf,
+  plClear,
+  selBuf,
+  upSelBuf,
+} from "../core/gpu.js";
+import { bolt, rt, ui } from "../core/state.js";
+import { thunder } from "../audio/thunder.js";
+import { writeSimU } from "../core/uniforms.js";
 
 export function setPhase(name, label) {
   bolt.phase = name;
   bolt.phaseTR = 0;
   bolt.phaseTV = 0;
   bolt.label = label;
-  $('rPhase').textContent = label;
+  $("rPhase").textContent = label;
 }
 export function newBolt(sx) {
-  bolt.seedX = Math.max(14, Math.min(GW - 14, sx ?? Math.floor(GW * (0.25 + Math.random() * 0.5))));
+  bolt.seedX = Math.max(
+    14,
+    Math.min(GW - 14, sx ?? Math.floor(GW * (0.25 + Math.random() * 0.5))),
+  );
   bolt.seed = (Math.random() * 0xffffffff) >>> 0;
   bolt.boltSeed = Math.random();
   bolt.cells = 5;
@@ -52,8 +63,16 @@ export function newBolt(sx) {
   bolt.thunderPerf = -1;
   bolt.strikeW = idxToWorld(4 * GW + bolt.seedX);
   rt.needParents = false;
-  device.queue.writeBuffer(selBuf, 0, new Uint32Array([0, 0, 0, 0, 0, 0xffffffff, 0, 0]));
-  device.queue.writeBuffer(upSelBuf, 0, new Uint32Array([0, 0, 0x40000000, 0, 0, 0, 0, 0]));
+  device.queue.writeBuffer(
+    selBuf,
+    0,
+    new Uint32Array([0, 0, 0, 0, 0, 0xffffffff, 0, 0]),
+  );
+  device.queue.writeBuffer(
+    upSelBuf,
+    0,
+    new Uint32Array([0, 0, 0x40000000, 0, 0, 0, 0, 0]),
+  );
   device.queue.writeBuffer(listBuf, 0, new Uint32Array([0, LIST_CAP, 0, 0]));
   writeSimU();
   const enc = device.createCommandEncoder();
@@ -63,21 +82,21 @@ export function newBolt(sx) {
   p.dispatchWorkgroups(Math.ceil(GW / 8), Math.ceil(GH / 8), 1);
   p.end();
   device.queue.submit([enc.finish()]);
-  setPhase('grow', '梯级先导');
-  $('rStroke').textContent = '—';
-  $('rDim').textContent = '—';
-  $('rLen').textContent = '—';
-  $('rThun').textContent = '—';
+  setPhase("grow", "梯级先导");
+  $("rStroke").textContent = "—";
+  $("rDim").textContent = "—";
+  $("rLen").textContent = "—";
+  $("rThun").textContent = "—";
 }
 export function onStrike(sidx, gidx) {
-  if (bolt.phase !== 'grow' && bolt.phase !== 'regrow') return;
+  if (bolt.phase !== "grow" && bolt.phase !== "regrow") return;
   bolt.regrow = false;
   bolt.sidx = sidx;
   bolt.gidx = gidx === undefined ? 0xffffffff : gidx;
   bolt.strikeW = idxToWorld(sidx);
   rt.needParents = true;
   rt.needFractal = true;
-  setPhase('attach', '连接中');
+  setPhase("attach", "连接中");
 }
 export function tracePath(parents) {
   /* 二维：在两棵树间遍历获胜路径（地面 → 云层） */
@@ -139,7 +158,8 @@ export function tracePath(parents) {
       j = parents[j];
     }
     if (chain.length < 7) continue;
-    for (let k = 0; k < chain.length; k++) pp[chain[k]] = -(2 + m + 0.92 * (1 - k / chain.length));
+    for (let k = 0; k < chain.length; k++)
+      pp[chain[k]] = -(2 + m + 0.92 * (1 - k / chain.length));
     m++;
   }
   bolt.recoilN = m;
@@ -160,10 +180,13 @@ export function tracePath(parents) {
       },
     ];
     bolt.ccDur = 0.24 + Math.random() * 0.12;
-    bolt.ccBumps = Array.from({ length: 3 + ((Math.random() * 2) | 0) }, () => ({
-      t: 0.02 + Math.random() * bolt.ccDur * 0.7,
-      amp: 2 + Math.random() * 4,
-    }));
+    bolt.ccBumps = Array.from(
+      { length: 3 + ((Math.random() * 2) | 0) },
+      () => ({
+        t: 0.02 + Math.random() * bolt.ccDur * 0.7,
+        amp: 2 + Math.random() * 4,
+      }),
+    );
   } else {
     const n = Math.random() < 0.18 ? 1 : 3 + ((Math.random() * 3) | 0);
     bolt.schedule = [];
@@ -180,7 +203,12 @@ export function tracePath(parents) {
           gap: 0.03 + Math.random() * 0.035,
         });
       } else {
-        const base = ui.I0 * (ui.storm ? 2.4 : 1) * 0.42 * Math.pow(0.85, s2) * (0.8 + Math.random() * 0.4);
+        const base =
+          ui.I0 *
+          (ui.storm ? 2.4 : 1) *
+          0.42 *
+          Math.pow(0.85, s2) *
+          (0.8 + Math.random() * 0.4);
         bolt.schedule.push({
           i0a: base * 0.62,
           t1a: 0.25,
@@ -204,14 +232,17 @@ export function tracePath(parents) {
         : null;
   }
   bolt.dim = Math.log(bolt.cells) / Math.log(GH);
-  $('rDim').textContent = bolt.dim.toFixed(2);
-  $('rLen').textContent = (bolt.chanLen / 1000).toFixed(2) + ' 千米';
+  $("rDim").textContent = bolt.dim.toFixed(2);
+  $("rLen").textContent = (bolt.chanLen / 1000).toFixed(2) + " 千米";
 }
 export function startStroke(k) {
   bolt.strokeIdx = k;
   bolt.nextStroke = 0;
-  setPhase('stroke', k === 0 ? (ui.positive ? '回击 · +CG' : '回击') : `后续回击 ${k + 1}`);
-  $('rStroke').textContent = `${k + 1} / ${bolt.schedule.length}`;
+  setPhase(
+    "stroke",
+    k === 0 ? (ui.positive ? "回击 · +CG" : "回击") : `后续回击 ${k + 1}`,
+  );
+  $("rStroke").textContent = `${k + 1} / ${bolt.schedule.length}`;
   if (k === 0 && (ui.positive || bolt.schedule[0].i0a >= 60)) {
     bolt.spriteV0 = bolt.simTime + 0.35;
   }
@@ -219,7 +250,11 @@ export function startStroke(k) {
     /* 二维：听者位于域中心正下方地面处 */
     const listenX = 0;
     const listenY = -(GH * 0.5 + 0.5) * CELL_M; // 计算域底部下方
-    const segs = (bolt.thunderSegs && bolt.thunderSegs.length ? bolt.thunderSegs : [{ w: bolt.strikeW, frac: 0 }])
+    const segs = (
+      bolt.thunderSegs && bolt.thunderSegs.length
+        ? bolt.thunderSegs
+        : [{ w: bolt.strikeW, frac: 0 }]
+    )
       .map((sg) => {
         const d = Math.hypot(sg.w[0] - listenX, sg.w[1] - listenY);
         return { d, frac: sg.frac };

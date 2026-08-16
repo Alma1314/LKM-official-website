@@ -1,15 +1,24 @@
-import type { MdxComponentDefinition } from './types';
+import type { MdxComponentDefinition } from "./types";
 
-const registry = new Map<string, MdxComponentDefinition<Record<string, unknown>>>();
+const registry = new Map<
+  string,
+  MdxComponentDefinition<Record<string, unknown>>
+>();
 
-export function registerComponent(def: MdxComponentDefinition<Record<string, unknown>>): void {
+export function registerComponent(
+  def: MdxComponentDefinition<Record<string, unknown>>,
+): void {
   if (registry.has(def.name)) {
-    console.warn(`Component "${def.name}" is already registered — overwriting.`);
+    console.warn(
+      `Component "${def.name}" is already registered — overwriting.`,
+    );
   }
   registry.set(def.name, def);
 }
 
-export function getComponent(name: string): MdxComponentDefinition<Record<string, unknown>> | undefined {
+export function getComponent(
+  name: string,
+): MdxComponentDefinition<Record<string, unknown>> | undefined {
   return registry.get(name);
 }
 

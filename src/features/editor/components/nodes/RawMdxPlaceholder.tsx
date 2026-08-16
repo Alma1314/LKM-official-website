@@ -1,8 +1,8 @@
-import { memo, useState } from 'react';
-import type { Node } from '@tiptap/pm/model';
-import type { Editor } from '@tiptap/core';
-import { NodeViewWrapper } from '@tiptap/react';
-import { t } from '~/lib/i18n';
+import { memo, useState } from "react";
+import type { Node } from "@tiptap/pm/model";
+import type { Editor } from "@tiptap/core";
+import { NodeViewWrapper } from "@tiptap/react";
+import { t } from "~/lib/i18n";
 
 interface RawMdxPlaceholderProps {
   node: Node;
@@ -10,11 +10,16 @@ interface RawMdxPlaceholderProps {
   getPos: () => number | undefined;
 }
 
-const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos }: RawMdxPlaceholderProps) {
+const RawMdxPlaceholder = memo(function RawMdxPlaceholder({
+  node,
+  editor,
+  getPos,
+}: RawMdxPlaceholderProps) {
   const [showSource, setShowSource] = useState(false);
-  const source = (node.attrs.source as string) ?? '';
-  const sourceKind = (node.attrs.sourceKind as string) ?? 'flow';
-  const truncatedSource = source.length > 200 ? source.slice(0, 200) + '…' : source;
+  const source = (node.attrs.source as string) ?? "";
+  const sourceKind = (node.attrs.sourceKind as string) ?? "flow";
+  const truncatedSource =
+    source.length > 200 ? source.slice(0, 200) + "…" : source;
 
   const handleDelete = (): void => {
     const pos = getPos();
@@ -31,7 +36,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
     try {
       await navigator.clipboard.writeText(source);
     } catch (err) {
-      console.warn('[RawMdxPlaceholder] 剪贴板操作失败:', err);
+      console.warn("[RawMdxPlaceholder] 剪贴板操作失败:", err);
     }
   };
 
@@ -59,7 +64,9 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
         <span className="text-sm font-medium text-warning">
-          {sourceKind === 'text' ? t('editor.rawMdx.unsupportedInline') : t('editor.rawMdx.unsupportedBlock')}
+          {sourceKind === "text"
+            ? t("editor.rawMdx.unsupportedInline")
+            : t("editor.rawMdx.unsupportedBlock")}
         </span>
       </div>
 
@@ -70,14 +77,28 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
       )}
 
       <div className="flex gap-1">
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setShowSource(!showSource)}>
-          {showSource ? t('editor.rawMdx.hideSource') : t('editor.rawMdx.showSource')}
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs"
+          onClick={() => setShowSource(!showSource)}
+        >
+          {showSource
+            ? t("editor.rawMdx.hideSource")
+            : t("editor.rawMdx.showSource")}
         </button>
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleCopy}>
-          {t('editor.rawMdx.copy')}
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs"
+          onClick={handleCopy}
+        >
+          {t("editor.rawMdx.copy")}
         </button>
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleDelete}>
-          {t('editor.delete')}
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs text-error"
+          onClick={handleDelete}
+        >
+          {t("editor.delete")}
         </button>
       </div>
     </NodeViewWrapper>

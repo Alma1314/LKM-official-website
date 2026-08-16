@@ -1,5 +1,5 @@
-import { getSsrCookie } from './ssr-context';
-import { t } from './i18n';
+import { getSsrCookie } from "./ssr-context";
+import { t } from "./i18n";
 
 /**
  * SSR fetch 工具：超时降级 + 统一错误处理
@@ -11,7 +11,7 @@ const SSR_TIMEOUT_MS = 3000; // 3 秒超时
 
 // 用 process.env 运行时读取 API_URL。import.meta.env 会在构建时被静态内联，
 // 导致运行时注入的 API_URL 失效。此模块仅在 SSR 服务端使用。
-const API_BASE = process.env.API_URL ?? '';
+const API_BASE = process.env.API_URL ?? "";
 
 interface FetchOptions {
   /** 超时毫秒数，默认 SSR_TIMEOUT_MS */
@@ -28,7 +28,7 @@ interface FetchOptions {
  */
 export async function ssrFetch<T>(
   path: string,
-  options: FetchOptions
+  options: FetchOptions,
 ): Promise<{ data: T | null; error: string | null }> {
   const { timeout = SSR_TIMEOUT_MS, fallback } = options;
 
@@ -36,10 +36,12 @@ export async function ssrFetch<T>(
   const timer = setTimeout(() => controller.abort(), timeout);
 
   try {
-    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
     // 转发当前 SSR 请求的 Cookie，使认证类接口在服务端可用
     const cookie = getSsrCookie();
-    if (cookie) headers['Cookie'] = cookie;
+    if (cookie) headers["Cookie"] = cookie;
 
     // eslint-disable-next-line no-restricted-globals
     const res = await fetch(`${API_BASE}${path}`, {
@@ -51,7 +53,9 @@ export async function ssrFetch<T>(
       const body = await res.json().catch(() => ({}));
       return {
         data: fallback as T,
-        error: ((body as Record<string, unknown>).msg as string) || t('messages.httpError', { status: res.status }),
+        error:
+          ((body as Record<string, unknown>).msg as string) ||
+          t("messages.httpError", { status: res.status }),
       };
     }
 
@@ -60,14 +64,17 @@ export async function ssrFetch<T>(
       return { data: json.data as T, error: null };
     }
 
-    return { data: fallback as T, error: (json.msg as string) || t('messages.unknownError') };
+    return {
+      data: fallback as T,
+      error: (json.msg as string) || t("messages.unknownError"),
+    };
   } catch (err: unknown) {
     const message =
-      err instanceof Error && err.name === 'AbortError'
-        ? t('messages.requestTimeout')
+      err instanceof Error && err.name === "AbortError"
+        ? t("messages.requestTimeout")
         : err instanceof Error
           ? err.message
-          : t('messages.networkError');
+          : t("messages.networkError");
     return { data: fallback as T, error: message };
   } finally {
     clearTimeout(timer);

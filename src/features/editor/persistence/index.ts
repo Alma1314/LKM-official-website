@@ -6,21 +6,28 @@ import type {
   BackupEntry,
   CommentReply,
   CommentThread,
-} from '../engine/types';
+} from "../engine/types";
 import {
   getDocument,
   listDocuments,
   createDocument as createDoc,
   updateDocument,
   deleteDocument,
-} from './document-store';
+} from "./document-store";
 
 // Re-export for direct consumer use (e.g. admin pages)
 export { listDocuments, deleteDocument };
-export type { DocumentData } from '../engine/types';
-import { saveBackup, getBackups } from './backup-store';
-import { saveVersion, getVersions } from './version-store';
-import { getThreads, addThread, addReply, resolveThread, reopenThread, deleteThread } from './comment-store';
+export type { DocumentData } from "../engine/types";
+import { saveBackup, getBackups } from "./backup-store";
+import { saveVersion, getVersions } from "./version-store";
+import {
+  getThreads,
+  addThread,
+  addReply,
+  resolveThread,
+  reopenThread,
+  deleteThread,
+} from "./comment-store";
 
 export function createLocalPersistence(): PersistenceAdapter {
   return {
@@ -43,7 +50,11 @@ export function createLocalPersistence(): PersistenceAdapter {
 
     listDocuments: (): DocumentSummary[] => listDocuments(),
 
-    saveVersion: async (docId: string, doc: DocumentData, message?: string): Promise<boolean> => {
+    saveVersion: async (
+      docId: string,
+      doc: DocumentData,
+      message?: string,
+    ): Promise<boolean> => {
       const result = saveVersion(docId, doc, message);
       return result.isOk();
     },
@@ -52,7 +63,14 @@ export function createLocalPersistence(): PersistenceAdapter {
 
     createBackup: async (
       docId: string,
-      data: { docId: string; title: string; contentMdx: string; editorJson: unknown; status: string; version: number }
+      data: {
+        docId: string;
+        title: string;
+        contentMdx: string;
+        editorJson: unknown;
+        status: string;
+        version: number;
+      },
     ): Promise<boolean> => {
       const result = await saveBackup(docId, {
         docId,
@@ -76,9 +94,13 @@ export function createLocalPersistence(): PersistenceAdapter {
       docId: string,
       range: { from: number; to: number },
       text: string,
-      initialComment?: string
+      initialComment?: string,
     ): CommentThread => addThread(docId, range, text, initialComment),
-    addReply: (docId: string, threadId: string, text: string): CommentReply | null => addReply(docId, threadId, text),
+    addReply: (
+      docId: string,
+      threadId: string,
+      text: string,
+    ): CommentReply | null => addReply(docId, threadId, text),
     resolveThread: (docId: string, threadId: string): void => {
       resolveThread(docId, threadId);
     },

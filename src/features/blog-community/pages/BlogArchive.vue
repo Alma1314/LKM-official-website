@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { blogApi } from '~/lib/api';
-import type { BlogArticleInfo } from '../types/blog';
-import { useRoute } from 'vue-router';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import { blogApi } from "~/lib/api";
+import type { BlogArticleInfo } from "../types/blog";
+import { useRoute } from "vue-router";
+import { t } from "~/lib/i18n";
 
 const route = useRoute();
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(false);
 
-const _filterTag = computed(() => (route.query.tag as string) || '');
-const _filterCategory = computed(() => (route.query.category as string) || '');
+const _filterTag = computed(() => (route.query.tag as string) || "");
+const _filterCategory = computed(() => (route.query.category as string) || "");
 
 const groupedByYear = computed(() => {
   const groups: Record<string, BlogArticleInfo[]> = {};
@@ -34,9 +34,16 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h1 class="text-3xl font-bold mb-8">{{ t('blog.archiveTitle') }}</h1>
-    <div v-if="loading" class="text-center py-12 text-gray-500">{{ t('common.loading') }}</div>
-    <div v-else v-for="[year, yearArticles] in groupedByYear" :key="year" class="mb-8">
+    <h1 class="text-3xl font-bold mb-8">{{ t("blog.archiveTitle") }}</h1>
+    <div v-if="loading" class="text-center py-12 text-gray-500">
+      {{ t("common.loading") }}
+    </div>
+    <div
+      v-else
+      v-for="[year, yearArticles] in groupedByYear"
+      :key="year"
+      class="mb-8"
+    >
       <h2 class="text-2xl font-bold text-gray-400 mb-4">{{ year }}</h2>
       <div class="space-y-3">
         <router-link
@@ -47,7 +54,10 @@ onMounted(async () => {
         >
           <span>{{ article.title }}</span>
           <span class="text-sm text-gray-500">{{
-            new Date(article.published).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })
+            new Date(article.published).toLocaleDateString("zh-CN", {
+              month: "long",
+              day: "numeric",
+            })
           }}</span>
         </router-link>
       </div>

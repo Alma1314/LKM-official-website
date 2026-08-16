@@ -1,14 +1,14 @@
-import astroEslintParser from 'astro-eslint-parser';
-import eslintPluginAstro from 'eslint-plugin-astro';
-import globals from 'globals';
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import typescriptParser from '@typescript-eslint/parser';
-import vueParser from 'vue-eslint-parser';
+import astroEslintParser from "astro-eslint-parser";
+import eslintPluginAstro from "eslint-plugin-astro";
+import globals from "globals";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import typescriptParser from "@typescript-eslint/parser";
+import vueParser from "vue-eslint-parser";
 
 export default [
   js.configs.recommended,
-  ...eslintPluginAstro.configs['flat/recommended'],
+  ...eslintPluginAstro.configs["flat/recommended"],
   ...tseslint.configs.recommended,
   {
     languageOptions: {
@@ -19,51 +19,51 @@ export default [
     },
   },
   {
-    files: ['**/*.astro'],
+    files: ["**/*.astro"],
     languageOptions: {
       parser: astroEslintParser,
       parserOptions: {
-        parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.astro'],
+        parser: "@typescript-eslint/parser",
+        extraFileExtensions: [".astro"],
       },
     },
     // Astro 组件脚本（`<script is:inline>` 为纯 JS、普通 `<script>`/`<script lang="ts">`
     // 由 Astro 原生处理）强制类型标注会把非法 TS/JS 打进页面（ts(8010)），故此处豁免。
     rules: {
-      '@typescript-eslint/explicit-function-return-type': 'off',
+      "@typescript-eslint/explicit-function-return-type": "off",
     },
   },
   {
-    files: ['**/*.vue'],
+    files: ["**/*.vue"],
     languageOptions: {
       parser: vueParser,
       parserOptions: {
-        parser: '@typescript-eslint/parser',
-        sourceType: 'module',
+        parser: "@typescript-eslint/parser",
+        sourceType: "module",
       },
     },
     rules: {
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
         },
       ],
     },
   },
   {
-    files: ['**/*.{js,jsx,astro}'],
+    files: ["**/*.{js,jsx,astro}"],
     rules: {
-      'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
         },
       ],
     },
@@ -71,23 +71,23 @@ export default [
   {
     // 定义 `<script>` 标签的配置。
     // `<script>` 中的脚本会被分配一个带 `.js` 扩展名的虚拟文件名。
-    files: ['**/*.{ts,tsx}', '**/*.astro/*.js'],
+    files: ["**/*.{ts,tsx}", "**/*.astro/*.js"],
     languageOptions: {
       parser: typescriptParser,
     },
     rules: {
       // 注意：必须禁用基础规则，因为它可能报告错误的错误
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
         },
       ],
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/triple-slash-reference': 'off',
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/triple-slash-reference": "off",
     },
   },
   {
@@ -97,51 +97,55 @@ export default [
     // （`ts(8010): Type annotations can only be used in TypeScript files`）。
     // astro-eslint-parser 会把 `<script>` 映射为匹配 `**/*.{ts,tsx}` 的虚拟路径，
     // 因此必须用 ignores 显式排除 .astro 相关虚拟文件。
-    files: ['**/*.{ts,tsx}'],
-    ignores: ['**/*.astro/**'],
+    files: ["**/*.{ts,tsx}"],
+    ignores: ["**/*.astro/**"],
     rules: {
-      '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        { allowExpressions: true },
+      ],
     },
   },
   {
     files: [
-      'src/features/shell/common/components/Analytics.astro',
-      'src/features/shell/common/components/Analytics.astro/**',
+      "src/features/shell/common/components/Analytics.astro",
+      "src/features/shell/common/components/Analytics.astro/**",
     ],
     rules: {
-      'prefer-rest-params': 'off',
-      'no-var': 'off',
+      "prefer-rest-params": "off",
+      "no-var": "off",
     },
   },
   {
-    files: ['src/**/*.{ts,tsx,vue,astro}'],
+    files: ["src/**/*.{ts,tsx,vue,astro}"],
     rules: {
-      'no-restricted-globals': [
-        'error',
+      "no-restricted-globals": [
+        "error",
         {
-          name: 'fetch',
-          message: '请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。',
+          name: "fetch",
+          message:
+            "请使用 ~/lib/http/client (axios) 或 ~/lib/api 的 apiFetch wrapper，不要直接调用 fetch。",
         },
       ],
     },
   },
   {
     ignores: [
-      'dist',
-      'packages/*/dist',
-      'node_modules',
-      '.github',
-      'reference',
-      'types.generated.d.ts',
-      '.astro',
-      '.claude',
-      '.superpowers',
-      'src/layouts/BlogLayout.astro',
-      'src/layouts/OfficialBlogLayout.astro',
-      'src/layouts/CommunityBlogLayout.astro',
-      'scripts/mock-server.mjs',
-      'src/lib/icons/register.ts',
-      'src/lib/icons/astro-include.ts',
+      "dist",
+      "packages/*/dist",
+      "node_modules",
+      ".github",
+      "reference",
+      "types.generated.d.ts",
+      ".astro",
+      ".claude",
+      ".superpowers",
+      "src/layouts/BlogLayout.astro",
+      "src/layouts/OfficialBlogLayout.astro",
+      "src/layouts/CommunityBlogLayout.astro",
+      "scripts/mock-server.mjs",
+      "src/lib/icons/register.ts",
+      "src/lib/icons/astro-include.ts",
     ],
   },
 ];

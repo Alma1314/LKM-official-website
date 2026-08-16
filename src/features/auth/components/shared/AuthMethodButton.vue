@@ -6,7 +6,9 @@
     :disabled="disabled"
     @click="emit('click')"
   >
-    <span v-if="icon" class="shrink-0 text-text-muted" aria-hidden="true">{{ icon }}</span>
+    <span v-if="icon" class="shrink-0 text-text-muted" aria-hidden="true">{{
+      icon
+    }}</span>
     <span>{{ label }}</span>
   </button>
 </template>
@@ -18,8 +20,8 @@ withDefaults(
     icon?: string;
     disabled?: boolean;
   }>(),
-  { disabled: false }
+  { disabled: false },
 );
 
-const emit = defineEmits<(e: 'click') => void>();
+const emit = defineEmits<(e: "click") => void>();
 </script>

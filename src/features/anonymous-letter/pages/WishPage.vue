@@ -3,16 +3,20 @@
     <div class="container">
       <!-- 头部 -->
       <section class="wish-head glass float-up">
-        <h1 class="page-title">🌟 {{ t('treehole.wish.title') }}</h1>
-        <button class="btn-grad" @click="makeDialogOpen = true">{{ t('treehole.wish.makeWish') }}</button>
+        <h1 class="page-title">🌟 {{ t("treehole.wish.title") }}</h1>
+        <button class="btn-grad" @click="makeDialogOpen = true">
+          {{ t("treehole.wish.makeWish") }}
+        </button>
       </section>
 
       <!-- 空状态 -->
       <section v-if="wishes.length === 0" class="wish-empty glass float-up">
         <div class="empty-icon">🌟</div>
-        <p class="empty-text">{{ t('treehole.wish.emptyTitle') }}</p>
-        <p class="empty-sub">{{ t('treehole.wish.emptySub') }}</p>
-        <button class="btn-grad" @click="makeDialogOpen = true">{{ t('treehole.wish.makeDialogTitle') }}</button>
+        <p class="empty-text">{{ t("treehole.wish.emptyTitle") }}</p>
+        <p class="empty-sub">{{ t("treehole.wish.emptySub") }}</p>
+        <button class="btn-grad" @click="makeDialogOpen = true">
+          {{ t("treehole.wish.makeDialogTitle") }}
+        </button>
       </section>
 
       <!-- 许愿墙网格 -->
@@ -25,13 +29,19 @@
         >
           <p class="wish-text">{{ w.text }}</p>
           <div class="wish-meta">
-            <button class="light-btn" @click="onLight(w)" :title="t('treehole.wish.lightWishTitle')">
+            <button
+              class="light-btn"
+              @click="onLight(w)"
+              :title="t('treehole.wish.lightWishTitle')"
+            >
               🕯️ {{ w.lights || 0 }}
             </button>
             <span class="wish-date">{{ formatDate(w.createdAt) }}</span>
             <template v-if="w.ownerId === 'me_local'">
               <button class="wish-action-chip" @click="openEdit(w)">✏️</button>
-              <button class="wish-action-chip wish-del" @click="onDelete(w)">🗑️</button>
+              <button class="wish-action-chip wish-del" @click="onDelete(w)">
+                🗑️
+              </button>
             </template>
           </div>
         </div>
@@ -39,10 +49,16 @@
     </div>
 
     <!-- 许愿弹窗 -->
-    <div v-if="makeDialogOpen" class="dialog-overlay" @click.self="makeDialogOpen = false">
+    <div
+      v-if="makeDialogOpen"
+      class="dialog-overlay"
+      @click.self="makeDialogOpen = false"
+    >
       <div class="dialog-box glass">
-        <h3 class="dialog-title">🌟 {{ t('treehole.wish.makeDialogTitle') }}</h3>
-        <p class="dialog-desc">{{ t('treehole.wish.makeDialogDesc') }}</p>
+        <h3 class="dialog-title">
+          🌟 {{ t("treehole.wish.makeDialogTitle") }}
+        </h3>
+        <p class="dialog-desc">{{ t("treehole.wish.makeDialogDesc") }}</p>
         <textarea
           v-model="makeText"
           class="dialog-textarea"
@@ -57,19 +73,27 @@
               makeText = '';
             "
           >
-            {{ t('treehole.wish.cancel') }}
+            {{ t("treehole.wish.cancel") }}
           </button>
-          <button class="btn-grad btn-sm" @click="onMake" :disabled="!makeText.trim()">
-            {{ t('treehole.wish.lightWishBtn') }}
+          <button
+            class="btn-grad btn-sm"
+            @click="onMake"
+            :disabled="!makeText.trim()"
+          >
+            {{ t("treehole.wish.lightWishBtn") }}
           </button>
         </div>
       </div>
     </div>
 
     <!-- 编辑弹窗 -->
-    <div v-if="editDialogOpen" class="dialog-overlay" @click.self="editDialogOpen = false">
+    <div
+      v-if="editDialogOpen"
+      class="dialog-overlay"
+      @click.self="editDialogOpen = false"
+    >
       <div class="dialog-box glass">
-        <h3 class="dialog-title">{{ t('treehole.wish.editTitle') }}</h3>
+        <h3 class="dialog-title">{{ t("treehole.wish.editTitle") }}</h3>
         <textarea
           v-model="editText"
           class="dialog-textarea"
@@ -77,9 +101,15 @@
           rows="4"
         ></textarea>
         <div class="dialog-actions">
-          <button class="chip" @click="editDialogOpen = false">{{ t('treehole.wish.cancel') }}</button>
-          <button class="btn-grad btn-sm" @click="onSaveEdit" :disabled="!editText.trim()">
-            {{ t('treehole.wish.save') }}
+          <button class="chip" @click="editDialogOpen = false">
+            {{ t("treehole.wish.cancel") }}
+          </button>
+          <button
+            class="btn-grad btn-sm"
+            @click="onSaveEdit"
+            :disabled="!editText.trim()"
+          >
+            {{ t("treehole.wish.save") }}
           </button>
         </div>
       </div>
@@ -88,17 +118,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
-import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, onMounted } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
+import { getWishes, addWish, lightWish, saveWishes } from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const wishes = ref([]);
 const makeDialogOpen = ref(false);
-const makeText = ref('');
+const makeText = ref("");
 const editDialogOpen = ref(false);
-const editText = ref('');
-const editId = ref('');
+const editText = ref("");
+const editId = ref("");
 
 function loadWishes() {
   wishes.value = getWishes();
@@ -107,13 +137,13 @@ function loadWishes() {
 function onMake() {
   if (!makeText.value.trim()) return;
   addWish({
-    id: 'wish_' + Date.now(),
+    id: "wish_" + Date.now(),
     text: makeText.value.trim(),
     lights: 0,
     createdAt: Date.now(),
-    ownerId: 'me_local',
+    ownerId: "me_local",
   });
-  makeText.value = '';
+  makeText.value = "";
   makeDialogOpen.value = false;
   loadWishes();
 }
@@ -138,39 +168,43 @@ function onSaveEdit() {
     saveWishes(list);
   }
   editDialogOpen.value = false;
-  editText.value = '';
-  editId.value = '';
+  editText.value = "";
+  editId.value = "";
   loadWishes();
 }
 
 function onDelete(w) {
-  if (!confirm(t('treehole.wish.confirmDeleteWish'))) return;
+  if (!confirm(t("treehole.wish.confirmDeleteWish"))) return;
   const list = getWishes().filter((x) => x.id !== w.id);
   saveWishes(list);
   loadWishes();
 }
 
 function formatDate(ts) {
-  if (!ts) return '';
+  if (!ts) return "";
   const d = new Date(ts);
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return d.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 }
 
 const COLORS = [
-  '#ff9aa2',
-  '#a0c4ff',
-  '#ffd6a5',
-  '#bdb2ff',
-  '#9bf6ff',
-  '#caffbf',
-  '#ffc6ff',
-  '#b9fbc0',
-  '#ffadad',
-  '#fdffb6',
+  "#ff9aa2",
+  "#a0c4ff",
+  "#ffd6a5",
+  "#bdb2ff",
+  "#9bf6ff",
+  "#caffbf",
+  "#ffc6ff",
+  "#b9fbc0",
+  "#ffadad",
+  "#fdffb6",
 ];
 function cardColor(id) {
   let hash = 0;
-  for (let i = 0; i < (id || '').length; i++) {
+  for (let i = 0; i < (id || "").length; i++) {
     hash = id.charCodeAt(i) + ((hash << 5) - hash);
   }
   return COLORS[Math.abs(hash) % COLORS.length];

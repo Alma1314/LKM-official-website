@@ -57,7 +57,9 @@
 自定义 `intersect` 变体，配合 IntersectionObserver 做入场动画：
 
 ```html
-<div class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"></div>
+<div
+  class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+></div>
 ```
 
 ## 修改配色

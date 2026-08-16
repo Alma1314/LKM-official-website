@@ -13,21 +13,24 @@
 //  - 需要 SSE 流式读取的场景
 //  - 不适用于普通 REST 请求 → 请使用 ~/lib/http/client 的 get/post/put/del
 
-import { AppError, ErrorCode } from '../errors/error-codes';
-import { ok, err } from '../errors/result';
-import { t } from '~/lib/i18n';
-import type { Result } from '../errors/result';
+import { AppError, ErrorCode } from "../errors/error-codes";
+import { ok, err } from "../errors/result";
+import { t } from "~/lib/i18n";
+import type { Result } from "../errors/result";
 
 const DEFAULT_TIMEOUT_MS = 15_000;
 
 function getApiBase(): string {
-  if (typeof window === 'undefined') {
-    return process.env.API_URL ?? '';
+  if (typeof window === "undefined") {
+    return process.env.API_URL ?? "";
   }
-  return '';
+  return "";
 }
 
-function createTimeoutSignal(timeoutMs: number): { signal: AbortSignal; clear: () => void } {
+function createTimeoutSignal(timeoutMs: number): {
+  signal: AbortSignal;
+  clear: () => void;
+} {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   return {
@@ -43,14 +46,14 @@ function mergeAbortSignals(signals: AbortSignal[]): AbortSignal {
   const controller = new AbortController();
   const onAbort = (): void => {
     controller.abort();
-    signals.forEach((s) => s.removeEventListener('abort', onAbort));
+    signals.forEach((s) => s.removeEventListener("abort", onAbort));
   };
   signals.forEach((s) => {
     if (s.aborted) {
       controller.abort();
       return;
     }
-    s.addEventListener('abort', onAbort, { once: true });
+    s.addEventListener("abort", onAbort, { once: true });
   });
   return controller.signal;
 }
@@ -63,15 +66,17 @@ function mergeAbortSignals(signals: AbortSignal[]): AbortSignal {
  */
 export async function apiFetch(
   url: string,
-  init?: RequestInit & { timeout?: number }
+  init?: RequestInit & { timeout?: number },
 ): Promise<Result<Response, AppError>> {
   const base = getApiBase();
-  const fullUrl = base ? `${base.replace(/\/$/, '')}${url}` : url;
+  const fullUrl = base ? `${base.replace(/\/$/, "")}${url}` : url;
   const timeout = init?.timeout ?? DEFAULT_TIMEOUT_MS;
 
   const timeoutCtl = createTimeoutSignal(timeout);
   const externalSignal = init?.signal;
-  const mergedSignal = externalSignal ? mergeAbortSignals([timeoutCtl.signal, externalSignal]) : timeoutCtl.signal;
+  const mergedSignal = externalSignal
+    ? mergeAbortSignals([timeoutCtl.signal, externalSignal])
+    : timeoutCtl.signal;
 
   const { signal: _sig, timeout: _to, ...restInit } = init || {};
   void _sig;
@@ -88,13 +93,18 @@ export async function apiFetch(
   } catch (e: unknown) {
     timeoutCtl.clear();
 
-    if (e instanceof DOMException && e.name === 'AbortError') {
-      return err(new AppError(ErrorCode.HTTP_TIMEOUT, t('messages.timeoutOrCancelled')));
+    if (e instanceof DOMException && e.name === "AbortError") {
+      return err(
+        new AppError(ErrorCode.HTTP_TIMEOUT, t("messages.timeoutOrCancelled")),
+      );
     }
 
     const message = e instanceof Error ? e.message : String(e);
     return err(
-      new AppError(ErrorCode.NETWORK_ERROR, t('messages.networkRequestFailed', { error: message.slice(0, 300) }))
+      new AppError(
+        ErrorCode.NETWORK_ERROR,
+        t("messages.networkRequestFailed", { error: message.slice(0, 300) }),
+      ),
     );
   }
 }

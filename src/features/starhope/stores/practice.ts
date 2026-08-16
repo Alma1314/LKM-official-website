@@ -1,13 +1,13 @@
-import { ref, computed, type Ref, type ComputedRef } from 'vue';
-import { db } from './db';
-import { useAuthStore } from './auth';
-import { enqueue } from '../sync/sync';
-import type { Question, PracticeSession } from '~/features/starhope/types';
+import { ref, computed, type Ref, type ComputedRef } from "vue";
+import { db } from "./db";
+import { useAuthStore } from "./auth";
+import { enqueue } from "../sync/sync";
+import type { Question, PracticeSession } from "~/features/starhope/types";
 
 export interface PracticeConfig {
   questionIds: string[];
-  mode: 'realtime' | 'batch';
-  type: 'practice' | 'exam';
+  mode: "realtime" | "batch";
+  type: "practice" | "exam";
   timeLimit?: number;
   passingGrade?: number;
 }
@@ -40,18 +40,29 @@ export function usePracticeStore(): {
   prevQuestion: () => void;
   submitExam: () => Promise<PracticeSession | undefined>;
   pauseSession: () => Promise<void>;
-  getSessionResult: () => { total: number; correct: number; wrong: number; score: number } | null;
+  getSessionResult: () => {
+    total: number;
+    correct: number;
+    wrong: number;
+    score: number;
+  } | null;
   getPassed: () => boolean | null;
-  loadSessions: (type?: 'practice' | 'exam') => Promise<PracticeSession[]>;
+  loadSessions: (type?: "practice" | "exam") => Promise<PracticeSession[]>;
   loadWrongQuestions: () => Promise<Question[]>;
   reset: () => void;
 } {
   const auth = useAuthStore();
 
   const totalQuestions = computed(() => questions.value.length);
-  const progress = computed(() => (totalQuestions.value === 0 ? 0 : currentIndex.value / totalQuestions.value));
-  const answeredCount = computed(() => (currentSession.value ? Object.keys(currentSession.value.answers).length : 0));
-  const isLastQuestion = computed(() => currentIndex.value >= totalQuestions.value - 1);
+  const progress = computed(() =>
+    totalQuestions.value === 0 ? 0 : currentIndex.value / totalQuestions.value,
+  );
+  const answeredCount = computed(() =>
+    currentSession.value ? Object.keys(currentSession.value.answers).length : 0,
+  );
+  const isLastQuestion = computed(
+    () => currentIndex.value >= totalQuestions.value - 1,
+  );
   const isFirstQuestion = computed(() => currentIndex.value <= 0);
 
   function stopTimer(): void {
@@ -65,7 +76,10 @@ export function usePracticeStore(): {
     stopTimer();
     timerInterval = setInterval(() => {
       elapsedSeconds.value++;
-      if (currentSession.value?.timeLimit && elapsedSeconds.value >= currentSession.value.timeLimit * 60) {
+      if (
+        currentSession.value?.timeLimit &&
+        elapsedSeconds.value >= currentSession.value.timeLimit * 60
+      ) {
         submitExam();
       }
     }, 1000);
@@ -77,7 +91,9 @@ export function usePracticeStore(): {
 
   async function startPractice(config: PracticeConfig): Promise<void> {
     if (!auth.isLoggedIn.value) return;
-    questions.value = (await db.questions.bulkGet(config.questionIds)) as Question[];
+    questions.value = (await db.questions.bulkGet(
+      config.questionIds,
+    )) as Question[];
     questions.value = questions.value.filter(Boolean);
     const session: PracticeSession = {
       id: crypto.randomUUID(),
@@ -86,14 +102,14 @@ export function usePracticeStore(): {
       mode: config.mode,
       questionIds: questions.value.map((q) => q.id),
       answers: {},
-      status: 'ongoing',
+      status: "ongoing",
       startedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       timeLimit: config.timeLimit,
       passingGrade: config.passingGrade,
     };
     await db.practiceSessions.put(session);
-    enqueue('sessions', session.id, 'upsert', session);
+    enqueue("sessions", session.id, "upsert", session);
     currentSession.value = session;
     currentIndex.value = 0;
     elapsedSeconds.value = 0;
@@ -105,7 +121,9 @@ export function usePracticeStore(): {
     const session = await db.practiceSessions.get(sessionId);
     if (!session) return;
     currentSession.value = session;
-    questions.value = (await db.questions.bulkGet(session.questionIds)) as Question[];
+    questions.value = (await db.questions.bulkGet(
+      session.questionIds,
+    )) as Question[];
     questions.value = questions.value.filter(Boolean);
     currentIndex.value = 0;
     loadCurrentQuestion();
@@ -115,7 +133,7 @@ export function usePracticeStore(): {
   function setAnswer(answer: string | string[]): void {
     if (!currentSession.value || !currentQuestion.value) return;
     currentSession.value.answers[currentQuestion.value.id] = answer;
-    if (currentSession.value.mode === 'realtime') gradeCurrent();
+    if (currentSession.value.mode === "realtime") gradeCurrent();
   }
 
   function gradeCurrent(): void {
@@ -127,8 +145,12 @@ export function usePracticeStore(): {
       const s1 = [...correctAnswer].sort(),
         s2 = [...userAnswer].sort();
       correct = s1.length === s2.length && s1.every((v, i) => v === s2[i]);
-    } else if (typeof correctAnswer === 'string' && typeof userAnswer === 'string') {
-      correct = correctAnswer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
+    } else if (
+      typeof correctAnswer === "string" &&
+      typeof userAnswer === "string"
+    ) {
+      correct =
+        correctAnswer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
     }
     if (!currentSession.value.results) currentSession.value.results = {};
     currentSession.value.results[currentQuestion.value.id] = { correct };
@@ -155,7 +177,7 @@ export function usePracticeStore(): {
 
   async function submitExam(): Promise<PracticeSession | undefined> {
     if (!currentSession.value) return;
-    if (currentSession.value.mode === 'batch') {
+    if (currentSession.value.mode === "batch") {
       for (const q of questions.value) {
         const ua = currentSession.value.answers[q.id];
         if (!ua) continue;
@@ -164,57 +186,84 @@ export function usePracticeStore(): {
           const s1 = [...q.answer].sort(),
             s2 = [...ua].sort();
           correct = s1.length === s2.length && s1.every((v, i) => v === s2[i]);
-        } else if (typeof q.answer === 'string' && typeof ua === 'string') {
+        } else if (typeof q.answer === "string" && typeof ua === "string") {
           correct = q.answer.trim().toLowerCase() === ua.trim().toLowerCase();
         }
         if (!currentSession.value.results) currentSession.value.results = {};
         currentSession.value.results[q.id] = { correct };
       }
     }
-    currentSession.value.status = 'completed';
+    currentSession.value.status = "completed";
     currentSession.value.completedAt = new Date().toISOString();
     currentSession.value.updatedAt = new Date().toISOString();
     await db.practiceSessions.put(currentSession.value);
-    enqueue('sessions', currentSession.value.id, 'upsert', currentSession.value);
+    enqueue(
+      "sessions",
+      currentSession.value.id,
+      "upsert",
+      currentSession.value,
+    );
     stopTimer();
     return currentSession.value;
   }
 
   async function pauseSession(): Promise<void> {
     if (!currentSession.value) return;
-    currentSession.value.status = 'paused';
+    currentSession.value.status = "paused";
     currentSession.value.updatedAt = new Date().toISOString();
     await db.practiceSessions.put(currentSession.value);
-    enqueue('sessions', currentSession.value.id, 'upsert', currentSession.value);
+    enqueue(
+      "sessions",
+      currentSession.value.id,
+      "upsert",
+      currentSession.value,
+    );
     stopTimer();
   }
 
-  function getSessionResult(): { total: number; correct: number; wrong: number; score: number } | null {
+  function getSessionResult(): {
+    total: number;
+    correct: number;
+    wrong: number;
+    score: number;
+  } | null {
     if (!currentSession.value?.results) return null;
     const results = currentSession.value.results;
     const total = Object.keys(results).length;
     const correct = Object.values(results).filter((r) => r.correct).length;
-    return { total, correct, wrong: total - correct, score: total > 0 ? Math.round((correct / total) * 100) : 0 };
+    return {
+      total,
+      correct,
+      wrong: total - correct,
+      score: total > 0 ? Math.round((correct / total) * 100) : 0,
+    };
   }
 
   function getPassed(): boolean | null {
-    if (currentSession.value?.type !== 'exam') return null;
+    if (currentSession.value?.type !== "exam") return null;
     const result = getSessionResult();
     if (!result || !currentSession.value?.passingGrade) return null;
     return result.score >= currentSession.value.passingGrade;
   }
 
-  async function loadSessions(type?: 'practice' | 'exam'): Promise<PracticeSession[]> {
+  async function loadSessions(
+    type?: "practice" | "exam",
+  ): Promise<PracticeSession[]> {
     if (!auth.isLoggedIn.value) return [];
-    let query = db.practiceSessions.where('userId').equals(auth.userId.value!);
+    let query = db.practiceSessions.where("userId").equals(auth.userId.value!);
     if (type) query = query.and((s: PracticeSession) => s.type === type);
-    return query.reverse().sortBy('startedAt');
+    return query.reverse().sortBy("startedAt");
   }
 
   async function loadWrongQuestions(): Promise<Question[]> {
     if (!auth.isLoggedIn.value) return [];
-    const all = await db.practiceSessions.where('userId').equals(auth.userId.value!).toArray();
-    const sessions = all.filter((s: PracticeSession) => s.results && s.status === 'completed');
+    const all = await db.practiceSessions
+      .where("userId")
+      .equals(auth.userId.value!)
+      .toArray();
+    const sessions = all.filter(
+      (s: PracticeSession) => s.results && s.status === "completed",
+    );
     const wrongIds = new Set<string>();
     for (const s of sessions) {
       if (!s.results) continue;

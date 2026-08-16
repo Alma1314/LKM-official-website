@@ -5,14 +5,14 @@
 //       漂流瓶、许愿墙、月度情绪、备份、桌面通知、涂鸦手写信纸、本地加密
 // =============================================================
 
-import { randomCodename } from '../utils/codename';
-import { t } from '~/lib/i18n';
+import { randomCodename } from "../utils/codename";
+import { t } from "~/lib/i18n";
 
 // ---------- 类型定义 ----------
 
 export interface Letter {
   id: string;
-  status: 'scheduled' | 'published' | 'sealed';
+  status: "scheduled" | "published" | "sealed";
   scheduledAt?: number;
   publishedAt?: number;
   sealUntil?: number;
@@ -45,8 +45,8 @@ export interface Conversation {
 }
 
 export interface TreeholeSettings {
-  theme: 'day' | 'night';
-  fontScale: 'small' | 'normal' | 'large';
+  theme: "day" | "night";
+  fontScale: "small" | "normal" | "large";
   muted: boolean;
   lowPerf: boolean;
   highContrast: boolean;
@@ -95,32 +95,33 @@ export interface Sketch {
 // ---------- 常量 ----------
 
 const KEYS: Record<string, string> = {
-  letters: 'th_letters', // 我发布的信件列表
-  replies: 'th_replies', // 回信对话（含收到/发出）
-  favorites: 'th_favorites', // 收藏信件 id 列表
-  favGroups: 'th_fav_groups', // 收藏夹分组
-  drafts: 'th_drafts', // 本地草稿
-  settings: 'th_settings', // 全局设置（主题/字体/静音/加密等）
-  blocked: 'th_blocked', // 屏蔽的匿名代号
-  reported: 'th_reported', // 已举报记录
-  postLog: 'th_post_log', // 投稿时间记录（频率限制）
-  inbox: 'th_inbox', // 收到的回信弹窗提醒队列
-  bottles: 'th_bottles', // 漂流瓶
-  wishes: 'th_wishes', // 许愿墙
-  moodLog: 'th_mood_log', // 月度情绪记录 { month, mood, count }
-  notify: 'th_notify_log', // 桌面通知历史
-  sketches: 'th_sketches', // 涂鸦手写信纸（dataURL）
+  letters: "th_letters", // 我发布的信件列表
+  replies: "th_replies", // 回信对话（含收到/发出）
+  favorites: "th_favorites", // 收藏信件 id 列表
+  favGroups: "th_fav_groups", // 收藏夹分组
+  drafts: "th_drafts", // 本地草稿
+  settings: "th_settings", // 全局设置（主题/字体/静音/加密等）
+  blocked: "th_blocked", // 屏蔽的匿名代号
+  reported: "th_reported", // 已举报记录
+  postLog: "th_post_log", // 投稿时间记录（频率限制）
+  inbox: "th_inbox", // 收到的回信弹窗提醒队列
+  bottles: "th_bottles", // 漂流瓶
+  wishes: "th_wishes", // 许愿墙
+  moodLog: "th_mood_log", // 月度情绪记录 { month, mood, count }
+  notify: "th_notify_log", // 桌面通知历史
+  sketches: "th_sketches", // 涂鸦手写信纸（dataURL）
 };
 
 /** SSR 环境下无 localStorage，任何读写都应安全兜底，避免 ReferenceError。 */
-const hasLocalStorage = typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+const hasLocalStorage =
+  typeof window !== "undefined" && typeof localStorage !== "undefined";
 
 function read<T>(key: string, fallback: T): T {
   try {
     const raw = hasLocalStorage ? localStorage.getItem(key) : null;
     return raw ? (JSON.parse(raw) as T) : fallback;
   } catch (err) {
-    console.warn('[storage] 读取 key 失败:', key, err);
+    console.warn("[storage] 读取 key 失败:", key, err);
     return fallback;
   }
 }
@@ -139,40 +140,60 @@ export function clone<T>(obj: T): T {
 export async function encryptText(text: string, pass: string): Promise<string> {
   try {
     const enc = new TextEncoder();
-    const key = await crypto.subtle.importKey('raw', enc.encode(padPass(pass)), { name: 'AES-GCM' }, false, [
-      'encrypt',
-    ]);
+    const key = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(padPass(pass)),
+      { name: "AES-GCM" },
+      false,
+      ["encrypt"],
+    );
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(text));
-    return 'enc:' + b64(arrayBufferToBase64(iv.buffer as ArrayBuffer)) + ':' + b64(arrayBufferToBase64(ct));
+    const ct = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      key,
+      enc.encode(text),
+    );
+    return (
+      "enc:" +
+      b64(arrayBufferToBase64(iv.buffer as ArrayBuffer)) +
+      ":" +
+      b64(arrayBufferToBase64(ct))
+    );
   } catch (err) {
-    console.warn('[storage] 加密失败，返回明文:', err);
+    console.warn("[storage] 加密失败，返回明文:", err);
     return text;
   }
 }
-export async function decryptText(payload: string, pass: string): Promise<string> {
+export async function decryptText(
+  payload: string,
+  pass: string,
+): Promise<string> {
   try {
-    if (!payload || !payload.startsWith('enc:')) return payload;
-    const [, ivB64, ctB64] = payload.split(':');
+    if (!payload || !payload.startsWith("enc:")) return payload;
+    const [, ivB64, ctB64] = payload.split(":");
     const enc = new TextEncoder();
-    const key = await crypto.subtle.importKey('raw', enc.encode(padPass(pass)), { name: 'AES-GCM' }, false, [
-      'decrypt',
-    ]);
+    const key = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(padPass(pass)),
+      { name: "AES-GCM" },
+      false,
+      ["decrypt"],
+    );
     const iv = new Uint8Array(base64ToArrayBuffer(unb64(ivB64)));
     const ct = new Uint8Array(base64ToArrayBuffer(unb64(ctB64)));
-    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ct);
     return new TextDecoder().decode(pt);
   } catch (err) {
-    console.warn('[storage] 解密失败:', err);
-    return t('treeholeData.messages.decryptFail');
+    console.warn("[storage] 解密失败:", err);
+    return t("treeholeData.messages.decryptFail");
   }
 }
 function padPass(p: string): string {
-  return (p || '').padEnd(32, '🌙').slice(0, 32);
+  return (p || "").padEnd(32, "🌙").slice(0, 32);
 }
 function arrayBufferToBase64(buf: ArrayBuffer): string {
   const bytes = new Uint8Array(buf);
-  let bin = '';
+  let bin = "";
   bytes.forEach((b) => (bin += String.fromCharCode(b)));
   return btoa(bin);
 }
@@ -221,10 +242,14 @@ export function publishScheduled(): boolean {
   const list = getLetters();
   let changed = false;
   list.forEach((l) => {
-    if (l.scheduledAt && l.scheduledAt <= Date.now() && l.status === 'scheduled') {
-      l.status = 'published';
+    if (
+      l.scheduledAt &&
+      l.scheduledAt <= Date.now() &&
+      l.status === "scheduled"
+    ) {
+      l.status = "published";
       l.publishedAt = Date.now();
-      l.privacy = l.scheduledPrivacy || 'public';
+      l.privacy = l.scheduledPrivacy || "public";
       changed = true;
     }
   });
@@ -236,8 +261,8 @@ export function sealExpired(): boolean {
   const list = getLetters();
   let changed = false;
   list.forEach((l) => {
-    if (l.sealUntil && l.sealUntil <= Date.now() && l.status !== 'sealed') {
-      l.status = 'sealed';
+    if (l.sealUntil && l.sealUntil <= Date.now() && l.status !== "sealed") {
+      l.status = "sealed";
       changed = true;
     }
   });
@@ -259,29 +284,32 @@ export function toggleFavorite(id: string): boolean {
 }
 export function getFavGroups(): FavGroup[] {
   const groups = read<FavGroup[]>(KEYS.favGroups, []);
-  if (!groups.length) return [{ id: 'default', name: '默认收藏', ids: getFavorites() }];
+  if (!groups.length)
+    return [{ id: "default", name: "默认收藏", ids: getFavorites() }];
   return groups;
 }
 export function saveFavGroups(groups: FavGroup[]): void {
   write(KEYS.favGroups, groups);
 }
 export function addFavGroup(name: string): FavGroup[] {
-  const groups = getFavGroups().filter((g) => g.id !== 'default');
-  groups.push({ id: 'g_' + Date.now(), name, ids: [] });
+  const groups = getFavGroups().filter((g) => g.id !== "default");
+  groups.push({ id: "g_" + Date.now(), name, ids: [] });
   write(KEYS.favGroups, groups);
   return groups;
 }
 export function moveFavToGroup(id: string, groupId: string): void {
   const groups = getFavGroups().map((g) => {
-    if (g.id === 'default') return g;
+    if (g.id === "default") return g;
     const ids = g.ids.filter((x) => x !== id);
     if (g.id === groupId) ids.push(id);
     return { ...g, ids };
   });
-  saveFavGroups(groups.filter((g) => g.id !== 'default'));
+  saveFavGroups(groups.filter((g) => g.id !== "default"));
 }
 export function deleteFavGroup(groupId: string): void {
-  const groups = getFavGroups().filter((g) => g.id !== groupId && g.id !== 'default');
+  const groups = getFavGroups().filter(
+    (g) => g.id !== groupId && g.id !== "default",
+  );
   saveFavGroups(groups);
 }
 
@@ -314,12 +342,16 @@ export function getReplies(): Conversation[] {
 export function saveReplies(list: Conversation[]): void {
   write(KEYS.replies, list);
 }
-export function getOrCreateConversation(myLetterId: string, peerCodename: string, peerLetterId: string): Conversation {
+export function getOrCreateConversation(
+  myLetterId: string,
+  peerCodename: string,
+  peerLetterId: string,
+): Conversation {
   const list = getReplies();
   let conv = list.find((c) => c.peerLetterId === peerLetterId);
   if (!conv) {
     conv = {
-      id: 'conv_' + Date.now() + Math.floor(Math.random() * 1000),
+      id: "conv_" + Date.now() + Math.floor(Math.random() * 1000),
       myLetterId,
       peerLetterId,
       peerCodename,
@@ -350,7 +382,7 @@ export function recallMessage(convId: string, msgId: string): void {
     const m = conv.messages.find((x) => x.id === msgId);
     if (m) {
       m.recalled = true;
-      m.text = t('treeholeData.messages.recalled');
+      m.text = t("treeholeData.messages.recalled");
     }
     saveReplies(list);
   }
@@ -392,23 +424,28 @@ export function clearInbox(): void {
 
 // ---------- 设置 ----------
 const DEFAULT_SETTINGS: TreeholeSettings = {
-  theme: 'day', // day | night
-  fontScale: 'normal', // small | normal | large
+  theme: "day", // day | night
+  fontScale: "normal", // small | normal | large
   muted: false, // 全站动效静音
   lowPerf: false, // 低性能设备：关闭重特效
   highContrast: false, // 高对比度护眼模式
   privacyAccepted: false,
-  accent: '#e8a87c', // 自定义主题强调色
-  accent2: '#c3aed6',
+  accent: "#e8a87c", // 自定义主题强调色
+  accent2: "#c3aed6",
   rateLimit: 3, // 投稿限流：每分钟最多 N 封（可自定义）
   audioOn: false, // 白噪音背景音乐
   notifyDesktop: false, // 浏览器桌面通知
   bgmVolume: 0.4,
 };
 export function getSettings(): TreeholeSettings {
-  return { ...DEFAULT_SETTINGS, ...read<Partial<TreeholeSettings>>(KEYS.settings, {}) };
+  return {
+    ...DEFAULT_SETTINGS,
+    ...read<Partial<TreeholeSettings>>(KEYS.settings, {}),
+  };
 }
-export function saveSettings(patch: Partial<TreeholeSettings>): TreeholeSettings {
+export function saveSettings(
+  patch: Partial<TreeholeSettings>,
+): TreeholeSettings {
   const s = { ...getSettings(), ...patch };
   write(KEYS.settings, s);
   return s;
@@ -466,7 +503,9 @@ export function addBottle(b: Bottle): Bottle {
   return b;
 }
 export function pickBottle(): Bottle | null {
-  const list = getBottles().filter((b) => !b.picked && b.ownerId !== 'me_local');
+  const list = getBottles().filter(
+    (b) => !b.picked && b.ownerId !== "me_local",
+  );
   if (!list.length) return null;
   return list[Math.floor(Math.random() * list.length)];
 }
@@ -516,7 +555,9 @@ export function logMood(mood: string): void {
   write(KEYS.moodLog, list);
 }
 export function moodByMonth(month?: string): MoodRecord[] {
-  return getMoodLog().filter((r) => r.month === (month || new Date().toISOString().slice(0, 7)));
+  return getMoodLog().filter(
+    (r) => r.month === (month || new Date().toISOString().slice(0, 7)),
+  );
 }
 
 // ---------- 桌面通知 ----------
@@ -530,20 +571,20 @@ export function pushNotify(n: unknown): void {
 }
 export function notifyDesktop(title: string, body: string): void {
   try {
-    if (typeof window === 'undefined' || !('Notification' in window)) return;
-    if (Notification.permission === 'granted') {
+    if (typeof window === "undefined" || !("Notification" in window)) return;
+    if (Notification.permission === "granted") {
       new Notification(title, { body });
       pushNotify({ title, body, at: Date.now() });
-    } else if (Notification.permission !== 'denied') {
+    } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((p) => {
-        if (p === 'granted') {
+        if (p === "granted") {
           new Notification(title, { body });
           pushNotify({ title, body, at: Date.now() });
         }
       });
     }
   } catch (err) {
-    console.warn('[storage] 桌面通知失败:', err);
+    console.warn("[storage] 桌面通知失败:", err);
   }
 }
 
@@ -553,7 +594,7 @@ export function getSketches(): Sketch[] {
 }
 export function saveSketch(dataUrl: string): void {
   const list = getSketches();
-  list.unshift({ id: 'sk_' + Date.now(), dataUrl, at: Date.now() });
+  list.unshift({ id: "sk_" + Date.now(), dataUrl, at: Date.now() });
   write(KEYS.sketches, list.slice(0, 30));
 }
 
@@ -563,11 +604,18 @@ export function exportAll(): string {
   Object.keys(KEYS).forEach((k) => {
     backup[k] = read(KEYS[k], null);
   });
-  backup.__meta = { app: 'shiguang-treehole', version: 1, exportedAt: Date.now() };
+  backup.__meta = {
+    app: "shiguang-treehole",
+    version: 1,
+    exportedAt: Date.now(),
+  };
   return JSON.stringify(backup, null, 2);
 }
 export function importAll(json: string): boolean {
-  const data = typeof json === 'string' ? (JSON.parse(json) as Record<string, unknown>) : json;
+  const data =
+    typeof json === "string"
+      ? (JSON.parse(json) as Record<string, unknown>)
+      : json;
   Object.keys(KEYS).forEach((k) => {
     if (data[k] !== undefined) write(KEYS[k], data[k]);
   });

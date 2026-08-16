@@ -1,4 +1,4 @@
-import { reactive, onBeforeUnmount } from 'vue';
+import { reactive, onBeforeUnmount } from "vue";
 
 interface VerificationCountdownState {
   countdown: number;
@@ -12,7 +12,9 @@ interface VerificationCountdownState {
  * start() 重置为初始 seconds 并每秒递减；归零后 running=false。
  * onBeforeUnmount 自动清 interval，避免组件卸载后泄漏。
  */
-export function useVerificationCountdown(seconds = 60): VerificationCountdownState {
+export function useVerificationCountdown(
+  seconds = 60,
+): VerificationCountdownState {
   const state = reactive<VerificationCountdownState>({
     countdown: seconds,
     running: false,

@@ -8,7 +8,7 @@
       @click.prevent="openLogin"
     >
       <Icon icon="material-symbols:login-rounded" class="text-[1.25rem]" />
-      <span class="hidden sm:inline">{{ t('user.login') }}</span>
+      <span class="hidden sm:inline">{{ t("user.login") }}</span>
     </a>
 
     <!-- 已登录 -->
@@ -27,7 +27,9 @@
       @click.stop
     >
       <div class="px-4 py-2 border-b border-surface-3 mb-1">
-        <div class="font-semibold text-sm text-deep-text truncate">{{ username }}</div>
+        <div class="font-semibold text-sm text-deep-text truncate">
+          {{ username }}
+        </div>
         <div class="text-xs text-text-muted">{{ userLevelText }}</div>
       </div>
 
@@ -37,7 +39,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:person-outline" class="w-4 h-4" />
-        {{ t('user.profile') }}
+        {{ t("user.profile") }}
       </a>
       <a
         :href="buildUrl('/contribution')"
@@ -45,7 +47,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:stars-outline" class="w-4 h-4" />
-        {{ t('user.contribution') }}
+        {{ t("user.contribution") }}
       </a>
       <a
         :href="buildUrl('/account')"
@@ -53,7 +55,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:settings-outline" class="w-4 h-4" />
-        {{ t('user.settings') }}
+        {{ t("user.settings") }}
       </a>
 
       <div class="border-t border-surface-3 mt-1 pt-1">
@@ -62,7 +64,7 @@
           @click="handleLogout"
         >
           <Icon icon="material-symbols:logout-rounded" class="w-4 h-4" />
-          {{ t('user.logout') }}
+          {{ t("user.logout") }}
         </button>
       </div>
     </div>
@@ -70,11 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { Icon } from '@iconify/vue';
-import { t } from '~/lib/i18n';
-import { buildUrl } from '~/lib/utils/paths';
-import { useAuthStore } from '~/stores/auth';
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { Icon } from "@iconify/vue";
+import { t } from "~/lib/i18n";
+import { buildUrl } from "~/lib/utils/paths";
+import { useAuthStore } from "~/stores/auth";
 
 defineProps<{ base?: string }>();
 
@@ -84,26 +86,30 @@ const isOpen = ref(false);
 const isLoggedIn = computed(() => store.isLoggedIn);
 const username = computed(() => store.username);
 // UserInfo.account_level 是 string，需收窄为字面量联合（与 useAuth.ts 归一化一致）
-const userLevel = computed<'local' | 'normal' | 'admin'>(() => {
+const userLevel = computed<"local" | "normal" | "admin">(() => {
   const level = store.user?.account_level;
-  return level === 'admin' || level === 'normal' ? level : 'local';
+  return level === "admin" || level === "normal" ? level : "local";
 });
 
-const avatarLetter = computed(() => (username.value ? username.value.charAt(0).toUpperCase() : '?'));
+const avatarLetter = computed(() =>
+  username.value ? username.value.charAt(0).toUpperCase() : "?",
+);
 
 const userLevelText = computed(() => {
   switch (userLevel.value) {
-    case 'admin':
-      return t('user.admin');
-    case 'local':
-      return t('user.localAccount');
+    case "admin":
+      return t("user.admin");
+    case "local":
+      return t("user.localAccount");
     default:
-      return t('user.normalUser');
+      return t("user.normalUser");
   }
 });
 
 function openLogin() {
-  window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { view: 'login' } }));
+  window.dispatchEvent(
+    new CustomEvent("open-auth-modal", { detail: { view: "login" } }),
+  );
 }
 
 function toggle() {
@@ -128,10 +134,10 @@ async function handleLogout() {
 
 onMounted(() => {
   store.restoreFromStorage();
-  document.addEventListener('click', handleClickOutside);
+  document.addEventListener("click", handleClickOutside);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
+  document.removeEventListener("click", handleClickOutside);
 });
 </script>

@@ -1,18 +1,20 @@
-import type { Editor } from '@tiptap/core';
-import { t } from '~/lib/i18n';
-import { serializeHtml } from '../../engine/serialize-html';
+import type { Editor } from "@tiptap/core";
+import { t } from "~/lib/i18n";
+import { serializeHtml } from "../../engine/serialize-html";
 
 export function handleExportHtml(editor: Editor): void {
   try {
     const json = editor.getJSON();
-    const content = (json?.content ?? []) as Parameters<typeof serializeHtml>[0];
+    const content = (json?.content ?? []) as Parameters<
+      typeof serializeHtml
+    >[0];
     const body = serializeHtml(content);
     const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${t('editor.exportDocument')}</title>
+<title>${t("editor.exportDocument")}</title>
 <style>
   body { font-family: 'Noto Sans SC', system-ui, sans-serif; font-size: 12pt; line-height: 1.8; color: #333; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
   h1 { font-size: 24pt; margin: 0.8em 0 0.4em; }
@@ -39,14 +41,14 @@ export function handleExportHtml(editor: Editor): void {
 <body>${body}</body>
 </html>`;
 
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'document.html';
+    a.download = "document.html";
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
-    alert(t('editor.exportFailed', { message: (err as Error).message }));
+    alert(t("editor.exportFailed", { message: (err as Error).message }));
   }
 }

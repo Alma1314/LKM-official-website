@@ -10,7 +10,7 @@
 export interface Detected {
   from: number;
   to: number;
-  kind: 'link' | 'wiki';
+  kind: "link" | "wiki";
   href: string;
   label: string;
 }
@@ -31,9 +31,9 @@ export function detectLink(text: string): Detected | null {
   return {
     from: fullStart + idx,
     to: text.length,
-    kind: 'link',
+    kind: "link",
     href: m[3],
-    label: m[2] ?? '',
+    label: m[2] ?? "",
   };
 }
 
@@ -51,8 +51,8 @@ export function detectWiki(text: string): Detected | null {
   return {
     from: fullStart,
     to: text.length,
-    kind: 'wiki',
-    href: '',
+    kind: "wiki",
+    href: "",
     label: m[1],
   };
 }
@@ -66,7 +66,10 @@ export function detectWiki(text: string): Detected | null {
  * @param getDocs 惰性获取已发布文档索引（懒加载，仅在调用时求值）
  * @returns 指向文档的绝对路径，或空串表示无匹配
  */
-export function wikiHref(label: string, getDocs: () => Array<{ title: string; slug?: string }>): string {
+export function wikiHref(
+  label: string,
+  getDocs: () => Array<{ title: string; slug?: string }>,
+): string {
   const hit = getDocs().find((d) => d.title === label && d.slug);
-  return hit && hit.slug ? `/docs/${hit.slug}` : '';
+  return hit && hit.slug ? `/docs/${hit.slug}` : "";
 }

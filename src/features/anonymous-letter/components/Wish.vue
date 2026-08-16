@@ -1,14 +1,14 @@
 <template>
   <div class="wish-page">
-    <h1 class="page-title">🌟 {{ t('treehole.wish.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.wish.subtitle') }}</p>
+    <h1 class="page-title">🌟 {{ t("treehole.wish.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.wish.subtitle") }}</p>
     <WishWall />
   </div>
 </template>
 
 <script setup>
-import WishWall from '../components/WishWall.vue';
-import { t } from '~/lib/i18n';
+import WishWall from "../components/WishWall.vue";
+import { t } from "~/lib/i18n";
 </script>
 
 <style scoped>

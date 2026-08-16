@@ -1,10 +1,10 @@
-import { Node } from '@tiptap/core';
-import { ReactNodeViewRenderer } from '@tiptap/react';
-import RawMdxPlaceholder from '../../components/nodes/RawMdxPlaceholder';
+import { Node } from "@tiptap/core";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import RawMdxPlaceholder from "../../components/nodes/RawMdxPlaceholder";
 
 export const RawMdx = Node.create({
-  name: 'rawMdx',
-  group: 'block',
+  name: "rawMdx",
+  group: "block",
   atom: true,
   selectable: true,
   draggable: true,
@@ -12,17 +12,17 @@ export const RawMdx = Node.create({
 
   addAttributes() {
     return {
-      source: { default: '' },
-      sourceKind: { default: 'flow' },
+      source: { default: "" },
+      sourceKind: { default: "flow" },
     };
   },
 
   parseHTML() {
-    return [{ tag: 'div[data-raw-mdx]' }];
+    return [{ tag: "div[data-raw-mdx]" }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', { 'data-raw-mdx': '', ...HTMLAttributes }];
+    return ["div", { "data-raw-mdx": "", ...HTMLAttributes }];
   },
 
   addNodeView() {

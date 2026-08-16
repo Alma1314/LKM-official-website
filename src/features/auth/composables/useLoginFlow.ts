@@ -1,12 +1,13 @@
-import { reactive, ref, toRef } from 'vue';
-import { useAuthStore } from '~/stores/auth';
-import { authApi } from '~/lib/api/modules/auth';
-import { AppError, ErrorCode } from '~/lib/errors/error-codes';
-import { t } from '~/lib/i18n';
-import { useVerificationCountdown } from './useVerificationCountdown';
-import { authenticate } from '../lib/webauthn';
+import { reactive, ref, toRef } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import { authApi } from "~/lib/api/modules/auth";
+import { AppError, ErrorCode } from "~/lib/errors/error-codes";
+import { t } from "~/lib/i18n";
+import { useVerificationCountdown } from "./useVerificationCountdown";
+import { authenticate } from "../lib/webauthn";
 
-export type LoginMode = 'password' | 'code' | 'github' | 'magic' | 'passkey' | '2fa';
+export type LoginMode =
+  "password" | "code" | "github" | "magic" | "passkey" | "2fa";
 
 export interface LoginFlowOptions {
   redirect?: string | null;
@@ -44,10 +45,10 @@ export interface LoginFlow {
 
 /** API_BASE：SSR 用 API_URL，浏览器同域。与 http/client 的 base 策略一致。 */
 function getApiBase(): string {
-  if (typeof window === 'undefined') {
-    return process.env.API_URL || '';
+  if (typeof window === "undefined") {
+    return process.env.API_URL || "";
   }
-  return '';
+  return "";
 }
 
 /**
@@ -62,32 +63,32 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const { onSuccess } = options;
 
   // ── State ──
-  const mode = ref<LoginMode>('password');
-  const account = ref('');
-  const password = ref('');
-  const code = ref('');
-  const txnId = ref('');
-  const tempToken = ref('');
+  const mode = ref<LoginMode>("password");
+  const account = ref("");
+  const password = ref("");
+  const code = ref("");
+  const txnId = ref("");
+  const tempToken = ref("");
   const magicSent = ref(false);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const successMessage = ref('');
+  const successMessage = ref("");
   const loggedIn = ref(false);
   const codeSent = ref(false);
   const countdown = useVerificationCountdown(60);
-  const countdownRunning = toRef(countdown, 'running');
+  const countdownRunning = toRef(countdown, "running");
 
   function errorMessageByCode(e: AppError): string {
     switch (e.code) {
       case ErrorCode.AUTH_ERROR:
       case ErrorCode.HTTP_CLIENT_ERROR:
-        return t('messages.auth.wrongCredentials');
+        return t("messages.auth.wrongCredentials");
       case ErrorCode.NETWORK_ERROR:
       case ErrorCode.HTTP_TIMEOUT:
       case ErrorCode.HTTP_SERVER_ERROR:
-        return t('messages.networkError');
+        return t("messages.networkError");
       default:
-        return e.message || t('messages.operationFailed');
+        return e.message || t("messages.operationFailed");
     }
   }
 
@@ -97,9 +98,9 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
 
   function succeed(): void {
     error.value = null;
-    successMessage.value = t('messages.auth.loginSuccess');
+    successMessage.value = t("messages.auth.loginSuccess");
     loggedIn.value = true;
-    if (typeof onSuccess === 'function') onSuccess('');
+    if (typeof onSuccess === "function") onSuccess("");
   }
 
   // ── 密码登录 ──
@@ -113,11 +114,11 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       if (r.value.requires2FA || r.value.requires2FASetup) {
-        mode.value = '2fa';
+        mode.value = "2fa";
         // store 已在进入 2FA 时暂存 temp_token，取回填入 flow
-        tempToken.value = store.getPending2FA() ?? '';
+        tempToken.value = store.getPending2FA() ?? "";
         if (r.value.requires2FASetup) {
-          successMessage.value = t('messages.auth.passkeyFirstTime2fa');
+          successMessage.value = t("messages.auth.passkeyFirstTime2fa");
         }
         return;
       }
@@ -139,7 +140,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       }
       codeSent.value = true;
       countdown.start();
-      successMessage.value = t('messages.auth.codeSent');
+      successMessage.value = t("messages.auth.codeSent");
     } finally {
       loading.value = false;
     }
@@ -156,8 +157,8 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       if (r.value.requires2FA || r.value.requires2FASetup) {
-        mode.value = '2fa';
-        tempToken.value = store.getPending2FA() ?? '';
+        mode.value = "2fa";
+        tempToken.value = store.getPending2FA() ?? "";
         return;
       }
       succeed();
@@ -171,7 +172,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     error.value = null;
     loading.value = true;
     try {
-      const base = getApiBase().replace(/\/$/, '');
+      const base = getApiBase().replace(/\/$/, "");
       const target = `${base}${authApi.githubLoginUrl()}`;
       // 整页跳转：必须用 window.location（axios 会吞 302 并拿到 GitHub HTML）
       window.location.assign(target);
@@ -179,7 +180,12 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     } catch (e) {
       loading.value = false;
       setError(
-        e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, t('messages.auth.githubAuthorizationFailed'))
+        e instanceof AppError
+          ? e
+          : new AppError(
+              ErrorCode.NETWORK_ERROR,
+              t("messages.auth.githubAuthorizationFailed"),
+            ),
       );
     }
   }
@@ -195,7 +201,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       magicSent.value = true;
-      successMessage.value = t('messages.auth.magicLinkSent');
+      successMessage.value = t("messages.auth.magicLinkSent");
     } finally {
       loading.value = false;
     }
@@ -231,7 +237,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       const complete = await authApi.passkeyLoginComplete(
         serialized.rawId,
         begin.value.challenge_id,
-        serialized.response
+        serialized.response,
       );
       if (complete.isErr()) {
         setError(complete.error);
@@ -239,9 +245,9 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       }
       const data = complete.value;
       if (data.requires_2fa || data.setup_required) {
-        mode.value = '2fa';
+        mode.value = "2fa";
         store.holdPending2FA(data.temp_token ?? null);
-        tempToken.value = data.temp_token ?? '';
+        tempToken.value = data.temp_token ?? "";
         return;
       }
       await applyTokenData(data);
@@ -250,7 +256,10 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       setError(
         e instanceof Error
           ? new AppError(ErrorCode.AUTH_ERROR, e.message)
-          : new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.passkeyLoginFailed'))
+          : new AppError(
+              ErrorCode.AUTH_ERROR,
+              t("messages.auth.passkeyLoginFailed"),
+            ),
       );
     } finally {
       loading.value = false;
@@ -258,13 +267,21 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   }
 
   // ── 2FA 验证 ──
-  async function submit2FA(verifyCode: string, tempTokenArg?: string): Promise<void> {
+  async function submit2FA(
+    verifyCode: string,
+    tempTokenArg?: string,
+  ): Promise<void> {
     error.value = null;
     loading.value = true;
     try {
       const tt = tempTokenArg ?? tempToken.value;
       if (!tt) {
-        setError(new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.missingTempToken')));
+        setError(
+          new AppError(
+            ErrorCode.AUTH_ERROR,
+            t("messages.auth.missingTempToken"),
+          ),
+        );
         return;
       }
       const r = await authApi.verify2FA(tt, verifyCode);
@@ -274,7 +291,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       }
       const data = r.value;
       if (data.access_token) {
-        store.setTokens(data.access_token, data.refresh_token ?? '');
+        store.setTokens(data.access_token, data.refresh_token ?? "");
         await store.fetchMe();
         store.clearPending2FA();
       }
@@ -286,29 +303,32 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     }
   }
 
-  async function applyTokenData(data: { access_token?: string | null; refresh_token?: string | null }): Promise<void> {
+  async function applyTokenData(data: {
+    access_token?: string | null;
+    refresh_token?: string | null;
+  }): Promise<void> {
     if (data.access_token) {
-      store.setTokens(data.access_token, data.refresh_token ?? '');
+      store.setTokens(data.access_token, data.refresh_token ?? "");
       await store.fetchMe();
     }
   }
 
   // ── 重置 ──
   function reset(): void {
-    account.value = '';
-    password.value = '';
-    code.value = '';
-    txnId.value = '';
-    tempToken.value = '';
+    account.value = "";
+    password.value = "";
+    code.value = "";
+    txnId.value = "";
+    tempToken.value = "";
     magicSent.value = false;
     codeSent.value = false;
     loading.value = false;
     error.value = null;
-    successMessage.value = '';
+    successMessage.value = "";
     loggedIn.value = false;
     countdown.stop();
     store.clearPending2FA();
-    mode.value = 'password';
+    mode.value = "password";
   }
 
   return reactive({
@@ -324,7 +344,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     successMessage,
     loggedIn,
     codeSent,
-    countdown: toRef(countdown, 'countdown'),
+    countdown: toRef(countdown, "countdown"),
     countdownRunning,
     submitPassword,
     requestCode,

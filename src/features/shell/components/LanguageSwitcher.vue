@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { t } from '~/lib/i18n';
-import { useI18n } from '~/lib/i18n/composables/useI18n';
-import { Icon } from '@iconify/vue';
+import { ref } from "vue";
+import { t } from "~/lib/i18n";
+import { useI18n } from "~/lib/i18n/composables/useI18n";
+import { Icon } from "@iconify/vue";
 
 const { locale, setLocale } = useI18n();
 
 const isOpen = ref(false);
 
 const options = [
-  { value: 'zh-CN', label: t('languageSwitcher.zh') },
-  { value: 'en', label: t('languageSwitcher.en') },
+  { value: "zh-CN", label: t("languageSwitcher.zh") },
+  { value: "en", label: t("languageSwitcher.en") },
 ];
 
 function toggle() {
   isOpen.value = !isOpen.value;
 }
 
-function select(next: 'zh-CN' | 'en') {
+function select(next: "zh-CN" | "en") {
   isOpen.value = false;
   if (next === locale.value) return;
   setLocale(next);

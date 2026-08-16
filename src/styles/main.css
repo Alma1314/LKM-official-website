@@ -36,7 +36,8 @@
     font-size: var(--font-size, 0.875rem);
     color: var(--color-base-content);
     background-color: var(--color-base-100);
-    border: var(--border, 1px) solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    border: var(--border, 1px) solid
+      color-mix(in oklab, var(--color-base-content) 20%, transparent);
     border-radius: var(--radius-field);
     cursor: text;
     transition:
@@ -61,13 +62,13 @@
     /* daisyUI 兼容别名：边框已并入 .input，此意在保持 `input input-bordered` 组合可读 */
   }
   .input-error,
-  .input[aria-invalid='true'] {
+  .input[aria-invalid="true"] {
     border-color: var(--error);
   }
   .input-error:focus,
   .input-error:focus-within,
-  .input[aria-invalid='true']:focus,
-  .input[aria-invalid='true']:focus-within {
+  .input[aria-invalid="true"]:focus,
+  .input[aria-invalid="true"]:focus-within {
     outline-color: var(--error);
   }
   .input-xs {
@@ -112,7 +113,8 @@
     text-align: start;
     color: var(--color-base-content);
     background-color: var(--alert-color, var(--color-base-200));
-    border: var(--border, 1px) solid var(--alert-border-color, var(--color-base-300));
+    border: var(--border, 1px) solid
+      var(--alert-border-color, var(--color-base-300));
     border-radius: var(--radius-box);
   }
   .alert-error {
@@ -143,7 +145,9 @@
     justify-content: center;
     width: fit-content;
     height: calc(var(--size-selector, 0.25rem) * 6);
-    padding-inline: calc(var(--size-selector, 0.25rem) * 3 - var(--border, 1px));
+    padding-inline: calc(
+      var(--size-selector, 0.25rem) * 3 - var(--border, 1px)
+    );
     gap: 0.5rem;
     font-size: 0.875rem;
     color: var(--color-base-content);
@@ -175,12 +179,16 @@
   .badge-xs {
     height: calc(var(--size-selector, 0.25rem) * 4);
     font-size: 0.625rem;
-    padding-inline: calc(var(--size-selector, 0.25rem) * 2 - var(--border, 1px));
+    padding-inline: calc(
+      var(--size-selector, 0.25rem) * 2 - var(--border, 1px)
+    );
   }
   .badge-sm {
     height: calc(var(--size-selector, 0.25rem) * 5);
     font-size: 0.75rem;
-    padding-inline: calc(var(--size-selector, 0.25rem) * 2.5 - var(--border, 1px));
+    padding-inline: calc(
+      var(--size-selector, 0.25rem) * 2.5 - var(--border, 1px)
+    );
   }
 
   /* tabs / tab — 分段切换 */
@@ -258,7 +266,8 @@
     cursor: pointer;
     color: var(--color-base-content);
     background-color: var(--color-base-100);
-    border: var(--border, 1px) solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    border: var(--border, 1px) solid
+      color-mix(in oklab, var(--color-base-content) 20%, transparent);
     border-radius: var(--radius-selector);
     transition:
       background-color 0.2s,
@@ -305,7 +314,7 @@
   .link {
     @apply transition rounded-md p-1 -m-1 relative active:bg-none z-0;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       border-radius: inherit;
@@ -327,7 +336,7 @@
   .link-lg {
     @apply transition rounded-md p-1.5 -m-1.5 relative active:bg-none z-0;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       border-radius: inherit;
@@ -372,7 +381,7 @@
     &.scale-animation {
       @apply relative active:bg-none z-0;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
         border-radius: inherit;
@@ -416,7 +425,13 @@
   }
 
   #toc-inner-wrapper {
-    mask-image: linear-gradient(to bottom, transparent 0%, black 2rem, black calc(100% - 2rem), transparent 100%);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 2rem,
+      black calc(100% - 2rem),
+      transparent 100%
+    );
   }
 
   .hide-scrollbar {
@@ -449,7 +464,7 @@
   }
   .with-divider {
     &::before {
-      content: '/';
+      content: "/";
       margin-left: 0.375rem;
       margin-right: 0.375rem;
       color: var(--meta-divider);
@@ -486,7 +501,7 @@
 }
 
 .dash-line::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 10%;
   height: 100%;
@@ -631,7 +646,12 @@
 
 .lkm-figure-placeholder {
   display: inline-block;
-  border: 2px dashed color-mix(in oklab, var(--surface-3, var(--color-base-300)) 60%, transparent);
+  border: 2px dashed
+    color-mix(
+      in oklab,
+      var(--surface-3, var(--color-base-300)) 60%,
+      transparent
+    );
   border-radius: 0.5rem;
   padding: 2rem;
   color: color-mix(in oklab, var(--base-content) 50%, transparent);

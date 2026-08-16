@@ -1,34 +1,44 @@
 <template>
   <div class="random">
-    <h1 class="page-title">🎲 {{ t('treehole.random.title') }}</h1>
-    <p class="page-sub">{{ t('treehole.random.subtitle') }}</p>
+    <h1 class="page-title">🎲 {{ t("treehole.random.title") }}</h1>
+    <p class="page-sub">{{ t("treehole.random.subtitle") }}</p>
 
     <!-- 抽取状态 -->
     <section v-if="!current" class="pick glass float-up">
       <div class="pick-emoji">🌌</div>
-      <p class="pick-tip">{{ t('treehole.random.pickTip') }}</p>
+      <p class="pick-tip">{{ t("treehole.random.pickTip") }}</p>
       <button class="btn-grad" :disabled="picking" @click="draw">
         <span v-if="picking" class="spinner"></span>
-        <span v-else>{{ t('treehole.random.drawBtn') }}</span>
+        <span v-else>{{ t("treehole.random.drawBtn") }}</span>
       </button>
-      <p class="pick-hint">{{ t('treehole.random.poolHint', { count: pool.length }) }}</p>
+      <p class="pick-hint">
+        {{ t("treehole.random.poolHint", { count: pool.length }) }}
+      </p>
     </section>
 
     <!-- 沉浸式阅读 -->
     <section v-else class="reader glass float-up">
-      <button class="reader-back" @click="current = null">{{ t('treehole.random.back') }}</button>
+      <button class="reader-back" @click="current = null">
+        {{ t("treehole.random.back") }}
+      </button>
       <div class="reader-paper" :style="{ background: paperBg }">
-        <div class="reader-cat">{{ category.emoji }} {{ t(category.label) }}</div>
+        <div class="reader-cat">
+          {{ category.emoji }} {{ t(category.label) }}
+        </div>
         <p class="reader-content">{{ current.content }}</p>
         <div class="reader-moods" v-if="current.moods && current.moods.length">
-          <span v-for="m in current.moods" :key="m" class="reader-mood">#{{ t(moodKey(m)) }}</span>
+          <span v-for="m in current.moods" :key="m" class="reader-mood"
+            >#{{ t(moodKey(m)) }}</span
+          >
         </div>
         <div class="reader-foot">{{ current.codename }} · {{ timeText }}</div>
       </div>
 
       <!-- 回信区（双向匿名） -->
       <div class="reply-box">
-        <label class="setup-label">{{ t('treehole.random.replyLabel', { name: current.codename }) }}</label>
+        <label class="setup-label">{{
+          t("treehole.random.replyLabel", { name: current.codename })
+        }}</label>
         <textarea
           v-model="replyText"
           class="reply-input"
@@ -36,38 +46,59 @@
           :style="{ fontSize: replyFont }"
         ></textarea>
         <div class="reply-acts">
-          <button class="chip" @click="replyFont = replyFont === '15px' ? '18px' : '15px'">A±</button>
-          <button class="btn-grad" :disabled="!replyText.trim()" @click="sendReply">
-            📨 {{ t('treehole.random.sendReply') }}
+          <button
+            class="chip"
+            @click="replyFont = replyFont === '15px' ? '18px' : '15px'"
+          >
+            A±
+          </button>
+          <button
+            class="btn-grad"
+            :disabled="!replyText.trim()"
+            @click="sendReply"
+          >
+            📨 {{ t("treehole.random.sendReply") }}
           </button>
         </div>
-        <p class="reply-note">{{ t('treehole.random.replyNote') }}</p>
+        <p class="reply-note">{{ t("treehole.random.replyNote") }}</p>
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useMessage } from 'naive-ui';
-import { getCategory, getPaper, moodKey } from '../stores/constants';
-import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref, computed, onMounted } from "vue";
+import { useMessage } from "naive-ui";
+import { getCategory, getPaper, moodKey } from "../stores/constants";
+import {
+  getLetters,
+  getOrCreateConversation,
+  appendMessage,
+} from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const message = useMessage();
 const pool = ref([]);
 const current = ref(null);
 const picking = ref(false);
-const replyText = ref('');
-const replyFont = ref('15px');
+const replyText = ref("");
+const replyFont = ref("15px");
 
-const category = computed(() => (current.value ? getCategory(current.value.category) : null));
-const paperBg = computed(() => (current.value ? getPaper(current.value.paper).gradient : ''));
-const timeText = computed(() => (current.value ? new Date(current.value.createdAt).toLocaleDateString() : ''));
+const category = computed(() =>
+  current.value ? getCategory(current.value.category) : null,
+);
+const paperBg = computed(() =>
+  current.value ? getPaper(current.value.paper).gradient : "",
+);
+const timeText = computed(() =>
+  current.value ? new Date(current.value.createdAt).toLocaleDateString() : "",
+);
 
 onMounted(refreshPool);
 function refreshPool() {
-  pool.value = getLetters().filter((l) => l.status === 'published' && l.privacy === 'public');
+  pool.value = getLetters().filter(
+    (l) => l.status === "published" && l.privacy === "public",
+  );
 }
 
 function draw() {
@@ -75,28 +106,32 @@ function draw() {
   setTimeout(() => {
     const list = pool.value;
     if (!list.length) {
-      message.info(t('treehole.random.noLetters'));
+      message.info(t("treehole.random.noLetters"));
       picking.value = false;
       return;
     }
     current.value = list[Math.floor(Math.random() * list.length)];
-    replyText.value = '';
+    replyText.value = "";
     picking.value = false;
   }, 900);
 }
 
 function sendReply() {
   if (!replyText.value.trim() || !current.value) return;
-  const conv = getOrCreateConversation(current.value.id, current.value.codename, current.value.id);
+  const conv = getOrCreateConversation(
+    current.value.id,
+    current.value.codename,
+    current.value.id,
+  );
   const msg = {
-    id: 'm_' + Date.now() + Math.floor(Math.random() * 100),
-    from: 'me',
+    id: "m_" + Date.now() + Math.floor(Math.random() * 100),
+    from: "me",
     text: replyText.value.trim(),
     at: Date.now(),
   };
   appendMessage(conv.id, msg);
-  message.success(t('treehole.random.replySent'));
-  replyText.value = '';
+  message.success(t("treehole.random.replySent"));
+  replyText.value = "";
   current.value = null;
 }
 </script>

@@ -1,50 +1,72 @@
-import { useCallback, useEffect, useRef, useState, Suspense, lazy } from 'react';
-import type { ReactElement } from 'react';
-import FullscreenButton from '../toolbar/FullscreenButton';
-import CommentPanel from '../panels/CommentPanel';
-import { setupKeyboardAutoScroll } from '../../hooks/useMobileEditor';
-import { useEditor, EditorContent } from '@tiptap/react';
-import { getEditorExtensions } from '../../engine/extensions/index';
-import { useEditorPersistence } from '../../hooks/useEditorPersistence';
-import { exportMdx } from '../../engine/mdx/index';
-import type { PersistenceAdapter, EditorMode, VersionEntry, DocumentData } from '../../engine/types';
-import EditorToolbar from '../toolbar/EditorToolbar';
-import ModeTabs from './ModeTabs';
-import SaveStatusIndicator from '../toolbar/SaveStatusIndicator';
-import BubbleMenuWrapper from '../toolbar/BubbleMenu';
-import SlashMenu from '../dialogs/SlashMenu';
-import PreviewPanel from '../panels/PreviewPanel';
-import PublishButton from '../dialogs/PublishButton';
-import VersionHistoryPanel from '../panels/VersionHistoryPanel';
-import ExportMenu from '../dialogs/ExportMenu';
-import BackupMenu from '../panels/BackupMenu';
-import { t } from '~/lib/i18n';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  Suspense,
+  lazy,
+} from "react";
+import type { ReactElement } from "react";
+import FullscreenButton from "../toolbar/FullscreenButton";
+import CommentPanel from "../panels/CommentPanel";
+import { setupKeyboardAutoScroll } from "../../hooks/useMobileEditor";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { getEditorExtensions } from "../../engine/extensions/index";
+import { useEditorPersistence } from "../../hooks/useEditorPersistence";
+import { exportMdx } from "../../engine/mdx/index";
+import type {
+  PersistenceAdapter,
+  EditorMode,
+  VersionEntry,
+  DocumentData,
+} from "../../engine/types";
+import EditorToolbar from "../toolbar/EditorToolbar";
+import ModeTabs from "./ModeTabs";
+import SaveStatusIndicator from "../toolbar/SaveStatusIndicator";
+import BubbleMenuWrapper from "../toolbar/BubbleMenu";
+import SlashMenu from "../dialogs/SlashMenu";
+import PreviewPanel from "../panels/PreviewPanel";
+import PublishButton from "../dialogs/PublishButton";
+import VersionHistoryPanel from "../panels/VersionHistoryPanel";
+import ExportMenu from "../dialogs/ExportMenu";
+import BackupMenu from "../panels/BackupMenu";
+import { t } from "~/lib/i18n";
 
 // 懒加载：CodeMirror（仅在切换到源码模式时加载）
-const SourceEditor = lazy(() => import('./SourceEditor'));
+const SourceEditor = lazy(() => import("./SourceEditor"));
 // 懒加载：AI 助手（仅在点击 AI 按钮时加载）
-const AiAssistant = lazy(() => import('../panels/AiAssistant'));
+const AiAssistant = lazy(() => import("../panels/AiAssistant"));
 // 懒加载：面板和对话框（仅在需要时显示）
-const PropertyPanel = lazy(() => import('../panels/PropertyPanel'));
-const PublishDialog = lazy(() => import('../dialogs/PublishDialog'));
+const PropertyPanel = lazy(() => import("../panels/PropertyPanel"));
+const PublishDialog = lazy(() => import("../dialogs/PublishDialog"));
 
 interface DocumentEditorProps {
   documentId: string;
   adapter: PersistenceAdapter;
 }
 
-import { computeTextMetrics } from '../../engine/text-metrics';
-import { findImageByOrgName, saveImageBlob } from '../../persistence/image-store';
-import { detectLink, detectWiki, wikiHref } from '../../engine/plugins/markdown-shortcuts';
-import ObsidianImagePicker from '../dialogs/ObsidianImagePicker';
+import { computeTextMetrics } from "../../engine/text-metrics";
+import {
+  findImageByOrgName,
+  saveImageBlob,
+} from "../../persistence/image-store";
+import {
+  detectLink,
+  detectWiki,
+  wikiHref,
+} from "../../engine/plugins/markdown-shortcuts";
+import ObsidianImagePicker from "../dialogs/ObsidianImagePicker";
 
 /** 上传图片为 blob 引用，避免 base64 塞满 localStorage */
 function uploadImageToBlob(file: File): Promise<string> {
   return saveImageBlob(file);
 }
 
-export default function DocumentEditor({ documentId, adapter }: DocumentEditorProps): ReactElement {
-  const [docId, setDocId] = useState(documentId === 'new' ? '' : documentId);
+export default function DocumentEditor({
+  documentId,
+  adapter,
+}: DocumentEditorProps): ReactElement {
+  const [docId, setDocId] = useState(documentId === "new" ? "" : documentId);
   const {
     saveStatus,
     triggerSave,
@@ -55,12 +77,15 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
     frontmatterRef,
     lastValidJsonRef: lastValidEditorJsonRef,
   } = useEditorPersistence(docId, adapter);
-  const [mode, setMode] = useState<EditorMode>('richtext');
+  const [mode, setMode] = useState<EditorMode>("richtext");
 
   // Slash 菜单状态
   const [slashOpen, setSlashOpen] = useState(false);
-  const [slashQuery, setSlashQuery] = useState('');
-  const [slashPos, setSlashPos] = useState<{ top: number; left: number } | null>(null);
+  const [slashQuery, setSlashQuery] = useState("");
+  const [slashPos, setSlashPos] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   // 发布状态
   const [publishOpen, setPublishOpen] = useState(false);
@@ -79,32 +104,36 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
   // 待替换为图片的附件语法：记录原始 `![[文件名]]` 串 + 大致起始位置。
   // 选图是异步的（文件弹窗期间用户/光标可位移），用原始串在文档中重新定位，避免绝对区间过期。
-  const pendingImageReplace = useRef<{ from: number; to: number; syntax: string } | null>(null);
+  const pendingImageReplace = useRef<{
+    from: number;
+    to: number;
+    syntax: string;
+  } | null>(null);
   // 延迟转换候选（链接/维基）：闭合括号后不立刻转，等光标移开/回车再转（对齐 Obsidian live preview）。
   // 存绝对 from/to，光标离开该区间后据此替换。
   const pendingConvertRef = useRef<{
     from: number;
     to: number;
-    kind: 'link' | 'wiki';
+    kind: "link" | "wiki";
     label: string;
     href: string;
   } | null>(null);
 
   // 源码视图类型（MDX / HTML）
-  const [sourceKind, setSourceKind] = useState<'mdx' | 'html'>('mdx');
+  const [sourceKind, setSourceKind] = useState<"mdx" | "html">("mdx");
   // HTML 源码（可编辑回写，进入源码模式时用 TipTap 原生 HTML 初始化）
-  const [htmlSource, setHtmlSource] = useState('');
+  const [htmlSource, setHtmlSource] = useState("");
 
   // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
-    if (documentId === 'new') {
+    if (documentId === "new") {
       (async () => {
         const doc: DocumentData = {
           id: crypto.randomUUID(),
-          title: t('editor.untitled'),
-          contentMdx: '',
+          title: t("editor.untitled"),
+          contentMdx: "",
           editorJson: null,
-          status: 'draft',
+          status: "draft",
           version: 1,
           lastModified: new Date().toISOString(),
           createdAt: new Date().toISOString(),
@@ -112,16 +141,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         };
         await adapter.saveDocument(doc);
         setDocId(doc.id);
-        const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
+        const base =
+          (window as unknown as Record<string, string>).__BASE_URL__ || "";
         // base 为 '/' 时 `${base}/editor` 会拼成 '//editor'（协议相对 URL，被解析为 http://editor/...），
         // 导致 replaceState 抛 SecurityError。去尾部斜杠后再拼接。
-        window.history.replaceState(null, '', `${base.replace(/\/+$/, '')}/editor?id=${doc.id}`);
+        window.history.replaceState(
+          null,
+          "",
+          `${base.replace(/\/+$/, "")}/editor?id=${doc.id}`,
+        );
       })();
     }
   }, [documentId, adapter]);
 
   const editor = useEditor({
-    extensions: getEditorExtensions(t('editor.startWritingPlaceholder')),
+    extensions: getEditorExtensions(t("editor.startWritingPlaceholder")),
     onUpdate({ editor: ed }) {
       if (!ed || !docId) return;
       const json = ed.getJSON();
@@ -130,19 +164,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
     },
     editorProps: {
       attributes: {
-        class: 'rte-editor-content',
+        class: "rte-editor-content",
       },
       handlePaste(view, event) {
         const items = event.clipboardData?.items;
         if (!items) return false;
         for (const item of Array.from(items)) {
-          if (item.type.startsWith('image/')) {
+          if (item.type.startsWith("image/")) {
             const file = item.getAsFile();
             if (file) {
               uploadImageToBlob(file)
                 .then((blobRef) => {
                   view.dispatch(
-                    view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: blobRef }))
+                    view.state.tr.replaceSelectionWith(
+                      view.state.schema.nodes.image.create({ src: blobRef }),
+                    ),
                   );
                 })
                 .catch(() => {
@@ -153,12 +189,12 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           }
         }
         // TSV 粘贴
-        const text = event.clipboardData?.getData('text/plain');
-        if (text && text.includes('\t')) {
+        const text = event.clipboardData?.getData("text/plain");
+        if (text && text.includes("\t")) {
           const rows = text
             .trim()
-            .split('\n')
-            .map((r) => r.split('\t'));
+            .split("\n")
+            .map((r) => r.split("\t"));
           if (rows.length > 1 && rows[0].length > 1) {
             const { insertTable } = view.state.schema.nodes;
             if (insertTable) {
@@ -170,12 +206,15 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                       view.state.schema.nodes.tableRow.create(
                         null,
                         rows[r].map((cell) =>
-                          view.state.schema.nodes.tableCell.create(null, view.state.schema.text(cell))
-                        )
-                      )
-                    )
-                  )
-                )
+                          view.state.schema.nodes.tableCell.create(
+                            null,
+                            view.state.schema.text(cell),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               );
               return true;
             }
@@ -188,13 +227,21 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         if (!files || files.length === 0) return false;
         let handled = false;
         Array.from(files).forEach((file) => {
-          if (file.type.startsWith('image/')) {
+          if (file.type.startsWith("image/")) {
             handled = true;
             uploadImageToBlob(file)
               .then((blobRef) => {
-                const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
+                const coords = view.posAtCoords({
+                  left: event.clientX,
+                  top: event.clientY,
+                });
                 const pos = coords?.pos ?? view.state.selection.from;
-                view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: blobRef })));
+                view.dispatch(
+                  view.state.tr.insert(
+                    pos,
+                    view.state.schema.nodes.image.create({ src: blobRef }),
+                  ),
+                );
               })
               .catch(() => {
                 // 忽略上传错误
@@ -212,7 +259,10 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
     const handleTextInput = (): void => {
       const { $from } = editor.state.selection;
-      const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
+      const parentText = $from.parent.textBetween(
+        Math.max(0, $from.parentOffset - 20),
+        $from.parentOffset,
+      );
       const slashMatch = parentText.match(/\/(\w*)$/);
       if (slashMatch) {
         setSlashQuery(slashMatch[1]);
@@ -228,8 +278,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       if (slashOpen) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { $from } = (editor.state as any).selection;
-        const parentText = $from.parent.textBetween(Math.max(0, $from.parentOffset - 20), $from.parentOffset);
-        if (!parentText.includes('/')) {
+        const parentText = $from.parent.textBetween(
+          Math.max(0, $from.parentOffset - 20),
+          $from.parentOffset,
+        );
+        if (!parentText.includes("/")) {
           setSlashOpen(false);
         }
       }
@@ -240,19 +293,23 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
     const applyConvert = async (cand: {
       from: number;
       to: number;
-      kind: 'link' | 'wiki';
+      kind: "link" | "wiki";
       label: string;
       href: string;
     }): Promise<void> => {
       if (!editor) return;
       const docSize = editor.state.doc.content.size;
       if (cand.from < 0 || cand.to > docSize || cand.from >= cand.to) return;
-      if (cand.kind === 'link') {
+      if (cand.kind === "link") {
         editor
           .chain()
           .focus()
           .setTextSelection({ from: cand.from, to: cand.to })
-          .insertContent({ type: 'text', text: cand.label, marks: [{ type: 'link', attrs: { href: cand.href } }] })
+          .insertContent({
+            type: "text",
+            text: cand.label,
+            marks: [{ type: "link", attrs: { href: cand.href } }],
+          })
           .run();
         editor
           .chain()
@@ -268,7 +325,10 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           .chain()
           .focus()
           .setTextSelection({ from: cand.from, to: cand.to })
-          .insertContent({ type: 'wikiLink', attrs: { href, label: cand.label } })
+          .insertContent({
+            type: "wikiLink",
+            attrs: { href, label: cand.label },
+          })
           .run();
         editor
           .chain()
@@ -293,7 +353,10 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
       // 附件：`![[文件名]]` → 弹隐藏文件选择器（优先检测并早退，避免 `![[file]]`
       // 同时被 detectWiki 的 `[[...]]` 误匹配）
-      const attach = $from.parent.textBetween(Math.max(0, $from.parentOffset - 60), $from.parentOffset);
+      const attach = $from.parent.textBetween(
+        Math.max(0, $from.parentOffset - 60),
+        $from.parentOffset,
+      );
       const attachMatch = attach.match(/!\[\[([^\]]*)\]\]$/);
       if (attachMatch) {
         pendingImageReplace.current = {
@@ -310,9 +373,12 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       //   覆盖：回车（光标跳到新段）、向右移出、在后方继续输入等一切「离开」情形。
       const pending = pendingConvertRef.current;
       if (pending) {
-        const close = pending.kind === 'wiki' ? ']]' : ')';
+        const close = pending.kind === "wiki" ? "]]" : ")";
         // href 闭括号后跟的是 url（`[label](url)` 以 `)` 收尾），与 wiki 不同；直接复用探测器更稳。
-        const stillClosing = pending.kind === 'wiki' ? parentText.endsWith(close) : detectLink(parentText) !== null;
+        const stillClosing =
+          pending.kind === "wiki"
+            ? parentText.endsWith(close)
+            : detectLink(parentText) !== null;
         if (!stillClosing) {
           pendingConvertRef.current = null;
           await applyConvert(pending);
@@ -327,39 +393,53 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         const fromAbs = textStart + link.from;
         const toAbs = textStart + link.to;
         if (fromAbs < 0 || toAbs > textStart + $from.parentOffset) return;
-        pendingConvertRef.current = { from: fromAbs, to: toAbs, kind: 'link', label: link.label, href: link.href };
+        pendingConvertRef.current = {
+          from: fromAbs,
+          to: toAbs,
+          kind: "link",
+          label: link.label,
+          href: link.href,
+        };
       } else if (wiki) {
         const fromAbs = textStart + wiki.from;
         const toAbs = textStart + wiki.to;
         if (fromAbs < 0 || toAbs > textStart + $from.parentOffset) return;
-        pendingConvertRef.current = { from: fromAbs, to: toAbs, kind: 'wiki', label: wiki.label, href: '' };
+        pendingConvertRef.current = {
+          from: fromAbs,
+          to: toAbs,
+          kind: "wiki",
+          label: wiki.label,
+          href: "",
+        };
       }
     };
 
-    editor.on('selectionUpdate', handleTextInput);
-    editor.on('update', handleUpdate);
-    editor.on('selectionUpdate', handleMarkdownTextInput);
-    editor.on('update', handleMarkdownTextInput);
+    editor.on("selectionUpdate", handleTextInput);
+    editor.on("update", handleUpdate);
+    editor.on("selectionUpdate", handleMarkdownTextInput);
+    editor.on("update", handleMarkdownTextInput);
 
     return () => {
-      editor.off('selectionUpdate', handleTextInput);
-      editor.off('update', handleUpdate);
-      editor.off('selectionUpdate', handleMarkdownTextInput);
-      editor.off('update', handleMarkdownTextInput);
+      editor.off("selectionUpdate", handleTextInput);
+      editor.off("update", handleUpdate);
+      editor.off("selectionUpdate", handleMarkdownTextInput);
+      editor.off("update", handleMarkdownTextInput);
     };
   }, [editor, slashOpen, adapter]);
 
   // 移动端键盘自动滚动
   useEffect(() => {
     if (editor) {
-      const el = (editor.view.dom as HTMLElement).closest('.ProseMirror') as HTMLElement;
+      const el = (editor.view.dom as HTMLElement).closest(
+        ".ProseMirror",
+      ) as HTMLElement;
       return setupKeyboardAutoScroll(el);
     }
   }, [editor]);
 
   // 编辑器和 docId 就绪后加载已有内容
   useEffect(() => {
-    if (!editor || !docId || documentId === 'new') return;
+    if (!editor || !docId || documentId === "new") return;
     (async () => {
       const loaded = await adapter.loadDocument(docId);
       const doc: DocumentData | null = loaded ?? (await loadDraft());
@@ -368,11 +448,14 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       if (doc.contentMdx && doc.contentMdx.trim().length > 0) {
         importMdxContent(doc.contentMdx)
           .then((result) => {
-            editor.commands.setContent({ type: 'doc', content: result.content });
+            editor.commands.setContent({
+              type: "doc",
+              content: result.content,
+            });
             lastValidEditorJsonRef.current = editor.getJSON();
           })
           .catch((err) => {
-            console.warn('[DocumentEditor] MDX 加载回退到 editorJson:', err);
+            console.warn("[DocumentEditor] MDX 加载回退到 editorJson:", err);
             if (doc.editorJson) {
               editor.commands.setContent(doc.editorJson);
             }
@@ -381,36 +464,47 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         editor.commands.setContent(doc.editorJson);
       }
     })();
-  }, [editor, docId, documentId, loadDraft, importMdxContent, lastValidEditorJsonRef, adapter]);
+  }, [
+    editor,
+    docId,
+    documentId,
+    loadDraft,
+    importMdxContent,
+    lastValidEditorJsonRef,
+    adapter,
+  ]);
 
   // 模式切换
   const handleModeChange = useCallback(
     async (newMode: EditorMode) => {
       if (newMode === mode) return;
 
-      if (mode === 'richtext' && newMode === 'source') {
+      if (mode === "richtext" && newMode === "source") {
         if (editor) {
           const json = editor.getJSON();
           const doc =
-            typeof json === 'object' && json !== null && 'content' in json
+            typeof json === "object" && json !== null && "content" in json
               ? (json as { content: unknown[] }).content
               : [];
           // 同步调用 exportMdx — 内部全是纯计算无网络请求，避免无意义 await
-          const result = exportMdx(doc as unknown[] as Parameters<typeof exportMdx>[0], frontmatterRef.current);
+          const result = exportMdx(
+            doc as unknown[] as Parameters<typeof exportMdx>[0],
+            frontmatterRef.current,
+          );
           sourceMdxRef.current = result.mdx;
           lastValidEditorJsonRef.current = editor.getJSON();
         }
       }
 
-      if (mode === 'source' && newMode === 'richtext') {
-        if (sourceKind === 'html') {
+      if (mode === "source" && newMode === "richtext") {
+        if (sourceKind === "html") {
           if (editor) {
             try {
               editor.commands.setContent(htmlSource);
               lastValidEditorJsonRef.current = editor.getJSON();
             } catch (err) {
-              console.warn('[DocumentEditor] HTML 解析失败:', err);
-              alert('HTML 解析失败，请检查源码格式后重试');
+              console.warn("[DocumentEditor] HTML 解析失败:", err);
+              alert("HTML 解析失败，请检查源码格式后重试");
               return;
             }
           }
@@ -419,12 +513,15 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
             const result = await importMdxContent(sourceMdxRef.current);
             if (editor) {
               editor.commands.clearContent();
-              editor.commands.setContent({ type: 'doc', content: result.content });
+              editor.commands.setContent({
+                type: "doc",
+                content: result.content,
+              });
               lastValidEditorJsonRef.current = editor.getJSON();
             }
           } catch (err) {
-            console.warn('[DocumentEditor] MDX 手动解析失败:', err);
-            alert(t('editor.mdxParseError'));
+            console.warn("[DocumentEditor] MDX 手动解析失败:", err);
+            alert(t("editor.mdxParseError"));
             return;
           }
         }
@@ -442,7 +539,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       lastValidEditorJsonRef,
       sourceKind,
       htmlSource,
-    ]
+    ],
   );
 
   const handleSourceChange = useCallback(
@@ -452,7 +549,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         triggerSave(lastValidEditorJsonRef.current ?? {});
       }
     },
-    [docId, triggerSave, sourceMdxRef, lastValidEditorJsonRef]
+    [docId, triggerSave, sourceMdxRef, lastValidEditorJsonRef],
   );
 
   const handleHtmlSourceChange = useCallback((html: string) => {
@@ -469,38 +566,45 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           ...doc,
           title,
           slug: slug || doc.slug,
-          status: 'published',
+          status: "published",
           updatedAt: new Date().toISOString(),
         };
         await adapter.saveDocument(updated);
-        await adapter.saveVersion(docId, updated, t('editor.publish'));
+        await adapter.saveVersion(docId, updated, t("editor.publish"));
         setRefreshKey((k) => k + 1);
       }
       setPublishOpen(false);
     },
-    [docId, adapter]
+    [docId, adapter],
   );
 
   const handleComment = useCallback(
     (from: number, to: number, text: string) => {
       if (!editor || !docId || !adapter.addThread) return;
       const threadId = crypto.randomUUID();
-      editor.chain().focus().setMark('commentMark', { threadId, resolved: 'false' }).run();
+      editor
+        .chain()
+        .focus()
+        .setMark("commentMark", { threadId, resolved: "false" })
+        .run();
       adapter.addThread(docId, { from, to }, text);
       setCommentPanelOpen(true);
     },
-    [editor, docId, adapter]
+    [editor, docId, adapter],
   );
 
-  const handleCommentHighlightClick = useCallback((_range: { from: number; to: number }) => {
-    // 滚动编辑器到评论位置
-    // 目前仅切换面板
-  }, []);
+  const handleCommentHighlightClick = useCallback(
+    (_range: { from: number; to: number }) => {
+      // 滚动编辑器到评论位置
+      // 目前仅切换面板
+    },
+    [],
+  );
 
   const handleRestoreVersion = useCallback(
     (version: VersionEntry) => {
       if (!editor) return;
-      if (version.editorJson && typeof version.editorJson === 'object') {
+      if (version.editorJson && typeof version.editorJson === "object") {
         editor.commands.clearContent();
         editor.commands.setContent(version.editorJson);
         if (docId) {
@@ -510,7 +614,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         setVersionPanelOpen(false);
       }
     },
-    [editor, docId, triggerSave]
+    [editor, docId, triggerSave],
   );
 
   // rAF 延迟计算 metrics，避免同步递归遍历阻塞输入
@@ -521,7 +625,9 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
     if (!editor) return;
     if (metricsRafRef.current) cancelAnimationFrame(metricsRafRef.current);
     metricsRafRef.current = requestAnimationFrame(() => {
-      setMetrics(computeTextMetrics(editor.getJSON() as Record<string, unknown>));
+      setMetrics(
+        computeTextMetrics(editor.getJSON() as Record<string, unknown>),
+      );
     });
     return () => {
       if (metricsRafRef.current) cancelAnimationFrame(metricsRafRef.current);
@@ -533,7 +639,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
 
   // 进入源码模式时，基于当前编辑器内容初始化 HTML 源码（TipTap 原生 HTML，可回写）
   useEffect(() => {
-    if (mode === 'source' && editor) {
+    if (mode === "source" && editor) {
       setHtmlSource(editor.getHTML());
     }
   }, [mode, editor]);
@@ -546,8 +652,8 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         <div className="rte-statusbar">
           <SaveStatusIndicator
             status={saveStatus}
-            charCount={mode === 'richtext' ? charCount : undefined}
-            wordCount={mode === 'richtext' ? wordCount : undefined}
+            charCount={mode === "richtext" ? charCount : undefined}
+            wordCount={mode === "richtext" ? wordCount : undefined}
           />
           <div className="flex items-center gap-1 md:gap-2">
             {editor && <ExportMenu editor={editor} />}
@@ -555,7 +661,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
             {editor && (
               <button
                 type="button"
-                className={aiPanelOpen ? 'rte-toolbar-btn is-active' : 'rte-btn rte-btn--ghost rte-btn--xs'}
+                className={
+                  aiPanelOpen
+                    ? "rte-toolbar-btn is-active"
+                    : "rte-btn rte-btn--ghost rte-btn--xs"
+                }
                 onClick={() => setAiPanelOpen(!aiPanelOpen)}
                 title="AI 助手"
               >
@@ -574,16 +684,20 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                 </svg>
               </button>
             )}
-            {docId && mode === 'richtext' && (
+            {docId && mode === "richtext" && (
               <>
                 <button
                   type="button"
-                  className={commentPanelOpen ? 'rte-toolbar-btn is-active' : 'rte-btn rte-btn--ghost rte-btn--xs'}
+                  className={
+                    commentPanelOpen
+                      ? "rte-toolbar-btn is-active"
+                      : "rte-btn rte-btn--ghost rte-btn--xs"
+                  }
                   onClick={() => {
                     setCommentPanelOpen(!commentPanelOpen);
                     setVersionPanelOpen(false);
                   }}
-                  title={t('editor.comments')}
+                  title={t("editor.comments")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -598,7 +712,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                   >
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
-                  {t('editor.comments')}
+                  {t("editor.comments")}
                 </button>
                 <button
                   type="button"
@@ -607,7 +721,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     setVersionPanelOpen(!versionPanelOpen);
                     setCommentPanelOpen(false);
                   }}
-                  title={t('editor.version')}
+                  title={t("editor.version")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -624,7 +738,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     <path d="M3 3v5h5" />
                     <path d="M12 7v5l4 2" />
                   </svg>
-                  {t('editor.version')}
+                  {t("editor.version")}
                 </button>
               </>
             )}
@@ -644,11 +758,11 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
         </div>
 
         {/* 下行：格式化工具栏（仅 richtext 模式显示） */}
-        {mode === 'richtext' && editor && <EditorToolbar editor={editor} />}
+        {mode === "richtext" && editor && <EditorToolbar editor={editor} />}
       </div>
 
       {/* 编辑器内容区域 */}
-      {mode === 'richtext' && editor ? (
+      {mode === "richtext" && editor ? (
         <div className="rte-editor-area">
           <div className="rte-editor-main">
             <BubbleMenuWrapper editor={editor} onComment={handleComment} />
@@ -683,20 +797,20 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
             </Suspense>
           )}
         </div>
-      ) : mode === 'source' ? (
+      ) : mode === "source" ? (
         <div className="flex flex-col flex-1 min-h-0">
           <div className="flex items-center gap-1 p-2 border-b border-surface-3 shrink-0">
             <button
               type="button"
-              className={`rte-mode-tab ${sourceKind === 'mdx' ? 'is-active' : ''}`}
-              onClick={() => setSourceKind('mdx')}
+              className={`rte-mode-tab ${sourceKind === "mdx" ? "is-active" : ""}`}
+              onClick={() => setSourceKind("mdx")}
             >
               MDX
             </button>
             <button
               type="button"
-              className={`rte-mode-tab ${sourceKind === 'html' ? 'is-active' : ''}`}
-              onClick={() => setSourceKind('html')}
+              className={`rte-mode-tab ${sourceKind === "html" ? "is-active" : ""}`}
+              onClick={() => setSourceKind("html")}
             >
               HTML
             </button>
@@ -709,26 +823,38 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                 </div>
               }
             >
-              {sourceKind === 'mdx' ? (
-                <SourceEditor key="mdx" value={sourceMdxRef.current} onChange={handleSourceChange} />
+              {sourceKind === "mdx" ? (
+                <SourceEditor
+                  key="mdx"
+                  value={sourceMdxRef.current}
+                  onChange={handleSourceChange}
+                />
               ) : (
-                <SourceEditor key="html" value={htmlSource} onChange={handleHtmlSourceChange} />
+                <SourceEditor
+                  key="html"
+                  value={htmlSource}
+                  onChange={handleHtmlSourceChange}
+                />
               )}
             </Suspense>
           </div>
         </div>
-      ) : mode === 'preview' && editor ? (
+      ) : mode === "preview" && editor ? (
         <PreviewPanel editor={editor} />
       ) : (
         <div className="rte-loading">
           <div className="rte-spinner" />
-          <span>{t('editor.loadingEditor')}</span>
+          <span>{t("editor.loadingEditor")}</span>
         </div>
       )}
 
       {publishOpen && (
         <Suspense fallback={null}>
-          <PublishDialog currentTitle={''} onConfirm={handlePublish} onCancel={() => setPublishOpen(false)} />
+          <PublishDialog
+            currentTitle={""}
+            onConfirm={handlePublish}
+            onCancel={() => setPublishOpen(false)}
+          />
         </Suspense>
       )}
 
@@ -753,8 +879,14 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
             // 依据原始 `![[文件名]]` 串在「当前文档全文」中重新定位（从原 from 向后找），
             // 找不到则回退到存储区间（若该区间当前仍是 `![[...]]` 文本）。
             void (async () => {
-              const fullText = editor.state.doc.textBetween(0, editor.state.doc.content.size);
-              const probeFrom = Math.min(Math.max(pending.from, 0), fullText.length);
+              const fullText = editor.state.doc.textBetween(
+                0,
+                editor.state.doc.content.size,
+              );
+              const probeFrom = Math.min(
+                Math.max(pending.from, 0),
+                fullText.length,
+              );
               let index = fullText.indexOf(pending.syntax, probeFrom);
               if (index === -1) {
                 // 兜底：从更前的位置向后找一次（光标向前移过的情况）
@@ -766,7 +898,8 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                 from = index;
                 to = index + pending.syntax.length;
               }
-              if (from < 0 || to > editor.state.doc.content.size || from >= to) return;
+              if (from < 0 || to > editor.state.doc.content.size || from >= to)
+                return;
               // 附件 `![[文件名]]` 复用：先按原始文件名查是否已有同名的已存图片，
               // 命中则直接复用它（避免对同名附件重复占用 IndexedDB 存储），未命中才新建并建 orgName 索引。
               const reusedRef = await findImageByOrgName(file.name);
@@ -776,7 +909,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                   .chain()
                   .focus()
                   .setTextSelection({ from, to })
-                  .insertContent({ type: 'image', attrs: { src: ref } })
+                  .insertContent({ type: "image", attrs: { src: ref } })
                   .run();
               }
             })();

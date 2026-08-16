@@ -26,7 +26,10 @@
         </svg>
       </span>
 
-      <span ref="particlesContainer" class="absolute inset-0 pointer-events-none" />
+      <span
+        ref="particlesContainer"
+        class="absolute inset-0 pointer-events-none"
+      />
 
       <span class="text-sm font-medium text-deep-text/60 tabular-nums">
         {{ displayCount }}
@@ -36,8 +39,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
-import { t } from '~/lib/i18n';
+import { ref, computed, onUnmounted } from "vue";
+import { t } from "~/lib/i18n";
 
 const props = withDefaults(
   defineProps<{
@@ -45,7 +48,7 @@ const props = withDefaults(
   }>(),
   {
     count: 0,
-  }
+  },
 );
 
 const liked = ref(false);
@@ -70,11 +73,11 @@ function spawnParticles() {
   const container = particlesContainer.value;
   if (!container) return;
 
-  const colors = ['#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fb923c'];
+  const colors = ["#ef4444", "#f87171", "#fca5a5", "#fecaca", "#fb923c"];
   const count = 8;
 
   for (let i = 0; i < count; i++) {
-    const particle = document.createElement('span');
+    const particle = document.createElement("span");
     const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
     const distance = 24 + Math.random() * 16;
     const size = 3 + Math.random() * 4;
@@ -99,7 +102,7 @@ function spawnParticles() {
     const rafId = requestAnimationFrame(() => {
       activeRafs.delete(rafId);
       particle.style.transform = `translate(-50%, -50%) translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`;
-      particle.style.opacity = '0';
+      particle.style.opacity = "0";
     });
     activeRafs.add(rafId);
 

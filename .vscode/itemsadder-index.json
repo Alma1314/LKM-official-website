@@ -21,8 +21,14 @@
       "mtimeMs": 1783139296507.3713,
       "size": 1490
     },
-    "/Users/tim/development/web/LKM-official-website/package.json": { "mtimeMs": 1782999665477.2124, "size": 2462 },
-    "/Users/tim/development/web/LKM-official-website/pnpm-lock.yaml": { "mtimeMs": 1783002656727.8218, "size": 275543 },
+    "/Users/tim/development/web/LKM-official-website/package.json": {
+      "mtimeMs": 1782999665477.2124,
+      "size": 2462
+    },
+    "/Users/tim/development/web/LKM-official-website/pnpm-lock.yaml": {
+      "mtimeMs": 1783002656727.8218,
+      "size": 275543
+    },
     "/Users/tim/development/web/LKM-official-website/pnpm-workspace.yaml": {
       "mtimeMs": 1781968227078.7664,
       "size": 45
@@ -51,8 +57,14 @@
       "mtimeMs": 1781871176789.003,
       "size": 551662
     },
-    "/Users/tim/development/web/LKM-official-website/src/config.yaml": { "mtimeMs": 1783138485746.7705, "size": 1333 },
-    "/Users/tim/development/web/LKM-official-website/tsconfig.json": { "mtimeMs": 1781955304432.3003, "size": 284 },
+    "/Users/tim/development/web/LKM-official-website/src/config.yaml": {
+      "mtimeMs": 1783138485746.7705,
+      "size": 1333
+    },
+    "/Users/tim/development/web/LKM-official-website/tsconfig.json": {
+      "mtimeMs": 1781955304432.3003,
+      "size": 284
+    },
     "/Users/tim/development/web/LKM-official-website/vscode.tailwind.json": {
       "mtimeMs": 1781871176805.5852,
       "size": 288

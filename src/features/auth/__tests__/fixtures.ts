@@ -1,10 +1,21 @@
-import { setActivePinia } from 'pinia';
-import { createTestingPinia, type TestingPinia } from '@pinia/testing';
-import { AppError, ErrorCode, type ErrorCodeType } from '~/lib/errors/error-codes';
-import type { User } from '~/types/auth';
+import { setActivePinia } from "pinia";
+import { createTestingPinia, type TestingPinia } from "@pinia/testing";
+import {
+  AppError,
+  ErrorCode,
+  type ErrorCodeType,
+} from "~/lib/errors/error-codes";
+import type { User } from "~/types/auth";
 
 export function makeUser(over: Partial<User> = {}): User {
-  return { id: 1, username: 'alma', account_level: 'normal', email: null, phone: null, ...over };
+  return {
+    id: 1,
+    username: "alma",
+    account_level: "normal",
+    email: null,
+    phone: null,
+    ...over,
+  };
 }
 
 export function makeStore(over: Record<string, unknown> = {}): TestingPinia {
@@ -15,6 +26,9 @@ export function makeStore(over: Record<string, unknown> = {}): TestingPinia {
   return pinia;
 }
 
-export function makeAppError(code: ErrorCodeType = ErrorCode.AUTH_ERROR, message = 'err'): AppError {
+export function makeAppError(
+  code: ErrorCodeType = ErrorCode.AUTH_ERROR,
+  message = "err",
+): AppError {
   return new AppError(code, message);
 }

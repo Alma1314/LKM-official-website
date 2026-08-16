@@ -1,22 +1,30 @@
 <template>
   <TreeholeShell active-nav="settings">
     <div class="container">
-      <h1 class="page-title">⚙️ {{ t('treehole.settings.title') }}</h1>
-      <p class="page-sub">{{ t('treehole.settings.subtitle') }}</p>
+      <h1 class="page-title">⚙️ {{ t("treehole.settings.title") }}</h1>
+      <p class="page-sub">{{ t("treehole.settings.subtitle") }}</p>
 
       <section class="set-card glass">
         <!-- 主题模式 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.themeMode') }}</b>
-            <small>{{ t('treehole.settings.themeModeDesc') }}</small>
+            <b>{{ t("treehole.settings.themeMode") }}</b>
+            <small>{{ t("treehole.settings.themeModeDesc") }}</small>
           </div>
           <div class="theme-switch">
-            <button class="theme-opt" :class="{ active: !isNight }" @click="setTheme('day')">
-              {{ t('treehole.settings.themeDay') }}
+            <button
+              class="theme-opt"
+              :class="{ active: !isNight }"
+              @click="setTheme('day')"
+            >
+              {{ t("treehole.settings.themeDay") }}
             </button>
-            <button class="theme-opt" :class="{ active: isNight }" @click="setTheme('night')">
-              {{ t('treehole.settings.themeNight') }}
+            <button
+              class="theme-opt"
+              :class="{ active: isNight }"
+              @click="setTheme('night')"
+            >
+              {{ t("treehole.settings.themeNight") }}
             </button>
           </div>
         </div>
@@ -24,8 +32,8 @@
         <!-- 自定义主题配色 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.accentColor') }}</b>
-            <small>{{ t('treehole.settings.accentColorDesc') }}</small>
+            <b>{{ t("treehole.settings.accentColor") }}</b>
+            <small>{{ t("treehole.settings.accentColorDesc") }}</small>
           </div>
           <div class="accent-picks">
             <button
@@ -33,7 +41,9 @@
               :key="a[0]"
               class="accent-dot"
               :class="{ active: state.settings.accent === a[0] }"
-              :style="{ background: `linear-gradient(135deg, ${a[0]}, ${a[1]})` }"
+              :style="{
+                background: `linear-gradient(135deg, ${a[0]}, ${a[1]})`,
+              }"
               @click="setAccent(a[0], a[1])"
             ></button>
             <input
@@ -49,8 +59,8 @@
         <!-- 字体大小 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.fontSize') }}</b>
-            <small>{{ t('treehole.settings.fontSizeDesc') }}</small>
+            <b>{{ t("treehole.settings.fontSize") }}</b>
+            <small>{{ t("treehole.settings.fontSizeDesc") }}</small>
           </div>
           <div class="theme-switch">
             <button
@@ -58,21 +68,21 @@
               :class="{ active: state.settings.fontScale === 'small' }"
               @click="setFontScale('small')"
             >
-              {{ t('treehole.settings.fontSmall') }}
+              {{ t("treehole.settings.fontSmall") }}
             </button>
             <button
               class="theme-opt"
               :class="{ active: state.settings.fontScale === 'normal' }"
               @click="setFontScale('normal')"
             >
-              {{ t('treehole.settings.fontNormal') }}
+              {{ t("treehole.settings.fontNormal") }}
             </button>
             <button
               class="theme-opt"
               :class="{ active: state.settings.fontScale === 'large' }"
               @click="setFontScale('large')"
             >
-              {{ t('treehole.settings.fontLarge') }}
+              {{ t("treehole.settings.fontLarge") }}
             </button>
           </div>
         </div>
@@ -80,10 +90,14 @@
         <!-- 白噪音背景音乐 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.whiteNoise') }}</b>
-            <small>{{ t('treehole.settings.whiteNoiseDesc') }}</small>
+            <b>{{ t("treehole.settings.whiteNoise") }}</b>
+            <small>{{ t("treehole.settings.whiteNoiseDesc") }}</small>
           </div>
-          <button class="switch" :class="{ on: state.settings.audioOn }" @click="toggleAudio">
+          <button
+            class="switch"
+            :class="{ on: state.settings.audioOn }"
+            @click="toggleAudio"
+          >
             <span class="knob"></span>
           </button>
         </div>
@@ -91,10 +105,14 @@
         <!-- 高对比度护眼模式 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.highContrast') }}</b>
-            <small>{{ t('treehole.settings.highContrastDesc') }}</small>
+            <b>{{ t("treehole.settings.highContrast") }}</b>
+            <small>{{ t("treehole.settings.highContrastDesc") }}</small>
           </div>
-          <button class="switch" :class="{ on: highContrast }" @click="toggleHighContrast()">
+          <button
+            class="switch"
+            :class="{ on: highContrast }"
+            @click="toggleHighContrast()"
+          >
             <span class="knob"></span>
           </button>
         </div>
@@ -102,10 +120,14 @@
         <!-- 低性能设备特效开关 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.lowPerf') }}</b>
-            <small>{{ t('treehole.settings.lowPerfDesc') }}</small>
+            <b>{{ t("treehole.settings.lowPerf") }}</b>
+            <small>{{ t("treehole.settings.lowPerfDesc") }}</small>
           </div>
-          <button class="switch" :class="{ on: lowPerf }" @click="toggleLowPerf()">
+          <button
+            class="switch"
+            :class="{ on: lowPerf }"
+            @click="toggleLowPerf()"
+          >
             <span class="knob"></span>
           </button>
         </div>
@@ -113,10 +135,14 @@
         <!-- 全站动效静音 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.mute') }}</b>
-            <small>{{ t('treehole.settings.muteDesc') }}</small>
+            <b>{{ t("treehole.settings.mute") }}</b>
+            <small>{{ t("treehole.settings.muteDesc") }}</small>
           </div>
-          <button class="switch" :class="{ on: state.settings.muted }" @click="toggleMuted">
+          <button
+            class="switch"
+            :class="{ on: state.settings.muted }"
+            @click="toggleMuted"
+          >
             <span class="knob"></span>
           </button>
         </div>
@@ -124,8 +150,12 @@
         <!-- 投稿限流 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.rateLimit') }}</b>
-            <small>{{ t('treehole.settings.rateLimitDesc', { count: state.settings.rateLimit }) }}</small>
+            <b>{{ t("treehole.settings.rateLimit") }}</b>
+            <small>{{
+              t("treehole.settings.rateLimitDesc", {
+                count: state.settings.rateLimit,
+              })
+            }}</small>
           </div>
           <div class="rate-pick">
             <button
@@ -143,14 +173,16 @@
         <!-- 隐私声明 -->
         <div class="set-row">
           <div class="set-info">
-            <b>{{ t('treehole.settings.privacy') }}</b>
-            <small>{{ t('treehole.settings.privacyDesc') }}</small>
+            <b>{{ t("treehole.settings.privacy") }}</b>
+            <small>{{ t("treehole.settings.privacyDesc") }}</small>
           </div>
-          <button class="mini" @click="showPrivacy = true">{{ t('treehole.settings.view') }}</button>
+          <button class="mini" @click="showPrivacy = true">
+            {{ t("treehole.settings.view") }}
+          </button>
         </div>
       </section>
 
-      <p class="foot-note">{{ t('treehole.settings.footNoteLocal') }}</p>
+      <p class="foot-note">{{ t("treehole.settings.footNoteLocal") }}</p>
 
       <PrivacyDialog v-model="showPrivacy" />
     </div>
@@ -158,12 +190,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
-import PrivacyDialog from '../components/PrivacyDialog.vue';
-import { useApp } from '../stores/app';
-import * as store from '../stores/storage';
-import { t } from '~/lib/i18n';
+import { ref } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
+import PrivacyDialog from "../components/PrivacyDialog.vue";
+import { useApp } from "../stores/app";
+import * as store from "../stores/storage";
+import { t } from "~/lib/i18n";
 
 const app = useApp();
 const {
@@ -183,12 +215,12 @@ const {
 const showPrivacy = ref(false);
 
 const accents = [
-  ['#e8a87c', '#c3aed6'],
-  ['#8b7ff0', '#5fd0e0'],
-  ['#ff9aa2', '#ffc6ff'],
-  ['#7bdff2', '#b2f7ef'],
-  ['#f6c28b', '#d9a7c7'],
-  ['#a0c4ff', '#bdb2ff'],
+  ["#e8a87c", "#c3aed6"],
+  ["#8b7ff0", "#5fd0e0"],
+  ["#ff9aa2", "#ffc6ff"],
+  ["#7bdff2", "#b2f7ef"],
+  ["#f6c28b", "#d9a7c7"],
+  ["#a0c4ff", "#bdb2ff"],
 ];
 const customA = ref(state.settings.accent);
 
@@ -199,14 +231,14 @@ function onCustom() {
 }
 
 function shade(hex, amt) {
-  const h = hex.replace('#', '');
+  const h = hex.replace("#", "");
   let r = parseInt(h.slice(0, 2), 16) + amt;
   let g = parseInt(h.slice(2, 4), 16) + amt;
   let bl = parseInt(h.slice(4, 6), 16) + amt;
   r = Math.max(0, Math.min(255, r));
   g = Math.max(0, Math.min(255, g));
   bl = Math.max(0, Math.min(255, bl));
-  return '#' + [r, g, bl].map((x) => x.toString(16).padStart(2, '0')).join('');
+  return "#" + [r, g, bl].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
 
 function toggleAudio() {

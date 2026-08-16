@@ -5,12 +5,24 @@
       <section v-if="!current" class="random-hero glass float-up">
         <div class="random-pick-area">
           <div class="pick-emoji">🌌</div>
-          <p class="pick-slogan">{{ t('treehole.random.pickTip') }}</p>
-          <button class="btn-grad pick-btn" @click="pickRandom" :disabled="picking">
-            {{ picking ? t('treehole.random.picking') : t('treehole.random.drawBtn') }}
+          <p class="pick-slogan">{{ t("treehole.random.pickTip") }}</p>
+          <button
+            class="btn-grad pick-btn"
+            @click="pickRandom"
+            :disabled="picking"
+          >
+            {{
+              picking
+                ? t("treehole.random.picking")
+                : t("treehole.random.drawBtn")
+            }}
           </button>
-          <p v-if="poolCount === 0" class="empty-hint">{{ t('treehole.random.emptyHint') }}</p>
-          <p v-else class="pool-hint">{{ t('treehole.random.poolHint2', { count: poolCount }) }}</p>
+          <p v-if="poolCount === 0" class="empty-hint">
+            {{ t("treehole.random.emptyHint") }}
+          </p>
+          <p v-else class="pool-hint">
+            {{ t("treehole.random.poolHint2", { count: poolCount }) }}
+          </p>
         </div>
       </section>
 
@@ -31,27 +43,43 @@
           </div>
 
           <!-- 心情标签 -->
-          <div v-if="current.moods && current.moods.length" class="letter-moods">
-            <span v-for="m in current.moods" :key="m" class="mood-tag">#{{ t(moodKey(m)) }}</span>
+          <div
+            v-if="current.moods && current.moods.length"
+            class="letter-moods"
+          >
+            <span v-for="m in current.moods" :key="m" class="mood-tag"
+              >#{{ t(moodKey(m)) }}</span
+            >
           </div>
 
           <!-- 署名 + 日期 -->
           <div class="letter-footer">
-            <span class="letter-codename">—— {{ current.codename || t('treehole.anonymous') }}</span>
+            <span class="letter-codename"
+              >—— {{ current.codename || t("treehole.anonymous") }}</span
+            >
             <span class="letter-date">{{ formatDate(current.createdAt) }}</span>
           </div>
         </div>
 
         <!-- 操作栏 -->
         <div class="read-actions">
-          <button class="chip" @click="pickRandom">{{ t('treehole.random.switchLetter') }}</button>
-          <button class="chip" @click="current = null">{{ t('treehole.random.back') }}</button>
+          <button class="chip" @click="pickRandom">
+            {{ t("treehole.random.switchLetter") }}
+          </button>
+          <button class="chip" @click="current = null">
+            {{ t("treehole.random.back") }}
+          </button>
         </div>
 
         <!-- 回复区域 -->
         <div class="reply-section">
           <p class="reply-label">
-            💬 {{ t('treehole.random.replyLabel', { name: current.codename || t('treehole.anonymous') }) }}
+            💬
+            {{
+              t("treehole.random.replyLabel", {
+                name: current.codename || t("treehole.anonymous"),
+              })
+            }}
           </p>
           <textarea
             v-model="replyText"
@@ -62,13 +90,19 @@
           ></textarea>
           <div class="reply-bar">
             <button class="chip" @click="toggleReplyFont">
-              {{ replyFontLarge ? 'A⁻' : 'A⁺' }}
+              {{ replyFontLarge ? "A⁻" : "A⁺" }}
             </button>
-            <button class="btn-grad btn-sm" @click="sendReply" :disabled="!replyText.trim()">
-              📨 {{ t('treehole.random.sendReply') }}
+            <button
+              class="btn-grad btn-sm"
+              @click="sendReply"
+              :disabled="!replyText.trim()"
+            >
+              📨 {{ t("treehole.random.sendReply") }}
             </button>
           </div>
-          <p v-if="replySent" class="reply-ok">{{ t('treehole.random.replySent') }}</p>
+          <p v-if="replySent" class="reply-ok">
+            {{ t("treehole.random.replySent") }}
+          </p>
         </div>
       </section>
     </div>
@@ -76,55 +110,62 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import TreeholeShell from '../components/TreeholeShell.vue';
-import { getCategory, getPaper, moodKey } from '../stores/constants';
-import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
-import { useApp } from '../stores/app';
-import { t } from '~/lib/i18n';
+import { ref, computed } from "vue";
+import TreeholeShell from "../components/TreeholeShell.vue";
+import { getCategory, getPaper, moodKey } from "../stores/constants";
+import {
+  getLetters,
+  getOrCreateConversation,
+  appendMessage,
+} from "../stores/storage";
+import { useApp } from "../stores/app";
+import { t } from "~/lib/i18n";
 
 const app = useApp();
 
 const current = ref(null);
 const picking = ref(false);
-const replyText = ref('');
+const replyText = ref("");
 const replyFontLarge = ref(false);
 const replySent = ref(false);
 
 const poolCount = computed(() => {
   const all = getLetters();
-  return all.filter((l) => l.status === 'published' && l.privacy === 'public').length;
+  return all.filter((l) => l.status === "published" && l.privacy === "public")
+    .length;
 });
 
 const catInfo = computed(() => {
-  if (!current.value) return { emoji: '💌', label: '' };
-  return getCategory(current.value.category || 'confess');
+  if (!current.value) return { emoji: "💌", label: "" };
+  return getCategory(current.value.category || "confess");
 });
 
 const paperBg = computed(() => {
-  if (!current.value) return 'transparent';
-  return getPaper(current.value.paper || 'paper').gradient;
+  if (!current.value) return "transparent";
+  return getPaper(current.value.paper || "paper").gradient;
 });
 
 const letterFontSize = computed(() => {
   const s = app.state.settings.fontScale;
-  return s === 'large' ? '1.15rem' : s === 'small' ? '0.9rem' : '1rem';
+  return s === "large" ? "1.15rem" : s === "small" ? "0.9rem" : "1rem";
 });
 
 const replyFontSize = computed(() => {
   const baseSize = parseFloat(letterFontSize.value);
-  return (replyFontLarge.value ? baseSize * 1.15 : baseSize) + 'rem';
+  return (replyFontLarge.value ? baseSize * 1.15 : baseSize) + "rem";
 });
 
 function pickRandom() {
   const all = getLetters();
-  const pool = all.filter((l) => l.status === 'published' && l.privacy === 'public');
+  const pool = all.filter(
+    (l) => l.status === "published" && l.privacy === "public",
+  );
   if (!pool.length) {
     current.value = null;
     return;
   }
   picking.value = true;
-  replyText.value = '';
+  replyText.value = "";
   replySent.value = false;
   // slight delay for animation feel
   setTimeout(() => {
@@ -140,17 +181,17 @@ function toggleReplyFont() {
 function sendReply() {
   if (!current.value || !replyText.value.trim()) return;
   const conv = getOrCreateConversation(
-    'random_' + current.value.id,
-    current.value.codename || t('treehole.anonymous'),
-    current.value.id
+    "random_" + current.value.id,
+    current.value.codename || t("treehole.anonymous"),
+    current.value.id,
   );
   appendMessage(conv.id, {
-    id: 'msg_' + Date.now(),
+    id: "msg_" + Date.now(),
     text: replyText.value.trim(),
-    from: 'me',
+    from: "me",
     createdAt: Date.now(),
   });
-  replyText.value = '';
+  replyText.value = "";
   replySent.value = true;
   setTimeout(() => {
     replySent.value = false;
@@ -158,9 +199,13 @@ function sendReply() {
 }
 
 function formatDate(ts) {
-  if (!ts) return '';
+  if (!ts) return "";
   const d = new Date(ts);
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return d.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 }
 </script>
 

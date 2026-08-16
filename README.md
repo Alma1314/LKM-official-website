@@ -201,7 +201,7 @@
 `src/data/config.yaml` 通过自定义集成注入：
 
 ```ts
-import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from '~/lib/config';
+import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from "~/lib/config";
 ```
 
 常用配置项：站点名称/URL、SEO 元数据、博客开关与分页、Google Analytics ID、主题模式等。

@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../../http/client';
+import { get, post, put, del } from "../../http/client";
 
 // ── 类型 ──
 
@@ -176,195 +176,272 @@ export interface BindCodeVerifyData {
 
 export const authApi = {
   // ── 获取当前用户 ──
-  getMe: () => get<UserInfo>('/api/v1/auth/me'),
+  getMe: () => get<UserInfo>("/api/v1/auth/me"),
 
   // ── 密码登录 ──
   loginPassword: (account: string, password: string) =>
-    post<TokenData>('/api/v1/auth/login/password', { account, password }),
+    post<TokenData>("/api/v1/auth/login/password", { account, password }),
 
   // ── 短信/邮箱验证码登录（请求验证码） ──
   requestLoginCode: (contact: string) =>
-    post<MessageResponse>(`/api/v1/auth/login/code/request?contact=${encodeURIComponent(contact)}`),
+    post<MessageResponse>(
+      `/api/v1/auth/login/code/request?contact=${encodeURIComponent(contact)}`,
+    ),
 
   // ── 短信/邮箱验证码登录（验证） ──
   loginCode: (contact: string, code: string) =>
-    post<TokenData>(`/api/v1/auth/login/code?contact=${encodeURIComponent(contact)}&code=${encodeURIComponent(code)}`),
+    post<TokenData>(
+      `/api/v1/auth/login/code?contact=${encodeURIComponent(contact)}&code=${encodeURIComponent(code)}`,
+    ),
 
   // ── Magic Link 请求 ──
   requestMagicLink: (email: string) =>
-    post<MessageResponse>(`/api/v1/auth/login/magic-link/request?email=${encodeURIComponent(email)}`),
+    post<MessageResponse>(
+      `/api/v1/auth/login/magic-link/request?email=${encodeURIComponent(email)}`,
+    ),
 
   // ── Magic Link 验证 ──
   verifyMagicLink: (token: string) =>
-    get<TokenData>(`/api/v1/auth/login/magic-link/verify?token=${encodeURIComponent(token)}`),
+    get<TokenData>(
+      `/api/v1/auth/login/magic-link/verify?token=${encodeURIComponent(token)}`,
+    ),
 
   // ── 注册本地账户 ──
   registerLocal: (username: string, password: string) =>
-    post<TokenData>('/api/v1/auth/reg/local', { username, password }),
+    post<TokenData>("/api/v1/auth/reg/local", { username, password }),
 
   // ── 注册普通账户（发送验证码） ──
-  registerNormal: (username: string, password: string, email: string | null, phone: string | null) =>
-    post<RegNormalResponse>('/api/v1/auth/reg/normal', { username, password, email, phone }),
+  registerNormal: (
+    username: string,
+    password: string,
+    email: string | null,
+    phone: string | null,
+  ) =>
+    post<RegNormalResponse>("/api/v1/auth/reg/normal", {
+      username,
+      password,
+      email,
+      phone,
+    }),
 
   // ── 验证并完成普通账户注册 ──
-  registerNormalVerify: (txnId: string, emailCode: string | null, phoneCode: string | null) => {
+  registerNormalVerify: (
+    txnId: string,
+    emailCode: string | null,
+    phoneCode: string | null,
+  ) => {
     const params = new URLSearchParams();
-    params.set('txn_id', txnId);
-    if (emailCode) params.set('email_code', emailCode);
-    if (phoneCode) params.set('phone_code', phoneCode);
-    return post<TokenData>(`/api/v1/auth/reg/normal/verify?${params.toString()}`);
+    params.set("txn_id", txnId);
+    if (emailCode) params.set("email_code", emailCode);
+    if (phoneCode) params.set("phone_code", phoneCode);
+    return post<TokenData>(
+      `/api/v1/auth/reg/normal/verify?${params.toString()}`,
+    );
   },
 
   // ── 手机号注册（发送验证码） ──
-  registerPhone: (phone: string) => post<{ phone: string; message: string }>('/api/v1/auth/reg/phone', { phone }),
+  registerPhone: (phone: string) =>
+    post<{ phone: string; message: string }>("/api/v1/auth/reg/phone", {
+      phone,
+    }),
 
   // ── 手机号注册（验证） ──
   registerPhoneVerify: (phone: string, code: string) =>
     post<TokenData>(
-      `/api/v1/auth/reg/phone/verify?phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`
+      `/api/v1/auth/reg/phone/verify?phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`,
     ),
 
   // ── 邮箱注册（发送验证码） ──
-  registerEmail: (email: string) => post<{ email: string; message: string }>('/api/v1/auth/reg/email', { email }),
+  registerEmail: (email: string) =>
+    post<{ email: string; message: string }>("/api/v1/auth/reg/email", {
+      email,
+    }),
 
   // ── 邮箱注册（验证） ──
   registerEmailVerify: (email: string, code: string) =>
     post<TokenData>(
-      `/api/v1/auth/reg/email/verify?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`
+      `/api/v1/auth/reg/email/verify?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`,
     ),
 
   // ── 刷新 Token ──
   refreshToken: (refreshToken: string) =>
-    post<{ access_token: string; refresh_token: string }>('/api/v1/auth/refresh', { refresh_token: refreshToken }),
+    post<{ access_token: string; refresh_token: string }>(
+      "/api/v1/auth/refresh",
+      { refresh_token: refreshToken },
+    ),
 
   // ── 登出 ──
-  logout: () => post<MessageResponse>('/api/v1/auth/logout'),
+  logout: () => post<MessageResponse>("/api/v1/auth/logout"),
 
   // ── 获取用户资料 ──
-  getUserProfile: (userId: number) => get<ProfileInfo>(`/api/v1/auth/${userId}`),
+  getUserProfile: (userId: number) =>
+    get<ProfileInfo>(`/api/v1/auth/${userId}`),
 
   // ── 编辑用户资料 ──
   editProfile: (
     userId: number,
-    info: { nickname?: string | null; avatar?: string | null; contact_links?: ContactLink[] }
+    info: {
+      nickname?: string | null;
+      avatar?: string | null;
+      contact_links?: ContactLink[];
+    },
   ) => put<ProfileInfo>(`/api/v1/auth/${userId}/profile`, info),
 
   // ── 根据用户名获取用户信息 ──
   getUserByUsername: (username: string) =>
-    get<ProfileInfo>(`/api/auth/user/by-username/${encodeURIComponent(username)}`),
+    get<ProfileInfo>(
+      `/api/auth/user/by-username/${encodeURIComponent(username)}`,
+    ),
 
   // ── 2FA / TOTP ──
 
   /** 开始 TOTP 设置，返回密钥与 otpauth 二维码 URI。 */
-  start2FA: () => post<TOTPSetupBeginData>('/api/v1/auth/2fa/setup/begin'),
+  start2FA: () => post<TOTPSetupBeginData>("/api/v1/auth/2fa/setup/begin"),
 
   /** 提交当前 TOTP 码完成设置，返回恢复码。 */
-  verify2FAEnable: (code: string) => post<TOTPSetupCompleteData>('/api/v1/auth/2fa/setup/complete', { code }),
+  verify2FAEnable: (code: string) =>
+    post<TOTPSetupCompleteData>("/api/v1/auth/2fa/setup/complete", { code }),
 
   /** 确认已保存恢复码。 */
-  confirm2FA: () => post<TOTPConfirmData>('/api/v1/auth/2fa/setup/confirm'),
+  confirm2FA: () => post<TOTPConfirmData>("/api/v1/auth/2fa/setup/confirm"),
 
   /** 关闭 2FA（需当前 TOTP 码）。 */
-  disable2FA: (code: string) => del<TOTPDisableData>('/api/v1/auth/2fa', { data: { code } }),
+  disable2FA: (code: string) =>
+    del<TOTPDisableData>("/api/v1/auth/2fa", { data: { code } }),
 
   /** 登录时验证 TOTP 或恢复码（purpose=2fa/recovery）。 */
-  verify2FA: (tempToken: string, code?: string | null, recoveryCode?: string | null) =>
-    post<TOTPVerifyData>('/api/v1/auth/2fa/verify', {
+  verify2FA: (
+    tempToken: string,
+    code?: string | null,
+    recoveryCode?: string | null,
+  ) =>
+    post<TOTPVerifyData>("/api/v1/auth/2fa/verify", {
       temp_token: tempToken,
       code: code ?? undefined,
       recovery_code: recoveryCode ?? undefined,
     }),
 
   /** 查询当前用户 2FA 是否已开启。 */
-  get2FAStatus: () => get<TOTPStatusData>('/api/v1/auth/2fa/status'),
+  get2FAStatus: () => get<TOTPStatusData>("/api/v1/auth/2fa/status"),
 
   // ── Passkey / WebAuthn ──
 
-  passkeyRegisterBegin: () => post<PasskeyBeginOptions>('/api/v1/auth/passkey/register/begin'),
+  passkeyRegisterBegin: () =>
+    post<PasskeyBeginOptions>("/api/v1/auth/passkey/register/begin"),
   passkeyRegisterComplete: (
     rawId: string,
     challengeId: string,
     response: Record<string, unknown>,
-    deviceName?: string
+    deviceName?: string,
   ) =>
-    post<PasskeyRegisterCompleteData>('/api/v1/auth/passkey/register/complete', {
+    post<PasskeyRegisterCompleteData>(
+      "/api/v1/auth/passkey/register/complete",
+      {
+        rawId,
+        challenge_id: challengeId,
+        response,
+        device_name: deviceName,
+      },
+    ),
+  passkeyLoginBegin: () =>
+    post<PasskeyBeginOptions>("/api/v1/auth/passkey/login/begin"),
+  passkeyLoginComplete: (
+    rawId: string,
+    challengeId: string,
+    response: Record<string, unknown>,
+  ) =>
+    post<TokenData>("/api/v1/auth/passkey/login/complete", {
       rawId,
       challenge_id: challengeId,
       response,
-      device_name: deviceName,
     }),
-  passkeyLoginBegin: () => post<PasskeyBeginOptions>('/api/v1/auth/passkey/login/begin'),
-  passkeyLoginComplete: (rawId: string, challengeId: string, response: Record<string, unknown>) =>
-    post<TokenData>('/api/v1/auth/passkey/login/complete', {
-      rawId,
-      challenge_id: challengeId,
-      response,
-    }),
-  listPasskeys: () => get<PasskeyCredential[]>('/api/v1/auth/passkey/credentials'),
-  deletePasskey: (id: number) => del<MessageResponse>(`/api/v1/auth/passkey/${id}`),
+  listPasskeys: () =>
+    get<PasskeyCredential[]>("/api/v1/auth/passkey/credentials"),
+  deletePasskey: (id: number) =>
+    del<MessageResponse>(`/api/v1/auth/passkey/${id}`),
 
   // ── GitHub OAuth ──
 
   /** 登录入口（整页跳转，走 302）。 */
-  githubLoginUrl: () => '/api/v1/auth/oauth/github/login',
+  githubLoginUrl: () => "/api/v1/auth/oauth/github/login",
   /** 绑定用授权 URL（供 JS 跳转）。 */
-  githubBindRedirect: () => post<OAuthRedirectData>('/api/v1/auth/oauth/github/login/redirect'),
+  githubBindRedirect: () =>
+    post<OAuthRedirectData>("/api/v1/auth/oauth/github/login/redirect"),
   /** 绑定回调确认。 */
   githubBindCallback: (code: string, state: string) =>
     get<MessageResponse>(
-      `/api/v1/auth/oauth/github/bind-callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`
+      `/api/v1/auth/oauth/github/bind-callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`,
     ),
 
   // ── 找回密码 ──
 
-  recoverCheck: (account: string) => post<{ recoverable: boolean }>('/api/v1/auth/recover/check', { account }),
-  recoverPhone: (phone: string) => post<MessageResponse>('/api/v1/auth/recover/phone', { phone }),
+  recoverCheck: (account: string) =>
+    post<{ recoverable: boolean }>("/api/v1/auth/recover/check", { account }),
+  recoverPhone: (phone: string) =>
+    post<MessageResponse>("/api/v1/auth/recover/phone", { phone }),
   recoverPhoneVerify: (phone: string, code: string, newPassword?: string) =>
-    post<RecoverRequires2FA>('/api/v1/auth/recover/phone/verify', {
+    post<RecoverRequires2FA>("/api/v1/auth/recover/phone/verify", {
       phone,
       code,
       new_password: newPassword,
     }),
-  recoverEmail: (email: string) => post<MessageResponse>('/api/v1/auth/recover/email', { email }),
+  recoverEmail: (email: string) =>
+    post<MessageResponse>("/api/v1/auth/recover/email", { email }),
   recoverEmailVerify: (email: string, code: string, newPassword?: string) =>
-    post<RecoverRequires2FA>('/api/v1/auth/recover/email/verify', {
+    post<RecoverRequires2FA>("/api/v1/auth/recover/email/verify", {
       email,
       code,
       new_password: newPassword,
     }),
-  recoverMagicLink: (email: string) => post<MessageResponse>('/api/v1/auth/recover/magic-link', { email }),
+  recoverMagicLink: (email: string) =>
+    post<MessageResponse>("/api/v1/auth/recover/magic-link", { email }),
   recoverMagicLinkVerify: (token: string, newPassword?: string) =>
-    post<RecoverRequires2FA>('/api/v1/auth/recover/magic-link/verify', {
+    post<RecoverRequires2FA>("/api/v1/auth/recover/magic-link/verify", {
       token,
       new_password: newPassword,
     }),
   recoverVerifyTotp: (txnId: string, tempToken: string) =>
-    post<RecoverTxMsg>('/api/v1/auth/recover/verify-totp', { txn_id: txnId, temp_token: tempToken }),
+    post<RecoverTxMsg>("/api/v1/auth/recover/verify-totp", {
+      txn_id: txnId,
+      temp_token: tempToken,
+    }),
   recoverComplete: (txnId: string, newPassword: string) =>
-    post<MessageResponse>('/api/v1/auth/recover/complete', {
+    post<MessageResponse>("/api/v1/auth/recover/complete", {
       txn_id: txnId,
       new_password: newPassword,
     }),
 
   // ── 绑定邮箱 / 手机 ──
 
-  bindEmailRequest: (email: string) => post<BindCodeRequestData>('/api/v1/auth/settings/bind-email/request', { email }),
+  bindEmailRequest: (email: string) =>
+    post<BindCodeRequestData>("/api/v1/auth/settings/bind-email/request", {
+      email,
+    }),
   bindEmailVerify: (email: string, code: string) =>
-    post<BindCodeVerifyData>('/api/v1/auth/settings/bind-email/verify', { email, code }),
-  bindPhoneRequest: (phone: string) => post<BindCodeRequestData>('/api/v1/auth/settings/bind-phone/request', { phone }),
+    post<BindCodeVerifyData>("/api/v1/auth/settings/bind-email/verify", {
+      email,
+      code,
+    }),
+  bindPhoneRequest: (phone: string) =>
+    post<BindCodeRequestData>("/api/v1/auth/settings/bind-phone/request", {
+      phone,
+    }),
   bindPhoneVerify: (phone: string, code: string) =>
-    post<BindCodeVerifyData>('/api/v1/auth/settings/bind-phone/verify', { phone, code }),
+    post<BindCodeVerifyData>("/api/v1/auth/settings/bind-phone/verify", {
+      phone,
+      code,
+    }),
 
   /** 查询当前绑定状态（邮箱 / 手机 / GitHub / 2FA）。 */
-  getSettings: () => get<SettingsInfo>('/api/v1/auth/settings'),
+  getSettings: () => get<SettingsInfo>("/api/v1/auth/settings"),
 
   /** 解绑（type: email | phone | github）；已开启 2FA 时需 code（TOTP 码）。 */
-  unbind: (type: 'email' | 'phone' | 'github', code?: string) =>
+  unbind: (type: "email" | "phone" | "github", code?: string) =>
     del<MessageResponse>(`/api/v1/auth/settings/${type}`, { data: { code } }),
 
   // ── Onboarding ──
-  getOnboarding: () => get<OnboardingState>('/api/auth/onboarding'),
+  getOnboarding: () => get<OnboardingState>("/api/auth/onboarding"),
   setOnboardingStep: (step: number, data: Record<string, unknown>) =>
     put<OnboardingState>(`/api/auth/onboarding/steps/${step}`, { data }),
-  skipOnboarding: () => post<OnboardingState>('/api/auth/onboarding/skip'),
+  skipOnboarding: () => post<OnboardingState>("/api/auth/onboarding/skip"),
 };

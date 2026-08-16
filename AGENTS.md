@@ -107,8 +107,8 @@ src/lib/api/
 使用 `~/` 从 `src/` 导入：
 
 ```typescript
-import { forumApi } from '~/lib/api';
-import { getPermalink } from '~/lib/utils/permalinks';
+import { forumApi } from "~/lib/api";
+import { getPermalink } from "~/lib/utils/permalinks";
 ```
 
 ## Tailwind CSS v4

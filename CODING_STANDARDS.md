@@ -137,8 +137,8 @@ const items = ['A', 'B', 'C'];
 使用 `~/` 替代 `src/`：
 
 ```typescript
-import Image from '~/components/primitives/Image.astro';
-import { siteConfig } from '~/lib/config';
+import Image from "~/components/primitives/Image.astro";
+import { siteConfig } from "~/lib/config";
 ```
 
 ## 运行环境
@@ -167,7 +167,7 @@ import { siteConfig } from '~/lib/config';
 站点元数据集中在 `src/data/config.yaml` 中管理，通过 `~/lib/config` 导入：
 
 ```typescript
-import { siteConfig, navBarConfig, profileConfig } from '~/lib/config';
+import { siteConfig, navBarConfig, profileConfig } from "~/lib/config";
 ```
 
 | 字段        | 说明                                          |

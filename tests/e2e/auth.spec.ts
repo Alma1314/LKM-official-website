@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-const BASE_PATH = process.env.BASE_PATH ?? '';
+const BASE_PATH = process.env.BASE_PATH ?? "";
 
 /**
  * 认证端到端烟雾覆盖。
@@ -16,30 +16,32 @@ const BASE_PATH = process.env.BASE_PATH ?? '';
  * 用户侧 `astro dev` 环境执行。
  */
 
-test.describe('认证端到端', () => {
-  test('独立登录页渲染居中卡片', async ({ page }) => {
+test.describe("认证端到端", () => {
+  test("独立登录页渲染居中卡片", async ({ page }) => {
     await page.goto(`${BASE_PATH}/login/`);
 
     // 登录卡标题（默认密码登录态：AuthCard title「登录」）
-    await expect(page.getByRole('heading', { name: '登录' })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "登录" })).toBeVisible();
     // 副标题与真实组件一致
-    await expect(page.getByText('登录理科迷账号，访问社区资源与文档')).toBeVisible();
+    await expect(
+      page.getByText("登录理科迷账号，访问社区资源与文档"),
+    ).toBeVisible();
     // 底部「立即注册」入口与真实组件一致
-    await expect(page.getByRole('button', { name: '立即注册' })).toBeVisible();
+    await expect(page.getByRole("button", { name: "立即注册" })).toBeVisible();
   });
 
-  test('独立注册页渲染居中卡片（含分段控件）', async ({ page }) => {
+  test("独立注册页渲染居中卡片（含分段控件）", async ({ page }) => {
     await page.goto(`${BASE_PATH}/register/`);
 
     // 注册卡标题/副标题与真实组件一致
-    await expect(page.getByRole('heading', { name: '注册' })).toBeVisible();
-    await expect(page.getByText('创建理科迷账号')).toBeVisible();
+    await expect(page.getByRole("heading", { name: "注册" })).toBeVisible();
+    await expect(page.getByText("创建理科迷账号")).toBeVisible();
 
     // 分段控件「普通账户 / 本地账户」与真实组件一致
-    await expect(page.getByRole('button', { name: '普通账户' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '本地账户' })).toBeVisible();
+    await expect(page.getByRole("button", { name: "普通账户" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "本地账户" })).toBeVisible();
 
     // 「已有账号？立即登录」入口与真实组件一致
-    await expect(page.getByRole('button', { name: '立即登录' })).toBeVisible();
+    await expect(page.getByRole("button", { name: "立即登录" })).toBeVisible();
   });
 });

@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import type { ReactElement } from 'react';
+import { useEffect, useRef } from "react";
+import type { ReactElement } from "react";
 
 interface Props {
   onSelect: (file: File | null) => void;
@@ -16,7 +16,7 @@ export default function ObsidianImagePicker({ onSelect }: Props): ReactElement {
       ref={inputRef}
       type="file"
       accept="image/*"
-      style={{ display: 'none' }}
+      style={{ display: "none" }}
       onChange={(e) => {
         const file = e.target.files?.[0] ?? null;
         onSelect(file);
