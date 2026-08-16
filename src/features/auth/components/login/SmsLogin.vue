@@ -1,16 +1,22 @@
 <template>
   <form @submit.prevent="handleSubmit" class="space-y-4">
     <div class="flex items-center justify-between p-3 bg-page-bg rounded-lg">
-      <span class="text-sm text-text-muted">发送至：</span>
+      <span class="text-sm text-text-muted">{{ t('auth.login.sendTo') }}</span>
       <span class="text-sm font-medium">{{ target }}</span>
     </div>
     <button type="button" class="btn btn-outline w-full" @click="handleSendCode" :disabled="countdown > 0">
-      {{ countdown > 0 ? `${countdown}s 后重新获取` : codeSent ? '重新获取验证码' : '获取验证码' }}
+      {{
+        countdown > 0
+          ? t('auth.login.resendCode', { count: countdown })
+          : codeSent
+            ? t('auth.login.resendCodeBtn')
+            : t('auth.login.getCodeBtn')
+      }}
     </button>
-    <p v-if="codeSent" class="text-xs text-success text-center">验证码已发送（模拟码：000000）</p>
+    <p v-if="codeSent" class="text-xs text-success text-center">{{ t('auth.login.codeSentHint') }}</p>
     <div>
       <label class="label pb-1" for="sms-code">
-        <span class="label-text font-medium">验证码</span>
+        <span class="label-text font-medium">{{ t('auth.login.codeLabel') }}</span>
       </label>
       <input
         id="sms-code"
@@ -18,7 +24,7 @@
         class="input input-bordered w-full"
         :class="{ 'input-error': codeError }"
         v-model="code"
-        placeholder="请输入 6 位验证码"
+        :placeholder="t('auth.login.codePlaceholder6')"
         maxlength="6"
         @input="codeError = ''"
       />
@@ -26,13 +32,14 @@
     </div>
     <button type="submit" class="btn btn-primary w-full" :disabled="loading || !codeSent">
       <span v-if="loading" class="loading loading-spinner loading-xs"></span>
-      <template v-else>登录</template>
+      <template v-else>{{ t('auth.login.title') }}</template>
     </button>
   </form>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onBeforeUnmount } from 'vue';
+import { t } from '~/lib/i18n';
 import type { LoginMethod } from '~/types/auth';
 
 const emit = defineEmits<{
@@ -69,11 +76,11 @@ function handleSendCode() {
 
 async function handleSubmit() {
   if (!code.value.trim()) {
-    codeError.value = '请输入验证码';
+    codeError.value = t('auth.login.codeRequired');
     return;
   }
   if (attempts.value >= 3) {
-    codeError.value = '验证码错误次数过多，请重新获取';
+    codeError.value = t('auth.login.tooManyAttempts');
     codeSent.value = false;
     code.value = '';
     attempts.value = 0;

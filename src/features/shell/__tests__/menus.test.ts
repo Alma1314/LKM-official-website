@@ -19,7 +19,7 @@ describe('menus', () => {
   });
 
   it('七月团队子项 7 个且唯一', () => {
-    const team = allMenuItems.find((item) => item.name === '七月团队');
+    const team = allMenuItems.find((item) => item.name === 'nav.team');
     expect(team).toBeTruthy();
     const childNames = team!.children!.map((child) => child.name);
     expect(childNames).toHaveLength(7);

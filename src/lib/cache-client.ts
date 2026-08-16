@@ -4,6 +4,8 @@
  * 适合文章列表、标签列表等不频繁变化的数据。
  */
 
+import { t } from '~/lib/i18n';
+
 interface CacheEntry<T> {
   data: T;
   expiresAt: number;
@@ -59,15 +61,15 @@ export async function fetchWithCache<T>(
     try {
       // eslint-disable-next-line no-restricted-globals
       const res = await fetch(url);
-      if (!res.ok) return { data: null, error: `HTTP ${res.status}` };
+      if (!res.ok) return { data: null, error: t('messages.httpError', { status: res.status }) };
       const json = await res.json();
       if (json.code === 0) {
         cacheSet(cacheKey, json.data as T, ttlMs);
         return { data: json.data as T, error: null };
       }
-      return { data: null, error: json.msg || '未知错误' };
+      return { data: null, error: json.msg || t('messages.unknownError') };
     } catch (err: unknown) {
-      return { data: null, error: err instanceof Error ? err.message : '网络错误' };
+      return { data: null, error: err instanceof Error ? err.message : t('messages.networkError') };
     }
   };
 

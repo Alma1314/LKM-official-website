@@ -1,5 +1,6 @@
 import type { Editor } from '@tiptap/core';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 import { serializeHtml } from '../../engine/serialize-html';
 
 export function handleExportDocx(editor: Editor): void {
@@ -32,7 +33,7 @@ export function handleExportDocx(editor: Editor): void {
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
-    alert('导出失败: ' + (err as Error).message);
+    alert(t('editor.exportFailed', { message: (err as Error).message }));
   }
 }
 
@@ -45,7 +46,7 @@ export default function ExportDocxButton({ editor }: ExportDocxButtonProps): Rea
     <button
       type="button"
       className="rte-btn rte-btn--ghost rte-btn--xs"
-      title="导出 Word 文档"
+      title={t('editor.exportDocxTitle')}
       onClick={() => handleExportDocx(editor)}
     >
       DOC

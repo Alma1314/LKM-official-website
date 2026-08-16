@@ -1,6 +1,7 @@
 import { ok, err } from 'neverthrow';
 import type { Result } from 'neverthrow';
 import { AppError } from './document-store';
+import { t } from '~/lib/i18n';
 
 const DB_NAME = 'lkm-editor-backup';
 const DB_VERSION = 1;
@@ -52,7 +53,7 @@ function openDB(): Promise<IDBDatabase | null> {
 export async function saveBackup(docId: string, data: BackupData): Promise<Result<void, AppError>> {
   try {
     const db = await openDB();
-    if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
+    if (!db) return err(new AppError('DB_OPEN_FAILED', t('editor.persistence.indexedDbUnavailable')));
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
     store.add({ ...data, docId, timestamp: new Date().toISOString() });
@@ -65,7 +66,7 @@ export async function saveBackup(docId: string, data: BackupData): Promise<Resul
     return ok(undefined);
   } catch (e) {
     console.warn('[backup-store] 备份写入失败:', e);
-    return err(new AppError('BACKUP_FAILED', '备份写入失败', e));
+    return err(new AppError('BACKUP_FAILED', t('editor.persistence.backupFailed'), e));
   }
 }
 
@@ -102,7 +103,7 @@ async function cleanOldSnapshots(db?: IDBDatabase): Promise<void> {
 export async function getBackups(): Promise<Result<BackupMeta[], AppError>> {
   try {
     const db = await openDB();
-    if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
+    if (!db) return err(new AppError('DB_OPEN_FAILED', t('editor.persistence.indexedDbUnavailable')));
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
     const request = store.getAll();
@@ -118,14 +119,14 @@ export async function getBackups(): Promise<Result<BackupMeta[], AppError>> {
     );
   } catch (e) {
     console.warn('[backup-store] 读取备份列表失败:', e);
-    return err(new AppError('DB_READ_FAILED', '读取备份列表失败', e));
+    return err(new AppError('DB_READ_FAILED', t('editor.persistence.readBackupsFailed'), e));
   }
 }
 
 export async function getLatestBackup(docId: string): Promise<Result<BackupData | null, AppError>> {
   try {
     const db = await openDB();
-    if (!db) return err(new AppError('DB_OPEN_FAILED', 'IndexedDB 不可用'));
+    if (!db) return err(new AppError('DB_OPEN_FAILED', t('editor.persistence.indexedDbUnavailable')));
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
     const index = store.index('docId');
@@ -140,7 +141,7 @@ export async function getLatestBackup(docId: string): Promise<Result<BackupData 
     return ok(results[0]);
   } catch (e) {
     console.warn('[backup-store] 读取最新备份失败:', e);
-    return err(new AppError('DB_READ_FAILED', '读取备份失败', e));
+    return err(new AppError('DB_READ_FAILED', t('editor.persistence.readBackupFailed'), e));
   }
 }
 
@@ -158,7 +159,7 @@ export function exportAllToJson(docs: BackupData[]): Result<string, AppError> {
       )
     );
   } catch (e) {
-    return err(new AppError('EXPORT_FAILED', '导出 JSON 失败', e));
+    return err(new AppError('EXPORT_FAILED', t('editor.persistence.exportJsonFailed'), e));
   }
 }
 
@@ -166,7 +167,7 @@ export function importFromJson(json: string): Result<BackupData[], AppError> {
   try {
     const parsed = JSON.parse(json);
     if (!Array.isArray(parsed)) {
-      return err(new AppError('IMPORT_FAILED', 'JSON 格式不正确：需要文档数组'));
+      return err(new AppError('IMPORT_FAILED', t('editor.backup.invalidJsonFormat')));
     }
     return ok(
       parsed.map((item: Record<string, unknown>) => ({
@@ -180,6 +181,14 @@ export function importFromJson(json: string): Result<BackupData[], AppError> {
       }))
     );
   } catch (e) {
-    return err(new AppError('IMPORT_FAILED', '导入 JSON 失败: ' + (e instanceof Error ? e.message : '格式错误'), e));
+    return err(
+      new AppError(
+        'IMPORT_FAILED',
+        t('editor.persistence.importJsonFailed', {
+          message: e instanceof Error ? e.message : t('editor.backup.formatError'),
+        }),
+        e
+      )
+    );
   }
 }

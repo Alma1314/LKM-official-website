@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div v-if="loading" class="text-center py-8 text-text-muted">加载中...</div>
+    <div v-if="loading" class="text-center py-8 text-text-muted">{{ t('common.loading') }}</div>
 
     <template v-else-if="user">
       <!-- 头部 -->
@@ -18,19 +18,21 @@
               class="text-sm px-2 py-0.5 rounded-full font-medium"
               :style="{ color: titleInfo.color, background: `color-mix(in srgb, ${titleInfo.color} 15%, transparent)` }"
             >
-              {{ titleInfo.name }}
+              {{ t(titleInfo.name) }}
             </span>
           </div>
           <p class="text-sm text-text-muted mt-1">@{{ user.username }}</p>
           <div class="flex items-center gap-4 mt-2 text-sm text-text-muted/60">
-            <span>{{ user.follower_count ?? 0 }} 关注者</span>
-            <span>{{ user.following_count ?? 0 }} 正在关注</span>
-            <span class="text-primary font-semibold">{{ (user.points ?? 0).toLocaleString() }} 积分</span>
+            <span>{{ t('profile.followers', { count: user.follower_count ?? 0 }) }}</span>
+            <span>{{ t('profile.following', { count: user.following_count ?? 0 }) }}</span>
+            <span class="text-primary font-semibold">{{
+              t('profile.points', { points: (user.points ?? 0).toLocaleString() })
+            }}</span>
           </div>
         </div>
         <div class="flex gap-2 shrink-0">
-          <button class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">关注</button>
-          <button class="btn-ghost px-4 py-2 rounded-lg text-sm">私信</button>
+          <button class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">{{ t('profile.follow') }}</button>
+          <button class="btn-ghost px-4 py-2 rounded-lg text-sm">{{ t('profile.message') }}</button>
         </div>
       </div>
 
@@ -38,19 +40,19 @@
       <div class="border-t border-surface-3 pt-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div>
-            <span class="text-text-muted/60">座右铭</span>
-            <p class="text-deep-text mt-0.5">{{ user.bio || '未填写' }}</p>
+            <span class="text-text-muted/60">{{ t('profile.motto') }}</span>
+            <p class="text-deep-text mt-0.5">{{ user.bio || t('profile.notFilled') }}</p>
           </div>
           <div>
-            <span class="text-text-muted/60">专业方向</span>
-            <p class="text-deep-text mt-0.5">{{ user.major || '未填写' }}</p>
+            <span class="text-text-muted/60">{{ t('profile.major') }}</span>
+            <p class="text-deep-text mt-0.5">{{ user.major || t('profile.notFilled') }}</p>
           </div>
           <div>
-            <span class="text-text-muted/60">年级</span>
-            <p class="text-deep-text mt-0.5">{{ user.grade || '未填写' }}</p>
+            <span class="text-text-muted/60">{{ t('profile.grade') }}</span>
+            <p class="text-deep-text mt-0.5">{{ user.grade || t('profile.notFilled') }}</p>
           </div>
           <div>
-            <span class="text-text-muted/60">兴趣爱好</span>
+            <span class="text-text-muted/60">{{ t('profile.interests') }}</span>
             <div v-if="user.interests && user.interests.length" class="flex flex-wrap gap-1 mt-1">
               <span
                 v-for="i in user.interests"
@@ -59,11 +61,11 @@
                 >{{ i }}</span
               >
             </div>
-            <p v-else class="text-deep-text mt-0.5 text-text-muted">未填写</p>
+            <p v-else class="text-deep-text mt-0.5 text-text-muted">{{ t('profile.notFilled') }}</p>
           </div>
           <div class="sm:col-span-2">
-            <span class="text-text-muted/60">理想</span>
-            <p class="text-deep-text mt-0.5">{{ user.ideals || '未填写' }}</p>
+            <span class="text-text-muted/60">{{ t('profile.ideals') }}</span>
+            <p class="text-deep-text mt-0.5">{{ user.ideals || t('profile.notFilled') }}</p>
           </div>
         </div>
       </div>
@@ -86,17 +88,23 @@
           </button>
         </div>
         <div class="pt-4">
-          <div v-if="activeTab === 'posts'" class="text-center py-8 text-sm text-text-muted">暂无发言</div>
-          <div v-if="activeTab === 'projects'" class="text-center py-8 text-sm text-text-muted">暂无项目</div>
+          <div v-if="activeTab === 'posts'" class="text-center py-8 text-sm text-text-muted">
+            {{ t('profile.noPosts') }}
+          </div>
+          <div v-if="activeTab === 'projects'" class="text-center py-8 text-sm text-text-muted">
+            {{ t('profile.noProjects') }}
+          </div>
           <div v-if="activeTab === 'columns'" class="text-center py-8">
-            <p v-if="!user.has_column_access" class="text-sm text-text-muted mb-2">尚未开通专栏功能</p>
+            <p v-if="!user.has_column_access" class="text-sm text-text-muted mb-2">
+              {{ t('profile.columnNotEnabled') }}
+            </p>
             <a
               v-if="!user.has_column_access"
               :href="buildUrl('/register/onboarding')"
               class="text-primary text-sm font-medium hover:underline"
-              >通过答题解锁专栏 →</a
+              >{{ t('profile.unlockColumn') }}</a
             >
-            <p v-else class="text-sm text-text-muted">暂无专栏文章</p>
+            <p v-else class="text-sm text-text-muted">{{ t('profile.noColumnArticles') }}</p>
           </div>
         </div>
       </div>
@@ -109,7 +117,7 @@
         {{ props.username?.charAt(0).toUpperCase() || '?' }}
       </div>
       <div class="text-lg font-semibold text-text-muted">@{{ props.username }}</div>
-      <div class="text-sm text-text-muted">用户不存在或数据加载失败</div>
+      <div class="text-sm text-text-muted">{{ t('profile.notFound') }}</div>
     </div>
   </div>
 </template>
@@ -120,6 +128,7 @@ import type { ProfileInfo } from '~/lib/api/modules/auth';
 import { authApi } from '~/lib/api';
 import { buildUrl } from '~/lib/utils/paths';
 import { titleInfoOf, type TitleInfo } from '../titles';
+import { t } from '~/lib/i18n';
 
 const props = defineProps<{ username: string }>();
 
@@ -132,9 +141,9 @@ const avatarLetter = computed(() => displayName.value.charAt(0).toUpperCase());
 const titleInfo = computed<TitleInfo>(() => titleInfoOf(user.value?.title));
 
 const tabs = computed(() => [
-  { key: 'posts', label: '发言', count: user.value?.post_count ?? 0 },
-  { key: 'projects', label: '项目', count: user.value?.project_count ?? 0 },
-  { key: 'columns', label: '专栏', count: user.value?.column_article_count ?? 0 },
+  { key: 'posts', label: t('profile.tabPosts'), count: user.value?.post_count ?? 0 },
+  { key: 'projects', label: t('profile.tabProjects'), count: user.value?.project_count ?? 0 },
+  { key: 'columns', label: t('profile.tabColumns'), count: user.value?.column_article_count ?? 0 },
 ]);
 
 onMounted(async () => {

@@ -25,16 +25,16 @@ export interface PaperInfo {
 
 // 信件分类
 export const CATEGORIES: CategoryInfo[] = [
-  { key: 'confess', label: '表白', emoji: '💌', color: '#ff9aa2' },
-  { key: 'heart', label: '心事', emoji: '🌧️', color: '#a0c4ff' },
-  { key: 'roast', label: '吐槽', emoji: '🔥', color: '#ffd6a5' },
-  { key: 'help', label: '求助', emoji: '🆘', color: '#bdb2ff' },
-  { key: 'campus', label: '校园', emoji: '🎓', color: '#9bf6ff' },
-  { key: 'work', label: '职场', emoji: '💼', color: '#caffbf' },
-  { key: 'crush', label: '暗恋', emoji: '🌙', color: '#ffc6ff' },
-  { key: 'heal', label: '治愈', emoji: '🌿', color: '#b9fbc0' },
-  { key: 'fun', label: '趣事', emoji: '🎉', color: '#ffadad' },
-  { key: 'insight', label: '感悟', emoji: '💡', color: '#fdffb6' },
+  { key: 'confess', label: 'treeholeData.categories.confess', emoji: '💌', color: '#ff9aa2' },
+  { key: 'heart', label: 'treeholeData.categories.heart', emoji: '🌧️', color: '#a0c4ff' },
+  { key: 'roast', label: 'treeholeData.categories.roast', emoji: '🔥', color: '#ffd6a5' },
+  { key: 'help', label: 'treeholeData.categories.help', emoji: '🆘', color: '#bdb2ff' },
+  { key: 'campus', label: 'treeholeData.categories.campus', emoji: '🎓', color: '#9bf6ff' },
+  { key: 'work', label: 'treeholeData.categories.work', emoji: '💼', color: '#caffbf' },
+  { key: 'crush', label: 'treeholeData.categories.crush', emoji: '🌙', color: '#ffc6ff' },
+  { key: 'heal', label: 'treeholeData.categories.heal', emoji: '🌿', color: '#b9fbc0' },
+  { key: 'fun', label: 'treeholeData.categories.fun', emoji: '🎉', color: '#ffadad' },
+  { key: 'insight', label: 'treeholeData.categories.insight', emoji: '💡', color: '#fdffb6' },
 ];
 
 export function getCategory(key: string): CategoryInfo {
@@ -43,13 +43,19 @@ export function getCategory(key: string): CategoryInfo {
 
 // 内容标签（可多选，区别于“心情”，用于人群/主题归类，如学术）
 export const TAGS: TagInfo[] = [
-  { key: 'academic', label: '学术', emoji: '📚', desc: '科研 / 硕博 / 研究生烦恼', color: '#8e7cff' },
-  { key: 'campus', label: '校园', emoji: '🏫', color: '#4fc3f7' },
-  { key: 'work', label: '职场', emoji: '💼', color: '#81c784' },
-  { key: 'growth', label: '成长', emoji: '🌱', color: '#ffb74d' },
-  { key: 'love', label: '情感', emoji: '💗', color: '#f06292' },
-  { key: 'family', label: '家庭', emoji: '🏠', color: '#9575cd' },
-  { key: 'life', label: '生活', emoji: '🌈', color: '#4db6ac' },
+  {
+    key: 'academic',
+    label: 'treeholeData.tags.academic.label',
+    emoji: '📚',
+    desc: 'treeholeData.tags.academic.desc',
+    color: '#8e7cff',
+  },
+  { key: 'campus', label: 'treeholeData.tags.campus.label', emoji: '🏫', color: '#4fc3f7' },
+  { key: 'work', label: 'treeholeData.tags.work.label', emoji: '💼', color: '#81c784' },
+  { key: 'growth', label: 'treeholeData.tags.growth.label', emoji: '🌱', color: '#ffb74d' },
+  { key: 'love', label: 'treeholeData.tags.love.label', emoji: '💗', color: '#f06292' },
+  { key: 'family', label: 'treeholeData.tags.family.label', emoji: '🏠', color: '#9575cd' },
+  { key: 'life', label: 'treeholeData.tags.life.label', emoji: '🌈', color: '#4db6ac' },
 ];
 
 export function getTag(key: string): TagInfo | undefined {
@@ -58,12 +64,12 @@ export function getTag(key: string): TagInfo | undefined {
 
 // 保密等级
 export const PRIVACY = [
-  { key: 'public', label: '公开可见', desc: '展示在树洞广场' },
-  { key: 'self', label: '仅自己可见', desc: '只保存在本地' },
-  { key: 'random', label: '随机匿名推送', desc: '随机发给陌生人' },
+  { key: 'public', label: 'treeholeData.privacy.public.label', desc: 'treeholeData.privacy.public.desc' },
+  { key: 'self', label: 'treeholeData.privacy.self.label', desc: 'treeholeData.privacy.self.desc' },
+  { key: 'random', label: 'treeholeData.privacy.random.label', desc: 'treeholeData.privacy.random.desc' },
 ];
 
-// 心情标签
+// 心情标签（值为存储/枚举比较值，展示时经 moodKey() 映射到 i18n key）
 export const MOODS = [
   '开心',
   '难过',
@@ -82,6 +88,30 @@ export const MOODS = [
   '治愈',
   '懵圈',
 ];
+
+// 心情枚举值 → i18n key（仅用于展示，不改动存储值）
+export const MOOD_KEYS: Record<string, string> = {
+  开心: 'treeholeData.moods.happy',
+  难过: 'treeholeData.moods.sad',
+  emo: 'treeholeData.moods.emo',
+  平静: 'treeholeData.moods.calm',
+  焦虑: 'treeholeData.moods.anxious',
+  期待: 'treeholeData.moods.expecting',
+  释怀: 'treeholeData.moods.relieved',
+  孤独: 'treeholeData.moods.lonely',
+  心动: 'treeholeData.moods.crush',
+  疲惫: 'treeholeData.moods.tired',
+  勇敢: 'treeholeData.moods.brave',
+  迷茫: 'treeholeData.moods.lost',
+  感恩: 'treeholeData.moods.grateful',
+  委屈: 'treeholeData.moods.wronged',
+  治愈: 'treeholeData.moods.healed',
+  懵圈: 'treeholeData.moods.confused',
+};
+
+export function moodKey(mood: string): string {
+  return MOOD_KEYS[mood] ?? mood;
+}
 
 // 背景贴纸（emoji）
 export const STICKERS = [
@@ -105,11 +135,15 @@ export const STICKERS = [
 
 // 信纸模板（渐变背景 + 名称）
 export const PAPERS: PaperInfo[] = [
-  { key: 'paper', label: '信纸', gradient: 'linear-gradient(135deg,#fff8f0,#ffe9d6)' },
-  { key: 'starry', label: '星空', gradient: 'radial-gradient(circle at 30% 20%, #2b2f77, #0d0b2b)' },
-  { key: 'minimal', label: '简约', gradient: 'linear-gradient(135deg,#fdfdfd,#eef2f5)' },
-  { key: 'art', label: '文艺', gradient: 'linear-gradient(135deg,#f6e7d8,#e9d5ec)' },
-  { key: 'campus', label: '校园', gradient: 'linear-gradient(135deg,#e8f5e9,#dbeafe)' },
+  { key: 'paper', label: 'treeholeData.papers.paper', gradient: 'linear-gradient(135deg,#fff8f0,#ffe9d6)' },
+  {
+    key: 'starry',
+    label: 'treeholeData.papers.starry',
+    gradient: 'radial-gradient(circle at 30% 20%, #2b2f77, #0d0b2b)',
+  },
+  { key: 'minimal', label: 'treeholeData.papers.minimal', gradient: 'linear-gradient(135deg,#fdfdfd,#eef2f5)' },
+  { key: 'art', label: 'treeholeData.papers.art', gradient: 'linear-gradient(135deg,#f6e7d8,#e9d5ec)' },
+  { key: 'campus', label: 'treeholeData.papers.campus', gradient: 'linear-gradient(135deg,#e8f5e9,#dbeafe)' },
 ];
 export function getPaper(key: string): PaperInfo {
   return PAPERS.find((p) => p.key === key) || PAPERS[0];
@@ -122,23 +156,23 @@ export const FONT_SCALES = {
   large: '1.15',
 };
 
-// 每日治愈文案
+// 每日治愈文案（i18n key，展示时经 t() 渲染）
 export const DAILY_QUOTES = [
-  '你不需要很厉害才能开始，但你需要开始才能很厉害。',
-  '今天的不开心就到此为止吧，明天依旧光芒万丈。',
-  '万物皆有裂痕，那是光照进来的地方。',
-  '慢慢来，所有的好戏都在烟火里，也在平淡里。',
-  '你是独一无二的，像夜空里最安静的那颗星。',
-  '允许自己偶尔枯萎，是为了更好地重新生长。',
-  '世界很吵，但你的心可以很静。',
-  '把心事说给风听，风会替你保守秘密。',
-  '温柔的人，终会被世界温柔以待。',
-  '不被定义，才自由。',
-  '请相信，冬天走了，春天一定会来。',
-  '你今天的努力，是幸运的伏笔。',
-  '月亮本无光，借了太阳的光，你亦可。',
-  '不要急着要答案，时间会替你慢慢揭晓。',
-  '生活明朗，万物可爱，人间值得。',
+  'treeholeData.quotes.q1',
+  'treeholeData.quotes.q2',
+  'treeholeData.quotes.q3',
+  'treeholeData.quotes.q4',
+  'treeholeData.quotes.q5',
+  'treeholeData.quotes.q6',
+  'treeholeData.quotes.q7',
+  'treeholeData.quotes.q8',
+  'treeholeData.quotes.q9',
+  'treeholeData.quotes.q10',
+  'treeholeData.quotes.q11',
+  'treeholeData.quotes.q12',
+  'treeholeData.quotes.q13',
+  'treeholeData.quotes.q14',
+  'treeholeData.quotes.q15',
 ];
 export function randomQuote(): string {
   return DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];

@@ -1,5 +1,6 @@
 import { reactive, ref, computed } from 'vue';
 import { authApi } from '~/lib/api/modules/auth';
+import { t } from '~/lib/i18n';
 
 export type RecoveryStage = 'account' | 'verify' | '2fa' | 'reset' | 'done';
 export type RecoveryContact = 'email' | 'phone' | 'magic';
@@ -59,14 +60,14 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   });
 
   function fail(msg?: string): void {
-    error.value = msg ?? '操作失败，请重试';
+    error.value = msg ?? t('messages.operationFailed');
   }
 
   // ── Step 1: 发送验证码 ──
   async function requestCode(): Promise<void> {
     error.value = null;
     const value = account.value.trim();
-    if (!value) return fail('请输入注册时使用的邮箱或手机号');
+    if (!value) return fail(t('messages.recovery.enterAccount'));
     loading.value = true;
     try {
       if (contact.value === 'email') {
@@ -80,7 +81,7 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
         if (r.isErr()) return fail(r.error.message);
       }
       stage.value = 'verify';
-      successMessage.value = '验证码已发送，请查收';
+      successMessage.value = t('messages.auth.codeSent');
     } finally {
       loading.value = false;
     }
@@ -90,7 +91,7 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   async function verifyCode(): Promise<void> {
     error.value = null;
     const value = account.value.trim();
-    if (!code.value.trim()) return fail('请输入验证码');
+    if (!code.value.trim()) return fail(t('messages.recovery.enterCode'));
     loading.value = true;
     try {
       let r;
@@ -122,8 +123,8 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   // ── Step 2.5: MFA 时的 TOTP 验证 ──
   async function submit2FA(totp: string): Promise<void> {
     error.value = null;
-    if (!tempToken.value) return fail('缺少临时会话令牌，请重新发起找回');
-    if (!/^\d{6}$/.test(totp)) return fail('请输入 6 位动态验证码');
+    if (!tempToken.value) return fail(t('messages.recovery.missingSessionToken'));
+    if (!/^\d{6}$/.test(totp)) return fail(t('messages.recovery.enterSixDigitTotp'));
     loading.value = true;
     try {
       const v = await authApi.verify2FA(tempToken.value, totp);
@@ -139,8 +140,8 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
   // ── Step 3: 设置新密码（MFA 场景走完 verify-totp 后；非 MFA 场景由 verify 直接带新密码）──
   async function stepReset(): Promise<void> {
     error.value = null;
-    if (newPassword.value.length < 6) return fail('密码长度不能少于 6 位');
-    if (newPassword.value !== confirm.value) return fail('两次输入的密码不一致');
+    if (newPassword.value.length < 6) return fail(t('messages.recovery.passwordTooShort'));
+    if (newPassword.value !== confirm.value) return fail(t('messages.recovery.passwordMismatch'));
     loading.value = true;
     try {
       const value = account.value.trim();
@@ -161,7 +162,7 @@ export function useRecoveryFlow(options: RecoveryFlowOptions = {}): RecoveryFlow
         if (r.isErr()) return fail(r.error.message);
       }
       stage.value = 'done';
-      if (typeof onSuccess === 'function') onSuccess('密码已重置，请登录');
+      if (typeof onSuccess === 'function') onSuccess(t('messages.recovery.resetSuccess'));
     } finally {
       loading.value = false;
     }

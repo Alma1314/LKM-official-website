@@ -1,9 +1,11 @@
 ---
+import { t } from '~/lib/i18n';
+
 interface Props {
   message?: string;
 }
 
-const { message = '暂无内容' } = Astro.props;
+const { message = t('primitives.empty') } = Astro.props;
 ---
 
 <div class="flex min-h-[200px] items-center justify-center text-muted-foreground">

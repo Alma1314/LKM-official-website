@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect, onMounted } from 'vue';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { Icon } from '@iconify/vue';
 import { url } from '~/lib/utils/url-utils';
 
@@ -142,7 +141,7 @@ watchEffect(() => {
       class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"
     />
     <input
-      :placeholder="i18n(I18nKey.search)"
+      :placeholder="t('search.placeholder')"
       v-model="keywordDesktop"
       @focus="
         () => {
@@ -184,7 +183,7 @@ watchEffect(() => {
         class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"
       />
       <input
-        placeholder="Search"
+        :placeholder="t('search.placeholder')"
         v-model="keywordMobile"
         class="pl-10 absolute inset-0 text-sm bg-transparent outline-0 focus:w-60 text-black/50 dark:text-white/50"
       />

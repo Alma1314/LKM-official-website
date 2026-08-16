@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { t } from '~/lib/i18n';
 import { url } from '~/lib/utils/url-utils';
 
 interface MobileMenuLink {
@@ -15,7 +16,7 @@ interface Props {
   title?: string;
 }
 
-const { id, links = [], title = '导航' } = Astro.props;
+const { id, links = [], title = t('nav.navigation') } = Astro.props;
 ---
 
 <div id={id} data-mobile-nav-panel class="fixed inset-0 z-[100] pointer-events-none" aria-hidden="true">
@@ -33,7 +34,7 @@ const { id, links = [], title = '导航' } = Astro.props;
       <span class="text-[17px] font-semibold text-deep-text">{title}</span>
       <button
         data-nav-close
-        aria-label="关闭菜单"
+        aria-label={t('nav.closeMenu')}
         class="btn-plain rounded-lg w-10 h-10 flex items-center justify-center"
       >
         <Icon name="material-symbols:close" class="text-[1.25rem]" />
@@ -41,7 +42,7 @@ const { id, links = [], title = '导航' } = Astro.props;
     </div>
 
     <!-- links -->
-    <nav class="flex-1 overflow-y-auto py-2" aria-label="移动端导航">
+    <nav class="flex-1 overflow-y-auto py-2" aria-label={t('nav.mobileNav')}>
       <ul>
         {
           links.map((link) => {
@@ -55,7 +56,7 @@ const { id, links = [], title = '导航' } = Astro.props;
                       data-nav-accordion-trigger
                       class="flex items-center justify-between w-full px-5 py-3 text-left font-semibold text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                     >
-                      <span>{link.name}</span>
+                      <span>{t(link.name)}</span>
                       <Icon
                         name="material-symbols:keyboard-arrow-down-rounded"
                         class="text-[1.25rem] text-text-muted transition-transform duration-200"
@@ -72,7 +73,7 @@ const { id, links = [], title = '导航' } = Astro.props;
                             class="flex items-center gap-2 px-8 py-2.5 text-[15px] text-text-muted hover:text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                             data-nav-link
                           >
-                            {child.name}
+                            {t(child.name)}
                             {child.external && (
                               <Icon
                                 name="fa6-solid:arrow-up-right-from-square"
@@ -92,7 +93,7 @@ const { id, links = [], title = '导航' } = Astro.props;
                     class="flex items-center gap-2 px-5 py-3 font-semibold text-deep-text hover:bg-[var(--btn-plain-bg-hover)] transition"
                     data-nav-link
                   >
-                    {link.name}
+                    {t(link.name)}
                     {link.external && (
                       <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] text-text-muted" />
                     )}

@@ -5,7 +5,7 @@
 
     <!-- Step 1: account -->
     <form v-if="flow.stage === 'account'" @submit.prevent="flow.requestCode()" class="space-y-4">
-      <p class="text-sm text-text-muted text-center">输入注册时使用的邮箱或手机号以接收验证码</p>
+      <p class="text-sm text-text-muted text-center">{{ t('recovery.accountHint') }}</p>
       <!-- 联系方式类型选择 -->
       <div class="grid grid-cols-2 gap-2">
         <button
@@ -14,7 +14,7 @@
           :class="flow.contact === 'email' ? 'btn-primary' : 'btn-ghost'"
           @click="flow.contact = 'email'"
         >
-          使用邮箱
+          {{ t('recovery.useEmail') }}
         </button>
         <button
           type="button"
@@ -22,13 +22,13 @@
           :class="flow.contact === 'phone' ? 'btn-primary' : 'btn-ghost'"
           @click="flow.contact = 'phone'"
         >
-          使用手机号
+          {{ t('recovery.usePhone') }}
         </button>
       </div>
       <AuthField
         id="recovery-account"
-        :label="flow.contact === 'phone' ? '手机号' : '邮箱'"
-        :placeholder="flow.contact === 'phone' ? '请输入手机号' : '请输入邮箱'"
+        :label="flow.contact === 'phone' ? t('recovery.phone') : t('recovery.email')"
+        :placeholder="flow.contact === 'phone' ? t('recovery.phonePlaceholder') : t('recovery.emailPlaceholder')"
         :autocomplete="flow.contact === 'phone' ? 'tel' : 'email'"
         v-model="flow.account"
       />
@@ -38,7 +38,7 @@
         :disabled="flow.loading || !flow.isContactValid"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-        <span v-else>发送验证码</span>
+        <span v-else>{{ t('recovery.sendCode') }}</span>
       </button>
     </form>
 
@@ -46,8 +46,8 @@
     <form v-else-if="flow.stage === 'verify'" @submit.prevent="flow.verifyCode()" class="space-y-4">
       <AuthField
         id="recovery-code"
-        label="验证码"
-        placeholder="请输入验证码"
+        :label="t('recovery.code')"
+        :placeholder="t('recovery.codePlaceholder')"
         autocomplete="one-time-code"
         v-model="flow.code"
       />
@@ -57,18 +57,18 @@
         :disabled="flow.loading || flow.code.length < 6"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-        <span v-else>校验验证码</span>
+        <span v-else>{{ t('recovery.verifyCode') }}</span>
       </button>
-      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">返回</button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">{{ t('common.back') }}</button>
     </form>
 
     <!-- Step 2.5: 2FA (MFA 场景) -->
     <div v-else-if="flow.stage === '2fa'" class="space-y-4">
-      <p class="text-sm text-text-muted text-center">该账号开启了两步验证，请输入动态验证码</p>
+      <p class="text-sm text-text-muted text-center">{{ t('recovery.twoFactorHint') }}</p>
       <AuthField
         id="recovery-totp"
-        label="动态验证码"
-        placeholder="6 位验证码"
+        :label="t('recovery.totp')"
+        :placeholder="t('recovery.totpPlaceholder')"
         inputmode="numeric"
         v-model="totpCode"
       />
@@ -79,26 +79,28 @@
         @click="flow.submit2FA(totpCode)"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-        <span v-else>验证</span>
+        <span v-else>{{ t('common.verify') }}</span>
       </button>
-      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">恢复完成，重新开始</button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">
+        {{ t('recovery.restart') }}
+      </button>
     </div>
 
     <!-- Step 3: reset password -->
     <form v-else-if="flow.stage === 'reset'" @submit.prevent="flow.stepReset()" class="space-y-4">
       <AuthField
         id="recovery-new"
-        label="新密码"
+        :label="t('recovery.newPassword')"
         type="password"
-        placeholder="请输入新密码（至少6位）"
+        :placeholder="t('recovery.newPasswordPlaceholder')"
         autocomplete="new-password"
         v-model="flow.newPassword"
       />
       <AuthField
         id="recovery-confirm"
-        label="确认新密码"
+        :label="t('recovery.confirmPassword')"
         type="password"
-        placeholder="再次输入新密码"
+        :placeholder="t('recovery.confirmPasswordPlaceholder')"
         autocomplete="new-password"
         v-model="flow.confirm"
       />
@@ -108,9 +110,9 @@
         :disabled="flow.loading"
       >
         <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-        <span v-else>重置密码</span>
+        <span v-else>{{ t('recovery.resetPassword') }}</span>
       </button>
-      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">返回</button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">{{ t('common.back') }}</button>
     </form>
 
     <!-- Step 4: done -->
@@ -129,9 +131,9 @@
           <polyline points="22 4 12 14.01 9 11.01" />
         </svg>
       </div>
-      <p class="text-xl font-semibold">密码已重置</p>
-      <p class="text-sm text-text-muted">请使用新密码登录</p>
-      <button type="button" class="btn btn-primary w-full" @click="emit('login')">去登录</button>
+      <p class="text-xl font-semibold">{{ t('recovery.done') }}</p>
+      <p class="text-sm text-text-muted">{{ t('recovery.loginWithNewPassword') }}</p>
+      <button type="button" class="btn btn-primary w-full" @click="emit('login')">{{ t('recovery.goLogin') }}</button>
     </div>
   </div>
 </template>
@@ -139,6 +141,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRecoveryFlow } from '~/features/auth/composables/useRecoveryFlow';
+import { t } from '~/lib/i18n';
 import AuthField from '../shared/AuthField.vue';
 import AuthStatus from '../shared/AuthStatus.vue';
 

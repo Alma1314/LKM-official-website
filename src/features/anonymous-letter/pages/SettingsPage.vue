@@ -1,27 +1,31 @@
 <template>
   <TreeholeShell active-nav="settings">
     <div class="container">
-      <h1 class="page-title">⚙️ 设置中心</h1>
-      <p class="page-sub">个性化你的树洞体验。</p>
+      <h1 class="page-title">⚙️ {{ t('treehole.settings.title') }}</h1>
+      <p class="page-sub">{{ t('treehole.settings.subtitle') }}</p>
 
       <section class="set-card glass">
         <!-- 主题模式 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🌗 主题模式</b>
-            <small>白日温柔奶油风 / 暗夜深空渐变风</small>
+            <b>{{ t('treehole.settings.themeMode') }}</b>
+            <small>{{ t('treehole.settings.themeModeDesc') }}</small>
           </div>
           <div class="theme-switch">
-            <button class="theme-opt" :class="{ active: !isNight }" @click="setTheme('day')">☀️ 日间</button>
-            <button class="theme-opt" :class="{ active: isNight }" @click="setTheme('night')">🌙 夜间</button>
+            <button class="theme-opt" :class="{ active: !isNight }" @click="setTheme('day')">
+              {{ t('treehole.settings.themeDay') }}
+            </button>
+            <button class="theme-opt" :class="{ active: isNight }" @click="setTheme('night')">
+              {{ t('treehole.settings.themeNight') }}
+            </button>
           </div>
         </div>
 
         <!-- 自定义主题配色 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🎨 自定义主题配色</b>
-            <small>点击色块切换强调色</small>
+            <b>{{ t('treehole.settings.accentColor') }}</b>
+            <small>{{ t('treehole.settings.accentColorDesc') }}</small>
           </div>
           <div class="accent-picks">
             <button
@@ -32,15 +36,21 @@
               :style="{ background: `linear-gradient(135deg, ${a[0]}, ${a[1]})` }"
               @click="setAccent(a[0], a[1])"
             ></button>
-            <input type="color" v-model="customA" class="accent-color" @input="onCustom" title="自定义主色" />
+            <input
+              type="color"
+              v-model="customA"
+              class="accent-color"
+              @input="onCustom"
+              :title="t('treehole.settings.customAccent')"
+            />
           </div>
         </div>
 
         <!-- 字体大小 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🔤 字体大小</b>
-            <small>三档调节，全站生效</small>
+            <b>{{ t('treehole.settings.fontSize') }}</b>
+            <small>{{ t('treehole.settings.fontSizeDesc') }}</small>
           </div>
           <div class="theme-switch">
             <button
@@ -48,21 +58,21 @@
               :class="{ active: state.settings.fontScale === 'small' }"
               @click="setFontScale('small')"
             >
-              小
+              {{ t('treehole.settings.fontSmall') }}
             </button>
             <button
               class="theme-opt"
               :class="{ active: state.settings.fontScale === 'normal' }"
               @click="setFontScale('normal')"
             >
-              中
+              {{ t('treehole.settings.fontNormal') }}
             </button>
             <button
               class="theme-opt"
               :class="{ active: state.settings.fontScale === 'large' }"
               @click="setFontScale('large')"
             >
-              大
+              {{ t('treehole.settings.fontLarge') }}
             </button>
           </div>
         </div>
@@ -70,8 +80,8 @@
         <!-- 白噪音背景音乐 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🌫️ 白噪音背景音乐</b>
-            <small>柔和雨声，沉浸书写</small>
+            <b>{{ t('treehole.settings.whiteNoise') }}</b>
+            <small>{{ t('treehole.settings.whiteNoiseDesc') }}</small>
           </div>
           <button class="switch" :class="{ on: state.settings.audioOn }" @click="toggleAudio">
             <span class="knob"></span>
@@ -81,8 +91,8 @@
         <!-- 高对比度护眼模式 -->
         <div class="set-row">
           <div class="set-info">
-            <b>👁️ 高对比度护眼模式</b>
-            <small>加深文字对比，缓解眼疲劳</small>
+            <b>{{ t('treehole.settings.highContrast') }}</b>
+            <small>{{ t('treehole.settings.highContrastDesc') }}</small>
           </div>
           <button class="switch" :class="{ on: highContrast }" @click="toggleHighContrast()">
             <span class="knob"></span>
@@ -92,8 +102,8 @@
         <!-- 低性能设备特效开关 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🐢 低性能设备特效开关</b>
-            <small>关闭重特效与粒子，更流畅</small>
+            <b>{{ t('treehole.settings.lowPerf') }}</b>
+            <small>{{ t('treehole.settings.lowPerfDesc') }}</small>
           </div>
           <button class="switch" :class="{ on: lowPerf }" @click="toggleLowPerf()">
             <span class="knob"></span>
@@ -103,8 +113,8 @@
         <!-- 全站动效静音 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🔕 全站动效静音</b>
-            <small>暂停漂浮粒子与过渡动画</small>
+            <b>{{ t('treehole.settings.mute') }}</b>
+            <small>{{ t('treehole.settings.muteDesc') }}</small>
           </div>
           <button class="switch" :class="{ on: state.settings.muted }" @click="toggleMuted">
             <span class="knob"></span>
@@ -114,8 +124,8 @@
         <!-- 投稿限流 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🚦 投稿限流（自定义）</b>
-            <small>每分钟最多可投稿 {{ state.settings.rateLimit }} 封</small>
+            <b>{{ t('treehole.settings.rateLimit') }}</b>
+            <small>{{ t('treehole.settings.rateLimitDesc', { count: state.settings.rateLimit }) }}</small>
           </div>
           <div class="rate-pick">
             <button
@@ -133,14 +143,14 @@
         <!-- 隐私声明 -->
         <div class="set-row">
           <div class="set-info">
-            <b>🔒 隐私声明</b>
-            <small>查看数据本地存储说明</small>
+            <b>{{ t('treehole.settings.privacy') }}</b>
+            <small>{{ t('treehole.settings.privacyDesc') }}</small>
           </div>
-          <button class="mini" @click="showPrivacy = true">查看</button>
+          <button class="mini" @click="showPrivacy = true">{{ t('treehole.settings.view') }}</button>
         </div>
       </section>
 
-      <p class="foot-note">数据保存于本地浏览器（匿名），投稿发布至服务器数据库。</p>
+      <p class="foot-note">{{ t('treehole.settings.footNoteLocal') }}</p>
 
       <PrivacyDialog v-model="showPrivacy" />
     </div>
@@ -153,6 +163,7 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import PrivacyDialog from '../components/PrivacyDialog.vue';
 import { useApp } from '../stores/app';
 import * as store from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const app = useApp();
 const {

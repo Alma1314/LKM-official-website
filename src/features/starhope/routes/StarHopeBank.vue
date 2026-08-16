@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useQuestionBankStore } from '../stores/question-bank';
+import { t } from '~/lib/i18n';
 const bank = useQuestionBankStore();
 onMounted(async () => {
   await bank.loadQuestions();
@@ -10,10 +11,17 @@ onMounted(async () => {
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold text-deep-text mb-6">题库管理</h1>
+    <h1 class="text-2xl font-bold text-deep-text mb-6">{{ t('starhope.bank.title') }}</h1>
     <div class="card-base p-6 text-center text-text-muted">
       <div class="text-5xl mb-4">📚</div>
-      <p>共 {{ bank.questions.value.length }} 道题目，{{ bank.folders.value.length }} 个文件夹</p>
+      <p>
+        {{
+          t('starhope.bank.summary', {
+            questions: bank.questions.value.length,
+            folders: bank.folders.value.length,
+          })
+        }}
+      </p>
     </div>
   </div>
 </template>

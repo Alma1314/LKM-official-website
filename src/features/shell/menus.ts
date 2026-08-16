@@ -1,98 +1,102 @@
 import type { NavBarLink } from '~/types/config';
 
-/** 官网默认顶栏一级菜单（原官方 navbar 的 4 项），供无显式 navItems 的布局兜底。 */
-export const officialDefaultNavItems: string[] = ['主页', '新闻资讯', '寻求帮助', '七月团队'];
+/**
+ * 官网默认顶栏一级菜单（原官方 navbar 的 4 项），供无显式 navItems 的布局兜底。
+ * 值为菜单 name（即 i18n key），与 allMenuItems 中对应菜单的 name 匹配。
+ */
+export const officialDefaultNavItems: string[] = ['nav.home', 'nav.news', 'nav.help', 'nav.team'];
 
 /**
  * 全站统一导航菜单池（原 config.yaml fuwari.navbar 与 fuwari.navbarCommunity 合并）。
- * 页面用 navItems 白名单从该池中挑选要显示的一级菜单。
+ * 页面用 navItems 白名单（name，即 i18n key）从该池中挑选要显示的一级菜单。
+ * 渲染层通过 t(name) 显示本地化文本。
  */
 export const allMenuItems: NavBarLink[] = [
   {
-    name: '主页',
+    name: 'nav.home',
     url: '/',
     children: [
-      { name: '简明介绍', url: '/' },
-      { name: '团队成员', url: '/#team' },
-      { name: '发展历程', url: '/#timeline' },
-      { name: '最近更新', url: '/#update' },
-      { name: '常见问题', url: '/#faq' },
+      { name: 'nav.intro', url: '/' },
+      { name: 'nav.teamMembers', url: '/#team' },
+      { name: 'nav.timeline', url: '/#timeline' },
+      { name: 'nav.recentUpdates', url: '/#update' },
+      { name: 'nav.faq', url: '/#faq' },
     ],
   },
   {
-    name: '社区主页',
+    name: 'nav.community',
     url: '/community',
     children: [
-      { name: '社区首页', url: '/community' },
-      { name: '板块广场', url: '/community/forum' },
-      { name: '专栏', url: '/community/columns' },
-      { name: '帮助/求助', url: '/official/qa' },
-      { name: '竞赛', url: '/community/competition' },
+      { name: 'nav.communityHome', url: '/community' },
+      { name: 'nav.forum', url: '/community/forum' },
+      { name: 'nav.columns', url: '/community/columns' },
+      { name: 'nav.qa', url: '/official/qa' },
+      { name: 'nav.competition', url: '/community/competition' },
     ],
   },
   {
-    name: '新闻资讯',
+    name: 'nav.news',
     url: '/official/news',
     children: [
-      { name: '官方公告', url: '/official/news/announcement' },
-      { name: '科技新闻', url: '/official/news/news' },
-      { name: '科普相关', url: '/official/news/science' },
+      { name: 'nav.officialAnnouncement', url: '/official/news/announcement' },
+      { name: 'nav.techNews', url: '/official/news/news' },
+      { name: 'nav.science', url: '/official/news/science' },
     ],
   },
   {
-    name: '寻求帮助',
+    name: 'nav.help',
     url: '/official/articles',
     children: [
-      { name: '文章列表', url: '/official/articles' },
-      { name: '所有分类', url: '/official/articles/categories' },
-      { name: '文章归档', url: '/official/articles/archive' },
-      { name: '关于文章', url: '/official/articles/about' },
+      { name: 'nav.articleList', url: '/official/articles' },
+      { name: 'nav.allCategories', url: '/official/articles/categories' },
+      { name: 'nav.articleArchive', url: '/official/articles/archive' },
+      { name: 'nav.aboutArticles', url: '/official/articles/about' },
     ],
   },
   {
-    name: '七月团队',
+    name: 'nav.team',
     url: '/official/team',
     children: [
-      { name: '管理团队', url: '/official/team' },
-      { name: '项目团队', url: '/official/project-team' },
-      { name: '关于我们', url: '/blog/about' },
-      { name: '服务', url: '/official/services' },
-      { name: '赞助与支持', url: '/official/pricing' },
-      { name: '联系我们', url: '/official/contact' },
-      { name: 'QQ社群', url: '/official/communities' },
+      { name: 'nav.managementTeam', url: '/official/team' },
+      { name: 'nav.projectTeam', url: '/official/project-team' },
+      { name: 'nav.aboutUs', url: '/blog/about' },
+      { name: 'nav.services', url: '/official/services' },
+      { name: 'nav.sponsorship', url: '/official/pricing' },
+      { name: 'nav.contactUs', url: '/official/contact' },
+      { name: 'nav.qqCommunity', url: '/official/communities' },
     ],
   },
   {
-    name: '博客',
+    name: 'nav.blog',
     url: '/blog',
     children: [
-      { name: '博客列表', url: '/blog' },
-      { name: '所有分类', url: '/blog/categories' },
-      { name: '博客归档', url: '/blog/archive' },
-      { name: '关于博客', url: '/blog/about' },
+      { name: 'nav.blogList', url: '/blog' },
+      { name: 'nav.allCategories', url: '/blog/categories' },
+      { name: 'nav.archive', url: '/blog/archive' },
+      { name: 'nav.aboutBlog', url: '/blog/about' },
     ],
   },
   {
-    name: '资源',
+    name: 'nav.resources',
     url: '/community/forum',
     children: [
-      { name: '板块广场', url: '/community/forum' },
-      { name: '专栏', url: '/community/columns' },
-      { name: '文件库', url: '/community/files' },
-      { name: '帮助/求助', url: '/official/qa' },
-      { name: '项目大厅', url: '/official/projects' },
-      { name: '竞赛', url: '/community/competition' },
-      { name: '资助系统', url: '/official/funding' },
-      { name: '其他应用', url: '/apps' },
+      { name: 'nav.forum', url: '/community/forum' },
+      { name: 'nav.columns', url: '/community/columns' },
+      { name: 'nav.fileLibrary', url: '/community/files' },
+      { name: 'nav.qa', url: '/official/qa' },
+      { name: 'nav.projects', url: '/official/projects' },
+      { name: 'nav.competition', url: '/community/competition' },
+      { name: 'nav.funding', url: '/official/funding' },
+      { name: 'nav.moreApps', url: '/apps' },
     ],
   },
   {
-    name: '我的',
+    name: 'nav.mine',
     url: '/account',
     children: [
-      { name: '个人主页', url: '/account' },
-      { name: '贡献系统', url: '/contribution' },
-      { name: '设置', url: '/account' },
+      { name: 'nav.profile', url: '/account' },
+      { name: 'nav.contribution', url: '/contribution' },
+      { name: 'nav.settings', url: '/account' },
     ],
   },
 ];

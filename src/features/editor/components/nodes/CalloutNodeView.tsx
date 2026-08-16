@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface CalloutNodeViewProps {
   node: Node;
@@ -10,10 +11,10 @@ interface CalloutNodeViewProps {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  info: '信息',
-  warning: '警告',
-  error: '错误',
-  success: '成功',
+  info: t('editor.callout.info'),
+  warning: t('editor.callout.warning'),
+  error: t('editor.callout.error'),
+  success: t('editor.callout.success'),
 };
 
 const TYPE_ICONS: Record<string, string> = {
@@ -58,7 +59,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
         <span className="text-lg">{TYPE_ICONS[ctype]}</span>
         <div>
           {title && <h4 className="font-semibold text-sm">{title}</h4>}
-          <p className="text-sm opacity-80">{TYPE_LABELS[ctype]} 提示 — 点击编辑属性</p>
+          <p className="text-sm opacity-80">{t('editor.callout.hintEdit', { type: TYPE_LABELS[ctype] })}</p>
         </div>
       </div>
 
@@ -67,7 +68,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
           ref={panelRef}
           className="absolute top-full left-0 mt-1 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
         >
-          <label className="text-xs font-medium block mb-1">类型</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.callout.type')}</label>
           <select
             className="rte-select rte-select--sm w-full mb-2"
             value={ctype}
@@ -79,12 +80,12 @@ const CalloutNodeView = memo(function CalloutNodeView({
               </option>
             ))}
           </select>
-          <label className="text-xs font-medium block mb-1">标题（可选）</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.callout.titleOptional')}</label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={title}
-            placeholder="输入标题"
+            placeholder={t('editor.callout.titlePlaceholder')}
             onChange={(e) => updateAttributes({ title: e.target.value })}
           />
           <div className="flex gap-1 justify-end">
@@ -103,7 +104,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 }
               }}
             >
-              删除
+              {t('editor.delete')}
             </button>
             <button
               type="button"
@@ -113,7 +114,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 setEditing(false);
               }}
             >
-              确定
+              {t('editor.confirm')}
             </button>
           </div>
         </div>

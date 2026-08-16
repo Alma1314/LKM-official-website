@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { blogApi } from '~/lib/api';
 import type { BlogSeriesDetail } from '../types/blog';
+import { t } from '~/lib/i18n';
 
 const props = defineProps<{
   seriesId: number;
@@ -42,7 +43,7 @@ function fileLink(filepath: string) {
 
   <div v-else-if="error" class="text-center py-16">
     <p class="text-red-500 mb-4">{{ error }}</p>
-    <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="load">重试</button>
+    <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="load">{{ t('common.retry') }}</button>
   </div>
 
   <div v-else-if="series" class="blog-series">
@@ -50,13 +51,13 @@ function fileLink(filepath: string) {
       <h1 class="text-3xl font-bold">{{ series.title }}</h1>
       <p v-if="series.description" class="mt-2 text-text-muted">{{ series.description }}</p>
       <div class="flex items-center gap-4 mt-3 text-sm text-text-muted">
-        <span>{{ series.star_count }} 收藏</span>
-        <span>{{ series.status === 'active' ? '活跃' : '已归档' }}</span>
+        <span>{{ t('blog.starCount', { count: series.star_count }) }}</span>
+        <span>{{ series.status === 'active' ? t('blog.seriesActive') : t('blog.seriesArchived') }}</span>
       </div>
     </div>
 
     <div v-if="series.file_tree && series.file_tree.length > 0" class="mt-8">
-      <h2 class="text-xl font-semibold mb-4">文章列表</h2>
+      <h2 class="text-xl font-semibold mb-4">{{ t('blog.articleListTitle') }}</h2>
       <ul class="space-y-2">
         <li v-for="node in series.file_tree" :key="node.name">
           <div v-if="node.type === 'tree' && node.children">
@@ -82,7 +83,7 @@ function fileLink(filepath: string) {
     </div>
 
     <div v-else class="mt-8 text-text-muted">
-      <p>这个系列还没有文章</p>
+      <p>{{ t('blog.seriesEmpty') }}</p>
     </div>
   </div>
 </template>

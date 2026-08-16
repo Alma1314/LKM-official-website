@@ -1,13 +1,15 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <h3 class="text-xl font-semibold text-deep-text">专业知识答题</h3>
-      <p class="text-sm text-text-muted mt-1">通过答题即可解锁专栏功能和专业资格（可跳过，之后也可以在设置中答题）</p>
+      <h3 class="text-xl font-semibold text-deep-text">{{ t('onboarding.quiz.title') }}</h3>
+      <p class="text-sm text-text-muted mt-1">{{ t('onboarding.quiz.subtitle') }}</p>
     </div>
 
     <!-- 选择领域 -->
     <div v-if="!quizStarted">
-      <label class="block text-sm font-medium text-deep-text mb-3 text-center">选择你擅长的领域</label>
+      <label class="block text-sm font-medium text-deep-text mb-3 text-center">{{
+        t('onboarding.quiz.chooseField')
+      }}</label>
       <div class="flex flex-wrap justify-center gap-2">
         <button
           v-for="f in quizFields"
@@ -21,7 +23,7 @@
           "
           @click="selectedField = f.value"
         >
-          {{ f.label }}
+          {{ t(f.labelKey) }}
         </button>
       </div>
       <div class="text-center mt-4">
@@ -32,7 +34,7 @@
           :class="!selectedField ? 'opacity-50 cursor-not-allowed' : ''"
           @click="startQuiz"
         >
-          开始答题（{{ questions.length }} 题）
+          {{ t('onboarding.quiz.start', { count: questions.length }) }}
         </button>
       </div>
     </div>
@@ -40,7 +42,9 @@
     <!-- 答题中 -->
     <div v-else-if="!quizFinished">
       <div class="flex items-center justify-between mb-4">
-        <span class="text-sm text-text-muted">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
+        <span class="text-sm text-text-muted">{{
+          t('onboarding.quiz.progress', { current: currentIndex + 1, total: questions.length })
+        }}</span>
         <div class="flex gap-1">
           <span
             v-for="(_, i) in questions"
@@ -58,7 +62,7 @@
       </div>
 
       <div class="bg-card-bg border border-surface-3 rounded-xl p-6">
-        <p class="text-deep-text font-medium mb-4">{{ questions[currentIndex].stem }}</p>
+        <p class="text-deep-text font-medium mb-4">{{ t(questions[currentIndex].stem) }}</p>
         <div class="space-y-2">
           <button
             v-for="(opt, i) in questions[currentIndex].options"
@@ -76,14 +80,14 @@
             @click="answer(i)"
           >
             <span class="font-mono text-text-muted mr-2">{{ 'ABCD'[i] }}.</span>
-            {{ opt }}
+            {{ t(opt) }}
           </button>
         </div>
       </div>
 
       <div class="flex justify-between mt-4">
         <button type="button" class="btn-ghost text-sm" :disabled="currentIndex === 0" @click="currentIndex--">
-          上一题
+          {{ t('onboarding.quiz.prev') }}
         </button>
         <button
           v-if="currentIndex < questions.length - 1 && answers[currentIndex] !== undefined"
@@ -91,10 +95,10 @@
           class="btn-primary px-4 py-2 rounded-lg text-sm"
           @click="currentIndex++"
         >
-          下一题
+          {{ t('onboarding.quiz.next') }}
         </button>
         <button v-if="allAnswered" type="button" class="btn-primary px-4 py-2 rounded-lg text-sm" @click="finishQuiz">
-          提交
+          {{ t('onboarding.submit') }}
         </button>
       </div>
     </div>
@@ -115,15 +119,22 @@
         class="text-lg font-semibold"
         :class="passed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
       >
-        {{ passed ? '恭喜通过！' : '未通过' }}
+        {{ passed ? t('onboarding.quiz.passed') : t('onboarding.quiz.failed') }}
       </h3>
       <p class="text-sm text-text-muted">
-        正确 {{ correctCount }} / {{ questions.length }}（正确率
-        {{ Math.round((correctCount / questions.length) * 100) }}%，{{ passed ? '≥60%' : '<60%' }}）
+        {{
+          t('onboarding.quiz.result', {
+            correct: correctCount,
+            total: questions.length,
+            rate: Math.round((correctCount / questions.length) * 100),
+          })
+        }}
       </p>
-      <p v-if="passed" class="text-sm text-primary font-medium">已解锁专栏功能和专业资格！</p>
-      <p v-else class="text-sm text-text-muted">正确率达到 60% 即可通过，可以重新答题或稍后再试。</p>
-      <button v-if="!passed" type="button" class="btn-ghost text-sm" @click="resetQuiz">重新答题</button>
+      <p v-if="passed" class="text-sm text-primary font-medium">{{ t('onboarding.quiz.unlocked') }}</p>
+      <p v-else class="text-sm text-text-muted">{{ t('onboarding.quiz.retryHint') }}</p>
+      <button v-if="!passed" type="button" class="btn-ghost text-sm" @click="resetQuiz">
+        {{ t('onboarding.quiz.retry') }}
+      </button>
     </div>
   </div>
 </template>
@@ -131,6 +142,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t, type TranslationKey } from '~/lib/i18n';
 
 interface QuizQuestion {
   id: string;
@@ -145,204 +157,336 @@ const quizQuestions: QuizQuestion[] = [
   {
     id: 'p1',
     field: 'physics',
-    fieldLabel: '物理学',
-    stem: '光速在真空中约为多少？',
-    options: ['3×10⁶ m/s', '3×10⁷ m/s', '3×10⁸ m/s', '3×10⁹ m/s'],
+    fieldLabel: 'onboarding.tags.physics',
+    stem: 'onboarding.quizData.p1.stem',
+    options: [
+      'onboarding.quizData.p1.options.0',
+      'onboarding.quizData.p1.options.1',
+      'onboarding.quizData.p1.options.2',
+      'onboarding.quizData.p1.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'p2',
     field: 'physics',
-    fieldLabel: '物理学',
-    stem: '牛顿第二定律的表达式是？',
-    options: ['F = mv', 'F = ma', 'F = m/v', 'F = m²a'],
+    fieldLabel: 'onboarding.tags.physics',
+    stem: 'onboarding.quizData.p2.stem',
+    options: [
+      'onboarding.quizData.p2.options.0',
+      'onboarding.quizData.p2.options.1',
+      'onboarding.quizData.p2.options.2',
+      'onboarding.quizData.p2.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'p3',
     field: 'physics',
-    fieldLabel: '物理学',
-    stem: '以下哪个是基本粒子？',
-    options: ['质子', '中子', '电子', '原子'],
+    fieldLabel: 'onboarding.tags.physics',
+    stem: 'onboarding.quizData.p3.stem',
+    options: [
+      'onboarding.quizData.p3.options.0',
+      'onboarding.quizData.p3.options.1',
+      'onboarding.quizData.p3.options.2',
+      'onboarding.quizData.p3.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'p4',
     field: 'physics',
-    fieldLabel: '物理学',
-    stem: '能量守恒定律是谁提出的？',
-    options: ['牛顿', '爱因斯坦', '焦耳', '亥姆霍兹'],
+    fieldLabel: 'onboarding.tags.physics',
+    stem: 'onboarding.quizData.p4.stem',
+    options: [
+      'onboarding.quizData.p4.options.0',
+      'onboarding.quizData.p4.options.1',
+      'onboarding.quizData.p4.options.2',
+      'onboarding.quizData.p4.options.3',
+    ],
     answer: 3,
   },
   {
     id: 'p5',
     field: 'physics',
-    fieldLabel: '物理学',
-    stem: '以下哪种现象是波的干涉？',
-    options: ['彩虹', '肥皂泡彩色', '影子', '闪电'],
+    fieldLabel: 'onboarding.tags.physics',
+    stem: 'onboarding.quizData.p5.stem',
+    options: [
+      'onboarding.quizData.p5.options.0',
+      'onboarding.quizData.p5.options.1',
+      'onboarding.quizData.p5.options.2',
+      'onboarding.quizData.p5.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'm1',
     field: 'math',
-    fieldLabel: '数学',
-    stem: '欧拉公式 e^(iπ) + 1 = ?',
-    options: ['0', '1', '-1', 'i'],
+    fieldLabel: 'onboarding.tags.math',
+    stem: 'onboarding.quizData.m1.stem',
+    options: [
+      'onboarding.quizData.m1.options.0',
+      'onboarding.quizData.m1.options.1',
+      'onboarding.quizData.m1.options.2',
+      'onboarding.quizData.m1.options.3',
+    ],
     answer: 0,
   },
   {
     id: 'm2',
     field: 'math',
-    fieldLabel: '数学',
-    stem: '以下哪个是质数？',
-    options: ['51', '57', '91', '97'],
+    fieldLabel: 'onboarding.tags.math',
+    stem: 'onboarding.quizData.m2.stem',
+    options: [
+      'onboarding.quizData.m2.options.0',
+      'onboarding.quizData.m2.options.1',
+      'onboarding.quizData.m2.options.2',
+      'onboarding.quizData.m2.options.3',
+    ],
     answer: 3,
   },
-  { id: 'm3', field: 'math', fieldLabel: '数学', stem: 'sin²x + cos²x = ?', options: ['0', '1', '2', 'x'], answer: 1 },
+  {
+    id: 'm3',
+    field: 'math',
+    fieldLabel: 'onboarding.tags.math',
+    stem: 'onboarding.quizData.m3.stem',
+    options: [
+      'onboarding.quizData.m3.options.0',
+      'onboarding.quizData.m3.options.1',
+      'onboarding.quizData.m3.options.2',
+      'onboarding.quizData.m3.options.3',
+    ],
+    answer: 1,
+  },
   {
     id: 'm4',
     field: 'math',
-    fieldLabel: '数学',
-    stem: '级数 1 + 1/2 + 1/4 + 1/8 + ... 的和是？',
-    options: ['1', '2', '∞', 'e'],
+    fieldLabel: 'onboarding.tags.math',
+    stem: 'onboarding.quizData.m4.stem',
+    options: [
+      'onboarding.quizData.m4.options.0',
+      'onboarding.quizData.m4.options.1',
+      'onboarding.quizData.m4.options.2',
+      'onboarding.quizData.m4.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'm5',
     field: 'math',
-    fieldLabel: '数学',
-    stem: '费马大定理是由谁证明的？',
-    options: ['欧拉', '高斯', '安德鲁·怀尔斯', '希尔伯特'],
+    fieldLabel: 'onboarding.tags.math',
+    stem: 'onboarding.quizData.m5.stem',
+    options: [
+      'onboarding.quizData.m5.options.0',
+      'onboarding.quizData.m5.options.1',
+      'onboarding.quizData.m5.options.2',
+      'onboarding.quizData.m5.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'c1',
     field: 'chemistry',
-    fieldLabel: '化学',
-    stem: '水的化学式是？',
-    options: ['H₂O', 'CO₂', 'NaCl', 'O₂'],
+    fieldLabel: 'onboarding.tags.chemistry',
+    stem: 'onboarding.quizData.c1.stem',
+    options: [
+      'onboarding.quizData.c1.options.0',
+      'onboarding.quizData.c1.options.1',
+      'onboarding.quizData.c1.options.2',
+      'onboarding.quizData.c1.options.3',
+    ],
     answer: 0,
   },
   {
     id: 'c2',
     field: 'chemistry',
-    fieldLabel: '化学',
-    stem: '以下哪个是惰性气体？',
-    options: ['氧气', '氮气', '氩气', '氢气'],
+    fieldLabel: 'onboarding.tags.chemistry',
+    stem: 'onboarding.quizData.c2.stem',
+    options: [
+      'onboarding.quizData.c2.options.0',
+      'onboarding.quizData.c2.options.1',
+      'onboarding.quizData.c2.options.2',
+      'onboarding.quizData.c2.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'c3',
     field: 'chemistry',
-    fieldLabel: '化学',
-    stem: 'pH=7 表示溶液是？',
-    options: ['酸性', '碱性', '中性', '不确定'],
+    fieldLabel: 'onboarding.tags.chemistry',
+    stem: 'onboarding.quizData.c3.stem',
+    options: [
+      'onboarding.quizData.c3.options.0',
+      'onboarding.quizData.c3.options.1',
+      'onboarding.quizData.c3.options.2',
+      'onboarding.quizData.c3.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'c4',
     field: 'chemistry',
-    fieldLabel: '化学',
-    stem: '催化剂在化学反应中的作用是？',
-    options: ['提高产率', '降低活化能', '改变平衡常数', '消耗反应物'],
+    fieldLabel: 'onboarding.tags.chemistry',
+    stem: 'onboarding.quizData.c4.stem',
+    options: [
+      'onboarding.quizData.c4.options.0',
+      'onboarding.quizData.c4.options.1',
+      'onboarding.quizData.c4.options.2',
+      'onboarding.quizData.c4.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'c5',
     field: 'chemistry',
-    fieldLabel: '化学',
-    stem: '以下哪种元素的原子序数是 6？',
-    options: ['氮', '碳', '氧', '硼'],
+    fieldLabel: 'onboarding.tags.chemistry',
+    stem: 'onboarding.quizData.c5.stem',
+    options: [
+      'onboarding.quizData.c5.options.0',
+      'onboarding.quizData.c5.options.1',
+      'onboarding.quizData.c5.options.2',
+      'onboarding.quizData.c5.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'b1',
     field: 'biology',
-    fieldLabel: '生物学',
-    stem: 'DNA 的全称是？',
-    options: ['脱氧核酸', '脱氧核糖核酸', '核糖核酸', '脱氧核苷酸'],
+    fieldLabel: 'onboarding.tags.biology',
+    stem: 'onboarding.quizData.b1.stem',
+    options: [
+      'onboarding.quizData.b1.options.0',
+      'onboarding.quizData.b1.options.1',
+      'onboarding.quizData.b1.options.2',
+      'onboarding.quizData.b1.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'b2',
     field: 'biology',
-    fieldLabel: '生物学',
-    stem: '细胞分裂的哪个阶段染色体数目加倍？',
-    options: ['间期', '前期', '中期', '后期'],
+    fieldLabel: 'onboarding.tags.biology',
+    stem: 'onboarding.quizData.b2.stem',
+    options: [
+      'onboarding.quizData.b2.options.0',
+      'onboarding.quizData.b2.options.1',
+      'onboarding.quizData.b2.options.2',
+      'onboarding.quizData.b2.options.3',
+    ],
     answer: 3,
   },
   {
     id: 'b3',
     field: 'biology',
-    fieldLabel: '生物学',
-    stem: '以下哪项是线粒体的功能？',
-    options: ['光合作用', '蛋白质合成', '有氧呼吸', '细胞运动'],
+    fieldLabel: 'onboarding.tags.biology',
+    stem: 'onboarding.quizData.b3.stem',
+    options: [
+      'onboarding.quizData.b3.options.0',
+      'onboarding.quizData.b3.options.1',
+      'onboarding.quizData.b3.options.2',
+      'onboarding.quizData.b3.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'b4',
     field: 'biology',
-    fieldLabel: '生物学',
-    stem: '孟德尔遗传定律中，F₂ 代表现型比例约为？',
-    options: ['1:1', '3:1', '9:3:3:1', '1:2:1'],
+    fieldLabel: 'onboarding.tags.biology',
+    stem: 'onboarding.quizData.b4.stem',
+    options: [
+      'onboarding.quizData.b4.options.0',
+      'onboarding.quizData.b4.options.1',
+      'onboarding.quizData.b4.options.2',
+      'onboarding.quizData.b4.options.3',
+    ],
     answer: 1,
   },
   {
     id: 'b5',
     field: 'biology',
-    fieldLabel: '生物学',
-    stem: '以下哪项是 RNA 不同于 DNA 的特征？',
-    options: ['双链结构', '含脱氧核糖', '含尿嘧啶', '含胸腺嘧啶'],
+    fieldLabel: 'onboarding.tags.biology',
+    stem: 'onboarding.quizData.b5.stem',
+    options: [
+      'onboarding.quizData.b5.options.0',
+      'onboarding.quizData.b5.options.1',
+      'onboarding.quizData.b5.options.2',
+      'onboarding.quizData.b5.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'cs1',
     field: 'cs',
-    fieldLabel: '信息科学',
-    stem: '二分查找的时间复杂度是？',
-    options: ['O(n)', 'O(n²)', 'O(log n)', 'O(n log n)'],
+    fieldLabel: 'onboarding.tags.cs',
+    stem: 'onboarding.quizData.cs1.stem',
+    options: [
+      'onboarding.quizData.cs1.options.0',
+      'onboarding.quizData.cs1.options.1',
+      'onboarding.quizData.cs1.options.2',
+      'onboarding.quizData.cs1.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'cs2',
     field: 'cs',
-    fieldLabel: '信息科学',
-    stem: 'TCP 协议位于 OSI 模型的哪一层？',
-    options: ['应用层', '网络层', '传输层', '数据链路层'],
+    fieldLabel: 'onboarding.tags.cs',
+    stem: 'onboarding.quizData.cs2.stem',
+    options: [
+      'onboarding.quizData.cs2.options.0',
+      'onboarding.quizData.cs2.options.1',
+      'onboarding.quizData.cs2.options.2',
+      'onboarding.quizData.cs2.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'cs3',
     field: 'cs',
-    fieldLabel: '信息科学',
-    stem: '以下哪种排序算法是稳定的？',
-    options: ['快速排序', '堆排序', '归并排序', '选择排序'],
+    fieldLabel: 'onboarding.tags.cs',
+    stem: 'onboarding.quizData.cs3.stem',
+    options: [
+      'onboarding.quizData.cs3.options.0',
+      'onboarding.quizData.cs3.options.1',
+      'onboarding.quizData.cs3.options.2',
+      'onboarding.quizData.cs3.options.3',
+    ],
     answer: 2,
   },
   {
     id: 'cs4',
     field: 'cs',
-    fieldLabel: '信息科学',
-    stem: '在二进制中，1010 + 0110 = ?',
-    options: ['10000', '11000', '11110', '10110'],
+    fieldLabel: 'onboarding.tags.cs',
+    stem: 'onboarding.quizData.cs4.stem',
+    options: [
+      'onboarding.quizData.cs4.options.0',
+      'onboarding.quizData.cs4.options.1',
+      'onboarding.quizData.cs4.options.2',
+      'onboarding.quizData.cs4.options.3',
+    ],
     answer: 0,
   },
   {
     id: 'cs5',
     field: 'cs',
-    fieldLabel: '信息科学',
-    stem: 'RESTful API 中，用于更新资源的 HTTP 方法是？',
-    options: ['GET', 'POST', 'PUT', 'DELETE'],
+    fieldLabel: 'onboarding.tags.cs',
+    stem: 'onboarding.quizData.cs5.stem',
+    options: [
+      'onboarding.quizData.cs5.options.0',
+      'onboarding.quizData.cs5.options.1',
+      'onboarding.quizData.cs5.options.2',
+      'onboarding.quizData.cs5.options.3',
+    ],
     answer: 2,
   },
 ];
 
 const quizFields = [
-  { value: 'physics', label: '物理学' },
-  { value: 'math', label: '数学' },
-  { value: 'chemistry', label: '化学' },
-  { value: 'biology', label: '生物学' },
-  { value: 'cs', label: '信息科学' },
+  { value: 'physics', labelKey: 'onboarding.tags.physics' as TranslationKey },
+  { value: 'math', labelKey: 'onboarding.tags.math' as TranslationKey },
+  { value: 'chemistry', labelKey: 'onboarding.tags.chemistry' as TranslationKey },
+  { value: 'biology', labelKey: 'onboarding.tags.biology' as TranslationKey },
+  { value: 'cs', labelKey: 'onboarding.tags.cs' as TranslationKey },
 ];
 
 const selectedField = ref('');

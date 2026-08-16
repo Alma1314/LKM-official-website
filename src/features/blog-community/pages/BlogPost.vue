@@ -7,6 +7,7 @@ import { useAuth } from '~/features/auth/composables/useAuth';
 import BlogCommentList from './BlogCommentList.vue';
 import BlogCommentForm from './BlogCommentForm.vue';
 import BlogStarButton from './BlogStarButton.vue';
+import { t } from '~/lib/i18n';
 
 const props = defineProps<{
   seriesId: number;
@@ -79,7 +80,7 @@ onMounted(async () => {
     <div v-else-if="postError" class="text-center py-16">
       <p class="text-red-500 mb-4">{{ postError }}</p>
       <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="fetchAndCompile(seriesId, filepath)">
-        重试
+        {{ t('common.retry') }}
       </button>
     </div>
 
@@ -91,7 +92,7 @@ onMounted(async () => {
     </article>
 
     <section class="mt-12 pt-8 border-t border-border">
-      <h2 class="text-xl font-semibold mb-6">评论 ({{ comments.length }})</h2>
+      <h2 class="text-xl font-semibold mb-6">{{ t('blog.commentsCount', { count: comments.length }) }}</h2>
       <BlogCommentList
         v-if="comments.length > 0"
         :comments="comments"
@@ -99,7 +100,7 @@ onMounted(async () => {
         :onDelete="handleDelete"
         :currentUserId="currentUserId"
       />
-      <p v-else-if="!commentsLoading" class="text-text-muted text-sm">暂无评论</p>
+      <p v-else-if="!commentsLoading" class="text-text-muted text-sm">{{ t('blog.noComments') }}</p>
       <BlogCommentForm
         :replyTo="replyTarget"
         :isLoggedIn="!!currentUserId"

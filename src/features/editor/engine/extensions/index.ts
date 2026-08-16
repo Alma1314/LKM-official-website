@@ -1,4 +1,5 @@
 import type { AnyExtension } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from '@tiptap/extension-link';
@@ -32,7 +33,7 @@ export function getEditorExtensions(placeholder?: string): AnyExtension[] {
       underline: false,
     }),
     Placeholder.configure({
-      placeholder: placeholder ?? '开始编写内容……',
+      placeholder: placeholder ?? t('editor.startWritingPlaceholder'),
     }),
     Link.configure({
       openOnClick: false,

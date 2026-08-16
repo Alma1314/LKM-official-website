@@ -5,12 +5,12 @@
       <section v-if="!current" class="random-hero glass float-up">
         <div class="random-pick-area">
           <div class="pick-emoji">🌌</div>
-          <p class="pick-slogan">每一次随机，都是一次未知的相遇</p>
+          <p class="pick-slogan">{{ t('treehole.random.pickTip') }}</p>
           <button class="btn-grad pick-btn" @click="pickRandom" :disabled="picking">
-            {{ picking ? '✨ 抽取中...' : '🎲 随机抽取一封' }}
+            {{ picking ? t('treehole.random.picking') : t('treehole.random.drawBtn') }}
           </button>
-          <p v-if="poolCount === 0" class="empty-hint">还没有公开信件，去写一封吧～</p>
-          <p v-else class="pool-hint">共有 {{ poolCount }} 封公开信件等待相遇</p>
+          <p v-if="poolCount === 0" class="empty-hint">{{ t('treehole.random.emptyHint') }}</p>
+          <p v-else class="pool-hint">{{ t('treehole.random.poolHint2', { count: poolCount }) }}</p>
         </div>
       </section>
 
@@ -21,7 +21,7 @@
           <div class="letter-meta">
             <span class="letter-cat">
               <span class="cat-emoji">{{ catInfo.emoji }}</span>
-              {{ catInfo.label }}
+              {{ t(catInfo.label) }}
             </span>
           </div>
 
@@ -32,39 +32,43 @@
 
           <!-- 心情标签 -->
           <div v-if="current.moods && current.moods.length" class="letter-moods">
-            <span v-for="m in current.moods" :key="m" class="mood-tag">#{{ m }}</span>
+            <span v-for="m in current.moods" :key="m" class="mood-tag">#{{ t(moodKey(m)) }}</span>
           </div>
 
           <!-- 署名 + 日期 -->
           <div class="letter-footer">
-            <span class="letter-codename">—— {{ current.codename || '匿名' }}</span>
+            <span class="letter-codename">—— {{ current.codename || t('treehole.anonymous') }}</span>
             <span class="letter-date">{{ formatDate(current.createdAt) }}</span>
           </div>
         </div>
 
         <!-- 操作栏 -->
         <div class="read-actions">
-          <button class="chip" @click="pickRandom">🎲 换一封</button>
-          <button class="chip" @click="current = null">← 返回</button>
+          <button class="chip" @click="pickRandom">{{ t('treehole.random.switchLetter') }}</button>
+          <button class="chip" @click="current = null">{{ t('treehole.random.back') }}</button>
         </div>
 
         <!-- 回复区域 -->
         <div class="reply-section">
-          <p class="reply-label">💬 给 {{ current.codename || '匿名' }} 写匿名回信</p>
+          <p class="reply-label">
+            💬 {{ t('treehole.random.replyLabel', { name: current.codename || t('treehole.anonymous') }) }}
+          </p>
           <textarea
             v-model="replyText"
             class="reply-textarea"
             :style="{ fontSize: replyFontSize }"
-            :placeholder="'用温柔的话回应这封信...'"
+            :placeholder="t('treehole.random.replyPlaceholder')"
             rows="3"
           ></textarea>
           <div class="reply-bar">
             <button class="chip" @click="toggleReplyFont">
               {{ replyFontLarge ? 'A⁻' : 'A⁺' }}
             </button>
-            <button class="btn-grad btn-sm" @click="sendReply" :disabled="!replyText.trim()">📨 发送回信</button>
+            <button class="btn-grad btn-sm" @click="sendReply" :disabled="!replyText.trim()">
+              📨 {{ t('treehole.random.sendReply') }}
+            </button>
           </div>
-          <p v-if="replySent" class="reply-ok">回信已发送，愿文字温暖彼此 🌿</p>
+          <p v-if="replySent" class="reply-ok">{{ t('treehole.random.replySent') }}</p>
         </div>
       </section>
     </div>
@@ -74,9 +78,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
-import { getCategory, getPaper } from '../stores/constants';
+import { getCategory, getPaper, moodKey } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
 import { useApp } from '../stores/app';
+import { t } from '~/lib/i18n';
 
 const app = useApp();
 
@@ -136,7 +141,7 @@ function sendReply() {
   if (!current.value || !replyText.value.trim()) return;
   const conv = getOrCreateConversation(
     'random_' + current.value.id,
-    current.value.codename || '匿名',
+    current.value.codename || t('treehole.anonymous'),
     current.value.id
   );
   appendMessage(conv.id, {

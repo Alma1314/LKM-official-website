@@ -1,5 +1,6 @@
 import { ref, type Ref } from 'vue';
 import { blogApi } from '~/lib/api';
+import { t } from '~/lib/i18n';
 import type { BlogArticle, BlogSeriesInfo } from '../types/blog';
 
 const MDX_EXTENSIONS = /\.(md|mdx)$/i;
@@ -51,7 +52,7 @@ export function useBlogArticles(): {
 
     const listResult = await blogApi.listSeries();
     if (listResult.isErr()) {
-      error.value = `获取博客系列失败：${listResult.error.message}`;
+      error.value = t('messages.blog.fetchSeriesFailed', { error: listResult.error.message });
       loading.value = false;
       return;
     }

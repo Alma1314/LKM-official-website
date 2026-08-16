@@ -2,7 +2,7 @@
   <!-- 月度情绪图表（纯 SVG，无第三方库） -->
   <div class="mood-chart glass">
     <div class="mc-head">
-      <span>📊 月度情绪</span>
+      <span>{{ t('treehole.moodChart.monthlyMood') }}</span>
       <select v-model="month" class="mc-select">
         <option v-for="m in months" :key="m" :value="m">{{ m }}</option>
       </select>
@@ -32,7 +32,7 @@
             class="mc-bar"
           />
           <text :x="63 + i * 38" :y="h - 12" text-anchor="middle" font-size="9" fill="var(--text-sub)">
-            {{ d.mood }}
+            {{ t(moodKey(d.mood)) }}
           </text>
           <text :x="63 + i * 38" :y="d.y - 4" text-anchor="middle" font-size="9" fill="var(--text-main)">
             {{ d.count }}
@@ -41,10 +41,11 @@
         <line x1="40" :y1="h - 30" x2="310" :y2="h - 30" stroke="var(--text-sub)" stroke-width="1.5" />
       </svg>
       <p class="mc-tip">
-        本月共记录 <b>{{ total }}</b> 次情绪，最常见：<b :style="{ color: topColor }">{{ topMood }}</b>
+        {{ t('treehole.moodChart.recordPrefix') }}<b>{{ total }}</b
+        >{{ t('treehole.moodChart.recordMiddle') }}<b :style="{ color: topColor }">{{ t(moodKey(topMood)) }}</b>
       </p>
     </div>
-    <EmptyState v-else title="本月还没有情绪记录" sub="写信时选择心情标签即可统计" />
+    <EmptyState v-else :title="t('treehole.moodChart.emptyTitle')" :sub="t('treehole.moodChart.emptySub')" />
   </div>
 </template>
 
@@ -52,7 +53,8 @@
 import { ref, computed, onMounted } from 'vue';
 import EmptyState from './EmptyState.vue';
 import * as store from '../stores/storage';
-import { MOODS } from '../stores/constants';
+import { MOODS, moodKey } from '../stores/constants';
+import { t } from '~/lib/i18n';
 
 const months = ref([]);
 const month = ref('');

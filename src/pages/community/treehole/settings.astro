@@ -4,8 +4,12 @@ import SettingsPage from '~/features/anonymous-letter/pages/SettingsPage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '设置 — 拾光树洞', description: '个性化你的树洞体验。' };
+const metadata: MetaData = {
+  title: t('page.treehole.settingsTitle'),
+  description: t('page.treehole.settingsDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

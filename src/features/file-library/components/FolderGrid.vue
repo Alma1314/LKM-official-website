@@ -14,10 +14,12 @@
           <Icon icon="material-symbols:folder" />
         </span>
         <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors line-clamp-1 text-sm">
-          {{ folder.name }}
+          {{ t(folder.name) }}
         </h3>
       </div>
-      <div class="text-xs text-text-muted/60">{{ fileCounts[folder.id] ?? 0 }} 个文件</div>
+      <div class="text-xs text-text-muted/60">
+        {{ t('community.fileLibrary.fileCount', { count: fileCounts[folder.id] ?? 0 }) }}
+      </div>
     </button>
   </div>
 </template>
@@ -25,6 +27,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 import type { FileCategory } from '../data/category-tree';
+import { t } from '~/lib/i18n';
 
 defineProps<{ folders: FileCategory[]; fileCounts: Record<string, number> }>();
 const emit = defineEmits<{ open: [categoryId: string] }>();

@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface PropertyPanelProps {
   editor: Editor;
@@ -56,23 +57,27 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
   const content = (
     <>
       <h3 className="text-sm font-semibold mb-3">
-        {selectedNode.type === 'callout' ? '提示框属性' : selectedNode.type === 'figure' ? '图片属性' : '属性'}
+        {selectedNode.type === 'callout'
+          ? t('editor.propertyPanel.calloutProps')
+          : selectedNode.type === 'figure'
+            ? t('editor.propertyPanel.figureProps')
+            : t('editor.propertyPanel.properties')}
       </h3>
 
       {selectedNode.type === 'callout' && (
         <>
-          <label className="text-xs font-medium block mb-1">类型</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.type')}</label>
           <select
             className="select select-bordered select-sm w-full mb-3"
             value={(selectedNode.attrs.type as string) || 'info'}
             onChange={(e) => handleUpdate('type', e.target.value)}
           >
-            <option value="info">信息</option>
-            <option value="warning">警告</option>
-            <option value="error">错误</option>
-            <option value="success">成功</option>
+            <option value="info">{t('editor.propertyPanel.info')}</option>
+            <option value="warning">{t('editor.propertyPanel.warning')}</option>
+            <option value="error">{t('editor.propertyPanel.error')}</option>
+            <option value="success">{t('editor.propertyPanel.success')}</option>
           </select>
-          <label className="text-xs font-medium block mb-1">标题</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.title')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
@@ -84,57 +89,57 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
 
       {selectedNode.type === 'figure' && (
         <>
-          <label className="text-xs font-medium block mb-1">图片地址</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.imageUrl')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
             value={(selectedNode.attrs.src as string) || ''}
             onChange={(e) => handleUpdate('src', e.target.value)}
           />
-          <label className="text-xs font-medium block mb-1">Alt 文本</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.altText')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
             value={(selectedNode.attrs.alt as string) || ''}
             onChange={(e) => handleUpdate('alt', e.target.value)}
           />
-          <label className="text-xs font-medium block mb-1">标题说明</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.caption')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
             value={(selectedNode.attrs.caption as string) || ''}
             onChange={(e) => handleUpdate('caption', e.target.value)}
           />
-          <label className="text-xs font-medium block mb-1">宽度 (px)</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.width')}</label>
           <input
             type="number"
             className="input input-bordered input-sm w-full mb-3"
             value={(selectedNode.attrs.width as number) || ''}
             onChange={(e) => handleNumberUpdate('width', e.target.value)}
           />
-          <label className="text-xs font-medium block mb-1">对齐</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.align')}</label>
           <select
             className="select select-bordered select-sm w-full mb-3"
             value={(selectedNode.attrs.align as string) || 'center'}
             onChange={(e) => handleUpdate('align', e.target.value)}
           >
-            <option value="left">左对齐</option>
-            <option value="center">居中</option>
-            <option value="right">右对齐</option>
+            <option value="left">{t('editor.propertyPanel.alignLeft')}</option>
+            <option value="center">{t('editor.propertyPanel.alignCenter')}</option>
+            <option value="right">{t('editor.propertyPanel.alignRight')}</option>
           </select>
         </>
       )}
 
       {selectedNode.type === 'image' && (
         <>
-          <label className="text-xs font-medium block mb-1">图片地址</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.imageUrl')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
             value={(selectedNode.attrs.src as string) || ''}
             onChange={(e) => handleUpdate('src', e.target.value)}
           />
-          <label className="text-xs font-medium block mb-1">Alt 文本</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.propertyPanel.altText')}</label>
           <input
             type="text"
             className="input input-bordered input-sm w-full mb-3"
@@ -154,7 +159,7 @@ const PropertyPanel = memo(function PropertyPanel({ editor }: PropertyPanelProps
       {mobileOpen && (
         <div className="md:hidden property-panel-mobile p-4">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold">属性</span>
+            <span className="text-sm font-semibold">{t('editor.propertyPanel.properties')}</span>
             <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setMobileOpen(false)}>
               ×
             </button>

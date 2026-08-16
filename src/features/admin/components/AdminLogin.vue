@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { NForm, NFormItem, NInput, NButton, NAlert } from 'naive-ui';
 import { useAdminAuthStore } from '~/stores/adminAuth';
+import { t } from '~/lib/i18n';
 
 const auth = useAdminAuthStore();
 
@@ -14,7 +15,7 @@ const success = ref(false);
 async function handleSubmit() {
   error.value = '';
   if (!username.value.trim() || !password.value) {
-    error.value = '请输入用户名和密码';
+    error.value = t('admin.login.required');
     return;
   }
   submitting.value = true;
@@ -27,7 +28,7 @@ async function handleSubmit() {
       window.location.href = '/admin';
     }, 600);
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '登录失败';
+    error.value = e instanceof Error ? e.message : t('admin.login.failed');
   } finally {
     submitting.value = false;
   }
@@ -38,40 +39,46 @@ async function handleSubmit() {
   <div class="min-h-screen bg-page-bg flex items-center justify-center px-4">
     <div class="w-full max-w-sm">
       <div class="bg-card-bg border border-surface-3 rounded-xl p-8 shadow-sm">
-        <h1 class="text-xl font-bold text-deep-text text-center mb-1">管理后台</h1>
-        <p class="text-sm text-text-muted text-center mb-6">管理员登录 · 理科迷</p>
+        <h1 class="text-xl font-bold text-deep-text text-center mb-1">{{ t('admin.title') }}</h1>
+        <p class="text-sm text-text-muted text-center mb-6">{{ t('admin.login.subtitle') }}</p>
 
         <NAlert v-if="error" type="error" :show-icon="false" class="mb-4">
           {{ error }}
         </NAlert>
-        <NAlert v-else-if="success" type="success" :show-icon="false" class="mb-4"> 登录成功，正在进入后台… </NAlert>
+        <NAlert v-else-if="success" type="success" :show-icon="false" class="mb-4">
+          {{ t('admin.login.success') }}
+        </NAlert>
 
         <NForm @submit.prevent="handleSubmit">
-          <NFormItem label="用户名" class="mb-3">
+          <NFormItem :label="t('admin.login.username')" class="mb-3">
             <NInput
               v-model:value="username"
-              placeholder="请输入管理员用户名"
+              :placeholder="t('admin.login.usernamePlaceholder')"
               size="large"
               :disabled="submitting"
               autocomplete="username"
             />
           </NFormItem>
-          <NFormItem label="密码" class="mb-4">
+          <NFormItem :label="t('admin.login.password')" class="mb-4">
             <NInput
               v-model:value="password"
               type="password"
-              placeholder="请输入密码"
+              :placeholder="t('admin.login.passwordPlaceholder')"
               size="large"
               :disabled="submitting"
               autocomplete="current-password"
               show-password-on="click"
             />
           </NFormItem>
-          <NButton type="primary" attr-type="submit" block size="large" :loading="submitting"> 登录 </NButton>
+          <NButton type="primary" attr-type="submit" block size="large" :loading="submitting">
+            {{ t('admin.login.submit') }}
+          </NButton>
         </NForm>
 
         <div class="mt-6 text-center">
-          <a href="/" class="text-xs text-text-muted hover:text-primary transition-colors">← 返回前台</a>
+          <a href="/" class="text-xs text-text-muted hover:text-primary transition-colors"
+            >← {{ t('admin.backToSite') }}</a
+          >
         </div>
       </div>
     </div>

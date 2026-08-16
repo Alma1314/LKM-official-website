@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 export interface AdminNavItem {
   text: string;
   href: string;
@@ -12,51 +13,58 @@ export interface AdminNavItem {
   <!-- 侧边栏 -->
   <aside class="w-56 shrink-0 bg-card-bg border-r border-surface-3 min-h-screen hidden md:block">
     <div class="p-4 border-b border-surface-3">
-      <a href={getPermalink('/admin')} class="text-lg font-bold text-primary">管理后台</a>
+      <a href={getPermalink('/admin')} class="text-lg font-bold text-primary">{t('admin.title')}</a>
     </div>
     <nav class="p-2 space-y-1">
       <a
         href={getPermalink('/admin')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:dashboard" class="w-4 h-4" /> 仪表盘
+        <Icon name="tabler:dashboard" class="w-4 h-4" />
+        {t('admin.sidebar.dashboard')}
       </a>
       <a
         href={getPermalink('/admin/users')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:users" class="w-4 h-4" /> 用户管理
+        <Icon name="tabler:users" class="w-4 h-4" />
+        {t('admin.sidebar.users')}
       </a>
       <a
         href={getPermalink('/admin/posts')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:article" class="w-4 h-4" /> 帖子管理
+        <Icon name="tabler:article" class="w-4 h-4" />
+        {t('admin.sidebar.posts')}
       </a>
       <a
         href={getPermalink('/admin/files')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:folder" class="w-4 h-4" /> 文件审核
+        <Icon name="tabler:folder" class="w-4 h-4" />
+        {t('admin.sidebar.files')}
       </a>
       <a
         href={getPermalink('/admin/categories')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:category" class="w-4 h-4" /> 板块管理
+        <Icon name="tabler:category" class="w-4 h-4" />
+        {t('admin.sidebar.categories')}
       </a>
       <a
         href={getPermalink('/admin/reports')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:flag" class="w-4 h-4" /> 举报管理
+        <Icon name="tabler:flag" class="w-4 h-4" />
+        {t('admin.sidebar.reports')}
       </a>
       <div class="border-t border-surface-3 my-2"></div>
       <a
         href={getPermalink('/')}
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
       >
-        <Icon name="tabler:arrow-left" class="w-4 h-4" /> 返回前台
+        <Icon name="tabler:arrow-left" class="w-4 h-4" />
+        {t('admin.backToSite')}
       </a>
     </nav>
   </aside>

@@ -2,6 +2,7 @@
 // 后台仪表盘统计 —— 接真实后端 GET /admin/stats
 import { ref, onMounted } from 'vue';
 import { adminFetch, readAdminResp } from '~/lib/api/admin';
+import { t } from '~/lib/i18n';
 
 interface AdminStats {
   user_count: number;
@@ -20,7 +21,7 @@ onMounted(async () => {
     const body = await readAdminResp(res);
     stats.value = body.data as AdminStats;
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '加载失败';
+    error.value = e instanceof Error ? e.message : t('admin.loadFailed');
   } finally {
     loading.value = false;
   }
@@ -38,19 +39,19 @@ onMounted(async () => {
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
         <div class="text-2xl font-bold text-deep-text">{{ stats?.user_count ?? 0 }}</div>
-        <div class="text-sm text-text-muted">注册用户</div>
+        <div class="text-sm text-text-muted">{{ t('admin.stats.users') }}</div>
       </div>
       <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
         <div class="text-2xl font-bold text-deep-text">{{ stats?.post_count ?? 0 }}</div>
-        <div class="text-sm text-text-muted">帖子总数</div>
+        <div class="text-sm text-text-muted">{{ t('admin.stats.posts') }}</div>
       </div>
       <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
         <div class="text-2xl font-bold text-deep-text">{{ stats?.file_count ?? 0 }}</div>
-        <div class="text-sm text-text-muted">文件总数</div>
+        <div class="text-sm text-text-muted">{{ t('admin.stats.files') }}</div>
       </div>
       <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
         <div class="text-2xl font-bold text-yellow-500">{{ stats?.file_pending_count ?? 0 }}</div>
-        <div class="text-sm text-text-muted">待审核文件</div>
+        <div class="text-sm text-text-muted">{{ t('admin.stats.pendingFiles') }}</div>
       </div>
     </div>
   </div>

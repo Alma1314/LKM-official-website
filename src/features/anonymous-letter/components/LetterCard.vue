@@ -2,7 +2,7 @@
   <div class="letter-card glass glass-hover float-up" :style="{ '--card-grad': grad }">
     <!-- 顶部：分类 + 代号 + 时间 -->
     <div class="lc-head">
-      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ category.label }}</span>
+      <span class="lc-cat" :style="{ background: category.color }">{{ category.emoji }} {{ t(category.label) }}</span>
       <span class="lc-code">{{ letter.codename }}</span>
     </div>
 
@@ -13,17 +13,17 @@
       <div v-if="!expanded && isLong" class="lc-fade"></div>
     </div>
     <button v-if="isLong && (!letter.encrypted || decrypted)" class="lc-toggle" @click="expanded = !expanded">
-      {{ expanded ? '收起 ▲' : '展开全文 ▼' }}
+      {{ expanded ? t('treehole.letterCard.collapse') : t('treehole.letterCard.expand') }}
     </button>
 
     <!-- 心情标签 -->
     <div class="lc-moods" v-if="letter.moods && letter.moods.length">
-      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ m }}</span>
+      <span v-for="m in letter.moods" :key="m" class="lc-mood">#{{ t(moodKey(m)) }}</span>
     </div>
     <!-- 内容标签 -->
     <div class="lc-tags" v-if="letter.tags && letter.tags.length">
-      <span v-for="t in letter.tags" :key="t" class="lc-tag" :style="{ background: tagColor(t) }"
-        >{{ tagEmoji(t) }} {{ tagLabel(t) }}</span
+      <span v-for="tg in letter.tags" :key="tg" class="lc-tag" :style="{ background: tagColor(tg) }"
+        >{{ tagEmoji(tg) }} {{ t(tagLabel(tg)) }}</span
       >
     </div>
     <slot name="extra" />
@@ -40,13 +40,15 @@
         <span class="lc-ic">{{ isFav ? '⭐' : '☆' }}</span
         >{{ favCount }}
       </button>
-      <button class="lc-act" @click="onCopy"><span class="lc-ic">📋</span>复制</button>
-      <button class="lc-act" @click="onReport"><span class="lc-ic">⚠️</span>举报</button>
+      <button class="lc-act" @click="onCopy"><span class="lc-ic">📋</span>{{ t('treehole.letterCard.copy') }}</button>
+      <button class="lc-act" @click="onReport">
+        <span class="lc-ic">⚠️</span>{{ t('treehole.letterCard.report') }}
+      </button>
     </div>
 
     <div class="lc-foot">
       <span>{{ formatTime(letter.createdAt) }}</span>
-      <button class="lc-same" @click="onSameType">同类树洞 ›</button>
+      <button class="lc-same" @click="onSameType">{{ t('treehole.letterCard.sameType') }}</button>
     </div>
 
     <ReportDialog
@@ -61,9 +63,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { getCategory, getPaper, getTag } from '../stores/constants';
+import { getCategory, getPaper, getTag, moodKey } from '../stores/constants';
 import { toggleFavorite } from '../stores/storage';
 import ReportDialog from './ReportDialog.vue';
+import { t } from '~/lib/i18n';
 
 const props = defineProps({ letter: { type: Object, required: true } });
 const emit = defineEmits(['like', 'fav', 'same-type']);
@@ -103,10 +106,10 @@ function particleStyle(n) {
 function formatTime(ts) {
   const d = new Date(ts);
   const diff = Date.now() - ts;
-  if (diff < 60000) return '刚刚';
-  if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
-  if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
-  return `${d.getMonth() + 1}月${d.getDate()}日`;
+  if (diff < 60000) return t('treehole.letterCard.justNow');
+  if (diff < 3600000) return t('treehole.letterCard.minutesAgo', { count: Math.floor(diff / 60000) });
+  if (diff < 86400000) return t('treehole.letterCard.hoursAgo', { count: Math.floor(diff / 3600000) });
+  return t('treehole.letterCard.date', { month: d.getMonth() + 1, day: d.getDate() });
 }
 
 function onLike() {
@@ -125,7 +128,7 @@ function onFav() {
   props.letter.favorites = Math.max(0, (props.letter.favorites || 0) + (added ? 1 : -1));
 }
 async function onCopy() {
-  const text = `【拾光树洞】${category.value.label} · ${props.letter.codename}\n${props.letter.content}`;
+  const text = `${t('treehole.letterCard.sharePrefix')}${t(category.value.label)} · ${props.letter.codename}\n${props.letter.content}`;
   try {
     await navigator.clipboard.writeText(text);
   } catch {

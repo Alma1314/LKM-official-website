@@ -2,23 +2,27 @@
 import OfficialLayout from '~/layouts/OfficialLayout.astro';
 import Section from '~/features/homepage/components/Section.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 ---
 
-<OfficialLayout metadata={{ title: '资源' }} navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}>
+<OfficialLayout
+  metadata={{ title: t('page.resourcesTitle') }}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
+>
   <div class="max-w-6xl mx-auto py-12 px-4">
     <a href={getPermalink('/')} class="inline-flex items-center gap-1 text-sm text-primary hover:underline mb-6">
-      ← 返回首页
+      {t('page.backToHome')}
     </a>
 
-    <h1 class="text-3xl font-bold text-deep-text text-center mb-2">延伸资源网站</h1>
+    <h1 class="text-3xl font-bold text-deep-text text-center mb-2">{t('page.resourcesHeading')}</h1>
     <p class="text-sm text-text-muted text-center mb-10">
-      以下为站外公开学术 / 教育平台，内容由第三方提供，访问请自行甄别，这个排版先这么凑合着用
+      {t('page.resourcesNote')}
     </p>
 
     <Section
       id="external-resources"
-      title="资源网站"
-      subtitle="目前由我（清汉）维护，如有投稿请联系我"
+      :title="t('page.resourcesTitle')"
+      :subtitle="`${t('page.maintainedBy')}，${t('page.submitLinkHint')}`"
       classes={{ container: '' }}
     >
       <div class="max-w-7xl mx-auto">
@@ -30,7 +34,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 >IU</span
               >
               <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">IUPAC</h3>
-              <p class="text-xs text-text-muted">国际纯粹与应用化学联合会</p>
+              <p class="text-xs text-text-muted">International Union of Pure and Applied Chemistry</p>
             </div>
           </a>
 
@@ -40,8 +44,10 @@ import { getPermalink } from '~/lib/utils/permalinks';
               <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
                 >CC</span
               >
-              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">中国化学会</h3>
-              <p class="text-xs text-text-muted">全国化学学术组织</p>
+              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
+                {t('page.resources.ccs')}
+              </h3>
+              <p class="text-xs text-text-muted">Chinese Chemical Society</p>
             </div>
           </a>
 
@@ -52,9 +58,9 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 >教</span
               >
               <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
-                国家中小学智慧教育平台
+                {t('page.resources.smartEdu')}
               </h3>
-              <p class="text-xs text-text-muted">教育部官方 · 全学段课程</p>
+              <p class="text-xs text-text-muted">Ministry of Education · All-grade courses</p>
             </div>
           </a>
 
@@ -72,7 +78,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 >Z</span
               >
               <h3 class="font-semibold text-deep-text group-hover:text-amber-600 transition-colors">Z-Library</h3>
-              <p class="text-xs text-text-muted">需梯子 · 域名可能变动</p>
+              <p class="text-xs text-text-muted">May need a VPN · Domain may change</p>
             </summary>
             <div class="px-5 pb-5 pt-1 flex flex-col gap-3">
               <a
@@ -81,7 +87,8 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 rel="noopener noreferrer"
                 class="block rounded-lg px-4 py-2.5 text-sm font-medium text-center bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20"
               >
-                官网入口（由于当前 .sk 域名不稳定，zlib在大陆时不时会遭到封锁，若访问不稳定，请更换时段访问）
+                Official site (the .sk domain is unstable; Z-Library may be blocked in mainland China at times. If
+                access is unstable, try again later)
               </a>
               <a
                 href="https://zh.101ml.by/"
@@ -89,7 +96,8 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 rel="noopener noreferrer"
                 class="block rounded-lg px-4 py-2.5 text-sm font-medium text-center border border-dashed border-amber-400/50 text-amber-700 dark:text-amber-300 hover:bg-amber-500/10"
               >
-                备用镜像站 · 且用且珍惜，如无法打开/域名过时，请及时联系站点维护人员更换
+                Backup mirror · use while it lasts; if it stops working or the domain is outdated, contact the site
+                maintainer
               </a>
             </div>
           </details>
@@ -106,7 +114,7 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 >P</span
               >
               <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">NCBI PubChem</h3>
-              <p class="text-xs text-text-muted">化学 / 分子式 / 生物活性</p>
+              <p class="text-xs text-text-muted">Chemistry / molecular formulas / bioactivity</p>
             </div>
           </a>
 
@@ -116,8 +124,10 @@ import { getPermalink } from '~/lib/utils/permalinks';
               <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
                 >植</span
               >
-              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">植物智</h3>
-              <p class="text-xs text-text-muted">中国植物志 / 物种检索</p>
+              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
+                {t('page.resources.zhiwu')}
+              </h3>
+              <p class="text-xs text-text-muted">Flora of China / species search</p>
             </div>
           </a>
 
@@ -127,8 +137,10 @@ import { getPermalink } from '~/lib/utils/permalinks';
               <span class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold"
                 >B</span
               >
-              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">国际计量局 (BIPM)</h3>
-              <p class="text-xs text-text-muted">SI 国际单位制标准</p>
+              <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
+                {t('page.resources.bipm')}
+              </h3>
+              <p class="text-xs text-text-muted">SI international standard units</p>
             </div>
           </a>
 
@@ -144,9 +156,9 @@ import { getPermalink } from '~/lib/utils/permalinks';
                 >W</span
               >
               <h3 class="font-semibold text-deep-text group-hover:text-primary transition-colors">
-                维基百科（默认为英文维基）
+                {t('page.resources.wikipedia')}
               </h3>
-              <p class="text-xs text-text-muted">（请合理利用）</p>
+              <p class="text-xs text-text-muted">Wikipedia (English by default)</p>
             </div>
           </a>
         </div>

@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue';
+import { t } from '~/lib/i18n';
 
 export type StarHopeRoute =
   'login' | 'dashboard' | 'bank' | 'practice' | 'exam' | 'wrong-book' | 'ai' | 'reader' | 'plugins' | 'settings';
@@ -10,15 +11,15 @@ export interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { route: 'dashboard', label: '学习概览', icon: '📊' },
-  { route: 'bank', label: '题库', icon: '📚' },
-  { route: 'practice', label: '练习', icon: '✏️' },
-  { route: 'exam', label: '考试', icon: '📝' },
-  { route: 'wrong-book', label: '错题本', icon: '📕' },
-  { route: 'ai', label: 'AI 助手', icon: '🤖' },
-  { route: 'reader', label: '阅读器', icon: '📖' },
-  { route: 'plugins', label: '插件', icon: '🧩' },
-  { route: 'settings', label: '设置', icon: '⚙️' },
+  { route: 'dashboard', label: t('starhope.nav.dashboard'), icon: '📊' },
+  { route: 'bank', label: t('starhope.nav.bank'), icon: '📚' },
+  { route: 'practice', label: t('starhope.nav.practice'), icon: '✏️' },
+  { route: 'exam', label: t('starhope.nav.exam'), icon: '📝' },
+  { route: 'wrong-book', label: t('starhope.nav.wrongBook'), icon: '📕' },
+  { route: 'ai', label: t('starhope.nav.ai'), icon: '🤖' },
+  { route: 'reader', label: t('starhope.nav.reader'), icon: '📖' },
+  { route: 'plugins', label: t('starhope.nav.plugins'), icon: '🧩' },
+  { route: 'settings', label: t('starhope.nav.settings'), icon: '⚙️' },
 ];
 
 const currentRoute = ref<StarHopeRoute>('dashboard');

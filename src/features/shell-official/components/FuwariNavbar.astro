@@ -3,7 +3,9 @@ import { Icon } from 'astro-icon/components';
 import { siteConfig } from '~/lib/config';
 import type { NavBarLink } from '~/types/config';
 import { url } from '~/lib/utils/url-utils';
+import { t } from '~/lib/i18n';
 import LightDarkSwitch from '~/features/shell/components/LightDarkSwitch.vue';
+import LanguageSwitcher from '~/features/shell/components/LanguageSwitcher.vue';
 import { SearchGlobalSearch } from '~/features/search';
 import DisplaySettings from '~/features/shell/components/widget/DisplaySettings.vue';
 import { NotificationBell } from '~/features/notification';
@@ -17,7 +19,7 @@ interface Props {
 
 const moduleType = Astro.props.module || 'official';
 const switchHref = moduleType === 'official' ? url('/community') : url('/');
-const switchText = moduleType === 'official' ? '社区' : '官网';
+const switchText = moduleType === 'official' ? t('shell.community') : t('shell.official');
 
 const className = Astro.props.class;
 const navInnerClass = [
@@ -62,12 +64,12 @@ const links: NavBarLink[] = Astro.props.links;
           if (!hasChildren) {
             return (
               <a
-                aria-label={l.name}
+                aria-label={t(l.name)}
                 href={l.external ? l.url : url(l.url)}
                 target={l.external ? '_blank' : null}
                 class="scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1 text-neutral-700 dark:text-neutral-200 hover:text-primary dark:hover:text-primary hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               >
-                {l.name}
+                {t(l.name)}
                 {l.external && (
                   <Icon
                     name="fa6-solid:arrow-up-right-from-square"
@@ -81,11 +83,11 @@ const links: NavBarLink[] = Astro.props.links;
             <div class="relative dropdown" data-nav-dropdown={idx}>
               <button
                 type="button"
-                aria-label={l.name}
+                aria-label={t(l.name)}
                 class="scale-animation rounded-lg h-11 font-bold px-5 active:scale-95 flex items-center gap-1 text-neutral-700 dark:text-neutral-200 hover:text-primary dark:hover:text-primary hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                 data-dropdown-trigger
               >
-                {l.name}
+                {t(l.name)}
                 <Icon
                   name="material-symbols:keyboard-arrow-down-rounded"
                   class="text-[1rem] text-black/30 dark:text-white/40 transition-transform"
@@ -96,12 +98,12 @@ const links: NavBarLink[] = Astro.props.links;
                 <div class="bg-white dark:bg-[oklch(0.23_0.015_var(--hue))] rounded-[var(--radius-large)] overflow-hidden shadow-md dark:shadow-none border border-black/5 dark:border-white/10 float-panel p-2">
                   {l.children!.map((child) => (
                     <a
-                      aria-label={child.name}
+                      aria-label={t(child.name)}
                       href={child.external ? child.url : url(child.url)}
                       target={child.external ? '_blank' : null}
                       class="flex transition-colors whitespace-nowrap items-center !justify-start w-full scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5 text-neutral-700 dark:text-neutral-200 hover:text-primary dark:hover:text-primary hover:bg-black/5 dark:hover:bg-white/10"
                     >
-                      {child.name}
+                      {t(child.name)}
                     </a>
                   ))}
                 </div>
@@ -127,6 +129,7 @@ const links: NavBarLink[] = Astro.props.links;
         )
       }
       <LightDarkSwitch client:only="vue" />
+      <LanguageSwitcher client:only="vue" />
       <NotificationBell client:idle />
       <UserAvatarMenu client:only="vue" base={url('/')} />
       <button

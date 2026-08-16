@@ -12,6 +12,7 @@
 //    与仓库其余调用一致（如 /api/v1/forum/...），cookie Path=/api/v1/admin 也与之匹配。
 
 import { apiFetch } from '~/lib/api/fetch';
+import { t } from '~/lib/i18n';
 import type { AppError } from '~/lib/errors/error-codes';
 import type { Result } from '~/lib/errors/result';
 
@@ -23,7 +24,7 @@ export interface AdminUser {
 
 export class AdminAuthError extends Error {
   constructor() {
-    super('后台登录态失效');
+    super(t('messages.admin.sessionExpired'));
     this.name = 'AdminAuthError';
   }
 }
@@ -72,10 +73,10 @@ export async function adminFetch(path: string, init?: RequestInit): Promise<Resp
 export async function readAdminResp(res: Response): Promise<{ code: number; msg: string; data: unknown }> {
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { detail?: string; msg?: string };
-    throw new Error(body.msg || body.detail || `请求失败 (${res.status})`);
+    throw new Error(body.msg || body.detail || t('messages.admin.requestFailedStatus', { status: res.status }));
   }
   const json = (await res.json()) as { code: number; msg: string; data: unknown };
-  if (json.code !== 0) throw new Error(json.msg || '请求失败');
+  if (json.code !== 0) throw new Error(json.msg || t('messages.admin.requestFailed'));
   return json;
 }
 

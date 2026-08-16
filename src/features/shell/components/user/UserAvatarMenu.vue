@@ -8,7 +8,7 @@
       @click.prevent="openLogin"
     >
       <Icon icon="material-symbols:login-rounded" class="text-[1.25rem]" />
-      <span class="hidden sm:inline">登录</span>
+      <span class="hidden sm:inline">{{ t('user.login') }}</span>
     </a>
 
     <!-- 已登录 -->
@@ -37,7 +37,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:person-outline" class="w-4 h-4" />
-        个人中心
+        {{ t('user.profile') }}
       </a>
       <a
         :href="buildUrl('/contribution')"
@@ -45,7 +45,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:stars-outline" class="w-4 h-4" />
-        贡献系统
+        {{ t('user.contribution') }}
       </a>
       <a
         :href="buildUrl('/account')"
@@ -53,7 +53,7 @@
         @click="close"
       >
         <Icon icon="material-symbols:settings-outline" class="w-4 h-4" />
-        设置
+        {{ t('user.settings') }}
       </a>
 
       <div class="border-t border-surface-3 mt-1 pt-1">
@@ -62,7 +62,7 @@
           @click="handleLogout"
         >
           <Icon icon="material-symbols:logout-rounded" class="w-4 h-4" />
-          退出
+          {{ t('user.logout') }}
         </button>
       </div>
     </div>
@@ -72,6 +72,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 import { buildUrl } from '~/lib/utils/paths';
 import { useAuthStore } from '~/stores/auth';
 
@@ -93,11 +94,11 @@ const avatarLetter = computed(() => (username.value ? username.value.charAt(0).t
 const userLevelText = computed(() => {
   switch (userLevel.value) {
     case 'admin':
-      return '管理员';
+      return t('user.admin');
     case 'local':
-      return '本地账户';
+      return t('user.localAccount');
     default:
-      return '普通用户';
+      return t('user.normalUser');
   }
 });
 

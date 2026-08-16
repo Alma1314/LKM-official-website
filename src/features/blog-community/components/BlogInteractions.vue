@@ -11,8 +11,8 @@
       <button
         class="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors hover:bg-page-bg text-deep-text/60 group"
         @click="scrollToComments"
-        aria-label="查看评论"
-        title="查看评论"
+        :aria-label="t('blog.viewComments')"
+        :title="t('blog.viewComments')"
       >
         <svg
           class="w-5 h-5"
@@ -25,7 +25,7 @@
         >
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
-        <span class="text-sm font-medium">评论</span>
+        <span class="text-sm font-medium">{{ t('blog.comments') }}</span>
       </button>
 
       <span class="w-px h-5 bg-surface-3" />
@@ -54,6 +54,7 @@ import { ref } from 'vue';
 import BlogLike from './BlogLike.vue';
 import BlogShare from './BlogShare.vue';
 import BlogComments from './BlogComments.vue';
+import { t } from '~/lib/i18n';
 
 export interface BlogInteractionsProps {
   /** 文章完整 URL */

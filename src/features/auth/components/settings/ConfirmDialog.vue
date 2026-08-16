@@ -25,7 +25,7 @@
           <p v-if="message" class="text-sm text-text-muted mb-5">{{ message }}</p>
 
           <div class="flex gap-3 justify-end">
-            <button type="button" class="btn btn-ghost btn-sm" @click="handleCancel">取消</button>
+            <button type="button" class="btn btn-ghost btn-sm" @click="handleCancel">{{ cancelText }}</button>
             <button
               type="button"
               data-testid="confirm"
@@ -54,7 +54,7 @@ const props = withDefaults(
     cancelText?: string;
     danger?: boolean;
   }>(),
-  { title: '确认操作', message: '', confirmText: '确认', cancelText: '取消', danger: false }
+  { title: '', message: '', confirmText: '', cancelText: '', danger: false }
 );
 
 const emit = defineEmits<{

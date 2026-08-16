@@ -4,8 +4,8 @@
       class="like-btn relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-page-bg group"
       :class="{ 'is-liked': liked }"
       @click="handleLike"
-      :aria-label="liked ? '取消点赞' : '点赞'"
-      :title="liked ? '取消点赞' : '点赞'"
+      :aria-label="liked ? t('blog.unlike') : t('blog.like')"
+      :title="liked ? t('blog.unlike') : t('blog.like')"
     >
       <span
         class="like-icon inline-flex items-center justify-center w-5 h-5 text-deep-text/60 transition-all duration-300"
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue';
+import { t } from '~/lib/i18n';
 
 const props = withDefaults(
   defineProps<{

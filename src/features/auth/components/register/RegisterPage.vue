@@ -4,7 +4,7 @@
     :max-width="mode === 'modal' ? undefined : '440px'"
     :class="mode === 'modal' ? 'w-full' : undefined"
   >
-    <AuthCard title="注册" subtitle="创建理科迷账号" :mode="mode">
+    <AuthCard :title="t('auth.register.title')" :subtitle="t('auth.register.subtitle')" :mode="mode">
       <!-- 状态提示 -->
       <AuthStatus v-if="flow.error" type="error" class="mb-4" :message="flow.error" />
 
@@ -24,8 +24,8 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <p class="text-xl font-semibold">注册成功</p>
-        <a :href="getAuthPath('')" class="btn btn-primary btn-sm w-full">返回首页</a>
+        <p class="text-xl font-semibold">{{ t('auth.register.success') }}</p>
+        <a :href="getAuthPath('')" class="btn btn-primary btn-sm w-full">{{ t('auth.register.backHome') }}</a>
       </div>
 
       <template v-else>
@@ -47,17 +47,17 @@
         <template v-if="flow.stage === 'form'">
           <div class="my-6 flex items-center gap-3">
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
-            <span class="text-xs text-text-muted">或者</span>
+            <span class="text-xs text-text-muted">{{ t('auth.register.or') }}</span>
             <div class="h-px flex-1 bg-[var(--surface-3)]"></div>
           </div>
-          <AuthMethodButton label="使用 GitHub 注册" :disabled="flow.loading" @click="handleGithub" />
+          <AuthMethodButton :label="t('auth.register.githubRegister')" :disabled="flow.loading" @click="handleGithub" />
         </template>
 
         <!-- 已有账号 -->
         <p class="mt-6 text-center text-[13px] text-text-muted">
-          已有账号？
+          {{ t('auth.register.haveAccount') }}
           <button type="button" class="text-primary font-semibold hover:underline" @click="switchToLogin">
-            立即登录
+            {{ t('auth.register.loginNow') }}
           </button>
         </p>
       </template>
@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { useRegisterFlow, type RegisterType } from '~/features/auth/composables/useRegisterFlow';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import { t } from '~/lib/i18n';
 import AuthShell from '../shared/AuthShell.vue';
 import AuthCard from '../shared/AuthCard.vue';
 import AuthSegmentedControl from '../shared/AuthSegmentedControl.vue';
@@ -89,12 +90,12 @@ const flow = useRegisterFlow({
 });
 
 const segmentedOptions = [
-  { key: 'normal' as RegisterType, label: '普通账户' },
-  { key: 'local' as RegisterType, label: '本地账户' },
+  { key: 'normal' as RegisterType, label: t('auth.register.normalAccount') },
+  { key: 'local' as RegisterType, label: t('auth.register.localAccount') },
 ];
 
 function handleGithub() {
-  alert('GitHub OAuth 注册暂未接入');
+  alert(t('auth.register.githubNotSupported'));
 }
 
 function switchToLogin() {

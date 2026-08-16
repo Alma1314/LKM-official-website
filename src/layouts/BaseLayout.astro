@@ -5,6 +5,7 @@ import '../styles/variables.css';
 
 import { I18N } from '~/lib/config';
 import { siteConfig } from '~/lib/config';
+import { t, getLocale } from '~/lib/i18n';
 import AuthModal from '~/features/auth/components/AuthModal.vue';
 import CommonMeta from '~/features/shell/common/components/CommonMeta.astro';
 import Favicons from '~/features/shell/components/Favicons.astro';
@@ -31,15 +32,16 @@ export interface Props {
 }
 
 const { metadata = {}, navbarLinks: navbarLinksProp } = Astro.props;
-const { language, textDirection } = I18N;
+const { textDirection } = I18N;
 const baseUrl = import.meta.env.BASE_URL;
+const currentLocale = getLocale();
 
 // 未传入 navbarLinks 时，兜底为官网默认菜单（官方 4 项）
 const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenuItems, officialDefaultNavItems);
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang={currentLocale} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <CommonMeta />
     <script is:inline define:vars={{ configHue: siteConfig.themeColor.hue }}>
@@ -47,6 +49,17 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
       (function () {
         const hue = localStorage.getItem('hue') || configHue;
         document.documentElement.style.setProperty('--hue', hue);
+      })();
+    </script>
+    <script is:inline>
+      // 在首次渲染前应用已持久化的语言，避免 SSR 默认语言闪烁
+      (function () {
+        try {
+          const stored = localStorage.getItem('lkm-locale');
+          if (stored) document.documentElement.setAttribute('lang', stored);
+        } catch {
+          /* noop */
+        }
       })();
     </script>
     <SecurityHeaders />
@@ -77,7 +90,7 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
     <slot />
 
     <slot name="body-end" />
-    <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={navbarLinks} />
+    <MobileNavPanel id="mobile-nav-fuwari" title={t('nav.navigation')} links={navbarLinks} />
 
     <BasicScripts />
 

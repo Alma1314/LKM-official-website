@@ -4,6 +4,7 @@ import { useBlogPost } from '../composables/useBlogPost';
 import { blogApi } from '~/lib/api';
 import { sanitizeHtmlContent } from '~/lib/utils/html-sanitize';
 import type { BlogArticleDetail } from '../types/blog';
+import { t } from '~/lib/i18n';
 
 const _props = defineProps<{ slug: string }>();
 
@@ -32,14 +33,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="loading" class="text-center py-12">加载中...</div>
+  <div v-if="loading" class="text-center py-12">{{ t('common.loading') }}</div>
   <div v-else-if="error" class="text-red-500 py-12">{{ error }}</div>
   <article v-else-if="article" class="max-w-4xl mx-auto">
     <h1 class="text-4xl font-bold mb-4">{{ article.title }}</h1>
     <div class="flex items-center gap-4 text-gray-500 mb-8">
       <span>{{ new Date(article.published).toLocaleDateString('zh-CN') }}</span>
-      <span v-if="article.updated">更新于 {{ new Date(article.updated).toLocaleDateString('zh-CN') }}</span>
-      <span>{{ article.word_count }} 字 · {{ article.reading_time }} 分钟</span>
+      <span v-if="article.updated">{{
+        t('blog.updatedAt', { date: new Date(article.updated).toLocaleDateString('zh-CN') })
+      }}</span>
+      <span>{{ t('blog.readingMeta', { words: article.word_count, minutes: article.reading_time }) }}</span>
     </div>
     <img v-if="article.cover_url" :src="article.cover_url" :alt="article.title" class="w-full rounded-lg mb-8" />
     <div class="flex gap-2 mb-8">
@@ -58,7 +61,9 @@ onMounted(async () => {
 
     <!-- Share -->
     <div class="flex items-center gap-4 py-4 border-t border-b mb-8">
-      <button @click="copyShareLink" class="text-sm text-gray-500 hover:text-blue-600">复制链接</button>
+      <button @click="copyShareLink" class="text-sm text-gray-500 hover:text-blue-600">
+        {{ t('blog.share.copyLink') }}
+      </button>
     </div>
 
     <!-- Prev/Next -->

@@ -4,8 +4,9 @@ import { Icon } from 'astro-icon/components';
 import { mockColumns } from '~/features/column';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
-const metadata = { title: '专栏 —— 理科迷' };
+const metadata = { title: `${t('community.columns.title')} —— LKM` };
 ---
 
 <Layout
@@ -16,8 +17,8 @@ const metadata = { title: '专栏 —— 理科迷' };
 >
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-bold text-deep-text">专栏</h1>
-      <p class="text-text-muted mt-2">高质量长图文，专业认证作者的深度创作</p>
+      <h1 class="text-3xl font-bold text-deep-text">{t('community.columns.title')}</h1>
+      <p class="text-text-muted mt-2">{t('community.columns.subtitle')}</p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -29,24 +30,28 @@ const metadata = { title: '专栏 —— 理科迷' };
               {col.isVerified && (
                 <span class="absolute top-3 right-3 inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
                   <Icon name="tabler:rosette" class="w-3 h-3" />
-                  专业认证
+                  {t('community.columns.verified')}
                 </span>
               )}
               <Icon name="tabler:article" class="w-12 h-12 text-primary/40" />
             </div>
             <div class="p-5 flex flex-col gap-2 flex-1">
               <h3 class="font-bold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-                {col.title}
+                {t(col.title)}
               </h3>
               <div class="flex items-center gap-2 text-xs text-text-muted/60">
-                <span>{col.authorName}</span>
+                <span>{t(col.authorName)}</span>
                 <span>·</span>
-                <span class="text-text-muted">{col.authorTitle}</span>
+                <span class="text-text-muted">{t(col.authorTitle)}</span>
               </div>
-              <p class="text-sm text-text-muted line-clamp-2 leading-relaxed flex-1">{col.description}</p>
+              <p class="text-sm text-text-muted line-clamp-2 leading-relaxed flex-1">{t(col.description)}</p>
               <div class="flex items-center justify-between text-xs text-text-muted/60 pt-2 border-t border-surface-3">
-                <span>{col.articleCount} 篇文章</span>
-                <span>{col.followerCount.toLocaleString()} 关注</span>
+                <span>
+                  {col.articleCount} {t('community.columns.articles')}
+                </span>
+                <span>
+                  {col.followerCount.toLocaleString()} {t('community.columns.followers')}
+                </span>
               </div>
             </div>
           </a>

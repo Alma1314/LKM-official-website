@@ -1,15 +1,16 @@
 // 新闻资讯板块子分类配置
 //
-// label：展示名称；fallbackSlug：后端分类端点无精确匹配（name 相同）时的兜底 slug。
-// 后端分类端点返回的分类若与 label 名称完全一致，则优先使用其真实 slug 与文章数。
+// label：与后端分类名称精确匹配的展示名（保留中文用于匹配）；
+// labelKey：i18n 展示 key；fallbackSlug：后端分类端点无精确匹配（name 相同）时的兜底 slug。
 
 export interface NewsSection {
   label: string;
+  labelKey: string;
   fallbackSlug: string;
 }
 
 export const NEWS_SECTIONS: NewsSection[] = [
-  { label: '官方公告', fallbackSlug: 'announcement' },
-  { label: '科技新闻', fallbackSlug: 'news' },
-  { label: '科普相关', fallbackSlug: 'science' },
+  { label: '官方公告', labelKey: 'newsSections.announcement', fallbackSlug: 'announcement' },
+  { label: '科技新闻', labelKey: 'newsSections.news', fallbackSlug: 'news' },
+  { label: '科普相关', labelKey: 'newsSections.science', fallbackSlug: 'science' },
 ];

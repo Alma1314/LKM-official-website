@@ -28,6 +28,7 @@ import {
 import { defaultFavicons } from '~/lib/constants/icon';
 import type { Favicon } from '~/types/config';
 import { pathsEqual, url } from '~/lib/utils/url-utils';
+import { t } from '~/lib/i18n';
 interface Props {
   title?: string;
   banner?: string;
@@ -163,7 +164,7 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
     <slot />
 
     <slot name="body-end" />
-    <MobileNavPanel id="mobile-nav-fuwari" title="导航" links={navbarLinks} />
+    <MobileNavPanel id="mobile-nav-fuwari" title={t('layout.navigation')} links={navbarLinks} />
 
     <!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
     <div id="page-height-extend" class="hidden h-[300vh]"></div>

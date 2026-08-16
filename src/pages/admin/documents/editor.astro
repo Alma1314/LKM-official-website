@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 const metadata = {
-  title: '编辑文档 — LKM',
-  description: 'LKM 管理后台 — 文档编辑',
+  title: t('page.admin.documents.editorMetaTitle'),
+  description: t('page.admin.documents.editorMetaDescription'),
 };
 ---
 
@@ -25,13 +26,13 @@ const metadata = {
         >
           <path d="m15 18-6-6 6-6"></path>
         </svg>
-        返回列表
+        {t('page.admin.documents.backToDocs')}
       </a>
     </div>
     <div id="editor-root" class="flex-1 min-h-0">
       <div class="flex items-center justify-center h-full">
         <span class="loading loading-spinner loading-md"></span>
-        <span class="ml-2 text-deep-text/50">正在加载编辑器……</span>
+        <span class="ml-2 text-deep-text/50">{t('page.admin.documents.loadingEditor')}</span>
       </div>
     </div>
   </div>

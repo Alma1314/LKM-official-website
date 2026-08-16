@@ -3,6 +3,7 @@ import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 import InlineInput from './InlineInput';
 import { resolveImageSrc } from '../../persistence/image-store';
+import { t } from '~/lib/i18n';
 
 interface ImageNodeViewProps {
   node: Node;
@@ -85,14 +86,14 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
             type="number"
             className="rte-input w-16"
             value={width ?? ''}
-            placeholder="宽"
+            placeholder={t('editor.imageNode.width')}
             onChange={(e) => updateAttributes({ width: Number(e.target.value) || undefined })}
           />
           <input
             type="number"
             className="rte-input w-16"
             value={height ?? ''}
-            placeholder="高"
+            placeholder={t('editor.imageNode.height')}
             onChange={(e) => updateAttributes({ height: Number(e.target.value) || undefined })}
           />
           {/* Align buttons */}
@@ -102,7 +103,13 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
               type="button"
               className={`rte-toolbar-btn ${align === a ? 'is-active' : ''}`}
               onClick={() => updateAttributes({ align: a })}
-              title={`${a === 'left' ? '左' : a === 'center' ? '中' : '右'}对齐`}
+              title={
+                a === 'left'
+                  ? t('editor.imageNode.alignLeft')
+                  : a === 'center'
+                    ? t('editor.imageNode.alignCenter')
+                    : t('editor.imageNode.alignRight')
+              }
             >
               {a === 'left' ? '←' : a === 'center' ? '↔' : '→'}
             </button>
@@ -111,7 +118,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           <button
             type="button"
             className={`rte-toolbar-btn ${inlineMode === 'alt' ? 'is-active' : ''}`}
-            title="替代文本"
+            title={t('editor.imageNode.altText')}
             onClick={() => setInlineMode(inlineMode === 'alt' ? null : 'alt')}
           >
             Alt
@@ -120,16 +127,16 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
           <button
             type="button"
             className={`rte-toolbar-btn ${inlineMode === 'url' ? 'is-active' : ''}`}
-            title="替换图片"
+            title={t('editor.imageNode.replaceImage')}
             onClick={() => setInlineMode(inlineMode === 'url' ? null : 'url')}
           >
-            替换
+            {t('editor.imageNode.replace')}
           </button>
           {/* Delete */}
           <button
             type="button"
             className="rte-toolbar-btn text-error"
-            title="删除图片"
+            title={t('editor.imageNode.deleteImage')}
             onClick={() => {
               const pos = getPos();
               if (pos !== undefined) {
@@ -150,7 +157,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       {inlineMode === 'url' && (
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
           <InlineInput
-            placeholder="输入图片地址"
+            placeholder={t('editor.imageNode.urlPlaceholder')}
             defaultValue={src}
             onConfirm={(val) => {
               updateAttributes({ src: val });
@@ -163,7 +170,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
       {inlineMode === 'alt' && (
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-40">
           <InlineInput
-            placeholder="替代文本 (alt)"
+            placeholder={t('editor.imageNode.altPlaceholder')}
             defaultValue={alt}
             onConfirm={(val) => {
               updateAttributes({ alt: val });

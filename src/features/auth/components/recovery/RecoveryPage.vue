@@ -4,13 +4,14 @@
     :max-width="mode === 'modal' ? undefined : '440px'"
     :class="mode === 'modal' ? 'w-full' : undefined"
   >
-    <AuthCard title="密码找回" subtitle="重置您的登录密码" :mode="mode">
+    <AuthCard :title="t('recovery.title')" :subtitle="t('recovery.subtitle')" :mode="mode">
       <RecoveryFlow @login="switchToLogin" />
     </AuthCard>
   </component>
 </template>
 
 <script setup lang="ts">
+import { t } from '~/lib/i18n';
 import AuthShell from '../shared/AuthShell.vue';
 import AuthCard from '../shared/AuthCard.vue';
 import RecoveryFlow from './RecoveryFlow.vue';

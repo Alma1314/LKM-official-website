@@ -1,34 +1,31 @@
 <template>
   <div class="space-y-4">
-    <h3 class="font-semibold text-deep-text">
-      评论 (<span>{{ comments.length }}</span
-      >)
-    </h3>
+    <h3 class="font-semibold text-deep-text">{{ t('community.forum.comments', { count: comments.length }) }}</h3>
 
     <!-- 评论输入 -->
     <div class="flex gap-3">
       <div
         class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-sm"
       >
-        我
+        {{ t('community.forum.me') }}
       </div>
       <div class="flex-1">
         <div
           v-if="replyToId"
           class="text-xs text-primary bg-primary/5 px-3 py-1.5 rounded-lg mb-2 inline-flex items-center gap-1"
         >
-          回复 <span class="font-medium">@{{ replyToAuthor }}</span>
+          {{ t('community.forum.replyTo', { name: replyToAuthor }) }}
           <button class="ml-1 hover:text-red-500" @click="cancelReply">&times;</button>
         </div>
         <textarea
           v-model="newComment"
           rows="3"
           class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none transition-colors"
-          placeholder="写下你的评论..."
+          :placeholder="t('community.forum.commentPlaceholder')"
           @keydown.ctrl.enter="submitComment"
         ></textarea>
         <div class="flex items-center justify-between mt-2">
-          <span class="text-xs text-text-muted/60">Ctrl + Enter 发送</span>
+          <span class="text-xs text-text-muted/60">{{ t('community.forum.ctrlEnterSend') }}</span>
           <button
             type="button"
             class="btn-primary px-4 py-1.5 rounded-lg text-sm font-medium"
@@ -36,7 +33,7 @@
             :class="!newComment.trim() ? 'opacity-50 cursor-not-allowed' : ''"
             @click="submitComment"
           >
-            发表评论
+            {{ t('community.forum.submitComment') }}
           </button>
         </div>
       </div>
@@ -75,19 +72,20 @@
               class="text-xs text-text-muted/60 hover:text-primary transition-colors"
               @click="startReply(comment.id, comment.authorName)"
             >
-              回复
+              {{ t('community.forum.reply') }}
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div v-else class="text-center py-8 text-sm text-text-muted">暂无评论，来发表第一条评论吧</div>
+    <div v-else class="text-center py-8 text-sm text-text-muted">{{ t('community.forum.noComments') }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 
 defineProps<{
   postId: string;
@@ -117,7 +115,7 @@ function submitComment() {
   const floor = comments.value.length + 1;
   comments.value.push({
     id: newId,
-    authorName: '我',
+    authorName: t('community.forum.me'),
     content: newComment.value.trim(),
     floorNumber: floor,
     parentId: replyToId.value || undefined,
@@ -158,11 +156,11 @@ function formatTime(dateStr: string): string {
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return '刚刚';
-  if (mins < 60) return `${mins} 分钟前`;
+  if (mins < 1) return t('community.forum.justNow');
+  if (mins < 60) return t('community.forum.minutesAgo', { count: mins });
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours} 小时前`;
+  if (hours < 24) return t('community.forum.hoursAgo', { count: hours });
   const days = Math.floor(hours / 24);
-  return `${days} 天前`;
+  return t('community.forum.daysAgo', { count: days });
 }
 </script>
