@@ -98,6 +98,6 @@ const filteredHeadings = headings.filter((h) => h.depth >= 1 && h.depth <= 3);
     headings.forEach((heading) => observer.observe(heading));
   }
 
-  // 兼容 Astro 的 View Transitions (视图过渡)
-  document.addEventListener('astro:page-load', initTOC);
+  // ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+  initTOC();
 </script>

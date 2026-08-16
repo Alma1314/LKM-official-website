@@ -21,9 +21,6 @@ import { allMenuItems, officialDefaultNavItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
 import type { NavBarLink } from '~/types/config';
 
-// 注释下面这行以禁用 View Transitions
-import { ClientRouter } from 'astro:transitions';
-
 import type { MetaData as MetaDataType } from '~/types/core';
 
 export interface Props {
@@ -79,8 +76,6 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
     <link rel="preconnect" href="https://api.simplesvg.com" />
     <link rel="preconnect" href="https://api.unisvg.com" />
 
-    <!-- 注释下面这行以禁用 View Transitions -->
-    <ClientRouter fallback="swap" />
     <script is:inline define:vars={{ baseUrl }}>
       window.__BASE_URL__ = baseUrl;
     </script>

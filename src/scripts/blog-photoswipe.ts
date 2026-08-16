@@ -38,12 +38,5 @@ function createPhotoSwipe(): void {
   lightbox.init();
 }
 
-// 新页面加载时（包括 View Transitions 后）重建 lightbox
-document.addEventListener('astro:page-load', () => {
-  createPhotoSwipe();
-});
-
-// 在页面替换前销毁旧的 lightbox
-document.addEventListener('astro:before-swap', () => {
-  lightbox?.destroy?.();
-});
+// ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+createPhotoSwipe();

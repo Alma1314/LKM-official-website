@@ -35,14 +35,6 @@ export function useApp(): {
 
   const state = reactive<AppState>({ settings });
 
-  // 监听主站 theme 变化（astro:after-swap 后 BasicScripts 会更新 .dark class）
-  if (isClient) {
-    document.addEventListener('astro:after-swap', () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      state.settings.theme = isDark ? 'night' : 'day';
-    });
-  }
-
   const isNight = computed(() => state.settings.theme === 'night');
   const lowPerf = computed(() => state.settings.lowPerf || state.settings.muted);
   const highContrast = computed(() => state.settings.highContrast);

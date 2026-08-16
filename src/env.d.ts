@@ -47,7 +47,6 @@ declare module 'virtual:config' {
 }
 
 declare module '~/scripts/blog-init.ts';
-declare module '~/scripts/blog-transitions.ts';
 declare module '~/scripts/blog-photoswipe.ts';
 
 interface ImportMeta {
