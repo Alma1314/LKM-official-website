@@ -7,9 +7,11 @@ interface OfficialArticle {
   slug: string;
   title: string;
   description: string;
-  cover: string;
+  cover?: string;
   published: string;
 }
+
+const DEFAULT_COVER = `${import.meta.env.BASE_URL || '/'}images/article-default.png`;
 
 const articles = ref<OfficialArticle[]>([]);
 const loading = ref(true);
@@ -38,25 +40,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="loading" class="text-center py-4 text-gray-500">{{ t('common.loading') }}</div>
+  <div v-if="loading" class="text-center py-4 text-text-muted">{{ t('common.loading') }}</div>
   <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <a
       v-for="article in articles"
       :key="article.slug"
       :href="`${baseUrl}official/articles/${article.slug}`"
-      class="border rounded-lg p-4 hover:shadow-md transition-shadow"
+      class="profile-card group flex flex-col"
     >
-      <img
-        v-if="article.cover"
-        :src="article.cover"
-        :alt="article.title"
-        class="w-full h-40 object-cover rounded mb-3"
-      />
-      <h3 class="font-semibold mb-1">{{ article.title }}</h3>
-      <p v-if="article.description" class="text-sm text-gray-600 line-clamp-2">{{ article.description }}</p>
-      <span class="text-xs text-gray-400 mt-2 block">{{
-        new Date(article.published).toLocaleDateString('zh-CN')
-      }}</span>
+      <div class="profile-inner h-full flex flex-col">
+        <img :src="article.cover || DEFAULT_COVER" :alt="article.title" class="w-full h-20 object-cover" />
+        <div class="flex flex-col flex-1 p-5">
+          <h3 class="font-semibold text-deep-text mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            {{ article.title }}
+          </h3>
+          <p v-if="article.description" class="text-sm text-text-muted line-clamp-2">
+            {{ article.description }}
+          </p>
+          <span class="text-xs text-text-muted mt-auto pt-4 block">{{
+            new Date(article.published).toLocaleDateString('zh-CN')
+          }}</span>
+        </div>
+      </div>
     </a>
   </div>
 </template>

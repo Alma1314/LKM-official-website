@@ -22,7 +22,7 @@ const { articles = [], error = null, emptyText = t('officialArticles.empty') } =
   articles.length > 0 && (
     <ul>
       {articles.map((article) => (
-        <li class="mb-12 md:mb-20">
+        <li class="mb-4 last:mb-0">
           <Item article={article} />
         </li>
       ))}

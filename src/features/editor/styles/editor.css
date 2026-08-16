@@ -184,6 +184,18 @@
   color: var(--deep-text);
 }
 
+/* ===== 占位提示框：仅在文档为空时显示，输入内容后自动隐藏 =====
+   Tiptap placeholder 扩展通过 is-editor-empty / is-empty 类标记空内容，
+   一旦输入内容即移除该类，伪元素随之隐藏，从而保证「输入后不再显示提示」。 */
+.rte-editor-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--rte-placeholder, rgba(120, 129, 141, 0.6));
+  pointer-events: none;
+  font-weight: 400;
+  height: 0;
+}
+
 /* ===== 编辑区排版：对齐站点文章，覆盖全局营销级标题 ===== */
 .rte-editor-content p {
   font-size: 17px;
@@ -855,4 +867,30 @@
   .rte-slash-menu {
     max-width: min(240px, calc(100vw - 2rem));
   }
+}
+
+/* ===== Callout 节点：图标居左 + 文字在剩余空间水平/垂直居中 =====
+   覆盖 main.css 的 `.alert`（display:grid / place-items:center start），
+   用更高特异性 `.rte-callout.alert` 强制 flex，使图标占据首列、正文占满并列居中。 */
+.rte-callout.alert {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.rte-callout-icon {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.rte-callout-body {
+  flex: 1 1 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.rte-callout-body h4,
+.rte-callout-body p {
+  margin: 0;
 }

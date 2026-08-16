@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
-import { t } from '~/lib/i18n';
+import { NodeViewWrapper } from '@tiptap/react';
 
 interface RawMdxPlaceholderProps {
   node: Node;
@@ -35,7 +35,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
   };
 
   return (
-    <div
+    <NodeViewWrapper
       className="my-2 border border-warning/40 rounded-lg bg-warning/10 p-4 select-none"
       contentEditable={false}
       data-raw-mdx
@@ -58,7 +58,7 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
         <span className="text-sm font-medium text-warning">
-          {sourceKind === 'text' ? t('editor.rawMdx.unsupportedInline') : t('editor.rawMdx.unsupportedBlock')}
+          此{sourceKind === 'text' ? '行内' : ''}内容暂不支持可视化编辑
         </span>
       </div>
 
@@ -70,16 +70,16 @@ const RawMdxPlaceholder = memo(function RawMdxPlaceholder({ node, editor, getPos
 
       <div className="flex gap-1">
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setShowSource(!showSource)}>
-          {showSource ? t('editor.rawMdx.hideSource') : t('editor.rawMdx.showSource')}
+          {showSource ? '隐藏源码' : '查看源码'}
         </button>
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleCopy}>
-          {t('editor.rawMdx.copy')}
+          复制
         </button>
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleDelete}>
-          {t('editor.delete')}
+          删除
         </button>
       </div>
-    </div>
+    </NodeViewWrapper>
   );
 });
 

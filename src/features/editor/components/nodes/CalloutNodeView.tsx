@@ -1,7 +1,8 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
-import { t } from '~/lib/i18n';
+import { NodeViewWrapper } from '@tiptap/react';
+import CalloutView from '../shared/CalloutView';
 
 interface CalloutNodeViewProps {
   node: Node;
@@ -11,17 +12,10 @@ interface CalloutNodeViewProps {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  info: t('editor.callout.info'),
-  warning: t('editor.callout.warning'),
-  error: t('editor.callout.error'),
-  success: t('editor.callout.success'),
-};
-
-const TYPE_ICONS: Record<string, string> = {
-  info: 'ℹ',
-  warning: '⚠',
-  error: '✕',
-  success: '✓',
+  info: '信息',
+  warning: '警告',
+  error: '错误',
+  success: '成功',
 };
 
 const CalloutNodeView = memo(function CalloutNodeView({
@@ -32,7 +26,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
 }: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const ctype = ((node.attrs.type as string) || 'info') as keyof typeof TYPE_LABELS;
+  const ctype = ((node.attrs.type as string) || 'info') as 'info' | 'warning' | 'error' | 'success';
 
   useEffect(() => {
     if (!editing) return;
@@ -46,21 +40,10 @@ const CalloutNodeView = memo(function CalloutNodeView({
   }, [editing]);
   const title = (node.attrs.title as string) || '';
 
-  const alertClass = {
-    info: 'alert-info',
-    warning: 'alert-warning',
-    error: 'alert-error',
-    success: 'alert-success',
-  }[ctype];
-
   return (
-    <div className="relative my-2" contentEditable={false} data-callout>
-      <div className={`alert ${alertClass} cursor-pointer`} onClick={() => setEditing(!editing)}>
-        <span className="text-lg">{TYPE_ICONS[ctype]}</span>
-        <div>
-          {title && <h4 className="font-semibold text-sm">{title}</h4>}
-          <p className="text-sm opacity-80">{t('editor.callout.hintEdit', { type: TYPE_LABELS[ctype] })}</p>
-        </div>
+    <NodeViewWrapper className="relative my-2" contentEditable={false} data-callout>
+      <div className="cursor-pointer" onClick={() => setEditing(!editing)}>
+        <CalloutView type={ctype} title={title || undefined} />
       </div>
 
       {editing && (
@@ -68,7 +51,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
           ref={panelRef}
           className="absolute top-full left-0 mt-1 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3 w-64 max-w-[calc(100vw-2rem)]"
         >
-          <label className="text-xs font-medium block mb-1">{t('editor.callout.type')}</label>
+          <label className="text-xs font-medium block mb-1">类型</label>
           <select
             className="rte-select rte-select--sm w-full mb-2"
             value={ctype}
@@ -80,12 +63,12 @@ const CalloutNodeView = memo(function CalloutNodeView({
               </option>
             ))}
           </select>
-          <label className="text-xs font-medium block mb-1">{t('editor.callout.titleOptional')}</label>
+          <label className="text-xs font-medium block mb-1">标题（可选）</label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={title}
-            placeholder={t('editor.callout.titlePlaceholder')}
+            placeholder="输入标题"
             onChange={(e) => updateAttributes({ title: e.target.value })}
           />
           <div className="flex gap-1 justify-end">
@@ -104,7 +87,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 }
               }}
             >
-              {t('editor.delete')}
+              删除
             </button>
             <button
               type="button"
@@ -114,12 +97,12 @@ const CalloutNodeView = memo(function CalloutNodeView({
                 setEditing(false);
               }}
             >
-              {t('editor.confirm')}
+              确定
             </button>
           </div>
         </div>
       )}
-    </div>
+    </NodeViewWrapper>
   );
 });
 

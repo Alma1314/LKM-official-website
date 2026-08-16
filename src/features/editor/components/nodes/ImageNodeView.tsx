@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { NodeViewWrapper } from '@tiptap/react';
 import InlineInput from './InlineInput';
 import { resolveImageSrc } from '../../persistence/image-store';
 import { t } from '~/lib/i18n';
@@ -54,7 +55,11 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   };
 
   return (
-    <div className={`relative inline-block group ${alignClasses[align] ?? ''}`} contentEditable={false} data-image-node>
+    <NodeViewWrapper
+      className={`relative inline-block group ${alignClasses[align] ?? ''}`}
+      contentEditable={false}
+      data-image-node
+    >
       <img
         src={displaySrc}
         alt={alt}
@@ -183,7 +188,7 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
 
       {/* Caption */}
       {title && <p className="text-xs text-center text-deep-text/60 mt-1">{title}</p>}
-    </div>
+    </NodeViewWrapper>
   );
 });
 

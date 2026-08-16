@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useBlogPost } from '../composables/useBlogPost';
+import { ref, onMounted, shallowRef, type Component } from 'vue';
+import { jsx, jsxs, Fragment } from 'vue/jsx-runtime';
+import { evaluate } from '@mdx-js/mdx';
 import { blogApi } from '~/lib/api';
-import { sanitizeHtmlContent } from '~/lib/utils/html-sanitize';
+import Callout from '../components/content/Callout.vue';
+import Figure from '../components/content/Figure.vue';
 import type { BlogArticleDetail } from '../types/blog';
 import { t } from '~/lib/i18n';
 
-const _props = defineProps<{ slug: string }>();
+const props = defineProps<{ slug: string }>();
 
 const article = ref<BlogArticleDetail | null>(null);
+const MDXComponent = shallowRef<Component | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-const safeContent = computed(() => (article.value ? sanitizeHtmlContent(article.value.content) : ''));
-
-const { MDXComponent: _MDXComponent, fetchAndCompile } = useBlogPost();
-
+// 背景：content 是编辑器导出的 MDX 原文（含 <Callout/>、<Figure/> 等 JSX）。
+// 用 @mdx-js/vue 的 evaluate() 在客户端编译，并传入共享组件映射，使自定义组件
+// 以全站统一的 .lkm-* 样式渲染（替代原 v-html 直插 HTML 导致组件/样式丢失的问题）。
 onMounted(async () => {
   loading.value = true;
-  const result = await blogApi.getArticleDetail(_props.slug);
+  const result = await blogApi.getArticleDetail(props.slug);
   if (result.isErr()) {
     error.value = result.error.message;
     loading.value = false;
@@ -26,8 +28,21 @@ onMounted(async () => {
   }
   article.value = result.value;
 
-  // Load MDX content via the existing composable (simulated: use content field directly)
-  await fetchAndCompile(0, ''); // placeholder; BlogArticleDetail.content will be rendered via a different path
+  try {
+    const compiled = await evaluate(result.value.content, {
+      jsx,
+      jsxs,
+      Fragment,
+      components: {
+        Callout,
+        Figure,
+      },
+    });
+    MDXComponent.value = compiled.default;
+  } catch (e) {
+    error.value = `内容解析失败: ${String(e)}`;
+  }
+
   loading.value = false;
 });
 </script>
@@ -54,9 +69,9 @@ onMounted(async () => {
       }}</span>
     </div>
 
-    <!-- MDX content rendered client-side -->
+    <!-- MDX content rendered client-side via evaluate + shared components -->
     <div class="prose max-w-none mb-12">
-      <div v-html="safeContent"></div>
+      <MDXComponent v-if="MDXComponent" />
     </div>
 
     <!-- Share -->
