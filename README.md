@@ -3,373 +3,33 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Astro v7](https://img.shields.io/badge/Astro-v7-FF5D01?logo=astro)](https://astro.build)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript)](https://www.typescriptlang.org)
 
 **理科迷 (LKM)** 的官方网站 — 基于 [AstroWind](https://github.com/arthelokyo/astrowind) 模板，采用 Astro v7 + Tailwind CSS v4 + Vue 3 构建，Astro SSR server 模式部署。LKM 是创立于 2014 年的科技爱好者社区，覆盖数学、物理、化学、生物、信息技术等多个学科。
+
+> **新手如何从零部署环境、安装工具、上传改动？** 请看 [**新手指南（GETTING_STARTED.md）**](./GETTING_STARTED.md)。
 
 ---
 
 ## 快速导航（点击跳转）
 
-- [前言](#前言)
-- [新手教程](#新手指导--环境部署)
-- [报错解决（pnpm超时）](#下载过程中易遇到的问题)
 - [常用命令表（复制即用）](#常用命令)
 - [项目结构](#项目结构)
-- [添加新成员](#添加新成员)
-- [上传你的改动](#上传你的改动)
-- [外置链接](#外置链接)
-- [联系我们！](#联系我们)
 - [页面路由](#页面路由)
-- [项目结构](#项目结构)
-- [其他](#其他)
+- [配置系统](#配置系统)
+- [样式系统](#样式系统)
+- [内容管理](#内容管理)
+- [构建部署](#构建部署)
 - [架构概览](#架构概览)
-
----
-
-## 前言
-
-就目前而言，理科迷（`LKM`）的官网是基于`github.io`的个人主页，目前为止，网站基于`Astro`架构搭建
-
-（`Astro`：[Astro](https://astro.build/)）
-
-整体处于测试阶段，部分功能尚有不完善之地，还请谅解，在国内部署域名可能要再很长一段时间后才能实践，如果你有兴趣来参与网站建设，欢迎报名！加入技术委员会（QQ群`1104277319`）以更深入的交流！在正式你的开发之旅前，我们首先建议开发工作在电脑端完成，以下以`WINDOWS`系统为例。
-
-总仓库地址（你目前所处网页）为： [https://github.com/LKM-AHZ/LKM-official-website](https://github.com/LKM-AHZ/LKM-official-website)
-
-后端仓库地址：[LKM-AHZ/LKM-service: backend](https://github.com/LKM-AHZ/LKM-service)
-
-如果你是一名新手，我们也欢迎你的加入，在正式加入项目之前，你可以先熟悉一下项目架构后再考虑加入。
-
-当然，我们默认你已基本会使用`github`。
-
-[**什么？！你连GitHub都不知道是啥？！**](https://www.bilibili.com/video/BV1m4GhzEER3/?spm_id_from=333.337.search-card.all.click&vd_source=0fd643b947c80b42ab465c4ed3101244)
-
-## 新手指导 · 环境部署
-
-**oi！小登！**
-
-你需要准备如下工具来完成对开发环境的部署，当然~后续的所有操作将在`cmd`（命令提示符）中执行：
-
-`Git bash`（以下简称`git`），`pnpm，NodeJS 24+`，以及一个稳定可靠的网络。
-
-[Git bash](https://git-scm.com/install/windows)
-
-[Pnpm](https://pnpm.io/zh/installation)
-
-[NodeJS](https://pnpm.io/zh/installation)
-
-相关的安装教程可以在如`CSDN`或是`B站`上等找到教程
-
-安装好这些工具后，打开`cmd`，输入指令
-
-```cmd
-git clone https://github.com/LKM-AHZ/LKM-official-website.git
-```
-
-克隆完成后，进入项目所在的本地目录下
-
-```cmd
-cd LKM-official-website
-```
-
-如果你不想让项目默认安装在C盘，在后续的操作中，请记得要输入参数` /d`来改变盘符。
-
-运行命令
-
-```cmd
-pnpm install
-```
-
-后在运行
-
-```cmd
-pnpm run dev
-```
-
-此时会输出
-
-```bash
-$ astro dev
-```
-
-随后打开浏览器（默认为`Edge`）访问链接[理科迷 —— 科技爱好者](http://localhost:4321/LKM-official-website)
-
-即可看到目前的官网。
-
-- [返回title](#快速导航点击跳转)
-
-## 开发工具部署
-
-通常情况下我们选用[VScode](https://code.visualstudio.com/Download?_exp_download=fb315fc982)进行开发，安装完VScode后，你需要在`VScode`中的插件商店里下载如下组件
-
-`Nodejs（extensions for nodejs）`
-
-`Pnpm（Pnpm commands for VSCode）`
-
-`Astro（Language support for Astro）`
-
-`MDX （Language support for MDX）`
-
-随后，用`VScode`打开文件夹
-
-`（默认位置为C盘）C:\Users\<你的用户名>\LKM-official-website`
-
-即可完成开发环境的部署。
-
-- [返回title](#快速导航点击跳转)
-
-## 下载过程中易遇到的问题
-
-当然，你也可以直接用`cmd`的`code`命令来直接打开。
-
-对于`github`本身，用户可用`SSL`来解决大部分在`git clone`时遇到的网络波动的问题
-
-而对于`pnpm install`，这一步本身也极易受到网络干扰，
-
-例如在输入`pnpm install`后等待一段时间后会输出红色字幕警告：如
-
-```bash
-[ERR_PNPM_META_FETCH_FAIL] GET https://registry.npmjs.org/......: The operation was aborted due to timeout
-```
-
-这个时候就要尝试切换镜像源了
-
-不过要注意
-
-在更换完镜像源后，切记输入清除缓存的指令以防干扰
-
-```cmd
-pnpm store prune
-```
-
-如果只是中途发生错误，并不需要更换镜像源的话，输入下面这串指令以清除缓存
-
-```cmd
-pnpm clean –lockfile
-```
-
-输入如下这串命令以检查网络延迟（不过这条貌似没什么用，即便它的响应在700ms内，该下载不上的还是下载不上）
-
-```cmd
-npm ping
-```
-
-我们注意到，使用指令
-
-```cmd
-set NODE_OPTIONS=--dns-result-order=ipv4first
-set PNPM_NETWORK_CONCURRENCY=4
-set PNPM_FETCH_TIMEOUT=60000
-```
-
-后，`pnpm`的下载明显要稳定很多
-
-我们可以通过在后面加参数`--network-concurrency=1 --fetch-timeout=60000`的形式的形式来稳定pnpm的下载，例如
-
-```cmd
-pnpm install --network-concurrency=1 --fetch-timeout=60000
-```
-
-不过官网的下载速度一般很慢，我们可以改为采用镜像源的形式来加快下载进度，输入如下这串指令来更换链接（默认此时在`LKM-official-website`的根目录中执行，这里我们采用淘宝的镜像源）
-
-```cmd
-pnpm config set registry https://registry.npmmirror.com
-pnpm store prune
-pnpm install --network-concurrency=2 --fetch-timeout=60000
-```
-
-- [返回title](#快速导航点击跳转)
-
-## 关于后续的更新
-
-```cmd
-cd LKM-official-website
-```
-
-输入
-
-```cmd
-git stash
-```
-
-来保留你的更改，
-
-在后续的使用中，如要更新别人的内容，需要你手动完成，依次输入
-
-```cmd
-git stash
-git pull
-pnpm install --network-concurrency=2 --fetch-timeout=60000
-```
-
-如看到类似的输出
-
-```bash
-Already up to date
-```
-
-则说明更新完成
-
-- [返回title](#快速导航点击跳转)
-
-## 启动开发平台
-
-确保完成上述步骤后，重新启用一个终端，输入
-
-```cmd
-cd LKM-official-website
-pnpm dev
-```
-
-浏览器访问[理科迷 —— 科技爱好者](http://localhost:4321/LKM-official-website/)
-
-`VScode`进入`LKM-official-website`文件夹即可启动开发平台。
-
-（记得勾选我完全信任）
-
-目前，`Astro`采用的是**热更新**的架构，这意味着你在修改源文件的同时修改能迅速反映到网页上。
-
-- [返回title](#快速导航点击跳转)
-
-## 嘿！你需要基本熟悉一下目前的网站的基本架构！
-
-这里举个例子
-
-如要编写起始页的信息，具体的位置在
-
-`LKM-official-website\src\pages\official\index.astro`
-
-中
-
-其余的请详见**项目结构**。
-
-- [返回title](#快速导航点击跳转)
-
-## 正式加入
-
-在做好要加入开发组（目前叫技术组）的准备后，你需要准备一个`github`账号和一个能用的邮箱，例如QQ邮箱，（**确保你的账户有效且不会被盗，且保证我们能够与你取得联系**），向有关部门提交申请后，如果通过，会发给你一封加入组织的邮件，首先你需要在本地中登录你的`github`账户，`cmd`在`LKM-official-website`目录下输入命令
-
-```cmd
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-```
-
-在`you@example.com`处填入你的`github`账户所绑定的邮箱
-在`Your Name`处填入你的`github`账户昵称
-
-其次，在你收到邮件后，同意并加入到组织中，并确保项目的管理者已经授予了你更改仓库的权限（即`write`权限），可以在个人主页[repositories](https://github.com/settings/repositories)处查看。
-
-- [返回title](#快速导航点击跳转)
-
-## 上传你的改动
-
-```cmd
-cd LKM-official-website
-```
-
-确保你的改动已经在本地文件中保存完毕，`VScode`的快捷键是`CTRL+S`
-
-**此外，请确保再改动前你已和总仓库同步，输入**
-
-```cmd
-git pull
-```
-
-以同步
-
-在`cmd`终端中（默认为`LKM-official-website`目录下）输入如下命令以将你的改动上传至仓库
-
-```cmd
-git add .
-git commit -m "<请输入文本>"
-git push
-```
-
-不过注意，也许你注意到了，在你上传完改动到仓库后，仓库大概率会显示
-
-**Some checks were not successful**
-
-你可以在
-
-[Commits · LKM-AHZ/LKM-official-website](https://github.com/LKM-AHZ/LKM-official-website/commits/main/)
-
-中查看详情原因
-
-如果要让改动通过`pending`并显示为`success`
-
-首先你需要知道你改动的文件的路径，这里以src\pages\official\index.astro为例，**假设**你对这个文件做出了改动
-
-那么`cmd`输入如下指令即可。
-
-```cmd
-pnpm exec prettier --write src\pages\official\index.astro
-git add src\pages\official\index.astro
-git commit -m "请输入文本"
-git push
-```
-
-如果你一次性修改了多个文件，考虑一并上传，这里以`src\...`举例（在实机的时候..是某个具体的路径），可以在每个`src\...`后空一格再接的形式上传，例如
-
-```cmd
-pnpm exec prettier --write src\... src\... src\...
-```
-
-对于其他的路径也同理。
-
-当然，适用于那些比较大的改动，你可以现在本地验证一遍，输入
-
-```cmd
-pnpm run check
-```
-
-如要统一 Prettier 格式，输入
-
-```cmd
-pnpm exec prettier --write .
-```
-
-即可
-
-（如果只是单个统一的话输入`pnpm exec prettier --write (具体的文件路径)`）
-
-在全程无报错的情况下即可上传至仓库。
-
-`pnpm run dev` 仅启动 **Astro（端口 4321）**。仓库不含后端，后端请求经 `API_URL` 代理到真实后端（见 `.env.example`），未配置则前端仅提供不依赖 API 的页面。
-
-## 外置链接
-
-自八月十号起，你可以通过访问[链接](http://lkm.s12mc.xyz/)
-
-来直接访问LKM官网
-
-感谢`Jason·CJ`（QQ3549287757）
-
-- [返回title](#快速导航点击跳转)
-
-## 联系我们
-
-这套教程的维护由清汉负责，如对这套教程有建议者可通过QQ`1121840744`来联系我
-
-项目骨干：笨笨狐狸 `3674887670`
-
-项目领导者：笨蛋千寻 `1549258401`
-
-后端 & 前端 维护与开发人员（也算作是）：
-
-Lich|et `2869580566`
-
-Eptazocine `3070025462`
-
-**外置链接维护者**
-
-Jason·CJ `QQ3549287757`
-
-**等**
-
----
-
-- [返回title](#快速导航点击跳转)
+- [特性](#特性)
+- [致谢 · 开源项目](#致谢--开源项目)
+- [许可证](#许可证)
+
+> 仓库文档族：
+>
+> - [新手指南](./GETTING_STARTED.md) — 环境部署 / 工具安装 / 排错 / 更新 / 上传改动
+> - [AGENTS.md](./AGENTS.md) — AI Agent 指南（架构、数据访问、认证、组件规范）
+> - [CODING_STANDARDS.md](./CODING_STANDARDS.md) — 代码规范（格式、ESLint、CI、Git 规范）
 
 ---
 
@@ -439,14 +99,11 @@ Jason·CJ `QQ3549287757`
 ├── AGENTS.md                   # AI Agent 指令
 ├── CLAUDE.md                   # Claude Code 配置
 ├── CODING_STANDARDS.md         # 代码规范
+├── GETTING_STARTED.md          # 新手指南（环境部署 / 上传改动）
 ├── LICENSE.md                  # AGPL-3.0 许可证
 ├── astro.config.ts             # Astro 配置（server 模式 + Vue/React 集成）
 └── tsconfig.json               # TypeScript 配置
 ```
-
----
-
-- [返回title](#快速导航点击跳转)
 
 ---
 
@@ -460,6 +117,7 @@ Jason·CJ `QQ3549287757`
 | 管理团队   | `/official/team`         | `pages/official/team.astro`         |
 | 项目团队   | `/official/project-team` | `pages/official/project-team.astro` |
 | 关于       | `/official/articles`     | `pages/official/articles/`          |
+| 新闻资讯   | `/official/news`         | `pages/official/news/`              |
 | 服务       | `/official/services`     | `pages/official/services.astro`     |
 | 赞助与支持 | `/official/pricing`      | `pages/official/pricing.astro`      |
 | 联系我们   | `/official/contact`      | `pages/official/contact.astro`      |
@@ -524,10 +182,13 @@ Jason·CJ `QQ3549287757`
 | 文件审核   | `/admin/files`            | 后台文件审核     |
 | 板块管理   | `/admin/categories`       | 后台板块管理     |
 | 举报管理   | `/admin/reports`          | 后台举报处理     |
-| 文档管理   | `/admin/documents`        | 后台文档编辑器   |
+| 文档列表   | `/admin/documents`        | 后台文档列表     |
+| 编辑器     | `/editor`                 | 富文本编辑器     |
 | 匿名信大厅 | `/letters`                | 匿名信列表       |
 | StarHope   | `/starhope`               | AI 学习助手      |
 | 团队介绍   | `/apps`                   | 应用入口         |
+| 资源       | `/resources`              | 资源页           |
+| 用户主页   | `/user/<username>`        | 用户个人主页     |
 | 博客       | `/blog`                   | 博客列表         |
 | 博客文章   | `/blog/<slug>`            | 博客文章         |
 | 404        | `/404`                    | 404 页面         |
@@ -553,33 +214,25 @@ import { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } from '~/lib/config';
 
 ---
 
-## 内容管理
+## 博客内容
 
-在 `src/content/posts/` 下创建 `.md` 或 `.mdx` 文件：
+博客采用 **Astro content collections**（`src/content.config.ts`，当前集合为空），正式博客内容来自独立部署的真实后端：
 
-```md
----
-title: 文章标题
-published: 2025-01-15
-description: 文章摘要
-tags: [web, tutorial]
-category: tutorials
-draft: false
-image: ~/assets/images/cover.jpg
----
-
-文章正文...
-```
+- 社区博客为 Vue SPA，路由 `src/pages/blog/`（`index.astro` / `[...slug].astro`）
+- 文章正文经 `useBlogPost` 用 `@mdx-js/mdx` 的 `evaluate()` 在客户端编译（MDX 原文由 `blogApi` 从后端获取），再经共享 `Callout`/`Figure` 组件映射渲染
+- 不在前端以 `.md` 文件管理博客正文
 
 ---
 
-## 构建部署
+## 构建与 CI
 
 ```bash
 pnpm run build   # 输出到 ./dist/
 ```
 
-推送 `main` 分支后，GitHub Actions 自动构建部署。
+推送 `main`（或开 PR）后，GitHub Actions 触发 `build` / `artifacts` / `check` / `test-frontend` 四个 job：生产构建、产物检查（SEO / 内部链接 / Bundle 预算）、`astro check`+ESLint+Prettier、Vitest 单测。**本仓库 CI 不含自动部署 job**，实际部署由外层编排（根目录仓库/nginx 编排）完成。
+
+> 本仓库 `pnpm run dev` 仅启动 Astro（端口 4321）；后端请求经 `API_URL` 代理到真实后端（见 `.env.example`），未配置则前端仅提供不依赖 API 的页面。
 
 ---
 
@@ -594,6 +247,8 @@ layouts/        页面布局（BaseLayout/PageLayout/SidebarLayout/MarkdownLayou
   ↓
 pages/          文件路由页面
 ```
+
+---
 
 ## 特性
 
@@ -610,6 +265,8 @@ pages/          文件路由页面
 - **KaTeX** — 数学公式渲染
 - **响应式适配** — 移动端至桌面端
 - **前后端分离** — 本仓库仅前端，对接独立部署的真实后端（REST + GraphQL），经 `API_URL` 代理
+
+---
 
 ## 致谢 · 开源项目
 
@@ -644,10 +301,6 @@ pages/          文件路由页面
 | [ESLint](https://eslint.org)                                      | MIT        | 代码检查         |
 | [Prettier](https://prettier.io)                                   | MIT        | 代码格式化       |
 | [TypeScript](https://www.typescriptlang.org)                      | Apache-2.0 | 类型系统         |
-
----
-
-- [返回title](#快速导航点击跳转)
 
 ---
 
