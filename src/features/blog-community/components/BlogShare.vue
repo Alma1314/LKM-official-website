@@ -2,12 +2,12 @@
   <div class="relative flex items-center gap-1.5">
     <dialog ref="wechatDialog" class="modal" @close="showWechatQR = false">
       <div class="modal-box max-w-xs text-center">
-        <p class="text-sm font-medium mb-3">微信扫一扫分享</p>
+        <p class="text-sm font-medium mb-3">{{ t('blog.share.wechatScanTitle') }}</p>
         <div ref="qrContainer" class="bg-white/80 dark:bg-white/90 rounded-xl p-2 mx-auto mb-3 inline-block" />
-        <p class="text-xs text-deep-text/50 mb-3">打开微信"扫一扫"，扫描二维码分享文章</p>
+        <p class="text-xs text-deep-text/50 mb-3">{{ t('blog.share.wechatScanHint') }}</p>
         <div class="modal-action mt-0 justify-center">
           <form method="dialog">
-            <button class="btn btn-sm btn-outline">关闭</button>
+            <button class="btn btn-sm btn-outline">{{ t('common.close') }}</button>
           </form>
         </div>
       </div>
@@ -18,16 +18,16 @@
         v-if="showCopiedToast"
         class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-base-content text-base-100 text-xs rounded-full whitespace-nowrap shadow-lg"
       >
-        已复制链接
+        {{ t('blog.share.linkCopied') }}
       </span>
     </Transition>
 
-    <span class="text-xs font-bold text-deep-text/60 mr-1">分享</span>
+    <span class="text-xs font-bold text-deep-text/60 mr-1">{{ t('blog.share.share') }}</span>
 
     <button
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-green-50 dark:hover:bg-green-950/30 hover:text-green-500 text-deep-text/60"
-      title="分享到微信"
-      aria-label="分享到微信"
+      :title="t('blog.share.wechat')"
+      :aria-label="t('blog.share.wechat')"
       @click="shareToWechat"
     >
       <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
@@ -39,8 +39,8 @@
 
     <button
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:text-blue-500 text-deep-text/60"
-      title="分享到 QQ"
-      aria-label="分享到 QQ"
+      :title="t('blog.share.qq')"
+      :aria-label="t('blog.share.qq')"
       @click="shareToQQ"
     >
       <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
@@ -52,8 +52,8 @@
 
     <button
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-500 text-deep-text/60"
-      title="分享到微博"
-      aria-label="分享到微博"
+      :title="t('blog.share.weibo')"
+      :aria-label="t('blog.share.weibo')"
       @click="shareToWeibo"
     >
       <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
@@ -65,8 +65,8 @@
 
     <button
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-surface-3 text-deep-text/60 hover:text-deep-text"
-      title="复制链接"
-      aria-label="复制文章链接"
+      :title="t('blog.share.copyLink')"
+      :aria-label="t('blog.share.copyLinkAria')"
       @click="copyLink"
     >
       <svg
@@ -86,8 +86,8 @@
     <button
       v-if="supportsWebShare"
       class="share-btn p-1.5 rounded-full transition-colors hover:bg-surface-3 text-deep-text/60 hover:text-deep-text"
-      title="更多分享方式"
-      aria-label="更多分享方式"
+      :title="t('blog.share.more')"
+      :aria-label="t('blog.share.more')"
       @click="shareNative"
     >
       <svg
@@ -111,6 +111,7 @@
 
 <script setup lang="ts">
 import { ref, onUnmounted, nextTick, watch } from 'vue';
+import { t } from '~/lib/i18n';
 
 const props = defineProps<{
   url: string;
@@ -159,7 +160,7 @@ async function loadQRCode() {
     qrContainer.value.appendChild(canvas);
   } catch {
     if (qrContainer.value) {
-      qrContainer.value.innerHTML = '<p class="text-sm text-deep-text/50">二维码加载失败</p>';
+      qrContainer.value.innerHTML = `<p class="text-sm text-deep-text/50">${t('blog.share.qrLoadFailed')}</p>`;
     }
   }
 }

@@ -1,10 +1,14 @@
 <template>
   <!-- 白噪音背景音乐（WebAudio 生成，无需音频文件） -->
   <div class="audio-player" :class="{ on: playing }" v-if="!lowPerf">
-    <button class="audio-btn" @click="toggle" :title="playing ? '关闭白噪音' : '开启白噪音'">
+    <button
+      class="audio-btn"
+      @click="toggle"
+      :title="playing ? t('treehole.audio.closeTitle') : t('treehole.audio.openTitle')"
+    >
       <span class="audio-icon">{{ playing ? '🔊' : '🔈' }}</span>
     </button>
-    <span class="audio-label">{{ playing ? '白噪音·雨声' : '静音' }}</span>
+    <span class="audio-label">{{ playing ? t('treehole.audio.rainLabel') : t('treehole.audio.mutedLabel') }}</span>
     <input v-if="playing" class="audio-vol" type="range" min="0" max="1" step="0.05" :value="volume" @input="onVol" />
   </div>
 </template>
@@ -13,6 +17,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useApp } from '../stores/app';
 import * as store from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const { state, lowPerf } = useApp();
 const playing = ref(false);

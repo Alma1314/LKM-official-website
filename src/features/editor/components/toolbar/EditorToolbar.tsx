@@ -5,6 +5,7 @@ import EditorToolbarButton from './EditorToolbarButton';
 import MathEditor from '../nodes/MathEditor';
 import ImageUrlPopover from '../dialogs/ImageUrlPopover';
 import LinkEditPopover from '../dialogs/LinkEditPopover';
+import { t } from '~/lib/i18n';
 
 interface MathDraft {
   isBlock: boolean;
@@ -376,7 +377,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
       key: 'h1',
       icon: H1,
       label: 'H1',
-      title: '标题 1',
+      title: t('editor.heading1'),
       group: 'heading',
       action: (e) => e.chain().focus().toggleHeading({ level: 1 }).run(),
       isActive: (e) => e.isActive('heading', { level: 1 }),
@@ -385,7 +386,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
       key: 'h2',
       icon: H2,
       label: 'H2',
-      title: '标题 2',
+      title: t('editor.heading2'),
       group: 'heading',
       action: (e) => e.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: (e) => e.isActive('heading', { level: 2 }),
@@ -394,7 +395,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
       key: 'h3',
       icon: H3,
       label: 'H3',
-      title: '标题 3',
+      title: t('editor.heading3'),
       group: 'heading',
       action: (e) => e.chain().focus().toggleHeading({ level: 3 }).run(),
       isActive: (e) => e.isActive('heading', { level: 3 }),
@@ -429,8 +430,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'bold',
       icon: B,
-      label: '加粗',
-      title: '加粗 (Ctrl+B)',
+      label: t('editor.bold'),
+      title: t('editor.boldShortcut'),
       group: 'format',
       action: (e) => e.chain().focus().toggleBold().run(),
       isActive: (e) => e.isActive('bold'),
@@ -438,8 +439,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'italic',
       icon: I,
-      label: '斜体',
-      title: '斜体 (Ctrl+I)',
+      label: t('editor.italic'),
+      title: t('editor.italicShortcut'),
       group: 'format',
       action: (e) => e.chain().focus().toggleItalic().run(),
       isActive: (e) => e.isActive('italic'),
@@ -447,8 +448,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'underline',
       icon: U,
-      label: '下划线',
-      title: '下划线 (Ctrl+U)',
+      label: t('editor.underline'),
+      title: t('editor.underlineShortcut'),
       group: 'format',
       action: (e) => e.chain().focus().toggleUnderline().run(),
       isActive: (e) => e.isActive('underline'),
@@ -456,8 +457,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'strike',
       icon: S,
-      label: '删除线',
-      title: '删除线',
+      label: t('editor.strike'),
+      title: t('editor.strike'),
       group: 'format',
       action: (e) => e.chain().focus().toggleStrike().run(),
       isActive: (e) => e.isActive('strike'),
@@ -465,8 +466,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'code',
       icon: Code,
-      label: '行内代码',
-      title: '行内代码',
+      label: t('editor.inlineCode'),
+      title: t('editor.inlineCode'),
       group: 'format',
       action: (e) => e.chain().focus().toggleCode().run(),
       isActive: (e) => e.isActive('code'),
@@ -474,8 +475,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'link',
       icon: Link,
-      label: '链接',
-      title: '插入链接',
+      label: t('editor.link'),
+      title: t('editor.insertLink'),
       group: 'insert',
       action: () => {
         // 链接由 dispatchAction 拦截：有链接则移除，无链接则打开 LinkEditPopover
@@ -485,8 +486,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'blockquote',
       icon: Blockquote,
-      label: '引用',
-      title: '引用块',
+      label: t('editor.blockquote'),
+      title: t('editor.blockquoteTitle'),
       group: 'block',
       action: (e) => e.chain().focus().toggleBlockquote().run(),
       isActive: (e) => e.isActive('blockquote'),
@@ -494,8 +495,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'bulletList',
       icon: Ul,
-      label: '无序列表',
-      title: '无序列表',
+      label: t('editor.bulletList'),
+      title: t('editor.bulletList'),
       group: 'list',
       action: (e) => e.chain().focus().toggleBulletList().run(),
       isActive: (e) => e.isActive('bulletList'),
@@ -503,8 +504,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'orderedList',
       icon: Ol,
-      label: '有序列表',
-      title: '有序列表',
+      label: t('editor.orderedList'),
+      title: t('editor.orderedList'),
       group: 'list',
       action: (e) => e.chain().focus().toggleOrderedList().run(),
       isActive: (e) => e.isActive('orderedList'),
@@ -512,8 +513,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'taskList',
       icon: TaskList,
-      label: '任务列表',
-      title: '任务列表',
+      label: t('editor.taskList'),
+      title: t('editor.taskList'),
       group: 'list',
       action: (e) => e.chain().focus().toggleTaskList().run(),
       isActive: (e) => e.isActive('taskList'),
@@ -521,8 +522,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'codeBlock',
       icon: CodeBlock,
-      label: '代码块',
-      title: '代码块',
+      label: t('editor.codeBlock'),
+      title: t('editor.codeBlock'),
       group: 'block',
       action: (e) => e.chain().focus().toggleCodeBlock().run(),
       isActive: (e) => e.isActive('codeBlock'),
@@ -530,8 +531,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'horizontalRule',
       icon: Hr,
-      label: '分割线',
-      title: '分割线',
+      label: t('editor.horizontalRule'),
+      title: t('editor.horizontalRule'),
       group: 'insert',
       action: (e) => e.chain().focus().setHorizontalRule().run(),
       isActive: () => false,
@@ -539,8 +540,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'undo',
       icon: Undo,
-      label: '撤销',
-      title: '撤销 (Ctrl+Z)',
+      label: t('editor.undo'),
+      title: t('editor.undoShortcut'),
       group: 'history',
       action: (e) => e.chain().focus().undo().run(),
       isActive: () => false,
@@ -548,8 +549,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: 'redo',
       icon: Redo,
-      label: '重做',
-      title: '重做 (Ctrl+Shift+Z)',
+      label: t('editor.redo'),
+      title: t('editor.redoShortcut'),
       group: 'history',
       action: (e) => e.chain().focus().redo().run(),
       isActive: () => false,
@@ -573,8 +574,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
         </svg>
       ),
-      label: '图片',
-      title: '插入图片',
+      label: t('editor.image'),
+      title: t('editor.insertImage'),
       group: 'insert',
       action: () => {
         // 图片由 dispatchAction 拦截：打开 ImageUrlPopover
@@ -600,8 +601,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M18 20c-1.7 0-3-1.3-3-3V4" />
         </svg>
       ),
-      label: '行内公式',
-      title: '插入行内公式',
+      label: t('editor.inlineMath'),
+      title: t('editor.insertInlineMath'),
       group: 'insert',
       action: () => {
         // 行内公式由 dispatchAction 拦截：打开 MathEditor
@@ -625,8 +626,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a2 2 0 0 1 0 2.4l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2" />
         </svg>
       ),
-      label: '块级公式',
-      title: '插入块级公式',
+      label: t('editor.blockMath'),
+      title: t('editor.insertBlockMath'),
       group: 'insert',
       action: () => {
         // 块级公式由 dispatchAction 拦截：打开 MathEditor
@@ -653,8 +654,8 @@ function buildToolbarItems(): ToolbarItemDef[] {
           <path d="M12 3v18" />
         </svg>
       ),
-      label: '表格',
-      title: '插入 3×3 表格',
+      label: t('editor.table'),
+      title: t('editor.insertTable3x3'),
       group: 'insert',
       action: (e) => {
         e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
@@ -681,7 +682,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
         </svg>
       ),
       label: 'Callout',
-      title: '插入提示框',
+      title: t('editor.insertCallout'),
       group: 'component',
       action: (e) => {
         e.chain()
@@ -711,7 +712,7 @@ function buildToolbarItems(): ToolbarItemDef[] {
         </svg>
       ),
       label: 'Figure',
-      title: '插入图片组件',
+      title: t('editor.insertFigure'),
       group: 'component',
       action: (e) => {
         e.chain().focus().insertContent({ type: 'figure', attrs: {} }).run();
@@ -835,7 +836,9 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
     () =>
       GROUPS.filter((g) => MORE_GROUPS.has(g)).map((group) => (
         <div key={group} className="mb-1 last:mb-0">
-          <div className="text-xs text-deep-text/50 px-1 mb-0.5">{group === 'component' ? '组件' : '操作'}</div>
+          <div className="text-xs text-deep-text/50 px-1 mb-0.5">
+            {group === 'component' ? t('editor.component') : t('editor.action')}
+          </div>
           <div className="flex flex-wrap gap-0.5">
             {ITEMS.filter((i) => i.group === group).map((item) => (
               <EditorToolbarButton

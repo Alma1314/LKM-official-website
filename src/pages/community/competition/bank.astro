@@ -3,18 +3,19 @@ import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import QuestionBank from '~/features/competition/components/QuestionBank.vue';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
-const metadata = { title: '题库中心 —— 理科迷' };
+const metadata = { title: `${t('community.competition.questionBank')} —— LKM` };
 ---
 
 <Layout
   metadata={metadata}
   sidebarLinks={communitySidebarLinks}
   currentPath={getPermalink('/competition/bank')}
-  navItems={['社区主页', '博客', '资源', '我的']}
+  navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}
 >
   <div class="space-y-6">
-    <h1 class="text-3xl font-bold text-deep-text">题库中心</h1>
+    <h1 class="text-3xl font-bold text-deep-text">{t('community.competition.questionBank')}</h1>
     <div style="min-height: 400px"><QuestionBank client:only="vue" /></div>
   </div>
 </Layout>

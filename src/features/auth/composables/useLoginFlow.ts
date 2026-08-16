@@ -2,6 +2,7 @@ import { reactive, ref, toRef } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { authApi } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
+import { t } from '~/lib/i18n';
 import { useVerificationCountdown } from './useVerificationCountdown';
 import { authenticate } from '../lib/webauthn';
 
@@ -80,13 +81,13 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     switch (e.code) {
       case ErrorCode.AUTH_ERROR:
       case ErrorCode.HTTP_CLIENT_ERROR:
-        return '账号或密码错误';
+        return t('messages.auth.wrongCredentials');
       case ErrorCode.NETWORK_ERROR:
       case ErrorCode.HTTP_TIMEOUT:
       case ErrorCode.HTTP_SERVER_ERROR:
-        return '网络连接失败，请稍后重试';
+        return t('messages.networkError');
       default:
-        return e.message || '操作失败，请重试';
+        return e.message || t('messages.operationFailed');
     }
   }
 
@@ -96,7 +97,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
 
   function succeed(): void {
     error.value = null;
-    successMessage.value = '登录成功';
+    successMessage.value = t('messages.auth.loginSuccess');
     loggedIn.value = true;
     if (typeof onSuccess === 'function') onSuccess('');
   }
@@ -116,7 +117,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         // store 已在进入 2FA 时暂存 temp_token，取回填入 flow
         tempToken.value = store.getPending2FA() ?? '';
         if (r.value.requires2FASetup) {
-          successMessage.value = '账号首次登录需先完成 2FA 设置，请配合扫码';
+          successMessage.value = t('messages.auth.passkeyFirstTime2fa');
         }
         return;
       }
@@ -138,7 +139,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       }
       codeSent.value = true;
       countdown.start();
-      successMessage.value = '验证码已发送，请查收';
+      successMessage.value = t('messages.auth.codeSent');
     } finally {
       loading.value = false;
     }
@@ -177,7 +178,9 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       // 跳转后本页将被卸载；此处不重置 loading，避免闪烁
     } catch (e) {
       loading.value = false;
-      setError(e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, '发起 GitHub 授权失败'));
+      setError(
+        e instanceof AppError ? e : new AppError(ErrorCode.NETWORK_ERROR, t('messages.auth.githubAuthorizationFailed'))
+      );
     }
   }
 
@@ -192,7 +195,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       magicSent.value = true;
-      successMessage.value = 'Magic Link 已发送，请查收邮箱';
+      successMessage.value = t('messages.auth.magicLinkSent');
     } finally {
       loading.value = false;
     }
@@ -247,7 +250,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       setError(
         e instanceof Error
           ? new AppError(ErrorCode.AUTH_ERROR, e.message)
-          : new AppError(ErrorCode.AUTH_ERROR, '通行密钥登录失败')
+          : new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.passkeyLoginFailed'))
       );
     } finally {
       loading.value = false;
@@ -261,7 +264,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     try {
       const tt = tempTokenArg ?? tempToken.value;
       if (!tt) {
-        setError(new AppError(ErrorCode.AUTH_ERROR, '缺少临时会话令牌，请重新登录'));
+        setError(new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.missingTempToken')));
         return;
       }
       const r = await authApi.verify2FA(tt, verifyCode);

@@ -130,7 +130,8 @@ export default defineConfig({
     }),
 
     compress({
-      CSS: true,
+      // 用 lightningcss 而非 csso：csso 压缩时会把包含某些规则的手写 @media 块整块误删
+      CSS: { csso: false, lightningcss: true },
       HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
       Image: true,
       JavaScript: true,

@@ -3,7 +3,7 @@
     <!-- 顶部精简步骤条 -->
     <div class="bg-card-bg border-b border-surface-3">
       <div class="max-w-xl mx-auto px-4 py-3">
-        <ol class="flex items-center justify-between" aria-label="引导步骤">
+        <ol class="flex items-center justify-between" :aria-label="t('onboarding.stepsAria')">
           <li
             v-for="cfg in steps"
             :key="cfg.number"
@@ -60,7 +60,7 @@
             :disabled="flow.loading"
             @click="prev"
           >
-            上一步
+            {{ t('onboarding.prev') }}
           </button>
           <div v-else></div>
 
@@ -72,7 +72,7 @@
               :disabled="flow.loading"
               @click="skip"
             >
-              跳过全部
+              {{ t('onboarding.skipAll') }}
             </button>
             <button
               v-if="currentConfig.number < 4"
@@ -82,7 +82,7 @@
               :class="!canProceed || flow.loading ? 'opacity-50 cursor-not-allowed' : ''"
               @click="next"
             >
-              {{ currentConfig.buttonText || '下一步' }}
+              {{ currentConfig.buttonText || t('onboarding.next') }}
             </button>
             <button
               v-else
@@ -92,7 +92,7 @@
               :class="!canProceed || flow.loading ? 'opacity-50 cursor-not-allowed' : ''"
               @click="next"
             >
-              完成引导
+              {{ t('onboarding.finish') }}
             </button>
           </div>
         </div>
@@ -108,6 +108,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 import AuthCard from '../shared/AuthCard.vue';
 import AuthStatus from '../shared/AuthStatus.vue';
 import IdentityTags from './IdentityTags.vue';
@@ -133,32 +134,39 @@ const props = defineProps<{ redirect?: string | null }>();
 const steps: StepConfig[] = [
   {
     number: 1,
-    label: '身份标签',
+    label: t('onboarding.identityTitle'),
     component: IdentityTags,
     optional: true,
     required: false,
     skippable: true,
-    buttonText: '下一步',
+    buttonText: t('onboarding.next'),
   },
   {
     number: 2,
-    label: '关注推荐',
+    label: t('onboarding.followTitle'),
     component: FollowRecommend,
     optional: false,
     required: true,
     skippable: true,
-    buttonText: '一键关注',
+    buttonText: t('onboarding.followAll'),
   },
   {
     number: 3,
-    label: '答题升级',
+    label: t('onboarding.quizTitle'),
     component: AnswerQuiz,
     optional: true,
     required: false,
     skippable: true,
-    buttonText: '提交',
+    buttonText: t('onboarding.submit'),
   },
-  { number: 4, label: '新手任务', component: NewbieTasks, optional: false, required: false, skippable: false },
+  {
+    number: 4,
+    label: t('onboarding.tasksTitle'),
+    component: NewbieTasks,
+    optional: false,
+    required: false,
+    skippable: false,
+  },
 ];
 
 function navigate(dst: string): void {
@@ -177,8 +185,8 @@ function setStepRef(el: Record<string, unknown> | null): void {
 const currentConfig = computed(() => steps.find((s) => s.number === flow.step) ?? steps[0]);
 
 const stepNote = computed(() => {
-  if (currentConfig.value.optional) return '此步骤可跳过';
-  if (currentConfig.value.required) return '此步骤为必填';
+  if (currentConfig.value.optional) return t('onboarding.optionalNote');
+  if (currentConfig.value.required) return t('onboarding.requiredNote');
   return '';
 });
 

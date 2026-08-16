@@ -2,28 +2,28 @@
   <!-- Form step -->
   <form v-if="flow.stage === 'form'" @submit.prevent="flow.submit()" class="space-y-4">
     <p class="text-sm text-text-muted text-center">
-      仅需用户名 + {{ flow.useEmail ? '邮箱' : '手机号' }}，验证后即可注册
+      {{ flow.useEmail ? t('register.normal.onlyEmail') : t('register.normal.onlyPhone') }}
     </p>
     <AuthField
       id="reg-normal-user"
-      label="用户名"
-      placeholder="请输入用户名（至少3位）"
+      :label="t('register.normal.username')"
+      :placeholder="t('register.normal.usernamePlaceholder')"
       autocomplete="username"
       v-model="flow.username"
     />
     <AuthField
       id="reg-normal-password"
-      label="密码"
+      :label="t('register.normal.password')"
       type="password"
-      placeholder="请输入密码（至少6位）"
+      :placeholder="t('register.normal.passwordPlaceholder')"
       autocomplete="new-password"
       v-model="flow.password"
     />
     <AuthField
       id="reg-normal-confirm"
-      label="确认密码"
+      :label="t('register.normal.confirm')"
       type="password"
-      placeholder="再次输入密码（至少6位）"
+      :placeholder="t('register.normal.confirmPlaceholder')"
       autocomplete="new-password"
       v-model="flow.confirm"
     />
@@ -34,7 +34,7 @@
         :class="flow.useEmail ? 'btn-primary' : 'btn-ghost'"
         @click="flow.useEmail = true"
       >
-        使用邮箱
+        {{ t('register.normal.useEmail') }}
       </button>
       <button
         type="button"
@@ -42,14 +42,14 @@
         :class="!flow.useEmail ? 'btn-primary' : 'btn-ghost'"
         @click="flow.useEmail = false"
       >
-        使用手机号
+        {{ t('register.normal.usePhone') }}
       </button>
     </div>
     <AuthField
       :id="flow.useEmail ? 'reg-normal-email' : 'reg-normal-phone'"
-      :label="flow.useEmail ? '邮箱' : '手机号'"
+      :label="flow.useEmail ? t('register.normal.email') : t('register.normal.phone')"
       :type="flow.useEmail ? 'email' : 'tel'"
-      :placeholder="flow.useEmail ? '请输入邮箱地址' : '请输入手机号'"
+      :placeholder="flow.useEmail ? t('register.normal.emailPlaceholder') : t('register.normal.phonePlaceholder')"
       :autocomplete="flow.useEmail ? 'email' : 'tel'"
       v-model="flow.contact"
     />
@@ -60,17 +60,19 @@
       :disabled="flow.loading"
     >
       <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-      <span v-else>发送验证码</span>
+      <span v-else>{{ t('register.normal.sendCode') }}</span>
     </button>
   </form>
 
   <!-- Verify step -->
   <form v-else-if="flow.stage === 'verify'" @submit.prevent="flow.submitCode()" class="space-y-4">
-    <p class="text-sm text-text-muted text-center">验证码已发送至 {{ flow.useEmail ? '邮箱' : '手机号' }}</p>
+    <p class="text-sm text-text-muted text-center">
+      {{ flow.useEmail ? t('register.normal.codeSentEmail') : t('register.normal.codeSentPhone') }}
+    </p>
     <AuthField
       id="reg-verify"
-      label="验证码"
-      placeholder="请输入验证码"
+      :label="t('register.normal.code')"
+      :placeholder="t('register.normal.codePlaceholder')"
       autocomplete="one-time-code"
       v-model="flow.code"
     />
@@ -81,14 +83,17 @@
       :disabled="flow.loading || flow.code.length < 1"
     >
       <span v-if="flow.loading" class="loading loading-spinner loading-sm"></span>
-      <span v-else>验证并完成注册</span>
+      <span v-else>{{ t('register.normal.verifyAndFinish') }}</span>
     </button>
-    <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">返回修改</button>
+    <button type="button" class="btn btn-ghost w-full btn-sm" @click="flow.reset()">
+      {{ t('register.normal.backToEdit') }}
+    </button>
   </form>
 </template>
 
 <script setup lang="ts">
 import type { RegisterFlow } from '~/features/auth/composables/useRegisterFlow';
+import { t } from '~/lib/i18n';
 import AuthField from '../shared/AuthField.vue';
 import AuthStatus from '../shared/AuthStatus.vue';
 

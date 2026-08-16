@@ -1,5 +1,5 @@
 <template>
-  <div role="group" class="tabs tabs-boxed flex w-full" aria-label="选择登录方式">
+  <div role="group" class="tabs tabs-boxed flex w-full" :aria-label="t('auth.segmented.ariaLabel')">
     <button
       v-for="opt in options"
       :key="opt.key"
@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { t } from '~/lib/i18n';
+
 type Option = { key: string; label: string };
 
 withDefaults(

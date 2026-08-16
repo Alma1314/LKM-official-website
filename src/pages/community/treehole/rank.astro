@@ -4,8 +4,12 @@ import RankPage from '~/features/anonymous-letter/pages/RankPage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '热门榜单 — 拾光树洞', description: '此刻最被温柔以待的匿名信。' };
+const metadata: MetaData = {
+  title: t('page.treehole.rankTitle'),
+  description: t('page.treehole.rankDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

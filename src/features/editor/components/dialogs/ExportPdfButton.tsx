@@ -3,6 +3,7 @@ import { createElement } from 'react';
 import type { ReactElement } from 'react';
 import ExportPdfPage from './ExportPdfPage';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 export function handleExportPdf(editor: Editor): void {
   const json = editor.getJSON();
@@ -10,12 +11,11 @@ export function handleExportPdf(editor: Editor): void {
 
   const printWindow = window.open('', '_blank', 'width=800,height=600');
   if (!printWindow) {
-    alert('请允许弹出窗口以导出 PDF');
+    alert(t('editor.exportPdfAllowPopup'));
     return;
   }
 
-  printWindow.document.documentElement.innerHTML =
-    '<head><meta charset="utf-8"><title>导出 PDF</title></head><body><div id="pdf-root"></div></body>';
+  printWindow.document.documentElement.innerHTML = `<head><meta charset="utf-8"><title>${t('editor.exportPdfTitle')}</title></head><body><div id="pdf-root"></div></body>`;
 
   setTimeout(() => {
     const rootEl = printWindow.document.getElementById('pdf-root');
@@ -38,7 +38,7 @@ export default function ExportPdfButton({ editor }: ExportPdfButtonProps): React
     <button
       type="button"
       className="rte-btn rte-btn--ghost rte-btn--xs"
-      title="导出 PDF"
+      title={t('editor.exportPdf')}
       onClick={() => handleExportPdf(editor)}
     >
       PDF

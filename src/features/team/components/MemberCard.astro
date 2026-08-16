@@ -1,4 +1,5 @@
 ---
+import { t } from '~/lib/i18n';
 import type { ImageMetadata } from '~/types/core';
 export interface Props {
   name: string;
@@ -53,10 +54,10 @@ const isLg = size === 'lg';
           <h4 class="font-bold text-lg text-deep-text">{name}</h4>
         )
       }
-      {role && <span class={isLg ? 'text-primary font-semibold' : 'text-xs text-text-muted'}>{role}</span>}
-      {desc && <p class="text-xs text-text-muted mt-1">{desc}</p>}
-      {dream && <p class="text-xs text-secondary mt-1 italic">{dream}</p>}
-      {quote && <p class="profile-quote text-xs text-primary/70 mt-1">{quote}</p>}
+      {role && <span class={isLg ? 'text-primary font-semibold' : 'text-xs text-text-muted'}>{t(role)}</span>}
+      {desc && <p class="text-xs text-text-muted mt-1">{t(desc)}</p>}
+      {dream && <p class="text-xs text-secondary mt-1 italic">{t(dream)}</p>}
+      {quote && <p class="profile-quote text-xs text-primary/70 mt-1">{t(quote)}</p>}
     </div>
   </div>
 </div>

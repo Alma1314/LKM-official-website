@@ -1,5 +1,6 @@
 import type { Editor } from '@tiptap/core';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 
 interface CommentBubbleButtonProps {
   editor: Editor;
@@ -19,7 +20,7 @@ export default function CommentBubbleButton({ editor, onClick }: CommentBubbleBu
     <button
       type="button"
       className="rte-toolbar-btn"
-      title="添加评论"
+      title={t('editor.addComment')}
       onMouseDown={(e) => {
         e.preventDefault();
         handleComment();

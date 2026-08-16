@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="flex justify-between gap-2">
       <label class="label pb-1" :for="`${id}-0`">
-        <span class="label-text font-medium">验证码</span>
+        <span class="label-text font-medium">{{ t('auth.twoFactor.code') }}</span>
       </label>
       <!-- 测试模式标记仅用于演示，非交互 -->
     </div>
@@ -18,7 +18,7 @@
         class="input input-bordered w-12 h-12 text-center text-lg"
         :class="{ 'input-error': error }"
         :value="v"
-        :aria-label="`第 ${i + 1} 位验证码`"
+        :aria-label="t('auth.twoFactor.digitLabel', { index: i + 1 })"
         :aria-invalid="!!error"
         @input="onInput(i, $event)"
         @keydown.backspace.prevent="onBackspace(i)"
@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { t } from '~/lib/i18n';
 
 const props = withDefaults(
   defineProps<{

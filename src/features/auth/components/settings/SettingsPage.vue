@@ -3,8 +3,8 @@
     <div class="relative min-h-[calc(100vh-12rem)] px-4 py-8">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-8">
-          <h1 class="text-3xl font-semibold mb-2">账户设置</h1>
-          <p class="text-sm text-text-muted">管理你的个人资料和安全设置</p>
+          <h1 class="text-3xl font-semibold mb-2">{{ t('settings.title') }}</h1>
+          <p class="text-sm text-text-muted">{{ t('settings.subtitle') }}</p>
         </div>
 
         <div v-if="message" class="alert alert-success text-sm mb-6">{{ message }}</div>
@@ -28,7 +28,7 @@
         <div class="flex flex-col md:flex-row gap-6">
           <!-- 桌面左侧导航 -->
           <aside class="hidden md:block w-56 shrink-0">
-            <nav class="sticky top-6 space-y-1" aria-label="账户设置导航">
+            <nav class="sticky top-6 space-y-1" aria-label="Account settings navigation">
               <button
                 v-for="grp in groups"
                 :key="grp.key"
@@ -49,7 +49,7 @@
               v-show="activeSection === 'profile'"
               class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6 space-y-4"
             >
-              <h3 class="text-lg font-semibold">个人资料</h3>
+              <h3 class="text-lg font-semibold">{{ t('settings.profileTitle') }}</h3>
 
               <div class="flex items-center gap-5">
                 <div
@@ -67,19 +67,19 @@
               <form @submit.prevent="handleSaveNickname" class="flex gap-3 items-end">
                 <div class="flex-1">
                   <label class="label pb-1" for="settings-nickname">
-                    <span class="label-text font-medium">昵称</span>
+                    <span class="label-text font-medium">{{ t('settings.nickname') }}</span>
                   </label>
                   <input
                     id="settings-nickname"
                     type="text"
                     class="input input-bordered w-full"
                     v-model="editNickname"
-                    placeholder="设置昵称"
+                    :placeholder="t('settings.nicknamePlaceholder')"
                   />
                 </div>
                 <button type="submit" class="btn btn-primary" :disabled="saving">
                   <span v-if="saving" class="loading loading-spinner loading-xs"></span>
-                  <template v-else>保存</template>
+                  <template v-else>{{ t('common.save') }}</template>
                 </button>
               </form>
               <div v-if="editError" class="alert alert-error text-sm">{{ editError }}</div>
@@ -87,58 +87,64 @@
               <!-- 联系方式 -->
               <div class="border-t border-surface-3 pt-4">
                 <div class="flex items-center justify-between mb-3">
-                  <h4 class="font-medium">联系方式</h4>
-                  <button type="button" class="btn btn-sm btn-ghost" @click="addLink">+ 添加</button>
+                  <h4 class="font-medium">{{ t('settings.contactTitle') }}</h4>
+                  <button type="button" class="btn btn-sm btn-ghost" @click="addLink">+ {{ t('settings.add') }}</button>
                 </div>
                 <p class="text-xs text-text-muted mb-3">
-                  可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。
+                  {{ t('settings.contactHint') }}
                 </p>
                 <div v-for="(l, i) in editLinks" :key="i" class="flex flex-wrap gap-2 items-center mb-2">
                   <input
                     v-model="l.name"
                     class="input input-bordered input-sm flex-1 min-w-[6rem]"
-                    placeholder="名称（如 QQ / GitHub）"
+                    :placeholder="t('settings.linkNamePlaceholder')"
                   />
-                  <input v-model="l.icon" class="input input-bordered input-sm w-36" placeholder="图标名（选填）" />
+                  <input
+                    v-model="l.icon"
+                    class="input input-bordered input-sm w-36"
+                    :placeholder="t('settings.iconPlaceholder')"
+                  />
                   <input
                     v-model="l.url"
                     class="input input-bordered input-sm flex-[2] min-w-[8rem]"
-                    placeholder="链接 / 账号（选填）"
+                    :placeholder="t('settings.urlPlaceholder')"
                   />
-                  <button type="button" class="btn btn-sm btn-ghost text-error" @click="removeLink(i)">删除</button>
+                  <button type="button" class="btn btn-sm btn-ghost text-error" @click="removeLink(i)">
+                    {{ t('common.delete') }}
+                  </button>
                 </div>
                 <button type="button" class="btn btn-sm btn-primary" :disabled="saving" @click="handleSaveLinks">
-                  保存联系方式
+                  {{ t('settings.saveContacts') }}
                 </button>
               </div>
 
               <!-- 用户只读信息 -->
               <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-surface-3 pt-4">
                 <div>
-                  <dt class="text-text-muted mb-0.5">用户 ID</dt>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.userId') }}</dt>
                   <dd class="font-mono">{{ store.user?.id }}</dd>
                 </div>
                 <div>
-                  <dt class="text-text-muted mb-0.5">用户名</dt>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.username') }}</dt>
                   <dd class="font-medium">{{ store.user?.username }}</dd>
                 </div>
                 <div>
-                  <dt class="text-text-muted mb-0.5">等级</dt>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.level') }}</dt>
                   <dd>
                     <span class="badge badge-sm" :class="levelBadgeClass">{{ levelLabel }}</span>
                   </dd>
                 </div>
                 <div>
-                  <dt class="text-text-muted mb-0.5">角色</dt>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.role') }}</dt>
                   <dd class="font-medium">{{ store.user?.role || 'member' }}</dd>
                 </div>
                 <div>
-                  <dt class="text-text-muted mb-0.5">邮箱</dt>
-                  <dd class="font-medium">{{ store.user?.email || '未绑定' }}</dd>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.email') }}</dt>
+                  <dd class="font-medium">{{ store.user?.email || t('settings.notBound') }}</dd>
                 </div>
                 <div>
-                  <dt class="text-text-muted mb-0.5">手机号</dt>
-                  <dd class="font-medium">{{ store.user?.phone || '未绑定' }}</dd>
+                  <dt class="text-text-muted mb-0.5">{{ t('settings.phone') }}</dt>
+                  <dd class="font-medium">{{ store.user?.phone || t('settings.notBound') }}</dd>
                 </div>
               </dl>
             </section>
@@ -148,7 +154,7 @@
               v-show="activeSection === 'security'"
               class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6"
             >
-              <h3 class="text-lg font-semibold mb-4">登录与安全</h3>
+              <h3 class="text-lg font-semibold mb-4">{{ t('settings.securityTitle') }}</h3>
               <div class="space-y-6 divide-y divide-surface-3">
                 <BindMethods :user="store.user!" @update="handleUserUpdate" />
                 <div class="pt-6"><TwoFactorSetup :user="store.user!" @update="handleUserUpdate" /></div>
@@ -161,24 +167,24 @@
               v-show="activeSection === 'account'"
               class="rounded-2xl bg-card-bg shadow-xl border border-surface-3 p-6 space-y-4"
             >
-              <h3 class="text-lg font-semibold">账户操作</h3>
+              <h3 class="text-lg font-semibold">{{ t('settings.accountTitle') }}</h3>
 
               <div v-if="store.user?.account_level === 'local'" class="alert alert-info text-sm">
-                <span> 当前为本地账户，绑定邮箱或手机号可自动升级为普通账户，解锁全部功能。 </span>
+                <span>{{ t('settings.localUpgradeHint') }}</span>
               </div>
 
               <div class="flex flex-wrap gap-3 justify-between">
-                <a :href="getAuthPath('account/recovery')" class="btn btn-ghost btn-sm">密码找回</a>
+                <a :href="getAuthPath('account/recovery')" class="btn btn-ghost btn-sm">{{ t('settings.recovery') }}</a>
                 <ConfirmDialog
                   :open="confirmLogout"
-                  title="退出登录"
-                  message="确定要退出当前账户吗？"
-                  confirm-text="退出登录"
+                  :title="t('settings.logoutTitle')"
+                  :message="t('settings.logoutMessage')"
+                  :confirm-text="t('settings.logoutTitle')"
                   @confirm="handleLogout"
                   @cancel="confirmLogout = false"
                 />
                 <button type="button" class="btn btn-ghost btn-sm text-error" @click="confirmLogout = true">
-                  退出登录
+                  {{ t('settings.logoutTitle') }}
                 </button>
               </div>
             </section>
@@ -193,6 +199,7 @@
 import { ref, computed } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { getAuthPath } from '~/features/auth/constants/auth-paths';
+import { t } from '~/lib/i18n';
 import ProtectedRoute from '~/features/auth/components/settings/ProtectedRoute.vue';
 import BindMethods from '~/features/auth/components/settings/BindMethods.vue';
 import TwoFactorSetup from '~/features/auth/components/settings/TwoFactorSetup.vue';
@@ -206,9 +213,9 @@ const store = useAuthStore();
 type SectionKey = 'profile' | 'security' | 'account';
 
 const groups = [
-  { key: 'profile', label: '个人资料' },
-  { key: 'security', label: '登录与安全' },
-  { key: 'account', label: '账户操作' },
+  { key: 'profile', label: t('settings.profileTitle') },
+  { key: 'security', label: t('settings.securityTitle') },
+  { key: 'account', label: t('settings.accountTitle') },
 ] as const;
 
 const tabs = groups;
@@ -232,11 +239,11 @@ const levelBadgeClass = computed(() => {
 });
 const levelLabel = computed(() => {
   const level = store.user?.account_level;
-  return level === 'admin' ? '管理员' : level === 'normal' ? '普通账户' : '本地账户';
+  return level === 'admin' ? t('user.admin') : level === 'normal' ? t('user.normalUser') : t('user.localAccount');
 });
 
 function handleUserUpdate(_user: User) {
-  message.value = '安全设置已更新';
+  message.value = t('settings.securityUpdated');
   setTimeout(() => (message.value = ''), 3000);
 }
 
@@ -247,15 +254,15 @@ async function handleSaveNickname() {
     if (store.user) {
       const r = await authApi.editProfile(store.user.id, { nickname: editNickname.value || null });
       if (r.isErr()) {
-        editError.value = r.error.message || '保存失败，请重试';
+        editError.value = r.error.message || t('settings.saveFailed');
         return;
       }
       store.updateUser({ ...store.user, nickname: r.value?.nickname ?? null });
-      message.value = '资料已更新';
+      message.value = t('settings.profileUpdated');
       setTimeout(() => (message.value = ''), 3000);
     }
   } catch {
-    editError.value = '保存失败，请重试';
+    editError.value = t('settings.saveFailed');
   } finally {
     saving.value = false;
   }
@@ -277,15 +284,15 @@ async function handleSaveLinks() {
         .map((l) => ({ name: l.name.trim(), icon: l.icon?.trim() || undefined, url: l.url?.trim() || undefined }));
       const r = await authApi.editProfile(store.user.id, { contact_links: cleaned });
       if (r.isErr()) {
-        editError.value = r.error.message || '保存失败，请重试';
+        editError.value = r.error.message || t('settings.saveFailed');
         return;
       }
       store.updateUser({ ...store.user, contact_links: cleaned });
-      message.value = '联系方式已更新';
+      message.value = t('settings.contactsUpdated');
       setTimeout(() => (message.value = ''), 3000);
     }
   } catch {
-    editError.value = '保存失败，请重试';
+    editError.value = t('settings.saveFailed');
   } finally {
     saving.value = false;
   }

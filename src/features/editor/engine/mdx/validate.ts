@@ -1,4 +1,5 @@
 import type { ValidationIssue } from './types';
+import { t } from '~/lib/i18n';
 
 const ALLOWED_PROTOCOLS = ['http:', 'https:', 'mailto:'];
 
@@ -17,7 +18,7 @@ function walkTree(node: WalkableNode, issues: ValidationIssue[]): void {
   // 检查禁止的节点类型（代码执行安全）
   if (nodeType === 'mdxjsEsm') {
     issues.push({
-      message: 'MDX ESM 导入/导出出于安全原因不允许',
+      message: t('editor.validation.esmForbidden'),
       nodeType: 'mdxjsEsm',
       severity: 'error',
     });
@@ -34,7 +35,7 @@ function walkTree(node: WalkableNode, issues: ValidationIssue[]): void {
         !node.url.startsWith('#')
       ) {
         issues.push({
-          message: `${nodeType} 中使用了不允许的 URL 协议: ${node.url}`,
+          message: t('editor.validation.disallowedProtocol', { nodeType, url: node.url }),
           nodeType,
           severity: 'warning',
           details: node.url,

@@ -5,6 +5,7 @@
 // 与 Vue 博客（/api/v1/blog/*）相互独立。
 
 import { ssrFetch } from '~/lib/fetch-ssr';
+import { t } from '~/lib/i18n';
 
 /** 官方文章列表项 */
 export interface OfficialArticle {
@@ -42,22 +43,23 @@ export interface OfficialArticleCategory {
   article_count: number;
 }
 
-/** 后端分类 slug → 中文显示名（未知 slug 直接回退为 slug） */
-export const ARTICLE_CATEGORY_LABELS: Record<string, string> = {
-  announcement: '公告',
-  architecture: '架构',
-  security: '安全',
-  engineering: '工程',
-  ai: 'AI',
-  community: '社区',
-  culture: '文化',
-  news: '科技新闻',
-  science: '科普相关',
+/** 后端分类 slug → 翻译 key（未知 slug 直接回退为 slug） */
+const ARTICLE_CATEGORY_KEYS: Record<string, string> = {
+  announcement: 'messages.articles.categories.announcement',
+  architecture: 'messages.articles.categories.architecture',
+  security: 'messages.articles.categories.security',
+  engineering: 'messages.articles.categories.engineering',
+  ai: 'messages.articles.categories.ai',
+  community: 'messages.articles.categories.community',
+  culture: 'messages.articles.categories.culture',
+  news: 'messages.articles.categories.news',
+  science: 'messages.articles.categories.science',
 };
 
 /** 分类 slug → 显示名 */
 export function categoryLabel(slug: string): string {
-  return ARTICLE_CATEGORY_LABELS[slug] ?? slug;
+  const key = ARTICLE_CATEGORY_KEYS[slug];
+  return key ? t(key) : slug;
 }
 
 /**

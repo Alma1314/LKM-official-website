@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { db } from '../stores/db';
 import type { Question } from '~/features/starhope/types';
+import { t } from '~/lib/i18n';
 const exportStatus = ref('');
 
 async function exportData() {
@@ -15,19 +16,21 @@ async function exportData() {
     a.download = `starhope-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    exportStatus.value = '导出成功';
+    exportStatus.value = t('starhope.settings.exportSuccess');
   } catch {
-    exportStatus.value = '导出失败';
+    exportStatus.value = t('starhope.settings.exportFailed');
   }
 }
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold text-deep-text mb-6">设置</h1>
+    <h1 class="text-2xl font-bold text-deep-text mb-6">{{ t('starhope.settings.title') }}</h1>
     <div class="card-base p-6">
-      <h3 class="text-sm font-semibold text-deep-text mb-3">数据管理</h3>
-      <button @click="exportData" class="btn-primary rounded-lg px-4 py-2 text-sm">导出题库数据</button>
+      <h3 class="text-sm font-semibold text-deep-text mb-3">{{ t('starhope.settings.dataManagement') }}</h3>
+      <button @click="exportData" class="btn-primary rounded-lg px-4 py-2 text-sm">
+        {{ t('starhope.settings.exportBank') }}
+      </button>
       <p v-if="exportStatus" class="text-sm text-text-muted mt-2">{{ exportStatus }}</p>
     </div>
   </div>

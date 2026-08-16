@@ -21,24 +21,24 @@
         :class="activeTab === tab.key ? 'text-primary' : 'text-text-muted hover:text-deep-text'"
         @click="activeTab = tab.key"
       >
-        {{ tab.label }}
+        {{ t(tab.label) }}
         <div v-if="activeTab === tab.key" class="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full" />
       </button>
 
       <div class="ml-auto flex gap-2">
         <button
-          aria-label="发言或报名参加项目"
+          :aria-label="t('projectHub.applyAria')"
           class="px-4 py-2 text-sm font-medium rounded-xl backdrop-blur-md bg-white/30 border border-white/40 text-black shadow-md hover:bg-white/50 hover:border-amber-400/70 hover:scale-105 hover:shadow-lg transition-all duration-300"
           @click="openApplyModal"
         >
-          📢 发言 / 报名
+          {{ t('projectHub.apply') }}
         </button>
         <button
-          aria-label="发起新的项目"
+          :aria-label="t('projectHub.createAria')"
           class="px-4 py-2 text-sm font-medium rounded-xl backdrop-blur-md bg-white/30 border border-white/40 text-black shadow-md hover:bg-white/50 hover:border-amber-400/70 hover:scale-105 hover:shadow-lg transition-all duration-300"
           @click="openProjectModal"
         >
-          ➕ 发起项目
+          {{ t('projectHub.create') }}
         </button>
       </div>
     </div>
@@ -57,19 +57,19 @@
               v-if="proj.isPinned"
               class="text-xs px-1.5 py-0.5 rounded font-medium bg-red-100 dark:bg-red-950/30 text-red-600"
             >
-              置顶
+              {{ t('projectHub.pinned') }}
             </span>
             <span
               v-if="proj.isIncubated"
               class="text-xs px-1.5 py-0.5 rounded font-medium bg-amber-100 dark:bg-amber-950/30 text-amber-600"
             >
-              七月孵化
+              {{ t('projectHub.incubated') }}
             </span>
           </div>
           <h3 class="font-bold text-deep-text group-hover:text-primary transition-colors">
-            {{ proj.name }}
+            {{ t(proj.name) }}
           </h3>
-          <p class="text-xs text-text-muted">{{ proj.initiatorName }} 发起</p>
+          <p class="text-xs text-text-muted">{{ t('projectHub.initiatedBy', { name: t(proj.initiatorName) }) }}</p>
           <div class="mt-1">
             <div class="h-1.5 rounded-full bg-surface-3">
               <div class="h-full rounded-full bg-primary transition-all" :style="{ width: proj.progress + '%' }" />
@@ -77,9 +77,9 @@
           </div>
           <div class="flex items-center justify-between text-xs">
             <span :class="proj.isRecruiting ? 'text-green-500' : 'text-text-muted/60'">
-              {{ proj.isRecruiting ? '招募中' : '成果展示' }}
+              {{ proj.isRecruiting ? t('projectHub.recruiting') : t('projectHub.showcase') }}
             </span>
-            <span class="text-text-muted/60">进度 {{ proj.progress }}%</span>
+            <span class="text-text-muted/60">{{ t('projectHub.progressValue', { progress: proj.progress }) }}</span>
           </div>
           <div v-if="proj.recruitingRoles.length" class="flex flex-wrap gap-1">
             <span
@@ -87,14 +87,16 @@
               :key="r"
               class="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary"
             >
-              缺{{ r }}
+              {{ t('projectHub.roleMissing', { role: t(r) }) }}
             </span>
           </div>
         </div>
       </a>
     </div>
 
-    <div v-if="filteredProjects.length === 0" class="text-center py-12 text-sm text-text-muted">暂无项目</div>
+    <div v-if="filteredProjects.length === 0" class="text-center py-12 text-sm text-text-muted">
+      {{ t('projectHub.noProjects') }}
+    </div>
 
     <!-- ==================== 模态框1：发言 / 报名 ==================== -->
     <div
@@ -113,9 +115,11 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h2 id="apply-modal-title" class="text-xl font-bold text-deep-text dark:text-white">📢 发言 / 报名</h2>
+          <h2 id="apply-modal-title" class="text-xl font-bold text-deep-text dark:text-white">
+            {{ t('projectHub.apply') }}
+          </h2>
           <button
-            aria-label="关闭对话框"
+            :aria-label="t('projectHub.closeDialogAria')"
             class="text-text-muted hover:text-deep-text text-2xl leading-none"
             @click="closeApplyModal"
           >
@@ -126,7 +130,7 @@
         <form class="space-y-4" @submit.prevent="handleApplySubmit">
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-nickname">
-              昵称 <span class="text-red-500">*</span>
+              {{ t('projectHub.nickname') }} <span class="text-red-500">*</span>
             </label>
             <input
               id="apply-nickname"
@@ -134,7 +138,7 @@
               type="text"
               maxlength="20"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="请输入你的昵称（2-20个字符）"
+              :placeholder="t('projectHub.nicknamePlaceholder')"
               @blur="validateApplyField('nickname')"
             />
             <p v-if="applyErrors.nickname" class="mt-1 text-xs text-red-500">
@@ -144,7 +148,7 @@
 
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-progress">
-              当前项目进度 <span class="text-red-500">*</span>
+              {{ t('projectHub.currentProgress') }} <span class="text-red-500">*</span>
             </label>
             <select
               id="apply-progress"
@@ -152,13 +156,13 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('progress')"
             >
-              <option value="">请选择</option>
-              <option value="idea">只有想法</option>
-              <option value="planning">规划中</option>
-              <option value="prototype">已有原型</option>
-              <option value="developing">开发中</option>
-              <option value="testing">测试中</option>
-              <option value="launched">已上线</option>
+              <option value="">{{ t('projectHub.selectPlaceholder') }}</option>
+              <option value="idea">{{ t('projectHub.progressIdea') }}</option>
+              <option value="planning">{{ t('projectHub.progressPlanning') }}</option>
+              <option value="prototype">{{ t('projectHub.progressPrototype') }}</option>
+              <option value="developing">{{ t('projectHub.progressDeveloping') }}</option>
+              <option value="testing">{{ t('projectHub.progressTesting') }}</option>
+              <option value="launched">{{ t('projectHub.progressLaunched') }}</option>
             </select>
             <p v-if="applyErrors.progress" class="mt-1 text-xs text-red-500">
               {{ applyErrors.progress }}
@@ -167,7 +171,7 @@
 
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-group">
-              加入项目组 <span class="text-red-500">*</span>
+              {{ t('projectHub.joinGroup') }} <span class="text-red-500">*</span>
             </label>
             <select
               id="apply-group"
@@ -175,11 +179,11 @@
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
               @change="validateApplyField('group')"
             >
-              <option value="">请选择</option>
-              <option value="quantum">量子</option>
-              <option value="knowledge-graph">知识图谱</option>
-              <option value="astronomy">天体</option>
-              <option value="science-video">科普视频</option>
+              <option value="">{{ t('projectHub.selectPlaceholder') }}</option>
+              <option value="quantum">{{ t('projectHub.groupQuantum') }}</option>
+              <option value="knowledge-graph">{{ t('projectHub.groupKnowledgeGraph') }}</option>
+              <option value="astronomy">{{ t('projectHub.groupAstronomy') }}</option>
+              <option value="science-video">{{ t('projectHub.groupScienceVideo') }}</option>
             </select>
             <p v-if="applyErrors.group" class="mt-1 text-xs text-red-500">
               {{ applyErrors.group }}
@@ -194,13 +198,13 @@
               class="w-4 h-4 text-primary rounded border-surface-3 focus:ring-primary"
             />
             <label for="apply-incubator" class="text-sm font-medium text-deep-text dark:text-white">
-              申请进入七月孵化项目
+              {{ t('projectHub.applyIncubator') }}
             </label>
           </div>
 
           <div v-if="applyForm.applyIncubator">
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="apply-contact">
-              联系方式 <span class="text-red-500">*</span>
+              {{ t('projectHub.contact') }} <span class="text-red-500">*</span>
             </label>
             <input
               id="apply-contact"
@@ -208,7 +212,7 @@
               type="text"
               maxlength="50"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="请输入手机号或邮箱"
+              :placeholder="t('projectHub.contactPlaceholder')"
               @blur="validateApplyField('contact')"
             />
             <p v-if="applyErrors.contact" class="mt-1 text-xs text-red-500">
@@ -222,14 +226,14 @@
               class="px-4 py-2 text-sm font-medium rounded-lg bg-surface-3 text-deep-text hover:bg-surface-4 transition-colors"
               @click="closeApplyModal"
             >
-              取消
+              {{ t('common.cancel') }}
             </button>
             <button
               type="submit"
               :disabled="isSubmittingApply"
               class="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-60"
             >
-              {{ isSubmittingApply ? '提交中...' : '提交申请' }}
+              {{ isSubmittingApply ? t('projectHub.submitting') : t('projectHub.submitApply') }}
             </button>
           </div>
         </form>
@@ -253,9 +257,11 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h2 id="project-modal-title" class="text-xl font-bold text-deep-text dark:text-white">➕ 发起新项目</h2>
+          <h2 id="project-modal-title" class="text-xl font-bold text-deep-text dark:text-white">
+            {{ t('projectHub.createTitle') }}
+          </h2>
           <button
-            aria-label="关闭对话框"
+            :aria-label="t('projectHub.closeDialogAria')"
             class="text-text-muted hover:text-deep-text text-2xl leading-none"
             @click="closeProjectModal"
           >
@@ -266,7 +272,7 @@
         <form class="space-y-4" @submit.prevent="handleProjectSubmit">
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-name">
-              项目名称 <span class="text-red-500">*</span>
+              {{ t('projectHub.projectName') }} <span class="text-red-500">*</span>
             </label>
             <input
               id="project-name"
@@ -274,7 +280,7 @@
               type="text"
               maxlength="50"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="请输入项目名称"
+              :placeholder="t('projectHub.projectNamePlaceholder')"
               @blur="validateProjectField('name')"
             />
             <p v-if="projectErrors.name" class="mt-1 text-xs text-red-500">
@@ -284,7 +290,7 @@
 
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-description">
-              项目简介 <span class="text-red-500">*</span>
+              {{ t('projectHub.projectDescription') }} <span class="text-red-500">*</span>
             </label>
             <textarea
               id="project-description"
@@ -292,7 +298,7 @@
               rows="3"
               maxlength="200"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="简要介绍项目背景和目标"
+              :placeholder="t('projectHub.projectDescriptionPlaceholder')"
               @blur="validateProjectField('description')"
             />
             <p v-if="projectErrors.description" class="mt-1 text-xs text-red-500">
@@ -302,7 +308,7 @@
 
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-roles">
-              需要招募的角色
+              {{ t('projectHub.recruitingRoles') }}
             </label>
             <input
               id="project-roles"
@@ -310,13 +316,13 @@
               type="text"
               maxlength="100"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="例如：前端开发, UI设计（逗号分隔）"
+              :placeholder="t('projectHub.rolesPlaceholder')"
             />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-deep-text dark:text-white mb-1" for="project-contact">
-              联系方式 <span class="text-red-500">*</span>
+              {{ t('projectHub.contact') }} <span class="text-red-500">*</span>
             </label>
             <input
               id="project-contact"
@@ -324,7 +330,7 @@
               type="text"
               maxlength="50"
               class="w-full px-3 py-2 border border-surface-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
-              placeholder="手机号或邮箱"
+              :placeholder="t('projectHub.contactPlaceholder2')"
               @blur="validateProjectField('contact')"
             />
             <p v-if="projectErrors.contact" class="mt-1 text-xs text-red-500">
@@ -338,14 +344,14 @@
               class="px-4 py-2 text-sm font-medium rounded-lg bg-surface-3 text-deep-text hover:bg-surface-4 transition-colors"
               @click="closeProjectModal"
             >
-              取消
+              {{ t('common.cancel') }}
             </button>
             <button
               type="submit"
               :disabled="isSubmittingProject"
               class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-60"
             >
-              {{ isSubmittingProject ? '提交中...' : '发起项目' }}
+              {{ isSubmittingProject ? t('projectHub.submitting') : t('projectHub.create') }}
             </button>
           </div>
         </form>
@@ -356,6 +362,7 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, watch, nextTick } from 'vue';
+import { t } from '~/lib/i18n';
 import { mockProjects } from '../data/mock-projects';
 import { buildUrl } from '~/lib/utils/paths';
 import { apiFetch } from '~/lib/api';
@@ -398,15 +405,15 @@ const sanitizeInput = (v: string): string => v.replace(/<[^>]*>/g, '').trim();
 const getErrorMessage = (status: number): string => {
   switch (status) {
     case 400:
-      return '请求参数有误，请检查填写内容。';
+      return t('projectHub.err400');
     case 401:
-      return '登录已过期，请重新登录。';
+      return t('projectHub.err401');
     case 403:
-      return '您没有权限执行此操作。';
+      return t('projectHub.err403');
     case 500:
-      return '服务器异常，请稍后重试。';
+      return t('projectHub.err500');
     default:
-      return '请求失败，请稍后重试。';
+      return t('projectHub.errGeneric');
   }
 };
 
@@ -428,7 +435,7 @@ const api = {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('请求失败，请稍后重试。', { cause: error });
+      throw new Error(t('projectHub.errGeneric'), { cause: error });
     }
   },
 };
@@ -471,8 +478,8 @@ const toast = {
 
 // ==================== Tab & 列表 ====================
 const tabs = [
-  { key: 'recruiting' as const, label: '招募' },
-  { key: 'showcase' as const, label: '成果展示' },
+  { key: 'recruiting' as const, label: 'projectHub.tabRecruiting' },
+  { key: 'showcase' as const, label: 'projectHub.tabShowcase' },
 ];
 
 const activeTab = ref<'recruiting' | 'showcase'>('recruiting');
@@ -505,22 +512,26 @@ const validateApplyField = (field: keyof typeof applyErrors): void => {
   if (field === 'nickname') {
     const v = applyForm.nickname.trim();
     applyErrors.nickname = !v
-      ? '请输入昵称'
+      ? t('projectHub.errNicknameRequired')
       : v.length < 2
-        ? '昵称至少2个字符'
+        ? t('projectHub.errNicknameMinLength')
         : /[<>/]/.test(v)
-          ? '昵称含非法字符'
+          ? t('projectHub.errNicknameInvalid')
           : '';
   }
-  if (field === 'progress') applyErrors.progress = applyForm.progress ? '' : '请选择进度';
-  if (field === 'group') applyErrors.group = applyForm.group ? '' : '请选择项目组';
+  if (field === 'progress') applyErrors.progress = applyForm.progress ? '' : t('projectHub.errProgressRequired');
+  if (field === 'group') applyErrors.group = applyForm.group ? '' : t('projectHub.errGroupRequired');
   if (field === 'contact') {
     if (!applyForm.applyIncubator) {
       applyErrors.contact = '';
       return;
     }
     const v = applyForm.contact.trim();
-    applyErrors.contact = !v ? '请填写联系方式' : !isValidContact(v) ? '请输入有效手机号/邮箱' : '';
+    applyErrors.contact = !v
+      ? t('projectHub.errContactRequired')
+      : !isValidContact(v)
+        ? t('projectHub.errContactInvalid')
+        : '';
   }
 };
 
@@ -549,10 +560,10 @@ const handleApplySubmit = async (): Promise<void> => {
       contact: sanitizeInput(applyForm.contact),
       source: 'project-hall',
     });
-    toast.success('提交成功！');
+    toast.success(t('projectHub.applySuccess'));
     closeApplyModal();
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : '提交失败';
+    const msg = e instanceof Error ? e.message : t('projectHub.applyFailed');
     toast.error(msg);
   } finally {
     isSubmittingApply.value = false;
@@ -574,15 +585,29 @@ const projectErrors = reactive<Record<'name' | 'description' | 'contact', string
 const validateProjectField = (field: keyof typeof projectErrors): void => {
   if (field === 'name') {
     const v = projectForm.name.trim();
-    projectErrors.name = !v ? '请输入项目名称' : v.length > 50 ? '名称过长' : /[<>/]/.test(v) ? '含非法字符' : '';
+    projectErrors.name = !v
+      ? t('projectHub.errNameRequired')
+      : v.length > 50
+        ? t('projectHub.errNameTooLong')
+        : /[<>/]/.test(v)
+          ? t('projectHub.errNameInvalid')
+          : '';
   }
   if (field === 'description') {
     const v = projectForm.description.trim();
-    projectErrors.description = !v ? '请输入简介' : v.length > 200 ? '简介过长' : '';
+    projectErrors.description = !v
+      ? t('projectHub.errDescRequired')
+      : v.length > 200
+        ? t('projectHub.errDescTooLong')
+        : '';
   }
   if (field === 'contact') {
     const v = projectForm.contact.trim();
-    projectErrors.contact = !v ? '请填联系方式' : !isValidContact(v) ? '无效手机号/邮箱' : '';
+    projectErrors.contact = !v
+      ? t('projectHub.errContactRequired')
+      : !isValidContact(v)
+        ? t('projectHub.errContactInvalid')
+        : '';
   }
 };
 
@@ -609,10 +634,10 @@ const handleProjectSubmit = async (): Promise<void> => {
       contact: sanitizeInput(projectForm.contact),
       source: 'project-hall',
     });
-    toast.success('项目发起成功！');
+    toast.success(t('projectHub.createSuccess'));
     closeProjectModal();
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : '发起失败';
+    const msg = e instanceof Error ? e.message : t('projectHub.createFailed');
     toast.error(msg);
   } finally {
     isSubmittingProject.value = false;

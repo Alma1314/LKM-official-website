@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useAiStore } from '../stores/ai';
 import type { AiAgent } from '~/features/starhope/types';
+import { t } from '~/lib/i18n';
 
 const ai = useAiStore();
 const inputText = ref('');
@@ -22,7 +23,7 @@ async function handleSend() {
 <template>
   <div class="flex h-[calc(100vh-4rem)]">
     <div class="w-56 shrink-0 border-r border-surface-3 p-4 flex flex-col">
-      <h3 class="text-sm font-semibold text-deep-text mb-3">AI 助手</h3>
+      <h3 class="text-sm font-semibold text-deep-text mb-3">{{ t('starhope.ai.title') }}</h3>
       <div class="space-y-1 flex-1 overflow-y-auto">
         <div
           v-for="agent in ai.agents.value"
@@ -36,7 +37,7 @@ async function handleSend() {
           <span>{{ agent.name }}</span>
         </div>
       </div>
-      <button class="btn-neutral rounded-lg w-full py-2 text-sm mt-2">+ 新建助手</button>
+      <button class="btn-neutral rounded-lg w-full py-2 text-sm mt-2">+ {{ t('starhope.ai.newAgent') }}</button>
     </div>
     <div class="flex-1 flex flex-col min-w-0">
       <div v-if="ai.currentAgent.value" class="flex-1 flex flex-col">
@@ -45,7 +46,9 @@ async function handleSend() {
             <h2 class="text-sm font-semibold text-deep-text">{{ ai.currentAgent.value.name }}</h2>
             <p class="text-xs text-text-muted">{{ ai.currentAgent.value.model }}</p>
           </div>
-          <button @click="ai.clearConversation()" class="text-xs text-text-muted hover:text-red-500">清除对话</button>
+          <button @click="ai.clearConversation()" class="text-xs text-text-muted hover:text-red-500">
+            {{ t('starhope.ai.clearConversation') }}
+          </button>
         </div>
         <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           <div
@@ -68,7 +71,7 @@ async function handleSend() {
             <div class="text-center">
               <div class="text-5xl mb-4">🤖</div>
               <h3 class="text-lg font-semibold text-deep-text">{{ ai.currentAgent.value.name }}</h3>
-              <p class="text-sm text-text-muted">发送消息开始对话</p>
+              <p class="text-sm text-text-muted">{{ t('starhope.ai.startHint') }}</p>
             </div>
           </div>
         </div>
@@ -79,7 +82,7 @@ async function handleSend() {
               rows="2"
               @keydown.enter.exact.prevent="handleSend"
               class="flex-1 rounded-xl border border-surface-3 bg-page-bg px-4 py-3 text-sm focus:outline-none focus:border-primary resize-none"
-              placeholder="输入消息，Enter 发送，Shift+Enter 换行..."
+              :placeholder="t('starhope.ai.inputPlaceholder')"
               :disabled="ai.isGenerating.value"
             ></textarea>
             <button
@@ -87,12 +90,14 @@ async function handleSend() {
               :disabled="!inputText.trim() || ai.isGenerating.value"
               class="btn-primary rounded-xl px-5 py-3 text-sm font-semibold shrink-0 disabled:opacity-50"
             >
-              {{ ai.isGenerating.value ? '...' : '发送' }}
+              {{ ai.isGenerating.value ? '...' : t('starhope.ai.send') }}
             </button>
           </div>
         </div>
       </div>
-      <div v-else class="flex items-center justify-center h-full text-text-muted"><p>选择一个 AI 助手开始对话</p></div>
+      <div v-else class="flex items-center justify-center h-full text-text-muted">
+        <p>{{ t('starhope.ai.selectHint') }}</p>
+      </div>
     </div>
   </div>
 </template>

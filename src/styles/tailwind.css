@@ -411,7 +411,9 @@
   .ct-root {
     width: 100%;
     content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
+    /* 预留占位高度需 ≥ 实际渲染高度（桌面圆 420+margin、移动端圆+卡片纵向堆叠），
+       否则滚动到附近时占位不足，上下边缘会被相邻内容遮挡 */
+    contain-intrinsic-size: auto 1100px;
   }
 
   .ct-layout {
@@ -587,80 +589,79 @@
   }
 }
 
-/* 钟表时间线移动端适配 */
-@layer components {
-  @media (max-width: 767px) {
-    .ct-layout {
-      flex-direction: column;
-      gap: 1rem;
-    }
+/* 钟表时间线移动端适配
+   注意：不可放在 @layer components 内——Tailwind v4 构建会丢弃 @layer 中嵌套的 @media 规则。 */
+@media (max-width: 767px) {
+  .ct-layout {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-    .ct-clock-col {
-      width: 100%;
-      order: -1;
-      display: flex;
-      justify-content: center;
-      padding-top: 20px;
-    }
+  .ct-clock-col {
+    width: 100%;
+    order: -1;
+    display: flex;
+    justify-content: center;
+    padding: 48px 0 36px;
+  }
 
-    .ct-clock-col .clock-face {
-      width: 260px;
-      border-width: 3px;
-    }
+  .ct-clock-col .clock-face {
+    width: 300px;
+    border-width: 3px;
+  }
 
-    .clock-pointer-line {
-      height: 4px;
-    }
+  .clock-pointer-line {
+    height: 4px;
+  }
 
-    .clock-tick-mark {
-      width: 3%;
-    }
+  .clock-tick-mark {
+    width: 3%;
+  }
 
-    .clock-tick-active {
-      width: 5%;
-    }
+  .clock-tick-active {
+    width: 5%;
+  }
 
-    .clock-tick-year {
-      font-size: 14px;
-      top: -7px;
-    }
+  .clock-tick-year {
+    font-size: 14px;
+    top: -7px;
+  }
 
-    .clock-tick-active .clock-tick-year {
-      font-size: 15px;
-    }
+  .clock-tick-active .clock-tick-year {
+    font-size: 15px;
+  }
 
-    .ct-cards-col {
-      flex: 1 1 100%;
-      width: 100%;
-      position: relative;
-    }
+  .ct-cards-col {
+    flex: 1 1 100%;
+    width: 100%;
+    position: relative;
+  }
 
-    .ct-cards-viewport {
-      height: 380px;
-    }
+  .ct-cards-viewport {
+    height: 380px;
+  }
 
-    .ct-card {
-      min-height: 380px;
-      padding: 0;
-    }
+  .ct-card {
+    min-height: 380px;
+    padding: 0;
+  }
 
-    .ct-card {
-      flex-direction: row;
-      align-items: center;
-      gap: 0.5rem;
-      padding-right: 0.5rem;
-    }
+  .ct-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+  }
 
-    .ct-arrows-desktop {
-      display: none;
-    }
+  .ct-arrows-desktop {
+    display: none;
+  }
 
-    .ct-arrows-mobile {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      flex-shrink: 0;
-    }
+  .ct-arrows-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex-shrink: 0;
   }
 }
 

@@ -1,11 +1,12 @@
 ---
 import { AdminLayout } from '~/features/admin';
 import UserTable from '~/features/admin/components/UserTable.vue';
+import { t } from '~/lib/i18n';
 ---
 
 <AdminLayout>
   <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold text-deep-text">用户管理</h1>
+    <h1 class="text-2xl font-bold text-deep-text">{t('page.admin.users.title')}</h1>
   </div>
   <UserTable client:only="vue" />
 </AdminLayout>

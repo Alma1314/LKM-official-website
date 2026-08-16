@@ -2,6 +2,7 @@
 // 后台帖子管理列表 —— 接真实后端 GET /forum/posts
 import { ref, onMounted, computed } from 'vue';
 import { adminFetch, readAdminResp } from '~/lib/api/admin';
+import { t } from '~/lib/i18n';
 
 interface AdminPostRow {
   id: number;
@@ -32,7 +33,7 @@ async function load() {
     rows.value = (body.data as { items: AdminPostRow[] }).items;
     total.value = (body.data as { total: number }).total;
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '加载失败';
+    error.value = e instanceof Error ? e.message : t('admin.loadFailed');
   } finally {
     loading.value = false;
   }
@@ -54,12 +55,16 @@ onMounted(() => void load());
       <table class="w-full text-sm">
         <thead class="bg-surface-3/50">
           <tr>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">标题</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted hidden sm:table-cell">作者</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">板块</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">浏览</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">评论</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">时间</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.posts.title') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted hidden sm:table-cell">{{ t('blog.author') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">
+              {{ t('admin.posts.category') }}
+            </th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.posts.views') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted hidden md:table-cell">
+              {{ t('blog.comments') }}
+            </th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.posts.createdAt') }}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-surface-3">
@@ -72,28 +77,28 @@ onMounted(() => void load());
             <td class="px-4 py-3 text-text-muted">{{ p.created_at ? p.created_at.slice(0, 10) : '—' }}</td>
           </tr>
           <tr v-if="!loading && rows.length === 0">
-            <td colspan="6" class="px-4 py-8 text-center text-text-muted">暂无帖子</td>
+            <td colspan="6" class="px-4 py-8 text-center text-text-muted">{{ t('admin.posts.empty') }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="flex items-center justify-between mt-4 text-sm text-text-muted">
-      <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
+      <span>{{ t('admin.pagination', { total, page, totalPages }) }}</span>
       <div class="flex gap-2">
         <button
           class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
           :disabled="page <= 1"
           @click="goTo(page - 1)"
         >
-          上一页
+          {{ t('admin.prevPage') }}
         </button>
         <button
           class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
           :disabled="page >= totalPages"
           @click="goTo(page + 1)"
         >
-          下一页
+          {{ t('admin.nextPage') }}
         </button>
       </div>
     </div>

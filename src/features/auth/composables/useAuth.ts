@@ -12,6 +12,7 @@ import type {
 import { authApi } from '~/lib/api/modules/auth';
 import { AppError, ErrorCode } from '~/lib/errors/error-codes';
 import { ok, err } from '~/lib/errors/result';
+import { t } from '~/lib/i18n';
 import type { UserInfo } from '~/lib/api/modules/auth';
 
 const AUTH_KEY = Symbol('auth');
@@ -135,11 +136,11 @@ export function useAuthProvider(): AuthContextType {
     if (method === 'passkey') {
       state.flow = 'idle';
       // 完整 WebAuthn 流程由 useLoginFlow / 登录页承载；此处不让 Provider 误以为已登录
-      return err(new AppError(ErrorCode.AUTH_ERROR, '请使用登录页的「通行密钥」方式完成认证'));
+      return err(new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.passkeyViaLoginPage')));
     }
 
     state.flow = 'idle';
-    return err(new AppError(ErrorCode.AUTH_ERROR, '不支持的登录方式'));
+    return err(new AppError(ErrorCode.AUTH_ERROR, t('messages.auth.unsupportedLoginMethod')));
   }
 
   // ── 注册 ──
@@ -161,7 +162,7 @@ export function useAuthProvider(): AuthContextType {
       // 正常返回 txn_id，由 NormalRegister 组件处理后续 verify 步骤
       return ok(undefined);
     }
-    return err(new AppError(ErrorCode.VALIDATION_ERROR, '不支持的注册类型'));
+    return err(new AppError(ErrorCode.VALIDATION_ERROR, t('messages.auth.unsupportedRegisterType')));
   }
 
   // ── 登出 ──

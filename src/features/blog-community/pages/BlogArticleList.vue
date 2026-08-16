@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { blogApi } from '~/lib/api';
 import type { BlogArticleInfo } from '../types/blog';
+import { t } from '~/lib/i18n';
 
 const articles = ref<BlogArticleInfo[]>([]);
 const loading = ref(false);
@@ -40,11 +41,11 @@ onMounted(() => fetchPage(1));
 
 <template>
   <div>
-    <h1 class="text-3xl font-bold mb-8">博客</h1>
-    <p v-if="total" class="text-gray-500 mb-6">共 {{ total }} 篇文章</p>
-    <div v-if="loading" class="text-center py-12 text-gray-500">加载中...</div>
+    <h1 class="text-3xl font-bold mb-8">{{ t('blog.title') }}</h1>
+    <p v-if="total" class="text-gray-500 mb-6">{{ t('blog.articleCount', { count: total }) }}</p>
+    <div v-if="loading" class="text-center py-12 text-gray-500">{{ t('common.loading') }}</div>
     <div v-else-if="error" class="text-red-500 py-12 text-center">{{ error }}</div>
-    <div v-else-if="articles.length === 0" class="text-center py-12 text-gray-500">暂无文章</div>
+    <div v-else-if="articles.length === 0" class="text-center py-12 text-gray-500">{{ t('blog.noArticles') }}</div>
     <div v-else class="grid gap-6">
       <article
         v-for="article in articles"
@@ -65,14 +66,14 @@ onMounted(() => fetchPage(1));
           <span v-if="article.category" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{{
             article.category
           }}</span>
-          <span>{{ article.word_count }} 字</span>
-          <span>{{ article.reading_time }} 分钟</span>
+          <span>{{ t('blog.wordsValue', { count: article.word_count }) }}</span>
+          <span>{{ t('blog.minutesValue', { count: article.reading_time }) }}</span>
         </div>
       </article>
     </div>
     <div v-if="totalPages > 1" class="flex justify-center gap-2 mt-8">
       <button :disabled="!hasPrev" @click="goPage(page - 1)" class="px-4 py-2 border rounded disabled:opacity-30">
-        上一页
+        {{ t('blog.prevPage') }}
       </button>
       <span v-for="p in totalPages" :key="p">
         <button @click="goPage(p)" :class="p === page ? 'bg-blue-600 text-white' : 'border'" class="px-3 py-2 rounded">
@@ -80,7 +81,7 @@ onMounted(() => fetchPage(1));
         </button>
       </span>
       <button :disabled="!hasNext" @click="goPage(page + 1)" class="px-4 py-2 border rounded disabled:opacity-30">
-        下一页
+        {{ t('blog.nextPage') }}
       </button>
     </div>
   </div>

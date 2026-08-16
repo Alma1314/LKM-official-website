@@ -1,38 +1,39 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 const metadata = {
-  title: '文档管理 — LKM',
-  description: 'LKM 管理后台 — 文档列表',
+  title: t('page.admin.documents.metaTitle'),
+  description: t('page.admin.documents.metaDescription'),
 };
 ---
 
 <PageLayout metadata={metadata}>
   <div class="section-container max-w-4xl mx-auto py-8 px-4">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
-      <h1 class="text-2xl font-bold">文档管理</h1>
+      <h1 class="text-2xl font-bold">{t('page.admin.documents.title')}</h1>
       <div class="flex gap-2 w-full sm:w-auto">
         <input
           type="text"
           class="input input-bordered input-sm flex-1 sm:w-48"
-          placeholder="搜索文档..."
+          placeholder={t('page.admin.documents.searchPlaceholder')}
           id="search-input"
           oninput="renderList()"
         />
         <select class="select select-bordered select-sm" id="status-filter" onchange="renderList()">
-          <option value="all">全部</option>
-          <option value="draft">草稿</option>
-          <option value="published">已发布</option>
-          <option value="archived">已归档</option>
+          <option value="all">{t('page.admin.documents.all')}</option>
+          <option value="draft">{t('page.admin.documents.draft')}</option>
+          <option value="published">{t('page.admin.documents.published')}</option>
+          <option value="archived">{t('page.admin.documents.archived')}</option>
         </select>
-        <a href={getPermalink('/editor')} class="btn btn-primary btn-sm">新建文档</a>
+        <a href={getPermalink('/editor')} class="btn btn-primary btn-sm">{t('page.admin.documents.newDocument')}</a>
       </div>
     </div>
     <div id="doc-list" class="bg-card-bg border border-surface-3 rounded-lg overflow-hidden">
       <div class="p-8 text-center text-deep-text/50">
         <span class="loading loading-spinner loading-md"></span>
-        <p class="mt-2 text-sm">正在加载文档列表……</p>
+        <p class="mt-2 text-sm">{t('page.admin.documents.loading')}</p>
       </div>
     </div>
   </div>
@@ -40,6 +41,7 @@ const metadata = {
 
 <script>
   import { buildUrl } from '~/lib/utils/paths';
+  import { t } from '~/lib/i18n';
 
   interface DocumentMeta {
     id: string;
@@ -84,17 +86,17 @@ const metadata = {
     if (docs.length === 0) {
       container.innerHTML = `
         <div class="p-12 text-center text-deep-text/50">
-          <p class="text-lg">暂无文档</p>
-          <p class="text-sm mt-1">点击"新建文档"开始编写</p>
+          <p class="text-lg">${t('page.admin.documents.noDocuments')}</p>
+          <p class="text-sm mt-1">${t('page.admin.documents.emptyHint')}</p>
         </div>
       `;
       return;
     }
 
     const statusLabels: Record<string, string> = {
-      published: '已发布',
-      archived: '已归档',
-      draft: '草稿',
+      published: t('page.admin.documents.published'),
+      archived: t('page.admin.documents.archived'),
+      draft: t('page.admin.documents.draft'),
     };
 
     container.innerHTML = docs
@@ -114,7 +116,7 @@ const metadata = {
             data-doc-id="${doc.id}"
             data-doc-title="${escapeHtml(doc.title)}"
             onclick="handleDelete(this.dataset.docId, this.dataset.docTitle)"
-            title="删除"
+            title="${t('common.delete')}"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
@@ -140,7 +142,7 @@ const metadata = {
     id: string,
     title: string
   ) {
-    if (window.confirm(`确定删除文档"${title}"？此操作不可撤销。`)) {
+    if (window.confirm(t('page.admin.documents.deleteConfirm', { title }))) {
       deleteDocument(id);
       renderList();
     }

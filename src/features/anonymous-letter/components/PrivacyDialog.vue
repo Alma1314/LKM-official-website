@@ -4,17 +4,33 @@
     <div class="dialog glass">
       <div class="privacy">
         <div class="privacy-emoji">🔒</div>
-        <h2 class="grad-text">隐私声明</h2>
-        <p class="privacy-text">欢迎来到 <b>拾光树洞</b>。这是一个 <b>纯匿名、无注册登录</b> 的倾诉空间：</p>
+        <h2 class="grad-text">{{ t('treehole.privacy.title') }}</h2>
+        <p class="privacy-text">
+          {{ t('treehole.privacy.welcomePrefix') }} <b>{{ t('treehole.name') }}</b
+          >{{ t('treehole.privacy.welcomeMiddle') }} <b>{{ t('treehole.privacy.pureAnonymous') }}</b
+          >{{ t('treehole.privacy.welcomeSuffix') }}
+        </p>
         <ul class="privacy-list">
-          <li>🌿 你发布的信件保存在 <b>服务器数据库</b>，匿名代号随机生成</li>
-          <li>🌿 系统 <b>不收集任何真实个人信息</b>，账号可选登录</li>
-          <li>🌿 所有投稿需经 <b>管理员审核</b> 通过后才公开展示</li>
-          <li>🌿 随机树洞与回信均为 <b>双向匿名</b>，不暴露身份</li>
+          <li>
+            🌿 {{ t('treehole.privacy.li1Prefix') }}<b>{{ t('treehole.privacy.li1Bold') }}</b
+            >{{ t('treehole.privacy.li1Suffix') }}
+          </li>
+          <li>
+            🌿 {{ t('treehole.privacy.li2Prefix') }}<b>{{ t('treehole.privacy.li2Bold') }}</b
+            >{{ t('treehole.privacy.li2Suffix') }}
+          </li>
+          <li>
+            🌿 {{ t('treehole.privacy.li3Prefix') }}<b>{{ t('treehole.privacy.li3Bold') }}</b
+            >{{ t('treehole.privacy.li3Suffix') }}
+          </li>
+          <li>
+            🌿 {{ t('treehole.privacy.li4Prefix') }}<b>{{ t('treehole.privacy.li4Bold') }}</b
+            >{{ t('treehole.privacy.li4Suffix') }}
+          </li>
         </ul>
-        <p class="privacy-tip">请理性倾诉，共同维护温暖治愈的树洞环境。</p>
+        <p class="privacy-tip">{{ t('treehole.privacy.tip') }}</p>
         <div class="privacy-actions">
-          <button class="btn-grad" @click="accept">我已知晓，进入树洞</button>
+          <button class="btn-grad" @click="accept">{{ t('treehole.privacy.accept') }}</button>
         </div>
       </div>
     </div>
@@ -23,6 +39,7 @@
 
 <script setup lang="ts">
 import { useApp } from '../stores/app';
+import { t } from '~/lib/i18n';
 const _props = defineProps({ modelValue: Boolean });
 const emit = defineEmits(['update:modelValue']);
 const { acceptPrivacy } = useApp();

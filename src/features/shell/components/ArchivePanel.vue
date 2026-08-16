@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { getPostUrlBySlug } from '~/lib/utils/url-utils';
 
 const props = withDefaults(
@@ -104,7 +103,7 @@ watchEffect(() => {
           ></div>
         </div>
         <div class="w-[70%] md:w-[80%] transition text-left text-50">
-          {{ group.posts.length }} {{ i18n(group.posts.length === 1 ? I18nKey.postCount : I18nKey.postsCount) }}
+          {{ group.posts.length }} {{ t(group.posts.length === 1 ? 'blog.postCount' : 'blog.postsCount') }}
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 
 interface PublishDialogProps {
   currentTitle: string;
@@ -31,19 +32,19 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
   return (
     <div className="rte-dialog-backdrop" onClick={onCancel}>
       <div className="rte-dialog" onClick={(e) => e.stopPropagation()}>
-        <h3 className="text-lg font-semibold mb-4">发布文档</h3>
+        <h3 className="text-lg font-semibold mb-4">{t('editor.publishDialogTitle')}</h3>
 
-        <label className="text-sm font-medium block mb-1">标题</label>
+        <label className="text-sm font-medium block mb-1">{t('editor.title')}</label>
         <input
           type="text"
           className="rte-input w-full mb-3"
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          placeholder="文档标题"
+          placeholder={t('editor.documentTitlePlaceholder')}
           autoFocus
         />
 
-        <label className="text-sm font-medium block mb-1">永久链接</label>
+        <label className="text-sm font-medium block mb-1">{t('editor.permalink')}</label>
         <div className="flex items-center gap-0 mb-3">
           <span className="text-sm text-deep-text/50 bg-page-bg px-2 py-1 rounded-l border border-surface-3 border-r-0">
             /docs/
@@ -64,11 +65,11 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
           />
         </div>
 
-        <p className="text-xs text-deep-text/50 mb-4">发布后文档将公开可见。</p>
+        <p className="text-xs text-deep-text/50 mb-4">{t('editor.publishNotice')}</p>
 
         <div className="flex justify-end gap-2">
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--sm" onClick={onCancel}>
-            取消
+            {t('editor.cancel')}
           </button>
           <button
             type="button"
@@ -76,7 +77,7 @@ export default function PublishDialog({ currentTitle, onConfirm, onCancel }: Pub
             disabled={!title.trim()}
             onClick={() => onConfirm(title.trim(), slug)}
           >
-            确认发布
+            {t('editor.confirmPublish')}
           </button>
         </div>
       </div>

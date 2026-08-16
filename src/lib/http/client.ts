@@ -13,6 +13,7 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { AppError, ErrorCode } from '../errors/error-codes';
 import { ok, err } from '../errors/result';
+import { t } from '~/lib/i18n';
 import type { Result } from '../errors/result';
 import { getSsrCookie } from '../ssr-context';
 
@@ -248,15 +249,15 @@ function getInstance(): AxiosInstance {
       (res) => res,
       (error: unknown) => {
         if (!isAxiosError(error)) {
-          return Promise.reject(new AppError(ErrorCode.UNKNOWN_ERROR, '未知错误', error));
+          return Promise.reject(new AppError(ErrorCode.UNKNOWN_ERROR, t('messages.unknownError'), error));
         }
 
         if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-          return Promise.reject(new AppError(ErrorCode.HTTP_TIMEOUT, '请求超时'));
+          return Promise.reject(new AppError(ErrorCode.HTTP_TIMEOUT, t('messages.requestTimeout')));
         }
 
         if (!error.response) {
-          return Promise.reject(new AppError(ErrorCode.NETWORK_ERROR, '网络连接失败'));
+          return Promise.reject(new AppError(ErrorCode.NETWORK_ERROR, t('messages.networkError')));
         }
 
         const status = error.response.status;
@@ -278,7 +279,9 @@ function getInstance(): AxiosInstance {
           // ignore
         }
 
-        return Promise.reject(new AppError(code, `请求失败 (${status})${detail ? `：${detail}` : ''}`, error));
+        return Promise.reject(
+          new AppError(code, t('messages.requestFailed', { status }) + (detail ? `：${detail}` : ''), error)
+        );
       }
     );
   }
@@ -305,7 +308,7 @@ export async function request<T>(config: AxiosRequestConfig): Promise<Result<T, 
     return ok(res.data);
   } catch (e) {
     if (e instanceof AppError) return err(e);
-    return err(new AppError(ErrorCode.NETWORK_ERROR, '未知网络错误', e));
+    return err(new AppError(ErrorCode.NETWORK_ERROR, t('messages.unknownNetworkError'), e));
   }
 }
 

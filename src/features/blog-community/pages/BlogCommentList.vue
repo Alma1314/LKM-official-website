@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BlogCommentInfo } from '../types/blog';
+import { t } from '~/lib/i18n';
 
 defineProps<{
   comments: BlogCommentInfo[];
@@ -32,13 +33,15 @@ function formatDate(iso: string) {
           </div>
           <p class="mt-1 text-sm">{{ comment.content }}</p>
           <div class="flex gap-3 mt-2">
-            <button class="text-xs text-primary hover:underline" @click="onReply(comment.id)">回复</button>
+            <button class="text-xs text-primary hover:underline" @click="onReply(comment.id)">
+              {{ t('blog.reply') }}
+            </button>
             <button
               v-if="currentUserId === comment.user_id"
               class="text-xs text-red-500 hover:underline"
               @click="onDelete(comment.id)"
             >
-              删除
+              {{ t('common.delete') }}
             </button>
           </div>
         </div>

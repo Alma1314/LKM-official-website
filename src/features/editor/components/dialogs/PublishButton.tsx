@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import type { DocumentData, PersistenceAdapter } from '../../engine/types';
 import ConfirmDialog from './ConfirmDialog';
+import { t } from '~/lib/i18n';
 
 interface PublishButtonProps {
   documentId: string;
@@ -73,7 +74,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--sm text-success"
             onClick={handleUnpublish}
-            title="已发布（点击取消发布）"
+            title={t('editor.published')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +95,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--ghost rte-btn--xs text-error"
             onClick={handleArchive}
-            title="归档"
+            title={t('editor.archive')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +119,7 @@ export default function PublishButton({
           type="button"
           className="rte-btn rte-btn--ghost rte-btn--xs"
           onClick={handleUnpublish}
-          title="已归档（点击恢复）"
+          title={t('editor.archivedClickToRestore')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +140,12 @@ export default function PublishButton({
         </button>
       ) : (
         <div className="flex gap-1">
-          <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish} title="发布">
+          <button
+            type="button"
+            className="rte-btn rte-btn--primary rte-btn--xs"
+            onClick={handlePublish}
+            title={t('editor.publish')}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -159,7 +165,7 @@ export default function PublishButton({
             type="button"
             className="rte-btn rte-btn--ghost rte-btn--xs text-error"
             onClick={handleArchive}
-            title="归档"
+            title={t('editor.archive')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +187,7 @@ export default function PublishButton({
       )}
       {archiveConfirmOpen && (
         <ConfirmDialog
-          message="确定归档此文档？归档后不可编辑。"
+          message={t('editor.confirmArchiveMessage')}
           danger
           onConfirm={handleArchiveConfirmed}
           onCancel={() => setArchiveConfirmOpen(false)}

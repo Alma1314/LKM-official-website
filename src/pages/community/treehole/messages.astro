@@ -4,8 +4,12 @@ import MessagesPage from '~/features/anonymous-letter/pages/MessagesPage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '匿名回信 — 拾光树洞', description: '全程匿名，双方都不暴露真实身份。' };
+const metadata: MetaData = {
+  title: t('page.treehole.messagesTitle'),
+  description: t('page.treehole.messagesDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

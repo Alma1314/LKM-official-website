@@ -4,8 +4,12 @@ import WishPage from '~/features/anonymous-letter/pages/WishPage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '许愿墙 — 拾光树洞', description: '把愿望交给星光，被温柔照亮。' };
+const metadata: MetaData = {
+  title: t('page.treehole.wishTitle'),
+  description: t('page.treehole.wishDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

@@ -25,20 +25,20 @@ export interface CommunitySidebarLink {
 
 /** 社区核心功能入口 */
 export const communitySidebarLinks: CommunitySidebarLink[] = [
-  { text: '首页', href: getPermalink('/community'), icon: 'material-symbols:home-outline-rounded' },
-  { text: '板块广场', href: getPermalink('/community/forum'), icon: 'material-symbols:forum-outline' },
-  { text: '专栏', href: getPermalink('/community/columns'), icon: 'material-symbols:article-outline' },
-  { text: '文件库', href: getPermalink('/community/files'), icon: 'material-symbols:folder-outline' },
-  { text: '帮助/求助', href: getPermalink('/official/qa'), icon: 'material-symbols:help-outline' },
-  { text: '项目大厅', href: getPermalink('/official/projects'), icon: 'material-symbols:rocket-launch-outline' },
-  { text: '竞赛', href: getPermalink('/community/competition'), icon: 'tabler:trophy' },
-  { text: '资助系统', href: getPermalink('/official/funding'), icon: 'material-symbols:volunteer-activism-outline' },
-  { text: 'QQ社群', href: getPermalink('/official/communities'), icon: 'tabler:brand-qq' },
+  { text: 'nav.home', href: getPermalink('/community'), icon: 'material-symbols:home-outline-rounded' },
+  { text: 'nav.forum', href: getPermalink('/community/forum'), icon: 'material-symbols:forum-outline' },
+  { text: 'nav.columns', href: getPermalink('/community/columns'), icon: 'material-symbols:article-outline' },
+  { text: 'nav.fileLibrary', href: getPermalink('/community/files'), icon: 'material-symbols:folder-outline' },
+  { text: 'nav.qa', href: getPermalink('/official/qa'), icon: 'material-symbols:help-outline' },
+  { text: 'nav.projects', href: getPermalink('/official/projects'), icon: 'material-symbols:rocket-launch-outline' },
+  { text: 'nav.competition', href: getPermalink('/community/competition'), icon: 'tabler:trophy' },
+  { text: 'nav.funding', href: getPermalink('/official/funding'), icon: 'material-symbols:volunteer-activism-outline' },
+  { text: 'nav.qqCommunity', href: getPermalink('/official/communities'), icon: 'tabler:brand-qq' },
 ];
 
 /** 用户个人相关 */
 export const userSidebarLinks: CommunitySidebarLink[] = [
-  { text: '个人主页', href: getPermalink('/profile'), icon: 'material-symbols:person-outline' },
-  { text: '贡献系统', href: getPermalink('/contribution'), icon: 'material-symbols:stars-outline' },
-  { text: '设置', href: getPermalink('/account'), icon: 'material-symbols:settings-outline' },
+  { text: 'nav.profile', href: getPermalink('/profile'), icon: 'material-symbols:person-outline' },
+  { text: 'nav.contribution', href: getPermalink('/contribution'), icon: 'material-symbols:stars-outline' },
+  { text: 'nav.settings', href: getPermalink('/account'), icon: 'material-symbols:settings-outline' },
 ];

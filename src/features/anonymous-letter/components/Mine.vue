@@ -1,29 +1,35 @@
 <template>
   <div class="mine">
-    <h1 class="page-title">🌙 我的本地树洞</h1>
-    <p class="page-sub">这里展示你发布的所有信件、收藏与草稿，数据保存在本地浏览器。</p>
+    <h1 class="page-title">🌙 {{ t('treehole.mine.title') }}</h1>
+    <p class="page-sub">{{ t('treehole.mine.subtitle') }}</p>
 
     <template>
       <!-- 统计 -->
       <section class="stats">
         <div class="stat glass">
           <b>{{ letters.length }}</b
-          ><span>发布信件</span>
+          ><span>{{ t('treehole.mine.statLetters') }}</span>
         </div>
         <div class="stat glass">
           <b>{{ favs.length }}</b
-          ><span>收藏树洞</span>
+          ><span>{{ t('treehole.mine.statFavs') }}</span>
         </div>
         <div class="stat glass">
           <b>{{ drafts.length }}</b
-          ><span>本地草稿</span>
+          ><span>{{ t('treehole.mine.statDrafts') }}</span>
         </div>
       </section>
 
       <div class="tabs">
-        <button class="chip" :class="{ active: tab === 'letters' }" @click="tab = 'letters'">我的信件</button>
-        <button class="chip" :class="{ active: tab === 'fav' }" @click="tab = 'fav'">收藏夹</button>
-        <button class="chip" :class="{ active: tab === 'drafts' }" @click="tab = 'drafts'">本地草稿</button>
+        <button class="chip" :class="{ active: tab === 'letters' }" @click="tab = 'letters'">
+          {{ t('treehole.mine.tabLetters') }}
+        </button>
+        <button class="chip" :class="{ active: tab === 'fav' }" @click="tab = 'fav'">
+          {{ t('treehole.mine.tabFavs') }}
+        </button>
+        <button class="chip" :class="{ active: tab === 'drafts' }" @click="tab = 'drafts'">
+          {{ t('treehole.mine.tabDrafts') }}
+        </button>
       </div>
 
       <!-- 我的信件 -->
@@ -32,7 +38,7 @@
           <div v-for="l in letters" :key="l.id" class="item glass">
             <div class="item-head">
               <span class="item-cat" :style="{ background: getCategory(l.category).color }"
-                >{{ getCategory(l.category).emoji }} {{ getCategory(l.category).label }}</span
+                >{{ getCategory(l.category).emoji }} {{ t(getCategory(l.category).label) }}</span
               >
               <span class="item-status" :class="l.status">{{ statusLabel(l.status) }}</span>
             </div>
@@ -45,14 +51,14 @@
                   class="mini"
                   @click="editLetter(l)"
                 >
-                  ✏️ 编辑
+                  {{ t('treehole.mine.edit') }}
                 </button>
-                <button class="mini danger" @click="removeLetter(l)">🗑️ 删除</button>
+                <button class="mini danger" @click="removeLetter(l)">{{ t('treehole.mine.delete') }}</button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else title="还没有发布任何信件" sub="去写信页，投出第一封匿名信吧～" />
+        <EmptyState v-else :title="t('treehole.mine.emptyLettersTitle')" :sub="t('treehole.mine.emptyLettersSub')" />
       </section>
 
       <!-- 收藏夹 -->
@@ -60,24 +66,24 @@
         <div v-if="favs.length" class="list">
           <LetterCard v-for="l in favs" :key="l.id" :letter="l" @fav="onFav" />
         </div>
-        <EmptyState v-else title="还没有收藏的树洞" sub="在广场点亮 ⭐ 收藏喜欢的信件" />
+        <EmptyState v-else :title="t('treehole.mine.emptyFavsTitle')" :sub="t('treehole.mine.emptyFavsSub')" />
       </section>
 
       <!-- 草稿（本地） -->
       <section v-if="tab === 'drafts'">
         <div v-if="drafts.length" class="list">
           <div v-for="d in drafts" :key="d.id" class="item glass">
-            <p class="item-content">{{ d.content || '（空草稿）' }}</p>
+            <p class="item-content">{{ d.content || t('treehole.mine.emptyDraft') }}</p>
             <div class="item-foot">
               <span>{{ timeText(d.updatedAt) }}</span>
               <div class="item-acts">
-                <button class="mini" @click="editDraft(d)">继续编辑</button>
-                <button class="mini danger" @click="removeDraft(d)">删除</button>
+                <button class="mini" @click="editDraft(d)">{{ t('treehole.mine.continueEdit') }}</button>
+                <button class="mini danger" @click="removeDraft(d)">{{ t('treehole.mine.delete') }}</button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else title="暂无本地草稿" sub="写信时可随时保存草稿" />
+        <EmptyState v-else :title="t('treehole.mine.emptyDraftsTitle')" :sub="t('treehole.mine.emptyDraftsSub')" />
       </section>
     </template>
 
@@ -87,10 +93,10 @@
     <!-- 危险操作 -->
     <section class="danger-zone glass">
       <div>
-        <b>清空全部本地草稿</b>
-        <p>仅删除本机保存的草稿，不可恢复。</p>
+        <b>{{ t('treehole.mine.clearAllTitle') }}</b>
+        <p>{{ t('treehole.mine.clearAllDesc') }}</p>
       </div>
-      <button class="btn-reset" @click="reset">清空草稿</button>
+      <button class="btn-reset" @click="reset">{{ t('treehole.mine.clearDraftsBtn') }}</button>
     </section>
   </div>
 </template>
@@ -104,6 +110,7 @@ import EmptyState from '../components/EmptyState.vue';
 import BackupPanel from '../components/BackupPanel.vue';
 import { getCategory } from '../stores/constants';
 import * as store from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const router = useRouter();
 const message = useMessage();
@@ -128,20 +135,21 @@ onMounted(() => {
 
 function statusLabel(s) {
   return s === 'pending'
-    ? '审核中'
+    ? t('treehole.mine.statusPending')
     : s === 'published'
-      ? '已公开'
+      ? t('treehole.mine.statusPublished')
       : s === 'rejected'
-        ? '已驳回'
+        ? t('treehole.mine.statusRejected')
         : s === 'scheduled'
-          ? '定时发布'
+          ? t('treehole.mine.statusScheduled')
           : s === 'sealed'
-            ? '已封存'
-            : '个人可见';
+            ? t('treehole.mine.statusSealed')
+            : t('treehole.mine.statusPrivate');
 }
 function timeText(ts) {
   const d = new Date(ts);
-  return `${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  return t('treehole.mine.dateTime', { month: d.getMonth() + 1, day: d.getDate(), time });
 }
 
 function editLetter(l) {
@@ -149,14 +157,14 @@ function editLetter(l) {
 }
 function removeLetter(l) {
   dialog.warning({
-    title: '确认删除',
-    content: '确定删除这封信？',
-    positiveText: '删除',
-    negativeText: '取消',
+    title: t('treehole.mine.confirmDelete'),
+    content: t('treehole.mine.confirmDeleteLetter'),
+    positiveText: t('treehole.mine.delete'),
+    negativeText: t('treehole.mine.cancel'),
     onPositiveClick: () => {
       store.deleteLetter(l.id);
       letters.value = store.getLetters();
-      message.success('已删除');
+      message.success(t('treehole.mine.deleted'));
     },
   });
 }
@@ -173,14 +181,14 @@ function removeDraft(d) {
 
 function reset() {
   dialog.warning({
-    title: '确认重置',
-    content: '确定清空全部本地草稿？',
-    positiveText: '清空',
-    negativeText: '取消',
+    title: t('treehole.mine.confirmReset'),
+    content: t('treehole.mine.confirmResetDrafts'),
+    positiveText: t('treehole.mine.clear'),
+    negativeText: t('treehole.mine.cancel'),
     onPositiveClick: () => {
       store.resetDrafts();
       drafts.value = [];
-      message.success('草稿已清空 🌿');
+      message.success(t('treehole.mine.draftsCleared'));
     },
   });
 }

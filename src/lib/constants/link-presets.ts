@@ -1,18 +1,17 @@
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { LinkPreset, type NavBarLink } from '~/types/config';
 
 export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
   [LinkPreset.Home]: {
-    name: i18n(I18nKey.home),
+    name: t('nav.home'),
     url: '/blog/',
   },
   [LinkPreset.About]: {
-    name: i18n(I18nKey.about),
+    name: t('nav.about'),
     url: '/blog/about/',
   },
   [LinkPreset.Archive]: {
-    name: i18n(I18nKey.archive),
+    name: t('nav.archive'),
     url: '/blog/archive/',
   },
 };

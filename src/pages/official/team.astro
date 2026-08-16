@@ -9,6 +9,7 @@ import { teamApi } from '~/lib/api';
 import type { TeamMember, TeamSubGroup } from '~/lib/api/modules/team';
 
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 // ---- 从后端拉取成员数据 ----
 // 统一解包 Result：ok 返回 data，err 返回空数组（页面降级为空，不中断渲染）
@@ -85,19 +86,39 @@ function getAvatar(filename?: string): ImageMetadata | undefined {
 }
 
 const metadata = {
-  title: '管理团队 —— 理科迷',
+  title: t('page.official.team.metaTitle'),
 };
 
 const sidebarLinks = [
-  { text: '创始人', href: getPermalink('/official/team#founder'), icon: 'tabler:star' },
-  { text: '总务部', href: getPermalink('/official/team#general'), icon: 'tabler:building-skyscraper' },
-  { text: '群务部', href: getPermalink('/official/team#affairs'), icon: 'tabler:users-group' },
-  { text: '活动策划部', href: getPermalink('/official/team#events'), icon: 'tabler:calendar-event' },
-  { text: '新闻办', href: getPermalink('/official/team#news'), icon: 'tabler:news' },
-  { text: '顾问团', href: getPermalink('/official/team#advisors'), icon: 'tabler:user-check' },
-  { text: '专业委员会', href: getPermalink('/official/team#professional'), icon: 'tabler:certificate' },
-  { text: '技术委员会', href: getPermalink('/official/team#tech'), icon: 'tabler:code' },
-  { text: '已离开成员', href: getPermalink('/official/team#alumni'), icon: 'tabler:user-x' },
+  { text: t('page.official.team.sidebarFounder'), href: getPermalink('/official/team#founder'), icon: 'tabler:star' },
+  {
+    text: t('page.official.team.sidebarGeneral'),
+    href: getPermalink('/official/team#general'),
+    icon: 'tabler:building-skyscraper',
+  },
+  {
+    text: t('page.official.team.sidebarAffairs'),
+    href: getPermalink('/official/team#affairs'),
+    icon: 'tabler:users-group',
+  },
+  {
+    text: t('page.official.team.sidebarEvents'),
+    href: getPermalink('/official/team#events'),
+    icon: 'tabler:calendar-event',
+  },
+  { text: t('page.official.team.sidebarNews'), href: getPermalink('/official/team#news'), icon: 'tabler:news' },
+  {
+    text: t('page.official.team.sidebarAdvisors'),
+    href: getPermalink('/official/team#advisors'),
+    icon: 'tabler:user-check',
+  },
+  {
+    text: t('page.official.team.sidebarProfessional'),
+    href: getPermalink('/official/team#professional'),
+    icon: 'tabler:certificate',
+  },
+  { text: t('page.official.team.sidebarTech'), href: getPermalink('/official/team#tech'), icon: 'tabler:code' },
+  { text: t('page.official.team.sidebarAlumni'), href: getPermalink('/official/team#alumni'), icon: 'tabler:user-x' },
 ];
 ---
 
@@ -105,15 +126,15 @@ const sidebarLinks = [
   metadata={metadata}
   sidebarLinks={sidebarLinks}
   currentPath={getPermalink('/official/team')}
-  navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
+  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
 >
   <!-- 创始人 -->
-  <Section title="创始人" subtitle="理科迷的起点，一切从这里开始" id="founder">
+  <Section title={t('page.official.team.founderTitle')} subtitle={t('page.official.team.founderSubtitle')} id="founder">
     <div class="max-w-2xl mx-auto">
       {
         founderMembers.map((m) => (
           <MemberCard
-            name={m.name ?? '匿名成员'}
+            name={m.name ?? t('page.official.anonymous')}
             avatar={getAvatar(m.avatarKey)}
             role={m.role}
             size="lg"
@@ -129,14 +150,14 @@ const sidebarLinks = [
   <!-- 总务部 -->
   <DepartmentSection
     id="general"
-    title="七月团队 · 总务部"
+    title={t('page.official.team.generalTitle')}
     borderColor="#ef4444"
-    desc="该团队部门职责是统筹和规划相关事宜，引领团队能够互相协作，落实我们共同的宗旨和目标。总务部更适合有多线程处理能力以及执行能力的成员，会有跨部门的需要。"
+    desc={t('page.official.team.generalDesc')}
   >
     {
       generalMembers.map((m) => (
         <MemberCard
-          name={m.name ?? '匿名成员'}
+          name={m.name ?? t('page.official.anonymous')}
           avatar={getAvatar(m.avatarKey)}
           desc={m.desc}
           dream={m.dream}
@@ -149,19 +170,19 @@ const sidebarLinks = [
   <!-- 群务部 -->
   <DepartmentSection
     id="affairs"
-    title="七月团队 · 群务部"
+    title={t('page.official.team.affairsTitle')}
     borderColor="#3b82f6"
-    desc="该团队部门职责是负责各个平台上面社群秩序，把握群内风向，确保群处于活跃并且持续有效的学习讨论氛围当中，有情况的时候第一时间处理。群务部更适合有常驻某一平台社群的，并有一定的应急处理能力。"
+    desc={t('page.official.team.affairsDesc')}
     noGrid
   >
     {
       Object.entries(affairsSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
-                name={m.name ?? '匿名成员'}
+                name={m.name ?? t('page.official.anonymous')}
                 avatar={getAvatar(m.avatarKey)}
                 desc={m.desc}
                 dream={m.dream}
@@ -177,14 +198,14 @@ const sidebarLinks = [
   <!-- 活动策划部 -->
   <DepartmentSection
     id="events"
-    title="七月团队 · 活动策划部"
+    title={t('page.official.team.eventsTitle')}
     borderColor="#f97316"
-    desc="该团队负责的是各个平台上面的活动，一条龙从策划开始，一直到执行，下管专业委员会，给大家带来更多更好的活动和体验，让大家能够真正的学到知识。适合有灵感、有创意并由能把这些全部落实的行动力加入。"
+    desc={t('page.official.team.eventsDesc')}
   >
     {
       eventsMembers.map((m) => (
         <MemberCard
-          name={m.name ?? '匿名成员'}
+          name={m.name ?? t('page.official.anonymous')}
           avatar={getAvatar(m.avatarKey)}
           role={m.role}
           desc={m.desc}
@@ -198,16 +219,16 @@ const sidebarLinks = [
   <!-- 新闻办 -->
   <DepartmentSection
     id="news"
-    title="新闻办"
+    title={t('page.official.team.newsTitle')}
     borderColor="#22c55e"
-    desc="该团队部门职责是负责各平台宣传账号的持续运营，以及外交事宜，持续宣传输出并扩大影响能力，并为此向大众输出科普内容，促进传播知识。新闻办会下属一个科普项目组，以及翻译项目组，为科普事业繁荣昌盛，以及中外科技爱好者能有所知识共享，破除信息差和壁垒。"
+    desc={t('page.official.team.newsDesc')}
     noGrid
   >
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {
         newsMembers.map((m) => (
           <MemberCard
-            name={m.name ?? '匿名成员'}
+            name={m.name ?? t('page.official.anonymous')}
             avatar={getAvatar(m.avatarKey)}
             desc={m.desc}
             dream={m.dream}
@@ -219,14 +240,14 @@ const sidebarLinks = [
     {
       Object.entries(newsSubGroupsMap).map(([, group]) => (
         <div class="mt-8">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <p class="max-w-3xl mx-auto mb-6 px-6 py-3 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[13px] text-text-muted leading-relaxed">
-            {group.desc}
+            {t(group.desc)}
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
-                name={m.name ?? '匿名成员'}
+                name={m.name ?? t('page.official.anonymous')}
                 avatar={getAvatar(m.avatarKey)}
                 desc={m.desc}
                 dream={m.dream}
@@ -242,14 +263,14 @@ const sidebarLinks = [
   <!-- 顾问团 -->
   <DepartmentSection
     id="advisors"
-    title="顾问团"
+    title={t('page.official.team.advisorsTitle')}
     borderColor="#eab308"
-    desc="该团队部门职责是属于理科迷的外部顾问，为理科迷的工作组，项目组事业提供相应的支持，如法律询问、其他社会组织团体等等。"
+    desc={t('page.official.team.advisorsDesc')}
   >
     {
       advisorMembers.map((m) => (
         <MemberCard
-          name={m.name ?? '匿名成员'}
+          name={m.name ?? t('page.official.anonymous')}
           avatar={getAvatar(m.avatarKey)}
           role={m.role}
           desc={m.desc}
@@ -263,19 +284,19 @@ const sidebarLinks = [
   <!-- 专业委员会 -->
   <DepartmentSection
     id="professional"
-    title="专业委员会"
+    title={t('page.official.team.professionalTitle')}
     borderColor="#a855f7"
-    desc="该团队部门职责是负责活动、项目等诸多提供专业知识，充实各个专业实际内容。成员是已经确定了想要在这方面深耕的，未来会下管学术项目组，带来更好的学术交流等内容。"
+    desc={t('page.official.team.professionalDesc')}
     noGrid
   >
     {
       Object.entries(professionalSubGroupsMap).map(([, group]) => (
         <div class="mb-12">
-          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{group.label}</h4>
+          <h4 class="text-md font-bold mb-3 text-center text-text-muted">{t(group.label)}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {group.members.map((m) => (
               <MemberCard
-                name={m.name ?? '匿名成员'}
+                name={m.name ?? t('page.official.anonymous')}
                 avatar={getAvatar(m.avatarKey)}
                 desc={m.desc}
                 dream={m.dream}
@@ -291,14 +312,14 @@ const sidebarLinks = [
   <!-- 技术委员会 -->
   <DepartmentSection
     id="tech"
-    title="技术委员会"
+    title={t('page.official.team.techTitle')}
     borderColor="#6b7280"
-    desc="该团队部门职责是负责各平台、各活动的相应技术上的技术开发与维护，未来将给大家带来更多实用性更强更好的开源项目。需要有编程知识，网站搭建等能。"
+    desc={t('page.official.team.techDesc')}
   >
     {
       techMembers.map((m) => (
         <MemberCard
-          name={m.name ?? '匿名成员'}
+          name={m.name ?? t('page.official.anonymous')}
           avatar={getAvatar(m.avatarKey)}
           role={m.role}
           desc={m.desc}
@@ -313,18 +334,18 @@ const sidebarLinks = [
   <Section id="alumni">
     <div class="max-w-7xl mx-auto">
       <h3 class="text-xl font-bold mb-9 text-center">
-        <span class="border-b-2 border-surface-3 pb-1">已离开或失联成员</span>
+        <span class="border-b-2 border-surface-3 pb-1">{t('page.official.team.alumniHeading')}</span>
       </h3>
       <p
         class="max-w-3xl mx-auto mb-9 px-6 py-4 bg-page-bg border border-surface-3 rounded-[8px] text-center text-[14px] text-text-muted leading-relaxed"
       >
-        以下成员曾为理科迷作出贡献，因各种原因现无法联系，不管如何理科迷的大门永远向你们打开。
+        {t('page.official.team.alumniNote')}
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           alumniMembers.map((m) => (
             <MemberCard
-              name={m.name ?? '匿名成员'}
+              name={m.name ?? t('page.official.anonymous')}
               avatar={getAvatar(m.avatarKey)}
               role={m.role}
               desc={m.desc}

@@ -7,7 +7,7 @@
         class="fixed inset-0 z-[100] flex items-center justify-center p-4"
         role="dialog"
         aria-modal="true"
-        aria-label="我要提问"
+        :aria-label="t('page.qa.askAria')"
       >
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="requestClose"></div>
 
@@ -15,11 +15,11 @@
           class="qa-card relative z-10 w-full max-w-lg flex flex-col max-h-[85vh] bg-card-bg rounded-[var(--radius-large)] border border-surface-3 shadow-xl dark:shadow-none"
         >
           <div class="flex items-center justify-between px-6 py-4 border-b border-surface-3 shrink-0">
-            <h3 class="text-lg font-semibold text-deep-text">我要提问</h3>
+            <h3 class="text-lg font-semibold text-deep-text">{{ t('page.qa.ask') }}</h3>
             <button
               type="button"
               class="w-8 h-8 rounded-full flex items-center justify-center text-text-muted hover:text-deep-text hover:bg-surface-3 transition-colors"
-              aria-label="关闭"
+              :aria-label="t('page.qa.closeAria')"
               @click="requestClose"
             >
               ✕
@@ -28,35 +28,35 @@
 
           <div class="px-6 py-5 space-y-4 overflow-y-auto">
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">标题</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.titleLabel') }}</label>
               <input
                 v-model="formModel.title"
                 class="qa-input"
-                placeholder="一句话概括你的问题"
+                :placeholder="t('page.qa.titlePlaceholder')"
                 @input="clearError('title')"
               />
               <p v-if="errors.title" class="mt-1 text-xs text-error">{{ errors.title }}</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">本人情况</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.situationLabel') }}</label>
               <textarea
                 v-model="formModel.situation"
                 rows="3"
                 class="qa-input resize-none"
-                placeholder="如：省份/分数/选科、年级、背景等"
+                :placeholder="t('page.qa.situationPlaceholder')"
                 @input="clearError('situation')"
               ></textarea>
               <p v-if="errors.situation" class="mt-1 text-xs text-error">{{ errors.situation }}</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1.5">详细问题</label>
+              <label class="block text-sm font-medium text-deep-text mb-1.5">{{ t('page.qa.detailLabel') }}</label>
               <textarea
                 v-model="formModel.detail"
                 rows="5"
                 class="qa-input resize-none"
-                placeholder="详细描述你的问题..."
+                :placeholder="t('page.qa.detailPlaceholder')"
                 @input="clearError('detail')"
                 @paste="onPaste"
                 @dragover.prevent
@@ -64,7 +64,9 @@
               ></textarea>
               <p v-if="errors.detail" class="mt-1 text-xs text-error">{{ errors.detail }}</p>
 
-              <button type="button" class="btn btn-ghost btn-sm mt-2" @click="triggerFilePicker">插入图片</button>
+              <button type="button" class="btn btn-ghost btn-sm mt-2" @click="triggerFilePicker">
+                {{ t('page.qa.insertImage') }}
+              </button>
               <input ref="fileInputRef" type="file" accept="image/*" multiple class="hidden" @change="onFileChange" />
 
               <div v-if="formModel.images.length" class="grid grid-cols-3 gap-2 mt-2">
@@ -73,11 +75,11 @@
                   :key="ref"
                   class="group relative aspect-square rounded-[var(--radius-md)] overflow-hidden border border-surface-3 bg-base-200"
                 >
-                  <img :src="imageUrls[ref] ?? ''" class="w-full h-full object-cover" alt="问题图片" />
+                  <img :src="imageUrls[ref] ?? ''" class="w-full h-full object-cover" :alt="t('page.qa.imageAlt')" />
                   <button
                     type="button"
                     class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    aria-label="删除图片"
+                    :aria-label="t('page.qa.removeImage')"
                     @click="removeImage(ref)"
                   >
                     ✕
@@ -88,27 +90,31 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-deep-text mb-1.5">悬赏人数</label>
+                <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+                  t('page.qa.bountyPeopleLabel')
+                }}</label>
                 <input
                   :value="formModel.bountyPeople ?? ''"
                   type="number"
                   min="1"
                   step="1"
                   class="qa-input"
-                  placeholder="≥1"
+                  :placeholder="t('page.qa.bountyMinPlaceholder')"
                   @input="onBountyPeopleInput"
                 />
                 <p v-if="errors.bountyPeople" class="mt-1 text-xs text-error">{{ errors.bountyPeople }}</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-deep-text mb-1.5">悬赏人均积分</label>
+                <label class="block text-sm font-medium text-deep-text mb-1.5">{{
+                  t('page.qa.bountyPerPersonLabel')
+                }}</label>
                 <input
                   :value="formModel.bountyPerPerson ?? ''"
                   type="number"
                   min="1"
                   step="1"
                   class="qa-input"
-                  placeholder="≥1"
+                  :placeholder="t('page.qa.bountyMinPlaceholder')"
                   @input="onBountyPerPersonInput"
                 />
                 <p v-if="errors.bountyPerPerson" class="mt-1 text-xs text-error">{{ errors.bountyPerPerson }}</p>
@@ -116,14 +122,14 @@
             </div>
 
             <div class="flex items-center justify-between text-sm pt-1">
-              <span class="text-text-muted">总悬赏</span>
-              <span class="font-semibold text-amber-500">{{ totalBounty }} 积分</span>
+              <span class="text-text-muted">{{ t('page.qa.totalBountyLabel') }}</span>
+              <span class="font-semibold text-amber-500">{{ totalBounty }} {{ t('page.qa.points') }}</span>
             </div>
           </div>
 
           <div class="flex justify-end gap-3 px-6 py-4 border-t border-surface-3 shrink-0">
-            <button type="button" class="btn btn-ghost" @click="handleSaveDraft">暂存</button>
-            <button type="button" class="btn btn-primary" @click="handlePublish">发布</button>
+            <button type="button" class="btn btn-ghost" @click="handleSaveDraft">{{ t('page.qa.saveDraft') }}</button>
+            <button type="button" class="btn btn-primary" @click="handlePublish">{{ t('common.publish') }}</button>
           </div>
         </div>
       </div>
@@ -135,16 +141,20 @@
         class="fixed inset-0 z-[110] flex items-center justify-center p-4"
         role="dialog"
         aria-modal="true"
-        aria-label="退出确认"
+        :aria-label="t('page.qa.exitConfirmAria')"
       >
         <div class="absolute inset-0 bg-black/50" @click="confirmOpen = false"></div>
         <div
           class="relative z-10 w-full max-w-sm bg-card-bg rounded-[var(--radius-large)] border border-surface-3 shadow-xl dark:shadow-none p-6"
         >
-          <p class="text-deep-text font-medium leading-relaxed">退出了，不会暂存相应内容，真的要退出吗？</p>
+          <p class="text-deep-text font-medium leading-relaxed">{{ t('page.qa.exitConfirmMessage') }}</p>
           <div class="flex justify-end gap-3 mt-5">
-            <button type="button" class="btn btn-ghost" @click="confirmOpen = false">我再考虑</button>
-            <button type="button" class="btn btn-primary" @click="confirmExit">退出</button>
+            <button type="button" class="btn btn-ghost" @click="confirmOpen = false">
+              {{ t('page.qa.exitConfirmKeep') }}
+            </button>
+            <button type="button" class="btn btn-primary" @click="confirmExit">
+              {{ t('page.qa.exitConfirmExit') }}
+            </button>
           </div>
         </div>
       </div>
@@ -163,6 +173,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
+import { t } from '~/lib/i18n';
 import { QA_DRAFT_STORAGE_KEY, computeTotalBounty, parseDraft, serializeDraft } from '../lib/draft';
 import type { QaDraft } from '../lib/draft';
 import { deleteImageBlobs, resolveImageSrc, saveImageBlob } from '../../editor/persistence/image-store';
@@ -294,11 +305,11 @@ function isPositiveInt(value: number | null): boolean {
 
 function validate(): boolean {
   clearErrors();
-  if (!formModel.title.trim()) errors.title = '请输入标题';
-  if (!formModel.situation.trim()) errors.situation = '请填写本人情况';
-  if (!formModel.detail.trim()) errors.detail = '请填写详细问题';
-  if (!isPositiveInt(formModel.bountyPeople)) errors.bountyPeople = '悬赏人数需为 ≥1 的整数';
-  if (!isPositiveInt(formModel.bountyPerPerson)) errors.bountyPerPerson = '悬赏人均积分需为 ≥1 的整数';
+  if (!formModel.title.trim()) errors.title = t('page.qa.titleRequired');
+  if (!formModel.situation.trim()) errors.situation = t('page.qa.situationRequired');
+  if (!formModel.detail.trim()) errors.detail = t('page.qa.detailRequired');
+  if (!isPositiveInt(formModel.bountyPeople)) errors.bountyPeople = t('page.qa.bountyPeopleInvalid');
+  if (!isPositiveInt(formModel.bountyPerPerson)) errors.bountyPerPerson = t('page.qa.bountyPerPersonInvalid');
   return Object.values(errors).every((message) => message === '');
 }
 
@@ -328,7 +339,7 @@ function onDrop(e: DragEvent): void {
 async function addFiles(files: File[]): Promise<void> {
   for (const file of files) {
     if (formModel.images.length >= MAX_IMAGES) {
-      showToast(`最多插入 ${MAX_IMAGES} 张图片`);
+      showToast(t('page.qa.maxImagesToast', { count: MAX_IMAGES }));
       break;
     }
     const error = validateImageFile(file);
@@ -341,8 +352,8 @@ async function addFiles(files: File[]): Promise<void> {
 }
 
 function validateImageFile(file: File): string | null {
-  if (!file.type.startsWith('image/')) return '仅支持图片文件';
-  if (file.size > MAX_IMAGE_SIZE_BYTES) return '图片大小需 ≤ 20MB';
+  if (!file.type.startsWith('image/')) return t('page.qa.imageOnlyToast');
+  if (file.size > MAX_IMAGE_SIZE_BYTES) return t('page.qa.imageTooLargeToast');
   return null;
 }
 
@@ -367,7 +378,7 @@ async function refreshImageUrls(): Promise<void> {
 
 function handleSaveDraft(): void {
   saveDraft();
-  showToast('草稿已暂存');
+  showToast(t('page.qa.draftSavedToast'));
 }
 
 async function handlePublish(): Promise<void> {
@@ -375,7 +386,7 @@ async function handlePublish(): Promise<void> {
   const refs = [...formModel.images];
   clearDraft();
   resetForm();
-  showToast('问题已发布');
+  showToast(t('page.qa.publishedToast'));
   emit('update:show', false);
   await deleteImageBlobs(refs);
 }

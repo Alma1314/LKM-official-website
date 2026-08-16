@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
+import { t } from '~/lib/i18n';
+
 defineProps({
-  title: { type: String, default: '这里还空空如也' },
-  sub: { type: String, default: '去写下第一封信，或逛逛树洞广场吧～' },
+  title: { type: String, default: () => t('treehole.emptyState.defaultTitle') },
+  sub: { type: String, default: () => t('treehole.emptyState.defaultSub') },
 });
 </script>
 

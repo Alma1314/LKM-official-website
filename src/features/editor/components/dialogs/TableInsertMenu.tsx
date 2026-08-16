@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 
 interface TableInsertMenuProps {
   onInsert: (rows: number, cols: number) => void;
@@ -75,12 +76,14 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
   return (
     <div className="rte-link-popover">
       <p className="text-xs text-deep-text/60 mb-2">
-        {activeRows > 0 && activeCols > 0 ? `${activeRows} × ${activeCols} 表格` : '选择表格尺寸'}
+        {activeRows > 0 && activeCols > 0
+          ? t('editor.tableInsert.tableLabel', { rows: activeRows, cols: activeCols })
+          : t('editor.tableInsert.selectSize')}
       </p>
       <div
         ref={gridRef}
         role="grid"
-        aria-label="表格尺寸选择器"
+        aria-label={t('editor.tableInsert.gridLabel')}
         className="rte-table-menu outline-none"
         style={{ gridTemplateColumns: `repeat(${MAX_COLS}, 24px)` }}
         tabIndex={-1}
@@ -101,7 +104,7 @@ export default function TableInsertMenu({ onInsert, onClose }: TableInsertMenuPr
                 type="button"
                 className={`rte-table-cell ${isActive ? 'is-active' : ''}`}
                 tabIndex={isFocused ? 0 : -1}
-                aria-label={`${r + 1} 行 ${c + 1} 列`}
+                aria-label={t('editor.tableInsert.cellLabel', { rows: r + 1, cols: c + 1 })}
                 onMouseEnter={() => {
                   setFocusRow(r);
                   setFocusCol(c);

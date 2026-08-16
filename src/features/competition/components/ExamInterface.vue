@@ -22,14 +22,16 @@
     <!-- 答题区 -->
     <div class="flex-1">
       <div class="flex items-center justify-between mb-4">
-        <span class="text-sm text-text-muted">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
+        <span class="text-sm text-text-muted">{{
+          t('community.competition.questionOf', { current: currentIndex + 1, total: questions.length })
+        }}</span>
         <span class="text-sm font-mono font-bold" :class="remaining < 300 ? 'text-red-500' : 'text-primary'">
           {{ formatTime(remaining) }}
         </span>
       </div>
 
       <div class="bg-card-bg border border-surface-3 rounded-xl p-6">
-        <p class="text-deep-text font-medium mb-4">{{ currentQ.stem }}</p>
+        <p class="text-deep-text font-medium mb-4">{{ t(currentQ.stem) }}</p>
         <div class="space-y-2">
           <button
             v-for="(opt, i) in currentQ.options"
@@ -42,25 +44,29 @@
             "
             @click="answers[currentIndex] = i"
           >
-            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ opt }}
+            <span class="font-mono text-text-muted mr-2">{{ labels[i] }}.</span>{{ t(opt) }}
           </button>
         </div>
       </div>
 
       <div class="flex justify-between mt-4">
         <button class="btn-ghost text-sm px-4 py-2" :disabled="currentIndex === 0" @click="currentIndex--">
-          上一题
+          {{ t('community.competition.previous') }}
         </button>
         <div class="flex gap-2">
-          <span class="text-xs text-text-muted self-center">已答 {{ answeredCount }}/{{ questions.length }}</span>
+          <span class="text-xs text-text-muted self-center">{{
+            t('community.competition.answered', { count: answeredCount, total: questions.length })
+          }}</span>
           <button
             v-if="currentIndex < questions.length - 1"
             class="btn-primary px-5 py-2 rounded-lg text-sm"
             @click="currentIndex++"
           >
-            下一题
+            {{ t('community.competition.next') }}
           </button>
-          <button v-else class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" @click="submit">提交答卷</button>
+          <button v-else class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" @click="submit">
+            {{ t('community.competition.submitExam') }}
+          </button>
         </div>
       </div>
     </div>
@@ -71,6 +77,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { mockQuestions } from '../data/mock-competitions';
 import { buildUrl } from '~/lib/utils/paths';
+import { t } from '~/lib/i18n';
 
 const questions = ref(mockQuestions.slice(0, 8));
 const answers = ref<(number | undefined)[]>(new Array(questions.value.length).fill(undefined));
@@ -100,7 +107,13 @@ function formatTime(s: number): string {
 function submit() {
   const correct = answers.value.filter((a, i) => a === questions.value[i].answer).length;
   clearInterval(timer);
-  alert(`答卷已提交！正确 ${correct}/${questions.length}（${Math.round((correct / questions.length) * 100)}%）`);
+  alert(
+    t('community.competition.examSubmitted', {
+      correct,
+      total: questions.length,
+      percent: Math.round((correct / questions.length) * 100),
+    })
+  );
   window.location.href = buildUrl('/competition');
 }
 </script>

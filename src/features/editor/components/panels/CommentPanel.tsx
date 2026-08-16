@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import type { PersistenceAdapter, CommentThread } from '../../engine/types';
 import ConfirmDialog from '../dialogs/ConfirmDialog';
+import { t } from '~/lib/i18n';
 
 interface CommentPanelProps {
   documentId: string;
@@ -57,7 +58,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
   return (
     <div className="rte-panel flex flex-col">
       <div className="flex items-center justify-between px-3 py-3 border-b border-surface-3">
-        <h3 className="text-sm font-semibold">评论</h3>
+        <h3 className="text-sm font-semibold">{t('editor.comments')}</h3>
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onClose}>
           ×
         </button>
@@ -65,7 +66,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
 
       <div className="flex-1 overflow-y-auto">
         {threads.length === 0 ? (
-          <p className="text-xs text-deep-text/50 px-3 py-4">暂无评论。选中文字后点击评论按钮添加。</p>
+          <p className="text-xs text-deep-text/50 px-3 py-4">{t('editor.noComments')}</p>
         ) : (
           threads.map((thread) => (
             <div key={thread.id} className={`border-b border-surface-3/50 ${thread.resolved ? 'opacity-60' : ''}`}>
@@ -100,7 +101,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                   <input
                     type="text"
                     className="rte-input flex-1"
-                    placeholder="输入回复…"
+                    placeholder={t('editor.replyPlaceholder')}
                     value={replyInput[thread.id] ?? ''}
                     onChange={(e) => setReplyInput((prev) => ({ ...prev, [thread.id]: e.target.value }))}
                     onKeyDown={(e) => {
@@ -112,7 +113,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs"
                     onClick={() => handleAddReply(thread.id)}
                   >
-                    发送
+                    {t('editor.send')}
                   </button>
                 </div>
               </div>
@@ -125,7 +126,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs"
                     onClick={() => handleReopen(thread.id)}
                   >
-                    重新打开
+                    {t('editor.reopen')}
                   </button>
                 ) : (
                   <button
@@ -133,7 +134,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                     className="rte-btn rte-btn--ghost rte-btn--xs text-success"
                     onClick={() => handleResolve(thread.id)}
                   >
-                    解决
+                    {t('editor.resolve')}
                   </button>
                 )}
                 <button
@@ -141,7 +142,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
                   className="rte-btn rte-btn--ghost rte-btn--xs text-error"
                   onClick={() => handleDelete(thread.id)}
                 >
-                  删除
+                  {t('editor.delete')}
                 </button>
               </div>
             </div>
@@ -151,7 +152,7 @@ const CommentPanel = memo(function CommentPanel({ documentId, adapter, onClose, 
 
       {deleteTarget && (
         <ConfirmDialog
-          message="确定删除此评论？"
+          message={t('editor.confirmDeleteComment')}
           danger
           onConfirm={handleDeleteConfirmed}
           onCancel={() => setDeleteTarget(null)}

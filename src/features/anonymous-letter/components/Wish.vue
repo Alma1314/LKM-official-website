@@ -1,13 +1,14 @@
 <template>
   <div class="wish-page">
-    <h1 class="page-title">🌟 许愿墙</h1>
-    <p class="page-sub">把愿望交给星光，被温柔照亮。</p>
+    <h1 class="page-title">🌟 {{ t('treehole.wish.title') }}</h1>
+    <p class="page-sub">{{ t('treehole.wish.subtitle') }}</p>
     <WishWall />
   </div>
 </template>
 
 <script setup>
 import WishWall from '../components/WishWall.vue';
+import { t } from '~/lib/i18n';
 </script>
 
 <style scoped>

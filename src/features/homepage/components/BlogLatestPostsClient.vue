@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { t } from '~/lib/i18n';
 import { fetchWithCache } from '~/lib/cache-client';
 
 interface OfficialArticle {
@@ -39,7 +40,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="loading" class="text-center py-4 text-text-muted">加载中...</div>
+  <div v-if="loading" class="text-center py-4 text-text-muted">{{ t('common.loading') }}</div>
   <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <a
       v-for="article in articles"

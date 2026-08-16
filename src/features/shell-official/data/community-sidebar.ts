@@ -25,20 +25,20 @@ export interface CommunitySidebarLink {
 
 /** 社区核心功能入口 */
 export const communitySidebarLinks: CommunitySidebarLink[] = [
-  { text: '首页', href: getPermalink('/'), icon: 'material-symbols:home-outline-rounded' },
-  { text: '板块广场', href: getPermalink('/forum'), icon: 'material-symbols:forum-outline' },
-  { text: '专栏', href: getPermalink('/columns'), icon: 'material-symbols:article-outline' },
-  { text: '文件库', href: getPermalink('/files'), icon: 'material-symbols:folder-outline' },
-  { text: '帮助/求助', href: getPermalink('/qa'), icon: 'material-symbols:help-outline' },
-  { text: '项目大厅', href: getPermalink('/projects'), icon: 'material-symbols:rocket-launch-outline' },
-  { text: '竞赛', href: getPermalink('/competition'), icon: 'tabler:trophy' },
-  { text: '资助系统', href: getPermalink('/funding'), icon: 'material-symbols:volunteer-activism-outline' },
-  { text: 'QQ社群', href: getPermalink('/communities'), icon: 'tabler:brand-qq' },
+  { text: 'nav.home', href: getPermalink('/'), icon: 'material-symbols:home-outline-rounded' },
+  { text: 'nav.forum', href: getPermalink('/forum'), icon: 'material-symbols:forum-outline' },
+  { text: 'nav.columns', href: getPermalink('/columns'), icon: 'material-symbols:article-outline' },
+  { text: 'nav.fileLibrary', href: getPermalink('/files'), icon: 'material-symbols:folder-outline' },
+  { text: 'nav.qa', href: getPermalink('/qa'), icon: 'material-symbols:help-outline' },
+  { text: 'nav.projects', href: getPermalink('/projects'), icon: 'material-symbols:rocket-launch-outline' },
+  { text: 'nav.competition', href: getPermalink('/competition'), icon: 'tabler:trophy' },
+  { text: 'nav.funding', href: getPermalink('/funding'), icon: 'material-symbols:volunteer-activism-outline' },
+  { text: 'nav.qqCommunity', href: getPermalink('/communities'), icon: 'tabler:brand-qq' },
 ];
 
 /** 用户个人相关 */
 export const userSidebarLinks: CommunitySidebarLink[] = [
-  { text: '个人主页', href: getPermalink('/profile'), icon: 'material-symbols:person-outline' },
-  { text: '贡献系统', href: getPermalink('/contribution'), icon: 'material-symbols:stars-outline' },
-  { text: '设置', href: getPermalink('/account'), icon: 'material-symbols:settings-outline' },
+  { text: 'nav.profile', href: getPermalink('/profile'), icon: 'material-symbols:person-outline' },
+  { text: 'nav.contribution', href: getPermalink('/contribution'), icon: 'material-symbols:stars-outline' },
+  { text: 'nav.settings', href: getPermalink('/account'), icon: 'material-symbols:settings-outline' },
 ];

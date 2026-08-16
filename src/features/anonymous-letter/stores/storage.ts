@@ -6,6 +6,7 @@
 // =============================================================
 
 import { randomCodename } from '../utils/codename';
+import { t } from '~/lib/i18n';
 
 // ---------- 类型定义 ----------
 
@@ -159,7 +160,7 @@ export async function decryptText(payload: string, pass: string): Promise<string
     return new TextDecoder().decode(pt);
   } catch (err) {
     console.warn('[storage] 解密失败:', err);
-    return '【解密失败：密码错误或未加密】';
+    return t('treeholeData.messages.decryptFail');
   }
 }
 function padPass(p: string): string {
@@ -345,7 +346,7 @@ export function recallMessage(convId: string, msgId: string): void {
     const m = conv.messages.find((x) => x.id === msgId);
     if (m) {
       m.recalled = true;
-      m.text = '对方撤回了一条消息';
+      m.text = t('treeholeData.messages.recalled');
     }
     saveReplies(list);
   }

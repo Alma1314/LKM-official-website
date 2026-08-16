@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 
 interface InlineInputProps {
   placeholder?: string;
@@ -55,7 +56,7 @@ export default function InlineInput({
         }}
       />
       <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handleSubmit}>
-        确定
+        {t('editor.confirm')}
       </button>
       <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onCancel}>
         ×

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 import { buildUrl } from '~/lib/utils/paths';
 
 interface SearchResultItem {
   type: 'post' | 'file' | 'user';
   title: string;
   desc: string;
+  descParams?: Record<string, string | number>;
   url: string;
   tag?: string;
 }
@@ -14,59 +16,64 @@ interface SearchResultItem {
 const mockData: SearchResultItem[] = [
   {
     type: 'post',
-    title: '量子力学入门：波函数坍缩',
-    desc: '作者：七月O · 12 点赞 · 34 评论',
+    title: 'search.mockQuantumTitle',
+    desc: 'search.postMeta',
+    descParams: { author: t('search.userQiyueOName'), likes: 12, comments: 34 },
     url: buildUrl('/forum/post/post-1'),
-    tag: '物理学',
+    tag: 'onboarding.tags.physics',
   },
   {
     type: 'post',
-    title: '数学建模竞赛经验分享',
-    desc: '作者：七月花 · 28 点赞 · 56 评论',
+    title: 'search.mockMathTitle',
+    desc: 'search.postMeta',
+    descParams: { author: t('search.userQiyueHuaName'), likes: 28, comments: 56 },
     url: buildUrl('/forum/post/post-3'),
-    tag: '数学',
+    tag: 'onboarding.tags.math',
   },
   {
     type: 'post',
-    title: 'Python 数据分析入门教程',
-    desc: '作者：七月墨染 · 45 点赞 · 23 评论',
+    title: 'search.mockPythonTitle',
+    desc: 'search.postMeta',
+    descParams: { author: t('search.userQiyueMoranName'), likes: 45, comments: 23 },
     url: buildUrl('/forum/post/post-5'),
-    tag: '信息科学',
+    tag: 'onboarding.tags.cs',
   },
   {
     type: 'file',
-    title: '天体物理数据集（2026版）.zip',
-    desc: '上传者：七月O · 128 MB · 下载 230 次',
+    title: 'search.mockAstroFileTitle',
+    desc: 'search.fileMeta',
+    descParams: { author: t('search.userQiyueOName'), size: '128', downloads: 230 },
     url: buildUrl('/files/file-1'),
-    tag: '文件',
+    tag: 'search.tagFile',
   },
   {
     type: 'file',
-    title: '线性代数习题集.pdf',
-    desc: '上传者：七月墨染 · 5.2 MB · 下载 89 次',
+    title: 'search.mockLinearFileTitle',
+    desc: 'search.fileMeta',
+    descParams: { author: t('search.userQiyueMoranName'), size: '5.2', downloads: 89 },
     url: buildUrl('/files/file-3'),
-    tag: '文件',
+    tag: 'search.tagFile',
   },
   {
     type: 'user',
-    title: '七月O',
-    desc: '中国科学院国家天文台博士 · 引力波与黑洞物理',
+    title: 'search.userQiyueOName',
+    desc: 'search.userQiyueODesc',
     url: buildUrl('/user/qiyue-o'),
-    tag: '用户',
+    tag: 'search.tagUser',
   },
   {
     type: 'user',
-    title: '七月花',
-    desc: '有理想的博士 · 科学教育倡导者',
+    title: 'search.userQiyueHuaName',
+    desc: 'search.userQiyueHuaDesc',
     url: buildUrl('/user/qiyue-hua'),
-    tag: '用户',
+    tag: 'search.tagUser',
   },
   {
     type: 'user',
-    title: '七月墨染',
-    desc: '双非物理，卧薪尝胆三千日',
+    title: 'search.userQiyueMoranName',
+    desc: 'search.userQiyueMoranDesc',
     url: buildUrl('/user/qiyue-moran'),
-    tag: '用户',
+    tag: 'search.tagUser',
   },
 ];
 
@@ -107,7 +114,8 @@ function doSearch(kw: string) {
     }
     const lower = kw.toLowerCase();
     const filtered = mockData.filter(
-      (item) => item.title.toLowerCase().includes(lower) || item.desc.toLowerCase().includes(lower)
+      (item) =>
+        t(item.title).toLowerCase().includes(lower) || t(item.desc, item.descParams).toLowerCase().includes(lower)
     );
     results.value = {
       posts: filtered.filter((r) => r.type === 'post'),
@@ -157,12 +165,12 @@ onUnmounted(() => {
       icon="material-symbols:search"
       class="text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"
     />
-    <span class="text-sm text-black/30 dark:text-white/30 px-3 w-40 select-none">搜索</span>
+    <span class="text-sm text-black/30 dark:text-white/30 px-3 w-40 select-none">{{ t('common.search') }}</span>
   </div>
 
   <!-- 移动端搜索按钮 -->
   <button
-    aria-label="搜索"
+    :aria-label="t('common.search')"
     class="btn-plain scale-animation lg:!hidden rounded-lg w-11 h-11 active:scale-90"
     id="global-search-mobile-btn"
     @click="toggle"
@@ -184,22 +192,22 @@ onUnmounted(() => {
           type="text"
           v-model="keyword"
           @input="doSearch(keyword)"
-          placeholder="搜索帖子、文件、用户..."
+          :placeholder="t('search.placeholderExtended')"
           class="flex-1 bg-transparent text-sm text-deep-text outline-none placeholder:text-text-muted/50"
         />
         <button class="text-xs text-text-muted hover:text-deep-text px-2" @click="close">ESC</button>
       </div>
 
       <div v-if="keyword.trim() === ''" class="px-3 py-8 text-center text-sm text-text-muted">
-        输入关键词搜索社区内容
+        {{ t('search.inputHint') }}
       </div>
       <div v-else-if="totalCount === 0" class="px-3 py-8 text-center text-sm text-text-muted">
-        未找到与 "<span class="text-deep-text">{{ keyword }}</span
-        >" 相关的内容
+        {{ t('search.noResultsPrefix') }} "<span class="text-deep-text">{{ keyword }}</span
+        >" {{ t('search.noResultsSuffix') }}
       </div>
       <div v-else class="space-y-4 pt-2">
         <div v-if="results.posts.length > 0">
-          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">帖子</div>
+          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">{{ t('search.posts') }}</div>
           <a
             v-for="item in results.posts"
             :key="item.url"
@@ -208,15 +216,17 @@ onUnmounted(() => {
           >
             <Icon icon="material-symbols:article-outline" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">{{ item.title }}</div>
-              <div class="text-xs text-text-muted mt-0.5">{{ item.desc }}</div>
+              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">
+                {{ t(item.title) }}
+              </div>
+              <div class="text-xs text-text-muted mt-0.5">{{ t(item.desc, item.descParams) }}</div>
             </div>
-            <span class="text-xs text-text-muted/50 shrink-0">{{ item.tag }}</span>
+            <span class="text-xs text-text-muted/50 shrink-0">{{ t(item.tag) }}</span>
           </a>
         </div>
 
         <div v-if="results.files.length > 0">
-          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">文件</div>
+          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">{{ t('search.files') }}</div>
           <a
             v-for="item in results.files"
             :key="item.url"
@@ -225,15 +235,17 @@ onUnmounted(() => {
           >
             <Icon icon="material-symbols:folder-outline" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">{{ item.title }}</div>
-              <div class="text-xs text-text-muted mt-0.5">{{ item.desc }}</div>
+              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">
+                {{ t(item.title) }}
+              </div>
+              <div class="text-xs text-text-muted mt-0.5">{{ t(item.desc, item.descParams) }}</div>
             </div>
-            <span class="text-xs text-text-muted/50 shrink-0">{{ item.tag }}</span>
+            <span class="text-xs text-text-muted/50 shrink-0">{{ t(item.tag) }}</span>
           </a>
         </div>
 
         <div v-if="results.users.length > 0">
-          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">用户</div>
+          <div class="text-xs text-text-muted/60 font-medium px-2 mb-1 uppercase">{{ t('search.users') }}</div>
           <a
             v-for="item in results.users"
             :key="item.url"
@@ -242,10 +254,12 @@ onUnmounted(() => {
           >
             <Icon icon="material-symbols:person-outline" class="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">{{ item.title }}</div>
-              <div class="text-xs text-text-muted mt-0.5">{{ item.desc }}</div>
+              <div class="text-sm font-medium text-deep-text group-hover:text-primary truncate">
+                {{ t(item.title) }}
+              </div>
+              <div class="text-xs text-text-muted mt-0.5">{{ t(item.desc, item.descParams) }}</div>
             </div>
-            <span class="text-xs text-text-muted/50 shrink-0">{{ item.tag }}</span>
+            <span class="text-xs text-text-muted/50 shrink-0">{{ t(item.tag) }}</span>
           </a>
         </div>
       </div>

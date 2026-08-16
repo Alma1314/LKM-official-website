@@ -10,40 +10,38 @@ export function filterNavbarByNames(links: NavBarLink[], names?: string[]): NavB
 export const footerData = {
   links: [
     {
-      title: '社区',
+      title: 'footer.community',
       links: [
-        { text: '七月团队', href: getPermalink('/blog/about') },
-        { text: '管理团队', href: getPermalink('/official/team') },
-        { text: '发展历程', href: getPermalink('/#timeline') },
-        { text: '寻求帮助', href: getPermalink('/official/articles') },
+        { text: 'nav.team', href: getPermalink('/blog/about') },
+        { text: 'nav.managementTeam', href: getPermalink('/official/team') },
+        { text: 'nav.timeline', href: getPermalink('/#timeline') },
+        { text: 'nav.help', href: getPermalink('/official/articles') },
       ],
     },
     {
-      title: '页面',
+      title: 'footer.pages',
       links: [
-        { text: '服务', href: getPermalink('/official/services') },
-        { text: '支持我们', href: getPermalink('/official/pricing') },
-        { text: '联系我们', href: getPermalink('/official/contact') },
-        { text: '常见问题', href: getPermalink('/#faq') },
+        { text: 'nav.services', href: getPermalink('/official/services') },
+        { text: 'footer.supportUs', href: getPermalink('/official/pricing') },
+        { text: 'nav.contactUs', href: getPermalink('/official/contact') },
+        { text: 'nav.faq', href: getPermalink('/#faq') },
       ],
     },
     {
-      title: '法律',
+      title: 'footer.legal',
       links: [
-        { text: '隐私政策', href: getPermalink('/official/privacy') },
-        { text: '使用条款', href: getPermalink('/official/terms') },
+        { text: 'footer.privacyPolicy', href: getPermalink('/official/privacy') },
+        { text: 'footer.terms', href: getPermalink('/official/terms') },
       ],
     },
   ],
   secondaryLinks: [
-    { text: '使用条款', href: getPermalink('/official/terms') },
-    { text: '隐私政策', href: getPermalink('/official/privacy') },
+    { text: 'footer.terms', href: getPermalink('/official/terms') },
+    { text: 'footer.privacyPolicy', href: getPermalink('/official/privacy') },
   ],
   socialLinks: [
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/LKM-AHZ' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
-  footNote: `
-    理科迷 LKM &copy; 2026 · 保留所有权利。
-  `,
+  footNote: 'footer.copyright',
 };

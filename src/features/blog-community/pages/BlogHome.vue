@@ -2,6 +2,7 @@
 import { onMounted } from 'vue';
 import { useBlogArticles } from '../composables/useBlogArticles';
 import BlogArticleCard from './BlogArticleCard.vue';
+import { t } from '~/lib/i18n';
 
 const { articles, loading, error, fetchAll } = useBlogArticles();
 
@@ -13,8 +14,8 @@ onMounted(() => {
 <template>
   <div class="blog-home">
     <div class="mb-8">
-      <h1 class="text-3xl font-bold">博客</h1>
-      <p class="mt-2 text-text-muted">社区成员的技术分享与思考</p>
+      <h1 class="text-3xl font-bold">{{ t('blog.title') }}</h1>
+      <p class="mt-2 text-text-muted">{{ t('blog.homeSubtitle') }}</p>
     </div>
 
     <div v-if="loading" class="flex justify-center py-16">
@@ -23,11 +24,13 @@ onMounted(() => {
 
     <div v-else-if="error" class="text-center py-16">
       <p class="text-red-500 mb-4">{{ error }}</p>
-      <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="fetchAll">重试</button>
+      <button class="btn-plain rounded-lg px-4 py-2 bg-primary text-white" @click="fetchAll">
+        {{ t('common.retry') }}
+      </button>
     </div>
 
     <div v-else-if="articles.length === 0" class="text-center py-16 text-text-muted">
-      <p>还没有文章</p>
+      <p>{{ t('blog.noArticlesYet') }}</p>
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,14 +1,14 @@
 <template>
   <TreeholeShell active-nav="messages">
     <div class="container">
-      <h1 class="page-title">💬 匿名回信</h1>
-      <p class="page-sub">全程匿名，双方都不暴露真实身份。</p>
+      <h1 class="page-title">💬 {{ t('treehole.messages.title') }}</h1>
+      <p class="page-sub">{{ t('treehole.messages.subtitle') }}</p>
 
       <div class="msg-layout">
         <!-- 会话列表 -->
         <aside class="conv-list glass">
           <div class="conv-head">
-            <span>对话 ({{ conversations.length }})</span>
+            <span>{{ t('treehole.messages.conversations', { count: conversations.length }) }}</span>
           </div>
           <div v-if="conversations.length" class="conv-items">
             <div
@@ -23,10 +23,14 @@
                 <b>{{ c.peerCodename }}</b>
                 <small>{{ lastMsg(c) }}</small>
               </div>
-              <span v-if="c.blocked" class="conv-blocked">已屏蔽</span>
+              <span v-if="c.blocked" class="conv-blocked">{{ t('treehole.messages.blocked') }}</span>
             </div>
           </div>
-          <EmptyState v-else title="还没有任何对话" sub="去随机树洞给陌生人写回信吧" />
+          <EmptyState
+            v-else
+            :title="t('treehole.messages.emptyConvsTitle')"
+            :sub="t('treehole.messages.emptyConvsSub')"
+          />
         </aside>
 
         <!-- 对话面板 -->
@@ -36,13 +40,15 @@
               <div class="conv-avatar">{{ active.peerCodename.charAt(0) }}</div>
               <div>
                 <b>{{ active.peerCodename }}</b>
-                <small>我的代号：{{ active.myCodename }}</small>
+                <small>{{ t('treehole.messages.myCodename', { name: active.myCodename }) }}</small>
               </div>
             </div>
             <div class="chat-acts">
-              <button class="mini" @click="blockConv" v-if="!active.blocked">屏蔽</button>
-              <button class="mini" @click="clearConvConfirm" v-if="active.messages.length">清空</button>
-              <button class="mini danger" @click="delConvConfirm">删除</button>
+              <button class="mini" @click="blockConv" v-if="!active.blocked">{{ t('treehole.messages.block') }}</button>
+              <button class="mini" @click="clearConvConfirm" v-if="active.messages.length">
+                {{ t('treehole.messages.clear') }}
+              </button>
+              <button class="mini danger" @click="delConvConfirm">{{ t('treehole.messages.delete') }}</button>
             </div>
           </div>
 
@@ -58,22 +64,31 @@
                 <template v-else>
                   <span class="bubble-text">{{ m.text }}</span>
                   <button v-if="m.from === 'me' && !m.recalled" class="bubble-recall" @click="recall(active.id, m)">
-                    撤回
+                    {{ t('treehole.messages.recall') }}
                   </button>
                 </template>
               </div>
             </div>
-            <EmptyState v-else title="还没有消息" sub="写下第一句匿名问候吧～" />
+            <EmptyState
+              v-else
+              :title="t('treehole.messages.emptyMsgsTitle')"
+              :sub="t('treehole.messages.emptyMsgsSub')"
+            />
           </div>
 
           <div class="chat-input" v-if="!active.blocked">
-            <textarea v-model="text" placeholder="匿名回复…" @keyup.enter.exact="send" rows="1"></textarea>
-            <button class="btn-grad" :disabled="!text.trim()" @click="send">发送</button>
+            <textarea
+              v-model="text"
+              :placeholder="t('treehole.messages.replyPlaceholder')"
+              @keyup.enter.exact="send"
+              rows="1"
+            ></textarea>
+            <button class="btn-grad" :disabled="!text.trim()" @click="send">{{ t('treehole.messages.send') }}</button>
           </div>
-          <div v-else class="chat-blocked">已屏蔽该陌生人，消息已停止。</div>
+          <div v-else class="chat-blocked">{{ t('treehole.messages.blockedHint') }}</div>
         </section>
 
-        <EmptyState v-else class="chat-empty" title="选择左侧对话开始" />
+        <EmptyState v-else class="chat-empty" :title="t('treehole.messages.selectConvHint')" />
       </div>
     </div>
   </TreeholeShell>
@@ -91,6 +106,7 @@ import {
   clearConversation,
   deleteConversation,
 } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const conversations = ref([]);
 const activeId = ref('');
@@ -105,9 +121,12 @@ onMounted(() => {
 });
 
 function lastMsg(c) {
-  if (!c.messages.length) return '暂无消息';
+  if (!c.messages.length) return t('treehole.messages.noMsg');
   const m = c.messages[c.messages.length - 1];
-  return (m.recalled ? '[撤回] ' : m.from === 'me' ? '我：' : '') + m.text;
+  return (
+    (m.recalled ? t('treehole.messages.recalledPrefix') : m.from === 'me' ? t('treehole.messages.mePrefix') : '') +
+    m.text
+  );
 }
 
 function selectConv(c) {
@@ -134,21 +153,21 @@ function recall(convId, msg) {
 }
 
 function blockConv() {
-  if (confirm('确定屏蔽该陌生人？屏蔽后将无法收到新消息。')) {
+  if (confirm(t('treehole.messages.confirmBlock'))) {
     blockConversation(activeId.value);
     conversations.value = getReplies();
   }
 }
 
 function clearConvConfirm() {
-  if (confirm('确定清空此对话的全部消息？')) {
+  if (confirm(t('treehole.messages.confirmClear'))) {
     clearConversation(activeId.value);
     conversations.value = getReplies();
   }
 }
 
 function delConvConfirm() {
-  if (confirm('确定删除此对话？')) {
+  if (confirm(t('treehole.messages.confirmDelete'))) {
     deleteConversation(activeId.value);
     conversations.value = getReplies();
     activeId.value = conversations.value[0]?.id || '';

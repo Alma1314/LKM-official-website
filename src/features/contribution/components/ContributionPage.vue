@@ -6,14 +6,16 @@
         <div
           class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl"
         >
-          我
+          {{ t('contribution.me') }}
         </div>
         <div class="flex-1">
-          <h1 class="text-xl font-bold text-deep-text">贡献系统</h1>
+          <h1 class="text-xl font-bold text-deep-text">{{ t('contribution.title') }}</h1>
           <div class="flex items-center gap-3 mt-1 text-sm">
-            <span class="text-text-muted">当前积分：</span>
+            <span class="text-text-muted">{{ t('contribution.currentPoints') }}</span>
             <span class="text-2xl font-bold text-primary">12,500</span>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">专栏作者</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{{
+              t('contribution.columnAuthor')
+            }}</span>
           </div>
         </div>
       </div>
@@ -52,9 +54,9 @@
           <Icon :icon="ach.icon" class="w-6 h-6" />
         </div>
         <div class="font-semibold text-sm" :class="ach.unlocked ? 'text-deep-text' : 'text-text-muted'">
-          {{ ach.name }}
+          {{ t(ach.name) }}
         </div>
-        <div class="text-xs text-text-muted/60 mt-1">{{ ach.description }}</div>
+        <div class="text-xs text-text-muted/60 mt-1">{{ t(ach.description) }}</div>
         <div v-if="!ach.unlocked" class="mt-2">
           <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden">
             <div class="h-full rounded-full bg-primary/40" :style="{ width: ach.progressPercent + '%' }"></div>
@@ -69,7 +71,7 @@
       <div class="divide-y divide-surface-3">
         <div v-for="log in pointLogs" :key="log.id" class="flex items-center justify-between px-5 py-3">
           <div>
-            <div class="text-sm text-deep-text">{{ log.reason }}</div>
+            <div class="text-sm text-deep-text">{{ t(log.reason) }}</div>
             <div class="text-xs text-text-muted/60">{{ log.createdAt }}</div>
           </div>
           <span class="text-sm font-semibold" :class="log.amount > 0 ? 'text-green-500' : 'text-red-500'">
@@ -116,10 +118,12 @@
             {{ entry.displayName.charAt(0) }}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-deep-text truncate">{{ entry.displayName }}</div>
-            <div class="text-xs text-text-muted/60">{{ entry.title }}</div>
+            <div class="text-sm font-medium text-deep-text truncate">{{ t(entry.displayName) }}</div>
+            <div class="text-xs text-text-muted/60">{{ t(entry.title) }}</div>
           </div>
-          <span class="text-sm font-semibold text-primary">{{ entry.points.toLocaleString() }} 分</span>
+          <span class="text-sm font-semibold text-primary">{{
+            t('contribution.pointsSuffix', { points: entry.points.toLocaleString() })
+          }}</span>
         </div>
       </div>
     </div>
@@ -140,20 +144,24 @@
                 : 'bg-amber-100 dark:bg-amber-950/30 text-amber-500'
             "
           >
-            {{ item.isVirtual ? '虚拟' : '实物' }}
+            {{ item.isVirtual ? t('contribution.virtual') : t('contribution.physical') }}
           </span>
-          <span v-if="item.stock > 0 && item.stock < 20" class="text-xs text-red-500">仅剩 {{ item.stock }}</span>
+          <span v-if="item.stock > 0 && item.stock < 20" class="text-xs text-red-500">{{
+            t('contribution.lowStock', { stock: item.stock })
+          }}</span>
         </div>
-        <h3 class="font-semibold text-deep-text mb-1">{{ item.name }}</h3>
-        <p class="text-xs text-text-muted mb-3 flex-1">{{ item.description }}</p>
+        <h3 class="font-semibold text-deep-text mb-1">{{ t(item.name) }}</h3>
+        <p class="text-xs text-text-muted mb-3 flex-1">{{ t(item.description) }}</p>
         <div class="flex items-center justify-between">
-          <span class="text-sm font-bold text-primary">{{ item.pointsCost }} 积分</span>
+          <span class="text-sm font-bold text-primary">{{
+            t('contribution.pointsCost', { points: item.pointsCost })
+          }}</span>
           <button
             class="btn-primary px-4 py-1.5 rounded-lg text-sm font-medium"
             :disabled="item.stock === 0"
             @click="handleExchange(item)"
           >
-            {{ item.stock === 0 ? '已售罄' : '兑换' }}
+            {{ item.stock === 0 ? t('contribution.soldOut') : t('contribution.exchange') }}
           </button>
         </div>
       </div>
@@ -164,21 +172,21 @@
       <!-- 打卡 -->
       <div class="bg-card-bg border border-surface-3 rounded-2xl p-6 text-center">
         <div class="text-4xl mb-2">📅</div>
-        <h3 class="text-lg font-semibold text-deep-text">每日打卡</h3>
-        <p class="text-sm text-text-muted mb-3">连续打卡 {{ 7 }} 天</p>
+        <h3 class="text-lg font-semibold text-deep-text">{{ t('contribution.dailyCheckin') }}</h3>
+        <p class="text-sm text-text-muted mb-3">{{ t('contribution.checkinStreak', { days: 7 }) }}</p>
         <button
           class="btn-primary px-8 py-3 rounded-xl text-base font-semibold"
           :class="dailyCheckedIn ? 'opacity-50 cursor-not-allowed' : ''"
           :disabled="dailyCheckedIn"
           @click="doCheckin"
         >
-          {{ dailyCheckedIn ? '今日已打卡 ✓' : '打卡 +5 积分' }}
+          {{ dailyCheckedIn ? t('contribution.checkedIn') : t('contribution.checkinReward', { points: 5 }) }}
         </button>
       </div>
 
       <!-- 任务列表 -->
       <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
-        <h3 class="font-semibold text-deep-text mb-4">今日任务</h3>
+        <h3 class="font-semibold text-deep-text mb-4">{{ t('contribution.dailyTasks') }}</h3>
         <div class="space-y-3">
           <div
             v-for="task in tasks"
@@ -205,10 +213,10 @@
                 class="text-sm font-medium"
                 :class="task.completed ? 'text-text-muted line-through' : 'text-deep-text'"
               >
-                {{ task.title }}
+                {{ t(task.title) }}
               </div>
               <div class="text-xs text-text-muted/60 mt-0.5">
-                {{ task.description }} · 奖励 {{ task.rewardPoints }} 积分
+                {{ t(task.description) }} · {{ t('contribution.taskReward', { points: task.rewardPoints }) }}
               </div>
               <div class="mt-1.5">
                 <div class="h-1.5 rounded-full bg-surface-3 overflow-hidden w-32">
@@ -238,20 +246,25 @@ import {
   tasks,
   exchangeItems,
 } from '../data/mock-contribution';
+import { t } from '~/lib/i18n';
 
 const activeTab = ref('achievements');
 const leaderboardPeriod = ref<'daily' | 'weekly' | 'total'>('weekly');
 const dailyCheckedIn = ref(false);
 
 const pageTabs = [
-  { key: 'achievements', label: '成就墙', icon: 'tabler:trophy' },
-  { key: 'points', label: '积分明细', icon: 'tabler:coin' },
-  { key: 'leaderboard', label: '排行榜', icon: 'tabler:chart-bar' },
-  { key: 'exchange', label: '兑换区', icon: 'tabler:gift' },
-  { key: 'tasks', label: '任务中心', icon: 'tabler:checklist' },
+  { key: 'achievements', label: t('contribution.tabAchievements'), icon: 'tabler:trophy' },
+  { key: 'points', label: t('contribution.tabPoints'), icon: 'tabler:coin' },
+  { key: 'leaderboard', label: t('contribution.tabLeaderboard'), icon: 'tabler:chart-bar' },
+  { key: 'exchange', label: t('contribution.tabExchange'), icon: 'tabler:gift' },
+  { key: 'tasks', label: t('contribution.tabTasks'), icon: 'tabler:checklist' },
 ] as const;
 
-const periodLabels = { daily: '日榜', weekly: '周榜', total: '总榜' };
+const periodLabels = {
+  daily: t('contribution.periodDaily'),
+  weekly: t('contribution.periodWeekly'),
+  total: t('contribution.periodTotal'),
+};
 
 const allAchievements = computed(() =>
   achievements.map((ach) => {
@@ -273,6 +286,6 @@ function doCheckin() {
 }
 
 function handleExchange(item: (typeof exchangeItems)[0]) {
-  alert(`兑换成功！您已花费 ${item.pointsCost} 积分兑换"${item.name}"`);
+  alert(t('contribution.exchangeSuccess', { points: item.pointsCost, name: t(item.name) }));
 }
 </script>

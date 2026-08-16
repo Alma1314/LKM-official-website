@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { t } from '~/lib/i18n';
 import styles from './Sidebar.module.css';
 
 interface SidebarGroup {
@@ -54,7 +55,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
               <div class={styles.icon}>
                 <Icon name={icon} />
               </div>
-              <div class={styles.text}>{text}</div>
+              <div class={styles.text}>{t(text)}</div>
             </a>
           </li>
         );
@@ -74,7 +75,7 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       stroke-linecap="round"
       stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg
     >
-    <span class={styles.toggleText}>收起</span>
+    <span class={styles.toggleText}>{t('blog.collapse')}</span>
   </button>
 </nav>
 

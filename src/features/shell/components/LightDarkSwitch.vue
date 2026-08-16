@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '~/lib/constants/constants';
-import I18nKey from '~/lib/i18n/i18nKey';
-import { i18n } from '~/lib/i18n/translation';
+import { t } from '~/lib/i18n';
 import { Icon } from '@iconify/vue';
 import { applyThemeToDocument, getStoredTheme, setTheme } from '~/lib/utils/setting-utils';
 import type { LIGHT_DARK_MODE } from '~/types/config';
@@ -78,7 +77,7 @@ function hidePanel() {
           @click="switchScheme(LIGHT_MODE)"
         >
           <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem] mr-2.5" />
-          {{ i18n(I18nKey.lightMode) }}
+          {{ t('theme.light') }}
         </button>
 
         <!-- 暗色模式选项 -->
@@ -92,7 +91,7 @@ function hidePanel() {
           @click="switchScheme(DARK_MODE)"
         >
           <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem] mr-2.5" />
-          {{ i18n(I18nKey.darkMode) }}
+          {{ t('theme.dark') }}
         </button>
 
         <!-- 跟随系统选项 -->
@@ -106,7 +105,7 @@ function hidePanel() {
           @click="switchScheme(AUTO_MODE)"
         >
           <Icon icon="material-symbols:radio-button-partial" class="text-[1.25rem] mr-2.5" />
-          {{ i18n(I18nKey.systemMode) }}
+          {{ t('theme.system') }}
         </button>
       </div>
     </div>

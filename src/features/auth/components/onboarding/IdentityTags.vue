@@ -1,13 +1,13 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <h3 class="text-xl font-semibold text-deep-text">选择你的身份标签</h3>
-      <p class="text-sm text-text-muted mt-1">帮助我们为你推荐更合适的内容（可跳过）</p>
+      <h3 class="text-xl font-semibold text-deep-text">{{ t('onboarding.tags.title') }}</h3>
+      <p class="text-sm text-text-muted mt-1">{{ t('onboarding.tags.subtitle') }}</p>
     </div>
 
     <!-- 年级 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">年级阶段</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.grade') }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="g in gradeOptions"
@@ -21,14 +21,14 @@
           "
           @click="selectedGrade = selectedGrade === g.value ? '' : g.value"
         >
-          {{ g.label }}
+          {{ t(g.labelKey) }}
         </button>
       </div>
     </div>
 
     <!-- 专业方向 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">专业方向（多选）</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.major') }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="m in majorOptions"
@@ -43,14 +43,14 @@
           @click="toggleMajor(m.value)"
         >
           <Icon v-if="m.icon" :icon="m.icon" class="w-4 h-4" />
-          {{ m.label }}
+          {{ t(m.labelKey) }}
         </button>
       </div>
     </div>
 
     <!-- 兴趣领域 -->
     <div>
-      <label class="block text-sm font-medium text-deep-text mb-2">兴趣领域（多选）</label>
+      <label class="block text-sm font-medium text-deep-text mb-2">{{ t('onboarding.tags.interests') }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="item in interestOptions"
@@ -64,7 +64,7 @@
           "
           @click="toggleInterest(item.value)"
         >
-          {{ item.label }}
+          {{ t(item.labelKey) }}
         </button>
       </div>
     </div>
@@ -74,52 +74,53 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t, type TranslationKey } from '~/lib/i18n';
 
 interface TagOption {
   value: string;
-  label: string;
+  labelKey: TranslationKey;
   icon?: string;
 }
 
 const gradeOptions: TagOption[] = [
-  { value: 'junior_high', label: '初中' },
-  { value: 'senior_high', label: '高中' },
-  { value: 'university', label: '大学' },
-  { value: 'graduate', label: '研究生' },
-  { value: 'working', label: '已工作' },
+  { value: 'junior_high', labelKey: 'onboarding.tags.juniorHigh' },
+  { value: 'senior_high', labelKey: 'onboarding.tags.seniorHigh' },
+  { value: 'university', labelKey: 'onboarding.tags.university' },
+  { value: 'graduate', labelKey: 'onboarding.tags.graduate' },
+  { value: 'working', labelKey: 'onboarding.tags.working' },
 ];
 
 const majorOptions: TagOption[] = [
-  { value: 'math', label: '数学', icon: 'tabler:math' },
-  { value: 'physics', label: '物理学', icon: 'tabler:atom' },
-  { value: 'chemistry', label: '化学', icon: 'tabler:flask' },
-  { value: 'biology', label: '生命科学', icon: 'tabler:microscope' },
-  { value: 'astronomy', label: '天文学', icon: 'tabler:telescope' },
-  { value: 'earth_science', label: '地球科学', icon: 'tabler:globe' },
-  { value: 'cs', label: '信息科学', icon: 'tabler:code' },
-  { value: 'ee', label: '电子电气', icon: 'tabler:bolt' },
-  { value: 'engineering', label: '工程学', icon: 'tabler:tools' },
-  { value: 'medicine', label: '医学', icon: 'tabler:heartbeat' },
-  { value: 'social_science', label: '社会科学', icon: 'tabler:users' },
-  { value: 'literature', label: '文学', icon: 'tabler:book' },
+  { value: 'math', labelKey: 'onboarding.tags.math', icon: 'tabler:math' },
+  { value: 'physics', labelKey: 'onboarding.tags.physics', icon: 'tabler:atom' },
+  { value: 'chemistry', labelKey: 'onboarding.tags.chemistry', icon: 'tabler:flask' },
+  { value: 'biology', labelKey: 'onboarding.tags.biology', icon: 'tabler:microscope' },
+  { value: 'astronomy', labelKey: 'onboarding.tags.astronomy', icon: 'tabler:telescope' },
+  { value: 'earth_science', labelKey: 'onboarding.tags.earthScience', icon: 'tabler:globe' },
+  { value: 'cs', labelKey: 'onboarding.tags.cs', icon: 'tabler:code' },
+  { value: 'ee', labelKey: 'onboarding.tags.ee', icon: 'tabler:bolt' },
+  { value: 'engineering', labelKey: 'onboarding.tags.engineering', icon: 'tabler:tools' },
+  { value: 'medicine', labelKey: 'onboarding.tags.medicine', icon: 'tabler:heartbeat' },
+  { value: 'social_science', labelKey: 'onboarding.tags.socialScience', icon: 'tabler:users' },
+  { value: 'literature', labelKey: 'onboarding.tags.literature', icon: 'tabler:book' },
 ];
 
 const interestOptions: TagOption[] = [
-  { value: 'research', label: '科研' },
-  { value: 'programming', label: '编程' },
-  { value: 'reading', label: '阅读' },
-  { value: 'writing', label: '写作' },
-  { value: 'experiment', label: '实验' },
-  { value: 'teaching', label: '教学' },
-  { value: 'debate', label: '辩论' },
-  { value: 'competition', label: '竞赛' },
-  { value: 'astronomy_hobby', label: '天文观测' },
-  { value: 'model', label: '模型制作' },
-  { value: 'game', label: '游戏' },
-  { value: 'music', label: '音乐' },
-  { value: 'sci_fi', label: '科幻' },
-  { value: 'cooking', label: '料理' },
-  { value: 'chess', label: '棋牌' },
+  { value: 'research', labelKey: 'onboarding.tags.research' },
+  { value: 'programming', labelKey: 'onboarding.tags.programming' },
+  { value: 'reading', labelKey: 'onboarding.tags.reading' },
+  { value: 'writing', labelKey: 'onboarding.tags.writing' },
+  { value: 'experiment', labelKey: 'onboarding.tags.experiment' },
+  { value: 'teaching', labelKey: 'onboarding.tags.teaching' },
+  { value: 'debate', labelKey: 'onboarding.tags.debate' },
+  { value: 'competition', labelKey: 'onboarding.tags.competition' },
+  { value: 'astronomy_hobby', labelKey: 'onboarding.tags.astronomyHobby' },
+  { value: 'model', labelKey: 'onboarding.tags.model' },
+  { value: 'game', labelKey: 'onboarding.tags.game' },
+  { value: 'music', labelKey: 'onboarding.tags.music' },
+  { value: 'sci_fi', labelKey: 'onboarding.tags.sciFi' },
+  { value: 'cooking', labelKey: 'onboarding.tags.cooking' },
+  { value: 'chess', labelKey: 'onboarding.tags.chess' },
 ];
 
 const selectedGrade = ref('');

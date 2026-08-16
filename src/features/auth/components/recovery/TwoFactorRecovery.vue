@@ -1,46 +1,57 @@
 <template>
   <div class="rounded-2xl bg-card-bg shadow-2xl border border-surface-3 p-6 sm:p-8">
-    <h2 class="text-xl font-semibold text-center mb-4">2FA 恢复</h2>
+    <h2 class="text-xl font-semibold text-center mb-4">{{ t('auth.twoFactor.recoveryTitle') }}</h2>
 
     <!-- Verify email -->
     <form v-if="step === 'verify'" @submit.prevent="handleVerify" class="space-y-4">
-      <p class="text-sm text-text-muted text-center">请通过邮箱验证身份</p>
+      <p class="text-sm text-text-muted text-center">{{ t('auth.twoFactor.verifyIdentity') }}</p>
       <div>
-        <label class="label pb-1"><span class="label-text font-medium">邮箱</span></label>
-        <input type="email" class="input input-bordered w-full" v-model="email" placeholder="请输入绑定邮箱" />
+        <label class="label pb-1"
+          ><span class="label-text font-medium">{{ t('auth.twoFactor.email') }}</span></label
+        >
+        <input
+          type="email"
+          class="input input-bordered w-full"
+          v-model="email"
+          :placeholder="t('auth.twoFactor.enterBoundEmail')"
+        />
       </div>
       <div>
-        <label class="label pb-1"><span class="label-text font-medium">验证码</span></label>
+        <label class="label pb-1"
+          ><span class="label-text font-medium">{{ t('auth.twoFactor.code') }}</span></label
+        >
         <input
           type="text"
           class="input input-bordered w-full"
           v-model="code"
-          placeholder="输入验证码（模拟：000000）"
+          :placeholder="t('auth.twoFactor.enterSimulatedCode')"
           maxlength="6"
         />
       </div>
-      <p class="text-xs text-success text-center">模拟验证码：000000</p>
+      <p class="text-xs text-success text-center">{{ t('auth.twoFactor.simulatedCode') }}</p>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
-      <button type="submit" class="btn btn-primary w-full">验证</button>
-      <button type="button" class="btn btn-ghost w-full btn-sm" @click="emit('back')">返回</button>
+      <button type="submit" class="btn btn-primary w-full">{{ t('auth.twoFactor.verify') }}</button>
+      <button type="button" class="btn btn-ghost w-full btn-sm" @click="emit('back')">{{ t('common.back') }}</button>
     </form>
 
     <!-- Recovery code -->
     <form v-else-if="step === 'recovery'" @submit.prevent="handleRecovery" class="space-y-4">
-      <p class="text-sm text-text-muted text-center">请输入备用恢复码</p>
+      <p class="text-sm text-text-muted text-center">{{ t('auth.twoFactor.enterRecoveryTitle') }}</p>
       <div>
-        <label class="label pb-1"><span class="label-text font-medium">恢复码</span></label>
+        <label class="label pb-1"
+          ><span class="label-text font-medium">{{ t('auth.twoFactor.recoveryCodeName') }}</span></label
+        >
         <input
           type="text"
           class="input input-bordered w-full"
           v-model="recoveryCode"
-          placeholder="格式：AAAA-BBBB-CCCC"
+          :placeholder="t('auth.twoFactor.recoveryCodePlaceholder')"
         />
       </div>
       <div v-if="error" class="alert alert-error text-sm">{{ error }}</div>
-      <button type="submit" class="btn btn-primary w-full">验证</button>
+      <button type="submit" class="btn btn-primary w-full">{{ t('auth.twoFactor.verify') }}</button>
       <button v-if="props.level === 'admin'" type="button" class="btn btn-ghost w-full btn-sm" @click="emit('success')">
-        联系其他管理员协助（模拟）
+        {{ t('auth.twoFactor.contactAdmin') }}
       </button>
     </form>
 
@@ -60,15 +71,18 @@
           <polyline points="22 4 12 14.01 9 11.01" />
         </svg>
       </div>
-      <p class="font-semibold">恢复成功</p>
-      <p class="text-sm text-text-muted">请重新设置 2FA</p>
-      <button type="button" class="btn btn-primary btn-sm" @click="emit('success')">完成</button>
+      <p class="font-semibold">{{ t('auth.twoFactor.recoverySuccess2') }}</p>
+      <p class="text-sm text-text-muted">{{ t('auth.twoFactor.pleaseReSetup2fa') }}</p>
+      <button type="button" class="btn btn-primary btn-sm" @click="emit('success')">
+        {{ t('auth.twoFactor.done') }}
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { t } from '~/lib/i18n';
 
 const emit = defineEmits<{
   (e: 'success'): void;
@@ -89,11 +103,11 @@ const error = ref('');
 
 function handleVerify() {
   if (!email.value.trim()) {
-    error.value = '请输入邮箱';
+    error.value = t('auth.twoFactor.enterEmailError');
     return;
   }
   if (code.value !== '000000') {
-    error.value = '验证码错误（模拟码：000000）';
+    error.value = t('auth.twoFactor.wrongCodeError');
     return;
   }
   error.value = '';
@@ -104,7 +118,7 @@ function handleRecovery() {
   if (DUMMY_RECOVERY_CODES.some((c) => c === recoveryCode.value.toUpperCase().trim())) {
     step.value = 'done';
   } else {
-    error.value = '恢复码无效';
+    error.value = t('auth.twoFactor.invalidRecoveryCode');
   }
 }
 </script>

@@ -15,6 +15,7 @@
 
 import { AppError, ErrorCode } from '../errors/error-codes';
 import { ok, err } from '../errors/result';
+import { t } from '~/lib/i18n';
 import type { Result } from '../errors/result';
 
 const DEFAULT_TIMEOUT_MS = 15_000;
@@ -88,10 +89,12 @@ export async function apiFetch(
     timeoutCtl.clear();
 
     if (e instanceof DOMException && e.name === 'AbortError') {
-      return err(new AppError(ErrorCode.HTTP_TIMEOUT, '请求超时或已取消'));
+      return err(new AppError(ErrorCode.HTTP_TIMEOUT, t('messages.timeoutOrCancelled')));
     }
 
     const message = e instanceof Error ? e.message : String(e);
-    return err(new AppError(ErrorCode.NETWORK_ERROR, `网络请求失败：${message.slice(0, 300)}`));
+    return err(
+      new AppError(ErrorCode.NETWORK_ERROR, t('messages.networkRequestFailed', { error: message.slice(0, 300) }))
+    );
   }
 }

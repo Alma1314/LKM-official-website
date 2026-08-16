@@ -1,5 +1,6 @@
 import { ok, err } from 'neverthrow';
 import type { Result } from 'neverthrow';
+import { t } from '~/lib/i18n';
 
 export class AppError extends Error {
   constructor(
@@ -39,7 +40,7 @@ function writeDrafts(drafts: Record<string, DocumentData>): Result<void, AppErro
     localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
     return ok(undefined);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', '写入文档失败', e));
+    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.writeFailed'), e));
   }
 }
 
@@ -61,7 +62,7 @@ function writeIndex(index: DocumentMeta[]): Result<void, AppError> {
     localStorage.setItem(DRAFTS_INDEX_KEY, JSON.stringify(index));
     return ok(undefined);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', '写入索引失败', e));
+    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.writeIndexFailed'), e));
   }
 }
 
@@ -84,7 +85,7 @@ export function createDocument(title?: string): Result<DocumentData, AppError> {
     const now = new Date().toISOString();
     const doc: DocumentData = {
       id: crypto.randomUUID(),
-      title: title ?? '无标题文档',
+      title: title ?? t('editor.untitled'),
       contentMdx: '',
       editorJson: null,
       status: 'draft',
@@ -112,7 +113,7 @@ export function createDocument(title?: string): Result<DocumentData, AppError> {
     writeIndex(index);
     return ok(doc);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', '创建文档失败', e));
+    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.createFailed'), e));
   }
 }
 
@@ -149,7 +150,7 @@ export function updateDocument(id: string, data: Partial<DocumentData>): Result<
 
     return ok(updated);
   } catch (e) {
-    return err(new AppError('DB_WRITE_FAILED', '更新文档失败', e));
+    return err(new AppError('DB_WRITE_FAILED', t('editor.persistence.updateFailed'), e));
   }
 }
 
@@ -166,7 +167,7 @@ export function autosave(id: string, payload: AutosavePayload): AutosaveResponse
 
   const doc: DocumentData = {
     id,
-    title: existing?.title ?? '无标题文档',
+    title: existing?.title ?? t('editor.untitled'),
     contentMdx: payload.contentMdx,
     editorJson: payload.editorJson,
     status: existing?.status ?? 'draft',
@@ -210,6 +211,6 @@ export function deleteDocument(id: string): Result<void, AppError> {
     const index = readIndex();
     return writeIndex(index.filter((m) => m.id !== id));
   } catch (e) {
-    return err(new AppError('DB_DELETE_FAILED', '删除文档失败', e));
+    return err(new AppError('DB_DELETE_FAILED', t('editor.persistence.deleteFailed'), e));
   }
 }
