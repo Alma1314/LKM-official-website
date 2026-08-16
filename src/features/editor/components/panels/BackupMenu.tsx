@@ -158,7 +158,8 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
     setShowBackups(false);
     setOpen(false);
     const base = (window as unknown as Record<string, string>).__BASE_URL__ || '';
-    window.location.href = `${base}/admin/documents/editor?id=${docId}`;
+    // 同 DocumentEditor：base 为 '/' 时拼出 '//admin/...' 协议相对 URL，去尾部斜杠。
+    window.location.href = `${base.replace(/\/+$/, '')}/admin/documents/editor?id=${docId}`;
   }, []);
 
   return (

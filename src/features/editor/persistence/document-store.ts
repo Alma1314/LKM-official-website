@@ -101,12 +101,14 @@ export function createDocument(title?: string): Result<DocumentData, AppError> {
     if (!wd.isOk()) return err(wd.error);
 
     const index = readIndex();
+    // 索引一并落 slug，供 wiki 双链 `/docs/<slug>` 解析使用（slug 贯通存储层）
     index.unshift({
       id: doc.id,
       title: doc.title,
       lastModified: doc.lastModified,
       status: doc.status,
       version: doc.version,
+      slug: doc.slug,
     });
     writeIndex(index);
     return ok(doc);
@@ -134,12 +136,14 @@ export function updateDocument(id: string, data: Partial<DocumentData>): Result<
     const index = readIndex();
     const idx = index.findIndex((m) => m.id === id);
     if (idx !== -1) {
+      // 索引一并同步 slug，避免发布后索引缺失 slug 导致 wiki 双链 unresolved
       index[idx] = {
         id: updated.id,
         title: updated.title,
         lastModified: updated.lastModified,
         status: updated.status,
         version: updated.version,
+        slug: updated.slug,
       };
       writeIndex(index);
     }
@@ -167,6 +171,8 @@ export function autosave(id: string, payload: AutosavePayload): AutosaveResponse
     contentMdx: payload.contentMdx,
     editorJson: payload.editorJson,
     status: existing?.status ?? 'draft',
+    // 保留既有 slug，autosave 不丢发布信息
+    slug: existing?.slug,
     version: newVersion,
     lastModified: now,
     createdAt: existing?.createdAt ?? now,
@@ -183,6 +189,7 @@ export function autosave(id: string, payload: AutosavePayload): AutosaveResponse
     lastModified: doc.lastModified,
     status: doc.status,
     version: doc.version,
+    slug: doc.slug,
   };
   if (idx !== -1) {
     index[idx] = meta;

@@ -1,13 +1,12 @@
 ---
 import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getColumnBySlug, getArticlesByColumnId } from '~/features/column';
+import { getColumnBySlug } from '~/features/column';
+import ColumnArticleList from '~/features/column/components/ColumnArticleList.vue';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
 import { t } from '~/lib/i18n';
 
-// server 模式：params 从 URL 直接解析
-// 后端就绪后切换为：const column = await columnApi.getColumnBySlug(slug)
 const { slug } = Astro.params;
 const column = getColumnBySlug(slug || '');
 
@@ -15,10 +14,8 @@ if (!column) {
   return Astro.redirect(getPermalink('/columns'));
 }
 
-const articles = getArticlesByColumnId(column.id);
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+function formatCount(n: number): string {
+  return n.toLocaleString('zh-CN');
 }
 
 const metadata = { title: `${t(column.title)} —— LKM` };
@@ -31,69 +28,101 @@ const metadata = { title: `${t(column.title)} —— LKM` };
   navItems={['社区主页', '博客', '资源', '我的']}
 >
   <div class="space-y-6">
-    <!-- 专栏头部 -->
-    <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
-      <div class="flex items-start gap-4">
+    <!-- 封面背景 Hero -->
+    <div
+      class="relative overflow-hidden rounded-2xl border border-surface-3 h-52 md:h-60 bg-gradient-to-br from-primary/40 via-primary/15 to-surface-3"
+    >
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+      {
+        column.isVerified && (
+          <span class="absolute top-4 right-4 inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
+            <Icon name="tabler:rosette" class="w-3.5 h-3.5" />
+            {t('page.communityDetail.verified')}
+          </span>
+        )
+      }
+      <h1 class="absolute top-4 left-6 text-xl md:text-2xl font-bold text-white">{column.title}</h1>
+      <div class="absolute bottom-4 left-6 flex items-center gap-4">
         <div
-          class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center shrink-0"
+          class="w-16 h-16 rounded-full bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center text-white font-bold text-2xl shrink-0"
         >
-          <Icon name="tabler:article" class="w-10 h-10 text-primary" />
+          {column.authorName.charAt(0)}
         </div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-1">
-            <h1 class="text-2xl font-bold text-deep-text">{t(column.title)}</h1>
-            {
-              column.isVerified && (
-                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium">
-                  <Icon name="tabler:rosette" class="w-3 h-3" />
-                  {t('page.communityDetail.verified')}
-                </span>
-              )
-            }
-          </div>
-          <p class="text-sm text-text-muted mt-1">{t(column.description)}</p>
-          <div class="flex flex-wrap items-center gap-3 mt-3 text-sm text-text-muted/60">
-            <span
-              >{t('page.communityDetail.authorBy', { name: t(column.authorName), title: t(column.authorTitle) })}</span
-            >
-            <span>{t('page.communityDetail.followers', { count: column.followerCount.toLocaleString() })}</span>
-            <span>{t('page.communityDetail.articleCount', { count: column.articleCount })}</span>
-          </div>
-          <div class="mt-3">
-            <button class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">
-              {t('page.communityDetail.followColumn')}
-            </button>
-          </div>
+        <div>
+          <p class="text-white font-semibold text-lg leading-tight">{column.authorName}</p>
+          <p class="text-white/80 text-sm mt-0.5">{column.authorTitle}</p>
         </div>
       </div>
     </div>
 
+    <!-- 数据统计条 -->
+    <div class="grid grid-cols-3 gap-4">
+      <div class="bg-card-bg border border-surface-3 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-deep-text">{formatCount(column.articleCount)}</div>
+        <div class="text-xs text-text-muted mt-1">
+          {t('page.communityDetail.articlesCount', { count: formatCount(column.articleCount) })}
+        </div>
+      </div>
+      <div class="bg-card-bg border border-surface-3 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-deep-text">{formatCount(column.likeCount)}</div>
+        <div class="text-xs text-text-muted mt-1">
+          {t('page.communityDetail.likedCount', { count: formatCount(column.likeCount) })}
+        </div>
+      </div>
+      <div class="bg-card-bg border border-surface-3 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-deep-text">{formatCount(column.subscribeCount)}</div>
+        <div class="text-xs text-text-muted mt-1">
+          {t('page.communityDetail.subscribedCount', { count: formatCount(column.subscribeCount) })}
+        </div>
+      </div>
+    </div>
+
+    <!-- 作者权威卡 -->
+    <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
+      <div class="flex items-start gap-4">
+        <div
+          class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0"
+        >
+          {column.authorName.charAt(0)}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-semibold text-deep-text">{column.authorName}</span>
+            <span class="text-sm text-text-muted">{column.authorTitle}</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 mt-2">
+            {
+              column.badges.map((badge) => (
+                <span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{badge}</span>
+              ))
+            }
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">
+              {t('page.communityDetail.fansCount', { count: formatCount(column.followerCount) })}
+            </span>
+          </div>
+          <p class="text-sm text-text-muted mt-3 leading-relaxed">{column.authorBio}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 专栏介绍 -->
+    <div class="bg-card-bg border border-surface-3 rounded-2xl p-6">
+      <h2 class="font-bold text-deep-text mb-2">{t('page.communityDetail.introTitle')}</h2>
+      <p class="text-sm text-text-muted leading-relaxed">{column.description}</p>
+    </div>
+
+    <!-- 标签（板块标签突出） -->
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-primary text-white font-medium">
+        <Icon name="tabler:category" class="w-3.5 h-3.5" />
+        {column.boardTag}
+      </span>
+      {column.tags.map((tag) => <span class="text-xs px-3 py-1 rounded-full bg-surface-3 text-text-muted">{tag}</span>)}
+    </div>
+
     <!-- 文章列表 -->
-    <div class="space-y-4">
-      {
-        articles.length > 0 ? (
-          articles.map((art) => (
-            <a href={getPermalink(`/columns/${column.slug}/${art.id}`)} class="profile-card group block">
-              <div class="profile-inner p-5 flex gap-4">
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-lg text-deep-text group-hover:text-primary transition-colors line-clamp-1">
-                    {t(art.title)}
-                  </h3>
-                  <p class="text-sm text-text-muted mt-1 line-clamp-2">{t(art.excerpt)}</p>
-                  <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60">
-                    <span>{formatDate(art.createdAt)}</span>
-                    <span>{t('page.communityDetail.readCount', { count: art.viewCount })}</span>
-                    <span>{t('page.communityDetail.likeCount', { count: art.likeCount })}</span>
-                    <span>{t('page.communityDetail.commentCount', { count: art.commentCount })}</span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))
-        ) : (
-          <div class="text-center py-12 text-text-muted text-sm">{t('page.communityDetail.emptyArticles')}</div>
-        )
-      }
+    <div style="min-height: 400px">
+      <ColumnArticleList columnSlug={column.slug} client:only="vue" />
     </div>
   </div>
 </Layout>

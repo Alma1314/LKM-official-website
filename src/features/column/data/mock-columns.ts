@@ -13,9 +13,15 @@ export interface MockColumn {
   slug: string;
   description: string;
   coverImage?: string;
+  avatar?: string;
   isVerified: boolean;
   followerCount: number;
   articleCount: number;
+  likeCount: number;
+  subscribeCount: number;
+  tags: string[];
+  boardTag: string;
+  badges: string[];
 }
 
 export interface MockColumnArticle {
@@ -46,6 +52,12 @@ export const mockColumns: MockColumn[] = [
     isVerified: true,
     followerCount: 1200,
     articleCount: 15,
+    avatar: undefined,
+    likeCount: 3200,
+    subscribeCount: 1500,
+    tags: ['引力波', '黑洞', '天体物理'],
+    boardTag: '物理',
+    badges: ['机构认证', '签约作者'],
   },
   {
     id: 'col-2',
@@ -59,6 +71,12 @@ export const mockColumns: MockColumn[] = [
     isVerified: true,
     followerCount: 890,
     articleCount: 8,
+    avatar: undefined,
+    likeCount: 1800,
+    subscribeCount: 950,
+    tags: ['科学教育', '课程设计', '科普'],
+    boardTag: '教育',
+    badges: ['机构认证'],
   },
   {
     id: 'col-3',
@@ -72,6 +90,12 @@ export const mockColumns: MockColumn[] = [
     isVerified: true,
     followerCount: 650,
     articleCount: 12,
+    avatar: undefined,
+    likeCount: 2100,
+    subscribeCount: 720,
+    tags: ['学术写作', '论文', '科研方法'],
+    boardTag: '学术',
+    badges: ['签约作者'],
   },
   {
     id: 'col-4',
@@ -85,6 +109,12 @@ export const mockColumns: MockColumn[] = [
     isVerified: false,
     followerCount: 450,
     articleCount: 20,
+    avatar: undefined,
+    likeCount: 1500,
+    subscribeCount: 480,
+    tags: ['算法', '数据结构', 'Python'],
+    boardTag: '计算机',
+    badges: [],
   },
 ];
 

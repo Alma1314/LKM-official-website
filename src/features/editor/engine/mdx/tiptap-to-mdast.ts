@@ -252,6 +252,15 @@ function convertInline(nodes: JSONContent[]): PhrasingContent[] {
         alt: attrs.alt ?? '',
         title: attrs.title || null,
       } as PhrasingContent);
+    } else if (node.type === 'wikiLink') {
+      // wiki 双链导出为 [[label]] 纯文本 html 节点：remark-stringify 原样输出，往返内容不丢；
+      // 读回时 remarkParse 视其为普通文本。href 不参与序列化（只作编辑器内跳转）。
+      const attrs = (node.attrs ?? {}) as Record<string, string>;
+      const label = attrs.label ?? '';
+      result.push({
+        type: 'html',
+        value: `[[${label}]]`,
+      } as unknown as PhrasingContent);
     } else if (node.type === 'inlineMath') {
       result.push({
         type: 'inlineMath',

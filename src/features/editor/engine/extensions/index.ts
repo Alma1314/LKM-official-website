@@ -17,6 +17,7 @@ import { RawMdx } from './raw-mdx';
 import { Callout } from './callout';
 import { Figure } from './figure';
 import { CommentMark } from './comment-mark';
+import { WikiLink } from './wiki-link';
 
 export function getEditorExtensions(placeholder?: string): AnyExtension[] {
   return [
@@ -27,6 +28,9 @@ export function getEditorExtensions(placeholder?: string): AnyExtension[] {
           class: 'rounded-lg',
         },
       },
+      // StarterKit v3 默认已含 link/underline，显式排除后再单独配置，避免重复注册
+      link: false,
+      underline: false,
     }),
     Placeholder.configure({
       placeholder: placeholder ?? t('editor.startWritingPlaceholder'),
@@ -53,5 +57,6 @@ export function getEditorExtensions(placeholder?: string): AnyExtension[] {
     Callout,
     Figure,
     CommentMark,
+    WikiLink,
   ];
 }

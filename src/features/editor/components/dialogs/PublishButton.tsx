@@ -70,24 +70,118 @@ export default function PublishButton({
     <>
       {status === 'published' ? (
         <div className="flex gap-1">
-          <button type="button" className="rte-btn rte-btn--sm text-success" onClick={handleUnpublish}>
-            {t('editor.published')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--sm text-success"
+            onClick={handleUnpublish}
+            title={t('editor.published')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
           </button>
-          <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-            {t('editor.archive')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--ghost rte-btn--xs text-error"
+            onClick={handleArchive}
+            title={t('editor.archive')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect width="20" height="5" x="2" y="3" rx="1" />
+              <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+              <path d="M10 12h4" />
+            </svg>
           </button>
         </div>
       ) : status === 'archived' ? (
-        <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleUnpublish}>
-          {t('editor.archivedClickToRestore')}
+        <button
+          type="button"
+          className="rte-btn rte-btn--ghost rte-btn--xs"
+          onClick={handleUnpublish}
+          title={t('editor.archivedClickToRestore')}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect width="20" height="5" x="2" y="3" rx="1" />
+            <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+            <path d="m9 15 3-3 3 3" />
+            <path d="M12 12v9" />
+          </svg>
         </button>
       ) : (
         <div className="flex gap-1">
-          <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish}>
-            {t('editor.publish')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--primary rte-btn--xs"
+            onClick={handlePublish}
+            title={t('editor.publish')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
           </button>
-          <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-            {t('editor.archive')}
+          <button
+            type="button"
+            className="rte-btn rte-btn--ghost rte-btn--xs text-error"
+            onClick={handleArchive}
+            title={t('editor.archive')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect width="20" height="5" x="2" y="3" rx="1" />
+              <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+              <path d="M10 12h4" />
+            </svg>
           </button>
         </div>
       )}
