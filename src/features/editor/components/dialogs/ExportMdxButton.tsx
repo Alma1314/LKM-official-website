@@ -1,5 +1,6 @@
 import type { Editor } from '@tiptap/core';
 import type { JSONContent } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 import { exportMdx } from '../../engine/mdx/index';
 import { serializeMarkdown } from '../../engine/serialize-markdown';
 
@@ -24,7 +25,7 @@ export function handleExportMdx(editor: Editor): void {
     const { mdx } = exportMdx(getContent(editor));
     downloadText(mdx, 'mdx');
   } catch (err) {
-    alert('导出失败: ' + (err as Error).message);
+    alert(t('editor.exportFailed', { message: (err as Error).message }));
   }
 }
 
@@ -34,6 +35,6 @@ export function handleExportMd(editor: Editor): void {
     const md = serializeMarkdown(getContent(editor));
     downloadText(md, 'md');
   } catch (err) {
-    alert('导出失败: ' + (err as Error).message);
+    alert(t('editor.exportFailed', { message: (err as Error).message }));
   }
 }

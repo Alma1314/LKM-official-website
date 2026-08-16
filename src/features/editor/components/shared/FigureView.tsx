@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import type { ReactElement } from 'react';
+import { t } from '~/lib/i18n';
 
 export interface FigureViewProps {
   src?: string;
@@ -25,7 +26,7 @@ const FigureView = memo(function FigureView({
       {src ? (
         <img src={src} alt={alt ?? ''} style={width ? { width: `${width}px` } : undefined} />
       ) : (
-        <span className="lkm-figure-placeholder">暂无图片</span>
+        <span className="lkm-figure-placeholder">{t('editor.preview.noImage')}</span>
       )}
       {caption && <figcaption className="lkm-figure-caption">{caption}</figcaption>}
     </figure>

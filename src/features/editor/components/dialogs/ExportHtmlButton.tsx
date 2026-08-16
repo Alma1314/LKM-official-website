@@ -1,4 +1,5 @@
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 import { serializeHtml } from '../../engine/serialize-html';
 
 export function handleExportHtml(editor: Editor): void {
@@ -11,7 +12,7 @@ export function handleExportHtml(editor: Editor): void {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>导出的文档</title>
+<title>${t('editor.exportDocument')}</title>
 <style>
   body { font-family: 'Noto Sans SC', system-ui, sans-serif; font-size: 12pt; line-height: 1.8; color: #333; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
   h1 { font-size: 24pt; margin: 0.8em 0 0.4em; }
@@ -46,6 +47,6 @@ export function handleExportHtml(editor: Editor): void {
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
-    alert('导出失败: ' + (err as Error).message);
+    alert(t('editor.exportFailed', { message: (err as Error).message }));
   }
 }
