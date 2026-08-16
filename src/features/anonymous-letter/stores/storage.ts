@@ -112,9 +112,12 @@ const KEYS: Record<string, string> = {
   sketches: 'th_sketches', // 涂鸦手写信纸（dataURL）
 };
 
+/** SSR 环境下无 localStorage，任何读写都应安全兜底，避免 ReferenceError。 */
+const hasLocalStorage = typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+
 function read<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = hasLocalStorage ? localStorage.getItem(key) : null;
     return raw ? (JSON.parse(raw) as T) : fallback;
   } catch (err) {
     console.warn('[storage] 读取 key 失败:', key, err);
@@ -123,6 +126,7 @@ function read<T>(key: string, fallback: T): T {
 }
 
 function write<T>(key: string, value: T): void {
+  if (!hasLocalStorage) return;
   localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -526,7 +530,7 @@ export function pushNotify(n: unknown): void {
 }
 export function notifyDesktop(title: string, body: string): void {
   try {
-    if (!('Notification' in window)) return;
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
     if (Notification.permission === 'granted') {
       new Notification(title, { body });
       pushNotify({ title, body, at: Date.now() });

@@ -174,8 +174,16 @@ export const DAILY_QUOTES = [
   'treeholeData.quotes.q14',
   'treeholeData.quotes.q15',
 ];
+// 按「日期」确定性选取每日治愈文案：SSR 与客户端水合在同一天必然选同句，避免
+// hydration text mismatch（原来用 Math.random()，SSR/客户端两次取值会不一致）。
+// 保留「每日一句」语义，跨天自动轮换。
 export function randomQuote(): string {
-  return DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
+  const today = new Date();
+  const dayOfYear = Math.floor(
+    (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(today.getFullYear(), 0, 0)) /
+      86400000
+  );
+  return DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
 }
 
 // 简易敏感词（演示用，真实场景需后端词库）

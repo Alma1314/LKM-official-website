@@ -10,6 +10,8 @@ interface AppState {
   settings: TreeholeSettings;
 }
 
+const isClient = typeof document !== 'undefined';
+
 export function useApp(): {
   state: AppState;
   isNight: ComputedRef<boolean>;
@@ -27,14 +29,14 @@ export function useApp(): {
 } {
   const settings = store.getSettings();
   // 始终从主站 .dark class 同步初始主题，不被 localStorage 覆盖
-  if (typeof document !== 'undefined') {
+  if (isClient) {
     settings.theme = document.documentElement.classList.contains('dark') ? 'night' : 'day';
   }
 
   const state = reactive<AppState>({ settings });
 
   // 监听主站 theme 变化（astro:after-swap 后 BasicScripts 会更新 .dark class）
-  if (typeof document !== 'undefined') {
+  if (isClient) {
     document.addEventListener('astro:after-swap', () => {
       const isDark = document.documentElement.classList.contains('dark');
       state.settings.theme = isDark ? 'night' : 'day';
@@ -49,7 +51,12 @@ export function useApp(): {
   watch(
     () => state.settings.fontScale,
     (s) => {
-      document.documentElement.style.setProperty('--font-scale', s === 'small' ? '0.9' : s === 'large' ? '1.15' : '1');
+      if (isClient) {
+        document.documentElement.style.setProperty(
+          '--font-scale',
+          s === 'small' ? '0.9' : s === 'large' ? '1.15' : '1'
+        );
+      }
     },
     { immediate: true }
   );
@@ -58,7 +65,7 @@ export function useApp(): {
   watch(
     () => state.settings.highContrast,
     (on) => {
-      document.documentElement.classList.toggle('high-contrast', !!on);
+      if (isClient) document.documentElement.classList.toggle('high-contrast', !!on);
     },
     { immediate: true }
   );
@@ -67,7 +74,7 @@ export function useApp(): {
   watch(
     () => state.settings.lowPerf,
     (on) => {
-      document.documentElement.classList.toggle('low-perf', !!on);
+      if (isClient) document.documentElement.classList.toggle('low-perf', !!on);
     },
     { immediate: true }
   );

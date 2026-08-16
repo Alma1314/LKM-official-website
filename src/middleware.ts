@@ -33,7 +33,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 非代理路径：建立 SSR 请求上下文，供页面 SSR 数据获取转发 Cookie
   if (!isProxyPath) {
-    return runWithRequest(context.request.headers, () => next());
+    const response = await runWithRequest(context.request.headers, () => next());
+    // 兜底：Astro SSR 生成的 HTML 可能不含 <meta charset>（或它被 vite/字体脚本
+    // 挤到字节嗅探窗口之外），浏览器会按 latin1 解码中文导致 Vue 水合 mismatch。
+    // 显式声明 text/html 响应头的 charset=UTF-8，确保编码确定，不依赖 <meta> 嗅探。
+    const ct = response.headers.get('Content-Type');
+    if (ct && ct.startsWith('text/html') && !/;\s*charset=/i.test(ct)) {
+      const headers = new Headers(response.headers);
+      headers.set('Content-Type', `${ct}; charset=UTF-8`);
+      return new Response(response.body, { status: response.status, headers });
+    }
+    return response;
   }
 
   try {
