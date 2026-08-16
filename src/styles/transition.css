@@ -35,8 +35,10 @@
 #navbar {
   animation-delay: 0ms;
 }
-#sidebar {
-  animation-delay: 100ms;
+#sidebar,
+#sidebar .onload-animation {
+  animation: none !important;
+  opacity: 1 !important;
 }
 #main-container {
   outline: none;
