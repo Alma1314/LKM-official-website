@@ -2,6 +2,7 @@ import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 import { NodeViewWrapper } from '@tiptap/react';
+import FigureView from '../shared/FigureView';
 
 interface FigureNodeViewProps {
   node: Node;
@@ -28,55 +29,13 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
   const alt = (node.attrs.alt as string) ?? '';
   const caption = (node.attrs.caption as string) ?? '';
   const width = (node.attrs.width as number) ?? undefined;
-  const align = (node.attrs.align as string) ?? 'center';
-
-  const alignClasses: Record<string, string> = {
-    left: 'text-left',
-    center: 'text-center',
-    right: 'text-right',
-  };
+  const align = (node.attrs.align as 'left' | 'center' | 'right') ?? 'center';
 
   return (
-    <NodeViewWrapper as="figure" className={`relative my-4 ${alignClasses[align]}`} contentEditable={false} data-figure>
-      {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className="cursor-pointer rounded-md border-2 border-dashed border-surface-3 hover:border-primary/50 transition-colors inline-block"
-          style={{
-            width: width ? `${width}px` : 'auto',
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-          onClick={() => setEditing(!editing)}
-        />
-      ) : (
-        <div
-          className="cursor-pointer border-2 border-dashed border-surface-3 rounded-lg p-8 text-deep-text/50 hover:border-primary/50 transition-colors"
-          onClick={() => setEditing(!editing)}
-        >
-          <div className="text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mx-auto mb-2"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-              <circle cx="9" cy="9" r="2" />
-              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-            </svg>
-            <p className="text-sm">点击设置图片</p>
-          </div>
-        </div>
-      )}
-      {caption && <figcaption className="text-xs text-deep-text/60 mt-1">{caption}</figcaption>}
+    <NodeViewWrapper as="figure" className="relative my-4" contentEditable={false} data-figure>
+      <div className="cursor-pointer" onClick={() => setEditing(!editing)}>
+        <FigureView src={src} alt={alt} caption={caption} width={width} align={align} />
+      </div>
 
       {editing && (
         <div

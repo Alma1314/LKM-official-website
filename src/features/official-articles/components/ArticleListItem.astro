@@ -13,11 +13,13 @@ interface Props {
 }
 
 const { article } = Astro.props;
-const image = await findImage(article.cover) ?? buildUrl('/images/article-default.png');
+const image = (await findImage(article.cover)) ?? buildUrl('/images/article-default.png');
 const link = getPermalink(`/official/articles/${article.slug}`);
 ---
 
-<article class="max-w-md mx-auto md:max-w-none bg-card-bg border border-surface-3 rounded-lg p-4 md:p-5 shadow-sm transition hover:border-primary hover:shadow-lg group">
+<article
+  class="max-w-md mx-auto md:max-w-none bg-card-bg border border-surface-3 rounded-lg p-4 md:p-5 shadow-sm transition hover:border-primary hover:shadow-lg group"
+>
   <div class="flex items-start gap-4 md:gap-6">
     <a class="relative block flex-none w-28 sm:w-36 md:w-44" href={link}>
       <div
@@ -42,7 +44,9 @@ const link = getPermalink(`/official/articles/${article.slug}`);
         <div class="mb-1.5">
           <span class="text-sm text-text-muted">
             <Icon name="tabler:clock" class="w-3.5 h-3.5 inline-block -mt-0.5" />
-            <time datetime={article.published} class="inline-block">{getFormattedDate(new Date(article.published))}</time>
+            <time datetime={article.published} class="inline-block"
+              >{getFormattedDate(new Date(article.published))}</time
+            >
             {
               article.category && (
                 <>

@@ -6,6 +6,7 @@ import { communitySidebarLinks } from '~/features/shell-community/data/community
 import { getPermalink } from '~/lib/utils/permalinks';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import { preprocessEditorMdx } from '~/lib/markdown-plugins/preprocess-editor-mdx.mjs';
 import { fetchAllArticles, type ArticleDetail } from '~/lib/api';
 
 const { slug } = Astro.params as { slug: string };
@@ -27,7 +28,9 @@ if (error || !article) {
 }
 
 const processor = await createMarkdownProcessor();
-const rendered = await processor.render(article.content);
+// content 是编辑器导出的 MDX（含自闭合 <Callout/>、<Figure/> JSX），markdown 处理器无法正确解析，
+// 先用预处理器转成闭合良好的 .lkm-* HTML 再渲染，避免 JSX 被当未闭合容器吞掉正文。
+const rendered = await processor.render(preprocessEditorMdx(article.content));
 const headings = rendered.metadata.headings;
 
 const { articles: allArticles } = await fetchAllArticles();

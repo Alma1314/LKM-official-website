@@ -2,6 +2,7 @@ import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
 import { NodeViewWrapper } from '@tiptap/react';
+import CalloutView from '../shared/CalloutView';
 
 interface CalloutNodeViewProps {
   node: Node;
@@ -17,13 +18,6 @@ const TYPE_LABELS: Record<string, string> = {
   success: '成功',
 };
 
-const TYPE_ICONS: Record<string, string> = {
-  info: 'ℹ',
-  warning: '⚠',
-  error: '✕',
-  success: '✓',
-};
-
 const CalloutNodeView = memo(function CalloutNodeView({
   node,
   editor,
@@ -32,7 +26,7 @@ const CalloutNodeView = memo(function CalloutNodeView({
 }: CalloutNodeViewProps) {
   const [editing, setEditing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const ctype = ((node.attrs.type as string) || 'info') as keyof typeof TYPE_LABELS;
+  const ctype = ((node.attrs.type as string) || 'info') as 'info' | 'warning' | 'error' | 'success';
 
   useEffect(() => {
     if (!editing) return;
@@ -46,27 +40,10 @@ const CalloutNodeView = memo(function CalloutNodeView({
   }, [editing]);
   const title = (node.attrs.title as string) || '';
 
-  const alertClass = {
-    info: 'alert-info',
-    warning: 'alert-warning',
-    error: 'alert-error',
-    success: 'alert-success',
-  }[ctype];
-
   return (
     <NodeViewWrapper className="relative my-2" contentEditable={false} data-callout>
-      <div
-        className={`alert ${alertClass} rte-callout cursor-pointer`}
-        onClick={() => setEditing(!editing)}
-      >
-        <span className="rte-callout-icon">{TYPE_ICONS[ctype]}</span>
-        <div className="rte-callout-body">
-          {title ? (
-            <h4 className="font-semibold text-sm">{title}</h4>
-          ) : (
-            <p className="text-sm opacity-80">{TYPE_LABELS[ctype]} 提示 — 点击编辑属性</p>
-          )}
-        </div>
+      <div className="cursor-pointer" onClick={() => setEditing(!editing)}>
+        <CalloutView type={ctype} title={title || undefined} />
       </div>
 
       {editing && (

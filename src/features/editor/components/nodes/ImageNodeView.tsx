@@ -54,7 +54,11 @@ const ImageNodeView = memo(function ImageNodeView({ node, editor, getPos, update
   };
 
   return (
-    <NodeViewWrapper className={`relative inline-block group ${alignClasses[align] ?? ''}`} contentEditable={false} data-image-node>
+    <NodeViewWrapper
+      className={`relative inline-block group ${alignClasses[align] ?? ''}`}
+      contentEditable={false}
+      data-image-node
+    >
       <img
         src={displaySrc}
         alt={alt}

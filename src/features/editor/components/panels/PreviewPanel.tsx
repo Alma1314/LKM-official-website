@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { JSONContent } from '@tiptap/core';
 import type { Editor } from '@tiptap/core';
+import CalloutView from '../shared/CalloutView';
+import FigureView from '../shared/FigureView';
 
 interface PreviewPanelProps {
   editor: Editor;
@@ -81,35 +83,21 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
     }
     case 'callout': {
       const attrs = (node.attrs ?? {}) as Record<string, string>;
-      const ctype = (attrs.type || 'info') as string;
-      return (
-        <div key={key} className={`rte-alert rte-alert-${ctype} my-4`}>
-          <span>{attrs.title || ctype}</span>
-        </div>
-      );
+      const ctype = (attrs.type || 'info') as 'info' | 'warning' | 'error' | 'success';
+      return <CalloutView key={key} type={ctype} title={attrs.title || undefined} />;
     }
     case 'figure': {
       const attrs = (node.attrs ?? {}) as Record<string, string | number>;
-      const align = (attrs.align as string) ?? 'center';
+      const align = (attrs.align as 'left' | 'center' | 'right') ?? 'center';
       return (
-        <figure
+        <FigureView
           key={key}
-          className={`my-4 ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`}
-        >
-          {(attrs.src as string) ? (
-            <img
-              src={attrs.src as string}
-              alt={(attrs.alt as string) ?? ''}
-              className="rounded-md inline-block max-w-full"
-              style={{ width: attrs.width ? `${attrs.width}px` : 'auto' }}
-            />
-          ) : (
-            <div className="border-2 border-dashed border-surface-3 rounded-lg p-8 text-deep-text/50">暂无图片</div>
-          )}
-          {attrs.caption && (
-            <figcaption className="text-xs text-deep-text/60 mt-1">{attrs.caption as string}</figcaption>
-          )}
-        </figure>
+          src={(attrs.src as string) || undefined}
+          alt={(attrs.alt as string) || undefined}
+          caption={(attrs.caption as string) || undefined}
+          width={(attrs.width as number) || undefined}
+          align={align}
+        />
       );
     }
     case 'table': {

@@ -48,15 +48,9 @@ onMounted(async () => {
       class="profile-card group flex flex-col"
     >
       <div class="profile-inner h-full flex flex-col">
-        <img
-          :src="article.cover || DEFAULT_COVER"
-          :alt="article.title"
-          class="w-full h-20 object-cover"
-        />
+        <img :src="article.cover || DEFAULT_COVER" :alt="article.title" class="w-full h-20 object-cover" />
         <div class="flex flex-col flex-1 p-5">
-          <h3
-            class="font-semibold text-deep-text mb-2 line-clamp-2 group-hover:text-primary transition-colors"
-          >
+          <h3 class="font-semibold text-deep-text mb-2 line-clamp-2 group-hover:text-primary transition-colors">
             {{ article.title }}
           </h3>
           <p v-if="article.description" class="text-sm text-text-muted line-clamp-2">
