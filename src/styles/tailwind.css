@@ -807,6 +807,16 @@
     @apply bg-[var(--secondary)] text-[var(--on-secondary)]
            hover:brightness-110 active:brightness-90;
   }
+  /* 中性灰按钮（Button.astro 的 variant="secondary"/默认兜底），文字恒为白色 */
+  .btn-neutral {
+    @apply bg-[var(--neutral)] text-white
+           hover:brightness-110 active:brightness-90;
+  }
+  /* 文字链按钮（Button.astro 的 variant="link"） */
+  .btn-link {
+    @apply bg-transparent text-[var(--primary)] underline underline-offset-4
+           hover:brightness-110 active:brightness-90;
+  }
   .btn-accent {
     @apply bg-[var(--primary)] text-[var(--on-primary)]
            hover:brightness-110 active:brightness-90;
