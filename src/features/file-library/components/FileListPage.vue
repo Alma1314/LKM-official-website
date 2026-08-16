@@ -9,7 +9,7 @@
       <input
         v-model="searchQuery"
         type="search"
-        placeholder="搜索文件…"
+        :placeholder="t('fileLibrary.searchPlaceholder')"
         class="w-full pl-10 pr-9 py-2.5 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text placeholder:text-text-muted/60 focus:border-primary outline-none"
       />
       <button
@@ -17,7 +17,7 @@
         type="button"
         class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md flex items-center justify-center text-text-muted hover:text-deep-text hover:bg-surface-3 transition-colors"
         @click="searchQuery = ''"
-        title="清除搜索"
+        :title="t('fileLibrary.clearSearch')"
       >
         <Icon icon="material-symbols:close" class="w-4 h-4" />
       </button>
@@ -31,15 +31,14 @@
       <div v-if="childFolders.length > 0">
         <FolderGrid :folders="childFolders" :file-counts="folderFileCounts" @open="openFolder" />
       </div>
-      <div v-else class="text-center py-12 text-sm text-text-muted">该分类下暂无子分类</div>
+      <div v-else class="text-center py-12 text-sm text-text-muted">{{ t('fileLibrary.noSubcategories') }}</div>
     </template>
 
     <!-- 文件层（叶子，或全局搜索态）：筛选 + 列表/卡片；数据经 filteredFiles 已切到 searchResults -->
     <template v-else>
       <!-- 搜索态头标题（仅搜索时显示） -->
       <div v-if="isSearching" class="text-sm text-text-muted">
-        搜索「<span class="text-deep-text font-medium">{{ searchQuery }}</span
-        >」，共 {{ searchResults.length }} 个文件
+        {{ t('fileLibrary.searchResults', { query: searchQuery, count: searchResults.length }) }}
       </div>
       <!-- 筛选器 -->
       <div class="flex flex-wrap items-center gap-3">
@@ -47,33 +46,33 @@
           v-model="filterType"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="">全部类型</option>
+          <option value="">{{ t('fileLibrary.allTypes') }}</option>
           <option value="pdf">PDF</option>
-          <option value="zip">压缩包</option>
-          <option value="other">其他</option>
+          <option value="zip">{{ t('fileLibrary.zipType') }}</option>
+          <option value="other">{{ t('fileLibrary.otherType') }}</option>
         </select>
         <select
           v-model="filterStatus"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="">全部状态</option>
-          <option value="approved">已通过</option>
-          <option value="pending">审核中</option>
-          <option value="rejected">已驳回</option>
+          <option value="">{{ t('fileLibrary.allStatuses') }}</option>
+          <option value="approved">{{ t('fileLibrary.statusApproved') }}</option>
+          <option value="pending">{{ t('fileLibrary.statusPending') }}</option>
+          <option value="rejected">{{ t('fileLibrary.statusRejected') }}</option>
         </select>
         <select
           v-model="sortBy"
           class="px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
         >
-          <option value="newest">最新</option>
-          <option value="downloads">最多下载</option>
+          <option value="newest">{{ t('fileLibrary.sortNewest') }}</option>
+          <option value="downloads">{{ t('fileLibrary.sortMostDownloaded') }}</option>
         </select>
         <div class="flex gap-1 ml-auto">
           <button
             class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
             :class="viewMode === 'list' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted'"
             @click="viewMode = 'list'"
-            title="列表视图"
+            :title="t('fileLibrary.listView')"
           >
             <Icon icon="material-symbols:list" class="w-5 h-5" />
           </button>
@@ -81,7 +80,7 @@
             class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
             :class="viewMode === 'grid' ? 'bg-primary text-on-primary' : 'bg-surface-3 text-text-muted'"
             @click="viewMode = 'grid'"
-            title="卡片视图"
+            :title="t('fileLibrary.cardView')"
           >
             <Icon icon="material-symbols:grid-view" class="w-5 h-5" />
           </button>
@@ -107,7 +106,7 @@
               <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-text-muted/60">
                 <span>{{ file.uploaderName }}</span>
                 <span>{{ formatSize(file.size) }}</span>
-                <span>下载 {{ file.downloadCount }} 次</span>
+                <span>{{ t('fileLibrary.downloadCount', { count: file.downloadCount }) }}</span>
                 <span class="text-text-muted">{{ file.createdAt }}</span>
               </div>
             </div>
@@ -115,9 +114,9 @@
               <span class="text-xs px-2 py-0.5 rounded-full font-medium" :class="statusClass(file.status)">
                 {{ statusLabel(file.status) }}
               </span>
-              <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium"
-                >查看</a
-              >
+              <a :href="buildUrl(`/files/${file.id}`)" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium">{{
+                t('fileLibrary.view')
+              }}</a>
             </div>
           </div>
         </div>
@@ -143,19 +142,21 @@
           </div>
           <div class="text-xs text-text-muted/60 space-y-1 flex-1">
             <div>{{ file.uploaderName }} · {{ formatSize(file.size) }}</div>
-            <div>下载 {{ file.downloadCount }} 次 · {{ file.createdAt }}</div>
+            <div>{{ t('fileLibrary.downloadCount', { count: file.downloadCount }) }} · {{ file.createdAt }}</div>
           </div>
           <div class="flex items-center justify-between mt-3 pt-3 border-t border-surface-3">
             <span class="text-xs px-2 py-0.5 rounded-full font-medium" :class="statusClass(file.status)">
               {{ statusLabel(file.status) }}
             </span>
-            <span class="text-xs text-primary font-medium">查看详情 →</span>
+            <span class="text-xs text-primary font-medium">{{ t('fileLibrary.viewDetails') }}</span>
           </div>
         </a>
       </div>
 
       <!-- 空状态 -->
-      <div v-if="filteredFiles.length === 0" class="text-center py-12 text-sm text-text-muted">暂无符合条件的文件</div>
+      <div v-if="filteredFiles.length === 0" class="text-center py-12 text-sm text-text-muted">
+        {{ t('fileLibrary.noMatchingFiles') }}
+      </div>
     </template>
 
     <!-- 上传按钮 -->
@@ -174,38 +175,44 @@
         @click.self="showUpload = false"
       >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
-          <h3 class="text-lg font-semibold text-deep-text mb-4">上传文件</h3>
+          <h3 class="text-lg font-semibold text-deep-text mb-4">{{ t('fileLibrary.uploadTitle') }}</h3>
           <div class="space-y-4">
             <div
               class="border-2 border-dashed border-surface-3 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer"
             >
               <Icon icon="material-symbols:cloud-upload-outline" class="w-10 h-10 text-text-muted/40 mx-auto mb-2" />
-              <p class="text-sm text-text-muted">点击或拖拽文件到此处</p>
-              <p class="text-xs text-text-muted/50 mt-1">支持 PDF、ZIP 等格式，最大 500MB</p>
+              <p class="text-sm text-text-muted">{{ t('fileLibrary.uploadDropHint') }}</p>
+              <p class="text-xs text-text-muted/50 mt-1">{{ t('fileLibrary.uploadFormats') }}</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1">所属分类</label>
+              <label class="block text-sm font-medium text-deep-text mb-1">{{ t('fileLibrary.categoryLabel') }}</label>
               <select
                 v-model="uploadCategory"
                 class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none"
               >
-                <option value="">请选择分类</option>
+                <option value="">{{ t('fileLibrary.selectCategory') }}</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-deep-text mb-1">简介</label>
+              <label class="block text-sm font-medium text-deep-text mb-1">{{
+                t('fileLibrary.descriptionLabel')
+              }}</label>
               <textarea
                 v-model="uploadDesc"
                 rows="2"
                 class="w-full px-3 py-2 rounded-lg border border-surface-3 bg-card-bg text-sm text-deep-text focus:border-primary outline-none resize-none"
-                placeholder="简单介绍文件内容..."
+                :placeholder="t('fileLibrary.descriptionPlaceholder')"
               ></textarea>
             </div>
           </div>
           <div class="flex gap-2 justify-end mt-4">
-            <button class="btn-ghost px-4 py-2 rounded-lg text-sm" @click="showUpload = false">取消</button>
-            <button class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold" @click="doUpload">提交上传</button>
+            <button class="btn-ghost px-4 py-2 rounded-lg text-sm" @click="showUpload = false">
+              {{ t('fileLibrary.cancel') }}
+            </button>
+            <button class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold" @click="doUpload">
+              {{ t('fileLibrary.submitUpload') }}
+            </button>
           </div>
         </div>
       </div>
@@ -224,6 +231,7 @@ import { searchFiles } from '../data/search';
 import FolderBreadcrumb from './FolderBreadcrumb.vue';
 import FolderGrid from './FolderGrid.vue';
 import { buildUrl } from '~/lib/utils/paths';
+import { t } from '~/lib/i18n';
 
 const viewMode = ref<'list' | 'grid'>('list');
 const filterType = ref('');
@@ -289,11 +297,11 @@ function formatSize(bytes: number): string {
 function statusLabel(status: string): string {
   switch (status) {
     case 'approved':
-      return '已通过 ✓';
+      return t('fileLibrary.statusApproved');
     case 'pending':
-      return '审核中';
+      return t('fileLibrary.statusPending');
     case 'rejected':
-      return '已驳回 ✗';
+      return t('fileLibrary.statusRejected');
     default:
       return status;
   }
@@ -314,6 +322,6 @@ function statusClass(status: string): string {
 
 function doUpload() {
   showUpload.value = false;
-  alert('文件已提交，进入人工审核与查重队列。审核通过后会通知您。');
+  alert(t('fileLibrary.uploadSubmitted'));
 }
 </script>

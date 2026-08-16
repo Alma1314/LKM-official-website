@@ -1,29 +1,35 @@
 <template>
   <TreeholeShell active-nav="mine">
     <div class="container">
-      <h1 class="page-title">🌙 我的本地树洞</h1>
-      <p class="page-sub">这里展示你发布的所有信件、收藏与草稿，数据保存在本地浏览器。</p>
+      <h1 class="page-title">🌙 {{ t('treehole.mine.title') }}</h1>
+      <p class="page-sub">{{ t('treehole.mine.subtitle') }}</p>
 
       <!-- 统计 -->
       <section class="stats">
         <div class="stat glass">
           <b>{{ letters.length }}</b
-          ><span>发布信件</span>
+          ><span>{{ t('treehole.mine.statLetters') }}</span>
         </div>
         <div class="stat glass">
           <b>{{ favList.length }}</b
-          ><span>收藏树洞</span>
+          ><span>{{ t('treehole.mine.statFavs') }}</span>
         </div>
         <div class="stat glass">
           <b>{{ drafts.length }}</b
-          ><span>本地草稿</span>
+          ><span>{{ t('treehole.mine.statDrafts') }}</span>
         </div>
       </section>
 
       <div class="tabs">
-        <button class="chip" :class="{ active: tab === 'letters' }" @click="tab = 'letters'">我的信件</button>
-        <button class="chip" :class="{ active: tab === 'fav' }" @click="tab = 'fav'">收藏夹</button>
-        <button class="chip" :class="{ active: tab === 'drafts' }" @click="tab = 'drafts'">本地草稿</button>
+        <button class="chip" :class="{ active: tab === 'letters' }" @click="tab = 'letters'">
+          {{ t('treehole.mine.tabLetters') }}
+        </button>
+        <button class="chip" :class="{ active: tab === 'fav' }" @click="tab = 'fav'">
+          {{ t('treehole.mine.tabFavs') }}
+        </button>
+        <button class="chip" :class="{ active: tab === 'drafts' }" @click="tab = 'drafts'">
+          {{ t('treehole.mine.tabDrafts') }}
+        </button>
       </div>
 
       <!-- 我的信件 -->
@@ -44,14 +50,14 @@
                   v-if="['pending', 'rejected', 'scheduled'].includes(l.status)"
                   :href="buildUrl('/community/treehole/write') + '?letterId=' + l.id"
                   class="mini"
-                  >✏️ 编辑</a
+                  >{{ t('treehole.mine.edit') }}</a
                 >
-                <button class="mini danger" @click="removeLetter(l)">🗑️ 删除</button>
+                <button class="mini danger" @click="removeLetter(l)">{{ t('treehole.mine.delete') }}</button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else title="还没有发布任何信件" sub="去写信页，投出第一封匿名信吧～" />
+        <EmptyState v-else :title="t('treehole.mine.emptyLettersTitle')" :sub="t('treehole.mine.emptyLettersSub')" />
       </section>
 
       <!-- 收藏夹 -->
@@ -61,24 +67,26 @@
             <LetterCard :letter="l" @fav="refreshFavs" />
           </div>
         </div>
-        <EmptyState v-else title="还没有收藏的树洞" sub="在广场点亮 ⭐ 收藏喜欢的信件" />
+        <EmptyState v-else :title="t('treehole.mine.emptyFavsTitle')" :sub="t('treehole.mine.emptyFavsSub')" />
       </section>
 
       <!-- 草稿（本地） -->
       <section v-if="tab === 'drafts'">
         <div v-if="drafts.length" class="list">
           <div v-for="d in drafts" :key="d.id" class="item glass">
-            <p class="item-content">{{ d.content || '（空草稿）' }}</p>
+            <p class="item-content">{{ d.content || t('treehole.mine.emptyDraft') }}</p>
             <div class="item-foot">
               <span>{{ timeText(d.updatedAt) }}</span>
               <div class="item-acts">
-                <a :href="buildUrl('/community/treehole/write') + '?draftId=' + d.id" class="mini">继续编辑</a>
-                <button class="mini danger" @click="removeDraft(d)">删除</button>
+                <a :href="buildUrl('/community/treehole/write') + '?draftId=' + d.id" class="mini">{{
+                  t('treehole.mine.continueEdit')
+                }}</a>
+                <button class="mini danger" @click="removeDraft(d)">{{ t('treehole.mine.delete') }}</button>
               </div>
             </div>
           </div>
         </div>
-        <EmptyState v-else title="暂无本地草稿" sub="写信时可随时保存草稿" />
+        <EmptyState v-else :title="t('treehole.mine.emptyDraftsTitle')" :sub="t('treehole.mine.emptyDraftsSub')" />
       </section>
 
       <!-- 数据备份 -->
@@ -87,10 +95,10 @@
       <!-- 危险操作 -->
       <section class="danger-zone glass">
         <div>
-          <b>清空全部本地草稿</b>
-          <p>仅删除本机保存的草稿，不可恢复。</p>
+          <b>{{ t('treehole.mine.clearAllTitle') }}</b>
+          <p>{{ t('treehole.mine.clearAllDesc') }}</p>
         </div>
-        <button class="btn-reset" @click="resetDraftsConfirm">清空草稿</button>
+        <button class="btn-reset" @click="resetDraftsConfirm">{{ t('treehole.mine.clearDraftsBtn') }}</button>
       </section>
     </div>
   </TreeholeShell>
@@ -105,6 +113,7 @@ import BackupPanel from '../components/BackupPanel.vue';
 import { getCategory } from '../stores/constants';
 import { getLetters, getFavorites, getDrafts, deleteLetter, deleteDraft, resetDrafts } from '../stores/storage';
 import { buildUrl } from '~/lib/utils/paths';
+import { t } from '~/lib/i18n';
 
 const tab = ref('letters');
 const letters = ref([]);
@@ -130,40 +139,41 @@ function refreshFavs() {
 
 function statusLabel(s) {
   return s === 'pending'
-    ? '审核中'
+    ? t('treehole.mine.statusPending')
     : s === 'published'
-      ? '已公开'
+      ? t('treehole.mine.statusPublished')
       : s === 'rejected'
-        ? '已驳回'
+        ? t('treehole.mine.statusRejected')
         : s === 'scheduled'
-          ? '定时发布'
+          ? t('treehole.mine.statusScheduled')
           : s === 'sealed'
-            ? '已封存'
-            : '个人可见';
+            ? t('treehole.mine.statusSealed')
+            : t('treehole.mine.statusPrivate');
 }
 
 function timeText(ts) {
   if (!ts) return '';
   const d = new Date(ts);
-  return `${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  return t('treehole.mine.dateTime', { month: d.getMonth() + 1, day: d.getDate(), time });
 }
 
 function removeLetter(l) {
-  if (confirm('确定删除这封信？')) {
+  if (confirm(t('treehole.mine.confirmDeleteLetter'))) {
     deleteLetter(l.id);
     load();
   }
 }
 
 function removeDraft(d) {
-  if (confirm('确定删除这份草稿？')) {
+  if (confirm(t('treehole.mine.confirmDeleteDraft'))) {
     deleteDraft(d.id);
     load();
   }
 }
 
 function resetDraftsConfirm() {
-  if (confirm('确定清空全部本地草稿？此操作不可恢复。')) {
+  if (confirm(t('treehole.mine.confirmResetDrafts2'))) {
     resetDrafts();
     load();
   }

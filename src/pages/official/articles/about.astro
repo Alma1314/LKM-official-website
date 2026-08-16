@@ -2,8 +2,9 @@
 import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
-const metadata = { title: '关于 —— 理科迷' };
+const metadata = { title: `${t('page.articles.aboutTitle')} —— LKM` };
 ---
 
 <Layout
@@ -14,54 +15,76 @@ const metadata = { title: '关于 —— 理科迷' };
 >
   <div class="space-y-6">
     <header>
-      <h1 class="text-3xl font-bold text-deep-text">关于</h1>
-      <p class="mt-2 text-text-muted">关于理科迷官网与社区</p>
+      <h1 class="text-3xl font-bold text-deep-text">{t('page.articles.aboutTitle')}</h1>
+      <p class="mt-2 text-text-muted">{t('page.articles.aboutSubtitle')}</p>
     </header>
 
     <div class="prose prose-slate dark:prose-invert max-w-none">
-      <h2>这是什么</h2>
+      <h2>{t('page.articles.whatIs')}</h2>
+      <p>{t('page.articles.whatIsP1')}</p>
       <p>
-        理科迷（LKM）是一个面向理科爱好者与技术学习者的社区，创立于 2014 年，由广大科技爱好者共同组成，
-        覆盖数学、物理、化学、生物、信息技术等多个学科，让科学回归每一个人。
-      </p>
-      <p>
-        本网站是理科迷的官方网站，基于 <a href="https://astro.build/">Astro</a> 构建，采用服务端渲染（SSR）， 前端使用 Vue
-        3 与 Tailwind CSS v4，为社区成员提供统一的线上门户。
+        {t('page.articles.whatIsP2a')}<a href="https://astro.build/">Astro</a>{t('page.articles.whatIsP2b')}
       </p>
 
-      <h2>网站模块</h2>
-      <p>目前官网包含以下主要模块：</p>
-      <ul>
-        <li><strong>文章中心</strong>：官方公告、技术分享与科普内容，支持分类浏览与归档</li>
-        <li><strong>社区平台</strong>：板块广场、专栏、文件库、问答、项目大厅、竞赛、资助系统等</li>
-        <li><strong>用户账户</strong>：注册 / 登录、个人主页、贡献系统与设置</li>
-        <li><strong>团队介绍</strong>：管理团队与项目团队展示、发展历程</li>
-      </ul>
-
-      <h2>社区</h2>
-      <p>
-        理科迷社区秉持共建共享的理念：你可以加入管理团队（总务部、群务部、新闻办、活动策划部等），
-        也可以加入项目团队（教材编写项目组、科普产出项目组等），还可以投稿作品、参加活动、帮忙宣传和推广。
-      </p>
-      <p>社区日常交流依托 QQ 社群开展，欢迎所有热爱理性、崇尚科技的爱好者加入，共同探索万物运转的奥秘。</p>
-
-      <h2>技术说明</h2>
-      <p>本项目是<strong>前后端分离</strong>的网站：</p>
-      <ul>
-        <li>前端为 Astro SSR 服务，负责页面渲染与交互</li>
-        <li>数据由独立部署的真实后端提供，通过 <code>API_URL</code> 环境变量指定后端地址</li>
-        <li>前端经 Astro 中间件将 <code>/api/*</code> 与 <code>/graphql</code> 反向代理到真实后端</li>
-        <li>认证采用真实后端 JWT 认证，本地不存储 mock 数据</li>
-      </ul>
-
-      <h2>项目信息</h2>
+      <h2>{t('page.articles.modules')}</h2>
+      <p>{t('page.articles.modulesIntro')}</p>
       <ul>
         <li>
-          <strong>仓库地址</strong>：<a href="https://github.com/LKM-AHZ/LKM-official-website"
-            >github.com/LKM-AHZ/LKM-official-website</a
+          <strong>{t('page.articles.moduleArticles')}</strong>{t('page.articles.listColon')}{
+            t('page.articles.moduleArticlesDesc')
+          }
+        </li>
+        <li>
+          <strong>{t('page.articles.moduleCommunity')}</strong>{t('page.articles.listColon')}{
+            t('page.articles.moduleCommunityDesc')
+          }
+        </li>
+        <li>
+          <strong>{t('page.articles.moduleAccount')}</strong>{t('page.articles.listColon')}{
+            t('page.articles.moduleAccountDesc')
+          }
+        </li>
+        <li>
+          <strong>{t('page.articles.moduleTeam')}</strong>{t('page.articles.listColon')}{
+            t('page.articles.moduleTeamDesc')
+          }
+        </li>
+      </ul>
+
+      <h2>{t('page.articles.community')}</h2>
+      <p>{t('page.articles.communityP1')}</p>
+      <p>{t('page.articles.communityP2')}</p>
+
+      <h2>{t('page.articles.tech')}</h2>
+      <p>
+        {t('page.articles.techIntroA')}<strong>{t('page.articles.techIntroStrong')}</strong>{
+          t('page.articles.techIntroB')
+        }
+      </p>
+      <ul>
+        <li>{t('page.articles.techList1')}</li>
+        <li>
+          {t('page.articles.techList2a')}<code>API_URL</code>{t('page.articles.techList2b')}
+        </li>
+        <li>
+          {t('page.articles.techList3a')}<code>/api/*</code>{t('page.articles.techList3b')}<code>/graphql</code>
+          {t('page.articles.techList3c')}
+        </li>
+        <li>{t('page.articles.techList4')}</li>
+      </ul>
+
+      <h2>{t('page.articles.projectInfo')}</h2>
+      <ul>
+        <li>
+          <strong>{t('page.articles.repoAddress')}</strong>{t('page.articles.listColon')}<a
+            href="https://github.com/LKM-AHZ/LKM-official-website">github.com/LKM-AHZ/LKM-official-website</a
           >
         </li>
-        <li><strong>技术栈</strong>：Astro v7（SSR）+ Vue 3 + Tailwind CSS v4 + TypeScript</li>
+        <li>
+          <strong>{t('page.articles.techStack')}</strong>{t('page.articles.listColon')}{
+            t('page.articles.techStackValue')
+          }
+        </li>
       </ul>
     </div>
   </div>

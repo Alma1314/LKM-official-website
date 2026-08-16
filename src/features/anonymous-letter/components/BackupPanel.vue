@@ -1,11 +1,11 @@
 <template>
   <!-- 数据备份 / 导入导出 -->
   <div class="backup glass">
-    <h3>💾 数据备份</h3>
-    <p class="bk-tip">导出全部本地数据为 JSON 文件，可在本机或其他浏览器导入恢复。</p>
+    <h3>{{ t('treehole.backup.title') }}</h3>
+    <p class="bk-tip">{{ t('treehole.backup.desc') }}</p>
     <div class="bk-actions">
-      <button class="chip" @click="exportData">⬇️ 导出备份</button>
-      <button class="chip" @click="triggerImport">⬆️ 导入备份</button>
+      <button class="chip" @click="exportData">{{ t('treehole.backup.exportBtn') }}</button>
+      <button class="chip" @click="triggerImport">{{ t('treehole.backup.importBtn') }}</button>
       <input ref="fileInput" type="file" accept="application/json" hidden @change="onImport" />
     </div>
     <div v-if="msg" class="bk-msg">{{ msg }}</div>
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import * as store from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const fileInput = ref(null);
 const msg = ref('');
@@ -28,7 +29,7 @@ function exportData() {
   a.download = `shiguang-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  msg.value = '已导出备份文件 ✅';
+  msg.value = t('treehole.backup.exported');
 }
 function triggerImport() {
   fileInput.value?.click();
@@ -40,9 +41,9 @@ function onImport(e) {
   reader.onload = () => {
     try {
       store.importAll(reader.result);
-      msg.value = '导入成功，刷新页面后生效 ✅';
+      msg.value = t('treehole.backup.importSuccess');
     } catch {
-      msg.value = '导入失败：文件格式不正确 ❌';
+      msg.value = t('treehole.backup.importFail');
     }
   };
   reader.readAsText(file);

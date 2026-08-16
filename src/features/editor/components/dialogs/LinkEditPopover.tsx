@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface LinkEditPopoverProps {
   editor: Editor;
@@ -68,7 +69,7 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
   return (
     <div ref={popoverRef} className="rte-link-popover">
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <label className="text-xs font-medium text-deep-text/70">链接地址</label>
+        <label className="text-xs font-medium text-deep-text/70">{t('editor.linkUrl')}</label>
         <input
           type="url"
           className="rte-input rte-input--sm"
@@ -77,20 +78,20 @@ export default function LinkEditPopover({ editor, onClose }: LinkEditPopoverProp
           placeholder="https://..."
           autoFocus
         />
-        <label className="text-xs font-medium text-deep-text/70">显示文本</label>
+        <label className="text-xs font-medium text-deep-text/70">{t('editor.linkText')}</label>
         <input
           type="text"
           className="rte-input rte-input--sm"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="链接文字"
+          placeholder={t('editor.linkTextPlaceholder')}
         />
         <div className="flex justify-between mt-1">
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--sm text-error" onClick={handleRemove}>
-            移除链接
+            {t('editor.removeLink')}
           </button>
           <button type="submit" className="rte-btn rte-btn--primary rte-btn--sm">
-            确认
+            {t('editor.confirm')}
           </button>
         </div>
       </form>

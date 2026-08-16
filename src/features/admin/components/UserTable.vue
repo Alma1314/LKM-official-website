@@ -2,6 +2,7 @@
 // 后台用户管理列表 —— 接真实后端 GET /admin/users（adminFetch）
 import { ref, onMounted, computed } from 'vue';
 import { adminFetch, readAdminResp } from '~/lib/api/admin';
+import { t } from '~/lib/i18n';
 
 interface AdminUserRow {
   id: number;
@@ -22,7 +23,10 @@ const includePii = ref(false);
 const loading = ref(false);
 const error = ref('');
 
-const levelMap: Record<string, string> = { local: '本地', normal: '正式', admin: '管理员' };
+const levelLabel = (key: string): string =>
+  ({ local: t('admin.userLevel.local'), normal: t('admin.userLevel.normal'), admin: t('admin.userLevel.admin') })[
+    key
+  ] ?? key;
 
 const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)));
 
@@ -42,7 +46,7 @@ async function load() {
     rows.value = (body.data as { items: AdminUserRow[] }).items;
     total.value = (body.data as { total: number }).total;
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '加载失败';
+    error.value = e instanceof Error ? e.message : t('admin.loadFailed');
   } finally {
     loading.value = false;
   }
@@ -62,7 +66,7 @@ onMounted(() => void load());
       <input
         v-model="keyword"
         type="text"
-        placeholder="按用户名搜索"
+        :placeholder="t('admin.users.searchPlaceholder')"
         class="px-3 py-1.5 rounded-lg text-sm bg-page-bg border border-surface-3 focus:outline-none focus:border-primary"
         @keyup.enter="
           page = 1;
@@ -77,11 +81,11 @@ onMounted(() => void load());
           load();
         "
       >
-        搜索
+        {{ t('common.search') }}
       </button>
       <label class="flex items-center gap-1.5 text-sm text-text-muted ml-auto">
         <input v-model="includePii" type="checkbox" @change="load()" />
-        显示邮箱/手机
+        {{ t('admin.users.showPii') }}
       </label>
     </div>
 
@@ -92,11 +96,11 @@ onMounted(() => void load());
         <thead class="bg-surface-3/50">
           <tr>
             <th class="text-left px-4 py-3 font-medium text-text-muted">ID</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">用户名</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">级别</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">邮箱</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">状态</th>
-            <th class="text-left px-4 py-3 font-medium text-text-muted">注册时间</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.users.username') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.users.level') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.users.email') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.users.status') }}</th>
+            <th class="text-left px-4 py-3 font-medium text-text-muted">{{ t('admin.users.createdAt') }}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-surface-3">
@@ -104,22 +108,24 @@ onMounted(() => void load());
             <td class="px-4 py-3 text-text-muted">{{ u.id }}</td>
             <td class="px-4 py-3 font-medium text-deep-text">
               {{ u.username }}
-              <span v-if="u.account_level === 'admin'" class="ml-1 text-xs text-primary">管理员</span>
+              <span v-if="u.account_level === 'admin'" class="ml-1 text-xs text-primary">{{
+                t('admin.userLevel.admin')
+              }}</span>
             </td>
-            <td class="px-4 py-3 text-text-muted">{{ levelMap[u.account_level] ?? u.account_level }}</td>
+            <td class="px-4 py-3 text-text-muted">{{ levelLabel(u.account_level) }}</td>
             <td class="px-4 py-3 text-text-muted">{{ u.email || '—' }}</td>
             <td class="px-4 py-3">
               <span
                 v-if="u.is_locked"
                 class="text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 dark:bg-red-950/30 text-red-500"
               >
-                已锁定
+                {{ t('admin.users.locked') }}
               </span>
               <span
                 v-else
                 class="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-950/30 text-green-500"
               >
-                正常
+                {{ t('admin.users.active') }}
               </span>
             </td>
             <td class="px-4 py-3 text-text-muted">
@@ -127,28 +133,28 @@ onMounted(() => void load());
             </td>
           </tr>
           <tr v-if="!loading && rows.length === 0">
-            <td colspan="6" class="px-4 py-8 text-center text-text-muted">暂无用户</td>
+            <td colspan="6" class="px-4 py-8 text-center text-text-muted">{{ t('admin.users.empty') }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="flex items-center justify-between mt-4 text-sm text-text-muted">
-      <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
+      <span>{{ t('admin.pagination', { total, page, totalPages }) }}</span>
       <div class="flex gap-2">
         <button
           class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
           :disabled="page <= 1"
           @click="goTo(page - 1)"
         >
-          上一页
+          {{ t('admin.prevPage') }}
         </button>
         <button
           class="px-3 py-1.5 rounded-lg bg-surface-3 text-deep-text disabled:opacity-40"
           :disabled="page >= totalPages"
           @click="goTo(page + 1)"
         >
-          下一页
+          {{ t('admin.nextPage') }}
         </button>
       </div>
     </div>

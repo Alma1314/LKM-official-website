@@ -2,8 +2,8 @@
   <!-- 许愿墙 -->
   <div class="wish-wall">
     <div class="ww-head">
-      <h3>🌟 许愿墙</h3>
-      <button class="btn-grad" @click="openMake = true">+ 许个愿</button>
+      <h3>🌟 {{ t('treehole.wish.title') }}</h3>
+      <button class="btn-grad" @click="openMake = true">{{ t('treehole.wish.makeWish') }}</button>
     </div>
     <div class="ww-grid">
       <div v-for="w in wishes" :key="w.id" class="wish-note glass glass-hover" :style="{ '--wc': colorOf(w.id) }">
@@ -13,23 +13,28 @@
           <span class="wish-date">{{ dateText(w.createdAt) }}</span>
         </div>
         <div v-if="canManage(w)" class="wish-acts">
-          <button class="mini" @click="openEdit(w)">✏️ 编辑</button>
-          <button class="mini danger" @click="remove(w)">🗑️ 删除</button>
+          <button class="mini" @click="openEdit(w)">{{ t('treehole.wish.edit') }}</button>
+          <button class="mini danger" @click="remove(w)">{{ t('treehole.wish.delete') }}</button>
         </div>
       </div>
-      <div v-if="!wishes.length" class="wish-empty">还没有愿望，做第一个许愿的人吧～</div>
+      <div v-if="!wishes.length" class="wish-empty">{{ t('treehole.wish.empty') }}</div>
     </div>
 
     <n-modal
       v-model:show="openMake"
       preset="card"
       :show-icon="false"
-      title="写下你的愿望"
+      :title="t('treehole.wish.makeDialogTitle')"
       style="width: min(420px, 92vw)"
     >
-      <n-input v-model="text" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="把愿望交给星光…" />
+      <n-input
+        v-model="text"
+        type="textarea"
+        :autosize="{ minRows: 3, maxRows: 3 }"
+        :placeholder="t('treehole.wish.makePlaceholder')"
+      />
       <template #footer>
-        <button class="btn-grad" :disabled="!text.trim()" @click="make">🌟 点亮愿望</button>
+        <button class="btn-grad" :disabled="!text.trim()" @click="make">{{ t('treehole.wish.lightWishBtn') }}</button>
       </template>
     </n-modal>
 
@@ -37,12 +42,17 @@
       v-model:show="openEditBox"
       preset="card"
       :show-icon="false"
-      title="编辑愿望"
+      :title="t('treehole.wish.editTitle')"
       style="width: min(420px, 92vw)"
     >
-      <n-input v-model="editText" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="修改你的愿望…" />
+      <n-input
+        v-model="editText"
+        type="textarea"
+        :autosize="{ minRows: 3, maxRows: 3 }"
+        :placeholder="t('treehole.wish.editPlaceholder')"
+      />
       <template #footer>
-        <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">💾 保存</button>
+        <button class="btn-grad" :disabled="!editText.trim()" @click="saveEdit">{{ t('treehole.wish.save') }}</button>
       </template>
     </n-modal>
   </div>
@@ -52,6 +62,7 @@
 import { ref, onMounted } from 'vue';
 import { useDialog, useMessage } from 'naive-ui';
 import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const message = useMessage();
 const dialog = useDialog();
@@ -105,7 +116,7 @@ function make() {
   wishes.value.unshift(w);
   text.value = '';
   openMake.value = false;
-  message.success('愿望已点亮 🌟');
+  message.success(t('treehole.wish.lightSuccess'));
 }
 
 function openEdit(w) {
@@ -124,20 +135,20 @@ function saveEdit() {
   }
   wishes.value = list;
   openEditBox.value = false;
-  message.success('已更新 ✏️');
+  message.success(t('treehole.wish.updateSuccess'));
 }
 
 function remove(w) {
   dialog.warning({
-    title: '确认删除',
-    content: '确定删除这个愿望吗？',
-    positiveText: '删除',
-    negativeText: '取消',
+    title: t('treehole.wish.confirmDelete'),
+    content: t('treehole.wish.confirmDeleteWish'),
+    positiveText: t('treehole.wish.delete'),
+    negativeText: t('treehole.wish.cancel'),
     onPositiveClick: () => {
       const list = getWishes().filter((x) => x.id !== w.id);
       saveWishes(list);
       wishes.value = list;
-      message.success('已删除');
+      message.success(t('treehole.wish.deleted'));
     },
   });
 }

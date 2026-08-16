@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { JSONContent } from '@tiptap/core';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface PreviewPanelProps {
   editor: Editor;
@@ -104,7 +105,9 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
               style={{ width: attrs.width ? `${attrs.width}px` : 'auto' }}
             />
           ) : (
-            <div className="border-2 border-dashed border-surface-3 rounded-lg p-8 text-deep-text/50">暂无图片</div>
+            <div className="border-2 border-dashed border-surface-3 rounded-lg p-8 text-deep-text/50">
+              {t('editor.preview.noImage')}
+            </div>
           )}
           {attrs.caption && (
             <figcaption className="text-xs text-deep-text/60 mt-1">{attrs.caption as string}</figcaption>

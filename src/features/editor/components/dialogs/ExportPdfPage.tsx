@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import type { ReactElement } from 'react';
 import { renderNode } from '../panels/PreviewPanel';
 import type { JSONContent } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface ExportPdfPageProps {
   content: JSONContent[];
@@ -15,7 +16,7 @@ export default function ExportPdfPage({ content, title }: ExportPdfPageProps): R
     <html>
       <head>
         <meta charSet="utf-8" />
-        <title>{title || '导出文档'}</title>
+        <title>{title || t('editor.exportDocument')}</title>
         <style>{`
           @page {
             size: A4;

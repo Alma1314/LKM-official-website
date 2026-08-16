@@ -18,6 +18,7 @@ import PublishButton from '../dialogs/PublishButton';
 import VersionHistoryPanel from '../panels/VersionHistoryPanel';
 import ExportMenu from '../dialogs/ExportMenu';
 import BackupMenu from '../panels/BackupMenu';
+import { t } from '~/lib/i18n';
 
 // 懒加载：CodeMirror（仅在切换到源码模式时加载）
 const SourceEditor = lazy(() => import('./SourceEditor'));
@@ -78,7 +79,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       (async () => {
         const doc: DocumentData = {
           id: crypto.randomUUID(),
-          title: '无标题文档',
+          title: t('editor.untitled'),
           contentMdx: '',
           editorJson: null,
           status: 'draft',
@@ -96,7 +97,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
   }, [documentId, adapter]);
 
   const editor = useEditor({
-    extensions: getEditorExtensions('开始编写内容……'),
+    extensions: getEditorExtensions(t('editor.startWritingPlaceholder')),
     onUpdate({ editor: ed }) {
       if (!ed || !docId) return;
       const json = ed.getJSON();
@@ -282,7 +283,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
           }
         } catch (err) {
           console.warn('[DocumentEditor] MDX 手动解析失败:', err);
-          alert('MDX 解析失败，请检查源码格式后重试');
+          alert(t('editor.mdxParseError'));
           return;
         }
       }
@@ -309,7 +310,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       if (doc) {
         const updated: DocumentData = { ...doc, title, status: 'published', updatedAt: new Date().toISOString() };
         await adapter.saveDocument(updated);
-        await adapter.saveVersion(docId, updated, '发布');
+        await adapter.saveVersion(docId, updated, t('editor.publish'));
         setRefreshKey((k) => k + 1);
       }
       setPublishOpen(false);
@@ -400,7 +401,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     setVersionPanelOpen(false);
                   }}
                 >
-                  评论
+                  {t('editor.comments')}
                 </button>
                 <button
                   type="button"
@@ -410,7 +411,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
                     setCommentPanelOpen(false);
                   }}
                 >
-                  版本
+                  {t('editor.version')}
                 </button>
               </>
             )}
@@ -484,7 +485,7 @@ export default function DocumentEditor({ documentId, adapter }: DocumentEditorPr
       ) : (
         <div className="rte-loading">
           <div className="rte-spinner" />
-          <span>正在加载编辑器……</span>
+          <span>{t('editor.loadingEditor')}</span>
         </div>
       )}
 

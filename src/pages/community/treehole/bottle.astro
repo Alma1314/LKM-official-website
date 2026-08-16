@@ -4,8 +4,12 @@ import BottlePage from '~/features/anonymous-letter/pages/BottlePage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '漂流瓶 — 拾光树洞', description: '把心事装进瓶子，交给海流，等一个陌生的回应。' };
+const metadata: MetaData = {
+  title: t('page.treehole.bottleTitle'),
+  description: t('page.treehole.bottleDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

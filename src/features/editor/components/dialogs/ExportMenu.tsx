@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import type { Editor } from '@tiptap/core';
 import { handleExportPdf } from './ExportPdfButton';
 import { handleExportDocx } from './ExportDocxButton';
+import { t } from '~/lib/i18n';
 
 interface ExportMenuProps {
   editor: Editor;
@@ -29,7 +30,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
         type="button"
         className={`rte-btn rte-btn--ghost rte-btn--xs gap-1 ${open ? 'is-active' : ''}`}
         onClick={() => setOpen(!open)}
-        title="导出"
+        title={t('editor.export')}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +47,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" x2="12" y1="15" y2="3" />
         </svg>
-        <span className="hidden lg:inline text-xs">导出</span>
+        <span className="hidden lg:inline text-xs">{t('editor.export')}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"
@@ -88,7 +89,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <line x1="16" x2="8" y1="17" y2="17" />
               <polyline points="10 9 9 9 8 9" />
             </svg>
-            导出 PDF
+            {t('editor.exportPdf')}
           </button>
           <button
             type="button"
@@ -114,7 +115,7 @@ export default function ExportMenu({ editor }: ExportMenuProps): ReactElement {
               <path d="M3 15h6" />
               <path d="M6 12v6" />
             </svg>
-            导出 Word
+            {t('editor.exportWord')}
           </button>
         </div>
       )}

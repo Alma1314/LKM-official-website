@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import type { EditorMode } from '../../engine/types';
+import { t } from '~/lib/i18n';
 
 interface ModeTabsProps {
   mode: EditorMode;
@@ -7,9 +8,9 @@ interface ModeTabsProps {
 }
 
 const TABS: { mode: EditorMode; label: string }[] = [
-  { mode: 'richtext', label: '富文本' },
-  { mode: 'source', label: '源码' },
-  { mode: 'preview', label: '预览' },
+  { mode: 'richtext', label: t('editor.modeRichtext') },
+  { mode: 'source', label: t('editor.modeSource') },
+  { mode: 'preview', label: t('editor.modePreview') },
 ];
 
 const ModeTabs = memo(function ModeTabs({ mode, onModeChange }: ModeTabsProps) {

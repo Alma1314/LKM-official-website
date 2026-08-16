@@ -5,9 +5,10 @@ import ContactUs from '~/features/homepage/components/Contact.astro';
 import Features2 from '~/features/homepage/components/Features2.astro';
 
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 const metadata = {
-  title: '联系我们',
+  title: t('page.official.contact.metaTitle'),
 };
 ---
 
@@ -17,71 +18,71 @@ const metadata = {
   navItems={['主页', '新闻资讯', '寻求帮助', '七月团队', '资源']}
 >
   <!-- 首屏 -->
-  <HeroText title="期待听到你的声音！" />
+  <HeroText title={t('page.official.contact.heroTitle')} />
 
   <!-- 留言表单 -->
   <ContactUs
     id="form"
-    title="给我们留言"
-    subtitle="如果你想加入理科迷、提出建议或合作意向，欢迎通过下方表单联系我们。也可以先看看常见问题，也许已经有了你想要的答案。"
+    title={t('page.official.contact.formTitle')}
+    subtitle={t('page.official.contact.formSubtitle')}
     inputs={[
       {
         type: 'text',
         name: 'name',
-        label: '你的名字',
+        label: t('page.official.contact.nameLabel'),
       },
       {
         type: 'email',
         name: 'email',
-        label: '电子邮箱',
+        label: t('page.official.contact.emailLabel'),
       },
     ]}
     textarea={{
-      label: '留言内容',
+      label: t('page.official.contact.messageLabel'),
     }}
     disclaimer={{
-      label: '提交此表单即表示你同意我们收集你的个人信息用于联系回复。',
+      label: t('page.official.contact.disclaimerLabel'),
     }}
-    description="我们通常会在 24 小时内回复你的留言。"
+    description={t('page.official.contact.replyNote')}
   />
 
   <!-- 联系方式 -->
   <Features2
     id="support"
-    title="联系我们"
+    title={t('page.official.contact.supportTitle')}
     items={[
       {
-        title: '加入社区',
-        description: '理科迷拥有完善的QQ社群体系，涵盖年级分群、学科分群、兴趣社团等数十个群组。',
+        title: t('page.official.contact.joinCommunity'),
+        description: t('page.official.contact.joinCommunityDesc'),
         icon: 'tabler:users-group',
         callToAction: {
-          text: '查看全部社群',
+          text: t('page.official.contact.viewAllCommunities'),
           href: getPermalink('/official/communities'),
         },
       },
       {
-        title: '合作建议',
-        description: '如果你有科普内容合作、活动联办、技术支持等方面的合作意向，欢迎通过留言表单联系我们。',
+        title: t('page.official.contact.cooperation'),
+        description: t('page.official.contact.cooperationDesc'),
         icon: 'tabler:heart-handshake',
       },
       {
-        title: '问题反馈',
-        description: '网站或社区的 Bug 反馈与功能建议，都可以通过留言表单提交，我们会认真处理每一条反馈。',
+        title: t('page.official.contact.feedback'),
+        description: t('page.official.contact.feedbackDesc'),
         icon: 'tabler:bug',
       },
       {
-        title: '邮箱',
+        title: t('page.official.contact.email'),
         description: 'almafox123@outlook.com',
         icon: 'tabler:mail',
       },
       {
-        title: 'GitHub',
+        title: t('page.official.contact.github'),
         description: 'github.com/LKM-AHZ',
         icon: 'tabler:brand-github',
       },
       {
-        title: 'B站',
-        description: '关注官方B站账号获取最新科普视频',
+        title: t('page.official.contact.bilibili'),
+        description: t('page.official.contact.bilibiliDesc'),
         icon: 'tabler:brand-bilibili',
       },
     ]}

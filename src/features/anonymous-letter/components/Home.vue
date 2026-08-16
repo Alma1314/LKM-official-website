@@ -6,20 +6,22 @@
         <span class="grad-text typewriter">{{ typed }}</span
         ><span class="caret">|</span>
       </h1>
-      <p class="hero-sub">把心事交给风，把秘密留给树洞。</p>
+      <p class="hero-sub">{{ t('treehole.home.heroSubtitle') }}</p>
       <div class="hero-quote"><span class="quote-mark">"</span>{{ quote }}<span class="quote-mark">"</span></div>
       <div class="hero-acts">
-        <button class="btn-grad" @click="go('/write')">✍️ 写一封信</button>
-        <button class="chip" @click="go('/random')">🎲 随机树洞</button>
+        <button class="btn-grad" @click="go('/write')">{{ t('treehole.writeLetter') }}</button>
+        <button class="chip" @click="go('/random')">{{ t('treehole.randomTreehole') }}</button>
       </div>
     </section>
 
     <!-- 筛选栏：分类 + 排序 -->
     <section class="filters glass">
       <div class="filter-row">
-        <span class="filter-label">分类</span>
+        <span class="filter-label">{{ t('treehole.home.category') }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: activeCat === 'all' }" @click="setCat('all')">全部</button>
+          <button class="chip" :class="{ active: activeCat === 'all' }" @click="setCat('all')">
+            {{ t('treehole.home.all') }}
+          </button>
           <button
             v-for="c in categories"
             :key="c.key"
@@ -32,25 +34,33 @@
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">排序</span>
+        <span class="filter-label">{{ t('treehole.home.sort') }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: sort === 'new' }" @click="sort = 'new'">最新</button>
-          <button class="chip" :class="{ active: sort === 'hot' }" @click="sort = 'hot'">最热</button>
-          <button class="chip" :class="{ active: sort === 'random' }" @click="sort = 'random'">随机</button>
+          <button class="chip" :class="{ active: sort === 'new' }" @click="sort = 'new'">
+            {{ t('treehole.home.sortNew') }}
+          </button>
+          <button class="chip" :class="{ active: sort === 'hot' }" @click="sort = 'hot'">
+            {{ t('treehole.home.sortHot') }}
+          </button>
+          <button class="chip" :class="{ active: sort === 'random' }" @click="sort = 'random'">
+            {{ t('treehole.home.sortRandom') }}
+          </button>
         </div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">标签</span>
+        <span class="filter-label">{{ t('treehole.home.tag') }}</span>
         <div class="chips">
-          <button class="chip" :class="{ active: activeTag === '' }" @click="setTag('')">全部</button>
+          <button class="chip" :class="{ active: activeTag === '' }" @click="setTag('')">
+            {{ t('treehole.home.all') }}
+          </button>
           <button
-            v-for="t in tags"
-            :key="t.key"
+            v-for="tg in tags"
+            :key="tg.key"
             class="chip"
-            :class="{ active: activeTag === t.key }"
-            @click="setTag(t.key)"
+            :class="{ active: activeTag === tg.key }"
+            @click="setTag(tg.key)"
           >
-            {{ t.emoji }} {{ t.label }}
+            {{ tg.emoji }} {{ tg.label }}
           </button>
         </div>
       </div>
@@ -62,13 +72,13 @@
         <LetterCard :letter="l" @like="onLike" @fav="onFav" @same-type="onSameType" />
       </div>
     </section>
-    <EmptyState v-else title="这个分类还没有信件" sub="换个分类，或写下第一封匿名信吧～" />
+    <EmptyState v-else :title="t('treehole.home.emptyTitle')" :sub="t('treehole.home.emptySub')" />
 
     <!-- 心情云标签墙（折叠入口） -->
     <section class="mood-cloud glass">
       <div class="mc-head">
-        <span>🏷️ 心情云标签墙</span>
-        <span class="mc-hint">点击标签筛选同心情信件</span>
+        <span>{{ t('treehole.home.moodCloud') }}</span>
+        <span class="mc-hint">{{ t('treehole.home.moodCloudHint') }}</span>
       </div>
       <div class="mc-tags">
         <button
@@ -92,6 +102,7 @@ import LetterCard from '../components/LetterCard.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { CATEGORIES, TAGS, MOODS, randomQuote } from '../stores/constants';
 import { getLetters, toggleFavorite } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const router = useRouter();
 const categories = CATEGORIES;
@@ -106,7 +117,7 @@ const sort = ref('new');
 const quote = ref(randomQuote());
 
 // 打字机 slogan
-const SLOGAN = '在拾光树洞，做回最真实的自己';
+const SLOGAN = t('treehole.home.slogan');
 const typed = ref('');
 let ti = 0;
 function typeLoop() {

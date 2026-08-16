@@ -1,6 +1,7 @@
 import { useState, useEffect, memo } from 'react';
 import type { PersistenceAdapter, VersionEntry } from '../../engine/types';
 import ConfirmDialog from '../dialogs/ConfirmDialog';
+import { t } from '~/lib/i18n';
 
 interface VersionHistoryPanelProps {
   documentId: string;
@@ -49,7 +50,7 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
   return (
     <div className="rte-panel flex flex-col">
       <div className="flex items-center justify-between px-3 py-3 border-b border-surface-3">
-        <h3 className="text-sm font-semibold">版本历史</h3>
+        <h3 className="text-sm font-semibold">{t('editor.versionHistory')}</h3>
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={onClose}>
           ×
         </button>
@@ -57,7 +58,7 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
 
       <div className="flex-1 overflow-y-auto">
         {versions.length === 0 ? (
-          <p className="text-xs text-deep-text/50 px-3 py-4">暂无版本记录</p>
+          <p className="text-xs text-deep-text/50 px-3 py-4">{t('editor.noVersions')}</p>
         ) : (
           versions.map((v) => (
             <button
@@ -85,14 +86,14 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
             {selectedVersion.contentMdx.length > 300 ? '…' : ''}
           </pre>
           <button type="button" className="rte-btn rte-btn--primary rte-btn--xs w-full" onClick={handleRestore}>
-            恢复此版本
+            {t('editor.restoreThisVersion')}
           </button>
         </div>
       )}
 
       {confirmRestore && selectedVersion && (
         <ConfirmDialog
-          message={`确定恢复到版本 ${selectedVersion.version}？当前未保存的更改会丢失。`}
+          message={t('editor.confirmRestoreVersion', { version: selectedVersion.version })}
           danger
           onConfirm={handleRestoreConfirmed}
           onCancel={() => setConfirmRestore(false)}

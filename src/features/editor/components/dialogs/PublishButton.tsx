@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import type { DocumentData, PersistenceAdapter } from '../../engine/types';
 import ConfirmDialog from './ConfirmDialog';
+import { t } from '~/lib/i18n';
 
 interface PublishButtonProps {
   documentId: string;
@@ -70,29 +71,29 @@ export default function PublishButton({
       {status === 'published' ? (
         <div className="flex gap-1">
           <button type="button" className="rte-btn rte-btn--sm text-success" onClick={handleUnpublish}>
-            已发布
+            {t('editor.published')}
           </button>
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-            归档
+            {t('editor.archive')}
           </button>
         </div>
       ) : status === 'archived' ? (
         <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={handleUnpublish}>
-          已归档 — 点击恢复
+          {t('editor.archivedClickToRestore')}
         </button>
       ) : (
         <div className="flex gap-1">
           <button type="button" className="rte-btn rte-btn--primary rte-btn--xs" onClick={handlePublish}>
-            发布
+            {t('editor.publish')}
           </button>
           <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs text-error" onClick={handleArchive}>
-            归档
+            {t('editor.archive')}
           </button>
         </div>
       )}
       {archiveConfirmOpen && (
         <ConfirmDialog
-          message="确定归档此文档？归档后不可编辑。"
+          message={t('editor.confirmArchiveMessage')}
           danger
           onConfirm={handleArchiveConfirmed}
           onCancel={() => setArchiveConfirmOpen(false)}

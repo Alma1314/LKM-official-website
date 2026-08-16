@@ -1,22 +1,22 @@
 <template>
   <div class="random">
-    <h1 class="page-title">🎲 随机树洞</h1>
-    <p class="page-sub">抽一封陌生人的信，安静地读，温柔地回。</p>
+    <h1 class="page-title">🎲 {{ t('treehole.random.title') }}</h1>
+    <p class="page-sub">{{ t('treehole.random.subtitle') }}</p>
 
     <!-- 抽取状态 -->
     <section v-if="!current" class="pick glass float-up">
       <div class="pick-emoji">🌌</div>
-      <p class="pick-tip">每一次随机，都是一次未知的相遇</p>
+      <p class="pick-tip">{{ t('treehole.random.pickTip') }}</p>
       <button class="btn-grad" :disabled="picking" @click="draw">
         <span v-if="picking" class="spinner"></span>
-        <span v-else>随机抽取一封</span>
+        <span v-else>{{ t('treehole.random.drawBtn') }}</span>
       </button>
-      <p class="pick-hint">共 {{ pool.length }} 封公开信件等待被看见</p>
+      <p class="pick-hint">{{ t('treehole.random.poolHint', { count: pool.length }) }}</p>
     </section>
 
     <!-- 沉浸式阅读 -->
     <section v-else class="reader glass float-up">
-      <button class="reader-back" @click="current = null">← 返回</button>
+      <button class="reader-back" @click="current = null">{{ t('treehole.random.back') }}</button>
       <div class="reader-paper" :style="{ background: paperBg }">
         <div class="reader-cat">{{ category.emoji }} {{ category.label }}</div>
         <p class="reader-content">{{ current.content }}</p>
@@ -28,18 +28,20 @@
 
       <!-- 回信区（双向匿名） -->
       <div class="reply-box">
-        <label class="setup-label">给 {{ current.codename }} 写匿名回信</label>
+        <label class="setup-label">{{ t('treehole.random.replyLabel', { name: current.codename }) }}</label>
         <textarea
           v-model="replyText"
           class="reply-input"
-          placeholder="你的回信同样匿名，不会暴露身份…"
+          :placeholder="t('treehole.random.replyPlaceholder')"
           :style="{ fontSize: replyFont }"
         ></textarea>
         <div class="reply-acts">
           <button class="chip" @click="replyFont = replyFont === '15px' ? '18px' : '15px'">A±</button>
-          <button class="btn-grad" :disabled="!replyText.trim()" @click="sendReply">📨 发送回信</button>
+          <button class="btn-grad" :disabled="!replyText.trim()" @click="sendReply">
+            📨 {{ t('treehole.random.sendReply') }}
+          </button>
         </div>
-        <p class="reply-note">🌿 双向匿名：你与对方都不会看到真实身份，回信将随机送达对方的本地收件箱。</p>
+        <p class="reply-note">{{ t('treehole.random.replyNote') }}</p>
       </div>
     </section>
   </div>
@@ -50,6 +52,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useMessage } from 'naive-ui';
 import { getCategory, getPaper } from '../stores/constants';
 import { getLetters, getOrCreateConversation, appendMessage } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const message = useMessage();
 const pool = ref([]);
@@ -72,7 +75,7 @@ function draw() {
   setTimeout(() => {
     const list = pool.value;
     if (!list.length) {
-      message.info('暂时没有可抽取的公开信件');
+      message.info(t('treehole.random.noLetters'));
       picking.value = false;
       return;
     }
@@ -92,7 +95,7 @@ function sendReply() {
     at: Date.now(),
   };
   appendMessage(conv.id, msg);
-  message.success('回信已匿名送达 💌');
+  message.success(t('treehole.random.replySent'));
   replyText.value = '';
   current.value = null;
 }

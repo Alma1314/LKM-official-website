@@ -4,8 +4,12 @@ import WritePage from '~/features/anonymous-letter/pages/WritePage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '写信 — 拾光树洞', description: '写下你的心事、表白、吐槽或悄悄话。' };
+const metadata: MetaData = {
+  title: t('page.treehole.writeTitle'),
+  description: t('page.treehole.writeDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

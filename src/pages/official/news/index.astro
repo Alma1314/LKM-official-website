@@ -5,6 +5,7 @@ import { NEWS_SECTIONS } from '~/features/official-articles/data/news-sections';
 import { getPermalink } from '~/lib/utils/permalinks';
 import { logSsrError } from '~/lib/fetch-ssr';
 import { fetchArticleCategories } from '~/lib/api';
+import { t } from '~/lib/i18n';
 
 const { categories, error } = await fetchArticleCategories();
 logSsrError('新闻资讯分类', error);
@@ -19,7 +20,7 @@ const sections = NEWS_SECTIONS.map((section) => {
   return resolved;
 });
 
-const metadata = { title: '新闻资讯 —— 理科迷' };
+const metadata = { title: `${t('page.news.title')} —— LKM` };
 ---
 
 <Layout
@@ -30,8 +31,8 @@ const metadata = { title: '新闻资讯 —— 理科迷' };
 >
   <div class="space-y-6">
     <header>
-      <h1 class="text-3xl font-bold text-deep-text">新闻资讯</h1>
-      <p class="mt-2 text-text-muted">官方公告、科技新闻与科普内容</p>
+      <h1 class="text-3xl font-bold text-deep-text">{t('page.news.title')}</h1>
+      <p class="mt-2 text-text-muted">{t('page.news.subtitle')}</p>
     </header>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,7 +45,9 @@ const metadata = { title: '新闻资讯 —— 理科迷' };
             <div class="flex flex-col h-full">
               <h2 class="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{section.label}</h2>
               <p class="text-text-muted text-sm mt-auto">
-                {section.count > 0 ? `${section.count} 篇文章` : '点击查看该分类文章'}
+                {section.count > 0
+                  ? t('page.news.articleCount', { count: section.count })
+                  : t('page.news.viewCategory')}
               </p>
             </div>
           </a>
@@ -55,7 +58,7 @@ const metadata = { title: '新闻资讯 —— 理科迷' };
     {
       error && (
         <div class="text-center py-12">
-          <p class="text-text-muted text-lg">加载失败：{error}</p>
+          <p class="text-text-muted text-lg">{t('page.news.loadFailed', { error })}</p>
         </div>
       )
     }

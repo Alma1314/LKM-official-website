@@ -52,10 +52,10 @@
         />
         <div class="flex-1 min-w-0">
           <div class="font-medium text-sm text-deep-text flex items-center gap-2">
-            {{ item.name }}
+            {{ t(item.name) }}
             <span v-if="selectedIds.includes(item.id)" class="text-primary text-xs">✓</span>
           </div>
-          <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ item.description }}</div>
+          <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ t(item.description) }}</div>
           <div class="text-xs text-text-muted/60 mt-1">{{ item.memberCount }} {{ t('onboarding.follow.members') }}</div>
         </div>
       </button>
@@ -78,14 +78,14 @@
         <div
           class="w-8 h-8 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm"
         >
-          {{ item.name.charAt(0) }}
+          {{ t(item.name).charAt(0) }}
         </div>
         <div class="flex-1 min-w-0">
           <div class="font-medium text-sm text-deep-text flex items-center gap-2">
-            {{ item.name }}
+            {{ t(item.name) }}
             <span v-if="selectedIds.includes(item.id)" class="text-primary text-xs">✓</span>
           </div>
-          <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ item.description }}</div>
+          <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ t(item.description) }}</div>
           <div class="text-xs text-text-muted/60 mt-1">
             {{ item.memberCount }} {{ t('onboarding.follow.followers') }}
           </div>
@@ -111,71 +111,71 @@ interface RecommendItem {
 const recommendCategories: RecommendItem[] = [
   {
     id: 'basic-science',
-    name: '基础学科',
-    description: '数学、物理、化学、生物、天文等基础科学讨论区',
+    name: 'onboarding.followData.basicScience.name',
+    description: 'onboarding.followData.basicScience.description',
     icon: 'tabler:atom-2',
     memberCount: 1200,
   },
   {
     id: 'applied-science',
-    name: '应用科学',
-    description: '信息科学、电子电气、工程学、医学等应用领域',
+    name: 'onboarding.followData.appliedScience.name',
+    description: 'onboarding.followData.appliedScience.description',
     icon: 'tabler:robot',
     memberCount: 890,
   },
   {
     id: 'language',
-    name: '语言学习',
-    description: '英语、俄语、德语、日语等多语言学习交流',
+    name: 'onboarding.followData.language.name',
+    description: 'onboarding.followData.language.description',
     icon: 'tabler:language',
     memberCount: 340,
   },
   {
     id: 'hobby-chess',
-    name: '棋牌社',
-    description: '象棋、围棋、五子棋、桥牌等各类棋牌交流',
+    name: 'onboarding.followData.hobbyChess.name',
+    description: 'onboarding.followData.hobbyChess.description',
     icon: 'tabler:chess',
     memberCount: 280,
   },
   {
     id: 'hobby-game',
-    name: '游戏社',
-    description: '主机、PC、手游玩家聚集地',
+    name: 'onboarding.followData.hobbyGame.name',
+    description: 'onboarding.followData.hobbyGame.description',
     icon: 'tabler:device-gamepad-2',
     memberCount: 420,
   },
   {
     id: 'hobby-sci-fi',
-    name: '科幻文学社',
-    description: '科幻创作、经典赏析、未来构想',
+    name: 'onboarding.followData.hobbySciFi.name',
+    description: 'onboarding.followData.hobbySciFi.description',
     icon: 'tabler:rocket',
     memberCount: 190,
   },
   {
     id: 'hobby-music',
-    name: '土鳖音乐社',
-    description: '乐理讨论、乐器交流、联欢晚会筹备',
+    name: 'onboarding.followData.hobbyMusic.name',
+    description: 'onboarding.followData.hobbyMusic.description',
     icon: 'tabler:music',
     memberCount: 310,
   },
   {
     id: 'hobby-cooking',
-    name: '料理学社',
-    description: '厨艺交流、美食分享、料理教学',
+    name: 'onboarding.followData.hobbyCooking.name',
+    description: 'onboarding.followData.hobbyCooking.description',
     icon: 'tabler:chef-hat',
     memberCount: 160,
   },
   {
     id: 'math',
-    name: '数学',
-    description: '数学爱好者与专业人员的交流园地',
+    name: 'onboarding.followData.math.name',
+    description: 'onboarding.followData.math.description',
     icon: 'tabler:math-symbols',
     memberCount: 520,
   },
   {
     id: 'physics',
-    name: '物理学&天文学',
-    description: '探索宇宙奥秘，讨论物理前沿',
+    name: 'onboarding.followData.physics.name',
+    description: 'onboarding.followData.physics.description',
     icon: 'tabler:telescope',
     memberCount: 480,
   },
@@ -184,36 +184,36 @@ const recommendCategories: RecommendItem[] = [
 const recommendAuthors: RecommendItem[] = [
   {
     id: 'author-1',
-    name: '七月O',
-    description: '中国科学院国家天文台博士，引力波与黑洞物理方向',
+    name: 'onboarding.followData.authorJulyO.name',
+    description: 'onboarding.followData.authorJulyO.description',
     icon: 'tabler:user',
     memberCount: 350,
   },
   {
     id: 'author-2',
-    name: '七月花',
-    description: '有理想的博士，梦想每个孩子都能接触科学',
+    name: 'onboarding.followData.authorJulyHua.name',
+    description: 'onboarding.followData.authorJulyHua.description',
     icon: 'tabler:user',
     memberCount: 420,
   },
   {
     id: 'author-3',
-    name: '七月墨染',
-    description: '双非物理，卧薪尝胆三千日，大雪深埋终成金',
+    name: 'onboarding.followData.authorJulyMoran.name',
+    description: 'onboarding.followData.authorJulyMoran.description',
     icon: 'tabler:user',
     memberCount: 280,
   },
   {
     id: 'author-4',
-    name: '七月郁离',
-    description: '群务组组长，群务无小事，用心皆风景',
+    name: 'onboarding.followData.authorJulyYuli.name',
+    description: 'onboarding.followData.authorJulyYuli.description',
     icon: 'tabler:user',
     memberCount: 200,
   },
   {
     id: 'author-5',
-    name: '七月有枝',
-    description: '前活动策划组组员，且停且忘且随风',
+    name: 'onboarding.followData.authorJulyYouzhi.name',
+    description: 'onboarding.followData.authorJulyYouzhi.description',
     icon: 'tabler:user',
     memberCount: 150,
   },

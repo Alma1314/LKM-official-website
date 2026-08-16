@@ -3,13 +3,14 @@ import Layout from '~/layouts/CommunitySidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { mockCompetitions } from '~/features/competition/data/mock-competitions';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 // server 模式：params 从 URL 直接解析
 // 后端就绪后切换为：const comp = await competitionApi.getCompetition(id)
 const { id } = Astro.params;
 const comp = mockCompetitions.find((c) => c.id === id);
 
-const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详情' };
+const metadata = { title: comp ? `${comp.title} —— LKM` : t('page.communityDetail.competition.metaTitle') };
 ---
 
 <Layout
@@ -25,24 +26,28 @@ const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详�
         <p class="text-text-muted">{comp.description}</p>
         <div class="bg-card-bg border border-surface-3 rounded-xl p-5 space-y-2 text-sm">
           <div>
-            <span class="text-text-muted/60">开始：</span>
+            <span class="text-text-muted/60">{t('page.communityDetail.competition.startsAt')}</span>
             {comp.startDate}
           </div>
           <div>
-            <span class="text-text-muted/60">结束：</span>
+            <span class="text-text-muted/60">{t('page.communityDetail.competition.endsAt')}</span>
             {comp.endDate}
           </div>
           <div>
-            <span class="text-text-muted/60">答题时长：</span>
-            {comp.duration} 分钟
+            <span class="text-text-muted/60">{t('page.communityDetail.competition.duration')}</span>
+            {t('page.communityDetail.competition.durationMinutes', { count: comp.duration })}
           </div>
           <div>
-            <span class="text-text-muted/60">状态：</span>
-            {comp.status === 'ongoing' ? '进行中' : comp.status === 'upcoming' ? '即将开始' : '已结束'}
+            <span class="text-text-muted/60">{t('page.communityDetail.competition.status')}</span>
+            {comp.status === 'ongoing'
+              ? t('page.communityDetail.competition.ongoing')
+              : comp.status === 'upcoming'
+                ? t('page.communityDetail.competition.upcoming')
+                : t('page.communityDetail.competition.ended')}
           </div>
           <div>
-            <span class="text-text-muted/60">参赛人数：</span>
-            {comp.participantCount || '待定'}
+            <span class="text-text-muted/60">{t('page.communityDetail.competition.participants')}</span>
+            {comp.participantCount || t('page.communityDetail.competition.pending')}
           </div>
         </div>
         {comp.status === 'ongoing' && (
@@ -50,12 +55,12 @@ const metadata = { title: comp ? `${comp.title} —— 理科迷` : '竞赛详�
             href={getPermalink(`/competition/${id}/exam`)}
             class="btn-primary px-6 py-3 rounded-lg text-base font-semibold inline-block"
           >
-            进入答题
+            {t('page.communityDetail.competition.enterExam')}
           </a>
         )}
       </div>
     ) : (
-      <p>竞赛不存在</p>
+      <p>{t('page.communityDetail.competition.notFound')}</p>
     )
   }
 </Layout>

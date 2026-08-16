@@ -3,6 +3,7 @@ import type { Editor } from '@tiptap/core';
 import TableInsertMenu from './TableInsertMenu';
 import MathEditor from '../nodes/MathEditor';
 import ImageUrlPopover from './ImageUrlPopover';
+import { t } from '~/lib/i18n';
 
 interface MathDraft {
   isBlock: boolean;
@@ -26,61 +27,61 @@ function tableCommand(editor: Editor): void {
 const ITEMS: SlashItem[] = [
   {
     label: 'H1',
-    description: '标题 1',
+    description: t('editor.slash.heading1Desc'),
     icon: 'H1',
     action: (e) => e.chain().focus().toggleHeading({ level: 1 }).run(),
   },
   {
     label: 'H2',
-    description: '标题 2',
+    description: t('editor.slash.heading2Desc'),
     icon: 'H2',
     action: (e) => e.chain().focus().toggleHeading({ level: 2 }).run(),
   },
   {
     label: 'H3',
-    description: '标题 3',
+    description: t('editor.slash.heading3Desc'),
     icon: 'H3',
     action: (e) => e.chain().focus().toggleHeading({ level: 3 }).run(),
   },
   {
-    label: '无序列表',
-    description: '项目符号列表',
+    label: t('editor.slash.bulletList'),
+    description: t('editor.slash.bulletListDesc'),
     icon: '•',
     action: (e) => e.chain().focus().toggleBulletList().run(),
   },
   {
-    label: '有序列表',
-    description: '编号列表',
+    label: t('editor.slash.orderedList'),
+    description: t('editor.slash.orderedListDesc'),
     icon: '1.',
     action: (e) => e.chain().focus().toggleOrderedList().run(),
   },
   {
-    label: '任务列表',
-    description: '待办事项列表',
+    label: t('editor.slash.taskList'),
+    description: t('editor.slash.taskListDesc'),
     icon: '☐',
     action: (e) => e.chain().focus().toggleTaskList().run(),
   },
   {
-    label: '引用',
-    description: '引用块',
+    label: t('editor.slash.blockquote'),
+    description: t('editor.slash.blockquoteDesc'),
     icon: '"',
     action: (e) => e.chain().focus().toggleBlockquote().run(),
   },
   {
-    label: '代码块',
-    description: '代码片段',
+    label: t('editor.slash.codeBlock'),
+    description: t('editor.slash.codeBlockDesc'),
     icon: '</>',
     action: (e) => e.chain().focus().toggleCodeBlock().run(),
   },
   {
-    label: '分割线',
-    description: '水平分割线',
+    label: t('editor.slash.horizontalRule'),
+    description: t('editor.slash.horizontalRuleDesc'),
     icon: '—',
     action: (e) => e.chain().focus().setHorizontalRule().run(),
   },
   {
-    label: '图片',
-    description: '插入图片',
+    label: t('editor.slash.image'),
+    description: t('editor.slash.imageDesc'),
     icon: '🖼',
     action: () => {
       // 由 submenu='image' 处理：打开 ImageUrlPopover
@@ -88,15 +89,15 @@ const ITEMS: SlashItem[] = [
     submenu: 'image',
   },
   {
-    label: '表格',
-    description: '插入表格',
+    label: t('editor.slash.table'),
+    description: t('editor.slash.tableDesc'),
     icon: '⊞',
     action: tableCommand,
     submenu: 'table',
   },
   {
-    label: '行内公式',
-    description: '插入行内数学公式',
+    label: t('editor.slash.inlineMath'),
+    description: t('editor.slash.inlineMathDesc'),
     icon: '𝑓',
     action: (e) => {
       const latex = 'x^2';
@@ -108,8 +109,8 @@ const ITEMS: SlashItem[] = [
     submenu: 'inlineMath',
   },
   {
-    label: '块级公式',
-    description: '插入块级数学公式',
+    label: t('editor.slash.blockMath'),
+    description: t('editor.slash.blockMathDesc'),
     icon: '∑',
     action: (e) => {
       const latex = '\\sum_{i=1}^{n} x_i';
@@ -119,7 +120,7 @@ const ITEMS: SlashItem[] = [
   },
   {
     label: 'Callout',
-    description: '提示框组件',
+    description: t('editor.slash.calloutDesc'),
     icon: '▸',
     action: (e) => {
       e.chain()
@@ -130,23 +131,23 @@ const ITEMS: SlashItem[] = [
   },
   {
     label: 'Figure',
-    description: '图片组件',
+    description: t('editor.slash.figureDesc'),
     icon: '🖼',
     action: (e) => {
       e.chain().focus().insertContent({ type: 'figure', attrs: {} }).run();
     },
   },
   {
-    label: 'AI 续写',
-    description: 'AI 助手续写当前内容',
+    label: t('editor.slash.aiContinue'),
+    description: t('editor.slash.aiContinueDesc'),
     icon: '🤖',
     action: () => {
       // AI panel is opened via DocumentEditor state
     },
   },
   {
-    label: 'AI 总结',
-    description: 'AI 助手总结当前内容',
+    label: t('editor.slash.aiSummarize'),
+    description: t('editor.slash.aiSummarizeDesc'),
     icon: '📝',
     action: () => {},
   },

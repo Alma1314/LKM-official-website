@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { mockNotifications, type MockNotification } from '../data/mock-notifications';
+import { t } from '~/lib/i18n';
 
 const isOpen = ref(false);
 const notifications = ref<MockNotification[]>(mockNotifications);
@@ -43,12 +44,12 @@ function timeAgo(dateStr: string): string {
   const now = Date.now();
   const diff = now - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return '刚刚';
-  if (mins < 60) return `${mins} 分钟前`;
+  if (mins < 1) return t('notification.justNow');
+  if (mins < 60) return t('notification.minutesAgo', { count: mins });
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours} 小时前`;
+  if (hours < 24) return t('notification.hoursAgo', { count: hours });
   const days = Math.floor(hours / 24);
-  return `${days} 天前`;
+  return t('notification.daysAgo', { count: days });
 }
 
 function handleClickOutside(e: MouseEvent) {
@@ -72,7 +73,7 @@ onUnmounted(() => {
   <div id="notification-bell" class="relative">
     <!-- 铃铛触发按钮 -->
     <button
-      aria-label="通知"
+      :aria-label="t('notification.title')"
       class="scale-animation rounded-lg w-11 h-11 active:scale-90 relative flex items-center justify-center text-neutral-700 dark:text-neutral-200 hover:text-primary dark:hover:text-primary hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
       @click="toggle"
     >
@@ -94,13 +95,13 @@ onUnmounted(() => {
     >
       <!-- 面板头部 -->
       <div class="flex items-center justify-between px-3 py-2 border-b border-black/5 dark:border-white/10 mb-1">
-        <span class="font-semibold text-sm text-neutral-800 dark:text-neutral-100">通知</span>
+        <span class="font-semibold text-sm text-neutral-800 dark:text-neutral-100">{{ t('notification.title') }}</span>
         <button
           v-if="unreadCount > 0"
           class="text-xs text-primary hover:underline font-medium transition-colors"
           @click="markAllAsRead"
         >
-          全部已读
+          {{ t('notification.markAllRead') }}
         </button>
       </div>
 
@@ -109,7 +110,7 @@ onUnmounted(() => {
         v-if="notifications.length === 0"
         class="px-3 py-6 text-center text-sm text-neutral-400 dark:text-neutral-500"
       >
-        暂无通知
+        {{ t('notification.empty') }}
       </div>
 
       <!-- 通知列表项 -->

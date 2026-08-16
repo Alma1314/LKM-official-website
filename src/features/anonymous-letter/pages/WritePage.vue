@@ -3,8 +3,8 @@
     <div class="container">
       <!-- 页面标题 -->
       <section class="write-header">
-        <h1 class="page-title grad-text">✍️ 写一封信</h1>
-        <p class="page-sub">把你的心事、秘密、表白或悄悄话，装进信封，投递给树洞。</p>
+        <h1 class="page-title grad-text">✍️ {{ t('treehole.write.title') }}</h1>
+        <p class="page-sub">{{ t('treehole.write.subtitle2') }}</p>
       </section>
 
       <!-- 双栏布局 -->
@@ -14,13 +14,13 @@
           <!-- 工具栏 -->
           <div class="editor-toolbar">
             <div class="tb-left">
-              <button class="tb-btn" @click="emojiOpen = !emojiOpen" title="表情">😊</button>
+              <button class="tb-btn" @click="emojiOpen = !emojiOpen" :title="t('treehole.write.emoji')">😊</button>
               <span class="tb-divider"></span>
               <button
                 class="tb-btn"
                 :class="{ active: fontSize === 'small' }"
                 @click="setFontSize('small')"
-                title="缩小字体"
+                :title="t('treehole.write.fontSmallTitle')"
               >
                 A<sup>-</sup>
               </button>
@@ -28,7 +28,7 @@
                 class="tb-btn"
                 :class="{ active: fontSize === 'normal' }"
                 @click="setFontSize('normal')"
-                title="正常字体"
+                :title="t('treehole.write.fontNormalTitle')"
               >
                 A
               </button>
@@ -36,12 +36,14 @@
                 class="tb-btn"
                 :class="{ active: fontSize === 'large' }"
                 @click="setFontSize('large')"
-                title="放大字体"
+                :title="t('treehole.write.fontLargeTitle')"
               >
                 A<sup>+</sup>
               </button>
               <span class="tb-divider"></span>
-              <button class="tb-btn tb-btn-clear" @click="clearContent" title="清空内容">🗑️ 清空</button>
+              <button class="tb-btn tb-btn-clear" @click="clearContent" :title="t('treehole.write.clearContentTitle')">
+                🗑️ {{ t('treehole.write.clearContent') }}
+              </button>
             </div>
             <div class="tb-right">
               <span class="char-counter" :class="{ warn: charCount > 900, danger: charCount > 1000 }"
@@ -69,7 +71,7 @@
               :class="'fs-' + fontSize"
               :style="{ fontSize: fsValue }"
               v-model="content"
-              placeholder="写下你的心事、表白、吐槽或悄悄话…"
+              :placeholder="t('treehole.write.contentPlaceholder')"
               maxlength="1000"
               @input="onContentInput"
             ></textarea>
@@ -80,7 +82,7 @@
         <aside class="setup-panel">
           <!-- 分类 -->
           <div class="setup-card glass">
-            <div class="setup-label">📂 信件分类</div>
+            <div class="setup-label">📂 {{ t('treehole.write.category') }}</div>
             <div class="cat-grid">
               <button
                 v-for="c in CATEGORIES"
@@ -96,7 +98,7 @@
 
           <!-- 隐私等级 -->
           <div class="setup-card glass">
-            <div class="setup-label">🔒 隐私等级</div>
+            <div class="setup-label">🔒 {{ t('treehole.write.privacyLevel') }}</div>
             <div class="privacy-row">
               <button
                 v-for="p in PRIVACY"
@@ -114,16 +116,21 @@
 
           <!-- 匿名代号 -->
           <div class="setup-card glass">
-            <div class="setup-label">🎭 匿名代号</div>
+            <div class="setup-label">🎭 {{ t('treehole.write.codename') }}</div>
             <div class="codename-row">
-              <input class="native-input" v-model="form.codename" placeholder="系统自动生成…" maxlength="20" />
-              <button class="chip" @click="form.codename = randomCodename()">🎲 随机</button>
+              <input
+                class="native-input"
+                v-model="form.codename"
+                :placeholder="t('treehole.write.codenamePlaceholder2')"
+                maxlength="20"
+              />
+              <button class="chip" @click="form.codename = randomCodename()">{{ t('treehole.write.random') }}</button>
             </div>
           </div>
 
           <!-- 心情标签 -->
           <div class="setup-card glass">
-            <div class="setup-label">💭 心情标签</div>
+            <div class="setup-label">💭 {{ t('treehole.write.moods') }}</div>
             <div class="chip-row">
               <button
                 v-for="m in MOODS"
@@ -139,23 +146,23 @@
 
           <!-- 内容标签 -->
           <div class="setup-card glass">
-            <div class="setup-label">🏷️ 内容标签</div>
+            <div class="setup-label">🏷️ {{ t('treehole.write.tags') }}</div>
             <div class="chip-row">
               <button
-                v-for="t in TAGS"
-                :key="t.key"
+                v-for="tg in TAGS"
+                :key="tg.key"
                 class="chip"
-                :class="{ active: form.tags.includes(t.key) }"
-                @click="toggleTag(t.key)"
+                :class="{ active: form.tags.includes(tg.key) }"
+                @click="toggleTag(tg.key)"
               >
-                {{ t.emoji }} {{ t.label }}
+                {{ tg.emoji }} {{ tg.label }}
               </button>
             </div>
           </div>
 
           <!-- 贴纸 -->
           <div class="setup-card glass">
-            <div class="setup-label">🌸 贴纸</div>
+            <div class="setup-label">🌸 {{ t('treehole.write.sticker') }}</div>
             <div class="chip-row">
               <button
                 v-for="s in STICKERS"
@@ -171,7 +178,7 @@
 
           <!-- 信纸模板 -->
           <div class="setup-card glass">
-            <div class="setup-label">📄 信纸模板</div>
+            <div class="setup-label">📄 {{ t('treehole.write.paper') }}</div>
             <div class="paper-row">
               <button
                 v-for="p in PAPERS"
@@ -188,13 +195,15 @@
 
           <!-- 定时发布 -->
           <div class="setup-card glass">
-            <div class="setup-label">⏰ 定时发布</div>
+            <div class="setup-label">⏰ {{ t('treehole.write.scheduled') }}</div>
             <div class="toggle-row">
               <label class="toggle-switch">
                 <input type="checkbox" v-model="scheduleEnabled" />
                 <span class="toggle-track"></span>
               </label>
-              <span class="toggle-label">{{ scheduleEnabled ? '已开启' : '关闭' }}</span>
+              <span class="toggle-label">{{
+                scheduleEnabled ? t('treehole.write.enabled') : t('treehole.write.disabled')
+              }}</span>
             </div>
             <input
               v-if="scheduleEnabled"
@@ -206,13 +215,15 @@
 
           <!-- 限时封存 -->
           <div class="setup-card glass">
-            <div class="setup-label">🔐 限时封存</div>
+            <div class="setup-label">🔐 {{ t('treehole.write.seal') }}</div>
             <div class="toggle-row">
               <label class="toggle-switch">
                 <input type="checkbox" v-model="sealEnabled" />
                 <span class="toggle-track"></span>
               </label>
-              <span class="toggle-label">{{ sealEnabled ? '已开启' : '关闭' }}</span>
+              <span class="toggle-label">{{
+                sealEnabled ? t('treehole.write.enabled') : t('treehole.write.disabled')
+              }}</span>
             </div>
             <input
               v-if="sealEnabled"
@@ -224,13 +235,13 @@
 
           <!-- 验证码 -->
           <div class="setup-card glass">
-            <div class="setup-label">🤖 验证码</div>
+            <div class="setup-label">🤖 {{ t('treehole.write.captcha') }}</div>
             <div class="captcha-row">
               <div class="captcha-code" @click="genCaptcha">{{ captchaCode }}</div>
               <input
                 class="native-input captcha-input"
                 v-model="captchaInput"
-                placeholder="请输入验证码"
+                :placeholder="t('treehole.write.captchaPlaceholder2')"
                 maxlength="4"
               />
             </div>
@@ -240,10 +251,10 @@
           <div class="submit-actions">
             <button class="btn-grad btn-submit" @click="submitLetter" :disabled="submitting">
               <span v-if="submitting" class="spinner-small"></span>
-              <span v-else>📮 投递信件</span>
+              <span v-else>📮 {{ t('treehole.write.submit') }}</span>
             </button>
-            <button class="btn-outline" @click="saveAsDraft">💾 保存草稿</button>
-            <button class="btn-text" @click="clearAll">🗑️ 全部清空</button>
+            <button class="btn-outline" @click="saveAsDraft">{{ t('treehole.write.saveDraft') }}</button>
+            <button class="btn-text" @click="clearAll">{{ t('treehole.write.clearAll') }}</button>
           </div>
         </aside>
       </div>
@@ -254,12 +265,12 @@
       <div v-if="showSuccess" class="modal-overlay" @click.self="showSuccess = false">
         <div class="modal-card pop-scale">
           <div class="modal-icon">✅</div>
-          <h2 class="modal-title">投递成功</h2>
+          <h2 class="modal-title">{{ t('treehole.write.successTitle') }}</h2>
           <p class="modal-desc">{{ successMsg }}</p>
           <div class="modal-actions">
-            <a :href="buildUrl('/community/treehole')" class="btn-grad">🏠 返回广场</a>
-            <a :href="buildUrl('/community/treehole/mine')" class="chip">📬 我的信箱</a>
-            <button class="btn-text" @click="writeAnother">✍️ 再写一封</button>
+            <a :href="buildUrl('/community/treehole')" class="btn-grad">{{ t('treehole.write.backToSquare') }}</a>
+            <a :href="buildUrl('/community/treehole/mine')" class="chip">{{ t('treehole.write.myMailbox') }}</a>
+            <button class="btn-text" @click="writeAnother">{{ t('treehole.write.writeAnother') }}</button>
           </div>
         </div>
       </div>
@@ -295,6 +306,7 @@ import {
 import { randomCodename } from '../utils/codename';
 import { useApp } from '../stores/app';
 import { buildUrl } from '~/lib/utils/paths';
+import { t } from '~/lib/i18n';
 
 const app = useApp();
 
@@ -414,19 +426,19 @@ function clearAll() {
 // ---------- 验证 ----------
 function validate() {
   if (!content.value.trim()) {
-    alert('请先写点什么吧～');
+    alert(t('treehole.write.emptyAlert'));
     return false;
   }
   if (charCount.value > 1000) {
-    alert('内容超过 1000 字限制');
+    alert(t('treehole.write.lengthAlert'));
     return false;
   }
   if (!canPost()) {
-    alert('投稿太频繁了，请稍后再试～');
+    alert(t('treehole.write.rateAlert'));
     return false;
   }
   if (captchaInput.value.toUpperCase() !== captchaCode.value) {
-    alert('验证码不正确');
+    alert(t('treehole.write.captchaAlert'));
     genCaptcha();
     captchaInput.value = '';
     return false;
@@ -491,14 +503,14 @@ function submitLetter() {
     }
 
     successMsg.value = editId.value
-      ? '信件已更新发布！'
+      ? t('treehole.write.updatedTip2')
       : scheduleEnabled.value && form.scheduledAt
-        ? `信件已定时 ${new Date(form.scheduledAt).toLocaleString()} 发布`
-        : '你的信件已投入树洞，快去看看大家的回应吧～';
+        ? t('treehole.write.scheduledTip2', { time: new Date(form.scheduledAt).toLocaleString() })
+        : t('treehole.write.publishedTip2');
 
     showSuccess.value = true;
   } catch {
-    alert('投稿失败，请重试');
+    alert(t('treehole.write.submitFail'));
   } finally {
     submitting.value = false;
   }
@@ -506,7 +518,7 @@ function submitLetter() {
 
 function saveAsDraft() {
   if (!content.value.trim()) {
-    alert('还没有任何内容哦～');
+    alert(t('treehole.write.emptyDraftMsg2'));
     return;
   }
   const draft = {
@@ -524,7 +536,7 @@ function saveAsDraft() {
     savedAt: Date.now(),
   };
   saveDraft(draft);
-  alert('草稿已保存到本地！');
+  alert(t('treehole.write.draftSaved2'));
 }
 
 function writeAnother() {

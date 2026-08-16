@@ -1,12 +1,16 @@
 <template>
   <TreeholeShell active-nav="rank">
     <div class="container">
-      <h1 class="page-title">🏆 热门树洞榜单</h1>
-      <p class="page-sub">此刻最被温柔以待的匿名信。</p>
+      <h1 class="page-title">🏆 {{ t('treehole.rank.title') }}</h1>
+      <p class="page-sub">{{ t('treehole.rank.subtitle') }}</p>
 
       <div class="tabs">
-        <button class="chip" :class="{ active: range === 'today' }" @click="range = 'today'">今日热榜</button>
-        <button class="chip" :class="{ active: range === 'week' }" @click="range = 'week'">本周榜单</button>
+        <button class="chip" :class="{ active: range === 'today' }" @click="range = 'today'">
+          {{ t('treehole.rank.todayTab') }}
+        </button>
+        <button class="chip" :class="{ active: range === 'week' }" @click="range = 'week'">
+          {{ t('treehole.rank.weekTab') }}
+        </button>
       </div>
 
       <section v-if="rankList.length" class="rank-list">
@@ -24,7 +28,7 @@
           </div>
         </div>
       </section>
-      <EmptyState v-else title="榜单还没数据" sub="多去广场点赞收藏，榜单就会热闹起来" />
+      <EmptyState v-else :title="t('treehole.rank.emptyTitle')" :sub="t('treehole.rank.emptySub')" />
     </div>
   </TreeholeShell>
 </template>
@@ -35,6 +39,7 @@ import TreeholeShell from '../components/TreeholeShell.vue';
 import EmptyState from '../components/EmptyState.vue';
 import { getCategory } from '../stores/constants';
 import { getLetters } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const range = ref('today');
 const letters = ref([]);

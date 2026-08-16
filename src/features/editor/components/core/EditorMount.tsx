@@ -2,6 +2,7 @@ import { Component, useEffect, useState, lazy, Suspense } from 'react';
 import type { ReactElement } from 'react';
 import type { PersistenceAdapter } from '../../engine/types';
 import '../../styles/editor.css';
+import { t } from '~/lib/i18n';
 
 const DocumentEditor = lazy(() => import('./DocumentEditor'));
 
@@ -59,9 +60,7 @@ class EditorErrorBoundary extends Component<Props, State> {
             <div className="rte-root">
               <div className="rte-loading">
                 <div className="rte-spinner" />
-                <span className="text-sm">
-                  正在重试加载编辑器……({retries}/{MAX_RETRIES})
-                </span>
+                <span className="text-sm">{t('editor.retryingEditor', { retries, total: MAX_RETRIES })}</span>
                 <pre className="rte-error">{error.message || String(error)}</pre>
               </div>
             </div>
@@ -72,7 +71,7 @@ class EditorErrorBoundary extends Component<Props, State> {
           <div className="rte-root">
             <div className="rte-loading">
               <div className="rte-spinner" />
-              <span className="text-sm">编辑器加载异常，正在重试……</span>
+              <span className="text-sm">{t('editor.editorLoadRetryNotice')}</span>
             </div>
           </div>
         );
@@ -98,16 +97,16 @@ class EditorErrorBoundary extends Component<Props, State> {
               <line x1="12" x2="12" y1="8" y2="12" />
               <line x1="12" x2="12.01" y1="16" y2="16" />
             </svg>
-            <h3>编辑器加载失败</h3>
-            <p>已尝试 {MAX_RETRIES} 次加载，仍无法启动编辑器。可能的原因：</p>
+            <h3>{t('editor.editorLoadFailed')}</h3>
+            <p>{t('editor.loadErrorDetail', { count: MAX_RETRIES })}</p>
             <ul className="text-xs list-disc list-inside text-left">
-              <li>开发服务器预构建缓存过期</li>
-              <li>网络连接问题</li>
-              <li>浏览器缓存冲突</li>
+              <li>{t('editor.loadErrorCache')}</li>
+              <li>{t('editor.loadErrorNetwork')}</li>
+              <li>{t('editor.loadErrorBrowserCache')}</li>
             </ul>
             <div className="rte-error-actions">
               <button className="rte-btn rte-btn--sm" onClick={this.handleRefresh}>
-                刷新页面
+                {t('editor.refreshPage')}
               </button>
               <button
                 className="rte-btn rte-btn--primary rte-btn--sm"
@@ -117,7 +116,7 @@ class EditorErrorBoundary extends Component<Props, State> {
                   this.handleRetry();
                 }}
               >
-                重新尝试
+                {t('editor.retry')}
               </button>
             </div>
             <pre>{error.message || String(error)}</pre>
@@ -134,7 +133,7 @@ class EditorErrorBoundary extends Component<Props, State> {
           <div className="rte-root">
             <div className="rte-loading">
               <div className="rte-spinner" />
-              <span>正在加载编辑器……</span>
+              <span>{t('editor.loadingEditor')}</span>
             </div>
           </div>
         }
@@ -161,7 +160,7 @@ export default function EditorMount({ adapter }: EditorMountProps): ReactElement
       <div className="rte-root">
         <div className="rte-loading">
           <div className="rte-spinner" />
-          <span>正在加载编辑器……</span>
+          <span>{t('editor.loadingEditor')}</span>
         </div>
       </div>
     );

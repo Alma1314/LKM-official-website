@@ -3,6 +3,7 @@ import Layout from '~/layouts/OfficialSidebarLayout.astro';
 import { mockProjects } from '~/features/project-hub/data/mock-projects';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 // server 模式：params 从 URL 直接解析
 // 后端就绪后切换为：const proj = await projectApi.getProject(projectId)
@@ -17,9 +18,16 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-const revisionLabel = (rev: number) => (rev === 0 ? '初版' : rev === 1 ? '一改' : `${rev === 2 ? '二' : rev}改`);
+const revisionLabel = (rev: number) =>
+  rev === 0
+    ? t('page.projects.revisionInitial')
+    : rev === 1
+      ? t('page.projects.revisionOne')
+      : rev === 2
+        ? t('page.projects.revisionTwo')
+        : t('page.projects.revisionN', { n: rev });
 
-const metadata = { title: `${proj.name} —— 理科迷` };
+const metadata = { title: `${proj.name} —— LKM` };
 ---
 
 <Layout
@@ -34,13 +42,15 @@ const metadata = { title: `${proj.name} —— 理科迷` };
       <div class="flex items-center gap-2 mb-2">
         {
           proj.isPinned && (
-            <span class="text-xs px-2 py-1 rounded font-medium bg-red-100 dark:bg-red-950/30 text-red-600">置顶</span>
+            <span class="text-xs px-2 py-1 rounded font-medium bg-red-100 dark:bg-red-950/30 text-red-600">
+              {t('page.projects.pinned')}
+            </span>
           )
         }
         {
           proj.isIncubated && (
             <span class="text-xs px-2 py-1 rounded font-medium bg-amber-100 dark:bg-amber-950/30 text-amber-600">
-              七月团队孵化
+              {t('page.projects.incubated')}
             </span>
           )
         }
@@ -51,18 +61,26 @@ const metadata = { title: `${proj.name} —— 理科迷` };
             { 'bg-blue-100 dark:bg-blue-950/30 text-blue-600': !proj.isRecruiting },
           ]}
         >
-          {proj.type === 'recruiting' ? (proj.isRecruiting ? '招募中' : '已招满') : '成果展示'}
+          {
+            proj.type === 'recruiting'
+              ? proj.isRecruiting
+                ? t('page.projects.recruiting')
+                : t('page.projects.recruited')
+              : t('page.projects.showcase')
+          }
         </span>
       </div>
       <h1 class="text-3xl font-bold text-deep-text">{proj.name}</h1>
-      <p class="text-sm text-text-muted mt-2">发起人：{proj.initiatorName} · {formatDate(proj.createdAt)}</p>
+      <p class="text-sm text-text-muted mt-2">
+        {t('page.projects.initiator', { name: proj.initiatorName, date: formatDate(proj.createdAt) })}
+      </p>
     </div>
 
     <!-- 进度条 -->
     <div class="bg-card-bg border border-surface-3 rounded-xl p-5">
       <div class="flex items-center justify-between mb-2 text-sm">
-        <span class="text-deep-text font-medium">项目进度</span><span class="text-primary font-bold"
-          >{proj.progress}%</span
+        <span class="text-deep-text font-medium">{t('page.projects.progress')}</span><span
+          class="text-primary font-bold">{proj.progress}%</span
         >
       </div>
       <div class="h-2.5 rounded-full bg-surface-3 overflow-hidden">
@@ -76,7 +94,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.background && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">项目背景</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.background')}</h3>
               <p class="text-text-muted leading-relaxed">{proj.background}</p>
             </>
           </div>
@@ -86,7 +104,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.goals && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">目标</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.goals')}</h3>
               <p class="text-text-muted leading-relaxed">{proj.goals}</p>
             </>
           </div>
@@ -96,7 +114,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.requirements && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">招募需求</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.requirements')}</h3>
               <p class="text-text-muted leading-relaxed">{proj.requirements}</p>
             </>
           </div>
@@ -106,7 +124,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.teamIntro && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">团队介绍</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.teamIntro')}</h3>
               <p class="text-text-muted leading-relaxed">{proj.teamIntro}</p>
             </>
           </div>
@@ -116,7 +134,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.team.length > 0 && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">团队成员</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.teamMembers')}</h3>
               <div class="flex flex-wrap gap-2">
                 {proj.team.map((m) => (
                   <span class="text-xs px-2 py-1 rounded-full bg-surface-3 text-text-muted">
@@ -132,10 +150,12 @@ const metadata = { title: `${proj.name} —— 理科迷` };
         proj.recruitingRoles.length > 0 && (
           <div>
             <>
-              <h3 class="font-semibold text-deep-text mb-1">招募角色</h3>
+              <h3 class="font-semibold text-deep-text mb-1">{t('page.projects.recruitingRoles')}</h3>
               <div class="flex flex-wrap gap-2">
                 {proj.recruitingRoles.map((r) => (
-                  <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">缺 {r}</span>
+                  <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">
+                    {t('page.projects.roleMissing', { name: r })}
+                  </span>
                 ))}
               </div>
             </>
@@ -145,8 +165,8 @@ const metadata = { title: `${proj.name} —— 理科迷` };
       {
         proj.tags.length > 0 && (
           <div class="flex flex-wrap gap-1">
-            {proj.tags.map((t) => (
-              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{t}</span>
+            {proj.tags.map((tag) => (
+              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{tag}</span>
             ))}
           </div>
         )
@@ -157,7 +177,7 @@ const metadata = { title: `${proj.name} —— 理科迷` };
     {
       proj.reports.length > 0 && (
         <div class="bg-card-bg border border-surface-3 rounded-xl p-6">
-          <h3 class="font-semibold text-deep-text mb-4">项目汇报</h3>
+          <h3 class="font-semibold text-deep-text mb-4">{t('page.projects.reports')}</h3>
           <div class="space-y-4">
             {proj.reports.map((r) => (
               <div class="border-l-2 border-primary pl-4">

@@ -3,16 +3,16 @@
     <div class="container">
       <!-- 头部 -->
       <section class="wish-head glass float-up">
-        <h1 class="page-title">🌟 许愿墙</h1>
-        <button class="btn-grad" @click="makeDialogOpen = true">+ 许个愿</button>
+        <h1 class="page-title">🌟 {{ t('treehole.wish.title') }}</h1>
+        <button class="btn-grad" @click="makeDialogOpen = true">{{ t('treehole.wish.makeWish') }}</button>
       </section>
 
       <!-- 空状态 -->
       <section v-if="wishes.length === 0" class="wish-empty glass float-up">
         <div class="empty-icon">🌟</div>
-        <p class="empty-text">许愿墙上还没有愿望</p>
-        <p class="empty-sub">点亮第一颗星吧</p>
-        <button class="btn-grad" @click="makeDialogOpen = true">✨ 许个愿</button>
+        <p class="empty-text">{{ t('treehole.wish.emptyTitle') }}</p>
+        <p class="empty-sub">{{ t('treehole.wish.emptySub') }}</p>
+        <button class="btn-grad" @click="makeDialogOpen = true">{{ t('treehole.wish.makeDialogTitle') }}</button>
       </section>
 
       <!-- 许愿墙网格 -->
@@ -25,7 +25,9 @@
         >
           <p class="wish-text">{{ w.text }}</p>
           <div class="wish-meta">
-            <button class="light-btn" @click="onLight(w)" :title="'点亮这个愿望'">🕯️ {{ w.lights || 0 }}</button>
+            <button class="light-btn" @click="onLight(w)" :title="t('treehole.wish.lightWishTitle')">
+              🕯️ {{ w.lights || 0 }}
+            </button>
             <span class="wish-date">{{ formatDate(w.createdAt) }}</span>
             <template v-if="w.ownerId === 'me_local'">
               <button class="wish-action-chip" @click="openEdit(w)">✏️</button>
@@ -39,9 +41,14 @@
     <!-- 许愿弹窗 -->
     <div v-if="makeDialogOpen" class="dialog-overlay" @click.self="makeDialogOpen = false">
       <div class="dialog-box glass">
-        <h3 class="dialog-title">🌟 许个愿</h3>
-        <p class="dialog-desc">写下你的愿望，让星星听到。</p>
-        <textarea v-model="makeText" class="dialog-textarea" placeholder="我希望..." rows="4"></textarea>
+        <h3 class="dialog-title">🌟 {{ t('treehole.wish.makeDialogTitle') }}</h3>
+        <p class="dialog-desc">{{ t('treehole.wish.makeDialogDesc') }}</p>
+        <textarea
+          v-model="makeText"
+          class="dialog-textarea"
+          :placeholder="t('treehole.wish.makePlaceholder')"
+          rows="4"
+        ></textarea>
         <div class="dialog-actions">
           <button
             class="chip"
@@ -50,9 +57,11 @@
               makeText = '';
             "
           >
-            取消
+            {{ t('treehole.wish.cancel') }}
           </button>
-          <button class="btn-grad btn-sm" @click="onMake" :disabled="!makeText.trim()">🌟 点亮愿望</button>
+          <button class="btn-grad btn-sm" @click="onMake" :disabled="!makeText.trim()">
+            {{ t('treehole.wish.lightWishBtn') }}
+          </button>
         </div>
       </div>
     </div>
@@ -60,11 +69,18 @@
     <!-- 编辑弹窗 -->
     <div v-if="editDialogOpen" class="dialog-overlay" @click.self="editDialogOpen = false">
       <div class="dialog-box glass">
-        <h3 class="dialog-title">✏️ 编辑愿望</h3>
-        <textarea v-model="editText" class="dialog-textarea" placeholder="修改你的愿望..." rows="4"></textarea>
+        <h3 class="dialog-title">{{ t('treehole.wish.editTitle') }}</h3>
+        <textarea
+          v-model="editText"
+          class="dialog-textarea"
+          :placeholder="t('treehole.wish.editPlaceholder')"
+          rows="4"
+        ></textarea>
         <div class="dialog-actions">
-          <button class="chip" @click="editDialogOpen = false">取消</button>
-          <button class="btn-grad btn-sm" @click="onSaveEdit" :disabled="!editText.trim()">💾 保存</button>
+          <button class="chip" @click="editDialogOpen = false">{{ t('treehole.wish.cancel') }}</button>
+          <button class="btn-grad btn-sm" @click="onSaveEdit" :disabled="!editText.trim()">
+            {{ t('treehole.wish.save') }}
+          </button>
         </div>
       </div>
     </div>
@@ -75,6 +91,7 @@
 import { ref, onMounted } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import { getWishes, addWish, lightWish, saveWishes } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const wishes = ref([]);
 const makeDialogOpen = ref(false);
@@ -127,7 +144,7 @@ function onSaveEdit() {
 }
 
 function onDelete(w) {
-  if (!confirm('确定删除这个愿望吗？')) return;
+  if (!confirm(t('treehole.wish.confirmDeleteWish'))) return;
   const list = getWishes().filter((x) => x.id !== w.id);
   saveWishes(list);
   loadWishes();

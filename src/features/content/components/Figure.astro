@@ -1,4 +1,6 @@
 ---
+import { t } from '~/lib/i18n';
+
 interface Props {
   src?: string;
   alt?: string;
@@ -31,7 +33,7 @@ const alignClasses: Record<string, string> = {
       />
     ) : (
       <div class="border-2 border-dashed border-surface-3 rounded-lg p-8 text-deep-text/50">
-        <p class="text-center text-sm">暂无图片</p>
+        <p class="text-center text-sm">{t('primitives.noImage')}</p>
       </div>
     )
   }

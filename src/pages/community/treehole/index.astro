@@ -4,11 +4,12 @@ import HomePage from '~/features/anonymous-letter/pages/HomePage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
 
 const metadata: MetaData = {
-  title: '拾光树洞',
-  description: '一个治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。',
+  title: t('page.treehole.homeTitle'),
+  description: t('page.treehole.homeDescription'),
 };
 ---
 

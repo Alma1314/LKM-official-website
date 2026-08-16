@@ -3,18 +3,18 @@
     <div class="container">
       <!-- 头部 -->
       <section class="bottle-head glass float-up">
-        <h1 class="page-title">🍶 漂流瓶</h1>
-        <button class="btn-grad" @click="throwDialogOpen = true">🍶 扔一个瓶</button>
+        <h1 class="page-title">🍶 {{ t('treehole.bottle.title') }}</h1>
+        <button class="btn-grad" @click="throwDialogOpen = true">{{ t('treehole.bottle.throwBtn') }}</button>
       </section>
 
       <!-- 无漂流瓶状态 -->
       <section v-if="!currentBottle" class="bottle-empty glass float-up">
         <div class="bottle-sea">
           <div class="sea-emoji">🌊</div>
-          <p class="sea-text">海里有 {{ bottleCount }} 个漂流瓶在漂流</p>
-          <p class="sea-sub">每一个瓶子里都藏着一个故事</p>
+          <p class="sea-text">{{ t('treehole.bottle.seaText', { count: bottleCount }) }}</p>
+          <p class="sea-sub">{{ t('treehole.bottle.seaSub') }}</p>
           <button class="btn-grad" @click="pickBottleHandler" :disabled="picking || bottleCount === 0">
-            {{ picking ? '🌊 打捞中...' : '🫙 捞一个漂流瓶' }}
+            {{ picking ? t('treehole.bottle.picking') : t('treehole.bottle.pickBtn') }}
           </button>
         </div>
       </section>
@@ -25,7 +25,9 @@
           <div class="bottle-icon">🍶</div>
           <div class="bottle-text">{{ currentBottle.text }}</div>
           <div class="bottle-meta">
-            <span class="bottle-from">—— {{ currentBottle.from || '海那边的陌生人' }}</span>
+            <span class="bottle-from">{{
+              t('treehole.bottle.from', { name: currentBottle.from || t('treehole.bottle.stranger') })
+            }}</span>
             <span class="bottle-date">{{ formatDate(currentBottle.createdAt) }}</span>
           </div>
         </div>
@@ -35,7 +37,7 @@
           <textarea
             v-model="replyText"
             class="reply-textarea"
-            placeholder="写下你的回复，然后放回海里..."
+            :placeholder="t('treehole.bottle.replyPlaceholder')"
             rows="3"
           ></textarea>
           <div class="reply-actions">
@@ -46,23 +48,25 @@
                 replyText = '';
               "
             >
-              ← 换个瓶子
+              {{ t('treehole.bottle.switchBottle') }}
             </button>
-            <button class="btn-grad btn-sm" @click="sendBottleReply" :disabled="!replyText.trim()">📨 放回海里</button>
+            <button class="btn-grad btn-sm" @click="sendBottleReply" :disabled="!replyText.trim()">
+              {{ t('treehole.bottle.sendReply') }}
+            </button>
           </div>
-          <p v-if="replyOk" class="reply-ok">回复已随海浪漂走 🌊</p>
+          <p v-if="replyOk" class="reply-ok">{{ t('treehole.bottle.replySent') }}</p>
         </div>
       </section>
 
       <!-- 扔漂流瓶弹窗 -->
       <div v-if="throwDialogOpen" class="dialog-overlay" @click.self="throwDialogOpen = false">
         <div class="dialog-box glass">
-          <h3 class="dialog-title">🍶 扔一个漂流瓶</h3>
-          <p class="dialog-desc">写下你想说的话，让海浪带走它。</p>
+          <h3 class="dialog-title">🍶 {{ t('treehole.bottle.throwDialogTitle') }}</h3>
+          <p class="dialog-desc">{{ t('treehole.bottle.throwDialogDesc') }}</p>
           <textarea
             v-model="throwText"
             class="dialog-textarea"
-            placeholder="想对未知的某个人说些什么..."
+            :placeholder="t('treehole.bottle.throwPlaceholder')"
             rows="4"
           ></textarea>
           <div class="dialog-actions">
@@ -73,9 +77,11 @@
                 throwText = '';
               "
             >
-              取消
+              {{ t('treehole.bottle.cancel') }}
             </button>
-            <button class="btn-grad btn-sm" @click="throwBottle" :disabled="!throwText.trim()">🍶 扔进海里</button>
+            <button class="btn-grad btn-sm" @click="throwBottle" :disabled="!throwText.trim()">
+              {{ t('treehole.bottle.throwBtn2') }}
+            </button>
           </div>
         </div>
       </div>
@@ -87,6 +93,7 @@
 import { ref, computed, onMounted } from 'vue';
 import TreeholeShell from '../components/TreeholeShell.vue';
 import { getBottles, addBottle, pickBottle, markBottlePicked } from '../stores/storage';
+import { t } from '~/lib/i18n';
 
 const allBottles = ref([]);
 const currentBottle = ref(null);
@@ -132,7 +139,7 @@ function throwBottle() {
   addBottle({
     id: 'bottle_' + Date.now(),
     text: throwText.value.trim(),
-    from: '海那边的陌生人',
+    from: t('treehole.bottle.stranger'),
     createdAt: Date.now(),
     picked: false,
     ownerId: 'me_local',

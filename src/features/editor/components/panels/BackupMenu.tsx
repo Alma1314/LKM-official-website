@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { ReactElement } from 'react';
 import type { PersistenceAdapter, BackupEntry } from '../../engine/types';
+import { t } from '~/lib/i18n';
 
 interface BackupMenuProps {
   adapter: PersistenceAdapter;
@@ -27,7 +28,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
   const handleExport = useCallback(async () => {
     const docs = await Promise.resolve(adapter.listDocuments());
     if (docs.length === 0) {
-      alert('暂无文档可导出');
+      alert(t('editor.backup.noDocsToExport'));
       return;
     }
     const fullDocs = [];
@@ -85,21 +86,32 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
         try {
           const parsed = JSON.parse(reader.result as string);
           if (!Array.isArray(parsed)) {
-            alert('JSON 格式不正确：需要文档数组');
+            alert(t('editor.backup.invalidJsonFormat'));
             return;
           }
           data = parsed;
         } catch (err) {
-          alert('JSON 解析失败: ' + (err instanceof Error ? err.message : '格式错误'));
+          alert(
+            t('editor.backup.jsonParseFailed', {
+              message: err instanceof Error ? err.message : t('editor.backup.formatError'),
+            })
+          );
           return;
         }
         if (data.length === 0) {
-          alert('JSON 文件中没有文档数据');
+          alert(t('editor.backup.invalidJsonNoDocs'));
           return;
         }
         const existing = await Promise.resolve(adapter.listDocuments());
         if (existing.length > 0) {
-          if (!confirm(`将导入 ${data.length} 个文档，当前 ${existing.length} 个文档将被覆盖。确定继续？`)) {
+          if (
+            !confirm(
+              t('editor.backup.importOverwrite', {
+                importCount: data.length,
+                existingCount: existing.length,
+              })
+            )
+          ) {
             return;
           }
         }
@@ -126,7 +138,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
             })
           );
         }
-        alert(`成功导入 ${data.length} 个文档`);
+        alert(t('editor.backup.importSuccess', { count: data.length }));
         window.location.reload();
       };
       reader.readAsText(file);
@@ -141,7 +153,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
   }, [adapter]);
 
   const handleRestore = useCallback(async (docId: string, title: string) => {
-    if (!confirm(`从备份恢复"${title}"？当前数据将被覆盖。`)) return;
+    if (!confirm(t('editor.backup.restoreConfirm', { title }))) return;
     // Navigate to editor with this doc ID to load the backup content
     setShowBackups(false);
     setOpen(false);
@@ -158,7 +170,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
           setOpen(!open);
           setShowBackups(false);
         }}
-        title="备份管理"
+        title={t('editor.backup.title')}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +187,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
           <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
           <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
         </svg>
-        <span className="hidden lg:inline text-xs">备份</span>
+        <span className="hidden lg:inline text-xs">{t('editor.backup.backup')}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"
@@ -213,7 +225,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" x2="12" y1="15" y2="3" />
             </svg>
-            导出所有文档
+            {t('editor.backup.exportAll')}
           </button>
           <button
             type="button"
@@ -235,7 +247,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" x2="12" y1="3" y2="15" />
             </svg>
-            导入文档
+            {t('editor.backup.importDocs')}
           </button>
           <button
             type="button"
@@ -257,7 +269,7 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
               <path d="M3 3v5h5" />
               <path d="M12 7v5l4 2" />
             </svg>
-            从备份恢复
+            {t('editor.backup.restoreFromBackup')}
           </button>
         </div>
       )}
@@ -265,13 +277,15 @@ export default function BackupMenu({ adapter }: BackupMenuProps): ReactElement {
       {open && showBackups && (
         <div className="absolute top-full right-0 mt-1 z-50 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-2 min-w-[260px] max-h-[300px] overflow-y-auto rte-dropdown">
           <div className="flex items-center justify-between mb-2 px-1">
-            <span className="text-xs text-deep-text/70">可用备份 ({backups.length})</span>
+            <span className="text-xs text-deep-text/70">
+              {t('editor.backup.availableBackups', { count: backups.length })}
+            </span>
             <button type="button" className="rte-btn rte-btn--ghost rte-btn--xs" onClick={() => setShowBackups(false)}>
-              返回
+              {t('editor.backup.back')}
             </button>
           </div>
           {backups.length === 0 ? (
-            <p className="text-xs text-deep-text/50 px-1 py-4 text-center">暂无备份</p>
+            <p className="text-xs text-deep-text/50 px-1 py-4 text-center">{t('editor.backup.noBackups')}</p>
           ) : (
             backups.map((b) => (
               <button

@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { Node } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/core';
+import { t } from '~/lib/i18n';
 
 interface FigureNodeViewProps {
   node: Node;
@@ -71,7 +72,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
               <circle cx="9" cy="9" r="2" />
               <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
             </svg>
-            <p className="text-sm">点击设置图片</p>
+            <p className="text-sm">{t('editor.figure.clickToSetImage')}</p>
           </div>
         </div>
       )}
@@ -82,7 +83,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
           ref={panelRef}
           className="absolute top-full left-0 mt-1 z-30 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-3 w-72 max-w-[calc(100vw-2rem)]"
         >
-          <label className="text-xs font-medium block mb-1">图片地址</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.figure.imageUrl')}</label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
@@ -90,43 +91,43 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
             placeholder="https://..."
             onChange={(e) => updateAttributes({ src: e.target.value })}
           />
-          <label className="text-xs font-medium block mb-1">替代文本 (alt)</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.figure.altText')}</label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={alt}
-            placeholder="图片描述"
+            placeholder={t('editor.figure.imageDescription')}
             onChange={(e) => updateAttributes({ alt: e.target.value })}
           />
-          <label className="text-xs font-medium block mb-1">标题说明</label>
+          <label className="text-xs font-medium block mb-1">{t('editor.figure.caption')}</label>
           <input
             type="text"
             className="rte-input rte-input--sm w-full mb-2"
             value={caption}
-            placeholder="图 1：说明文字"
+            placeholder={t('editor.figure.captionPlaceholder')}
             onChange={(e) => updateAttributes({ caption: e.target.value })}
           />
           <div className="flex gap-2 mb-2">
             <div className="flex-1">
-              <label className="text-xs font-medium block mb-1">宽度 (px)</label>
+              <label className="text-xs font-medium block mb-1">{t('editor.figure.width')}</label>
               <input
                 type="number"
                 className="rte-input rte-input--sm w-full"
                 value={width ?? ''}
-                placeholder="自动"
+                placeholder={t('editor.figure.auto')}
                 onChange={(e) => updateAttributes({ width: Number(e.target.value) || undefined })}
               />
             </div>
             <div className="flex-1">
-              <label className="text-xs font-medium block mb-1">对齐</label>
+              <label className="text-xs font-medium block mb-1">{t('editor.figure.align')}</label>
               <select
                 className="rte-select rte-select--sm w-full"
                 value={align}
                 onChange={(e) => updateAttributes({ align: e.target.value })}
               >
-                <option value="left">左对齐</option>
-                <option value="center">居中</option>
-                <option value="right">右对齐</option>
+                <option value="left">{t('editor.figure.alignLeft')}</option>
+                <option value="center">{t('editor.figure.alignCenter')}</option>
+                <option value="right">{t('editor.figure.alignRight')}</option>
               </select>
             </div>
           </div>
@@ -146,7 +147,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
                 }
               }}
             >
-              删除
+              {t('editor.delete')}
             </button>
             <button
               type="button"
@@ -156,7 +157,7 @@ const FigureNodeView = memo(function FigureNodeView({ node, editor, getPos, upda
                 setEditing(false);
               }}
             >
-              确定
+              {t('editor.confirm')}
             </button>
           </div>
         </div>

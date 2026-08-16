@@ -5,20 +5,53 @@ import CommunitySection from '~/features/team/components/CommunitySection.astro'
 
 import { communityCategories, communityNote } from '~/features/team/data/communities';
 import { getPermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
 
 const metadata = {
-  title: 'QQ社群 —— 理科迷',
+  title: t('page.official.communities.metaTitle'),
 };
 
 const sidebarLinks = [
-  { text: '爱好者总群', href: getPermalink('/official/communities#general'), icon: 'tabler:users' },
-  { text: '年级分段分群', href: getPermalink('/official/communities#grades'), icon: 'tabler:school' },
-  { text: '群体分类分群', href: getPermalink('/official/communities#groups'), icon: 'tabler:category' },
-  { text: '自然/基础学科', href: getPermalink('/official/communities#basic'), icon: 'tabler:atom' },
-  { text: '应用科学', href: getPermalink('/official/communities#applied'), icon: 'tabler:robot' },
-  { text: '兴趣板块社团', href: getPermalink('/official/communities#hobby'), icon: 'tabler:palette' },
-  { text: '常驻活动', href: getPermalink('/official/communities#events'), icon: 'tabler:calendar-star' },
-  { text: '原始老群', href: getPermalink('/official/communities#legacy'), icon: 'tabler:archive' },
+  {
+    text: t('page.official.communities.sidebarGeneral'),
+    href: getPermalink('/official/communities#general'),
+    icon: 'tabler:users',
+  },
+  {
+    text: t('page.official.communities.sidebarGrades'),
+    href: getPermalink('/official/communities#grades'),
+    icon: 'tabler:school',
+  },
+  {
+    text: t('page.official.communities.sidebarGroups'),
+    href: getPermalink('/official/communities#groups'),
+    icon: 'tabler:category',
+  },
+  {
+    text: t('page.official.communities.sidebarBasic'),
+    href: getPermalink('/official/communities#basic'),
+    icon: 'tabler:atom',
+  },
+  {
+    text: t('page.official.communities.sidebarApplied'),
+    href: getPermalink('/official/communities#applied'),
+    icon: 'tabler:robot',
+  },
+  {
+    text: t('page.official.communities.sidebarHobby'),
+    href: getPermalink('/official/communities#hobby'),
+    icon: 'tabler:palette',
+  },
+  {
+    text: t('page.official.communities.sidebarEvents'),
+    href: getPermalink('/official/communities#events'),
+    icon: 'tabler:calendar-star',
+  },
+  {
+    text: t('page.official.communities.sidebarLegacy'),
+    href: getPermalink('/official/communities#legacy'),
+    icon: 'tabler:archive',
+  },
 ];
 
 const sectionIds = ['general', 'grades', 'groups', 'basic', 'applied', 'hobby', 'events', 'legacy'];

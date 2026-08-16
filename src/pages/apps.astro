@@ -2,28 +2,29 @@
 import Layout from '~/layouts/PageLayout.astro';
 import type { MetaData } from '~/types/core';
 import { buildUrl } from '~/lib/utils/paths';
+import { t } from '~/lib/i18n';
 
 const metadata: MetaData = {
-  title: '其他应用',
-  description: '理科迷社区的全部应用入口。',
+  title: t('page.apps.title'),
+  description: t('page.apps.description'),
 };
 
 const apps = [
   {
-    name: '触发击穿',
-    desc: '实时 GPU 闪电模拟。Laplace 场方程求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、程序化雷声——全物理驱动的可视化实验。',
+    name: t('page.apps.triggeredDischarge.name'),
+    desc: t('page.apps.triggeredDischarge.description'),
     href: buildUrl('/official/triggered-discharge'),
     icon: '⚡',
   },
   {
-    name: 'StarHope 学习助手',
-    desc: '本地优先的跨平台学习工具。题库管理、智能练习、AI 对话、文档阅读、考试模拟——一站式学习解决方案。',
+    name: t('page.apps.starHope.name'),
+    desc: t('page.apps.starHope.description'),
     href: buildUrl('/starhope'),
     icon: '📚',
   },
   {
-    name: '拾光树洞',
-    desc: '治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。写信、漂流瓶、许愿墙、双向匿名回信。',
+    name: t('page.apps.treehole.name'),
+    desc: t('page.apps.treehole.description'),
     href: buildUrl('/community/treehole'),
     icon: '🌙',
   },
@@ -32,8 +33,8 @@ const apps = [
 
 <Layout metadata={metadata}>
   <div class="max-w-3xl mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">其他应用</h1>
-    <p class="text-gray-500 dark:text-gray-400 mb-8">社区的全部应用服务入口。</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('page.apps.title')}</h1>
+    <p class="text-gray-500 dark:text-gray-400 mb-8">{t('page.apps.subtitle')}</p>
 
     <div class="grid gap-4 sm:grid-cols-2">
       {

@@ -31,7 +31,7 @@
       @click="showReport = true"
     >
       <Icon icon="material-symbols:flag-outline" class="w-5 h-5" />
-      <span class="hidden sm:inline">举报</span>
+      <span class="hidden sm:inline">{{ t('forum.report') }}</span>
     </button>
 
     <!-- 举报弹窗 -->
@@ -42,7 +42,7 @@
         @click.self="showReport = false"
       >
         <div class="bg-card-bg rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4">
-          <h3 class="text-lg font-semibold text-deep-text mb-4">举报帖子</h3>
+          <h3 class="text-lg font-semibold text-deep-text mb-4">{{ t('forum.reportTitle') }}</h3>
           <div class="space-y-2">
             <button
               v-for="reason in reportReasons"
@@ -57,7 +57,7 @@
             class="w-full mt-4 px-4 py-2 rounded-lg text-sm text-text-muted hover:bg-surface-3 transition-colors"
             @click="showReport = false"
           >
-            取消
+            {{ t('forum.cancel') }}
           </button>
         </div>
       </div>
@@ -66,8 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
+import { t } from '~/lib/i18n';
 
 const props = defineProps<{
   likeCount: number;
@@ -83,7 +84,13 @@ const likeCount = ref(props.likeCount);
 const bookmarkCount = ref(props.bookmarkCount);
 const forwardCount = ref(props.forwardCount);
 
-const reportReasons = ['垃圾广告', '不实信息', '人身攻击', '侵权内容', '其他违规'];
+const reportReasons = computed(() => [
+  t('forum.reportSpam'),
+  t('forum.reportMisinformation'),
+  t('forum.reportHarassment'),
+  t('forum.reportInfringement'),
+  t('forum.reportOther'),
+]);
 
 function toggleLike() {
   liked.value = !liked.value;
@@ -98,13 +105,13 @@ function toggleBookmark() {
 function handleShare() {
   navigator.clipboard.writeText(window.location.href).then(() => {
     forwardCount.value += 1;
-    alert('链接已复制到剪贴板');
+    alert(t('forum.linkCopied'));
   });
 }
 
 function submitReport(reason: string) {
   showReport.value = false;
-  alert(`已提交举报：${reason}，我们会尽快处理。`);
+  alert(t('forum.reportSubmitted', { reason }));
 }
 
 function formatCount(n: number): string {

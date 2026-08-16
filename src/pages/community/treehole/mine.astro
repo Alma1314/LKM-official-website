@@ -4,8 +4,12 @@ import MinePage from '~/features/anonymous-letter/pages/MinePage.vue';
 import '~/features/anonymous-letter/styles/global.css';
 import { allMenuItems } from '~/features/shell/menus';
 import { filterNavbarByNames } from '~/lib/navigation';
+import { t } from '~/lib/i18n';
 import type { MetaData } from '~/types/core';
-const metadata: MetaData = { title: '我的树洞 — 拾光树洞', description: '查看你发布的所有信件、收藏与草稿。' };
+const metadata: MetaData = {
+  title: t('page.treehole.mineTitle'),
+  description: t('page.treehole.mineDescription'),
+};
 ---
 
 <Layout metadata={metadata} navbarLinks={filterNavbarByNames(allMenuItems, ['社区主页', '博客', '资源', '我的'])}

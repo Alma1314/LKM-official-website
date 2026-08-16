@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { t } from '~/lib/i18n';
 import type { TimelineData } from '~/types/core';
 
 interface Props {
@@ -41,14 +42,14 @@ const clockYears = items.map((i) => shortYear(i.year));
                   <button
                     class="ct-arrow text-neutral-700 dark:text-neutral-200"
                     data-ct-arrow="prev"
-                    aria-label="上一个"
+                    aria-label={t('blog.prev')}
                   >
                     <Icon name="tabler:chevron-up" class="h-6 w-6" />
                   </button>
                   <button
                     class="ct-arrow text-neutral-700 dark:text-neutral-200"
                     data-ct-arrow="next"
-                    aria-label="下一个"
+                    aria-label={t('blog.next')}
                   >
                     <Icon name="tabler:chevron-down" class="h-6 w-6" />
                   </button>
@@ -60,10 +61,18 @@ const clockYears = items.map((i) => shortYear(i.year));
       </div>
       {/* 桌面端：卡片外部右侧箭头 */}
       <div class="ct-arrows ct-arrows-desktop">
-        <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="prev" aria-label="上一个">
+        <button
+          class="ct-arrow text-neutral-700 dark:text-neutral-200"
+          data-ct-arrow="prev"
+          aria-label={t('blog.prev')}
+        >
           <Icon name="tabler:chevron-up" class="h-6 w-6" />
         </button>
-        <button class="ct-arrow text-neutral-700 dark:text-neutral-200" data-ct-arrow="next" aria-label="下一个">
+        <button
+          class="ct-arrow text-neutral-700 dark:text-neutral-200"
+          data-ct-arrow="next"
+          aria-label={t('blog.next')}
+        >
           <Icon name="tabler:chevron-down" class="h-6 w-6" />
         </button>
       </div>
