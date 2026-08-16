@@ -2982,6 +2982,7 @@ export const en = {
         anonymousUser: 'Anonymous user',
         introTitle: 'About this board',
         membersTitle: 'Members',
+        emptyMembers: 'No members yet, join us!',
         allMembers: 'All members',
         subcategoriesTitle: 'Sub-boards',
         subcategoriesEmpty: 'No sub-boards yet',

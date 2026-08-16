@@ -2898,6 +2898,7 @@ export const zh_CN: DeepStringRecord<typeof en> = {
         anonymousUser: '匿名用户',
         introTitle: '板块介绍',
         membersTitle: '活跃成员',
+        emptyMembers: '暂无成员，期待你的加入',
         allMembers: '全部成员',
         subcategoriesTitle: '子板块',
         subcategoriesEmpty: '暂无子板块',

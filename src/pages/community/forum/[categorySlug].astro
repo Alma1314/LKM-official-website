@@ -75,7 +75,7 @@ const memberAvatarCount = Math.min(category.memberCount || 0, 10);
 
     <!-- 板块头部 -->
     <div class="relative overflow-hidden rounded-2xl bg-card-bg border border-surface-3">
-      <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-primary/5" />
+      <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-primary/5"></div>
       <div class="relative p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center gap-4">
           <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -84,11 +84,13 @@ const memberAvatarCount = Math.min(category.memberCount || 0, 10);
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2 flex-wrap">
               <h1 class="text-2xl font-bold text-deep-text">{t(category.name)}</h1>
-              {category.type === 'school_club' && (
-                <span class="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
-                  {t('community.forum.club')}
-                </span>
-              )}
+              {
+                category.type === 'school_club' && (
+                  <span class="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                    {t('community.forum.club')}
+                  </span>
+                )
+              }
             </div>
             <p class="text-sm text-text-muted mt-1">
               {
@@ -177,7 +179,7 @@ const memberAvatarCount = Math.min(category.memberCount || 0, 10);
               </div>
             ))
           ) : (
-            <p class="text-sm text-text-muted">{t('page.communityDetail.forum.subcategoriesEmpty')}</p>
+            <p class="text-sm text-text-muted">{t('page.communityDetail.forum.emptyMembers')}</p>
           )
         }
       </div>
