@@ -50,12 +50,12 @@
             {{ art.title }}
           </h3>
           <p class="text-sm text-text-muted mt-1 line-clamp-2">
-            {{ art.excerpt }}
+            {{ art.summary }}
           </p>
           <div
             class="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted/60"
           >
-            <span>{{ formatDate(art.createdAt) }}</span>
+            <span>{{ formatDate(art.publishedAt) }}</span>
             <span>{{ art.viewCount }} 阅读</span>
             <span>{{ art.likeCount }} 赞</span>
             <span>{{ art.commentCount }} 评论</span>
@@ -68,9 +68,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
-import { getArticlesByColumnId, getColumnBySlug } from "../data/mock-columns";
+import { columnApi } from "~/lib/api";
+import type { ColumnArticle } from "~/lib/api/modules/column";
 import { buildUrl } from "~/lib/utils/paths";
 import { sortArticles, type SortField, type SortOrder } from "../utils";
 
@@ -78,11 +79,12 @@ const props = defineProps<{ columnSlug: string }>();
 
 const sortField = ref<SortField>("time");
 const sortOrder = ref<SortOrder>("desc");
+const articles = ref<ColumnArticle[]>([]);
 
-const column = computed(() => getColumnBySlug(props.columnSlug));
-const articles = computed(() =>
-  column.value ? getArticlesByColumnId(column.value.id) : [],
-);
+onMounted(async () => {
+  articles.value = await columnApi.getArticlesBySlug(props.columnSlug);
+});
+
 const sorted = computed(() =>
   sortArticles(articles.value, sortField.value, sortOrder.value),
 );
@@ -95,7 +97,8 @@ function toggleOrder(): void {
   sortOrder.value = sortOrder.value === "desc" ? "asc" : "desc";
 }
 
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return "";
   return new Date(dateStr).toLocaleDateString("zh-CN", {
     year: "numeric",
     month: "long",

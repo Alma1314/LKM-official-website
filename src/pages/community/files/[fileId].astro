@@ -2,14 +2,12 @@
 import CommunitySidebarLayout from '~/layouts/CommunitySidebarLayout.astro';
 import { communitySidebarLinks } from '~/features/shell-community/data/community-sidebar';
 import { Icon } from 'astro-icon/components';
-import { getFileById } from '~/features/file-library/data/mock-files';
+import { fileLibraryApi } from '~/lib/api';
 import { getPermalink } from '~/lib/utils/permalinks';
 import { t } from '~/lib/i18n';
 
-// server 模式：params 从 URL 直接解析
-// 后端就绪后切换为：const file = await fileLibraryApi.getFile(fileId)
 const { fileId } = Astro.params;
-const file = getFileById(fileId || '');
+const file = await fileLibraryApi.getFile(fileId || '');
 
 if (!file) {
   return Astro.redirect(getPermalink('/files'));
@@ -73,7 +71,7 @@ const metadata = { title: `${file.originalName} —— LKM` };
     <div class="bg-card-bg border border-surface-3 rounded-2xl p-8 text-center">
       <span class="text-6xl">{fileIcon(file.mimeType)}</span>
       <h1 class="text-xl font-bold text-deep-text mt-4">{file.originalName}</h1>
-      <p class="text-sm text-text-muted mt-2">{t(file.description)}</p>
+      <p class="text-sm text-text-muted mt-2">{file.description}</p>
     </div>
 
     <!-- 文件信息 -->
@@ -83,7 +81,7 @@ const metadata = { title: `${file.originalName} —— LKM` };
           <span class="text-text-muted/60">{t('page.communityDetail.files.uploader')}</span><p
             class="text-deep-text font-medium mt-0.5"
           >
-            {t(file.uploaderName)}
+            {file.uploaderName}
           </p>
         </div>
         <div>
@@ -114,12 +112,12 @@ const metadata = { title: `${file.originalName} —— LKM` };
           >{statusBadge(file.status).text}</span
         >
         <span class="text-sm text-text-muted/60"
-          >{t('page.communityDetail.files.category', { name: t(file.categoryName) })}</span
+          >{t('page.communityDetail.files.category', { name: file.categoryName })}</span
         >
         <div class="flex flex-wrap gap-1">
           {
             file.tags.map((tag) => (
-              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{t(tag)}</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-surface-3 text-text-muted">{tag}</span>
             ))
           }
         </div>

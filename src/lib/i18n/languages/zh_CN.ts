@@ -2860,6 +2860,7 @@ export const zh_CN: DeepStringRecord<typeof en> = {
         file: "文件",
         handle: "处理",
         reject: "驳回",
+        empty: "暂无举报",
       },
       users: {
         title: "用户管理",

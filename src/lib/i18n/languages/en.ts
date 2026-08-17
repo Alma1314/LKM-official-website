@@ -2994,6 +2994,7 @@ export const en = {
         file: "File",
         handle: "Handle",
         reject: "Reject",
+        empty: "No reports",
       },
       users: {
         title: "User Management",

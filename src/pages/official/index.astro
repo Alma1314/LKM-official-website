@@ -13,10 +13,41 @@ import { avatarUrl } from '~/lib/utils/avatars';
 import FAQs from '~/features/homepage/components/FAQs.astro';
 import ClockTimeline from '~/features/homepage/components/ClockTimeline.astro';
 import Section from '~/features/homepage/components/Section.astro';
+
+import { ssrFetch } from '~/lib/fetch-ssr';
+
+import type {
+  OfficialArticle,
+  OfficialArticleListData,
+} from '~/lib/api/modules/official-articles';
+
 const metadata = {
   title: t('page.home.metaTitle'),
   ignoreTitleTemplate: true,
 };
+
+// 首页「最新文章」服务端取数（3 秒超时 + 失败降级为空数组，避免后端不可用拖慢/崩首屏）
+const { data: latestData } = await ssrFetch<OfficialArticleListData>(
+  '/api/v1/articles?page=1&page_size=6',
+  { fallback: { items: [], total: 0 } },
+);
+
+// 日期在服务端格式化为确定文本，组件直接渲染，客户端不再复算
+function formatHomeDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const latestArticles = (latestData?.items ?? []).map((a: OfficialArticle) => ({
+  slug: a.slug,
+  title: a.title,
+  description: a.description,
+  cover: a.cover,
+  publishedText: formatHomeDate(a.published),
+}));
 ---
 
 <Layout metadata={metadata} navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}>
@@ -400,7 +431,7 @@ const metadata = {
     subtitle={t('page.home.update.subtitle')}
     classes={{ container: '' }}
   >
-    <BlogLatestPostsClient client:load>
+    <BlogLatestPostsClient client:load articles={latestArticles}>
       <p class="text-gray-500">{t('page.home.update.loading')}</p>
     </BlogLatestPostsClient>
   </Section>

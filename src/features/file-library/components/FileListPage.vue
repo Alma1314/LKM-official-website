@@ -306,7 +306,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import { mockFiles } from "../data/mock-files";
+import { fileLibraryApi } from "~/lib/api";
+import type { FileEntry } from "~/lib/api/modules/file-library";
 import { forumCategories } from "../../forum/data/categories";
 import {
   getChildren,
@@ -329,16 +330,22 @@ const showUpload = ref(false);
 // Teleport 在 SSR 水合时会产生节点结构 mismatch（注释 vs 文本）。
 // mounted 前不渲染 Teleport，客户端水合一致，onMounted 后再挂载。
 const mounted = ref(false);
-onMounted(() => {
-  mounted.value = true;
-});
 const uploadCategory = ref("");
 const uploadDesc = ref("");
+
+// 文件全量数据：由后端 API 拉取（mock 已移入后端 seed）
+const files = ref<FileEntry[]>([]);
+onMounted(async () => {
+  mounted.value = true;
+  files.value = await fileLibraryApi.getFiles();
+});
 
 // 顶部常驻搜索栏
 const searchQuery = ref("");
 const isSearching = computed(() => searchQuery.value.trim() !== "");
-const searchResults = computed(() => searchFiles(mockFiles, searchQuery.value));
+const searchResults = computed(() =>
+  searchFiles(files.value, searchQuery.value),
+);
 
 const categories = forumCategories.filter((c) => !c.parentId);
 
@@ -356,13 +363,13 @@ const isFolderLayer = computed(
 );
 const currentFiles = computed(() =>
   currentId.value
-    ? mockFiles.filter((f) => f.categoryId === currentId.value)
+    ? files.value.filter((f) => f.categoryId === currentId.value)
     : [],
 );
 const folderFileCounts = computed<Record<string, number>>(() => {
   const m: Record<string, number> = {};
   for (const folder of childFolders.value)
-    m[folder.id] = countFilesInCategory(folder.id, mockFiles);
+    m[folder.id] = countFilesInCategory(folder.id, files.value);
   return m;
 });
 
