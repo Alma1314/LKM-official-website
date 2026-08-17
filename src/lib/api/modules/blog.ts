@@ -1,4 +1,4 @@
-import { get, post, del } from "../../http/client";
+import { get, post, put, del } from "../../http/client";
 import { ok, err } from "../../errors/result";
 import type { Result } from "../../errors/result";
 import type { AppError } from "../../errors/error-codes";
@@ -106,6 +106,19 @@ export const blogApi = {
       (value) => ok(value.data),
       (e) => err(e),
     );
+  },
+
+  putSeriesFile: async (
+    seriesId: number,
+    filepath: string,
+    content: string,
+    message?: string,
+  ): Promise<Result<null, AppError>> => {
+    const result = await put<ApiResponse<null>>(
+      BLOG_API.files.put(seriesId, filepath),
+      { content, message },
+    );
+    return result.match((v) => ok(v.data), (e) => err(e));
   },
 
   // ── 评论 ──

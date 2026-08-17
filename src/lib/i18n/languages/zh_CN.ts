@@ -205,6 +205,9 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     seriesArchived: "已归档",
     starCount: "{count} 收藏",
     updatedAt: "更新于 {date}",
+    newArticle: "新建文章",
+    editArticle: "编辑",
+    editArticleFull: "编辑本文",
     readingMeta: "{words} 字 · {minutes} 分钟",
     postNotFound: "找不到这篇博客文章",
     postNotExist: "博客文章不存在",
@@ -3566,6 +3569,8 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       words: "{count} 字",
       chars: "{count} 字符",
     },
+
+    saveToSeries: "保存到系列",
 
     backup: {
       title: "备份管理",

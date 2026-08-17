@@ -43,6 +43,8 @@ const PublishDialog = lazy(() => import("../dialogs/PublishDialog"));
 interface DocumentEditorProps {
   documentId: string;
   adapter: PersistenceAdapter;
+  /** Git 系列写作模式（URL 带 ?seriesId 时为 series 主键；admin 本地模式为 undefined） */
+  seriesId?: number;
 }
 
 import { computeTextMetrics } from "../../engine/text-metrics";
@@ -65,12 +67,15 @@ function uploadImageToBlob(file: File): Promise<string> {
 export default function DocumentEditor({
   documentId,
   adapter,
+  seriesId,
 }: DocumentEditorProps): ReactElement {
+  const gitMode = seriesId !== undefined;
   const [docId, setDocId] = useState(documentId === "new" ? "" : documentId);
   const {
     saveStatus,
     triggerSave,
     loadDraft,
+    flushImmediate,
     importMdxContent,
     exportMdxContent,
     sourceMdxRef,
@@ -127,6 +132,12 @@ export default function DocumentEditor({
   // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
     if (documentId === "new") {
+      // Git 系列写作：新建文档不写临时 uuid、不改 URL。
+      // docId 保持 "new" 使 autosave 可触发；保存时由 createGitPersistence 按标题 deriveSlug 生成 filepath。
+      if (gitMode) {
+        setDocId("new");
+        return;
+      }
       (async () => {
         const doc: DocumentData = {
           id: crypto.randomUUID(),
@@ -152,7 +163,7 @@ export default function DocumentEditor({
         );
       })();
     }
-  }, [documentId, adapter]);
+  }, [documentId, adapter, gitMode]);
 
   const editor = useEditor({
     extensions: getEditorExtensions(t("editor.startWritingPlaceholder")),
@@ -637,6 +648,18 @@ export default function DocumentEditor({
   const charCount = metrics.characters;
   const wordCount = metrics.words;
 
+  // Git 系列写作：显式"保存到系列"——立即把当前内容经 git adapter 写回 series 仓库。
+  // 复用 useEditorPersistence 的 flushImmediate（内部走 triggerSave → doSave），不另起一套保存逻辑。
+  const handleSaveToSeries = useCallback((): void => {
+    const json = editor?.getJSON();
+    const content: Record<string, unknown> | null =
+      json && typeof json === "object"
+        ? (json as Record<string, unknown>)
+        : lastValidEditorJsonRef.current;
+    if (!content) return;
+    flushImmediate(content);
+  }, [editor, lastValidEditorJsonRef, flushImmediate]);
+
   // 进入源码模式时，基于当前编辑器内容初始化 HTML 源码（TipTap 原生 HTML，可回写）
   useEffect(() => {
     if (mode === "source" && editor) {
@@ -751,6 +774,31 @@ export default function DocumentEditor({
                   onOpenPublishDialog={() => setPublishOpen(true)}
                 />
               </div>
+            )}
+            {gitMode && (
+              <button
+                type="button"
+                className="rte-btn rte-btn--primary rte-btn--xs"
+                onClick={handleSaveToSeries}
+                title={t("editor.saveToSeries")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                  <path d="M17 21v-8H7v8" />
+                  <path d="M7 3v5h8" />
+                </svg>
+                {t("editor.saveToSeries")}
+              </button>
             )}
             <FullscreenButton />
             <ModeTabs mode={mode} onModeChange={handleModeChange} />

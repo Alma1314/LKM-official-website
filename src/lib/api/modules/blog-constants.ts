@@ -21,6 +21,8 @@ export const BLOG_API = {
   files: {
     get: (id: number, filepath: string) =>
       `/api/v1/blog/series/${id}/files/${filepath}`,
+    put: (id: number, filepath: string) =>
+      `/api/v1/blog/series/${id}/files/${filepath}`,
   },
   // 文章相关的只读端点对齐后端真实 /api/v1/articles（旧的 blog 假路径已废弃）。
   articles: {

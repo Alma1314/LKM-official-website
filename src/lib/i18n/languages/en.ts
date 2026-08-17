@@ -207,6 +207,9 @@ export const en = {
     seriesArchived: "Archived",
     starCount: "{count} favorites",
     updatedAt: "Updated on {date}",
+    newArticle: "New article",
+    editArticle: "Edit",
+    editArticleFull: "Edit this article",
     readingMeta: "{words} words · {minutes} minutes",
     postNotFound: "Blog post not found",
     postNotExist: "The blog post does not exist",
@@ -3721,6 +3724,8 @@ export const en = {
       words: "{count} words",
       chars: "{count} characters",
     },
+
+    saveToSeries: "Save to series",
 
     backup: {
       title: "Backup management",

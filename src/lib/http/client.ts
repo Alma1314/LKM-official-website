@@ -141,6 +141,7 @@ function needsAuth(url: string): boolean {
   return (
     url.startsWith("/api/v1/starhope/") ||
     url.startsWith("/api/v1/articles/") ||
+    url.startsWith("/api/v1/blog/") ||
     url.startsWith("/graphql")
   );
 }
