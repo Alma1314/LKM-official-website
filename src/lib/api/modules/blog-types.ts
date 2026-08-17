@@ -51,6 +51,36 @@ export interface BlogStarStatus {
   star_count: number;
 }
 
+// ── 文章（/api/v1/articles）评论与点赞 ──
+
+/** 文章评论（后端 ArticleCommentOut，平铺列表，含 parent_id 自引用用于组树）。 */
+export interface ArticleCommentInfo {
+  id: number;
+  article_id: number;
+  user_id: number;
+  content: string;
+  parent_id: number | null;
+  created_at: string;
+  /** 作者 profile（后端 ProfileInfo），可能缺失。 */
+  profile: {
+    nickname: string | null;
+    avatar: string | null;
+    role: string;
+  } | null;
+}
+
+/** 文章点赞状态（后端 ArticleLikeStatus）。 */
+export interface ArticleLikeStatus {
+  liked: boolean;
+  like_count: number;
+}
+
+/** 文章评论创建入参（后端 ArticleCommentCreate）。 */
+export interface ArticleCommentCreate {
+  content: string;
+  parent_id?: number | null;
+}
+
 export interface ApiResponse<T> {
   code: number;
   msg: string;

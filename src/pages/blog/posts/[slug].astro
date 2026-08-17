@@ -1,5 +1,8 @@
 ---
 import Layout from '~/layouts/CommunityLayout.astro';
+import ArticleLikeButton from '~/features/blog-community/components/ArticleLikeButton.vue';
+import ArticleComments from '~/features/blog-community/components/ArticleComments.vue';
+import BlogShare from '~/features/blog-community/components/BlogShare.vue';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import { preprocessEditorMdx } from '~/lib/markdown-plugins/preprocess-editor-mdx.mjs';
@@ -35,6 +38,9 @@ function formatDate(d: string): string {
     year: 'numeric', month: 'long', day: 'numeric',
   });
 }
+
+// 分享完整 URL（供 BlogShare 使用）
+const shareUrl = Astro.url.href;
 ---
 
 <Layout metadata={metadata} navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}>
@@ -49,5 +55,18 @@ function formatDate(d: string): string {
     <div class="prose max-w-none my-8">
       <Fragment set:html={rendered.code} />
     </div>
+
+    <!-- 点赞 / 分享 / 评论（客户端水合，SSR 首屏输出静态正文 + 点赞初值初始计数） -->
+    <section class="mt-8 border-t border-border pt-6">
+      <div class="flex items-center gap-4 mb-6">
+        <ArticleLikeButton
+          client:visible
+          slug={slug}
+          initialCount={article.likes}
+        />
+        <BlogShare client:visible url={shareUrl} title={article.title} />
+      </div>
+      <ArticleComments client:visible slug={slug} />
+    </section>
   </article>
 </Layout>

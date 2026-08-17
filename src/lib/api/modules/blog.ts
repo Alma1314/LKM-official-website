@@ -12,6 +12,9 @@ import type {
   BlogCommentInfo,
   BlogStarStatus,
   BlogCommentCreate,
+  ArticleCommentInfo,
+  ArticleLikeStatus,
+  ArticleCommentCreate,
   BlogArticleInfo,
   BlogArticleDetail,
   BlogCategoryInfo,
@@ -28,6 +31,9 @@ export type {
   BlogCommentInfo,
   BlogStarStatus,
   BlogCommentCreate,
+  ArticleCommentInfo,
+  ArticleLikeStatus,
+  ArticleCommentCreate,
   BlogArticleInfo,
   BlogArticleDetail,
   BlogCategoryInfo,
@@ -169,6 +175,39 @@ export const blogApi = {
   ): Promise<Result<BlogStarStatus, AppError>> => {
     const result = await post<ApiResponse<BlogStarStatus>>(
       BLOG_API.star.toggle(seriesId),
+    );
+    return result.match(
+      (value) => ok(value.data),
+      (e) => err(e),
+    );
+  },
+
+  // ── 文章评论与点赞（/api/v1/articles/*）──
+  listArticleComments: (slug: string) =>
+    get<ListData<ArticleCommentInfo>>(BLOG_API.articles.comments.list(slug)),
+
+  createArticleComment: async (
+    slug: string,
+    data: ArticleCommentCreate,
+  ): Promise<Result<ArticleCommentInfo, AppError>> => {
+    const result = await post<ApiResponse<ArticleCommentInfo>>(
+      BLOG_API.articles.comments.create(slug),
+      data,
+    );
+    return result.match(
+      (value) => ok(value.data),
+      (e) => err(e),
+    );
+  },
+
+  deleteArticleComment: (commentId: number) =>
+    del<null>(BLOG_API.articles.comments.delete(commentId)),
+
+  toggleArticleLike: async (
+    slug: string,
+  ): Promise<Result<ArticleLikeStatus, AppError>> => {
+    const result = await post<ApiResponse<ArticleLikeStatus>>(
+      BLOG_API.articles.like(slug),
     );
     return result.match(
       (value) => ok(value.data),
