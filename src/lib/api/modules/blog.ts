@@ -23,6 +23,7 @@ import type {
   BlogAboutInfo,
 } from "./blog-types";
 import { BLOG_API } from "./blog-constants";
+import type { ArticleDetail } from "./official-articles";
 
 export type {
   BlogSeriesInfo,
@@ -117,6 +118,18 @@ export const blogApi = {
     const result = await put<ApiResponse<null>>(
       BLOG_API.files.put(seriesId, filepath),
       { content, message },
+    );
+    return result.match((v) => ok(v.data), (e) => err(e));
+  },
+
+  publishSeriesFile: async (
+    seriesId: number,
+    filepath: string,
+    override?: Record<string, unknown>,
+  ): Promise<Result<ArticleDetail, AppError>> => {
+    const result = await post<ApiResponse<ArticleDetail>>(
+      BLOG_API.series.publish(seriesId),
+      { filepath, override },
     );
     return result.match((v) => ok(v.data), (e) => err(e));
   },

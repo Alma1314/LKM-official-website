@@ -3571,6 +3571,17 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     },
 
     saveToSeries: "保存到系列",
+    publishAsArticle: "发布为文章",
+    publishArticleTitle: "发布为文章",
+    publishArticleNotice: "将从当前系列文件发布为博客文章，确认后文章将公开可见。",
+    slugLabel: "Slug（文章链接）",
+    categoryLabel: "分类",
+    categoryPlaceholder: "engineering",
+    tagsLabel: "标签（逗号分隔）",
+    tagsPlaceholder: "react, node",
+    publishing: "发布中……",
+    publishArticleSuccess: "已发布为文章",
+    needSaveFirst: "请先保存到系列后再发布",
 
     backup: {
       title: "备份管理",

@@ -3726,6 +3726,17 @@ export const en = {
     },
 
     saveToSeries: "Save to series",
+    publishAsArticle: "Publish as article",
+    publishArticleTitle: "Publish as article",
+    publishArticleNotice: "Publish the current series file as a blog article. The article will be publicly visible after confirmation.",
+    slugLabel: "Slug (article permalink)",
+    categoryLabel: "Category",
+    categoryPlaceholder: "engineering",
+    tagsLabel: "Tags (comma separated)",
+    tagsPlaceholder: "react, node",
+    publishing: "Publishing…",
+    publishArticleSuccess: "Published as article",
+    needSaveFirst: "Please save to series before publishing",
 
     backup: {
       title: "Backup management",

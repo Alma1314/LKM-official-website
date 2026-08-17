@@ -8,6 +8,7 @@ export const BLOG_API = {
     create: "/api/v1/blog/series",
     update: (id: number) => `/api/v1/blog/series/${id}`,
     delete: (id: number) => `/api/v1/blog/series/${id}`,
+    publish: (id: number) => `/api/v1/blog/series/${id}/publish`,
   },
   star: {
     toggle: (id: number) => `/api/v1/blog/series/${id}/star`,
