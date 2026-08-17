@@ -91,7 +91,7 @@ export default defineConfig({
       theme: false,
       native: true,
       animationClass: false,
-      containers: ["main"],
+      containers: ["#navbar-wrapper", "main"],
       cache: true,
       preload: { hover: true, visible: false },
       smoothScrolling: true,
