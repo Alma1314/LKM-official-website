@@ -123,11 +123,12 @@ export const blogApi = {
   deleteComment: (seriesId: number, commentId: number) =>
     del<null>(BLOG_API.comments.delete(seriesId, commentId)),
 
-  // ── 文章 ──
-  listArticles: (page = 1) =>
-    get<PaginatedData<BlogArticleInfo>>(
-      `${BLOG_API.articles.list}?page=${page}`,
-    ),
+  // ── 文章（对齐后端真实 /api/v1/articles，返回契约沿用 BlogArticleInfo）──
+  listArticles: (page = 1, pageSize = 20) =>
+    get<PaginatedData<BlogArticleInfo>>(BLOG_API.articles.list, {
+      page,
+      page_size: pageSize,
+    }),
 
   getArticleDetail: async (
     slug: string,
@@ -148,7 +149,7 @@ export const blogApi = {
   listTags: () => get<ListData<BlogTagInfo>>(BLOG_API.tags.list),
 
   // ── 搜索 ──
-  search: (q: string) =>
+  searchArticles: (q: string) =>
     get<ListData<BlogSearchResult>>(
       `${BLOG_API.search.query}?q=${encodeURIComponent(q)}`,
     ),

@@ -22,23 +22,24 @@ export const BLOG_API = {
     get: (id: number, filepath: string) =>
       `/api/v1/blog/series/${id}/files/${filepath}`,
   },
+  // 文章相关的只读端点对齐后端真实 /api/v1/articles（旧的 blog 假路径已废弃）。
   articles: {
-    list: "/api/v1/blog/articles",
-    detail: (slug: string) => `/api/v1/blog/articles/${slug}`,
-    prevNext: (slug: string) => `/api/v1/blog/articles/${slug}/prev-next`,
+    list: "/api/v1/articles",
+    detail: (slug: string) => `/api/v1/articles/${slug}`,
+    prevNext: (slug: string) => `/api/v1/articles/${slug}/prev-next`,
   },
   categories: {
-    list: "/api/v1/blog/categories",
-    detail: (slug: string) => `/api/v1/blog/categories/${slug}`,
+    list: "/api/v1/articles/categories",
+    detail: (slug: string) => `/api/v1/articles/categories/${slug}`,
   },
   tags: {
-    list: "/api/v1/blog/tags",
-    detail: (slug: string) => `/api/v1/blog/tags/${slug}`,
+    list: "/api/v1/articles/tags",
+    detail: (slug: string) => `/api/v1/articles/tags/${slug}`,
   },
   search: {
-    query: "/api/v1/blog/search",
+    query: "/api/v1/articles/search",
   },
   about: {
-    get: "/api/v1/blog/about",
+    get: "/api/v1/articles/about",
   },
 } as const;

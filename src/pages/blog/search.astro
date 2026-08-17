@@ -1,25 +1,21 @@
 ---
+// 博客搜索页（SSR）：读 ?q= 搜索词，调用后端搜索端点渲染结果列表。
 import Layout from '~/layouts/CommunityLayout.astro';
 import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
 import { categoryLabel } from '~/lib/api/modules/official-articles';
 import type { OfficialArticle, OfficialArticleListData } from '~/lib/api/modules/official-articles';
 import { t } from '~/lib/i18n';
 
-const PAGE_SIZE = 20;
-
-// 读 ?page= 分页参数，默认第 1 页
-const rawPage = Astro.url.searchParams.get('page');
-const page = Math.max(1, Number.parseInt(rawPage ?? '1', 10) || 1);
+// 读 ?q= 搜索词，默认空
+const q = (Astro.url.searchParams.get('q') ?? '').trim();
 
 const { data, error } = await ssrFetch<OfficialArticleListData>(
-  `/api/v1/articles?page=${page}&page_size=${PAGE_SIZE}`,
+  `/api/v1/articles/search?q=${encodeURIComponent(q)}&page=1`,
   { fallback: { items: [], total: 0 } },
 );
-logSsrError('博客列表', error);
+logSsrError('博客搜索', error);
 
 const articles = (data?.items ?? []) as OfficialArticle[];
-const total = data?.total ?? 0;
-const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
 // 服务端确定日期文本，客户端无需再计算、无水合差异
 function formatDate(d: string): string {
@@ -30,17 +26,36 @@ function formatDate(d: string): string {
   });
 }
 
-const metadata = { title: `${t('nav.blog')} —— LKM` };
+const metadata = { title: `${t('blog.searchTitle')} —— LKM` };
 ---
 
 <Layout metadata={metadata} navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}>
   <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold text-deep-text mb-6">{t('nav.blog')}</h1>
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-deep-text mb-4">{t('blog.searchTitle')}</h1>
+      <form method="get" action="/blog/search" class="flex gap-2">
+        <input
+          name="q"
+          type="text"
+          value={q}
+          placeholder={t('blog.searchPlaceholder')}
+          class="flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <button
+          type="submit"
+          class="rounded-lg bg-primary px-6 py-2 text-surface-0 text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          {t('common.search')}
+        </button>
+      </form>
+    </div>
+
+    {!q && <p class="text-text-muted text-center py-8">{t('blog.searchHint')}</p>}
 
     {
-      (!articles || articles.length === 0) && (
+      q && articles.length === 0 && (
         <p class="text-text-muted text-center py-8">
-          {error ? t('officialArticles.loadFailed', { error }) : t('officialArticles.empty')}
+          {error ? t('officialArticles.loadFailed', { error }) : t('blog.searchNoResults')}
         </p>
       )
     }
@@ -89,50 +104,6 @@ const metadata = { title: `${t('nav.blog')} —— LKM` };
             </li>
           ))}
         </ul>
-      )
-    }
-
-    {
-      totalPages > 1 && (
-        <nav class="mt-10 flex items-center justify-center gap-2" aria-label={t('blog.articleCount', { count: total })}>
-          {
-            page > 1 && (
-              <a
-                href={`/blog?page=${page - 1}`}
-                class="px-3 py-1.5 rounded border border-surface-3 text-sm hover:border-primary hover:text-primary transition-colors"
-              >
-                {t('blog.prev')}
-              </a>
-            )
-          }
-
-          <div class="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <a
-                href={`/blog?page=${p}`}
-                aria-current={p === page ? 'page' : undefined}
-                class={
-                  p === page
-                    ? 'px-3 py-1.5 rounded text-sm bg-primary text-surface-0 font-semibold'
-                    : 'px-3 py-1.5 rounded border border-surface-3 text-sm hover:border-primary hover:text-primary transition-colors'
-                }
-              >
-                {p}
-              </a>
-            ))}
-          </div>
-
-          {
-            page < totalPages && (
-              <a
-                href={`/blog?page=${page + 1}`}
-                class="px-3 py-1.5 rounded border border-surface-3 text-sm hover:border-primary hover:text-primary transition-colors"
-              >
-                {t('blog.next')}
-              </a>
-            )
-          }
-        </nav>
       )
     }
   </div>
