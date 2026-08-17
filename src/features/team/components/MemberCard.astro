@@ -1,9 +1,9 @@
 ---
 import { t } from '~/lib/i18n';
-import type { ImageMetadata } from '~/types/core';
 export interface Props {
   name: string;
-  avatar?: ImageMetadata;
+  /** 头像站点相对 URL（后端静态服务提供），未传则走文字回退 */
+  avatar?: string;
   role?: string;
   desc?: string;
   dream?: string;
@@ -24,7 +24,7 @@ const isLg = size === 'lg';
       {
         avatar ? (
           <img
-            src={avatar.src}
+            src={avatar}
             alt={name}
             class={
               isLg

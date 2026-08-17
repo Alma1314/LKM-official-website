@@ -8,11 +8,7 @@ import { t } from '~/lib/i18n';
 import Hero from '~/features/homepage/components/Hero.astro';
 import BlogLatestPostsClient from '~/features/homepage/components/BlogLatestPostsClient.vue';
 
-import avatarJulyHua from '~/assets/images/member-optimized/七月花.webp';
-import avatarJulyO from '~/assets/images/member-optimized/七月O.webp';
-import avatarJulyYuli from '~/assets/images/member-optimized/七月郁离.webp';
-import avatarJulyMoran from '~/assets/images/member-optimized/七月墨染.webp';
-import avatarJulyYouzhi from '~/assets/images/member-optimized/七月有枝.webp';
+import { avatarUrl } from '~/lib/utils/avatars';
 
 import FAQs from '~/features/homepage/components/FAQs.astro';
 import ClockTimeline from '~/features/homepage/components/ClockTimeline.astro';
@@ -225,33 +221,33 @@ const metadata = {
           {
             name: t('page.home.members.julyO.name'),
             desc: t('page.home.members.julyO.desc'),
-            avatar: avatarJulyO,
+            avatar: avatarUrl('七月O.png'),
           },
           {
             name: t('page.home.members.julyHua.name'),
             desc: t('page.home.members.julyHua.desc'),
-            avatar: avatarJulyHua,
+            avatar: avatarUrl('七月花.jpg'),
           },
           {
             name: t('page.home.members.julyMoran.name'),
             desc: t('page.home.members.julyMoran.desc'),
-            avatar: avatarJulyMoran,
+            avatar: avatarUrl('七月墨染.png'),
           },
           {
             name: t('page.home.members.julyYuli.name'),
             desc: t('page.home.members.julyYuli.desc'),
-            avatar: avatarJulyYuli,
+            avatar: avatarUrl('七月郁离.png'),
           },
           {
             name: t('page.home.members.julyYouzhi.name'),
             desc: t('page.home.members.julyYouzhi.desc'),
-            avatar: avatarJulyYouzhi,
+            avatar: avatarUrl('七月有枝.jpeg'),
           },
         ].map((m) => (
           <a href={getPermalink('/official/team')} class="profile-card ">
             <div class="profile-inner p-4 sm:p-5 flex flex-row items-center gap-3 sm:flex-col sm:items-center text-left sm:text-center rounded-lg">
               <img
-                src={m.avatar.src}
+                src={m.avatar}
                 alt={m.name}
                 width={96}
                 height={96}

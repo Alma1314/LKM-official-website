@@ -255,6 +255,8 @@ export default defineConfig({
         ? {
             "/api": { target: process.env.API_URL, changeOrigin: true },
             "/graphql": { target: process.env.API_URL, changeOrigin: true },
+            // 成员头像由后端静态服务提供（/static/avatars/*.webp）
+            "/static": { target: process.env.API_URL, changeOrigin: true },
           }
         : undefined,
     },
