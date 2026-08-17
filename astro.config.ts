@@ -165,7 +165,9 @@ export default defineConfig({
 
     compress({
       // 用 lightningcss 而非 csso：csso 压缩时会把包含某些规则的手写 @media 块整块误删
-      CSS: { csso: false, lightningcss: true },
+      // 注意：lightningcss 选项须传配置对象而非 true，否则 astro-compress 会把布尔值
+      // 直接交给 lightningcss transform，触发 "InvalidArg: boolean true, expected struct Config"。
+      CSS: { csso: false, lightningcss: { minify: true } },
       HTML: { "html-minifier-terser": { removeAttributeQuotes: false } },
       Image: true,
       JavaScript: true,
