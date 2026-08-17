@@ -1,10 +1,13 @@
 @reference "tailwindcss";
 
-/* View Transitions — fade + slide up effect (replaces Swup .transition-swup-fade) */
-::view-transition-old(root) {
+/* View Transitions — fade + slide up effect（由 Swup native 模式驱动） */
+html.is-changing main {
+  view-transition-name: main;
+}
+::view-transition-old(main) {
   animation: 200ms var(--ease-out) both fade-out;
 }
-::view-transition-new(root) {
+::view-transition-new(main) {
   animation: 300ms var(--ease-out) both fade-in-up;
 }
 

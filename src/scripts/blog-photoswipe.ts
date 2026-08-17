@@ -38,5 +38,13 @@ function createPhotoSwipe(): void {
   lightbox.init();
 }
 
-// ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+// 首次加载直接初始化；Swup 导航后由 astro:page-load 重建、astro:before-swap 销毁旧灯箱
 createPhotoSwipe();
+
+document.addEventListener("astro:page-load", () => {
+  createPhotoSwipe();
+});
+
+document.addEventListener("astro:before-swap", () => {
+  lightbox?.destroy?.();
+});

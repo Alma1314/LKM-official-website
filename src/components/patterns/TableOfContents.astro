@@ -98,6 +98,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 1 && h.depth <= 3);
     headings.forEach((heading) => observer.observe(heading));
   }
 
-  // ClientRouter 已禁用，脚本加载时直接初始化（无需等 astro:page-load）
+  // 首次加载直接初始化；Swup 导航后由 astro:page-load 重新初始化
   initTOC();
+  document.addEventListener('astro:page-load', initTOC);
 </script>

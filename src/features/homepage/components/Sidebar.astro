@@ -250,4 +250,8 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
 
   initSidebarScroll();
   initSidebarToggle();
+  document.addEventListener('astro:after-swap', () => {
+    initSidebarScroll();
+    initSidebarToggle();
+  });
 </script>

@@ -9,6 +9,7 @@ import icon from "astro-icon";
 import compress from "astro-compress";
 import vue from "@astrojs/vue";
 import react from "@astrojs/react";
+import swup from "@swup/astro";
 import node from "@astrojs/node";
 import Unfonts from "unplugin-fonts/astro";
 import tailwindcss from "@tailwindcss/vite";
@@ -85,6 +86,27 @@ export default defineConfig({
   adapter: node({ mode: "standalone" }),
 
   integrations: [
+    swup({
+      // 关掉自带 fade 主题，用 View Transitions API 自定过渡（复用 transition.css）
+      theme: false,
+      native: true,
+      animationClass: false,
+      containers: ["main"],
+      cache: true,
+      preload: { hover: true, visible: false },
+      smoothScrolling: true,
+      updateHead: true,
+      updateBodyClass: true,
+      reloadScripts: true,
+      globalInstance: true,
+      ignore: [
+        /^\/blog(\/|$)/,
+        /^\/community\/treehole(\/|$)/,
+        /^\/starhope(\/|$)/,
+        "a[download]",
+      ],
+    }),
+
     sitemap(),
     astroExpressiveCode({
       themes: ["github-dark"],

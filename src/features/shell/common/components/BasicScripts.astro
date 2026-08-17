@@ -181,5 +181,11 @@ import { UI } from '~/lib/config';
 
     window.onload = onLoad;
     window.onpageshow = onPageShow;
+
+    document.addEventListener('astro:after-swap', () => {
+      initTheme();
+      onLoad();
+      onPageShow();
+    });
   })();
 </script>

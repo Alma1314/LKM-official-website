@@ -232,6 +232,8 @@ const links: NavBarLink[] = Astro.props.links;
 
   // 首次加载绑定
   bindNavbarButtons();
+  // View Transitions 导航后重新绑定
+  document.addEventListener('astro:after-swap', bindNavbarButtons);
 
   function updateProfileLink() {
     try {
@@ -251,6 +253,7 @@ const links: NavBarLink[] = Astro.props.links;
     }
   }
   updateProfileLink();
+  document.addEventListener('astro:after-swap', updateProfileLink);
 </script>
 
 {
