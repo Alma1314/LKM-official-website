@@ -6,7 +6,6 @@ export { default as Image } from "./Image.astro";
 export { default as Pagination } from "./Pagination.astro";
 export { default as License } from "./License.astro";
 export { default as Markdown } from "./Markdown.astro";
-export { default as ImageWrapper } from "./ImageWrapper.astro";
 export { default as BackToTop } from "./BackToTop.astro";
 export { default as ButtonLink } from "./ButtonLink.astro";
 export { default as ButtonTag } from "./ButtonTag.astro";
