@@ -183,6 +183,26 @@ describe("MDX 往返转换", () => {
     expect(back.frontmatter.title).toBe("我的标题");
   });
 
+  it("GFM 表格对齐元数据往返保留（右对齐 :--:）", () => {
+    const mdx = `| 名称 | 数量 |
+| ---- | ---: |
+| 产品A | 10 |`;
+    // 导入：第二列 `---:` 应对应 align='right'
+    const imported = importMdx(mdx);
+    const table = imported.content![0];
+    expect(table.type).toBe("table");
+    const rightHeader = table.content![0].content![1];
+    expect(rightHeader.attrs?.align).toBe("right");
+    // 左对齐列（`----`）不应写 align
+    expect(table.content![0].content![0].attrs?.align).toBeUndefined();
+    // 再走 exportMdx 往返，列对齐应写回 mdast：第二列以「冒号在右侧」的右对齐标记序列化
+    const out = exportMdx(imported.content ?? [], {});
+    expect(out.mdx).toMatch(/\| -: \|\s*\n/);
+    // 二次导入后 align 仍为 right（右对齐素格的第二列单元格）
+    const back = importMdx(out.mdx);
+    expect(back.content![0].content![0].content![1].attrs?.align).toBe("right");
+  });
+
   it("带正文的 Callout 读回不丢内容（降级为 rawMdx 保底）", () => {
     const mdx = `<Callout type="warning">
 **注意**：这是正文内容，不能被丢弃。

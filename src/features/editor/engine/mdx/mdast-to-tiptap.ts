@@ -118,10 +118,14 @@ function convertInlineChildren(
 function convertTable(node: Table): JSONContent {
   const tableContent: JSONContent[] = [];
   const rows = (node as any).children as any[];
+  // GFM 对齐元数据：mdast table.align 是按列的 ['left'|'right'|'center'|null] 数组，
+  // 映射到 Tiptap 单元格的 align 属性（由 @tiptap/extension-table 内建支持），保证往返不丢。
+  const aligns = (node.align ?? []) as Array<string | null>;
   rows.forEach((row, rowIndex) => {
     const cells = (row as any).children as any[];
     const rowContent: JSONContent[] = [];
-    for (const cell of cells) {
+    for (let ci = 0; ci < cells.length; ci++) {
+      const cell = cells[ci];
       // GFM 表首行即表头（remark-gfm 不区分 cell 类型，但 markdown 语法首行就是 header）
       const cellType = rowIndex === 0 ? "tableHeader" : "tableCell";
       const children = cell.children as any[];
@@ -151,7 +155,11 @@ function convertTable(node: Table): JSONContent {
             ? [{ type: "paragraph", content: inline }]
             : [{ type: "paragraph" }];
       }
-      rowContent.push({ type: cellType, content });
+      const colAlign = aligns[ci] ?? null;
+      const cellJson: JSONContent = { type: cellType, content };
+      // 仅列有左/右/中对齐时才写入 align，保持 editorJson 最小化
+      if (colAlign) (cellJson as any).attrs = { align: colAlign };
+      rowContent.push(cellJson);
     }
     tableContent.push({ type: "tableRow", content: rowContent });
   });
