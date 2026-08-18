@@ -6,6 +6,7 @@ docs/
 !src/components/docs/
 !src/features/docs/
 !src/pages/docs/
+.turbo/
 
 # dependencies
 node_modules/
