@@ -1,0 +1,39 @@
+name: Lighthouse Performance Budget
+
+# 前端性能监测：对关键路径页跑 Lighthouse 实验室审计，对照 CWV 预算门槛（模块 0）。
+# 说明：
+#  - 本 job 仅在 main 分支 push/PR 触发，独立于 actions.yaml 的 CI 主流程。
+#  - CI 环境无真实后端（API_URL 为空），页面的 SSR 会降级渲染，指标可能低于生产；
+#    因此本 job 定位为「性能预算的门槛 + 基线记录」，阈值通过环境变量可调：
+#      LIGHTHOUSE_LCP_MS / LIGHTHOUSE_CLS / LIGHTHOUSE_TBT_MS / LIGHTHOUSE_PERF
+#  - 脚本输出 PASS/FAIL 并以退出码判定，超阈即 CI 失败（可用 continue-on-error 临时放行）。
+#  - 先用宽松阈值立基线，本地/后端就绪后逐步收紧（见 docs 模块 0 计划）。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    name: Lighthouse CWV budgets
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      # 预算门槛：实验室里 INP 用 TBT 代理；首版放开阈值立基线，收紧后去掉 env 覆盖
+      - name: Run Lighthouse budgets
+        env:
+          LIGHTHOUSE_LCP_MS: '4000'
+          LIGHTHOUSE_CLS: '0.15'
+          LIGHTHOUSE_TBT_MS: '600'
+          LIGHTHOUSE_PERF: '40'
+        run: pnpm run lighthouse:budget

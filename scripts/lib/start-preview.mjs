@@ -8,6 +8,8 @@
  */
 import { spawn } from "node:child_process";
 import net from "node:net";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const READY_TIMEOUT_MS = 60_000;
 
@@ -61,18 +63,31 @@ export async function withPreview(callback, preferredPort) {
 
   // 已有实例在跑则直接复用
   if (await isReady(base)) {
-    await callback(base);
-    return;
+    return callback(base);
   }
 
-  const child = spawn(
-    "pnpm",
-    ["exec", "astro", "preview", "--host", "127.0.0.1", "--port", String(port)],
-    {
-      stdio: ["ignore", "pipe", "pipe"],
-      detached: true,
-    },
+  // 直接用 node 运行 node adapter 的 standalone 产物 dist/server/entry.mjs。
+  // 原因：`astro preview` 的 wrapper 子进程在部分 Windows 环境下
+  // 不稳定（"Preview server process exited before becoming ready"），
+  // 而 standalone entry 是同构的生产启动方式（`output: server` + node
+  // standalone），本机实测正常服务 200。与 CI/生产更一致。
+  //
+  // 不用 spawn pnpm：Windows 上 pnpm 是 .cmd shim、spawn 需 shell:true，
+  // 而 shell+detached 的进程组/信号行为在 win32 dev 下不稳。直接
+  // spawn node + entry.mjs 全程无 shell，Linux/Windows 行为一致。
+  const entry = resolve(
+    dirname(fileURLToPath(import.meta.url)),
+    "..",
+    "..",
+    "dist",
+    "server",
+    "entry.mjs",
   );
+  const child = spawn(process.execPath, [entry], {
+    stdio: ["ignore", "pipe", "pipe"],
+    detached: false,
+    env: { ...process.env, PORT: String(port), HOST: "127.0.0.1" },
+  });
 
   const deadline = Date.now() + READY_TIMEOUT_MS;
   let ready = false;
@@ -99,7 +114,7 @@ export async function withPreview(callback, preferredPort) {
   }
 
   try {
-    await callback(base);
+    return await callback(base);
   } finally {
     killTree(child);
   }

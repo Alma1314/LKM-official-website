@@ -15,6 +15,7 @@ import ApplyColorMode from '~/features/shell/common/components/ApplyColorMode.as
 import Metadata from '~/features/shell/common/components/Metadata.astro';
 import SiteVerification from '~/features/shell/common/components/SiteVerification.astro';
 import Analytics from '~/features/shell/common/components/Analytics.astro';
+import SentryInit from '~/features/shell/common/components/SentryInit.vue';
 import SecurityHeaders from '~/features/shell/common/components/SecurityHeaders.astro';
 import BasicScripts from '~/features/shell/common/components/BasicScripts.astro';
 import MobileNavPanel from '~/features/shell/components/MobileNavPanel.astro';
@@ -33,6 +34,10 @@ const { metadata = {}, navbarLinks: navbarLinksProp } = Astro.props;
 const { textDirection } = I18N;
 const baseUrl = import.meta.env.BASE_URL;
 const currentLocale = getLocale();
+
+// Sentry RUM：仅当配置了真实 DSN 时才注入 SentryInit（client:load）。
+// 空 DSN 时整个组件不渲染，不影响首屏/本地/测试（计划模块 0 开关设计）。
+const sentryDsn = ((import.meta.env.PUBLIC_SENTRY_DSN as string | undefined) ?? '').trim();
 
 // 未传入 navbarLinks 时，兜底为官网默认菜单（官方 4 项）
 const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenuItems, officialDefaultNavItems);
@@ -107,5 +112,8 @@ const navbarLinks: NavBarLink[] = navbarLinksProp ?? filterNavbarByNames(allMenu
 
     <!-- 通用 Auth 浮层（登录 / 注册 / 密码找回）：由 AuthModal 自管开合/遮罩/Escape/焦点/滚动 -->
     <AuthModal client:only="vue" />
+
+    <!-- 前端性能监测 RUM（Sentry）：仅配置了 PUBLIC_SENTRY_DSN 时注入，空则整组件不渲染 -->
+    {sentryDsn ? <SentryInit client:load /> : null}
   </body>
 </html>
