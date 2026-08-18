@@ -431,7 +431,7 @@ const latestArticles = (latestData?.items ?? []).map((a: OfficialArticle) => ({
     subtitle={t('page.home.update.subtitle')}
     classes={{ container: '' }}
   >
-    <BlogLatestPostsClient client:load articles={latestArticles}>
+    <BlogLatestPostsClient client:visible articles={latestArticles}>
       <p class="text-gray-500">{t('page.home.update.loading')}</p>
     </BlogLatestPostsClient>
   </Section>
