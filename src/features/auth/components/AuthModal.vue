@@ -37,11 +37,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from "vue";
 import { t } from "~/lib/i18n";
-import LoginPage from "./login/LoginPage.vue";
-import RegisterPage from "./register/RegisterPage.vue";
-import RecoveryPage from "./recovery/RecoveryPage.vue";
+// 三个认证子页改为异步组件：仅在模态打开时按需加载，
+// 避免登录/注册/找回把各自 JS 塞进全站每页的关键路径（首屏 TBT 成本）。
+const LoginPage = defineAsyncComponent(() => import("./login/LoginPage.vue"));
+const RegisterPage = defineAsyncComponent(
+  () => import("./register/RegisterPage.vue"),
+);
+const RecoveryPage = defineAsyncComponent(
+  () => import("./recovery/RecoveryPage.vue"),
+);
 
 type View = "login" | "register" | "recovery";
 

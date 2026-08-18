@@ -20,7 +20,13 @@ import { withPreview } from "./lib/start-preview.mjs";
 import { measureLighthouse, medianMetrics } from "./lib/lighthouse-run.mjs";
 
 // 计划定义的关键路径页（index / 博客 / 编辑器 / 树洞 / 论坛）
-const DEFAULT_PATHS = ["/", "/blog", "/editor", "/community/treehole", "/community"];
+const DEFAULT_PATHS = [
+  "/",
+  "/blog",
+  "/editor",
+  "/community/treehole",
+  "/community",
+];
 
 function parseFlags() {
   const { values } = parseArgs({
@@ -32,7 +38,10 @@ function parseFlags() {
   });
   const runs = Math.max(1, parseInt(values.runs ?? "1", 10) || 1);
   const paths = values.urls
-    ? String(values.urls).split(",").map((s) => s.trim()).filter(Boolean)
+    ? String(values.urls)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
     : DEFAULT_PATHS;
   return { runs, paths, json: !!values.json };
 }
@@ -70,8 +79,19 @@ async function main() {
   }
 
   // Markdown 表格
-  const h = ["页面", "LCP(ms)", "CLS", "TBT(ms)", "TTI(ms)", "SI(ms)", "Perf分", "JS(KiB)"];
-  process.stdout.write(`\n## Core Web Vitals 基线（Lighthouse lab, runs=${runs}）\n\n`);
+  const h = [
+    "页面",
+    "LCP(ms)",
+    "CLS",
+    "TBT(ms)",
+    "TTI(ms)",
+    "SI(ms)",
+    "Perf分",
+    "JS(KiB)",
+  ];
+  process.stdout.write(
+    `\n## Core Web Vitals 基线（Lighthouse lab, runs=${runs}）\n\n`,
+  );
   process.stdout.write(`| ${h.join(" | ")} |\n`);
   process.stdout.write(`|${h.map(() => "---").join("|")}|\n`);
   for (const r of all) {
@@ -87,7 +107,9 @@ async function main() {
     ];
     process.stdout.write(`| ${cells.join(" | ")} |\n`);
   }
-  process.stdout.write(`\n注：INP 为 field metric，实验室以 TBT 作响应性代理；真实 INP 见 Sentry RUM。\n`);
+  process.stdout.write(
+    `\n注：INP 为 field metric，实验室以 TBT 作响应性代理；真实 INP 见 Sentry RUM。\n`,
+  );
 }
 
 main().catch((err) => {

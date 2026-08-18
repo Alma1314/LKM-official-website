@@ -22,6 +22,15 @@
     padding-left: 4px;
   }
 
+  /* 移动端主内容偏移：默认收起态 50px，展开态 200px（与 JS 的 getSizes 对齐） */
+  [data-main-content] {
+    padding-left: 200px;
+  }
+
+  html.sidebar-collapsed [data-main-content] {
+    padding-left: 50px;
+  }
+
   .icon {
     min-width: 36px;
     height: 30px;
@@ -211,9 +220,14 @@
   transform: none;
 }
 
-/* 主内容容器默认偏移，匹配侧边栏展开宽度 */
+/* 主内容容器偏移，由 html.sidebar-collapsed（BaseLayout 首帧内联脚本在 paint 前设置）驱动，
+   避免 JS 在首帧后改 main 内边距触发 CLS。默认=展开宽度；收起态走 CSS 覆盖。 */
 [data-main-content] {
   padding-left: 240px;
+}
+
+html.sidebar-collapsed [data-main-content] {
+  padding-left: 67px;
 }
 
 /* 收起态：居中显示，隐藏文字 */
