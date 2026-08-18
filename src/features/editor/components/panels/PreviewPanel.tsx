@@ -148,16 +148,17 @@ export function renderNode(node: JSONContent, key: number): React.ReactNode {
       );
     }
     case "rawMdx": {
-      const source = (
-        (node.attrs as Record<string, string>)?.source ?? ""
-      ).slice(0, 60);
+      // rawMdx 承载未在 Tiptap 结构化的 MDX 源码片段（如带正文的 Callout/Figure、未知组件）。
+      // 直接展示完整源码（pre-wrap 保留换行），预览与 PDF 导出都不丢失信息；
+      // 截断为 [...] 会在用户预览/导出时误导性地隐藏真实内容。
+      const source = (node.attrs as Record<string, string>)?.source ?? "";
       return (
-        <div
+        <pre
           key={key}
-          className="bg-warning/10 border border-warning/40 rounded p-3 text-sm text-warning my-2"
+          className="bg-surface-3/40 border border-surface-3 rounded p-3 text-xs whitespace-pre-wrap font-mono my-2 overflow-x-auto"
         >
-          [MDX: {source}...]
-        </div>
+          {source}
+        </pre>
       );
     }
     default:

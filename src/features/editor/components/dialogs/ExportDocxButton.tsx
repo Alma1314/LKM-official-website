@@ -1,42 +1,54 @@
 import type { Editor } from "@tiptap/core";
 import type { ReactElement } from "react";
 import { t } from "~/lib/i18n";
-import { serializeHtml } from "../../engine/serialize-html";
 
-export function handleExportDocx(editor: Editor): void {
+export async function handleExportDocx(editor: Editor): Promise<void> {
   try {
+    // docx 库约 1MB，动态 import 仅在点击导出时加载，避免打膨胀编辑器主包
+    const { buildDocxBlob } = await import("../../engine/serialize-docx");
     const json = editor.getJSON();
-    const content = (json?.content ?? []) as Parameters<
-      typeof serializeHtml
+    const content = (json?.content ?? []) as unknown as Parameters<
+      typeof buildDocxBlob
     >[0];
-    const html = serializeHtml(content);
+    // 用文档首标题作为默认文件名与文档标题
+    const titleText = firstHeadingText(content) || t("editor.untitled");
+    const blob = await buildDocxBlob(content, titleText);
 
-    // Microsoft Word compatible HTML format
-    const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="utf-8"><title>Document</title><style>
-  body { font-family: 'Noto Sans SC', sans-serif; font-size: 12pt; line-height: 1.8; }
-  h1 { font-size: 20pt; } h2 { font-size: 16pt; } h3 { font-size: 14pt; }
-  p { margin: 0.3em 0; }
-  blockquote { border-left: 3px solid #ccc; padding-left: 1em; color: #666; }
-  pre { background: #f5f5f5; padding: 1em; }
-  table { border-collapse: collapse; width: 100%; }
-  td, th { border: 1px solid #ddd; padding: 6px; }
-</style></head>
-<body>${html}</body>
-</html>`;
-
-    const blob = new Blob(["\ufeff" + wordHtml], {
-      type: "application/msword",
-    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "document.doc";
+    a.download = `${filenameSafe(titleText)}.docx`;
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
+    console.warn("[DocumentEditor] 导出 docx 失败:", err);
     alert(t("editor.exportFailed", { message: (err as Error).message }));
   }
+}
+
+/** 从顶层节点取首个标题文本，用作文件名 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function firstHeadingText(content: any[]): string {
+  for (const node of content) {
+    if (node?.type === "heading" && Array.isArray(node.content)) {
+      const text = node.content
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .map((c: any) => c.text ?? "")
+        .join("");
+      if (text.trim()) return text.trim();
+    }
+  }
+  return "";
+}
+
+/** 移除不适合做文件名的字符 */
+function filenameSafe(name: string): string {
+  return (
+    name
+      .trim()
+      .replace(/[\\/:*?"<>|]/g, "-")
+      .replace(/\s+/g, "_") || "document"
+  );
 }
 
 interface ExportDocxButtonProps {
@@ -51,9 +63,11 @@ export default function ExportDocxButton({
       type="button"
       className="rte-btn rte-btn--ghost rte-btn--xs"
       title={t("editor.exportDocxTitle")}
-      onClick={() => handleExportDocx(editor)}
+      onClick={() => {
+        void handleExportDocx(editor);
+      }}
     >
-      DOC
+      DOCX
     </button>
   );
 }

@@ -2,6 +2,7 @@
 import type { Root, Table, List } from "mdast";
 import type { JSONContent } from "@tiptap/core";
 import { toString as mdastToString } from "mdast-util-to-string";
+import { serializeJsxElement } from "./serialize-mdx";
 
 // MDAST 中这些是包裹文本的父节点，Tiptap 中它们是文本节点上的标记。
 interface MarkContext {
@@ -257,6 +258,7 @@ function convertBlockChildren(children: any[]): JSONContent[] {
       case "mdxJsxFlowElement": {
         const el = child as {
           name?: string;
+          children?: any[];
           attributes?: Array<{
             type: string;
             name: string;
@@ -264,22 +266,28 @@ function convertBlockChildren(children: any[]): JSONContent[] {
           }>;
         };
         const name = el.name ?? "";
-        if (name === "Callout") {
+        if (name === "Callout" || name === "Figure") {
+          const hasChildren = (el.children ?? []).length > 0;
+          if (hasChildren) {
+            // Callout/Figure 为 atom 节点，无法承载可编辑子内容（正文/图注）。
+            // 带子内容的元素与其丢弃子内容造成数据丢失，不如整体降级为 rawMdx 保底，
+            // 序列化回完整源码，往返不丢内容（还原自 serializeJsxElement）。
+            result.push({
+              type: "rawMdx",
+              attrs: {
+                source: serializeJsxElement(el as unknown as any),
+                sourceKind: "flow",
+              },
+            });
+            break;
+          }
           const attrs: Record<string, unknown> = {};
           for (const attr of el.attributes ?? []) {
             if (attr.type === "mdxJsxAttribute") {
               attrs[attr.name] = attr.value;
             }
           }
-          result.push({ type: "callout", attrs });
-        } else if (name === "Figure") {
-          const attrs: Record<string, unknown> = {};
-          for (const attr of el.attributes ?? []) {
-            if (attr.type === "mdxJsxAttribute") {
-              attrs[attr.name] = attr.value;
-            }
-          }
-          result.push({ type: "figure", attrs });
+          result.push({ type: name === "Callout" ? "callout" : "figure", attrs });
         } else {
           result.push({
             type: "rawMdx",

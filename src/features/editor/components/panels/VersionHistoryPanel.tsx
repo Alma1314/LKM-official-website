@@ -23,13 +23,21 @@ const VersionHistoryPanel = memo(function VersionHistoryPanel({
   const [confirmRestore, setConfirmRestore] = useState(false);
 
   useEffect(() => {
+    // 卸载防抖：卸载后不再 setState（避免 setState-on-unmounted 与迟到响应）。
+    let cancelled = false;
+    const apply = (list: VersionEntry[]): void => {
+      if (!cancelled) setVersions(list);
+    };
     const result = adapter.getVersions(documentId);
     // Handle both Promise and sync return
     if (result instanceof Promise) {
-      result.then(setVersions);
+      result.then(apply).catch(() => apply([]));
     } else {
-      setVersions(result);
+      apply(result);
     }
+    return () => {
+      cancelled = true;
+    };
   }, [documentId, adapter]);
 
   const handleSelect = (version: number): void => {

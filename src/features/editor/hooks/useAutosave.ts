@@ -50,6 +50,13 @@ export function useAutoSave(
   const lastSavedJsonHashRef = useRef<string>("");
   const lastVersionSaveRef = useRef<number>(0);
 
+  // 待保存的最新内容：卸载/刷新前 flush 用。doSave 是异步的，且卸载 effect 用的是空依赖
+  // 闭包，因此保存原始 content 由 triggerSave/flushImmediate 实时写入本 ref，卸载时读取。
+  const latestContentRef = useRef<Record<string, unknown>>({});
+  // 串行化保存链：把可能并发的 doSave 排队执行（乐观锁依赖 baseVersionRef，并发会竞态）。
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const saveChainRef = useRef<Promise<any>>(Promise.resolve());
+
   const loadDraft = useCallback(async () => {
     const doc = await Promise.resolve(adapter.loadDocument(documentId));
     if (doc) {
@@ -67,7 +74,7 @@ export function useAutoSave(
     return null;
   }, [documentId, adapter]);
 
-  const doSave = useCallback(
+  const saveImpl = useCallback(
     async (content: Record<string, unknown>) => {
       setSaveStatus("saving");
       try {
@@ -162,8 +169,22 @@ export function useAutoSave(
     [documentId, adapter, getFrontmatter],
   );
 
+  // 把一次保存串行入队，避免多调用并发踩乐观锁；后一个保存必然拿到前一个保存后的 baseVersion。
+  const enqueueSave = useCallback(
+    (content: Record<string, unknown>) => {
+      saveChainRef.current = saveChainRef.current
+        .then(() => saveImpl(content))
+        .catch(() => {
+          // 单个保存失败不中断后续链（saveImpl 内部已 try/catch 处理，正常不会走到这）
+        });
+      return saveChainRef.current;
+    },
+    [saveImpl],
+  );
+
   const triggerSave = useCallback(
     (content: Record<string, unknown>) => {
+      latestContentRef.current = content;
       hasUnsavedRef.current = true;
       setSaveStatus("unsaved");
 
@@ -172,23 +193,24 @@ export function useAutoSave(
       }
       timerRef.current = setTimeout(() => {
         timerRef.current = null;
-        doSave(content);
+        enqueueSave(latestContentRef.current);
       }, debounceMs);
     },
-    [debounceMs, doSave],
+    [debounceMs, enqueueSave],
   );
 
   const flushImmediate = useCallback(
     (content: Record<string, unknown>) => {
+      latestContentRef.current = content;
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
       if (hasUnsavedRef.current) {
-        doSave(content);
+        enqueueSave(content);
       }
     },
-    [doSave],
+    [enqueueSave],
   );
 
   useEffect(() => {
@@ -201,10 +223,18 @@ export function useAutoSave(
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);
 
+  // 卸载时 flush 未落盘改动：组件卸载 / 路由切换 / 快速刷新前尽力把最新内容写回。
+  // latestContentRef 避开空依赖闭包读不到最新 content 的问题。
   useEffect(() => {
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      // 仅在确有未保存内容且尚未处于保存中时才发起（避免卸载瞬间重复写一次已保存内容）
+      if (hasUnsavedRef.current) {
+        // 用离线微任务而非同步网络请求，避免卸载路径上的可见异常
+        void Promise.resolve().then(() => enqueueSave(latestContentRef.current));
       }
     };
   }, []);

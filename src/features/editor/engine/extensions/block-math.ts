@@ -20,14 +20,21 @@ export const BlockMath = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
+    // atom 节点无内容槽，不返回 0（否则 getHTML/复制粘贴会产生无意义空标签层）。
+    // 把外部 merge 进来的通用 attrs（如 class）与节点私有 attrs 合并，避免覆盖默认 class。
+    const { class: extraClass, ...rest } = HTMLAttributes as {
+      class?: string;
+      [key: string]: unknown;
+    };
     return [
       "div",
       {
         "data-block-math": "",
-        class: "my-4 text-center select-none cursor-pointer",
-        ...HTMLAttributes,
+        class: extraClass
+          ? `my-4 text-center select-none cursor-pointer ${extraClass}`
+          : "my-4 text-center select-none cursor-pointer",
+        ...rest,
       },
-      0,
     ];
   },
 

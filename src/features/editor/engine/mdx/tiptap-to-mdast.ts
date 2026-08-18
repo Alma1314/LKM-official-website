@@ -250,23 +250,37 @@ function convertInline(nodes: JSONContent[]): PhrasingContent[] {
         continue;
       }
 
-      let current: PhrasingContent[] = [
-        { type: "text", value: node.text ?? "" } as PhrasingContent,
-      ];
+      // 多行文本：Tiptap 中文本可含字面 `\n`（粘贴/自动换行遗留），若原样输出会
+      // 破坏 MARKDOWN 结构。故按 `\n` 切分，段间插入 hardBreak（mdast `break`），
+      // 并把同一组 marks 应用到一个段落内的每个文本片段上。
+      const segments = (node.text ?? "").split("\n");
+      for (let i = 0; i < segments.length; i++) {
+        const seg = segments[i];
+        if (seg === "" && i === segments.length - 1) continue;
 
-      // 从内到外应用标记（Tiptap 中最后一个标记是最内层，MDAST 中最外层）
-      // 需要按顺序应用：越早的阶段包裹越深
-      // MDAST 嵌套顺序：link > strong > emphasis > delete
-      // Tiptap 标记顺序不保证嵌套，因此按固定优先级应用：
-      const priority = ["code", "strike", "italic", "bold", "link"];
-      const sorted = [...marks].sort(
-        (a, b) => priority.indexOf(a.type) - priority.indexOf(b.type),
-      );
-      for (const mark of sorted) {
-        current = wrapWithMark(current, mark.type, mark.attrs);
+        let current: PhrasingContent[] = [
+          { type: "text", value: seg } as PhrasingContent,
+        ];
+
+        // 从内到外应用标记（Tiptap 中最后一个标记是最内层，MDAST 中最外层）
+        // 需要按顺序应用：越早的阶段包裹越深
+        // MDAST 嵌套顺序：link > strong > emphasis > delete
+        // Tiptap 标记顺序不保证嵌套，因此按固定优先级应用：
+        const priority = ["code", "strike", "italic", "bold", "link"];
+        const sorted = [...marks].sort(
+          (a, b) => priority.indexOf(a.type) - priority.indexOf(b.type),
+        );
+        for (const mark of sorted) {
+          current = wrapWithMark(current, mark.type, mark.attrs);
+        }
+
+        result.push(...current);
+
+        // 非末尾段之后插硬换行
+        if (i < segments.length - 1) {
+          result.push({ type: "break" } as PhrasingContent);
+        }
       }
-
-      result.push(...current);
     } else if (node.type === "image") {
       const attrs = (node.attrs ?? {}) as Record<string, string>;
       result.push({

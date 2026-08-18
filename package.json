@@ -92,6 +92,7 @@
     "astro-icon": "^1.1.5",
     "astro-seo": "^1.1.0",
     "dexie": "^4.4.4",
+    "docx": "9.7.1",
     "hastscript": "^9.0.1",
     "katex": "^0.18.1",
     "limax": "4.2.3",

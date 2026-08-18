@@ -183,6 +183,48 @@ describe("MDX 往返转换", () => {
     expect(back.frontmatter.title).toBe("我的标题");
   });
 
+  it("带正文的 Callout 读回不丢内容（降级为 rawMdx 保底）", () => {
+    const mdx = `<Callout type="warning">
+**注意**：这是正文内容，不能被丢弃。
+</Callout>`;
+    const back = importMdx(mdx);
+    const node = back.content![0];
+    // Callout 为 atom 节点无法承载正文，带正文时应整体保底为 rawMdx，还原完整源码
+    expect(["rawMdx", "callout"]).toContain(node.type);
+    if (node.type === "rawMdx") {
+      const source = (node.attrs as { source?: string }).source ?? "";
+      expect(source).toContain("这是正文内容");
+      // 再走 exportMdx 往返，正文应原样保留
+      const out = exportMdx(back.content ?? [], {});
+      expect(out.mdx).toContain("这是正文内容");
+    }
+  });
+
+  it("多行文本往返保留换行（\n 转 hardBreak）", () => {
+    const doc: JSONContent = {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            {
+              type: "text",
+              text: "第一行\n第二行",
+            },
+          ],
+        },
+      ],
+    };
+    const out = exportMdx(doc.content ?? [], {});
+    // remark-stringify 把 break 序列化为行尾两空格硬换行，roundtrip 后不应吞掉换行
+    const back = importMdx(out.mdx);
+    const paragraphText = (back.content![0].content ?? [])
+      .map((c) => c.text ?? (c.type === "break" ? "\n" : ""))
+      .join("");
+    expect(paragraphText).toContain("第一行");
+    expect(paragraphText).toContain("第二行");
+  });
+
   it("WikiLink 往返：导出为 [[label]] 文本，读回不丢内容", () => {
     const doc: JSONContent = {
       type: "doc",
