@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/kucherenko/jscpd/master/jscpd.schema.json",
   "ignore": [
     "dist",
     "node_modules",

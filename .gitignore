@@ -57,6 +57,8 @@ reports/
 !/scripts/check-links.mjs
 !/scripts/check-seo-output.mjs
 !/scripts/optimize-avatars.mjs
+!/scripts/lighthouse-budget.mjs
+!/scripts/measure-cwv.mjs
 !src/scripts/
 
 # reference material (astro templates, not committed)
