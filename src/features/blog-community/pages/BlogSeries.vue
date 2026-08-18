@@ -111,7 +111,11 @@ function fileLink(filepath: string) {
               {{ node.name }}
             </p>
             <ul class="ml-4 space-y-1">
-              <li v-for="child in node.children" :key="child.name" class="flex items-center gap-2">
+              <li
+                v-for="child in node.children"
+                :key="child.name"
+                class="flex items-center gap-2"
+              >
                 <router-link
                   v-if="isMarkdown(child.name)"
                   :to="fileLink(`${node.name}/${child.name}`)"

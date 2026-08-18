@@ -20,7 +20,10 @@
     <div v-if="error" class="mt-4 text-red-500 text-sm">
       {{ error }}
     </div>
-    <div v-else-if="loading && !comments.length" class="text-sm text-text-muted py-4">
+    <div
+      v-else-if="loading && !comments.length"
+      class="text-sm text-text-muted py-4"
+    >
       {{ t("blog.commentsLoading") }}
     </div>
     <div v-else-if="!comments.length" class="text-sm text-text-muted py-4">
@@ -40,7 +43,10 @@
 <script setup lang="ts">
 import { ref, computed, h, type PropType } from "vue";
 import BlogCommentForm from "../pages/BlogCommentForm.vue";
-import { useArticleComments, type ArticleCommentNode } from "../composables/useArticleComments";
+import {
+  useArticleComments,
+  type ArticleCommentNode,
+} from "../composables/useArticleComments";
 import { useAuthStore } from "~/stores/auth";
 import { avatarUrl } from "~/lib/utils/avatars";
 import { t } from "~/lib/i18n";
@@ -48,7 +54,9 @@ import { t } from "~/lib/i18n";
 const props = defineProps<{ slug: string }>();
 
 const auth = useAuthStore();
-const { comments, loading, error, fetch, add, remove } = useArticleComments(props.slug);
+const { comments, loading, error, fetch, add, remove } = useArticleComments(
+  props.slug,
+);
 const submitting = ref(false);
 // 回复目标：仅一层 parent_id（照 blog series 惯例，不无限嵌套）
 const replyTarget = ref<number | null>(null);
@@ -88,8 +96,14 @@ const CommentNode = {
   props: {
     comment: { type: Object as PropType<ArticleCommentNode>, required: true },
     currentUserId: { type: Number, default: null },
-    onReply: { type: Function as PropType<(id: number) => void>, required: true },
-    onDelete: { type: Function as PropType<(id: number) => void>, required: true },
+    onReply: {
+      type: Function as PropType<(id: number) => void>,
+      required: true,
+    },
+    onDelete: {
+      type: Function as PropType<(id: number) => void>,
+      required: true,
+    },
   },
   setup(props) {
     // 作者昵称兜底：有 profile 用 nickname，否则回退到用户 ID
@@ -107,28 +121,43 @@ const CommentNode = {
                 class: "w-8 h-8 rounded-full shrink-0 object-cover",
                 alt: authorName(),
               })
-            : h("div", {
-                class:
-                  "w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium shrink-0",
-              }, authorName()[0] ?? "?"),
+            : h(
+                "div",
+                {
+                  class:
+                    "w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium shrink-0",
+                },
+                authorName()[0] ?? "?",
+              ),
           h("div", { class: "flex-1" }, [
             h("div", { class: "flex items-center gap-2" }, [
               h("span", { class: "font-medium text-sm" }, authorName()),
-              h("span", { class: "text-xs text-text-muted" },
-                formatDate(props.comment.created_at)),
+              h(
+                "span",
+                { class: "text-xs text-text-muted" },
+                formatDate(props.comment.created_at),
+              ),
             ]),
             h("p", { class: "mt-1 text-sm" }, props.comment.content),
             h("div", { class: "flex gap-3 mt-2" }, [
-              h("button", {
-                class: "text-xs text-primary hover:underline",
-                onClick: () => props.onReply(props.comment.id),
-              }, t("blog.reply")),
+              h(
+                "button",
+                {
+                  class: "text-xs text-primary hover:underline",
+                  onClick: () => props.onReply(props.comment.id),
+                },
+                t("blog.reply"),
+              ),
               props.currentUserId !== null &&
               props.currentUserId === props.comment.user_id
-                ? h("button", {
-                    class: "text-xs text-red-500 hover:underline",
-                    onClick: () => props.onDelete(props.comment.id),
-                  }, t("common.delete"))
+                ? h(
+                    "button",
+                    {
+                      class: "text-xs text-red-500 hover:underline",
+                      onClick: () => props.onDelete(props.comment.id),
+                    },
+                    t("common.delete"),
+                  )
                 : null,
             ]),
           ]),

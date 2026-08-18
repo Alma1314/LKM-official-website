@@ -295,7 +295,10 @@ function convertBlockChildren(children: any[]): JSONContent[] {
               attrs[attr.name] = attr.value;
             }
           }
-          result.push({ type: name === "Callout" ? "callout" : "figure", attrs });
+          result.push({
+            type: name === "Callout" ? "callout" : "figure",
+            attrs,
+          });
         } else {
           result.push({
             type: "rawMdx",

@@ -234,7 +234,9 @@ export function useAutoSave(
       // 仅在确有未保存内容且尚未处于保存中时才发起（避免卸载瞬间重复写一次已保存内容）
       if (hasUnsavedRef.current) {
         // 用离线微任务而非同步网络请求，避免卸载路径上的可见异常
-        void Promise.resolve().then(() => enqueueSave(latestContentRef.current));
+        void Promise.resolve().then(() =>
+          enqueueSave(latestContentRef.current),
+        );
       }
     };
   }, []);

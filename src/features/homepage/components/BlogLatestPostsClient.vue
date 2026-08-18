@@ -21,7 +21,9 @@ const fetchedArticles = ref<ServerArticle[]>([]);
 const loading = ref(true);
 
 // 受控：有 props 直接渲染；无 props 走本地 fetch
-const articles = computed<ServerArticle[]>(() => props.articles ?? fetchedArticles.value);
+const articles = computed<ServerArticle[]>(
+  () => props.articles ?? fetchedArticles.value,
+);
 
 const DEFAULT_COVER = `${import.meta.env.BASE_URL || "/"}images/article-default.png`;
 const baseUrl = import.meta.env.BASE_URL || "/";
@@ -37,7 +39,9 @@ onMounted(async () => {
   try {
     // 响应条目含 published 原始日期字段（与 ServerArticle 渲染形状不同）
     const { data } = await fetchWithCache<{
-      items: Array<Omit<ServerArticle, "publishedText"> & { published: string }>;
+      items: Array<
+        Omit<ServerArticle, "publishedText"> & { published: string }
+      >;
       total: number;
     }>("/api/v1/articles?page=1&page_size=6", CACHE_KEY, CACHE_TTL);
     if (data?.items) {

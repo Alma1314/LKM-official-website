@@ -165,7 +165,11 @@ class EditorErrorBoundary extends Component<Props, State> {
           </div>
         }
       >
-        <DocumentEditor documentId={docId} adapter={adapter} seriesId={seriesId} />
+        <DocumentEditor
+          documentId={docId}
+          adapter={adapter}
+          seriesId={seriesId}
+        />
       </Suspense>
     );
   }
@@ -203,7 +207,11 @@ export default function EditorMount({
 
   return (
     <div className="rte-root">
-      <EditorErrorBoundary docId={docId} adapter={adapter} seriesId={seriesId} />
+      <EditorErrorBoundary
+        docId={docId}
+        adapter={adapter}
+        seriesId={seriesId}
+      />
     </div>
   );
 }

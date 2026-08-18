@@ -169,7 +169,9 @@ function isRefreshRequest(url: string): boolean {
  * 真正的请求执行。401 时触发「单飞」刷新（并发去重），成功后带新 token 重放一次。
  * 返回 ok(data)（解包 {code,msg,data}）或 err(AppError)。
  */
-async function rawRequest<T>(config: RequestConfig): Promise<Result<T, AppError>> {
+async function rawRequest<T>(
+  config: RequestConfig,
+): Promise<Result<T, AppError>> {
   const base = getApiBase();
   const url = config.url ?? "";
   const fullUrl = `${base ? base.replace(/\/$/, "") : ""}${url}${
@@ -177,7 +179,8 @@ async function rawRequest<T>(config: RequestConfig): Promise<Result<T, AppError>
   }`;
 
   const timeout = config.timeout ?? DEFAULT_TIMEOUT_MS;
-  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const controller =
+    typeof AbortController !== "undefined" ? new AbortController() : null;
   const timeoutId = controller
     ? setTimeout(() => controller.abort(), timeout)
     : undefined;
@@ -212,9 +215,7 @@ async function rawRequest<T>(config: RequestConfig): Promise<Result<T, AppError>
       method: config.method ?? "GET",
       headers: {
         ...headers,
-        ...(finalToken
-          ? { Authorization: `Bearer ${finalToken}` }
-          : {}),
+        ...(finalToken ? { Authorization: `Bearer ${finalToken}` } : {}),
       },
       body,
       signal: controller ? controller.signal : undefined,
@@ -259,9 +260,7 @@ async function toResult<T>(response: Response): Promise<Result<T, AppError>> {
   if (!response.ok) {
     const status = response.status;
     const code =
-      status >= 500
-        ? ErrorCode.HTTP_SERVER_ERROR
-        : ErrorCode.HTTP_CLIENT_ERROR;
+      status >= 500 ? ErrorCode.HTTP_SERVER_ERROR : ErrorCode.HTTP_CLIENT_ERROR;
     const m = t("messages.requestFailed", { status });
     // 尽力取后端 msg/message（只取可读错误信息，不透传完整响应体）
     let detail = "";
@@ -274,9 +273,7 @@ async function toResult<T>(response: Response): Promise<Result<T, AppError>> {
     } catch {
       // 响应非 JSON（如 HTML 错误页），忽略 detail
     }
-    return err(
-      new AppError(code, m + (detail ? `：${detail}` : ""), status),
-    );
+    return err(new AppError(code, m + (detail ? `：${detail}` : ""), status));
   }
 
   // 2xx：尝试解析 JSON body
@@ -288,7 +285,12 @@ async function toResult<T>(response: Response): Promise<Result<T, AppError>> {
   }
 
   // unpack {code, msg, data} → 返回内层 data（契约与旧 axios request 一致）
-  if (data && typeof data === "object" && "code" in (data as object) && "data" in (data as object)) {
+  if (
+    data &&
+    typeof data === "object" &&
+    "code" in (data as object) &&
+    "data" in (data as object)
+  ) {
     return ok((data as { data: T }).data);
   }
   return ok(data as T);
@@ -349,7 +351,10 @@ function refreshAccessToken(): Promise<string | null> {
 }
 
 /** 配置全局 http 客户端（兼容占位；超时默认已内置）。 */
-export function configure(_config: { baseURL?: string; timeout?: number }): void {
+export function configure(_config: {
+  baseURL?: string;
+  timeout?: number;
+}): void {
   // 无持久化实例，保留函数签名以兼容旧 barrel 导出
 }
 

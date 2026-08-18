@@ -36,7 +36,10 @@ interface MarkLike {
 const BULLET_CONF_ID = "editor-bullets";
 const NUMBER_CONF_ID = "editor-numbers";
 
-const HEADING_MAP: Record<number, (typeof HeadingLevel)[keyof typeof HeadingLevel]> = {
+const HEADING_MAP: Record<
+  number,
+  (typeof HeadingLevel)[keyof typeof HeadingLevel]
+> = {
   1: HeadingLevel.HEADING_1,
   2: HeadingLevel.HEADING_2,
   3: HeadingLevel.HEADING_3,
@@ -75,9 +78,24 @@ export async function buildDocxBlob(
         {
           reference: BULLET_CONF_ID,
           levels: [
-            { level: 0, format: LevelFormat.BULLET, text: "\u2022", alignment: AlignmentType.LEFT },
-            { level: 1, format: LevelFormat.BULLET, text: "\u25e6", alignment: AlignmentType.LEFT },
-            { level: 2, format: LevelFormat.BULLET, text: "\u25aa", alignment: AlignmentType.LEFT },
+            {
+              level: 0,
+              format: LevelFormat.BULLET,
+              text: "\u2022",
+              alignment: AlignmentType.LEFT,
+            },
+            {
+              level: 1,
+              format: LevelFormat.BULLET,
+              text: "\u25e6",
+              alignment: AlignmentType.LEFT,
+            },
+            {
+              level: 2,
+              format: LevelFormat.BULLET,
+              text: "\u25aa",
+              alignment: AlignmentType.LEFT,
+            },
           ],
         },
         {
@@ -149,12 +167,22 @@ function buildBlock(node: JSONContent): (Paragraph | Table)[] {
         }),
       ];
     case "horizontalRule":
-      return [new Paragraph({ text: "--------------------", spacing: { after: 120 } })];
+      return [
+        new Paragraph({
+          text: "--------------------",
+          spacing: { after: 120 },
+        }),
+      ];
     case "image":
       // 图片以 base64 blob 引用实现需要异步资源加载，先以占位文本呈现
       return [
         new Paragraph({
-          children: [new TextRun({ text: `[图片: ${String(attrs.alt ?? attrs.src ?? "")}]`, italics: true })],
+          children: [
+            new TextRun({
+              text: `[图片: ${String(attrs.alt ?? attrs.src ?? "")}]`,
+              italics: true,
+            }),
+          ],
           alignment: AlignmentType.CENTER,
         }),
       ];
@@ -172,22 +200,49 @@ function buildBlock(node: JSONContent): (Paragraph | Table)[] {
       const ctype = String(attrs.type ?? "info");
       const titleText = String(attrs.title ?? ctype);
       return [
-        new Paragraph({ children: [new TextRun({ text: `[${ctype.toUpperCase()}] ${titleText}`, bold: true })], spacing: { before: 120, after: 120 } }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `[${ctype.toUpperCase()}] ${titleText}`,
+              bold: true,
+            }),
+          ],
+          spacing: { before: 120, after: 120 },
+        }),
       ];
     }
     case "figure": {
       const caption = String(attrs.caption ?? "");
       return [
-        new Paragraph({ children: [new TextRun({ text: `[图片: ${String(attrs.alt ?? attrs.src ?? "")}]`, italics: true })], alignment: AlignmentType.CENTER }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `[图片: ${String(attrs.alt ?? attrs.src ?? "")}]`,
+              italics: true,
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+        }),
         ...(caption
-          ? [new Paragraph({ children: [new TextRun({ text: caption, italics: true })], alignment: AlignmentType.CENTER, spacing: { after: 120 } })]
+          ? [
+              new Paragraph({
+                children: [new TextRun({ text: caption, italics: true })],
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 120 },
+              }),
+            ]
           : []),
       ];
     }
     case "blockMath":
       return [
         new Paragraph({
-          children: [new TextRun({ text: `$${String(attrs.latex ?? "")}$$`, font: { name: "Cambria Math" } })],
+          children: [
+            new TextRun({
+              text: `$${String(attrs.latex ?? "")}$$`,
+              font: { name: "Cambria Math" },
+            }),
+          ],
           alignment: AlignmentType.CENTER,
           spacing: { before: 120, after: 120 },
         }),
@@ -195,7 +250,12 @@ function buildBlock(node: JSONContent): (Paragraph | Table)[] {
     case "rawMdx":
       return [
         new Paragraph({
-          children: [new TextRun({ text: String(attrs.source ?? ""), font: { name: "Consolas" } })],
+          children: [
+            new TextRun({
+              text: String(attrs.source ?? ""),
+              font: { name: "Consolas" },
+            }),
+          ],
           spacing: { after: 120 },
         }),
       ];
@@ -213,7 +273,9 @@ function buildInlineAsParagraph(node: JSONContent): (Paragraph | Table)[] {
   return buildBlockChildrenAsParagraphs(node.content ?? []);
 }
 
-function buildBlockChildrenAsParagraphs(children: JSONContent[]): (Paragraph | Table)[] {
+function buildBlockChildrenAsParagraphs(
+  children: JSONContent[],
+): (Paragraph | Table)[] {
   return children.flatMap((c) => buildBlock(c));
 }
 
@@ -222,20 +284,25 @@ function buildListItems(
   kind: "bullet" | "number",
   level = 0,
 ): (Paragraph | Table)[] {
-  const ref =
-    kind === "bullet"
-      ? BULLET_CONF_ID
-      : NUMBER_CONF_ID;
+  const ref = kind === "bullet" ? BULLET_CONF_ID : NUMBER_CONF_ID;
   return items.flatMap((item) => {
     const itemContent = item.content ?? [];
     // 列表项内部可能是 paragraph 或嵌套列表
     const paragraphs = itemContent.filter(
-      (c) => c.type === "paragraph" || c.type === "heading" || c.type === "codeBlock",
+      (c) =>
+        c.type === "paragraph" ||
+        c.type === "heading" ||
+        c.type === "codeBlock",
     );
-    const nested = itemContent.filter((c) => c && c.type && /List$/.test(c.type));
-    const outerParagraphs = paragraphs.length > 0
-      ? paragraphs
-      : (itemContent.length > 0 ? [itemContent[0]] : []);
+    const nested = itemContent.filter(
+      (c) => c && c.type && /List$/.test(c.type),
+    );
+    const outerParagraphs =
+      paragraphs.length > 0
+        ? paragraphs
+        : itemContent.length > 0
+          ? [itemContent[0]]
+          : [];
 
     const primary = outerParagraphs.map((p) => {
       return new Paragraph({
@@ -247,7 +314,11 @@ function buildListItems(
     });
 
     const nestedBlocks = nested.flatMap((n) =>
-      buildListItems(n.content ?? [], n.type === "orderedList" ? "number" : "bullet", level + 1),
+      buildListItems(
+        n.content ?? [],
+        n.type === "orderedList" ? "number" : "bullet",
+        level + 1,
+      ),
     );
     return [...primary, ...nestedBlocks];
   });
@@ -260,8 +331,8 @@ function buildTableRow(row: JSONContent): TableRow {
 
 function buildTableCell(cell: JSONContent): TableCell {
   const isHeader = cell.type === "tableHeader";
-  const children: (Paragraph | Table)[] = (cell.content ?? []).flatMap((child) =>
-    buildBlock(child),
+  const children: (Paragraph | Table)[] = (cell.content ?? []).flatMap(
+    (child) => buildBlock(child),
   );
   return new TableCell({
     children,
@@ -277,13 +348,22 @@ function inlineRuns(nodes: JSONContent[]): ParagraphChild[] {
       runs.push(...textRuns(node));
     } else if (node.type === "inlineMath") {
       const latex = String((node.attrs as Record<string, string>)?.latex ?? "");
-      runs.push(new TextRun({ text: `$${latex}$`, font: { name: "Cambria Math" } }));
+      runs.push(
+        new TextRun({ text: `$${latex}$`, font: { name: "Cambria Math" } }),
+      );
     } else if (node.type === "image") {
       const attrs = (node.attrs ?? {}) as Record<string, string>;
-      runs.push(new TextRun({ text: `[图片: ${attrs.alt ?? attrs.src ?? ""}]`, italics: true }));
+      runs.push(
+        new TextRun({
+          text: `[图片: ${attrs.alt ?? attrs.src ?? ""}]`,
+          italics: true,
+        }),
+      );
     } else if (node.type === "wikiLink") {
       const attrs = (node.attrs ?? {}) as Record<string, string>;
-      runs.push(new TextRun({ text: `[[${attrs.label ?? ""}]]`, color: "2E86C1" }));
+      runs.push(
+        new TextRun({ text: `[[${attrs.label ?? ""}]]`, color: "2E86C1" }),
+      );
     } else {
       // 已知其它内联块：扁平化其内容
       if (node.content) {

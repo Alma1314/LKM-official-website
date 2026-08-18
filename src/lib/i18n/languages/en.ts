@@ -3728,7 +3728,8 @@ export const en = {
     saveToSeries: "Save to series",
     publishAsArticle: "Publish as article",
     publishArticleTitle: "Publish as article",
-    publishArticleNotice: "Publish the current series file as a blog article. The article will be publicly visible after confirmation.",
+    publishArticleNotice:
+      "Publish the current series file as a blog article. The article will be publicly visible after confirmation.",
     slugLabel: "Slug (article permalink)",
     categoryLabel: "Category",
     categoryPlaceholder: "engineering",

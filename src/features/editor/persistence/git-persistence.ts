@@ -63,7 +63,12 @@ export function createGitPersistence(
     async saveDocument(doc) {
       const filepath =
         doc.id === "new" ? `${deriveSlug(doc.title)}.mdx` : doc.id;
-      const r = await blogApi.putSeriesFile(seriesId, filepath, doc.contentMdx, "save");
+      const r = await blogApi.putSeriesFile(
+        seriesId,
+        filepath,
+        doc.contentMdx,
+        "save",
+      );
       return r.isOk();
     },
 

@@ -82,9 +82,7 @@ function convertBlocks(nodes: JSONContent[]): RootContent[] {
         // 首行（GFM 总是表头）先求列数，便于对齐数组按列对齐
         const maxCols = Math.max(
           0,
-          ...rowNodes.map(
-            (row) => (row.content ?? []).length,
-          ),
+          ...rowNodes.map((row) => (row.content ?? []).length),
         );
         // 按列收集对齐值：取每列中首个非空 align
         const alignMap = Array.from({ length: maxCols }, () => null) as Array<
@@ -111,7 +109,10 @@ function convertBlocks(nodes: JSONContent[]): RootContent[] {
             return cellJson as unknown as RootContent;
           }) as RootContent[],
         }));
-        const tableNode: Record<string, unknown> = { type: "table", children: rows };
+        const tableNode: Record<string, unknown> = {
+          type: "table",
+          children: rows,
+        };
         // 汇总列对齐数组；长度按实际列数补齐 null，保障 `---`/`:--:` 序列化正确
         const alignArr = alignMap.map((a) => a ?? null) as Array<
           "left" | "right" | "center" | null

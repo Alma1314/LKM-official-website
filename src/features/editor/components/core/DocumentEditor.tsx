@@ -702,7 +702,10 @@ export default function DocumentEditor({
 
     const filepath = docId === "new" ? "" : docId;
     const fileSlug = filepath
-      ? filepath.split("/").pop()?.replace(/\.(mdx|md)$/, "") ?? ""
+      ? (filepath
+          .split("/")
+          .pop()
+          ?.replace(/\.(mdx|md)$/, "") ?? "")
       : "";
     // 标题从当前 MDX 首行取；无则回退未命名
     const title =
@@ -889,52 +892,52 @@ export default function DocumentEditor({
             )}
             {gitMode && (
               <>
-              <button
-                type="button"
-                className="rte-btn rte-btn--primary rte-btn--xs"
-                onClick={handleSaveToSeries}
-                title={t("editor.saveToSeries")}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <button
+                  type="button"
+                  className="rte-btn rte-btn--primary rte-btn--xs"
+                  onClick={handleSaveToSeries}
+                  title={t("editor.saveToSeries")}
                 >
-                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                  <path d="M17 21v-8H7v8" />
-                  <path d="M7 3v5h8" />
-                </svg>
-                {t("editor.saveToSeries")}
-              </button>
-              <button
-                type="button"
-                className="rte-btn rte-btn--primary rte-btn--xs"
-                onClick={openPublishArticle}
-                title={t("editor.publishAsArticle")}
-                disabled={publishingArticle}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <path d="M17 21v-8H7v8" />
+                    <path d="M7 3v5h8" />
+                  </svg>
+                  {t("editor.saveToSeries")}
+                </button>
+                <button
+                  type="button"
+                  className="rte-btn rte-btn--primary rte-btn--xs"
+                  onClick={openPublishArticle}
+                  title={t("editor.publishAsArticle")}
+                  disabled={publishingArticle}
                 >
-                  <path d="M22 2 11 13" />
-                  <path d="M22 2 15 22l-4-9-9-4Z" />
-                </svg>
-                {t("editor.publishAsArticle")}
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 2 11 13" />
+                    <path d="M22 2 15 22l-4-9-9-4Z" />
+                  </svg>
+                  {t("editor.publishAsArticle")}
+                </button>
               </>
             )}
             <FullscreenButton />

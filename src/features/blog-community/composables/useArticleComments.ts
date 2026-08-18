@@ -51,8 +51,7 @@ export function useArticleComments(slug: string): {
   async function fetch(): Promise<void> {
     loading.value = true;
     error.value = null;
-    const result =
-      await blogApi.listArticleComments(slug);
+    const result = await blogApi.listArticleComments(slug);
     if (result.isErr()) {
       error.value = result.error.message;
     } else {
@@ -73,9 +72,7 @@ export function useArticleComments(slug: string): {
     return result;
   }
 
-  async function remove(
-    commentId: number,
-  ): Promise<Result<null, AppError>> {
+  async function remove(commentId: number): Promise<Result<null, AppError>> {
     const result = await blogApi.deleteArticleComment(commentId);
     if (result.isErr()) {
       return result;

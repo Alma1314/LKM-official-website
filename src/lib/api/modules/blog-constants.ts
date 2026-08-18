@@ -34,8 +34,7 @@ export const BLOG_API = {
     comments: {
       list: (slug: string) => `/api/v1/articles/${slug}/comments`,
       create: (slug: string) => `/api/v1/articles/${slug}/comments`,
-      delete: (commentId: number) =>
-        `/api/v1/articles/comments/${commentId}`,
+      delete: (commentId: number) => `/api/v1/articles/comments/${commentId}`,
     },
   },
   categories: {

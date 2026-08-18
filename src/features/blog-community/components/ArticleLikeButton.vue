@@ -27,7 +27,10 @@
       </svg>
     </span>
 
-    <span ref="particlesContainer" class="absolute inset-0 pointer-events-none" />
+    <span
+      ref="particlesContainer"
+      class="absolute inset-0 pointer-events-none"
+    />
 
     <span class="text-sm font-medium text-deep-text/60 tabular-nums">
       {{ likeCount }}
@@ -54,7 +57,9 @@ const props = withDefaults(
 );
 
 const auth = useAuthStore();
-const { liked, likeCount, loading, setStatus, toggle } = useArticleLike(props.slug);
+const { liked, likeCount, loading, setStatus, toggle } = useArticleLike(
+  props.slug,
+);
 const particlesContainer = ref<HTMLElement | null>(null);
 
 // 注入 SSR 初值，保证水合后计数与首屏静态输出一致、不跳变。

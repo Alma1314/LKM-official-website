@@ -119,7 +119,10 @@ export const blogApi = {
       BLOG_API.files.put(seriesId, filepath),
       { content, message },
     );
-    return result.match((v) => ok(v.data), (e) => err(e));
+    return result.match(
+      (v) => ok(v.data),
+      (e) => err(e),
+    );
   },
 
   publishSeriesFile: async (
@@ -131,7 +134,10 @@ export const blogApi = {
       BLOG_API.series.publish(seriesId),
       { filepath, override },
     );
-    return result.match((v) => ok(v.data), (e) => err(e));
+    return result.match(
+      (v) => ok(v.data),
+      (e) => err(e),
+    );
   },
 
   // ── 评论 ──
