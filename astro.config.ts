@@ -335,6 +335,25 @@ export default defineConfig({
             ) {
               return "vendor-vue";
             }
+            // ---- 编辑器技术栈拆分（模块 2 · 只分割不迁框架）----
+            // Tiptap 运行时 + 其底层 ProseMirror（tiptap 强依赖 prosemirror）→ 独立「编辑器运行时」chunk，
+            // 一是拆分 DocumentEditor 巨型共享 chunk，二是让稳定的编辑器运行时具备独立 HTTP 缓存。
+            if (
+              id.includes("node_modules/@tiptap") ||
+              id.includes("node_modules/@prosemirror") ||
+              id.includes("node_modules/prosemirror")
+            ) {
+              return "editor-tiptap";
+            }
+            // CodeMirror 语言运行时（SourceEditor 用）→ 独立 chunk，避免所有语言包打进 Document/Source。
+            if (
+              id.includes("node_modules/@codemirror") ||
+              id.includes("node_modules/@lezer") ||
+              id.includes("node_modules/@uiw/codemirror") ||
+              id.includes("node_modules/@ungap")
+            ) {
+              return "editor-codemirror";
+            }
           },
         },
       },
