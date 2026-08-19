@@ -354,6 +354,15 @@ export default defineConfig({
             ) {
               return "editor-codemirror";
             }
+            // ---- i18n 预平铺词典拆分（TBT 专项 · 见 plans/hidden-twirling-ocean）。----
+            // 生成器产出的扁平词典各自独立 chunk：zh-CN 为默认语同步载入（防闪），
+            // en 按当前 locale 异步 import（ensureDict），互不进公共池、可独立缓存。
+            if (id.includes("/i18n/generated/zh_CN.flat.")) {
+              return "i18n-zh";
+            }
+            if (id.includes("/i18n/generated/en.flat.")) {
+              return "i18n-en";
+            }
           },
         },
       },

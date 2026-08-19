@@ -12,7 +12,7 @@
     "dev:frontend": "astro dev",
     "dev:clean": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\" && astro dev",
     "start": "astro dev",
-    "build": "node scripts/generate-icons.mjs && astro build && node scripts/precompress.mjs",
+    "build": "node scripts/generate-icons.mjs && node scripts/generate-i18n-flat.mjs && astro build && node scripts/precompress.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "turbo run check:astro check:eslint check:prettier check:jscpd",

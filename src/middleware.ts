@@ -9,8 +9,24 @@
 
 import { defineMiddleware } from "astro:middleware";
 import { runWithRequest } from "~/lib/ssr-context.node";
+import { ensureDict } from "~/lib/i18n";
+import { SUPPORTED_LOCALES } from "~/lib/i18n/types";
+import type { Locale } from "~/lib/i18n/types";
 
 const API_TARGET = process.env.API_URL ?? "";
+
+/** 从请求 Cookie 解析当前 locale（缺省 zh-CN 默认语）。 */
+function localeFromCookie(cookieHeader: string | null): Locale {
+  if (cookieHeader) {
+    const m = /(?:^|;\s*)lkm-locale=([^;]+)/.exec(cookieHeader);
+    if (m) {
+      const parsed = decodeURIComponent(m[1]);
+      if ((SUPPORTED_LOCALES as string[]).includes(parsed))
+        return parsed as Locale;
+    }
+  }
+  return "zh-CN";
+}
 
 // hop-by-hop 头与 body 相关头不能原样转发给 fetch，
 // 否则与重写后的 body / fetch 自身的压缩协商冲突。
@@ -34,6 +50,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 非代理路径：建立 SSR 请求上下文，供页面 SSR 数据获取转发 Cookie
   if (!isProxyPath) {
+    // 在页面 frontmatter 的同步 t() 之前，确保当前 locale 词典已就绪：
+    // 默认 zh-CN 同步已载；en（非默认）动态 import en.flat chunk，
+    // 使 en SSR 译文正确（否则同步 t() 会落回 zh-CN，en 页显示中文）。
+    const locale = localeFromCookie(context.request.headers.get("cookie"));
+    await ensureDict(locale);
     const response = await runWithRequest(context.request.headers, () =>
       next(),
     );

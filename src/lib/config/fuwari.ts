@@ -60,7 +60,7 @@ const ecCfg = cfg?.expressiveCode ?? { theme: "github-dark" };
 export const siteConfig: SiteConfig = {
   title: siteCfg.title || "Fuwari",
   subtitle: siteCfg.subtitle || "",
-  lang: (siteCfg.lang || "en") as SiteConfig["lang"],
+  lang: (siteCfg.lang || "zh-CN") as SiteConfig["lang"],
   themeColor: {
     hue: siteCfg.themeColor?.hue ?? 250,
     fixed: siteCfg.themeColor?.fixed ?? false,
