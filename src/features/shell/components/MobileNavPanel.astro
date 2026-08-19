@@ -210,5 +210,14 @@ const { id, links = [], title = t('nav.navigation') } = Astro.props;
     }
 
     initAllPanels();
+    document.addEventListener('astro:after-swap', function () {
+      const el = document.getElementById(panelId);
+      if (el) {
+        el.addEventListener('mobile-nav:open', () => open(el));
+        el.addEventListener('mobile-nav:close', () => close(el));
+        el.addEventListener('mobile-nav:toggle', () => toggle(el));
+      }
+      initAllPanels();
+    });
   })();
 </script>

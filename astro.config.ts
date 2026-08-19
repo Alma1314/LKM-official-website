@@ -9,6 +9,7 @@ import icon from "astro-icon";
 import compress from "astro-compress";
 import vue from "@astrojs/vue";
 import react from "@astrojs/react";
+import swup from "@swup/astro";
 import node from "@astrojs/node";
 import Unfonts from "unplugin-fonts/astro";
 import tailwindcss from "@tailwindcss/vite";
@@ -85,6 +86,27 @@ export default defineConfig({
   adapter: node({ mode: "standalone" }),
 
   integrations: [
+    swup({
+      // 关掉自带 fade 主题，用 View Transitions API 自定过渡（复用 transition.css）
+      theme: false,
+      native: true,
+      animationClass: false,
+      containers: ["#navbar-wrapper", "main"],
+      cache: true,
+      preload: { hover: true, visible: false },
+      smoothScrolling: true,
+      updateHead: true,
+      updateBodyClass: true,
+      reloadScripts: true,
+      globalInstance: true,
+      ignore: [
+        /^\/blog(\/|$)/,
+        /^\/community\/treehole(\/|$)/,
+        /^\/starhope(\/|$)/,
+        "a[download]",
+      ],
+    }),
+
     sitemap(),
     astroExpressiveCode({
       themes: ["github-dark"],
@@ -143,7 +165,9 @@ export default defineConfig({
 
     compress({
       // 用 lightningcss 而非 csso：csso 压缩时会把包含某些规则的手写 @media 块整块误删
-      CSS: { csso: false, lightningcss: true },
+      // 注意：lightningcss 选项须传配置对象而非 true，否则 astro-compress 会把布尔值
+      // 直接交给 lightningcss transform，触发 "InvalidArg: boolean true, expected struct Config"。
+      CSS: { csso: false, lightningcss: { minify: true } },
       HTML: { "html-minifier-terser": { removeAttributeQuotes: false } },
       Image: true,
       JavaScript: true,
@@ -231,8 +255,16 @@ export default defineConfig({
       allowedHosts: ["lkm.s12mc.xyz"],
       proxy: process.env.API_URL
         ? {
-            "/api": { target: process.env.API_URL, changeOrigin: true },
+            // 即转发 HTTP 也转发 WS upgrade：前端 WebSocket(/api/v1/ws/events)
+            // 需经 Vite dev 代理把握手与数据中继到后端（浏览器同域建连无法直连源站）。
+            "/api": {
+              target: process.env.API_URL,
+              changeOrigin: true,
+              ws: true,
+            },
             "/graphql": { target: process.env.API_URL, changeOrigin: true },
+            // 成员头像由后端静态服务提供（/static/avatars/*.webp）
+            "/static": { target: process.env.API_URL, changeOrigin: true },
           }
         : undefined,
     },
@@ -282,6 +314,11 @@ export default defineConfig({
       noExternal: [],
     },
     build: {
+      // editor-tiptap/editor-codemirror 为编辑器专属懒加载 chunk（模块2 强分离产物，
+      // 仅编辑器页加载，不进公共池；minified 原始 ~507KiB 但 gz 传输 178/145KiB，
+      // 均在 check-bundle-budget 的 180KiB 门禁内）。调高默认 500 阈值消除纯字节噪音，
+      // 真实体积仍由 scripts/check-bundle-budget.mjs 把关。
+      chunkSizeWarningLimit: 600,
       rollupOptions: {
         output: {
           manualChunks(id) {
@@ -308,6 +345,34 @@ export default defineConfig({
               id.includes("node_modules/@iconify/vue")
             ) {
               return "vendor-vue";
+            }
+            // ---- 编辑器技术栈拆分（模块 2 · 只分割不迁框架）----
+            // Tiptap 运行时 + 其底层 ProseMirror（tiptap 强依赖 prosemirror）→ 独立「编辑器运行时」chunk，
+            // 一是拆分 DocumentEditor 巨型共享 chunk，二是让稳定的编辑器运行时具备独立 HTTP 缓存。
+            if (
+              id.includes("node_modules/@tiptap") ||
+              id.includes("node_modules/@prosemirror") ||
+              id.includes("node_modules/prosemirror")
+            ) {
+              return "editor-tiptap";
+            }
+            // CodeMirror 语言运行时（SourceEditor 用）→ 独立 chunk，避免所有语言包打进 Document/Source。
+            if (
+              id.includes("node_modules/@codemirror") ||
+              id.includes("node_modules/@lezer") ||
+              id.includes("node_modules/@uiw/codemirror") ||
+              id.includes("node_modules/@ungap")
+            ) {
+              return "editor-codemirror";
+            }
+            // ---- i18n 预平铺词典拆分（TBT 专项 · 见 plans/hidden-twirling-ocean）。----
+            // 生成器产出的扁平词典各自独立 chunk：zh-CN 为默认语同步载入（防闪），
+            // en 按当前 locale 异步 import（ensureDict），互不进公共池、可独立缓存。
+            if (id.includes("/i18n/generated/zh_CN.flat.")) {
+              return "i18n-zh";
+            }
+            if (id.includes("/i18n/generated/en.flat.")) {
+              return "i18n-en";
             }
           },
         },

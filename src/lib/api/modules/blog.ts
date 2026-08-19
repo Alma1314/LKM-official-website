@@ -1,4 +1,4 @@
-import { get, post, del } from "../../http/client";
+import { get, post, put, del } from "../../http/client";
 import { ok, err } from "../../errors/result";
 import type { Result } from "../../errors/result";
 import type { AppError } from "../../errors/error-codes";
@@ -12,6 +12,9 @@ import type {
   BlogCommentInfo,
   BlogStarStatus,
   BlogCommentCreate,
+  ArticleCommentInfo,
+  ArticleLikeStatus,
+  ArticleCommentCreate,
   BlogArticleInfo,
   BlogArticleDetail,
   BlogCategoryInfo,
@@ -20,6 +23,7 @@ import type {
   BlogAboutInfo,
 } from "./blog-types";
 import { BLOG_API } from "./blog-constants";
+import type { ArticleDetail } from "./official-articles";
 
 export type {
   BlogSeriesInfo,
@@ -28,6 +32,9 @@ export type {
   BlogCommentInfo,
   BlogStarStatus,
   BlogCommentCreate,
+  ArticleCommentInfo,
+  ArticleLikeStatus,
+  ArticleCommentCreate,
   BlogArticleInfo,
   BlogArticleDetail,
   BlogCategoryInfo,
@@ -102,6 +109,37 @@ export const blogApi = {
     );
   },
 
+  putSeriesFile: async (
+    seriesId: number,
+    filepath: string,
+    content: string,
+    message?: string,
+  ): Promise<Result<null, AppError>> => {
+    const result = await put<ApiResponse<null>>(
+      BLOG_API.files.put(seriesId, filepath),
+      { content, message },
+    );
+    return result.match(
+      (v) => ok(v.data),
+      (e) => err(e),
+    );
+  },
+
+  publishSeriesFile: async (
+    seriesId: number,
+    filepath: string,
+    override?: Record<string, unknown>,
+  ): Promise<Result<ArticleDetail, AppError>> => {
+    const result = await post<ApiResponse<ArticleDetail>>(
+      BLOG_API.series.publish(seriesId),
+      { filepath, override },
+    );
+    return result.match(
+      (v) => ok(v.data),
+      (e) => err(e),
+    );
+  },
+
   // ── 评论 ──
   listComments: (seriesId: number) =>
     get<ListData<BlogCommentInfo>>(BLOG_API.comments.list(seriesId)),
@@ -123,11 +161,12 @@ export const blogApi = {
   deleteComment: (seriesId: number, commentId: number) =>
     del<null>(BLOG_API.comments.delete(seriesId, commentId)),
 
-  // ── 文章 ──
-  listArticles: (page = 1) =>
-    get<PaginatedData<BlogArticleInfo>>(
-      `${BLOG_API.articles.list}?page=${page}`,
-    ),
+  // ── 文章（对齐后端真实 /api/v1/articles，返回契约沿用 BlogArticleInfo）──
+  listArticles: (page = 1, pageSize = 20) =>
+    get<PaginatedData<BlogArticleInfo>>(BLOG_API.articles.list, {
+      page,
+      page_size: pageSize,
+    }),
 
   getArticleDetail: async (
     slug: string,
@@ -148,7 +187,7 @@ export const blogApi = {
   listTags: () => get<ListData<BlogTagInfo>>(BLOG_API.tags.list),
 
   // ── 搜索 ──
-  search: (q: string) =>
+  searchArticles: (q: string) =>
     get<ListData<BlogSearchResult>>(
       `${BLOG_API.search.query}?q=${encodeURIComponent(q)}`,
     ),
@@ -168,6 +207,39 @@ export const blogApi = {
   ): Promise<Result<BlogStarStatus, AppError>> => {
     const result = await post<ApiResponse<BlogStarStatus>>(
       BLOG_API.star.toggle(seriesId),
+    );
+    return result.match(
+      (value) => ok(value.data),
+      (e) => err(e),
+    );
+  },
+
+  // ── 文章评论与点赞（/api/v1/articles/*）──
+  listArticleComments: (slug: string) =>
+    get<ListData<ArticleCommentInfo>>(BLOG_API.articles.comments.list(slug)),
+
+  createArticleComment: async (
+    slug: string,
+    data: ArticleCommentCreate,
+  ): Promise<Result<ArticleCommentInfo, AppError>> => {
+    const result = await post<ApiResponse<ArticleCommentInfo>>(
+      BLOG_API.articles.comments.create(slug),
+      data,
+    );
+    return result.match(
+      (value) => ok(value.data),
+      (e) => err(e),
+    );
+  },
+
+  deleteArticleComment: (commentId: number) =>
+    del<null>(BLOG_API.articles.comments.delete(commentId)),
+
+  toggleArticleLike: async (
+    slug: string,
+  ): Promise<Result<ArticleLikeStatus, AppError>> => {
+    const result = await post<ApiResponse<ArticleLikeStatus>>(
+      BLOG_API.articles.like(slug),
     );
     return result.match(
       (value) => ok(value.data),

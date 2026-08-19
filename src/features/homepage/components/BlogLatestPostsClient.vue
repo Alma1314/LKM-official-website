@@ -1,37 +1,62 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { t } from "~/lib/i18n";
 import { fetchWithCache } from "~/lib/cache-client";
 
-interface OfficialArticle {
+/** 服务端传入的已渲染条目（publishedText 由服务端格式化，避免客户端复算 mismatch） */
+interface ServerArticle {
   slug: string;
   title: string;
-  description: string;
-  cover?: string;
-  published: string;
+  description: string | null;
+  cover: string | null;
+  publishedText: string;
 }
 
-const DEFAULT_COVER = `${import.meta.env.BASE_URL || "/"}images/article-default.png`;
+const props = defineProps<{
+  /** 服务端 SSR 传入的数据；不传则退回浏览器 fetch */
+  articles?: ServerArticle[];
+}>();
 
-const articles = ref<OfficialArticle[]>([]);
+const fetchedArticles = ref<ServerArticle[]>([]);
 const loading = ref(true);
 
-const baseUrl = import.meta.env.BASE_URL || "/";
+// 受控：有 props 直接渲染；无 props 走本地 fetch
+const articles = computed<ServerArticle[]>(
+  () => props.articles ?? fetchedArticles.value,
+);
 
+const DEFAULT_COVER = `${import.meta.env.BASE_URL || "/"}images/article-default.png`;
+const baseUrl = import.meta.env.BASE_URL || "/";
 const CACHE_KEY = "articles:latest";
 const CACHE_TTL = 5 * 60 * 1000; // 5 分钟
 
 onMounted(async () => {
+  // 受控模式（已有服务端数据）无需再 fetch
+  if (props.articles) {
+    loading.value = false;
+    return;
+  }
   try {
-    const { data, fromCache } = await fetchWithCache<{
-      items: OfficialArticle[];
+    // 响应条目含 published 原始日期字段（与 ServerArticle 渲染形状不同）
+    const { data } = await fetchWithCache<{
+      items: Array<
+        Omit<ServerArticle, "publishedText"> & { published: string }
+      >;
       total: number;
     }>("/api/v1/articles?page=1&page_size=6", CACHE_KEY, CACHE_TTL);
     if (data?.items) {
-      articles.value = data.items;
+      fetchedArticles.value = data.items.map((a) => ({
+        slug: a.slug,
+        title: a.title,
+        description: a.description ?? null,
+        cover: a.cover ?? null,
+        publishedText: new Date(a.published).toLocaleDateString("zh-CN", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      }));
     }
-    // SWR: 缓存命中已立即返回，后台已在静默更新
-    void fromCache; // 标记使用
   } finally {
     loading.value = false;
   }
@@ -68,7 +93,7 @@ onMounted(async () => {
             {{ article.description }}
           </p>
           <span class="text-xs text-text-muted mt-auto pt-4 block">{{
-            new Date(article.published).toLocaleDateString("zh-CN")
+            article.publishedText
           }}</span>
         </div>
       </div>

@@ -1,5 +1,6 @@
 ---
-import { BackToTop, ImageWrapper } from '~/components/primitives';
+import { BackToTop } from '~/components/primitives';
+import Image from '~/components/primitives/Image.astro';
 import Footer from '~/features/shell/components/FuwariFooter.astro';
 import SideBar from '~/features/shell/components/BlogSidePanel.astro';
 import type { MarkdownHeading } from 'astro';
@@ -56,13 +57,18 @@ const navbarLinks: NavBarLink[] = filterNavbarByNames(allMenuItems, navItems);
         class="absolute z-10 w-full transition duration-700 overflow-hidden"
         style={`top: -${BANNER_HEIGHT_EXTEND}vh`}
       >
-        <ImageWrapper
-          id="banner"
-          alt="Banner image of the blog"
-          class:list={['object-cover h-full transition duration-700 opacity-0 scale-105']}
-          src={siteConfig.banner.src}
-          position={siteConfig.banner.position}
-        />
+        <div id="banner" class="overflow-hidden relative w-full h-full">
+          <Image
+            id="banner-img"
+            alt="Banner image of the blog"
+            src={`~/assets/images/${String(siteConfig.banner.src).replace(/^assets\/images\//, '')}`}
+            layout="cover"
+            class="object-cover h-full w-full transition duration-700 opacity-0 scale-105"
+            style={`object-position: ${siteConfig.banner.position}`}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
       </div>
     )
   }

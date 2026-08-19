@@ -11,7 +11,11 @@ const SSR_TIMEOUT_MS = 3000; // 3 秒超时
 
 // 用 process.env 运行时读取 API_URL。import.meta.env 会在构建时被静态内联，
 // 导致运行时注入的 API_URL 失效。此模块仅在 SSR 服务端使用。
-const API_BASE = process.env.API_URL ?? "";
+// 用函数懒读取而非模块顶层 const：模块顶层 process.env 引用一旦被客户端 chunk
+// 拉入，会在浏览器抛 ReferenceError: process is not defined（白屏）。
+function getApiBase(): string {
+  return process.env.API_URL ?? "";
+}
 
 interface FetchOptions {
   /** 超时毫秒数，默认 SSR_TIMEOUT_MS */
@@ -44,7 +48,7 @@ export async function ssrFetch<T>(
     if (cookie) headers["Cookie"] = cookie;
 
     // eslint-disable-next-line no-restricted-globals
-    const res = await fetch(`${API_BASE}${path}`, {
+    const res = await fetch(`${getApiBase()}${path}`, {
       signal: controller.signal,
       headers,
     });

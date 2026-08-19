@@ -1,0 +1,49 @@
+---
+// 博客关于页（SSR）：读 /api/v1/articles/about 渲染标题/描述/维护方。
+import Layout from '~/layouts/CommunityLayout.astro';
+import { ssrFetch, logSsrError } from '~/lib/fetch-ssr';
+import { t } from '~/lib/i18n';
+
+interface AboutItem {
+  title: string;
+  description: string;
+  maintainer: string;
+}
+
+const { data, error } = await ssrFetch<AboutItem>('/api/v1/articles/about', {
+  fallback: null,
+});
+logSsrError('博客关于', error);
+
+const about: AboutItem = data ?? { title: '', description: '', maintainer: '' };
+const metadata = { title: `${t('blog.aboutTitle')} —— LKM` };
+---
+
+<Layout metadata={metadata} navItems={['nav.community', 'nav.blog', 'nav.resources', 'nav.mine']}>
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold text-deep-text mb-6">{t('blog.aboutTitle')}</h1>
+
+    {
+      error && (
+        <p class="text-text-muted text-center py-8">
+          {t('officialArticles.loadFailed', { error })}
+        </p>
+      )
+    }
+
+    {
+      !error && about.title && (
+        <article class="max-w-4xl mx-auto">
+          <h2 class="text-2xl font-bold text-deep-text mb-3">{about.title}</h2>
+          {about.description && <p class="text-text-muted mb-2">{about.description}</p>}
+          {about.maintainer && (
+            <p class="text-text-muted">
+              <span class="font-medium text-deep-text">{t('blog.aboutMaintainer')}</span>
+              {about.maintainer}
+            </p>
+          )}
+        </article>
+      )
+    }
+  </div>
+</Layout>

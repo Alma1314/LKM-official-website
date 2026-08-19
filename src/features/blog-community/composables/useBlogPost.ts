@@ -1,6 +1,6 @@
-import { ref, shallowRef, Fragment, type Component, type Ref } from "vue";
+import { ref, shallowRef, type Component, type Ref } from "vue";
+import { jsx, jsxs, Fragment } from "vue/jsx-runtime";
 import { evaluate } from "@mdx-js/mdx";
-import * as runtime from "@mdx-js/vue";
 import { blogApi } from "~/lib/api";
 import type { GitFileContent } from "../types/blog";
 
@@ -34,7 +34,8 @@ export function useBlogPost(): {
 
     try {
       const compiled = await evaluate(fileResult.value.content, {
-        ...runtime,
+        jsx,
+        jsxs,
         Fragment,
       });
       MDXComponent.value = compiled.default;

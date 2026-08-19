@@ -1,0 +1,26 @@
+---
+import Layout from '~/layouts/BaseLayout.astro';
+import { Button } from '~/components/primitives';
+import { getHomePermalink } from '~/lib/utils/permalinks';
+import { t } from '~/lib/i18n';
+
+const title = t('page.notFound.title');
+---
+
+<Layout metadata={{ title }}>
+  <main class="flex items-center h-full p-16">
+    <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+      <div class="max-w-md text-center">
+        <h1 class="mb-8 font-bold text-9xl">
+          <span class="sr-only">{t('page.notFound.error')}</span>
+          <span class="text-primary">500</span>
+        </h1>
+        <p class="text-[28px] font-semibold">{t('page.notFound.notFound')}</p>
+        <p class="mt-4 mb-8 text-[17px] text-text-muted">{t('page.notFound.hint')}</p>
+        <Button variant="primary" href={getHomePermalink()} aria-label={t('page.notFound.backHome')}>
+          {t('page.notFound.backHome')}
+        </Button>
+      </div>
+    </div>
+  </main>
+</Layout>

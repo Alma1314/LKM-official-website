@@ -1,79 +1,71 @@
 import { describe, expect, it } from "vitest";
-import type { MockColumnArticle } from "../data/mock-columns";
+import type { ColumnArticle } from "../../../lib/api/modules/column";
 import { sortArticles } from "../utils";
 
-const articles: MockColumnArticle[] = [
+const articles: ColumnArticle[] = [
   {
-    id: "a",
-    columnId: "c",
-    columnSlug: "c",
+    id: 1,
+    columnId: 1,
+    authorId: 1,
     title: "A",
-    excerpt: "",
+    summary: "",
     content: "",
-    tags: [],
+    coverImage: null,
     viewCount: 1,
     likeCount: 10,
     commentCount: 0,
-    createdAt: "2026-07-01T00:00:00Z",
+    publishedAt: "2026-07-01T00:00:00Z",
   },
   {
-    id: "b",
-    columnId: "c",
-    columnSlug: "c",
+    id: 2,
+    columnId: 1,
+    authorId: 1,
     title: "B",
-    excerpt: "",
+    summary: "",
     content: "",
-    tags: [],
+    coverImage: null,
     viewCount: 2,
     likeCount: 30,
     commentCount: 0,
-    createdAt: "2026-07-03T00:00:00Z",
+    publishedAt: "2026-07-03T00:00:00Z",
   },
   {
-    id: "c",
-    columnId: "c",
-    columnSlug: "c",
+    id: 3,
+    columnId: 1,
+    authorId: 1,
     title: "C",
-    excerpt: "",
+    summary: "",
     content: "",
-    tags: [],
+    coverImage: null,
     viewCount: 3,
     likeCount: 20,
     commentCount: 0,
-    createdAt: "2026-07-02T00:00:00Z",
+    publishedAt: "2026-07-02T00:00:00Z",
   },
 ];
 
 describe("sortArticles", () => {
   it("按赞同倒序（最多赞同在前）", () => {
     expect(sortArticles(articles, "like", "desc").map((a) => a.id)).toEqual([
-      "b",
-      "c",
-      "a",
+      2, 3, 1,
     ]);
   });
 
   it("按赞同正序（最少赞同在前）", () => {
     expect(sortArticles(articles, "like", "asc").map((a) => a.id)).toEqual([
-      "a",
-      "c",
-      "b",
+      1, 3, 2,
     ]);
   });
 
   it("按发布时间倒序（最新在前）", () => {
     expect(sortArticles(articles, "time", "desc").map((a) => a.id)).toEqual([
-      "b",
-      "c",
-      "a",
+      2, 3, 1,
     ]);
   });
 
   it("按发布时间正序（最早在前）", () => {
     expect(sortArticles(articles, "time", "asc").map((a) => a.id)).toEqual([
-      "a",
-      "c",
-      "b",
+      1, 3, 2,
     ]);
   });
 

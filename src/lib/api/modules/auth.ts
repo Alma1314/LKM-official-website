@@ -1,4 +1,5 @@
-import { get, post, put, del } from "../../http/client";
+import { get, post, put, del, getHttpAccessToken } from "../../http/client";
+import { apiFetch } from "../fetch";
 
 // ── 类型 ──
 
@@ -286,6 +287,35 @@ export const authApi = {
       contact_links?: ContactLink[];
     },
   ) => put<ProfileInfo>(`/api/v1/auth/${userId}/profile`, info),
+
+  // ── 头像 ──
+
+  /** 上传头像（multipart file，≤2MB），成功后返回更新后的 avatar 字段。 */
+  uploadAvatar: async (file: File): Promise<{ avatar: string | null }> => {
+    const token = getHttpAccessToken();
+    const fd = new FormData();
+    fd.append("file", file);
+    const result = await apiFetch("/api/v1/auth/avatar", {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: fd,
+    });
+    if (result.isErr()) {
+      throw new Error(
+        `头像上传失败 ${result.error.message ?? result.error.name}`,
+      );
+    }
+    const res = result.value;
+    if (!res.ok) {
+      throw new Error(`头像上传失败 ${res.status}`);
+    }
+    const b = (await res.json()) as { data?: { avatar: string | null } };
+    return (b?.data ?? { avatar: null }) as { avatar: string | null };
+  },
+
+  /** 读取头像图片 URL（GET 流式返回，未上传时为 404）。 */
+  getAvatarUrl: (userId: string | number): string =>
+    `/api/v1/auth/avatar/${userId}`,
 
   // ── 根据用户名获取用户信息 ──
   getUserByUsername: (username: string) =>

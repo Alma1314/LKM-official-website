@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
+import { blogApi } from "~/lib/api";
 import { useBlogPost } from "../composables/useBlogPost";
 import { useBlogComments } from "../composables/useBlogComments";
 import { useBlogStar } from "../composables/useBlogStar";
@@ -41,6 +42,20 @@ const currentUserId = computed<number | null>(() => {
   return Number(_auth.state.user.id);
 });
 
+// 当前登录用户是否为系列 owner（决定是否显示"编辑本文"）
+const ownerId = ref<number | null>(null);
+const isOwner = computed<boolean>(() => {
+  if (currentUserId.value === null || ownerId.value === null) return false;
+  return currentUserId.value === ownerId.value;
+});
+
+// 进入 Git 系列编辑器（编辑模式，带 path）
+function goEdit() {
+  window.location.href = `/editor?seriesId=${props.seriesId}&path=${encodeURIComponent(
+    props.filepath,
+  )}`;
+}
+
 const replyParentId = ref<number | null>(null);
 const submitting = ref(false);
 
@@ -78,6 +93,11 @@ async function handleStar() {
 onMounted(async () => {
   await fetchAndCompile(props.seriesId, props.filepath);
   await fetchComments();
+  // 取系列 detail 得 owner_id，供 owner 编辑入口判断
+  const detail = await blogApi.getSeriesDetail(props.seriesId);
+  if (detail.isOk()) {
+    ownerId.value = detail.value.owner_id;
+  }
 });
 </script>
 
@@ -107,6 +127,13 @@ onMounted(async () => {
           :loading="starLoading"
           @toggle="handleStar"
         />
+        <button
+          v-if="isOwner"
+          class="btn-primary btn-sm rounded-lg px-4 py-2 bg-primary text-white"
+          @click="goEdit"
+        >
+          {{ t("blog.editArticleFull") }}
+        </button>
       </div>
       <MDXComponent />
     </article>

@@ -28,6 +28,7 @@ export interface ArticleDetail extends OfficialArticle {
   content: string;
   reading_time: number;
   keywords: string[];
+  tags?: string[];
 }
 
 /** 官方文章列表分页数据 */

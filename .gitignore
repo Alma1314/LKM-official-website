@@ -6,6 +6,7 @@ docs/
 !src/components/docs/
 !src/features/docs/
 !src/pages/docs/
+.turbo/
 
 # dependencies
 node_modules/
@@ -49,6 +50,7 @@ reports/
 !/scripts/
 /scripts/*
 !/scripts/generate-icons.mjs
+!/scripts/generate-i18n-flat.mjs
 !/scripts/lib/
 !/scripts/lib/start-preview.mjs
 !/scripts/precompress.mjs
@@ -56,6 +58,8 @@ reports/
 !/scripts/check-links.mjs
 !/scripts/check-seo-output.mjs
 !/scripts/optimize-avatars.mjs
+!/scripts/lighthouse-budget.mjs
+!/scripts/measure-cwv.mjs
 !src/scripts/
 
 # reference material (astro templates, not committed)

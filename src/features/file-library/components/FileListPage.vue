@@ -157,10 +157,45 @@
               >
                 {{ statusLabel(file.status) }}
               </span>
+              <!-- 仅 approved 文件提供预览/下载 -->
+              <template v-if="file.status === 'approved'">
+                <button
+                  type="button"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-surface-3 text-deep-text hover:text-primary hover:border-primary/30 transition-colors"
+                  @click="previewFile(file)"
+                >
+                  <Icon
+                    icon="material-symbols:visibility-outline"
+                    class="w-3.5 h-3.5 inline -mt-0.5 mr-1"
+                  />
+                  预览
+                </button>
+                <button
+                  type="button"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-surface-3 text-deep-text hover:text-primary hover:border-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  :disabled="downloading.has(file.id)"
+                  @click="downloadFile(file)"
+                >
+                  <Icon
+                    :icon="
+                      downloading.has(file.id)
+                        ? 'material-symbols:progress-activity'
+                        : 'material-symbols:download'
+                    "
+                    class="w-3.5 h-3.5 inline -mt-0.5 mr-1"
+                    :class="downloading.has(file.id) ? 'animate-spin' : ''"
+                  />
+                  {{
+                    downloading.has(file.id)
+                      ? t("community.fileLibrary.statusPending")
+                      : "下载"
+                  }}
+                </button>
+              </template>
               <a
                 :href="buildUrl(`/files/${file.id}`)"
                 class="btn-primary px-3 py-1.5 rounded-lg text-xs font-medium"
-                >{{ t("community.fileLibrary.view") }}</a
+                >{{ t("community.fileLibrary.viewDetails") }}</a
               >
             </div>
           </div>
@@ -241,9 +276,16 @@
             {{ t("community.fileLibrary.uploadTitle") }}
           </h3>
           <div class="space-y-4">
-            <div
-              class="border-2 border-dashed border-surface-3 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer"
+            <!-- 真文件选择：隐藏 input + 点击拖放区触发 -->
+            <label
+              class="border-2 border-dashed border-surface-3 rounded-xl p-6 text-center hover:border-primary/40 transition-colors cursor-pointer block"
             >
+              <input
+                type="file"
+                class="hidden"
+                :disabled="uploading"
+                @change="onFileChange"
+              />
               <Icon
                 icon="material-symbols:cloud-upload-outline"
                 class="w-10 h-10 text-text-muted/40 mx-auto mb-2"
@@ -254,7 +296,12 @@
               <p class="text-xs text-text-muted/50 mt-1">
                 {{ t("community.fileLibrary.uploadFormats") }}
               </p>
-            </div>
+            </label>
+            <p v-if="selectedFile" class="text-sm text-deep-text text-center">
+              已选择：{{ selectedFile.name }}（{{
+                formatSize(selectedFile.size)
+              }}）
+            </p>
             <div>
               <label class="block text-sm font-medium text-deep-text mb-1">{{
                 t("community.fileLibrary.categoryLabel")
@@ -291,10 +338,15 @@
               {{ t("community.fileLibrary.cancel") }}
             </button>
             <button
-              class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold"
+              class="btn-primary px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              :disabled="uploading"
               @click="doUpload"
             >
-              {{ t("community.fileLibrary.submitUpload") }}
+              {{
+                uploading
+                  ? t("community.fileLibrary.statusPending")
+                  : t("community.fileLibrary.submitUpload")
+              }}
             </button>
           </div>
         </div>
@@ -306,7 +358,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import { mockFiles } from "../data/mock-files";
+import { fileLibraryApi } from "~/lib/api";
+import type { FileEntry } from "~/lib/api/modules/file-library";
+import { waitForUploadRegistration } from "~/lib/ws/upload-events";
 import { forumCategories } from "../../forum/data/categories";
 import {
   getChildren,
@@ -329,16 +383,31 @@ const showUpload = ref(false);
 // Teleport 在 SSR 水合时会产生节点结构 mismatch（注释 vs 文本）。
 // mounted 前不渲染 Teleport，客户端水合一致，onMounted 后再挂载。
 const mounted = ref(false);
-onMounted(() => {
-  mounted.value = true;
-});
 const uploadCategory = ref("");
 const uploadDesc = ref("");
+// 上传态：所选文件 + 上传中标志（用于禁用/提示）
+const selectedFile = ref<File | null>(null);
+const uploading = ref(false);
+
+// 文件全量数据：由后端 API 拉取（mock 已移入后端 seed）
+const files = ref<FileEntry[]>([]);
+
+// 拉取列表（上传成功后也走它刷新）
+async function loadFiles() {
+  files.value = await fileLibraryApi.getFiles();
+}
+
+onMounted(async () => {
+  mounted.value = true;
+  await loadFiles();
+});
 
 // 顶部常驻搜索栏
 const searchQuery = ref("");
 const isSearching = computed(() => searchQuery.value.trim() !== "");
-const searchResults = computed(() => searchFiles(mockFiles, searchQuery.value));
+const searchResults = computed(() =>
+  searchFiles(files.value, searchQuery.value),
+);
 
 const categories = forumCategories.filter((c) => !c.parentId);
 
@@ -356,13 +425,13 @@ const isFolderLayer = computed(
 );
 const currentFiles = computed(() =>
   currentId.value
-    ? mockFiles.filter((f) => f.categoryId === currentId.value)
+    ? files.value.filter((f) => f.categoryId === currentId.value)
     : [],
 );
 const folderFileCounts = computed<Record<string, number>>(() => {
   const m: Record<string, number> = {};
   for (const folder of childFolders.value)
-    m[folder.id] = countFilesInCategory(folder.id, mockFiles);
+    m[folder.id] = countFilesInCategory(folder.id, files.value);
   return m;
 });
 
@@ -431,8 +500,117 @@ function statusClass(status: string): string {
   }
 }
 
-function doUpload() {
-  showUpload.value = false;
-  alert(t("community.fileLibrary.uploadSubmitted"));
+// 文件选择：读 input.files[0]，同时记录文件名/大小供弹窗展示
+function onFileChange(e: Event) {
+  const input = e.target as HTMLInputElement;
+  selectedFile.value = input.files?.[0] ?? null;
+}
+
+// 真提交：uploadInit 判定 direct（S3 预签名直传，登记改由事件通知驱动 → 轮询确认）
+// 或 sync（Local multipart 回退），成功后关弹窗并刷新列表。错误沿用组件现有 alert/console 风格。
+async function doUpload() {
+  if (!selectedFile.value) {
+    // 提示选文件
+    alert(t("community.fileLibrary.uploadDropHint"));
+    return;
+  }
+  uploading.value = true;
+  try {
+    const init = await fileLibraryApi.uploadInit({
+      originalName: selectedFile.value.name,
+      mimeType: selectedFile.value.type,
+      categoryId: uploadCategory.value,
+      description: uploadDesc.value,
+      tags: [],
+    });
+    if (init.mode === "sync") {
+      // Local：无预签名，直接 multipart 同步上传
+      await fileLibraryApi.uploadSyncFromFile(selectedFile.value, {
+        categoryId: uploadCategory.value,
+        description: uploadDesc.value,
+        tags: [],
+      });
+    } else {
+      // S3：先 PUT 字节到预签名 URL。Phase 2-C 起**不再调 confirmUpload** —— 登记改由
+      // MinIO 事件通知驱动（对象落桶 → webhook → 后端登记），后端经 WebSocket 推送
+      // 「upload_registered」。这里等待该推送（实时，替代轮询）。
+      // eslint-disable-next-line no-restricted-globals -- 预签名直传必须直接 PUT 字节到 S3 URL(同域 /api fetch 不适用于对象存储)
+      const put = await fetch(init.presignedUrl!, {
+        method: "PUT",
+        body: selectedFile.value,
+      });
+      if (!put.ok) throw new Error(`直传失败 ${put.status}`);
+      const confirm = await waitForUploadRegistration(init.uploadId!);
+      if (confirm !== "registered") {
+        // 超时/WS 不可用：直传已成功、但实时确认没等到。不报错卡死——
+        // 关弹窗、刷新列表，提示用户稍后在列表确认状态即可。
+        alert("文件已上传，正在确认中，请稍后在列表确认状态");
+      }
+    }
+    showUpload.value = false;
+    selectedFile.value = null;
+    await loadFiles();
+  } catch (e) {
+    console.error("上传失败", e);
+    alert("上传失败，请稍后重试");
+  } finally {
+    uploading.value = false;
+  }
+}
+
+// 下载中文件 id 集合（防重复触发 + 按钮 loading 态）
+const downloading = ref<Set<number>>(new Set());
+// 预览中文件 id 集合（防重复触发）
+const previewing = ref<Set<number>>(new Set());
+
+// 下载：approved 文件按后端给出的 kind 分叉。
+// presigned → S3 直连跳转；backend → 鉴权拉 blob 后走合成 <a download>。
+async function downloadFile(file: FileEntry) {
+  if (downloading.value.has(file.id)) return;
+  downloading.value.add(file.id);
+  try {
+    const info = await fileLibraryApi.getDownloadUrl(file.id);
+    if (info.kind === "presigned") {
+      // S3 预签名直连
+      window.location.href = info.url;
+    } else {
+      const blob = await fileLibraryApi.getContentBlob(file.id); // backend: fetch+blob+鉴权
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file.originalName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  } catch (e) {
+    // 失败提示：组件无 toast 体系，沿用 alert 原语 + console
+    console.error("文件下载失败", e);
+    alert("文件下载失败，请稍后重试");
+  } finally {
+    downloading.value.delete(file.id);
+  }
+}
+
+// 预览：带 Bearer 鉴权拉取内容为 blob，再在新标签打开 blob URL。
+// 不能再用裸导航 window.open(previewUrl)，浏览器导航无法携带自定义头，
+// 后端 /preview 由 get_current_user 保护会 401。
+async function previewFile(file: FileEntry) {
+  if (previewing.has(file.id)) return;
+  previewing.add(file.id);
+  try {
+    const blob = await fileLibraryApi.getContentBlob(file.id);
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, "_blank");
+    // 新标签加载是异步的，立即 revoke 可能使部分浏览器加载中断；
+    // 用延时兜底清理，避免永久泄漏。
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+  } catch (e) {
+    console.error("文件预览失败", e);
+    alert("文件预览失败，请稍后重试");
+  } finally {
+    previewing.delete(file.id);
+  }
 }
 </script>

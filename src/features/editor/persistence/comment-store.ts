@@ -16,7 +16,12 @@ function read(docId: string): CommentThread[] {
 }
 
 function write(docId: string, threads: CommentThread[]): void {
-  localStorage.setItem(getKey(docId), JSON.stringify(threads));
+  try {
+    localStorage.setItem(getKey(docId), JSON.stringify(threads));
+  } catch (err) {
+    // 隐私模式 / localStorage 配额满时静默降级，不中断评论交互
+    console.warn("[comment-store] 保存评论失败:", err);
+  }
 }
 
 export function getThreads(docId: string): CommentThread[] {

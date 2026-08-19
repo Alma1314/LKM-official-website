@@ -6,10 +6,19 @@ import { t } from "~/lib/i18n";
 
 const DocumentEditor = lazy(() => import("./DocumentEditor"));
 
-function getDocumentId(): string {
+interface DocumentIdContext {
+  seriesId?: number;
+  path?: string;
+}
+
+function getDocumentId(ctx: DocumentIdContext): string {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   if (id) return id;
+  if (ctx.seriesId !== undefined) {
+    // Git 系列写作：有 path → 打开该文件；无 path → 新建（"new"，保存时按标题 deriveSlug 生成 filepath）
+    return ctx.path !== undefined && ctx.path !== "" ? ctx.path : "new";
+  }
   const hash = window.location.hash.slice(1);
   if (hash) return hash;
   return "new";
@@ -21,6 +30,7 @@ const RETRY_DELAYS = [1000, 3000, 6000];
 interface Props {
   docId: string;
   adapter: PersistenceAdapter;
+  seriesId?: number;
 }
 
 interface State {
@@ -51,7 +61,7 @@ class EditorErrorBoundary extends Component<Props, State> {
   };
 
   render(): ReactElement {
-    const { docId, adapter } = this.props;
+    const { docId, adapter, seriesId } = this.props;
     const { error, retries, errorVersion } = this.state;
 
     if (error) {
@@ -155,7 +165,11 @@ class EditorErrorBoundary extends Component<Props, State> {
           </div>
         }
       >
-        <DocumentEditor documentId={docId} adapter={adapter} />
+        <DocumentEditor
+          documentId={docId}
+          adapter={adapter}
+          seriesId={seriesId}
+        />
       </Suspense>
     );
   }
@@ -163,16 +177,22 @@ class EditorErrorBoundary extends Component<Props, State> {
 
 export interface EditorMountProps {
   adapter: PersistenceAdapter;
+  /** Git 系列写作：URL ?seriesId 存在时为 series 主键；无则 undefined（admin 本地模式） */
+  seriesId?: number;
+  /** Git 系列写作：URL ?path（可选），指示打开 series 内指定文件 */
+  path?: string;
 }
 
 export default function EditorMount({
   adapter,
+  seriesId,
+  path,
 }: EditorMountProps): ReactElement {
   const [docId, setDocId] = useState<string | null>(null);
 
   useEffect(() => {
-    setDocId(getDocumentId());
-  }, []);
+    setDocId(getDocumentId({ seriesId, path }));
+  }, [seriesId, path]);
 
   if (!docId) {
     return (
@@ -187,7 +207,11 @@ export default function EditorMount({
 
   return (
     <div className="rte-root">
-      <EditorErrorBoundary docId={docId} adapter={adapter} />
+      <EditorErrorBoundary
+        docId={docId}
+        adapter={adapter}
+        seriesId={seriesId}
+      />
     </div>
   );
 }

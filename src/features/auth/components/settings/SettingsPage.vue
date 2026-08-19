@@ -63,10 +63,31 @@
               </h3>
 
               <div class="flex items-center gap-5">
-                <div
-                  class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary shrink-0"
-                >
-                  {{ avatarLetter }}
+                <div class="relative shrink-0">
+                  <img
+                    v-if="store.user?.avatar"
+                    :src="avatarUrl"
+                    alt="avatar"
+                    class="w-16 h-16 rounded-full object-cover bg-primary/20"
+                  />
+                  <div
+                    v-else
+                    class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary"
+                  >
+                    {{ avatarLetter }}
+                  </div>
+                  <label
+                    class="absolute inset-0 rounded-full cursor-pointer flex items-center justify-center text-xs text-transparent hover:bg-black/30 hover:text-white transition-colors"
+                    title="上传头像"
+                  >
+                    上传头像
+                    <input
+                      type="file"
+                      accept="image/*"
+                      class="hidden"
+                      @change="onAvatarChange"
+                    />
+                  </label>
                 </div>
                 <div class="flex-1">
                   <div class="text-lg font-semibold">
@@ -336,6 +357,12 @@ const avatarLetter = computed(() =>
   (store.user?.nickname || store.user?.username || "?").charAt(0).toUpperCase(),
 );
 
+const avatarUrl = computed(() =>
+  store.user?.avatar && store.user.id
+    ? authApi.getAvatarUrl(store.user.id)
+    : "",
+);
+
 const levelBadgeClass = computed(() => {
   const level = store.user?.account_level;
   return level === "admin"
@@ -378,6 +405,25 @@ async function handleSaveNickname() {
     editError.value = t("settings.saveFailed");
   } finally {
     saving.value = false;
+  }
+}
+
+async function onAvatarChange(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file || !store.user) return;
+  editError.value = "";
+  saving.value = true;
+  try {
+    const res = await authApi.uploadAvatar(file);
+    store.updateUser({ ...store.user, avatar: res.avatar });
+    message.value = t("settings.profileUpdated");
+    setTimeout(() => (message.value = ""), 3000);
+  } catch {
+    editError.value = "头像上传失败";
+  } finally {
+    saving.value = false;
+    input.value = "";
   }
 }
 

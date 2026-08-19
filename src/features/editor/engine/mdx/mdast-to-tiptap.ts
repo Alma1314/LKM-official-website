@@ -2,6 +2,7 @@
 import type { Root, Table, List } from "mdast";
 import type { JSONContent } from "@tiptap/core";
 import { toString as mdastToString } from "mdast-util-to-string";
+import { serializeJsxElement } from "./serialize-mdx";
 
 // MDAST 中这些是包裹文本的父节点，Tiptap 中它们是文本节点上的标记。
 interface MarkContext {
@@ -117,10 +118,14 @@ function convertInlineChildren(
 function convertTable(node: Table): JSONContent {
   const tableContent: JSONContent[] = [];
   const rows = (node as any).children as any[];
+  // GFM 对齐元数据：mdast table.align 是按列的 ['left'|'right'|'center'|null] 数组，
+  // 映射到 Tiptap 单元格的 align 属性（由 @tiptap/extension-table 内建支持），保证往返不丢。
+  const aligns = (node.align ?? []) as Array<string | null>;
   rows.forEach((row, rowIndex) => {
     const cells = (row as any).children as any[];
     const rowContent: JSONContent[] = [];
-    for (const cell of cells) {
+    for (let ci = 0; ci < cells.length; ci++) {
+      const cell = cells[ci];
       // GFM 表首行即表头（remark-gfm 不区分 cell 类型，但 markdown 语法首行就是 header）
       const cellType = rowIndex === 0 ? "tableHeader" : "tableCell";
       const children = cell.children as any[];
@@ -150,7 +155,11 @@ function convertTable(node: Table): JSONContent {
             ? [{ type: "paragraph", content: inline }]
             : [{ type: "paragraph" }];
       }
-      rowContent.push({ type: cellType, content });
+      const colAlign = aligns[ci] ?? null;
+      const cellJson: JSONContent = { type: cellType, content };
+      // 仅列有左/右/中对齐时才写入 align，保持 editorJson 最小化
+      if (colAlign) (cellJson as any).attrs = { align: colAlign };
+      rowContent.push(cellJson);
     }
     tableContent.push({ type: "tableRow", content: rowContent });
   });
@@ -257,6 +266,7 @@ function convertBlockChildren(children: any[]): JSONContent[] {
       case "mdxJsxFlowElement": {
         const el = child as {
           name?: string;
+          children?: any[];
           attributes?: Array<{
             type: string;
             name: string;
@@ -264,22 +274,31 @@ function convertBlockChildren(children: any[]): JSONContent[] {
           }>;
         };
         const name = el.name ?? "";
-        if (name === "Callout") {
+        if (name === "Callout" || name === "Figure") {
+          const hasChildren = (el.children ?? []).length > 0;
+          if (hasChildren) {
+            // Callout/Figure 为 atom 节点，无法承载可编辑子内容（正文/图注）。
+            // 带子内容的元素与其丢弃子内容造成数据丢失，不如整体降级为 rawMdx 保底，
+            // 序列化回完整源码，往返不丢内容（还原自 serializeJsxElement）。
+            result.push({
+              type: "rawMdx",
+              attrs: {
+                source: serializeJsxElement(el as unknown as any),
+                sourceKind: "flow",
+              },
+            });
+            break;
+          }
           const attrs: Record<string, unknown> = {};
           for (const attr of el.attributes ?? []) {
             if (attr.type === "mdxJsxAttribute") {
               attrs[attr.name] = attr.value;
             }
           }
-          result.push({ type: "callout", attrs });
-        } else if (name === "Figure") {
-          const attrs: Record<string, unknown> = {};
-          for (const attr of el.attributes ?? []) {
-            if (attr.type === "mdxJsxAttribute") {
-              attrs[attr.name] = attr.value;
-            }
-          }
-          result.push({ type: "figure", attrs });
+          result.push({
+            type: name === "Callout" ? "callout" : "figure",
+            attrs,
+          });
         } else {
           result.push({
             type: "rawMdx",

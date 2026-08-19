@@ -1,7 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { t } from '~/lib/i18n';
-import styles from './Sidebar.module.css';
+import { Icon } from "astro-icon/components";
+import { t } from "~/lib/i18n";
+import styles from "./Sidebar.module.css";
 
 interface SidebarGroup {
   text: string;
@@ -21,13 +21,13 @@ interface Props {
   currentPath?: string;
 }
 
-const { logo, groups = [], currentPath = '' } = Astro.props;
+const { logo, groups = [], currentPath = "" } = Astro.props;
 ---
 
 <nav
   class:list={[
     styles.shell,
-    'fixed top-[72px] left-0 h-[calc(100vh-72px)] bg-base-100 z-10 pl-2 overflow-hidden border-r border-base-300',
+    "fixed top-[72px] left-0 h-[calc(100vh-72px)] bg-base-100 z-10 pl-2 overflow-hidden border-r border-base-300",
   ]}
   aria-label="Sidebar navigation"
   data-sidebar
@@ -35,7 +35,9 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
   <ul class={styles.nav}>
     {
       logo && (
-        <li class:list={[styles.logoItem, { active: currentPath === logo.href }]}>
+        <li
+          class:list={[styles.logoItem, { active: currentPath === logo.href }]}
+        >
           <a href={logo.href}>
             <div class={styles.icon}>
               <div class={styles.imageBox}>
@@ -51,9 +53,9 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     {
       groups.map(({ text, href, icon }) => {
         const isActive = (() => {
-          const linkUrl = new URL(href, 'https://example.com');
+          const linkUrl = new URL(href, "https://example.com");
           if (linkUrl.hash) return currentPath === linkUrl.pathname;
-          return currentPath === href || currentPath.startsWith(href + '#');
+          return currentPath === href || currentPath.startsWith(href + "#");
         })();
 
         return (
@@ -70,7 +72,11 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     }
   </ul>
 
-  <button class={styles.toggle} aria-label="Toggle sidebar" id="sidebar-toggle-btn">
+  <button
+    class={styles.toggle}
+    aria-label="Toggle sidebar"
+    id="sidebar-toggle-btn"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
@@ -82,26 +88,28 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       stroke-linecap="round"
       stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg
     >
-    <span class={styles.toggleText}>{t('blog.collapse')}</span>
+    <span class={styles.toggleText}>{t("blog.collapse")}</span>
   </button>
 </nav>
 
 <script>
   function initSidebarScroll(): void {
-    const sidebar = document.querySelector('[data-sidebar]');
+    const sidebar = document.querySelector("[data-sidebar]");
     if (!sidebar) return;
 
-    const links = sidebar.querySelectorAll('a[href]');
+    const links = sidebar.querySelectorAll("a[href]");
 
     const handler = (e: Event): void => {
-      const link = (e.target as HTMLElement).closest('a[href]');
+      const link = (e.target as HTMLElement).closest("a[href]");
       if (!link) return;
 
-      const href = link.getAttribute('href');
+      const href = link.getAttribute("href");
       if (!href) return;
 
       const url = new URL(href, location.origin);
-      const isSamePage = url.pathname.replace(/\/$/, '') === location.pathname.replace(/\/$/, '');
+      const isSamePage =
+        url.pathname.replace(/\/$/, "") ===
+        location.pathname.replace(/\/$/, "");
       const hash = url.hash;
 
       if (!hash || !isSamePage) return;
@@ -109,8 +117,8 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
       e.preventDefault();
       const target = document.querySelector(hash);
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-        history.replaceState(null, '', hash);
+        target.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", hash);
         updateActive();
       }
     };
@@ -118,19 +126,25 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     function updateActive(): void {
       const currentHash = location.hash;
       links.forEach((a) => {
-        const href = a.getAttribute('href');
+        const href = a.getAttribute("href");
         if (!href) return;
         const linkUrl = new URL(href, location.origin);
-        if (linkUrl.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '')) return;
+        if (
+          linkUrl.pathname.replace(/\/$/, "") !==
+          location.pathname.replace(/\/$/, "")
+        )
+          return;
 
-        const li = a.closest('li');
+        const li = a.closest("li");
         if (!li) return;
 
-        const isActive = linkUrl.hash ? linkUrl.hash === currentHash : !currentHash;
+        const isActive = linkUrl.hash
+          ? linkUrl.hash === currentHash
+          : !currentHash;
         if (isActive) {
-          li.classList.add('active');
+          li.classList.add("active");
         } else {
-          li.classList.remove('active');
+          li.classList.remove("active");
         }
       });
     }
@@ -141,28 +155,33 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
         requestAnimationFrame(() => {
           const sections = [...links]
             .map((a) => {
-              const href = a.getAttribute('href');
+              const href = a.getAttribute("href");
               if (!href) return null;
               const url = new URL(href, location.origin);
-              if (url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '') || !url.hash) return null;
+              if (
+                url.pathname.replace(/\/$/, "") !==
+                  location.pathname.replace(/\/$/, "") ||
+                !url.hash
+              )
+                return null;
               return document.querySelector(url.hash);
             })
             .filter(Boolean) as HTMLElement[];
 
           if (sections.length === 0) return;
 
-          let currentId = '';
+          let currentId = "";
           for (const section of sections) {
             const rect = section.getBoundingClientRect();
             if (rect.top <= 120) {
-              currentId = '#' + section.id;
+              currentId = "#" + section.id;
             }
           }
           if (currentId && location.hash !== currentId) {
-            history.replaceState(null, '', currentId);
+            history.replaceState(null, "", currentId);
             updateActive();
           } else if (!currentId && location.hash) {
-            history.replaceState(null, '', location.pathname);
+            history.replaceState(null, "", location.pathname);
             updateActive();
           }
           scrollTicking = false;
@@ -177,33 +196,35 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     };
     const prevHandler = sidebarWithHandler._sidebarHandler;
     const prevScroll = sidebarWithHandler._scrollHandler;
-    if (prevHandler) sidebar.removeEventListener('click', prevHandler);
-    if (prevScroll) window.removeEventListener('scroll', prevScroll);
-    sidebar.addEventListener('click', handler);
+    if (prevHandler) sidebar.removeEventListener("click", prevHandler);
+    if (prevScroll) window.removeEventListener("scroll", prevScroll);
+    sidebar.addEventListener("click", handler);
     sidebarWithHandler._sidebarHandler = handler as EventListener;
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     sidebarWithHandler._scrollHandler = onScroll as EventListener;
 
     updateActive();
   }
 
   function initSidebarToggle(): void {
-    const btn = document.getElementById('sidebar-toggle-btn');
-    const sidebar = document.querySelector('[data-sidebar]');
-    const main = document.querySelector('[data-main-content]') as HTMLElement | null;
+    const btn = document.getElementById("sidebar-toggle-btn");
+    const sidebar = document.querySelector("[data-sidebar]");
+    const main = document.querySelector(
+      "[data-main-content]",
+    ) as HTMLElement | null;
     if (!btn || !sidebar) return;
 
     function getSizes(): { collapsed: string; expanded: string } {
-      const mq = window.matchMedia('(max-width: 767px)');
+      const mq = window.matchMedia("(max-width: 767px)");
       return {
-        collapsed: mq.matches ? '50px' : '67px',
-        expanded: mq.matches ? '200px' : '240px',
+        collapsed: mq.matches ? "50px" : "67px",
+        expanded: mq.matches ? "200px" : "240px",
       };
     }
 
     function syncMainMargin(): void {
       if (!main) return;
-      const isExpanded = !sidebar!.classList.contains('collapsed');
+      const isExpanded = !sidebar!.classList.contains("collapsed");
       const { collapsed, expanded } = getSizes();
       main.style.paddingLeft = isExpanded ? expanded : collapsed;
     }
@@ -212,36 +233,47 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
     // 同步 .shell 的 .collapsed、<html> 的首帧兜底标记与主内容偏移，
     // 保证首帧内联脚本设置的 html.sidebar-collapsed 与实际收起态始终一致。
     function setSidebarExpanded(isExpanded: boolean): void {
-      sidebar!.classList.toggle('collapsed', !isExpanded);
-      document.documentElement.classList.toggle('sidebar-collapsed', !isExpanded);
+      sidebar!.classList.toggle("collapsed", !isExpanded);
+      document.documentElement.classList.toggle(
+        "sidebar-collapsed",
+        !isExpanded,
+      );
       syncMainMargin();
     }
 
     // 恢复或初始化侧边栏状态（无动画）。
     // 默认：桌面端展开、移动端收起；用户显式持久化的值优先。
-    const STORAGE_KEY = 'sidebar-expanded';
+    const STORAGE_KEY = "sidebar-expanded";
     const stored = localStorage.getItem(STORAGE_KEY);
-    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
 
     const sidebarEl = sidebar as HTMLElement;
     const prevTransition = sidebarEl.style.transition;
-    sidebarEl.style.transition = 'none';
+    sidebarEl.style.transition = "none";
 
-    const defaultExpanded = stored !== null ? stored === 'true' : !mobile;
-    setSidebarExpanded(defaultExpanded);
-    syncMainMargin();
+    const defaultExpanded = stored !== null ? stored === "true" : !mobile;
+    // 首帧状态由 BaseLayout 内联脚本以 html.sidebar-collapsed 在 paint 前设定，
+    // CSS 已据此设置 main 偏移（见 Sidebar.module.css），此处仅同步 shell 的实际收起态，
+    // 不再内联改 main 内边距，避免首帧后改布局触发 CLS。
+    sidebar!.classList.toggle("collapsed", !defaultExpanded);
+    document.documentElement.classList.toggle(
+      "sidebar-collapsed",
+      !defaultExpanded,
+    );
 
     // 强制回流后恢复 transition
     void sidebarEl.offsetWidth;
     sidebarEl.style.transition = prevTransition;
 
     // 视口在移动/桌面间切换时，重算主内容偏移（宽度随断点变化）
-    window.matchMedia('(max-width: 767px)').addEventListener('change', syncMainMargin);
+    window
+      .matchMedia("(max-width: 767px)")
+      .addEventListener("change", syncMainMargin);
 
-    btn.addEventListener('click', (e: Event) => {
+    btn.addEventListener("click", (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = !sidebar!.classList.contains('collapsed');
+      const isExpanded = !sidebar!.classList.contains("collapsed");
       setSidebarExpanded(!isExpanded);
       localStorage.setItem(STORAGE_KEY, String(!isExpanded));
       syncMainMargin();
@@ -250,4 +282,8 @@ const { logo, groups = [], currentPath = '' } = Astro.props;
 
   initSidebarScroll();
   initSidebarToggle();
+  document.addEventListener("astro:after-swap", () => {
+    initSidebarScroll();
+    initSidebarToggle();
+  });
 </script>

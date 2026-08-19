@@ -122,7 +122,7 @@ export const SITE: SharedSiteConfig = {
 };
 
 export const I18N: I18NConfig = {
-  language: i18n.language ?? "en",
+  language: i18n.language ?? "zh-CN",
   textDirection: i18n.textDirection ?? "ltr",
 };
 

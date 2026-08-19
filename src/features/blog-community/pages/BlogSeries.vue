@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useAuthStore } from "~/stores/auth";
 import { blogApi } from "~/lib/api";
 import type { BlogSeriesDetail } from "../types/blog";
 import { t } from "~/lib/i18n";
@@ -11,6 +12,25 @@ const props = defineProps<{
 const series = ref<BlogSeriesDetail | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
+
+const auth = useAuthStore();
+const isOwner = computed<boolean>(() => {
+  if (!series.value) return false;
+  if (!auth.user?.id) return false;
+  return Number(auth.user.id) === series.value.owner_id;
+});
+
+// 新建文章：进入 Git 系列编辑器（新建模式，无 path）
+function goCreate() {
+  window.location.href = `/editor?seriesId=${props.seriesId}`;
+}
+
+// 编辑指定文件：进入 Git 系列编辑器（编辑模式，带 path）
+function goEdit(filepath: string) {
+  window.location.href = `/editor?seriesId=${props.seriesId}&path=${encodeURIComponent(
+    filepath,
+  )}`;
+}
 
 async function load() {
   loading.value = true;
@@ -55,17 +75,28 @@ function fileLink(filepath: string) {
 
   <div v-else-if="series" class="blog-series">
     <div class="mb-6">
-      <h1 class="text-3xl font-bold">{{ series.title }}</h1>
-      <p v-if="series.description" class="mt-2 text-text-muted">
-        {{ series.description }}
-      </p>
-      <div class="flex items-center gap-4 mt-3 text-sm text-text-muted">
-        <span>{{ t("blog.starCount", { count: series.star_count }) }}</span>
-        <span>{{
-          series.status === "active"
-            ? t("blog.seriesActive")
-            : t("blog.seriesArchived")
-        }}</span>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">{{ series.title }}</h1>
+          <p v-if="series.description" class="mt-2 text-text-muted">
+            {{ series.description }}
+          </p>
+          <div class="flex items-center gap-4 mt-3 text-sm text-text-muted">
+            <span>{{ t("blog.starCount", { count: series.star_count }) }}</span>
+            <span>{{
+              series.status === "active"
+                ? t("blog.seriesActive")
+                : t("blog.seriesArchived")
+            }}</span>
+          </div>
+        </div>
+        <button
+          v-if="isOwner"
+          class="btn-primary btn-sm rounded-lg px-4 py-2 bg-primary text-white whitespace-nowrap"
+          @click="goCreate"
+        >
+          {{ t("blog.newArticle") }}
+        </button>
       </div>
     </div>
 
@@ -80,7 +111,11 @@ function fileLink(filepath: string) {
               {{ node.name }}
             </p>
             <ul class="ml-4 space-y-1">
-              <li v-for="child in node.children" :key="child.name">
+              <li
+                v-for="child in node.children"
+                :key="child.name"
+                class="flex items-center gap-2"
+              >
                 <router-link
                   v-if="isMarkdown(child.name)"
                   :to="fileLink(`${node.name}/${child.name}`)"
@@ -89,6 +124,13 @@ function fileLink(filepath: string) {
                   {{ child.name.replace(/\.(md|mdx)$/i, "") }}
                 </router-link>
                 <span v-else class="text-text-muted">{{ child.name }}</span>
+                <button
+                  v-if="isOwner && isMarkdown(child.name)"
+                  class="text-text-muted text-xs underline hover:text-primary"
+                  @click="goEdit(`${node.name}/${child.name}`)"
+                >
+                  {{ t("blog.editArticle") }}
+                </button>
               </li>
             </ul>
           </div>
@@ -99,6 +141,13 @@ function fileLink(filepath: string) {
           >
             {{ node.name.replace(/\.(md|mdx)$/i, "") }}
           </router-link>
+          <button
+            v-if="isOwner && isMarkdown(node.name)"
+            class="text-text-muted text-xs underline hover:text-primary ml-2"
+            @click="goEdit(node.name)"
+          >
+            {{ t("blog.editArticle") }}
+          </button>
         </li>
       </ul>
     </div>

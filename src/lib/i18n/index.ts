@@ -1,32 +1,42 @@
 import { I18N } from "~/lib/config";
 import type { Locale, TranslationKey, TranslationParams } from "./types";
 import { LOCALE_STORAGE_KEY, SUPPORTED_LOCALES } from "./types";
-import { en } from "./languages/en";
-import { zh_CN } from "./languages/zh_CN";
+import { zhFlat } from "./generated/zh_CN.flat";
+import type { FlatDict } from "./flatten";
 import { getSsrCookie } from "~/lib/ssr-context";
-
-const DICTS: Record<Locale, Record<string, string>> = {
-  en: flatten(en),
-  "zh-CN": flatten(zh_CN),
-};
 
 const COOKIE_KEY = "lkm-locale";
 
-/** 将嵌套词典扁平化为 `a.b.c` 路径 → 字符串 */
-function flatten(
-  dict: Record<string, unknown>,
-  prefix = "",
-): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const [key, value] of Object.entries(dict)) {
-    const path = prefix ? `${prefix}.${key}` : key;
-    if (typeof value === "string") {
-      out[path] = value;
-    } else if (value && typeof value === "object") {
-      Object.assign(out, flatten(value as Record<string, unknown>, path));
-    }
-  }
-  return out;
+/**
+ * 词典注册表：运行时可命中的扁平词典。
+ * 默认语 zh-CN 同步载入（SSR/水合防闪、立即可用）；en 由 ensureDict 按需 import。
+ * 任何键缺失时 t() 回退 zh-CN → 原始 key（不抛错，mismatch 防崩降级）。
+ */
+const loadedDicts: Partial<Record<Locale, FlatDict>> = {
+  "zh-CN": zhFlat,
+};
+
+// memoize：每个 locale 只拉一次
+const dictPromises: Partial<Record<Locale, Promise<FlatDict>>> = {};
+
+/**
+ * 确保某 locale 的词典已载入（memoize）。en 走动态 import() 独立 chunk，
+ * 命中后写入注册表供 t() 同步读取。SSR 端 zh-默认已同步可用，en 在 SSR 也同步 import。
+ */
+export async function ensureDict(locale: Locale): Promise<FlatDict> {
+  const existing = loadedDicts[locale];
+  if (existing) return existing;
+  const pending = dictPromises[locale];
+  if (pending) return pending;
+  dictPromises[locale] = (
+    locale === "en"
+      ? import("./generated/en.flat").then((m) => m.enFlat)
+      : Promise.resolve(zhFlat)
+  ).then((dict) => {
+    loadedDicts[locale] = dict;
+    return dict;
+  });
+  return dictPromises[locale]!;
 }
 
 /** 根据配置默认语言推断 Locale */
@@ -83,6 +93,8 @@ export function setLocale(locale: Locale): void {
       /* noop */
     }
   }
+  // 预热非默认语词典（不阻塞调用方；命中即缓存）
+  void ensureDict(locale);
 }
 
 /** 插值：将 `{name}` 占位符替换为参数 */
@@ -93,16 +105,23 @@ function interpolate(template: string, params?: TranslationParams): string {
   );
 }
 
-/** 翻译入口。key 类型为 TranslationKey（字典路径），但运行时也支持任意字符串（未命中时原样返回）。 */
+/**
+ * 翻译入口。key 类型为 TranslationKey（字典路径），但运行时也支持任意字符串。
+ * 回退链：当前 locale → 默认语 zh-CN → 原始 key。词典未就绪时返回原始 key（防崩降级，不抛错）。
+ */
 export function t(
   key: TranslationKey | string | undefined | null,
   params?: TranslationParams,
 ): string {
   if (!key) return "";
   const locale = getLocale();
-  const template = DICTS[locale][key] ?? DICTS.en[key] ?? key;
+  const localeDict = loadedDicts[locale];
+  const zhdict = loadedDicts["zh-CN"];
+  const template =
+    (localeDict ? localeDict[key] : undefined) ??
+    (zhdict ? zhdict[key] : undefined) ??
+    key;
   return interpolate(template, params);
 }
 
-export { en, zh_CN };
 export type { Locale, TranslationKey, TranslationParams };

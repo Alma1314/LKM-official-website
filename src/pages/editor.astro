@@ -43,10 +43,35 @@ const metadata = {
   import { createElement } from 'react';
   import EditorMount from '~/features/editor/components/core/EditorMount';
   import { createLocalPersistence } from '~/features/editor/persistence/index';
+  import { createGitPersistence } from '~/features/editor/persistence/git-persistence';
 
   const rootEl = document.getElementById('editor-root');
   if (rootEl) {
     const root = createRoot(rootEl);
-    root.render(createElement(EditorMount, { adapter: createLocalPersistence() }));
+    // 浏览器端解析 URL：带 ?seriesId → Git 系列写作（admin 的 /editor 无 seriesId 保持本地 adapter）
+    const params = new URLSearchParams(window.location.search);
+    const rawSeriesId = params.get('seriesId');
+    if (rawSeriesId && rawSeriesId.trim() !== '') {
+      const seriesId = Number(rawSeriesId);
+      if (Number.isFinite(seriesId) && seriesId > 0) {
+        const path = params.get('path') ?? undefined;
+        root.render(
+          createElement(EditorMount, {
+            adapter: createGitPersistence(seriesId, path),
+            seriesId,
+            path,
+          }),
+        );
+      } else {
+        // seriesId 非法，回退本地
+        root.render(
+          createElement(EditorMount, { adapter: createLocalPersistence() }),
+        );
+      }
+    } else {
+      root.render(
+        createElement(EditorMount, { adapter: createLocalPersistence() }),
+      );
+    }
   }
 </script>

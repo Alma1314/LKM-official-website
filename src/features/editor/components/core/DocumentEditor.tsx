@@ -30,7 +30,25 @@ import PublishButton from "../dialogs/PublishButton";
 import VersionHistoryPanel from "../panels/VersionHistoryPanel";
 import ExportMenu from "../dialogs/ExportMenu";
 import BackupMenu from "../panels/BackupMenu";
+import PublishArticleDialog from "../dialogs/PublishArticleDialog";
+import { blogApi } from "~/lib/api";
 import { t } from "~/lib/i18n";
+
+/** 从标题派生文件名 slug（与 git-persistence 的 deriveSlug 保持一致） */
+function deriveSlug(title: string): string {
+  const s = title
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\u4e00-\u9fa5-]/g, "");
+  return s || "post";
+}
+
+/** 从 MDX 首行 `# ` 提取标题；无标题返回空串 */
+function firstHeadingTitle(mdx: string): string {
+  const line = (mdx.split("\n")[0] ?? "").replace(/^#\s*/, "").trim();
+  return line;
+}
 
 // 懒加载：CodeMirror（仅在切换到源码模式时加载）
 const SourceEditor = lazy(() => import("./SourceEditor"));
@@ -43,6 +61,8 @@ const PublishDialog = lazy(() => import("../dialogs/PublishDialog"));
 interface DocumentEditorProps {
   documentId: string;
   adapter: PersistenceAdapter;
+  /** Git 系列写作模式（URL 带 ?seriesId 时为 series 主键；admin 本地模式为 undefined） */
+  seriesId?: number;
 }
 
 import { computeTextMetrics } from "../../engine/text-metrics";
@@ -65,12 +85,15 @@ function uploadImageToBlob(file: File): Promise<string> {
 export default function DocumentEditor({
   documentId,
   adapter,
+  seriesId,
 }: DocumentEditorProps): ReactElement {
+  const gitMode = seriesId !== undefined;
   const [docId, setDocId] = useState(documentId === "new" ? "" : documentId);
   const {
     saveStatus,
     triggerSave,
     loadDraft,
+    flushImmediate,
     importMdxContent,
     exportMdxContent,
     sourceMdxRef,
@@ -90,6 +113,15 @@ export default function DocumentEditor({
   // 发布状态
   const [publishOpen, setPublishOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  // 发布为文章状态（gitMode 专用）：预填元数据 + 弹框开合 + 发布中
+  const [publishArticleOpen, setPublishArticleOpen] = useState(false);
+  const [publishingArticle, setPublishingArticle] = useState(false);
+  const [publishArticleInitial, setPublishArticleInitial] = useState<{
+    slug: string;
+    category: string;
+    tags: string[];
+  }>({ slug: "", category: "engineering", tags: [] });
 
   // 版本历史状态
   const [versionPanelOpen, setVersionPanelOpen] = useState(false);
@@ -127,6 +159,12 @@ export default function DocumentEditor({
   // 解析文档：新建 → 创建，已有 → 加载
   useEffect(() => {
     if (documentId === "new") {
+      // Git 系列写作：新建文档不写临时 uuid、不改 URL。
+      // docId 保持 "new" 使 autosave 可触发；保存时由 createGitPersistence 按标题 deriveSlug 生成 filepath。
+      if (gitMode) {
+        setDocId("new");
+        return;
+      }
       (async () => {
         const doc: DocumentData = {
           id: crypto.randomUUID(),
@@ -152,7 +190,7 @@ export default function DocumentEditor({
         );
       })();
     }
-  }, [documentId, adapter]);
+  }, [documentId, adapter, gitMode]);
 
   const editor = useEditor({
     extensions: getEditorExtensions(t("editor.startWritingPlaceholder")),
@@ -637,6 +675,106 @@ export default function DocumentEditor({
   const charCount = metrics.characters;
   const wordCount = metrics.words;
 
+  // Git 系列写作：显式"保存到系列"——立即把当前内容经 git adapter 写回 series 仓库。
+  // 复用 useEditorPersistence 的 flushImmediate（内部走 triggerSave → doSave），不另起一套保存逻辑。
+  const handleSaveToSeries = useCallback((): void => {
+    const json = editor?.getJSON();
+    const content: Record<string, unknown> | null =
+      json && typeof json === "object"
+        ? (json as Record<string, unknown>)
+        : lastValidEditorJsonRef.current;
+    if (!content) return;
+    flushImmediate(content);
+  }, [editor, lastValidEditorJsonRef, flushImmediate]);
+
+  /**
+   * 打开"发布为文章"确认框，并预填元数据。
+   * 预填来源：当前 frontmatter 的 slug/category/tags（loaded 时记录在 frontmatterRef）；
+   * 缺失则 slug 用当前 filepath 去扩展名 或 由标题派生，category 默认 engineering。
+   */
+  const openPublishArticle = useCallback((): void => {
+    const fm = frontmatterRef.current ?? {};
+    const fmSlug = typeof fm.slug === "string" ? fm.slug : "";
+    const fmCategory = typeof fm.category === "string" ? fm.category : "";
+    const fmTags = Array.isArray(fm.tags)
+      ? fm.tags.filter((x): x is string => typeof x === "string")
+      : [];
+
+    const filepath = docId === "new" ? "" : docId;
+    const fileSlug = filepath
+      ? (filepath
+          .split("/")
+          .pop()
+          ?.replace(/\.(mdx|md)$/, "") ?? "")
+      : "";
+    // 标题从当前 MDX 首行取；无则回退未命名
+    const title =
+      firstHeadingTitle(sourceMdxRef.current) || t("editor.untitled");
+
+    setPublishArticleInitial({
+      slug: fmSlug || fileSlug || deriveSlug(title),
+      category: fmCategory || "engineering",
+      tags: fmTags,
+    });
+    setPublishArticleOpen(true);
+  }, [docId, frontmatterRef, sourceMdxRef]);
+
+  /**
+   * 确认发布为文章：调 blogApi.publishSeriesFile(seriesId, filepath, override)。
+   * 未保存（docId==="new"）先按当前内容派生 filepath 写入再发布。
+   */
+  const handlePublishArticle = useCallback(
+    async (slug: string, category: string, tags: string[]): Promise<void> => {
+      if (seriesId === undefined) return;
+      setPublishingArticle(true);
+      try {
+        // 生成当前编辑内容的 MDX（与 autosave 的 exportMdx 一致）
+        const json = editor?.getJSON() ?? lastValidEditorJsonRef.current;
+        const nodes =
+          json && typeof json === "object" && "content" in json
+            ? (json as { content: unknown[] }).content
+            : [];
+        const mdx = exportMdx(
+          nodes as Parameters<typeof exportMdx>[0],
+          frontmatterRef.current,
+        ).mdx;
+
+        let filepath = docId;
+        if (filepath === "new") {
+          // 未保存：以选定的 slug 派生 filepath，先写入 series 仓库再发布
+          filepath = `${slug || "post"}.mdx`;
+          const saved = await blogApi.putSeriesFile(
+            seriesId,
+            filepath,
+            mdx,
+            "save",
+          );
+          if (saved.isErr()) {
+            console.warn("[DocumentEditor] 发布前保存失败:", saved.error);
+            window.alert(t("editor.mdxParseError"));
+            return;
+          }
+        }
+
+        const result = await blogApi.publishSeriesFile(seriesId, filepath, {
+          slug,
+          category,
+          tags,
+        });
+        if (result.isErr()) {
+          console.warn("[DocumentEditor] 发布为文章失败:", result.error);
+          window.alert(result.error.message || t("editor.mdxParseError"));
+          return;
+        }
+        window.alert(t("editor.publishArticleSuccess"));
+        setPublishArticleOpen(false);
+      } finally {
+        setPublishingArticle(false);
+      }
+    },
+    [seriesId, docId, editor, lastValidEditorJsonRef, frontmatterRef],
+  );
+
   // 进入源码模式时，基于当前编辑器内容初始化 HTML 源码（TipTap 原生 HTML，可回写）
   useEffect(() => {
     if (mode === "source" && editor) {
@@ -752,6 +890,56 @@ export default function DocumentEditor({
                 />
               </div>
             )}
+            {gitMode && (
+              <>
+                <button
+                  type="button"
+                  className="rte-btn rte-btn--primary rte-btn--xs"
+                  onClick={handleSaveToSeries}
+                  title={t("editor.saveToSeries")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <path d="M17 21v-8H7v8" />
+                    <path d="M7 3v5h8" />
+                  </svg>
+                  {t("editor.saveToSeries")}
+                </button>
+                <button
+                  type="button"
+                  className="rte-btn rte-btn--primary rte-btn--xs"
+                  onClick={openPublishArticle}
+                  title={t("editor.publishAsArticle")}
+                  disabled={publishingArticle}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 2 11 13" />
+                    <path d="M22 2 15 22l-4-9-9-4Z" />
+                  </svg>
+                  {t("editor.publishAsArticle")}
+                </button>
+              </>
+            )}
             <FullscreenButton />
             <ModeTabs mode={mode} onModeChange={handleModeChange} />
           </div>
@@ -856,6 +1044,20 @@ export default function DocumentEditor({
             onCancel={() => setPublishOpen(false)}
           />
         </Suspense>
+      )}
+
+      {publishArticleOpen && (
+        <PublishArticleDialog
+          initialSlug={publishArticleInitial.slug}
+          initialCategory={publishArticleInitial.category}
+          initialTags={publishArticleInitial.tags}
+          publishing={publishingArticle}
+          onConfirm={handlePublishArticle}
+          onCancel={() => {
+            if (publishingArticle) return;
+            setPublishArticleOpen(false);
+          }}
+        />
       )}
 
       {aiPanelOpen && (
