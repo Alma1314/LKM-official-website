@@ -19,6 +19,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { globSync } from "tinyglobby";
+// 用 prettier 格式化产物，保证与 check:prettier 一致（超长 value 需换行），
+// 避免生成文件触发 CI 的 prettier 门禁。
+import * as prettier from "prettier";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const LANGS_DIR = path.join(ROOT, "src", "lib", "i18n", "languages");
@@ -79,7 +82,11 @@ for (const loc of LOCALES) {
     throw new Error(`[i18n-flat] ${loc.source} 未导出 \`${loc.varTs}\``);
   }
   const flat = flatten(dict);
-  const tsCode = formatFlatTs(loc.outVar, flat);
+  const rawTs = formatFlatTs(loc.outVar, flat);
+  const tsCode = await prettier.format(rawTs, {
+    parser: "typescript",
+    printWidth: 80,
+  });
   fs.writeFileSync(path.join(OUT_DIR, loc.outFile), tsCode, "utf-8");
   console.log(
     `[i18n-flat] ${loc.source} -> ${loc.outFile} (${Object.keys(flat).length} keys)`,
