@@ -255,7 +255,13 @@ export default defineConfig({
       allowedHosts: ["lkm.s12mc.xyz"],
       proxy: process.env.API_URL
         ? {
-            "/api": { target: process.env.API_URL, changeOrigin: true },
+            // 即转发 HTTP 也转发 WS upgrade：前端 WebSocket(/api/v1/ws/events)
+            // 需经 Vite dev 代理把握手与数据中继到后端（浏览器同域建连无法直连源站）。
+            "/api": {
+              target: process.env.API_URL,
+              changeOrigin: true,
+              ws: true,
+            },
             "/graphql": { target: process.env.API_URL, changeOrigin: true },
             // 成员头像由后端静态服务提供（/static/avatars/*.webp）
             "/static": { target: process.env.API_URL, changeOrigin: true },

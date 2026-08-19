@@ -2,7 +2,7 @@
 //
 // 后端 FileInfo 为 snake_case 字段，这里在客户端层映射为前端 UI 使用的 camelCase 形状。
 
-import { get } from "../../http/client";
+import { get, getHttpAccessToken } from "../../http/client";
 
 /** 文件展示形状（camelCase，由后端 FileInfo 映射而来）。 */
 export interface FileEntry {
@@ -47,6 +47,36 @@ export interface PaginatedResponse<T> {
   pages: number;
 }
 
+/** 上传初始化响应（camelCase，由后端 UploadInitResp 映射而来）。 */
+export interface UploadInitResp {
+  mode: "direct" | "sync";
+  uploadId?: string | null;
+  presignedUrl?: string | null;
+  file?: FileEntry | null;
+}
+
+/** 后端 upload-init 响应的 snake_case 形状。 */
+interface BackendUploadInitResp {
+  mode: "direct" | "sync";
+  upload_id?: string | null;
+  presigned_url?: string | null;
+  file?: BackendFile | null;
+}
+
+/** 下载地址信息（camelCase，由后端 BackendDownloadUrl 映射而来）。 */
+export interface DownloadUrlInfo {
+  kind: "backend" | "presigned";
+  url: string;
+  expiresIn?: number | null;
+}
+
+/** 后端下载地址响应的 snake_case 形状。 */
+interface BackendDownloadUrl {
+  kind: "backend" | "presigned";
+  url: string;
+  expires_in?: number | null;
+}
+
 function mapFile(f: BackendFile): FileEntry {
   return {
     id: f.id,
@@ -80,5 +110,108 @@ export const fileLibraryApi = {
     const res = await get<BackendFile>(`/api/v1/files/${id}`);
     if (res.isErr()) return null;
     return mapFile(res.value);
+  },
+
+  getDownloadUrl: async (id: string | number): Promise<DownloadUrlInfo> => {
+    // 后端该端点由 get_current_user 保护，只认 Bearer 头；generic get() 的
+    // needsAuth 白名单未含 /api/v1/files/，这里手动附加 token 发起请求，
+    // 与 getContentBlob 保持一致，避免依赖会随白名单变化而失效。
+    const token = getHttpAccessToken();
+    // eslint-disable-next-line no-restricted-globals -- 与 getContentBlob 一致：需手动携带 Bearer 头的独立请求，generic client 的 needsAuth 白名单不覆盖此端点
+    const res = await fetch(`/api/v1/files/${id}/download/url`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!res.ok) {
+      throw new Error(`获取下载地址失败 ${res.status}`);
+    }
+    const data = (await res.json()) as BackendDownloadUrl;
+    return {
+      kind: data.kind,
+      url: data.url,
+      expiresIn: data.expires_in,
+    };
+  },
+
+  getContentBlob: async (id: string | number): Promise<Blob> => {
+    const token = getHttpAccessToken();
+    const res = await fetch(`/api/v1/files/${id}/content`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!res.ok) throw new Error(`下载失败 ${res.status}`);
+    return res.blob();
+  },
+
+  getPreviewUrl: (id: string | number): string =>
+    `/api/v1/files/${id}/preview`,
+
+  // ── 上传（Phase 2-B）──
+  // 该链路由 /files 相关端点保护，只认 Bearer 头；generic get() 的
+  // needsAuth 白名单未含 /api/v1/files/，故此处全部手动带 token 发起请求。
+  // upload-init 只回元数据，不发文件字节：
+
+  /** 初始化上传：后端判定 S3→direct（返 presigned_url, 需后续 confirm）或 Local→sync（无 presign, 走 multipart 回退）。 */
+  uploadInit: async (info: {
+    originalName: string;
+    mimeType: string;
+    categoryId: string;
+    description: string;
+    tags: string[];
+  }): Promise<UploadInitResp> => {
+    const token = getHttpAccessToken();
+    const res = await fetch("/api/v1/files/upload-init", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        original_name: info.originalName,
+        mime_type: info.mimeType,
+        category_id: info.categoryId,
+        description: info.description,
+        tags: info.tags,
+      }),
+    });
+    if (!res.ok) throw new Error(`初始化上传失败 ${res.status}`);
+    const b = (await res.json())["data"] as BackendUploadInitResp;
+    return {
+      mode: b.mode,
+      uploadId: b.upload_id ?? null,
+      presignedUrl: b.presigned_url ?? null,
+      file: b.file ? mapFile(b.file) : null,
+    };
+  },
+
+  /** 直传后确认：S3 direct 上传的 upload_id 确认落库，返回 PENDING 的 FileEntry。 */
+  confirmUpload: async (uploadId: string): Promise<FileEntry> => {
+    const token = getHttpAccessToken();
+    const res = await fetch(`/api/v1/files/${uploadId}/confirm`, {
+      method: "POST",
+      ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+    });
+    if (!res.ok) throw new Error(`确认上传失败 ${res.status}`);
+    const b = (await res.json())["data"] as BackendFile;
+    return mapFile(b);
+  },
+
+  /** L-b：Local（无 presign）回退同步 multipart POST /files（既有后端端点）。 */
+  uploadSyncFromFile: async (
+    file: File,
+    meta: { categoryId: string; description: string; tags: string[] },
+  ): Promise<FileEntry> => {
+    const token = getHttpAccessToken();
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("category_id", meta.categoryId);
+    fd.append("description", meta.description);
+    fd.append("tags", JSON.stringify(meta.tags));
+    const res = await fetch("/api/v1/files", {
+      method: "POST",
+      ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+      body: fd,
+    });
+    if (!res.ok) throw new Error(`上传失败 ${res.status}`);
+    const b = (await res.json())["data"] as BackendFile;
+    return mapFile(b);
   },
 };
