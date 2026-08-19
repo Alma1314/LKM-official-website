@@ -40,6 +40,7 @@
     "check:links": "node scripts/check-links.mjs",
     "check:budget": "node scripts/check-bundle-budget.mjs",
     "lighthouse:budget": "node scripts/lighthouse-budget.mjs",
+    "lighthouse:budget:update": "node scripts/lighthouse-budget.mjs --update-baseline",
     "measure:cwv": "node scripts/measure-cwv.mjs"
   },
   "dependencies": {

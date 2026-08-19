@@ -60,6 +60,7 @@ reports/
 !/scripts/optimize-avatars.mjs
 !/scripts/lighthouse-budget.mjs
 !/scripts/measure-cwv.mjs
+!/scripts/jsbudget-baseline.json
 !src/scripts/
 
 # reference material (astro templates, not committed)

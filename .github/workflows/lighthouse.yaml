@@ -29,11 +29,20 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
-      # 预算门槛：实验室里 INP 用 TBT 代理；首版放开阈值立基线，收紧后去掉 env 覆盖
-      - name: Run Lighthouse budgets
+      # 预算门槛（2026-08-20 完善为「分层 + JS 体积 delta」）：
+      #   --runs=3 取中位滤 TBT 等噪声指标的单次抖动（此前 runs=1 被 CPU 负载误杀）。
+      #   · 硬指标（超阈 exit1 拦截）：CLS / TBT / JS 体积 / JS 相对基线 delta。
+      #   · 告警指标（::warning:: 不阻塞）：LCP / Perf / /editor 整页（已确认接受项）。
+      #   · JS 基线（scripts/jsbudget-baseline.json，提交 git）防体积回归；大幅增长才拦。
+      # 无后端降级下 LCP/TBT 绝对值偏高，以下 TBT 硬阈取 CI 中位可过的合理值。
+      - name: Run Lighthouse budgets (layered)
         env:
           LIGHTHOUSE_LCP_MS: '4000'
           LIGHTHOUSE_CLS: '0.15'
-          LIGHTHOUSE_TBT_MS: '600'
+          # TBT 为硬指标：CI(Linux) 中位 / ~319ms、treehole ~428ms，取 500 拦「真实回归」而非单次抖动
+          LIGHTHOUSE_TBT_MS: '500'
           LIGHTHOUSE_PERF: '40'
-        run: pnpm run lighthouse:budget
+          # JS 绝对阈仅防事故级暴增；真正的 per-page JS 回归由基线 delta 承担
+          LIGHTHOUSE_JS_KB: '3500'
+          LIGHTHOUSE_JS_DELTA_PCT: '8'
+        run: pnpm run lighthouse:budget --runs=3
