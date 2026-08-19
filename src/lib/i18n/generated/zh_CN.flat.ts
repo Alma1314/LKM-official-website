@@ -179,11 +179,13 @@ export const zhFlat = {
   "auth.twoFactor.recoveryCode": "备用恢复码",
   "auth.twoFactor.recoveryCodeName": "恢复码",
   "auth.twoFactor.recoveryCodePlaceholder": "格式：AAAA-BBBB-CCCC",
-  "auth.twoFactor.recoverySuccess": "恢复码验证通过，登录成功。请在设置中重新绑定 2FA。",
+  "auth.twoFactor.recoverySuccess":
+    "恢复码验证通过，登录成功。请在设置中重新绑定 2FA。",
   "auth.twoFactor.recoverySuccess2": "恢复成功",
   "auth.twoFactor.recoveryTitle": "2FA 恢复",
   "auth.twoFactor.simulatedCode": "模拟验证码：000000",
-  "auth.twoFactor.testModeTempToken": "测试模式暂缺 temp_token，无法验证恢复码（保留 UI 完整，未造假成功）",
+  "auth.twoFactor.testModeTempToken":
+    "测试模式暂缺 temp_token，无法验证恢复码（保留 UI 完整，未造假成功）",
   "auth.twoFactor.title": "双因素认证",
   "auth.twoFactor.totpHint": "请输入 Google Authenticator 中的 6 位验证码",
   "auth.twoFactor.useRecoveryCode": "无法验证 / 丢失设备？使用备用恢复码",
@@ -254,7 +256,7 @@ export const zhFlat = {
   "blog.share.qrLoadFailed": "二维码加载失败",
   "blog.share.share": "分享",
   "blog.share.wechat": "分享到微信",
-  "blog.share.wechatScanHint": "打开微信\"扫一扫\"，扫描二维码分享文章",
+  "blog.share.wechatScanHint": '打开微信"扫一扫"，扫描二维码分享文章',
   "blog.share.wechatScanTitle": "微信扫一扫分享",
   "blog.share.weibo": "分享到微博",
   "blog.starCount": "{count} 收藏",
@@ -269,50 +271,60 @@ export const zhFlat = {
   "blog.wordCount": "字",
   "blog.wordsCount": "字",
   "blog.wordsValue": "{count} 字",
-  "columnData.articles.art1.excerpt": "从2015年GW150914首次探测至今，引力波天文学已经成为了解宇宙的全新窗口。",
+  "columnData.articles.art1.excerpt":
+    "从2015年GW150914首次探测至今，引力波天文学已经成为了解宇宙的全新窗口。",
   "columnData.articles.art1.tags.a": "引力波",
   "columnData.articles.art1.tags.b": "天体物理",
   "columnData.articles.art1.tags.c": "LIGO",
-  "columnData.articles.art1.title": "引力波天文学：聆听宇宙的\"声音\"",
-  "columnData.articles.art2.excerpt": "霍金辐射的发现引发了一个深刻的问题：掉入黑洞的信息去哪了？",
+  "columnData.articles.art1.title": '引力波天文学：聆听宇宙的"声音"',
+  "columnData.articles.art2.excerpt":
+    "霍金辐射的发现引发了一个深刻的问题：掉入黑洞的信息去哪了？",
   "columnData.articles.art2.tags.a": "黑洞",
   "columnData.articles.art2.tags.b": "霍金辐射",
   "columnData.articles.art2.tags.c": "量子引力",
   "columnData.articles.art2.title": "黑洞信息悖论：物理学的最大谜题之一",
-  "columnData.articles.art3.excerpt": "基于认知科学和教学实践经验，探讨科普课程设计的核心原则。",
+  "columnData.articles.art3.excerpt":
+    "基于认知科学和教学实践经验，探讨科普课程设计的核心原则。",
   "columnData.articles.art3.tags.a": "科学教育",
   "columnData.articles.art3.tags.b": "课程设计",
   "columnData.articles.art3.tags.c": "科普",
   "columnData.articles.art3.title": "如何设计一门引人入胜的科普课程",
-  "columnData.articles.art4.excerpt": "摘要是论文的\"广告\"，好的摘要能决定论文的引用率和影响力。",
+  "columnData.articles.art4.excerpt":
+    '摘要是论文的"广告"，好的摘要能决定论文的引用率和影响力。',
   "columnData.articles.art4.tags.a": "学术写作",
   "columnData.articles.art4.tags.b": "论文",
   "columnData.articles.art4.tags.c": "摘要",
   "columnData.articles.art4.title": "学术论文摘要写作的黄金法则",
-  "columnData.articles.art5.excerpt": "动态规划不是一种算法，而是一种解决问题的思维方式。",
+  "columnData.articles.art5.excerpt":
+    "动态规划不是一种算法，而是一种解决问题的思维方式。",
   "columnData.articles.art5.tags.a": "算法",
   "columnData.articles.art5.tags.b": "动态规划",
   "columnData.articles.art5.tags.c": "Python",
   "columnData.articles.art5.title": "动态规划：从入门到进阶的思维框架",
-  "columnData.columns.col1.authorBio": "引力波与黑洞物理方向，致力于天体物理科普",
+  "columnData.columns.col1.authorBio":
+    "引力波与黑洞物理方向，致力于天体物理科普",
   "columnData.columns.col1.authorName": "七月O",
   "columnData.columns.col1.authorTitle": "中国科学院国家天文台博士",
-  "columnData.columns.col1.description": "记录天体物理研究前沿，分享宇宙探索的奇妙旅程。从引力波到黑洞，从暗物质到宇宙大尺度结构。",
+  "columnData.columns.col1.description":
+    "记录天体物理研究前沿，分享宇宙探索的奇妙旅程。从引力波到黑洞，从暗物质到宇宙大尺度结构。",
   "columnData.columns.col1.title": "宇宙探索笔记",
   "columnData.columns.col2.authorBio": "有理想的博士，梦想每个孩子都能接触科学",
   "columnData.columns.col2.authorName": "七月花",
   "columnData.columns.col2.authorTitle": "科学教育博士",
-  "columnData.columns.col2.description": "科学教育的理论与实践，课程设计、教学方法、科普写作的深度思考。",
+  "columnData.columns.col2.description":
+    "科学教育的理论与实践，课程设计、教学方法、科普写作的深度思考。",
   "columnData.columns.col2.title": "教育者的实验室",
   "columnData.columns.col3.authorBio": "凝聚态物理研究，学术写作指导",
   "columnData.columns.col3.authorName": "李教授",
   "columnData.columns.col3.authorTitle": "复旦大学物理学教授",
-  "columnData.columns.col3.description": "分享论文写作技巧、学术英语表达、科研方法论等硬核内容。",
+  "columnData.columns.col3.description":
+    "分享论文写作技巧、学术英语表达、科研方法论等硬核内容。",
   "columnData.columns.col3.title": "学术写作之道",
   "columnData.columns.col4.authorBio": "10年算法竞赛与工程经验",
   "columnData.columns.col4.authorName": "码农老王",
   "columnData.columns.col4.authorTitle": "资深算法工程师",
-  "columnData.columns.col4.description": "深入浅出讲解算法与数据结构，从 LeetCode 到 ACM，从工程实践到理论推导。",
+  "columnData.columns.col4.description":
+    "深入浅出讲解算法与数据结构，从 LeetCode 到 ACM，从工程实践到理论推导。",
   "columnData.columns.col4.title": "算法之美",
   "common.back": "返回",
   "common.cancel": "取消",
@@ -363,7 +375,8 @@ export const zhFlat = {
   "community.competition.ended": "已结束",
   "community.competition.endsAt": "结束：",
   "community.competition.enterExam": "进入答题",
-  "community.competition.examSubmitted": "答卷已提交！正确 {correct}/{total}（{percent}%）",
+  "community.competition.examSubmitted":
+    "答卷已提交！正确 {correct}/{total}（{percent}%）",
   "community.competition.explanation": "解析：",
   "community.competition.next": "下一题",
   "community.competition.notFound": "竞赛不存在",
@@ -409,7 +422,8 @@ export const zhFlat = {
   "community.fileLibrary.title": "文件库",
   "community.fileLibrary.uploadDropHint": "点击或拖拽文件到此处",
   "community.fileLibrary.uploadFormats": "支持 PDF、ZIP 等格式，最大 500MB",
-  "community.fileLibrary.uploadSubmitted": "文件已提交，进入人工审核与查重队列。审核通过后会通知您。",
+  "community.fileLibrary.uploadSubmitted":
+    "文件已提交，进入人工审核与查重队列。审核通过后会通知您。",
   "community.fileLibrary.uploadTitle": "上传文件",
   "community.fileLibrary.view": "查看",
   "community.fileLibrary.viewDetails": "查看详情 →",
@@ -417,7 +431,8 @@ export const zhFlat = {
   "community.files.approved": "已通过",
   "community.files.backToLibrary": "文件库",
   "community.files.category": "分类：{name}",
-  "community.files.disclaimer": "所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。",
+  "community.files.disclaimer":
+    "所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。",
   "community.files.disclaimerTitle": "免责声明：",
   "community.files.download": "下载文件（贡献积分 +{points}）",
   "community.files.downloads": "下载量",
@@ -426,7 +441,8 @@ export const zhFlat = {
   "community.files.reviewComment": "审核意见：{comment}",
   "community.files.size": "文件大小",
   "community.files.status": "状态：",
-  "community.files.subtitle": "结构化资源中心，学术资料、数据集、教程文件尽在掌握",
+  "community.files.subtitle":
+    "结构化资源中心，学术资料、数据集、教程文件尽在掌握",
   "community.files.times": "次",
   "community.files.title": "文件库",
   "community.files.uploadTime": "上传时间",
@@ -463,7 +479,8 @@ export const zhFlat = {
   "community.forum.posts": "帖子",
   "community.forum.postsShort": "帖",
   "community.forum.publish": "发布",
-  "community.forum.publishSuccess": "帖子已发布！\n标题：{title}\n板块：{category}\n标签：{tags}",
+  "community.forum.publishSuccess":
+    "帖子已发布！\n标题：{title}\n板块：{category}\n标签：{tags}",
   "community.forum.reply": "回复",
   "community.forum.replyTo": "回复 @{name}",
   "community.forum.report": "举报",
@@ -486,7 +503,8 @@ export const zhFlat = {
   "community.forum.todayPosts": "今日 {count}",
   "community.forum.viewAll": "查看全部",
   "community.forum.yesterday": "昨天",
-  "community.subtitle": "欢迎来到 LKM 社区，在这里交流技术、分享经验、共同成长。",
+  "community.subtitle":
+    "欢迎来到 LKM 社区，在这里交流技术、分享经验、共同成长。",
   "community.title": "LKM 社区",
   "competition.allDifficulties": "全部难度",
   "competition.categoryAll": "全部",
@@ -501,24 +519,30 @@ export const zhFlat = {
   "competition.singleChoice": "单选",
   "competition.trueFalse": "判断",
   "competitionData.competitions.comp1.category": "物理",
-  "competitionData.competitions.comp1.description": "涵盖力学、电磁学、热学、光学、近代物理等，适合高中及以上学生参加。",
+  "competitionData.competitions.comp1.description":
+    "涵盖力学、电磁学、热学、光学、近代物理等，适合高中及以上学生参加。",
   "competitionData.competitions.comp1.title": "2026 暑假物理竞赛",
   "competitionData.competitions.comp2.category": "数学",
-  "competitionData.competitions.comp2.description": "三人组队参赛，解决实际问题并提交论文。",
+  "competitionData.competitions.comp2.description":
+    "三人组队参赛，解决实际问题并提交论文。",
   "competitionData.competitions.comp2.title": "2026 数学建模挑战赛",
   "competitionData.competitions.comp3.category": "信息科学",
-  "competitionData.competitions.comp3.description": "48 小时极限编程挑战，不限语言和工具。",
+  "competitionData.competitions.comp3.description":
+    "48 小时极限编程挑战，不限语言和工具。",
   "competitionData.competitions.comp3.title": "2026 编程马拉松",
   "competitionData.competitions.comp4.category": "化学",
-  "competitionData.competitions.comp4.description": "限时完成化学方程式配平挑战。",
+  "competitionData.competitions.comp4.description":
+    "限时完成化学方程式配平挑战。",
   "competitionData.competitions.comp4.title": "2026 化学方程式平衡大赛",
-  "competitionData.questions.q1.explanation": "光速 c = 299,792,458 m/s ≈ 3×10⁸ m/s",
+  "competitionData.questions.q1.explanation":
+    "光速 c = 299,792,458 m/s ≈ 3×10⁸ m/s",
   "competitionData.questions.q1.option0": "3×10⁶ m/s",
   "competitionData.questions.q1.option1": "3×10⁷ m/s",
   "competitionData.questions.q1.option2": "3×10⁸ m/s",
   "competitionData.questions.q1.option3": "3×10⁹ m/s",
   "competitionData.questions.q1.stem": "光速在真空中约为？",
-  "competitionData.questions.q2.explanation": "摩擦力是电磁力的宏观表现，不是基本力。四种基本力是：引力、电磁力、强相互作用、弱相互作用。",
+  "competitionData.questions.q2.explanation":
+    "摩擦力是电磁力的宏观表现，不是基本力。四种基本力是：引力、电磁力、强相互作用、弱相互作用。",
   "competitionData.questions.q2.option0": "引力",
   "competitionData.questions.q2.option1": "电磁力",
   "competitionData.questions.q2.option2": "摩擦力",
@@ -529,18 +553,22 @@ export const zhFlat = {
   "competitionData.questions.q3.option1": "5 m/s²",
   "competitionData.questions.q3.option2": "10 m/s²",
   "competitionData.questions.q3.option3": "20 m/s²",
-  "competitionData.questions.q3.stem": "一个质量为 2kg 的物体，受到 10N 的力，加速度是多少？",
-  "competitionData.questions.q4.explanation": "声音是机械波，需要介质传播，真空无法传声。",
+  "competitionData.questions.q3.stem":
+    "一个质量为 2kg 的物体，受到 10N 的力，加速度是多少？",
+  "competitionData.questions.q4.explanation":
+    "声音是机械波，需要介质传播，真空无法传声。",
   "competitionData.questions.q4.option0": "正确",
   "competitionData.questions.q4.option1": "错误",
   "competitionData.questions.q4.stem": "声音可以在真空中传播。",
-  "competitionData.questions.q5.explanation": "矢量有大小和方向。速度有大小和方向，质量和温度只有大小。",
+  "competitionData.questions.q5.explanation":
+    "矢量有大小和方向。速度有大小和方向，质量和温度只有大小。",
   "competitionData.questions.q5.option0": "质量",
   "competitionData.questions.q5.option1": "温度",
   "competitionData.questions.q5.option2": "速度",
   "competitionData.questions.q5.option3": "时间",
   "competitionData.questions.q5.stem": "下列哪个是矢量？",
-  "competitionData.questions.q6.explanation": "欧姆定律：I=U/R，电压不变时，电阻越大电流越小。",
+  "competitionData.questions.q6.explanation":
+    "欧姆定律：I=U/R，电压不变时，电阻越大电流越小。",
   "competitionData.questions.q6.option0": "增加",
   "competitionData.questions.q6.option1": "减小",
   "competitionData.questions.q6.option2": "不变",
@@ -552,7 +580,8 @@ export const zhFlat = {
   "competitionData.questions.q7.option2": "3.16",
   "competitionData.questions.q7.option3": "3.18",
   "competitionData.questions.q7.stem": "π (pi) 的值最接近？",
-  "competitionData.questions.q8.explanation": "O(log n) 增长最慢。排序：O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)",
+  "competitionData.questions.q8.explanation":
+    "O(log n) 增长最慢。排序：O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)",
   "competitionData.questions.q8.option0": "O(n²)",
   "competitionData.questions.q8.option1": "O(n log n)",
   "competitionData.questions.q8.option2": "O(log n)",
@@ -566,7 +595,8 @@ export const zhFlat = {
   "contribution.dailyCheckin": "每日打卡",
   "contribution.dailyTasks": "今日任务",
   "contribution.exchange": "兑换",
-  "contribution.exchangeSuccess": "兑换成功！您已花费 {points} 积分兑换\"{name}\"",
+  "contribution.exchangeSuccess":
+    '兑换成功！您已花费 {points} 积分兑换"{name}"',
   "contribution.lowStock": "仅剩 {stock}",
   "contribution.me": "我",
   "contribution.periodDaily": "日榜",
@@ -612,7 +642,8 @@ export const zhFlat = {
   "contributionData.exchangeItems.e1.name": "理科迷定制徽章（虚拟）",
   "contributionData.exchangeItems.e2.description": "解锁金色称号显示",
   "contributionData.exchangeItems.e2.name": "专属称号颜色",
-  "contributionData.exchangeItems.e3.description": "在首页推荐区展示你的专栏文章 7 天",
+  "contributionData.exchangeItems.e3.description":
+    "在首页推荐区展示你的专栏文章 7 天",
   "contributionData.exchangeItems.e3.name": "专栏文章推广位",
   "contributionData.exchangeItems.e4.description": "限量版理科迷主题笔记本",
   "contributionData.exchangeItems.e4.name": "理科迷定制笔记本",
@@ -656,11 +687,13 @@ export const zhFlat = {
   "editor.addComment": "添加评论",
   "editor.ai.apiKey": "API Key",
   "editor.ai.apiUrl": "API 地址",
-  "editor.ai.compatibilityNotice": "兼容 OpenAI / Ollama / LM Studio 等 API 格式",
+  "editor.ai.compatibilityNotice":
+    "兼容 OpenAI / Ollama / LM Studio 等 API 格式",
   "editor.ai.customPromptOptional": "自定义 prompt（可选）",
   "editor.ai.customPromptPlaceholder": "留空则使用默认 prompt",
   "editor.ai.insert": "插入",
-  "editor.ai.keyMemoryNotice": "Key 仅保存在当前页面内存中，刷新或关闭页面后自动清除。",
+  "editor.ai.keyMemoryNotice":
+    "Key 仅保存在当前页面内存中，刷新或关闭页面后自动清除。",
   "editor.ai.noSelectionOrPrompt": "请先选中文本或输入自定义 prompt",
   "editor.ai.operation": "操作",
   "editor.ai.operationContinue": "续写",
@@ -676,7 +709,8 @@ export const zhFlat = {
   "editor.ai.sendRequest": "发送请求",
   "editor.ai.sending": "请求中…",
   "editor.ai.settings": "设置",
-  "editor.ai.thirdPartyNotice": "注意：您的编辑器内容将被发送至第三方 AI 服务商处理。请勿在内容中包含个人敏感信息。",
+  "editor.ai.thirdPartyNotice":
+    "注意：您的编辑器内容将被发送至第三方 AI 服务商处理。请勿在内容中包含个人敏感信息。",
   "editor.ai.writingAssistant": "AI 写作助手",
   "editor.altText": "替代文本 (alt)",
   "editor.archive": "归档",
@@ -687,14 +721,15 @@ export const zhFlat = {
   "editor.backup.exportAll": "导出所有文档",
   "editor.backup.formatError": "格式错误",
   "editor.backup.importDocs": "导入文档",
-  "editor.backup.importOverwrite": "将导入 {importCount} 个文档，当前 {existingCount} 个文档将被覆盖。确定继续？",
+  "editor.backup.importOverwrite":
+    "将导入 {importCount} 个文档，当前 {existingCount} 个文档将被覆盖。确定继续？",
   "editor.backup.importSuccess": "成功导入 {count} 个文档",
   "editor.backup.invalidJsonFormat": "JSON 格式不正确：需要文档数组",
   "editor.backup.invalidJsonNoDocs": "JSON 文件中没有文档数据",
   "editor.backup.jsonParseFailed": "JSON 解析失败: {message}",
   "editor.backup.noBackups": "暂无备份",
   "editor.backup.noDocsToExport": "暂无文档可导出",
-  "editor.backup.restoreConfirm": "从备份恢复\"{title}\"？当前数据将被覆盖。",
+  "editor.backup.restoreConfirm": '从备份恢复"{title}"？当前数据将被覆盖。',
   "editor.backup.restoreFromBackup": "从备份恢复",
   "editor.backup.title": "备份管理",
   "editor.blockMath": "块级公式",
@@ -722,7 +757,8 @@ export const zhFlat = {
   "editor.confirmArchiveMessage": "确定归档此文档？归档后不可编辑。",
   "editor.confirmDeleteComment": "确定删除此评论？",
   "editor.confirmPublish": "确认发布",
-  "editor.confirmRestoreVersion": "确定恢复到版本 {version}？当前未保存的更改会丢失。",
+  "editor.confirmRestoreVersion":
+    "确定恢复到版本 {version}？当前未保存的更改会丢失。",
   "editor.confirmTitle": "确认操作",
   "editor.delete": "删除",
   "editor.documentTitlePlaceholder": "文档标题",
@@ -791,14 +827,16 @@ export const zhFlat = {
   "editor.linkUrl": "链接地址",
   "editor.loadErrorBrowserCache": "浏览器缓存冲突",
   "editor.loadErrorCache": "开发服务器预构建缓存过期",
-  "editor.loadErrorDetail": "已尝试 {count} 次加载，仍无法启动编辑器。可能的原因：",
+  "editor.loadErrorDetail":
+    "已尝试 {count} 次加载，仍无法启动编辑器。可能的原因：",
   "editor.loadErrorNetwork": "网络连接问题",
   "editor.loadingEditor": "正在加载编辑器……",
   "editor.math.blockFormula": "块级公式",
   "editor.math.confirmShortcut": "Ctrl+Enter 确认",
   "editor.math.enterFormulaPreview": "输入公式后这里预览",
   "editor.math.inlineFormula": "行内公式",
-  "editor.math.latexExample": "例如: E=mc^2 或 \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",
+  "editor.math.latexExample":
+    "例如: E=mc^2 或 \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",
   "editor.math.latexFormula": "LaTeX 公式",
   "editor.math.latexSyntaxError": "LaTeX 语法错误",
   "editor.mdxParseError": "MDX 解析失败，请检查源码格式后重试",
@@ -843,7 +881,8 @@ export const zhFlat = {
   "editor.propertyPanel.warning": "警告",
   "editor.propertyPanel.width": "宽度 (px)",
   "editor.publish": "发布",
-  "editor.publishArticleNotice": "将从当前系列文件发布为博客文章，确认后文章将公开可见。",
+  "editor.publishArticleNotice":
+    "将从当前系列文件发布为博客文章，确认后文章将公开可见。",
   "editor.publishArticleSuccess": "已发布为文章",
   "editor.publishArticleTitle": "发布为文章",
   "editor.publishAsArticle": "发布为文章",
@@ -921,7 +960,8 @@ export const zhFlat = {
   "editor.undo": "撤销",
   "editor.undoShortcut": "撤销 (Ctrl+Z)",
   "editor.untitled": "无标题文档",
-  "editor.validation.disallowedProtocol": "{nodeType} 中使用了不允许的 URL 协议: {url}",
+  "editor.validation.disallowedProtocol":
+    "{nodeType} 中使用了不允许的 URL 协议: {url}",
   "editor.validation.esmForbidden": "MDX ESM 导入/导出出于安全原因不允许",
   "editor.version": "版本",
   "editor.versionHistory": "版本历史",
@@ -930,7 +970,8 @@ export const zhFlat = {
   "editorData.errApiUrlRequired": "请输入 API 地址",
   "editorData.errCheckKey": "，请检查 API Key 和端点配置是否正确",
   "editorData.errConfigInvalid": "AI 接口配置无效：{detail}",
-  "editorData.errCredentials": "API 地址不能包含用户名或密码，请在下方单独输入 API Key",
+  "editorData.errCredentials":
+    "API 地址不能包含用户名或密码，请在下方单独输入 API Key",
   "editorData.errEmptyReply": "AI 服务返回了空白的回复内容",
   "editorData.errHttpsOnly": "仅支持 HTTPS 地址",
   "editorData.errIncomplete": "AI 服务返回数据不完整",
@@ -939,12 +980,14 @@ export const zhFlat = {
   "editorData.errMissingMessage": "AI 服务返回数据不完整（缺少消息内容）",
   "editorData.errNetworkFailed": "网络请求失败",
   "editorData.errNetworkFailedDetail": "网络请求失败：{message}",
-  "editorData.errNotConfigured": "请先配置 AI 接口。点击\"设置\"输入 API 地址和 Key。",
+  "editorData.errNotConfigured":
+    '请先配置 AI 接口。点击"设置"输入 API 地址和 Key。',
   "editorData.errParseFailed": "无法解析 AI 服务返回的数据",
   "editorData.errServiceError": "AI 服务返回错误：{detail}",
   "editorData.errServiceStatus": "AI 服务返回错误（状态码 {status}）",
   "editorData.errStatusCodeSuffix": "（状态码 {status}）",
-  "editorData.errTooLarge": "AI 返回内容过大（{bytes} 字节），已超过 {max} 字节上限",
+  "editorData.errTooLarge":
+    "AI 返回内容过大（{bytes} 字节），已超过 {max} 字节上限",
   "editorData.errUnexpectedContentType": "服务器返回了意外的内容类型",
   "editorData.errUnknown": "未知错误",
   "editorData.errUnsupportedProtocol": "不支持的协议",
@@ -968,35 +1011,43 @@ export const zhFlat = {
   "fileLibraryData.categories.physics": "物理学",
   "fileLibraryData.categories.physicsAstrophysics": "天体物理",
   "fileLibraryData.categories.physicsQuantum": "量子力学",
-  "fileLibraryData.files.file1.description": "整理的天体物理公开数据集，包含 SDSS、Gaia DR3 和 LIGO 事件数据，适用于学习和研究。",
+  "fileLibraryData.files.file1.description":
+    "整理的天体物理公开数据集，包含 SDSS、Gaia DR3 和 LIGO 事件数据，适用于学习和研究。",
   "fileLibraryData.files.file1.tags.a": "天体物理",
   "fileLibraryData.files.file1.tags.b": "数据集",
   "fileLibraryData.files.file1.tags.c": "天文",
-  "fileLibraryData.files.file2.description": "中国科学院量子力学课程讲义，涵盖从波函数到微扰论的完整内容。",
+  "fileLibraryData.files.file2.description":
+    "中国科学院量子力学课程讲义，涵盖从波函数到微扰论的完整内容。",
   "fileLibraryData.files.file2.tags.a": "量子力学",
   "fileLibraryData.files.file2.tags.b": "讲义",
   "fileLibraryData.files.file2.tags.c": "物理",
-  "fileLibraryData.files.file3.description": "线性代数经典习题集，含详细解答和解题思路分析，适合期末复习和考研备考。",
+  "fileLibraryData.files.file3.description":
+    "线性代数经典习题集，含详细解答和解题思路分析，适合期末复习和考研备考。",
   "fileLibraryData.files.file3.tags.a": "线性代数",
   "fileLibraryData.files.file3.tags.b": "习题",
   "fileLibraryData.files.file3.tags.c": "数学",
-  "fileLibraryData.files.file4.description": "图解常见有机化学反应机理，包括亲核取代、消除反应、加成反应等。",
+  "fileLibraryData.files.file4.description":
+    "图解常见有机化学反应机理，包括亲核取代、消除反应、加成反应等。",
   "fileLibraryData.files.file4.tags.a": "有机化学",
   "fileLibraryData.files.file4.tags.b": "反应机理",
   "fileLibraryData.files.file4.tags.c": "图解",
-  "fileLibraryData.files.file5.description": "配套 Pandas/NumPy/Matplotlib 教程的实战代码和数据文件。",
+  "fileLibraryData.files.file5.description":
+    "配套 Pandas/NumPy/Matplotlib 教程的实战代码和数据文件。",
   "fileLibraryData.files.file5.tags.a": "Python",
   "fileLibraryData.files.file5.tags.b": "数据分析",
   "fileLibraryData.files.file5.tags.c": "代码",
-  "fileLibraryData.files.file6.description": "近三年全国大学生数学建模竞赛优秀论文汇编，含专家点评。",
+  "fileLibraryData.files.file6.description":
+    "近三年全国大学生数学建模竞赛优秀论文汇编，含专家点评。",
   "fileLibraryData.files.file6.tags.a": "数学建模",
   "fileLibraryData.files.file6.tags.b": "竞赛",
   "fileLibraryData.files.file6.tags.c": "论文集",
-  "fileLibraryData.files.file7.description": "从零开始的芯片设计入门教程，涵盖 Verilog 基础、综合、布局布线全流程。",
+  "fileLibraryData.files.file7.description":
+    "从零开始的芯片设计入门教程，涵盖 Verilog 基础、综合、布局布线全流程。",
   "fileLibraryData.files.file7.tags.a": "集成电路",
   "fileLibraryData.files.file7.tags.b": "芯片设计",
   "fileLibraryData.files.file7.tags.c": "Verilog",
-  "fileLibraryData.files.file8.description": "针对非英语母语研究者的学术写作指南，包含常用句式和范文。",
+  "fileLibraryData.files.file8.description":
+    "针对非英语母语研究者的学术写作指南，包含常用句式和范文。",
   "fileLibraryData.files.file8.tags.a": "英语",
   "fileLibraryData.files.file8.tags.b": "学术写作",
   "fileLibraryData.files.file8.tags.c": "指南",
@@ -1013,63 +1064,92 @@ export const zhFlat = {
   "footer.privacyPolicy": "隐私政策",
   "footer.supportUs": "支持我们",
   "footer.terms": "使用条款",
-  "forumData.categories.agriFood.description": "农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。",
+  "forumData.categories.agriFood.description":
+    "农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。",
   "forumData.categories.agriFood.name": "农学与食品科学",
-  "forumData.categories.appliedScience.description": "信息科学、电子电气、工程学、医学等应用领域，连接理论与实践的桥梁。",
+  "forumData.categories.appliedScience.description":
+    "信息科学、电子电气、工程学、医学等应用领域，连接理论与实践的桥梁。",
   "forumData.categories.appliedScience.name": "应用学科",
-  "forumData.categories.basicScience.description": "数学、物理、化学、生物、天文、地球科学等基础科学讨论区，是万物根本，应用学科从此生根发芽延伸至诸多领域。",
+  "forumData.categories.basicScience.description":
+    "数学、物理、化学、生物、天文、地球科学等基础科学讨论区，是万物根本，应用学科从此生根发芽延伸至诸多领域。",
   "forumData.categories.basicScience.name": "基础学科",
-  "forumData.categories.biology.description": "生物学、医学、农学、环境科学等多个分支，人员聚集，后续医学会单开。",
+  "forumData.categories.biology.description":
+    "生物学、医学、农学、环境科学等多个分支，人员聚集，后续医学会单开。",
   "forumData.categories.biology.name": "生命学科",
-  "forumData.categories.chemistry.description": "化学、应用化学、化学生物学、分子科学与工程等。人数虽少但水平高，有求必应。",
+  "forumData.categories.chemistry.description":
+    "化学、应用化学、化学生物学、分子科学与工程等。人数虽少但水平高，有求必应。",
   "forumData.categories.chemistry.name": "化学",
-  "forumData.categories.clinicalMedicine.description": "临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等。",
+  "forumData.categories.clinicalMedicine.description":
+    "临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等。",
   "forumData.categories.clinicalMedicine.name": "临床医学院",
-  "forumData.categories.cosmosAstronomy.description": "天文学是一门研究宇宙空间天体、宇宙的结构和发展的自然科学。",
+  "forumData.categories.cosmosAstronomy.description":
+    "天文学是一门研究宇宙空间天体、宇宙的结构和发展的自然科学。",
   "forumData.categories.cosmosAstronomy.name": "宇宙与天文学",
-  "forumData.categories.cs.description": "ACM，计算机、互联网、软件开发、算法研究、大模型、网络安全等。",
+  "forumData.categories.cs.description":
+    "ACM，计算机、互联网、软件开发、算法研究、大模型、网络安全等。",
   "forumData.categories.cs.name": "信息科学与技术",
-  "forumData.categories.earthScience.description": "地质学、地球物理学、地理学、大气科学、海洋科学等综合性学科。",
+  "forumData.categories.earthScience.description":
+    "地质学、地球物理学、地理学、大气科学、海洋科学等综合性学科。",
   "forumData.categories.earthScience.name": "地球科学",
-  "forumData.categories.ee.description": "IEEE，电气工程、自动化、通信工程、电子科学与技术、光电子等。",
+  "forumData.categories.ee.description":
+    "IEEE，电气工程、自动化、通信工程、电子科学与技术、光电子等。",
   "forumData.categories.ee.name": "电子与电气科学",
-  "forumData.categories.engineering.description": "土木、机械、交通运输、安全科学与工程等，未来细分更多工程类分群。",
+  "forumData.categories.engineering.description":
+    "土木、机械、交通运输、安全科学与工程等，未来细分更多工程类分群。",
   "forumData.categories.engineering.name": "工程学",
-  "forumData.categories.envEnergy.description": "环境科学、能源工程、资源循环、新型交叉学科等。",
+  "forumData.categories.envEnergy.description":
+    "环境科学、能源工程、资源循环、新型交叉学科等。",
   "forumData.categories.envEnergy.name": "环境与能源科学",
-  "forumData.categories.friendshipEnterprise.description": "与理科迷合作的各大科技企业板块，申请合作即可开放专属区域。",
+  "forumData.categories.friendshipEnterprise.description":
+    "与理科迷合作的各大科技企业板块，申请合作即可开放专属区域。",
   "forumData.categories.friendshipEnterprise.name": "友情企业",
-  "forumData.categories.friendshipOrganization.description": "与理科迷合作的各大组织板块，申请合作即可开放专属区域。",
+  "forumData.categories.friendshipOrganization.description":
+    "与理科迷合作的各大组织板块，申请合作即可开放专属区域。",
   "forumData.categories.friendshipOrganization.name": "友情组织",
-  "forumData.categories.geoEngineering.description": "测绘、地质、矿业、安全科学与工程等。",
+  "forumData.categories.geoEngineering.description":
+    "测绘、地质、矿业、安全科学与工程等。",
   "forumData.categories.geoEngineering.name": "地学工程",
-  "forumData.categories.group.description": "按群体来源和职业划分，给不同背景的成员更好的探讨空间。",
+  "forumData.categories.group.description":
+    "按群体来源和职业划分，给不同背景的成员更好的探讨空间。",
   "forumData.categories.group.name": "群体板块",
-  "forumData.categories.groupInternational.description": "国际生、留学生、外国友人交流区，用于国内外科技交流。",
+  "forumData.categories.groupInternational.description":
+    "国际生、留学生、外国友人交流区，用于国内外科技交流。",
   "forumData.categories.groupInternational.name": "国际体系",
-  "forumData.categories.groupJuniorHigh.description": "初中阶段文理学习讨论，备战中考。",
+  "forumData.categories.groupJuniorHigh.description":
+    "初中阶段文理学习讨论，备战中考。",
   "forumData.categories.groupJuniorHigh.name": "初中学生",
-  "forumData.categories.groupScientist.description": "科普工作者的专属交流区，分享科学知识与资源。",
+  "forumData.categories.groupScientist.description":
+    "科普工作者的专属交流区，分享科学知识与资源。",
   "forumData.categories.groupScientist.name": "科普工作者",
-  "forumData.categories.groupSeniorHighSchool.description": "高中阶段文理学习讨论，备战高考。",
+  "forumData.categories.groupSeniorHighSchool.description":
+    "高中阶段文理学习讨论，备战高考。",
   "forumData.categories.groupSeniorHighSchool.name": "高中学生",
-  "forumData.categories.groupTeacher.description": "教育工作者的专属交流区，分享教学经验与资源。",
+  "forumData.categories.groupTeacher.description":
+    "教育工作者的专属交流区，分享教学经验与资源。",
   "forumData.categories.groupTeacher.name": "教育工作者",
-  "forumData.categories.hobby.description": "由群友各种兴趣爱好组成的社团区，每逢寒暑假都有精彩活动。",
+  "forumData.categories.hobby.description":
+    "由群友各种兴趣爱好组成的社团区，每逢寒暑假都有精彩活动。",
   "forumData.categories.hobby.name": "兴趣板块",
-  "forumData.categories.hobbyChess.description": "象棋、围棋、五子棋、跳棋、飞行棋等传统与竞技棋类，及扑克、TCG、桌游卡牌等。",
+  "forumData.categories.hobbyChess.description":
+    "象棋、围棋、五子棋、跳棋、飞行棋等传统与竞技棋类，及扑克、TCG、桌游卡牌等。",
   "forumData.categories.hobbyChess.name": "棋牌社",
-  "forumData.categories.hobbyCooking.description": "探讨做饭和料理学化学反应，交流厨艺，展示成果。未来可能出教学直播。",
+  "forumData.categories.hobbyCooking.description":
+    "探讨做饭和料理学化学反应，交流厨艺，展示成果。未来可能出教学直播。",
   "forumData.categories.hobbyCooking.name": "料理学社",
-  "forumData.categories.hobbyGame.description": "主机PS/Xbox/Switch、PC端Steam/Epic、手游等，游戏话题讨论与组队。",
+  "forumData.categories.hobbyGame.description":
+    "主机PS/Xbox/Switch、PC端Steam/Epic、手游等，游戏话题讨论与组队。",
   "forumData.categories.hobbyGame.name": "游戏社",
-  "forumData.categories.hobbyMusic.description": "乐理讨论、乐器学习交流、音乐创作与赏析，以及音乐相关的各种话题。",
+  "forumData.categories.hobbyMusic.description":
+    "乐理讨论、乐器学习交流、音乐创作与赏析，以及音乐相关的各种话题。",
   "forumData.categories.hobbyMusic.name": "土鳖音乐社",
-  "forumData.categories.hobbyMusicGame.description": "讨论音游相关内容，分享谱面与技巧。",
+  "forumData.categories.hobbyMusicGame.description":
+    "讨论音游相关内容，分享谱面与技巧。",
   "forumData.categories.hobbyMusicGame.name": "二次元音游社",
-  "forumData.categories.hobbySciFi.description": "科幻世界的想象与文学创作，这是计划的一部分！",
+  "forumData.categories.hobbySciFi.description":
+    "科幻世界的想象与文学创作，这是计划的一部分！",
   "forumData.categories.hobbySciFi.name": "科幻文学社",
-  "forumData.categories.icSemiconductor.description": "芯片设计、晶圆制造、封装测试，技术壁垒极高的硬核圈子。",
+  "forumData.categories.icSemiconductor.description":
+    "芯片设计、晶圆制造、封装测试，技术壁垒极高的硬核圈子。",
   "forumData.categories.icSemiconductor.name": "集成电路与半导体",
   "forumData.categories.langDe.description": "德国工程技术文献",
   "forumData.categories.langDe.name": "德语",
@@ -1083,25 +1163,35 @@ export const zhFlat = {
   "forumData.categories.langRu.name": "俄语",
   "forumData.categories.langZh.description": "汉语语言学与中国文化",
   "forumData.categories.langZh.name": "汉语",
-  "forumData.categories.language.description": "阅读论文、国际交流所需的语言学习区，按语种精细分类。",
+  "forumData.categories.language.description":
+    "阅读论文、国际交流所需的语言学习区，按语种精细分类。",
   "forumData.categories.language.name": "语言学习",
-  "forumData.categories.lightIndustry.description": "纺织、轻工工程、包装工程、香料香精、化妆品技术等。",
+  "forumData.categories.lightIndustry.description":
+    "纺织、轻工工程、包装工程、香料香精、化妆品技术等。",
   "forumData.categories.lightIndustry.name": "轻工业",
-  "forumData.categories.literature.description": "文学作品讨论、经典赏析、文学创作构思，欢迎所有文学爱好者加入。",
+  "forumData.categories.literature.description":
+    "文学作品讨论、经典赏析、文学创作构思，欢迎所有文学爱好者加入。",
   "forumData.categories.literature.name": "文学",
-  "forumData.categories.math.description": "对数学感兴趣或专业相关人员交流园地。数学爱好者们共同探讨数学知识和前沿内容。",
+  "forumData.categories.math.description":
+    "对数学感兴趣或专业相关人员交流园地。数学爱好者们共同探讨数学知识和前沿内容。",
   "forumData.categories.math.name": "数学",
-  "forumData.categories.medicine.description": "中医学、临床医学、药学、护理、口腔、影像、麻醉、法医学等。",
+  "forumData.categories.medicine.description":
+    "中医学、临床医学、药学、护理、口腔、影像、麻醉、法医学等。",
   "forumData.categories.medicine.name": "医学总部",
-  "forumData.categories.physics.description": "基础理论争议与历史演进、量子力学与前沿物理、凝聚态与物质科学",
+  "forumData.categories.physics.description":
+    "基础理论争议与历史演进、量子力学与前沿物理、凝聚态与物质科学",
   "forumData.categories.physics.name": "物理学",
-  "forumData.categories.psychology.description": "心理学各分支领域的交流与探讨。",
+  "forumData.categories.psychology.description":
+    "心理学各分支领域的交流与探讨。",
   "forumData.categories.psychology.name": "心理学",
-  "forumData.categories.schoolClub.description": "与理科迷合作的各大学校社团板块，申请合作即可开放专属区域。",
+  "forumData.categories.schoolClub.description":
+    "与理科迷合作的各大学校社团板块，申请合作即可开放专属区域。",
   "forumData.categories.schoolClub.name": "学校社团",
-  "forumData.categories.socialScience.description": "哲学、政治、历史、经济、法律等，鼓励学习和接触，理论与实践结合。",
+  "forumData.categories.socialScience.description":
+    "哲学、政治、历史、经济、法律等，鼓励学习和接触，理论与实践结合。",
   "forumData.categories.socialScience.name": "社会科学",
-  "forumData.categories.tcm.description": "中医基础理论、中医内科学、针灸推拿学、民族医学等传统医学精华。",
+  "forumData.categories.tcm.description":
+    "中医基础理论、中医内科学、针灸推拿学、民族医学等传统医学精华。",
   "forumData.categories.tcm.name": "中医学院",
   "languageSwitcher.en": "英文",
   "languageSwitcher.zh": "中文",
@@ -1123,7 +1213,8 @@ export const zhFlat = {
   "messages.auth.loginSuccess": "登录成功",
   "messages.auth.magicLinkSent": "Magic Link 已发送，请查收邮箱",
   "messages.auth.missingTempToken": "缺少临时会话令牌，请重新登录",
-  "messages.auth.passkeyFirstTime2fa": "账号首次登录需先完成 2FA 设置，请配合扫码",
+  "messages.auth.passkeyFirstTime2fa":
+    "账号首次登录需先完成 2FA 设置，请配合扫码",
   "messages.auth.passkeyLoginFailed": "通行密钥登录失败",
   "messages.auth.passkeyViaLoginPage": "请使用登录页的「通行密钥」方式完成认证",
   "messages.auth.unsupportedLoginMethod": "不支持的登录方式",
@@ -1156,7 +1247,8 @@ export const zhFlat = {
   "messages.register.passwordTooLong": "密码长度不能超过 128 位",
   "messages.register.passwordTooShort": "密码长度不能少于 6 位",
   "messages.register.sessionExpired": "注册会话已失效，请重新提交",
-  "messages.register.usernameSpecialChars": "用户名不能包含特殊字符（如 < > /）",
+  "messages.register.usernameSpecialChars":
+    "用户名不能包含特殊字符（如 < > /）",
   "messages.register.usernameTooLong": "用户名不能超过 50 个字符",
   "messages.register.usernameTooShort": "用户名至少 3 个字符",
   "messages.requestFailed": "请求失败 ({status})",
@@ -1165,7 +1257,8 @@ export const zhFlat = {
   "messages.unknownError": "未知错误",
   "messages.unknownNetworkError": "未知网络错误",
   "messages.webauthn.authenticateFailed": "通行密钥认证失败",
-  "messages.webauthn.browserOnly": "WebAuthn 仅在浏览器环境可用，请使用支持的浏览器并确保 HTTPS 或 localhost",
+  "messages.webauthn.browserOnly":
+    "WebAuthn 仅在浏览器环境可用，请使用支持的浏览器并确保 HTTPS 或 localhost",
   "messages.webauthn.createFailed": "创建通行密钥失败",
   "nav.about": "关于",
   "nav.aboutArticles": "关于文章",
@@ -1228,7 +1321,8 @@ export const zhFlat = {
   "notificationData.contents.n2": "李四 赞了你的评论",
   "notificationData.contents.n3": "王五 关注了你",
   "notificationData.contents.n4": "你上传的《天体物理数据集.zip》已通过审核",
-  "notificationData.contents.n5": "理科迷社区 2026 暑假竞赛即将开始，快来参加！",
+  "notificationData.contents.n5":
+    "理科迷社区 2026 暑假竞赛即将开始，快来参加！",
   "notificationData.contents.n6": "赵六 赞了你的帖子《数学建模经验分享》",
   "notificationData.titles.fileApproved": "文件审核通过",
   "notificationData.titles.follow": "新关注",
@@ -1242,35 +1336,48 @@ export const zhFlat = {
   "onboarding.follow.authorsTab": "作者推荐",
   "onboarding.follow.categoriesTab": "板块推荐",
   "onboarding.follow.followers": "关注者",
-  "onboarding.follow.hint": "至少选择 {min} 个板块或作者（已选 {selected}/{min}）",
+  "onboarding.follow.hint":
+    "至少选择 {min} 个板块或作者（已选 {selected}/{min}）",
   "onboarding.follow.members": "成员",
   "onboarding.follow.title": "关注你感兴趣的内容",
   "onboarding.followAll": "一键关注",
-  "onboarding.followData.appliedScience.description": "信息科学、电子电气、工程学、医学等应用领域",
+  "onboarding.followData.appliedScience.description":
+    "信息科学、电子电气、工程学、医学等应用领域",
   "onboarding.followData.appliedScience.name": "应用科学",
-  "onboarding.followData.authorJulyHua.description": "有理想的博士，梦想每个孩子都能接触科学",
+  "onboarding.followData.authorJulyHua.description":
+    "有理想的博士，梦想每个孩子都能接触科学",
   "onboarding.followData.authorJulyHua.name": "七月花",
-  "onboarding.followData.authorJulyMoran.description": "双非物理，卧薪尝胆三千日，大雪深埋终成金",
+  "onboarding.followData.authorJulyMoran.description":
+    "双非物理，卧薪尝胆三千日，大雪深埋终成金",
   "onboarding.followData.authorJulyMoran.name": "七月墨染",
-  "onboarding.followData.authorJulyO.description": "中国科学院国家天文台博士，引力波与黑洞物理方向",
+  "onboarding.followData.authorJulyO.description":
+    "中国科学院国家天文台博士，引力波与黑洞物理方向",
   "onboarding.followData.authorJulyO.name": "七月O",
-  "onboarding.followData.authorJulyYouzhi.description": "前活动策划组组员，且停且忘且随风",
+  "onboarding.followData.authorJulyYouzhi.description":
+    "前活动策划组组员，且停且忘且随风",
   "onboarding.followData.authorJulyYouzhi.name": "七月有枝",
-  "onboarding.followData.authorJulyYuli.description": "群务组组长，群务无小事，用心皆风景",
+  "onboarding.followData.authorJulyYuli.description":
+    "群务组组长，群务无小事，用心皆风景",
   "onboarding.followData.authorJulyYuli.name": "七月郁离",
-  "onboarding.followData.basicScience.description": "数学、物理、化学、生物、天文等基础科学讨论区",
+  "onboarding.followData.basicScience.description":
+    "数学、物理、化学、生物、天文等基础科学讨论区",
   "onboarding.followData.basicScience.name": "基础学科",
-  "onboarding.followData.hobbyChess.description": "象棋、围棋、五子棋、桥牌等各类棋牌交流",
+  "onboarding.followData.hobbyChess.description":
+    "象棋、围棋、五子棋、桥牌等各类棋牌交流",
   "onboarding.followData.hobbyChess.name": "棋牌社",
-  "onboarding.followData.hobbyCooking.description": "厨艺交流、美食分享、料理教学",
+  "onboarding.followData.hobbyCooking.description":
+    "厨艺交流、美食分享、料理教学",
   "onboarding.followData.hobbyCooking.name": "料理学社",
   "onboarding.followData.hobbyGame.description": "主机、PC、手游玩家聚集地",
   "onboarding.followData.hobbyGame.name": "游戏社",
-  "onboarding.followData.hobbyMusic.description": "乐理讨论、乐器交流、联欢晚会筹备",
+  "onboarding.followData.hobbyMusic.description":
+    "乐理讨论、乐器交流、联欢晚会筹备",
   "onboarding.followData.hobbyMusic.name": "土鳖音乐社",
-  "onboarding.followData.hobbySciFi.description": "科幻创作、经典赏析、未来构想",
+  "onboarding.followData.hobbySciFi.description":
+    "科幻创作、经典赏析、未来构想",
   "onboarding.followData.hobbySciFi.name": "科幻文学社",
-  "onboarding.followData.language.description": "英语、俄语、德语、日语等多语言学习交流",
+  "onboarding.followData.language.description":
+    "英语、俄语、德语、日语等多语言学习交流",
   "onboarding.followData.language.name": "语言学习",
   "onboarding.followData.math.description": "数学爱好者与专业人员的交流园地",
   "onboarding.followData.math.name": "数学",
@@ -1289,9 +1396,11 @@ export const zhFlat = {
   "onboarding.quiz.progress": "第 {current} / {total} 题",
   "onboarding.quiz.result": "正确 {correct} / {total}（正确率 {rate}%）",
   "onboarding.quiz.retry": "重新答题",
-  "onboarding.quiz.retryHint": "正确率达到 60% 即可通过，可以重新答题或稍后再试。",
+  "onboarding.quiz.retryHint":
+    "正确率达到 60% 即可通过，可以重新答题或稍后再试。",
   "onboarding.quiz.start": "开始答题（{count} 题）",
-  "onboarding.quiz.subtitle": "通过答题即可解锁专栏功能和专业资格（可跳过，之后也可以在设置中答题）",
+  "onboarding.quiz.subtitle":
+    "通过答题即可解锁专栏功能和专业资格（可跳过，之后也可以在设置中答题）",
   "onboarding.quiz.title": "专业知识答题",
   "onboarding.quiz.unlocked": "已解锁专栏功能和专业资格！",
   "onboarding.quizData.b1.options.0": "脱氧核酸",
@@ -1368,7 +1477,8 @@ export const zhFlat = {
   "onboarding.quizData.cs5.options.1": "POST",
   "onboarding.quizData.cs5.options.2": "PUT",
   "onboarding.quizData.cs5.options.3": "DELETE",
-  "onboarding.quizData.cs5.stem": "RESTful API 中，用于更新资源的 HTTP 方法是？",
+  "onboarding.quizData.cs5.stem":
+    "RESTful API 中，用于更新资源的 HTTP 方法是？",
   "onboarding.quizData.m1.options.0": "0",
   "onboarding.quizData.m1.options.1": "1",
   "onboarding.quizData.m1.options.2": "-1",
@@ -1468,8 +1578,9 @@ export const zhFlat = {
   "onboarding.tasks.introPlaceholder": "简单介绍一下你自己...",
   "onboarding.tasks.motto": "座右铭",
   "onboarding.tasks.mottoPlaceholder": "一句话介绍自己",
-  "onboarding.tasks.rewardDetail": "+100 积分 · 解锁\"初来乍到\"称号",
-  "onboarding.tasks.rewardHint": "完成信息填写即可获得 {points} 积分 + \"初来乍到\" 称号",
+  "onboarding.tasks.rewardDetail": '+100 积分 · 解锁"初来乍到"称号',
+  "onboarding.tasks.rewardHint":
+    '完成信息填写即可获得 {points} 积分 + "初来乍到" 称号',
   "onboarding.tasks.rewardTitle": "完成奖励",
   "onboarding.tasksTitle": "新手任务",
   "page.accountTitle": "账户设置",
@@ -1483,11 +1594,12 @@ export const zhFlat = {
   "page.admin.documents.all": "全部",
   "page.admin.documents.archived": "已归档",
   "page.admin.documents.backToDocs": "返回列表",
-  "page.admin.documents.deleteConfirm": "确定删除文档\"{title}\"？此操作不可撤销。",
+  "page.admin.documents.deleteConfirm":
+    '确定删除文档"{title}"？此操作不可撤销。',
   "page.admin.documents.draft": "草稿",
   "page.admin.documents.editorMetaDescription": "LKM 管理后台 — 文档编辑",
   "page.admin.documents.editorMetaTitle": "编辑文档 — LKM",
-  "page.admin.documents.emptyHint": "点击\"新建文档\"开始编写",
+  "page.admin.documents.emptyHint": '点击"新建文档"开始编写',
   "page.admin.documents.loading": "正在加载文档列表……",
   "page.admin.documents.loadingEditor": "正在加载编辑器……",
   "page.admin.documents.metaDescription": "LKM 管理后台 — 文档列表",
@@ -1514,13 +1626,16 @@ export const zhFlat = {
   "page.admin.reports.type": "类型",
   "page.admin.users.title": "用户管理",
   "page.apps.description": "理科迷社区的全部应用入口。",
-  "page.apps.starHope.description": "本地优先的跨平台学习工具。题库管理、智能练习、AI 对话、文档阅读、考试模拟——一站式学习解决方案。",
+  "page.apps.starHope.description":
+    "本地优先的跨平台学习工具。题库管理、智能练习、AI 对话、文档阅读、考试模拟——一站式学习解决方案。",
   "page.apps.starHope.name": "StarHope 学习助手",
   "page.apps.subtitle": "社区的全部应用服务入口。",
   "page.apps.title": "其他应用",
-  "page.apps.treehole.description": "治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。写信、漂流瓶、许愿墙、双向匿名回信。",
+  "page.apps.treehole.description":
+    "治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。写信、漂流瓶、许愿墙、双向匿名回信。",
   "page.apps.treehole.name": "拾光树洞",
-  "page.apps.triggeredDischarge.description": "实时 GPU 闪电模拟。Laplace 场方程求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、程序化雷声——全物理驱动的可视化实验。",
+  "page.apps.triggeredDischarge.description":
+    "实时 GPU 闪电模拟。Laplace 场方程求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、程序化雷声——全物理驱动的可视化实验。",
   "page.apps.triggeredDischarge.name": "触发击穿",
   "page.articles.aboutSubtitle": "关于理科迷官网与社区",
   "page.articles.aboutTitle": "关于",
@@ -1534,17 +1649,21 @@ export const zhFlat = {
   "page.articles.categoryEmpty": "暂无分类",
   "page.articles.categoryEmptyText": "该分类暂无文章",
   "page.articles.community": "社区",
-  "page.articles.communityP1": "理科迷社区秉持共建共享的理念：你可以加入管理团队（总务部、群务部、新闻办、活动策划部等），也可以加入项目团队（教材编写项目组、科普产出项目组等），还可以投稿作品、参加活动、帮忙宣传和推广。",
-  "page.articles.communityP2": "社区日常交流依托 QQ 社群开展，欢迎所有热爱理性、崇尚科技的爱好者加入，共同探索万物运转的奥秘。",
+  "page.articles.communityP1":
+    "理科迷社区秉持共建共享的理念：你可以加入管理团队（总务部、群务部、新闻办、活动策划部等），也可以加入项目团队（教材编写项目组、科普产出项目组等），还可以投稿作品、参加活动、帮忙宣传和推广。",
+  "page.articles.communityP2":
+    "社区日常交流依托 QQ 社群开展，欢迎所有热爱理性、崇尚科技的爱好者加入，共同探索万物运转的奥秘。",
   "page.articles.empty": "暂无文章",
   "page.articles.listColon": "：",
   "page.articles.loadFailed": "加载失败：{error}",
   "page.articles.moduleAccount": "用户账户",
   "page.articles.moduleAccountDesc": "注册 / 登录、个人主页、贡献系统与设置",
   "page.articles.moduleArticles": "文章中心",
-  "page.articles.moduleArticlesDesc": "官方公告、技术分享与科普内容，支持分类浏览与归档",
+  "page.articles.moduleArticlesDesc":
+    "官方公告、技术分享与科普内容，支持分类浏览与归档",
   "page.articles.moduleCommunity": "社区平台",
-  "page.articles.moduleCommunityDesc": "板块广场、专栏、文件库、问答、项目大厅、竞赛、资助系统等",
+  "page.articles.moduleCommunityDesc":
+    "板块广场、专栏、文件库、问答、项目大厅、竞赛、资助系统等",
   "page.articles.moduleTeam": "团队介绍",
   "page.articles.moduleTeamDesc": "管理团队与项目团队展示、发展历程",
   "page.articles.modules": "网站模块",
@@ -1565,12 +1684,15 @@ export const zhFlat = {
   "page.articles.techList3c": " 反向代理到真实后端",
   "page.articles.techList4": "认证采用真实后端 JWT 认证，本地不存储 mock 数据",
   "page.articles.techStack": "技术栈",
-  "page.articles.techStackValue": "Astro v7（SSR）+ Vue 3 + Tailwind CSS v4 + TypeScript",
+  "page.articles.techStackValue":
+    "Astro v7（SSR）+ Vue 3 + Tailwind CSS v4 + TypeScript",
   "page.articles.title": "官方文章",
   "page.articles.whatIs": "这是什么",
-  "page.articles.whatIsP1": "理科迷（LKM）是一个面向理科爱好者与技术学习者的社区，创立于 2014 年，由广大科技爱好者共同组成，覆盖数学、物理、化学、生物、信息技术等多个学科，让科学回归每一个人。",
+  "page.articles.whatIsP1":
+    "理科迷（LKM）是一个面向理科爱好者与技术学习者的社区，创立于 2014 年，由广大科技爱好者共同组成，覆盖数学、物理、化学、生物、信息技术等多个学科，让科学回归每一个人。",
   "page.articles.whatIsP2a": "本网站是理科迷的官方网站，基于 ",
-  "page.articles.whatIsP2b": " 构建，采用服务端渲染（SSR），前端使用 Vue 3 与 Tailwind CSS v4，为社区成员提供统一的线上门户。",
+  "page.articles.whatIsP2b":
+    " 构建，采用服务端渲染（SSR），前端使用 Vue 3 与 Tailwind CSS v4，为社区成员提供统一的线上门户。",
   "page.backToHome": "← 返回首页",
   "page.communityDetail.articleCount": "{count} 篇文章",
   "page.communityDetail.articlesCount": "{count} 篇文章",
@@ -1593,7 +1715,8 @@ export const zhFlat = {
   "page.communityDetail.emptyArticles": "暂无文章",
   "page.communityDetail.fansCount": "{count} 粉丝",
   "page.communityDetail.files.category": "分类：{name}",
-  "page.communityDetail.files.disclaimer": "所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。",
+  "page.communityDetail.files.disclaimer":
+    "所有内容均为网友上传，如涉嫌侵犯您的权利，请通过举报或报告问题投诉功能发送通知，平台将及时处理。",
   "page.communityDetail.files.disclaimerTitle": "免责声明：",
   "page.communityDetail.files.download": "下载文件（贡献积分 +5）",
   "page.communityDetail.files.downloads": "下载量",
@@ -1621,7 +1744,8 @@ export const zhFlat = {
   "page.communityDetail.forum.forum": "板块广场",
   "page.communityDetail.forum.hotPosts": "热门讨论",
   "page.communityDetail.forum.introTitle": "板块介绍",
-  "page.communityDetail.forum.memberStats": "{members} 成员 · {posts} 帖子 · 今日 {today}",
+  "page.communityDetail.forum.memberStats":
+    "{members} 成员 · {posts} 帖子 · 今日 {today}",
   "page.communityDetail.forum.membersShort": "{count} 人",
   "page.communityDetail.forum.membersTitle": "活跃成员",
   "page.communityDetail.forum.pinned": "置顶",
@@ -1646,34 +1770,47 @@ export const zhFlat = {
   "page.home.explore.stats": "{members} 成员 · 今日 {posts} 帖",
   "page.home.explore.subtitle": "发现你感兴趣的内容",
   "page.home.explore.title": "探索板块",
-  "page.home.faq.activities.description": "理科迷定期举办假期活动、学科研讨会、科普内容创作等。七月团队·活动策划部负责统筹各项活动，欢迎关注官方宣传账号获取最新动态。",
+  "page.home.faq.activities.description":
+    "理科迷定期举办假期活动、学科研讨会、科普内容创作等。七月团队·活动策划部负责统筹各项活动，欢迎关注官方宣传账号获取最新动态。",
   "page.home.faq.activities.title": "理科迷有哪些活动？",
-  "page.home.faq.build.description": "理科迷是一个共建共享的社区。你可以加入管理团队（总务部、群务部、新闻办等），也可以加入项目团队（教材编写项目组、科普产出项目组等），也可以投稿作品文章、参加活动、帮忙宣传和推广。",
+  "page.home.faq.build.description":
+    "理科迷是一个共建共享的社区。你可以加入管理团队（总务部、群务部、新闻办等），也可以加入项目团队（教材编写项目组、科普产出项目组等），也可以投稿作品文章、参加活动、帮忙宣传和推广。",
   "page.home.faq.build.title": "如何参与社区建设？",
-  "page.home.faq.contact.description": "欢迎通过联系我们页面提交你的想法或问题。也可以直接在 QQ 群内向管理团队反馈，我们会认真对待每一条建议。",
+  "page.home.faq.contact.description":
+    "欢迎通过联系我们页面提交你的想法或问题。也可以直接在 QQ 群内向管理团队反馈，我们会认真对待每一条建议。",
   "page.home.faq.contact.title": "有问题或建议怎么联系？",
-  "page.home.faq.howToJoin.description": "你可以通过理科迷官方 QQ 群组加入我们。目前设有初中群和高中群两个分群，还有完整的基础学科和应用学科群，对不同学段、不同专业的成员提供更精准的交流空间。具体群号请查看联系我们页面。",
+  "page.home.faq.howToJoin.description":
+    "你可以通过理科迷官方 QQ 群组加入我们。目前设有初中群和高中群两个分群，还有完整的基础学科和应用学科群，对不同学段、不同专业的成员提供更精准的交流空间。具体群号请查看联系我们页面。",
   "page.home.faq.howToJoin.title": "如何加入理科迷？",
-  "page.home.faq.officialSite.description": "是的。理科迷拥有官方网站，2026 年我们以更稳健的架构重建了官网，为你提供更好的在线体验。",
+  "page.home.faq.officialSite.description":
+    "是的。理科迷拥有官方网站，2026 年我们以更稳健的架构重建了官网，为你提供更好的在线体验。",
   "page.home.faq.officialSite.title": "理科迷有官网吗？",
-  "page.home.faq.subtitle": "以下整理了用户关于 LKM 官方网站的常见疑问，帮助您快速了解项目特性和使用方式。",
+  "page.home.faq.subtitle":
+    "以下整理了用户关于 LKM 官方网站的常见疑问，帮助您快速了解项目特性和使用方式。",
   "page.home.faq.title": "常见问题",
-  "page.home.faq.whatIs.description": "理科迷是一个由科技爱好者组成的社区，创立于 2014 年。我们打破专业门槛，让每一位热爱理性、崇尚科技的人都能在这里找到同频的伙伴，共同探索万物运转的奥秘。",
+  "page.home.faq.whatIs.description":
+    "理科迷是一个由科技爱好者组成的社区，创立于 2014 年。我们打破专业门槛，让每一位热爱理性、崇尚科技的人都能在这里找到同频的伙伴，共同探索万物运转的奥秘。",
   "page.home.faq.whatIs.title": "理科迷是什么？",
   "page.home.hero.badge": "是由广大科技爱好者组成的社区",
   "page.home.hero.communityIntro": "社区简介",
-  "page.home.hero.long": "在这里，科学与技术都脱离了学术象牙塔的刻板与遥远，变成了每一位都能够去迸发，对于世界发问的好奇心。触手可及，摆脱功利视视角，让更多人迸发对于知识的渴望，感受到理工科的美。我们打破专业门槛，让每一位热爱理性，崇尚科技的\"爱好者\"，也都能在这里找到同频的伙伴，共探万物运转的奥秘。",
+  "page.home.hero.long":
+    '在这里，科学与技术都脱离了学术象牙塔的刻板与遥远，变成了每一位都能够去迸发，对于世界发问的好奇心。触手可及，摆脱功利视视角，让更多人迸发对于知识的渴望，感受到理工科的美。我们打破专业门槛，让每一位热爱理性，崇尚科技的"爱好者"，也都能在这里找到同频的伙伴，共探万物运转的奥秘。',
   "page.home.hero.seekHelp": "寻求帮助",
-  "page.home.hero.short": "打破专业门槛，让每一位科技爱好者都能在这里找到同频的伙伴。",
+  "page.home.hero.short":
+    "打破专业门槛，让每一位科技爱好者都能在这里找到同频的伙伴。",
   "page.home.hero.subtitle": "科技爱好者社区",
   "page.home.hero.title": "理科迷！",
-  "page.home.members.julyHua.desc": "一个有理想的博士，梦想：每个孩子都能接触科学",
+  "page.home.members.julyHua.desc":
+    "一个有理想的博士，梦想：每个孩子都能接触科学",
   "page.home.members.julyHua.name": "七月花",
-  "page.home.members.julyMoran.desc": "双非物理，卧薪尝胆三千日，大雪深埋终成金",
+  "page.home.members.julyMoran.desc":
+    "双非物理，卧薪尝胆三千日，大雪深埋终成金",
   "page.home.members.julyMoran.name": "七月墨染",
-  "page.home.members.julyO.desc": "中国科学院国家天文台博士，引力波与黑洞物理方向",
+  "page.home.members.julyO.desc":
+    "中国科学院国家天文台博士，引力波与黑洞物理方向",
   "page.home.members.julyO.name": "七月O",
-  "page.home.members.julyYouzhi.desc": "前活动策划组组员，且停且忘且随风，且行且看且从容",
+  "page.home.members.julyYouzhi.desc":
+    "前活动策划组组员，且停且忘且随风，且行且看且从容",
   "page.home.members.julyYouzhi.name": "七月有枝",
   "page.home.members.julyYuli.desc": "群务组组长，群务无小事，用心皆风景",
   "page.home.members.julyYuli.name": "七月郁离",
@@ -1683,44 +1820,66 @@ export const zhFlat = {
   "page.home.members.title": "团队成员",
   "page.home.members.viewAll": "查看全部 →",
   "page.home.metaTitle": "理科迷 —— 科技爱好者",
-  "page.home.resources.desc": "学术机构、科研工具、文献站点汇总（目前正在完善中）",
+  "page.home.resources.desc":
+    "学术机构、科研工具、文献站点汇总（目前正在完善中）",
   "page.home.resources.goTo": "前往资源页 →",
   "page.home.resources.title": "延伸资源网站",
-  "page.home.timeline.items.databaseWipe.description": "网站因意外被删库，所有数据丢失。这次事故让团队深刻认识到备份机制与运维规范的重要性，也成为后续重建的转折点。",
+  "page.home.timeline.items.databaseWipe.description":
+    "网站因意外被删库，所有数据丢失。这次事故让团队深刻认识到备份机制与运维规范的重要性，也成为后续重建的转折点。",
   "page.home.timeline.items.databaseWipe.title": "网站遭删库，一切归零",
-  "page.home.timeline.items.eventPlanningDept.description": "组建﹝七月团队·活动策划部﹞，启动首次暑假活动策划。理科迷从线上交流走向有组织的活动运营，翻开新的一页。",
-  "page.home.timeline.items.eventPlanningDept.title": "七月团队·活动策划部 成立",
-  "page.home.timeline.items.expansion.description": "理科迷群组进入快速扩张期，从百度物理吧、数学吧、化学吧等社区吸收大量成员，其中与物理吧的联系最为密切。群友涵盖理科生与竞赛生，早期管理员团队也由活跃群友中选拔组建。",
+  "page.home.timeline.items.eventPlanningDept.description":
+    "组建﹝七月团队·活动策划部﹞，启动首次暑假活动策划。理科迷从线上交流走向有组织的活动运营，翻开新的一页。",
+  "page.home.timeline.items.eventPlanningDept.title":
+    "七月团队·活动策划部 成立",
+  "page.home.timeline.items.expansion.description":
+    "理科迷群组进入快速扩张期，从百度物理吧、数学吧、化学吧等社区吸收大量成员，其中与物理吧的联系最为密切。群友涵盖理科生与竞赛生，早期管理员团队也由活跃群友中选拔组建。",
   "page.home.timeline.items.expansion.title": "群组扩张，与百度贴吧建立联系",
-  "page.home.timeline.items.firstSummerEvent.description": "首次暑假活动雏形落地。虽在组织细节上仍存不足，人手亦有待扩充，但这是一次珍贵的尝试，为后续活动积累了宝贵经验。",
+  "page.home.timeline.items.firstSummerEvent.description":
+    "首次暑假活动雏形落地。虽在组织细节上仍存不足，人手亦有待扩充，但这是一次珍贵的尝试，为后续活动积累了宝贵经验。",
   "page.home.timeline.items.firstSummerEvent.title": "第一次暑假活动落地",
-  "page.home.timeline.items.founderStepsBack.description": "可琪因学业原因逐渐淡出，理科迷随之陷入低迷。现任团队组长花花接替创始人职责，每年自费维持理科迷的 SVIP 及物理部落的日常运营——彼时部落每周需完成 20 次管理操作，否则管理团队将受处罚。后来腾讯部落功能下架，所有帖子一夜间消失，公众号也随之停用。",
+  "page.home.timeline.items.founderStepsBack.description":
+    "可琪因学业原因逐渐淡出，理科迷随之陷入低迷。现任团队组长花花接替创始人职责，每年自费维持理科迷的 SVIP 及物理部落的日常运营——彼时部落每周需完成 20 次管理操作，否则管理团队将受处罚。后来腾讯部落功能下架，所有帖子一夜间消失，公众号也随之停用。",
   "page.home.timeline.items.founderStepsBack.title": "创始人淡出，花花接续坚守",
-  "page.home.timeline.items.founding.description": "可琪创建了第一个群聊——〔理科迷宅基地〕，后几经更名，如〔理科α旗舰〕等。他是理科迷最初的创始人，社区现有的大部分框架与制度，都建立在他开创的基础之上。",
+  "page.home.timeline.items.founding.description":
+    "可琪创建了第一个群聊——〔理科迷宅基地〕，后几经更名，如〔理科α旗舰〕等。他是理科迷最初的创始人，社区现有的大部分框架与制度，都建立在他开创的基础之上。",
   "page.home.timeline.items.founding.title": "可琪创立理科迷",
-  "page.home.timeline.items.interestGroups.description": "物理部落群（2016.4.2）、信息技术群（2016.2.5）、科技世界群（2016.2.15）、心理学群（2016.10.7）等兴趣群组相继建立，社群生态进一步丰富。",
+  "page.home.timeline.items.interestGroups.description":
+    "物理部落群（2016.4.2）、信息技术群（2016.2.5）、科技世界群（2016.2.15）、心理学群（2016.10.7）等兴趣群组相继建立，社群生态进一步丰富。",
   "page.home.timeline.items.interestGroups.title": "兴趣群组持续扩展",
-  "page.home.timeline.items.julyTeamEarly.description": "七月团队·群务组（2018.2.19）与总务组（2018.2.21）相继成立，同期创办棋社、料理学、HIFI 等兴趣群。由可琪召集组建的早期管理团队，为后续的组织运转奠定了制度基础。",
+  "page.home.timeline.items.julyTeamEarly.description":
+    "七月团队·群务组（2018.2.19）与总务组（2018.2.21）相继成立，同期创办棋社、料理学、HIFI 等兴趣群。由可琪召集组建的早期管理团队，为后续的组织运转奠定了制度基础。",
   "page.home.timeline.items.julyTeamEarly.title": "七月团队早期架构建立",
-  "page.home.timeline.items.officialGroupsReorganized.description": "重新组建理科迷官方群组，设立﹝理科迷·初中﹞与﹝理科迷·高中﹞两个分群，为不同学段的成员提供更精准的交流空间。",
+  "page.home.timeline.items.officialGroupsReorganized.description":
+    "重新组建理科迷官方群组，设立﹝理科迷·初中﹞与﹝理科迷·高中﹞两个分群，为不同学段的成员提供更精准的交流空间。",
   "page.home.timeline.items.officialGroupsReorganized.title": "官方群组重组",
-  "page.home.timeline.items.promoAccount.description": "理科迷官方宣传账号正式上线，首条视频获 7800+ 播放量，社区迅速恢复活跃，理科迷迎来新生。",
-  "page.home.timeline.items.promoAccount.title": "官方宣传账号成立，首条视频走红",
-  "page.home.timeline.items.qianxunJoins.description": "千寻加入理科迷群聊，原本沉寂已久的群聊开始重现活力。",
+  "page.home.timeline.items.promoAccount.description":
+    "理科迷官方宣传账号正式上线，首条视频获 7800+ 播放量，社区迅速恢复活跃，理科迷迎来新生。",
+  "page.home.timeline.items.promoAccount.title":
+    "官方宣传账号成立，首条视频走红",
+  "page.home.timeline.items.qianxunJoins.description":
+    "千寻加入理科迷群聊，原本沉寂已久的群聊开始重现活力。",
   "page.home.timeline.items.qianxunJoins.title": "千寻入群，短暂回暖",
-  "page.home.timeline.items.qianxunStepsBack.description": "千寻因年龄尚小、需全力备战中考，2020 年后逐渐淡出，群聊再度归于沉寂。理科迷历经聚散，一群人数跌落至仅 800 人。",
+  "page.home.timeline.items.qianxunStepsBack.description":
+    "千寻因年龄尚小、需全力备战中考，2020 年后逐渐淡出，群聊再度归于沉寂。理科迷历经聚散，一群人数跌落至仅 800 人。",
   "page.home.timeline.items.qianxunStepsBack.title": "再度沉寂：千寻备战中考",
-  "page.home.timeline.items.rebirth.description": "汲取删库教训，以更稳健的架构重建官网与文件库。同期启动第二次暑假活动策划，理科迷以全新的姿态再度启程。",
-  "page.home.timeline.items.rebirth.title": "涅槃重生：官网重建与第二次暑假筹备",
-  "page.home.timeline.items.rebuildDecided.description": "千寻正式下定决心重建并发展理科迷，开始向此前组织团队成员阐述视频宣传计划，为后续宣传攻势做铺垫。",
+  "page.home.timeline.items.rebirth.description":
+    "汲取删库教训，以更稳健的架构重建官网与文件库。同期启动第二次暑假活动策划，理科迷以全新的姿态再度启程。",
+  "page.home.timeline.items.rebirth.title":
+    "涅槃重生：官网重建与第二次暑假筹备",
+  "page.home.timeline.items.rebuildDecided.description":
+    "千寻正式下定决心重建并发展理科迷，开始向此前组织团队成员阐述视频宣传计划，为后续宣传攻势做铺垫。",
   "page.home.timeline.items.rebuildDecided.title": "下定决心，启动重建计划",
-  "page.home.timeline.items.rebuildSeed.description": "群管理再次找到千寻，诉说群人数已不足 800、社区沉寂已久。千寻内心开始动摇，重建理科迷的念头悄然萌芽。",
+  "page.home.timeline.items.rebuildSeed.description":
+    "群管理再次找到千寻，诉说群人数已不足 800、社区沉寂已久。千寻内心开始动摇，重建理科迷的念头悄然萌芽。",
   "page.home.timeline.items.rebuildSeed.title": "群管理的呼唤，重建之心萌芽",
-  "page.home.timeline.items.subjectGroups.description": "各学科分群陆续创立：数学（2015.12.22）、物理学、化学、生物学（2015.12.25），以及高中数学、物理、化学（2016.2.5），初中数学、生物（2016.2.4）。早期的学科分群体系初步成型。",
+  "page.home.timeline.items.subjectGroups.description":
+    "各学科分群陆续创立：数学（2015.12.22）、物理学、化学、生物学（2015.12.25），以及高中数学、物理、化学（2016.2.5），初中数学、生物（2016.2.4）。早期的学科分群体系初步成型。",
   "page.home.timeline.items.subjectGroups.title": "学科分群体系建立",
-  "page.home.timeline.items.teamAndWebsite.description": "开始吸纳组建新团队，重新建设官网，打造面向社区内部的实用型知识平台。",
+  "page.home.timeline.items.teamAndWebsite.description":
+    "开始吸纳组建新团队，重新建设官网，打造面向社区内部的实用型知识平台。",
   "page.home.timeline.items.teamAndWebsite.title": "团队组建与官网建设",
-  "page.home.timeline.items.websitePlanning.description": "线上网站曾有过规划并短暂试运行，但未能正式搭建运营。同期设想的新闻社——用于发布科技资讯——也仅停留在纸面阶段，未最终落地。",
+  "page.home.timeline.items.websitePlanning.description":
+    "线上网站曾有过规划并短暂试运行，但未能正式搭建运营。同期设想的新闻社——用于发布科技资讯——也仅停留在纸面阶段，未最终落地。",
   "page.home.timeline.items.websitePlanning.title": "网站规划与新闻社构想",
   "page.home.timeline.subtitle": "物换星移，春秋代序",
   "page.home.timeline.title": "发展历程",
@@ -1756,18 +1915,23 @@ export const zhFlat = {
   "page.official.contact.bilibili": "B站",
   "page.official.contact.bilibiliDesc": "关注官方B站账号获取最新科普视频",
   "page.official.contact.cooperation": "合作建议",
-  "page.official.contact.cooperationDesc": "如果你有科普内容合作、活动联办、技术支持等方面的合作意向，欢迎通过留言表单联系我们。",
-  "page.official.contact.disclaimerLabel": "提交此表单即表示你同意我们收集你的个人信息用于联系回复。",
+  "page.official.contact.cooperationDesc":
+    "如果你有科普内容合作、活动联办、技术支持等方面的合作意向，欢迎通过留言表单联系我们。",
+  "page.official.contact.disclaimerLabel":
+    "提交此表单即表示你同意我们收集你的个人信息用于联系回复。",
   "page.official.contact.email": "邮箱",
   "page.official.contact.emailLabel": "电子邮箱",
   "page.official.contact.feedback": "问题反馈",
-  "page.official.contact.feedbackDesc": "网站或社区的 Bug 反馈与功能建议，都可以通过留言表单提交，我们会认真处理每一条反馈。",
-  "page.official.contact.formSubtitle": "如果你想加入理科迷、提出建议或合作意向，欢迎通过下方表单联系我们。也可以先看看常见问题，也许已经有了你想要的答案。",
+  "page.official.contact.feedbackDesc":
+    "网站或社区的 Bug 反馈与功能建议，都可以通过留言表单提交，我们会认真处理每一条反馈。",
+  "page.official.contact.formSubtitle":
+    "如果你想加入理科迷、提出建议或合作意向，欢迎通过下方表单联系我们。也可以先看看常见问题，也许已经有了你想要的答案。",
   "page.official.contact.formTitle": "给我们留言",
   "page.official.contact.github": "GitHub",
   "page.official.contact.heroTitle": "期待听到你的声音！",
   "page.official.contact.joinCommunity": "加入社区",
-  "page.official.contact.joinCommunityDesc": "理科迷拥有完善的QQ社群体系，涵盖年级分群、学科分群、兴趣社团等数十个群组。",
+  "page.official.contact.joinCommunityDesc":
+    "理科迷拥有完善的QQ社群体系，涵盖年级分群、学科分群、兴趣社团等数十个群组。",
   "page.official.contact.messageLabel": "留言内容",
   "page.official.contact.metaTitle": "联系我们",
   "page.official.contact.nameLabel": "你的名字",
@@ -1779,123 +1943,174 @@ export const zhFlat = {
   "page.official.funding.heading": "系统筹备中",
   "page.official.funding.metaTitle": "资助系统 —— 理科迷",
   "page.official.funding.notOpen": "暂未开放",
-  "page.official.funding.planLine": "我们计划在平台稳定运营后启动正式资助系统。",
-  "page.official.funding.selfFundedLine": "平台运行至今，由管理团队自费支撑服务器、域名等运营成本。",
+  "page.official.funding.planLine":
+    "我们计划在平台稳定运营后启动正式资助系统。",
+  "page.official.funding.selfFundedLine":
+    "平台运行至今，由管理团队自费支撑服务器、域名等运营成本。",
   "page.official.funding.serverDomain": "服务器与域名费用",
   "page.official.funding.smsEmail": "短信与邮件服务",
   "page.official.funding.storageCdn": "文件存储与 CDN 带宽",
-  "page.official.funding.sustainableLine": "理科迷致力于收支平衡后的可持续发展。",
+  "page.official.funding.sustainableLine":
+    "理科迷致力于收支平衡后的可持续发展。",
   "page.official.funding.thanksTitle": "感谢每一位支持理科迷的你",
-  "page.official.funding.transparencyNote": "我们承诺所有资金使用公开透明，定期发布财务报告。如有赞助意向，欢迎联系我们。",
+  "page.official.funding.transparencyNote":
+    "我们承诺所有资金使用公开透明，定期发布财务报告。如有赞助意向，欢迎联系我们。",
   "page.official.pricing.contactUs": "联系我们",
   "page.official.pricing.contributionRecord": "如何查看我的贡献记录？",
-  "page.official.pricing.contributionRecordAnswer": "目前社群的贡献记录主要通过与社群和网站进行展示，未来我们计划建设更完善的贡献追踪和显示系统，让每一位\"理科迷\"都有归属感和组织认同。",
+  "page.official.pricing.contributionRecordAnswer":
+    '目前社群的贡献记录主要通过与社群和网站进行展示，未来我们计划建设更完善的贡献追踪和显示系统，让每一位"理科迷"都有归属感和组织认同。',
   "page.official.pricing.cooperation": "联系合作",
-  "page.official.pricing.cooperationDesc": "如果你有任何的资源，并不吝啬于分享以及合作共赢，欢迎联系总务部，我们可以详谈合作相关事宜，一起把社区办得更好。",
+  "page.official.pricing.cooperationDesc":
+    "如果你有任何的资源，并不吝啬于分享以及合作共赢，欢迎联系总务部，我们可以详谈合作相关事宜，一起把社区办得更好。",
   "page.official.pricing.createContent": "创作内容",
-  "page.official.pricing.createContentDesc": "我们对于创作是有长期征集计划，帮助类、学科类、科普类，当下热点——无论是文稿、视频、或是其他形式，都是组织最需要的实质内容，你的创作能让更多人感受到科技的魅力，并受惠于社区共建共享的体系下，能得到最诚恳的建议。欢迎大家联系新闻办投稿。",
-  "page.official.pricing.ctaSubtitle": "加入我们的社区，与志同道合的伙伴一起，让科技传播走得更远。",
+  "page.official.pricing.createContentDesc":
+    "我们对于创作是有长期征集计划，帮助类、学科类、科普类，当下热点——无论是文稿、视频、或是其他形式，都是组织最需要的实质内容，你的创作能让更多人感受到科技的魅力，并受惠于社区共建共享的体系下，能得到最诚恳的建议。欢迎大家联系新闻办投稿。",
+  "page.official.pricing.ctaSubtitle":
+    "加入我们的社区，与志同道合的伙伴一起，让科技传播走得更远。",
   "page.official.pricing.ctaTitle": "准备好为理科迷贡献一份力量了？",
-  "page.official.pricing.faqSubtitle": "关于支持方式的一些常见疑问，也许能解答你的困惑。",
+  "page.official.pricing.faqSubtitle":
+    "关于支持方式的一些常见疑问，也许能解答你的困惑。",
   "page.official.pricing.faqTitle": "常见问题",
   "page.official.pricing.fundingSource": "理科迷经费来源于哪里？",
-  "page.official.pricing.fundingSourceAnswer": "目前来源于团队里面成员自掏腰包。但不是长久之计，我们未来会尝试开办募捐等形式，并持续运行自媒体，为了能够步入正向循环，维持自身运营。",
-  "page.official.pricing.heroSubtitle": "理科迷是一个非营利的科技爱好者社区。每一位成员的支持，都是我们持续前行的动力。",
+  "page.official.pricing.fundingSourceAnswer":
+    "目前来源于团队里面成员自掏腰包。但不是长久之计，我们未来会尝试开办募捐等形式，并持续运行自媒体，为了能够步入正向循环，维持自身运营。",
+  "page.official.pricing.heroSubtitle":
+    "理科迷是一个非营利的科技爱好者社区。每一位成员的支持，都是我们持续前行的动力。",
   "page.official.pricing.heroTitle": "让科技传播走得更远",
   "page.official.pricing.joinCommunity": "加入社区",
-  "page.official.pricing.joinCommunityDesc": "最直接的方式就是加入理科迷官方 QQ 群组，关注官方账号、参与讨论、分享知识、上传文件。每一位活跃的成员都是社区最宝贵的财富。",
+  "page.official.pricing.joinCommunityDesc":
+    "最直接的方式就是加入理科迷官方 QQ 群组，关注官方账号、参与讨论、分享知识、上传文件。每一位活跃的成员都是社区最宝贵的财富。",
   "page.official.pricing.metaTitle": "赞助与支持",
   "page.official.pricing.multiDept": "我可以同时参与多个部门吗？",
-  "page.official.pricing.multiDeptAnswer": "当然可以。我们鼓励成员跨部门协作。只要你有时间精力，欢迎在多个领域发挥你的才能，并且我们鼓励成员提升自己，掌握更多的技能，承担更好的职能工作。",
+  "page.official.pricing.multiDeptAnswer":
+    "当然可以。我们鼓励成员跨部门协作。只要你有时间精力，欢迎在多个领域发挥你的才能，并且我们鼓励成员提升自己，掌握更多的技能，承担更好的职能工作。",
   "page.official.pricing.noExperience": "没有相关经验可以参与吗？",
-  "page.official.pricing.noExperienceAnswer": "完全可以。理科迷欢迎每一位学习和贡献、建设的伙伴，为了大家承担工作，能够快速上手，我们将制定工作手册。并且我们组织分组是按照现有能力情况下，进行分组，不会让贡献者承担自己目前做不到的事情。",
+  "page.official.pricing.noExperienceAnswer":
+    "完全可以。理科迷欢迎每一位学习和贡献、建设的伙伴，为了大家承担工作，能够快速上手，我们将制定工作手册。并且我们组织分组是按照现有能力情况下，进行分组，不会让贡献者承担自己目前做不到的事情。",
   "page.official.pricing.participateMgmt": "参与管理",
-  "page.official.pricing.participateMgmtDesc": "加入七月管理团队（总务部、群务部、策划部等），参与社群日常运营和策划执行，让组织实现长期目标，让社区更加繁荣，为理科迷的发展贡献你的才能。",
+  "page.official.pricing.participateMgmtDesc":
+    "加入七月管理团队（总务部、群务部、策划部等），参与社群日常运营和策划执行，让组织实现长期目标，让社区更加繁荣，为理科迷的发展贡献你的才能。",
   "page.official.pricing.participateProject": "参与项目",
-  "page.official.pricing.participateProjectDesc": "加入七月项目团队（教材编写组、科普产出组），参与具体的产出内容落实，让知识传播出去，打破壁垒以及信息差。为更多渴求学习的孩子，能够得到知识。",
-  "page.official.pricing.payAnswer": "不需要。理科迷是一个非营利组织，所有服务和内容均免费向社区成员开放，不收取任何费用。但由于社区的扩大，对于社群人数上限、域名、服务器以及活动等支出也日渐增高，未来会探索更多有可能的，维持开销的举措。",
+  "page.official.pricing.participateProjectDesc":
+    "加入七月项目团队（教材编写组、科普产出组），参与具体的产出内容落实，让知识传播出去，打破壁垒以及信息差。为更多渴求学习的孩子，能够得到知识。",
+  "page.official.pricing.payAnswer":
+    "不需要。理科迷是一个非营利组织，所有服务和内容均免费向社区成员开放，不收取任何费用。但由于社区的扩大，对于社群人数上限、域名、服务器以及活动等支出也日渐增高，未来会探索更多有可能的，维持开销的举措。",
   "page.official.pricing.payQuestion": "理科迷是否需要付费？",
   "page.official.pricing.promotion": "宣传推广",
-  "page.official.pricing.promotionDesc": "将理科迷的官方账号、理念、活动、实质的优质内容等分享给你的朋友和同学们，让更多热爱科技的小伙伴们知道我们的存在，每一个分享都是一次传播。",
+  "page.official.pricing.promotionDesc":
+    "将理科迷的官方账号、理念、活动、实质的优质内容等分享给你的朋友和同学们，让更多热爱科技的小伙伴们知道我们的存在，每一个分享都是一次传播。",
   "page.official.pricing.proposeProject": "我可以主动提出项目建设吗？",
-  "page.official.pricing.proposeProjectAnswer": "完全可以。理科迷社区属于集体，大家共建共享，自己承担，自己建设相关事务，七月团队会帮助项目组建工作，和管理团队支持和帮助，我们也欢迎大家更多有创造力、有领导力、有执行能力的人加入，让想法落地，加入团队，帮助更多的人！",
+  "page.official.pricing.proposeProjectAnswer":
+    "完全可以。理科迷社区属于集体，大家共建共享，自己承担，自己建设相关事务，七月团队会帮助项目组建工作，和管理团队支持和帮助，我们也欢迎大家更多有创造力、有领导力、有执行能力的人加入，让想法落地，加入团队，帮助更多的人！",
   "page.official.pricing.suggestions": "提出建议",
-  "page.official.pricing.suggestionsDesc": "对理科迷有任何想法或建议？我们非常愿意倾听。通过联系我们页面提交你的反馈，我们认真对待每一条意见。",
-  "page.official.pricing.supportSubtitle": "你的每一份力量，都能帮助理科迷变得更好。以下是你参与社区建设的几种方式。",
+  "page.official.pricing.suggestionsDesc":
+    "对理科迷有任何想法或建议？我们非常愿意倾听。通过联系我们页面提交你的反馈，我们认真对待每一条意见。",
+  "page.official.pricing.supportSubtitle":
+    "你的每一份力量，都能帮助理科迷变得更好。以下是你参与社区建设的几种方式。",
   "page.official.pricing.supportTitle": "支持方式",
   "page.official.pricing.system": "在七月团队，有完整的体系吗？",
-  "page.official.pricing.systemAnswer": "是的。在七月团队中有明确的每一个不同部门和分组，我们有管理规范守则和组织成员公约，需要每一位进行遵守。并且职位，可以按照成员现有的发展进行灵活更换，随着组织壮大，未来会更加明确晋升体系，帮助大家有更好的成长。",
+  "page.official.pricing.systemAnswer":
+    "是的。在七月团队中有明确的每一个不同部门和分组，我们有管理规范守则和组织成员公约，需要每一位进行遵守。并且职位，可以按照成员现有的发展进行灵活更换，随着组织壮大，未来会更加明确晋升体系，帮助大家有更好的成长。",
   "page.official.pricing.techSupport": "技术支持",
-  "page.official.pricing.techSupportDesc": "如果你擅长网站开发、UI 设计、服务器运维等技术，欢迎加入技术委员会，帮助理科迷建设更好的线上平台。",
+  "page.official.pricing.techSupportDesc":
+    "如果你擅长网站开发、UI 设计、服务器运维等技术，欢迎加入技术委员会，帮助理科迷建设更好的线上平台。",
   "page.official.pricing.transparency": "理科迷经费收入和支出透明吗？",
-  "page.official.pricing.transparencyAnswer": "透明。理科迷所有的经费属于集体，不属于个人，每一次的收入和支出均会进行公示，并接受社区成员监督。未来开办募捐的形式时也会让募捐的社员，成立一个崭新的工作组，负责相关的事宜。",
+  "page.official.pricing.transparencyAnswer":
+    "透明。理科迷所有的经费属于集体，不属于个人，每一次的收入和支出均会进行公示，并接受社区成员监督。未来开办募捐的形式时也会让募捐的社员，成立一个崭新的工作组，负责相关的事宜。",
   "page.official.projectTeam.empty": "暂无成员，期待你的加入",
   "page.official.projectTeam.metaTitle": "项目团队 —— 理科迷",
   "page.official.projectTeam.sidebarScience": "科普项目组",
   "page.official.projectTeam.sidebarTextbooks": "教材项目组",
-  "page.official.services.blogDesc": "支持 Markdown 和 MDX 格式的文章发布，分类与标签过滤、阅读时间估算、RSS 订阅等功能一应俱全。",
+  "page.official.services.blogDesc":
+    "支持 Markdown 和 MDX 格式的文章发布，分类与标签过滤、阅读时间估算、RSS 订阅等功能一应俱全。",
   "page.official.services.blogTitle": "博客系统",
   "page.official.services.brandName": "理科迷",
-  "page.official.services.chatDesc": "我们设有不同年级阶段、职业相关交流群，以及各学科方向分群，为不同阶段和类型的成员提供精准高效的交流空间。",
+  "page.official.services.chatDesc":
+    "我们设有不同年级阶段、职业相关交流群，以及各学科方向分群，为不同阶段和类型的成员提供精准高效的交流空间。",
   "page.official.services.chatTitle": "社群交流",
-  "page.official.services.contentSubtitle": "由团队成员和社区成员共创的高质量内容，覆盖多个学科领域。",
+  "page.official.services.contentSubtitle":
+    "由团队成员和社区成员共创的高质量内容，覆盖多个学科领域。",
   "page.official.services.contentTitle": "内容创作",
-  "page.official.services.ctaSubtitle": "无论你是想加入社区、投稿创作作品，还是提出合作建议，我们都非常欢迎。",
+  "page.official.services.ctaSubtitle":
+    "无论你是想加入社区、投稿创作作品，还是提出合作建议，我们都非常欢迎。",
   "page.official.services.ctaTitlePrefix": "对",
   "page.official.services.ctaTitleSuffix": "感兴趣？",
-  "page.official.services.deepDiveDesc": "针对热门科学话题推出系列专题文章，深入浅出地剖析背后的科学原理，培养批判性思维和科学素养。",
+  "page.official.services.deepDiveDesc":
+    "针对热门科学话题推出系列专题文章，深入浅出地剖析背后的科学原理，培养批判性思维和科学素养。",
   "page.official.services.deepDiveTitle": "专题深度",
-  "page.official.services.eventsSubtitle": "从线上研讨到假期活动，理科迷为社区成员提供丰富多彩的互动体验。",
+  "page.official.services.eventsSubtitle":
+    "从线上研讨到假期活动，理科迷为社区成员提供丰富多彩的互动体验。",
   "page.official.services.eventsTitle": "社区活动",
-  "page.official.services.exchangeDesc": "在未来我们会组建翻译组，传播和搬运中外优质的科技论文、文章、讲解和讲课视频，做到双向的输入输出。",
+  "page.official.services.exchangeDesc":
+    "在未来我们会组建翻译组，传播和搬运中外优质的科技论文、文章、讲解和讲课视频，做到双向的输入输出。",
   "page.official.services.exchangeTitle": "中外交流",
-  "page.official.services.helpDesc": "我们会提供不限于学习、竞赛、专业、考试、技能和方向等等具有实质性并且最新的建议，打破参考和意见，打破信息差。",
+  "page.official.services.helpDesc":
+    "我们会提供不限于学习、竞赛、专业、考试、技能和方向等等具有实质性并且最新的建议，打破参考和意见，打破信息差。",
   "page.official.services.helpTitle": "相关帮助",
-  "page.official.services.heroSubtitle": "理科迷提供多种形式让科学与技术传播，以及社区服务，从学术专业讨论到科普内容，我们致力于打破知识壁垒，打破信息差，让更多人感受到科技的魅力，理性的美。",
+  "page.official.services.heroSubtitle":
+    "理科迷提供多种形式让科学与技术传播，以及社区服务，从学术专业讨论到科普内容，我们致力于打破知识壁垒，打破信息差，让更多人感受到科技的魅力，理性的美。",
   "page.official.services.heroTitle": "让科技回归每一个人",
-  "page.official.services.holidayDesc": "一年一度的寒暑假主题活动，由七月团队·活动策划部统筹组织。汇集线上讲座、学科研讨、趣味竞赛等多种形式，是社区每年最大的盛事。",
+  "page.official.services.holidayDesc":
+    "一年一度的寒暑假主题活动，由七月团队·活动策划部统筹组织。汇集线上讲座、学科研讨、趣味竞赛等多种形式，是社区每年最大的盛事。",
   "page.official.services.holidayTitle": "假期活动",
   "page.official.services.joinUs": "加入我们",
-  "page.official.services.journalDesc": "在未来我们会组建期刊项目组，给大家呈现一年或半年内，社区共建共享所产出的实质性内容和成果，如优秀的文章、科普、创作作品等等。",
+  "page.official.services.journalDesc":
+    "在未来我们会组建期刊项目组，给大家呈现一年或半年内，社区共建共享所产出的实质性内容和成果，如优秀的文章、科普、创作作品等等。",
   "page.official.services.journalTitle": "科技期刊",
   "page.official.services.metaTitle": "服务",
-  "page.official.services.newsDesc": "追踪全球科技前沿动态，用通俗易懂的语言解读最新科学发现与技术突破，让你第一时间掌握科技脉搏。",
+  "page.official.services.newsDesc":
+    "追踪全球科技前沿动态，用通俗易懂的语言解读最新科学发现与技术突破，让你第一时间掌握科技脉搏。",
   "page.official.services.newsTitle": "科技新闻",
-  "page.official.services.platformSubtitle": "理科迷正在建设面向社区成员的知识管理平台，助力学习与协作。",
+  "page.official.services.platformSubtitle":
+    "理科迷正在建设面向社区成员的知识管理平台，助力学习与协作。",
   "page.official.services.platformTitle": "知识平台",
-  "page.official.services.promoDesc": "通过官方宣传账号在 B 站等平台持续输出，扩大社区影响力，吸引更多热爱科技的伙伴加入我们。",
+  "page.official.services.promoDesc":
+    "通过官方宣传账号在 B 站等平台持续输出，扩大社区影响力，吸引更多热爱科技的伙伴加入我们。",
   "page.official.services.promoTitle": "宣传推广",
-  "page.official.services.quizDesc": "定期举办线上学科知识竞赛，寓教于乐，激发学习兴趣，在轻松的氛围中检验和巩固所学知识。",
+  "page.official.services.quizDesc":
+    "定期举办线上学科知识竞赛，寓教于乐，激发学习兴趣，在轻松的氛围中检验和巩固所学知识。",
   "page.official.services.quizTitle": "知识竞赛",
-  "page.official.services.resourcesDesc": "整理和分享优质学习资料、书籍推荐、在线课程等学习资源，帮助社区成员找到最适合自己的学习路径。",
+  "page.official.services.resourcesDesc":
+    "整理和分享优质学习资料、书籍推荐、在线课程等学习资源，帮助社区成员找到最适合自己的学习路径。",
   "page.official.services.resourcesTitle": "资源分享",
-  "page.official.services.scienceDesc": "覆盖数学、物理、化学、生物、信息技术等核心学科，从基础概念到前沿理论，循序渐进带你进入科学的世界。",
+  "page.official.services.scienceDesc":
+    "覆盖数学、物理、化学、生物、信息技术等核心学科，从基础概念到前沿理论，循序渐进带你进入科学的世界。",
   "page.official.services.scienceTitle": "学科科普",
-  "page.official.services.seminarDesc": "由专业委员会委员和各学科爱好者共同参与，定期举办专题研讨，针对特定科学话题展开深入讨论与交流。",
+  "page.official.services.seminarDesc":
+    "由专业委员会委员和各学科爱好者共同参与，定期举办专题研讨，针对特定科学话题展开深入讨论与交流。",
   "page.official.services.seminarTitle": "学科研讨会",
   "page.official.services.sidebarContent": "内容创作",
   "page.official.services.sidebarEvents": "社区活动",
   "page.official.services.sidebarPlatform": "知识平台",
-  "page.official.services.videoDesc": "通过B站等视频平台发布教学、科普视频，以及硬核优质内容，以生动直观的方式展现科学与技术知识点，让抽象的公理和理论变得眼见为实。",
+  "page.official.services.videoDesc":
+    "通过B站等视频平台发布教学、科普视频，以及硬核优质内容，以生动直观的方式展现科学与技术知识点，让抽象的公理和理论变得眼见为实。",
   "page.official.services.videoTitle": "视频创作",
-  "page.official.services.websiteDesc": "理科迷的线上门户，集成社区介绍、团队展示、博客文章、文档资源等功能，是我们面向公众的第一窗口。",
+  "page.official.services.websiteDesc":
+    "理科迷的线上门户，集成社区介绍、团队展示、博客文章、文档资源等功能，是我们面向公众的第一窗口。",
   "page.official.services.websiteTitle": "官方网站",
-  "page.official.team.advisorsDesc": "该团队部门职责是属于理科迷的外部顾问，为理科迷的工作组，项目组事业提供相应的支持，如法律询问、其他社会组织团体等等。",
+  "page.official.team.advisorsDesc":
+    "该团队部门职责是属于理科迷的外部顾问，为理科迷的工作组，项目组事业提供相应的支持，如法律询问、其他社会组织团体等等。",
   "page.official.team.advisorsTitle": "顾问团",
-  "page.official.team.affairsDesc": "该团队部门职责是负责各个平台上面社群秩序，把握群内风向，确保群处于活跃并且持续有效的学习讨论氛围当中，有情况的时候第一时间处理。群务部更适合有常驻某一平台社群的，并有一定的应急处理能力。",
+  "page.official.team.affairsDesc":
+    "该团队部门职责是负责各个平台上面社群秩序，把握群内风向，确保群处于活跃并且持续有效的学习讨论氛围当中，有情况的时候第一时间处理。群务部更适合有常驻某一平台社群的，并有一定的应急处理能力。",
   "page.official.team.affairsTitle": "七月团队 · 群务部",
   "page.official.team.alumniHeading": "已离开或失联成员",
-  "page.official.team.alumniNote": "以下成员曾为理科迷作出贡献，因各种原因现无法联系，不管如何理科迷的大门永远向你们打开。",
-  "page.official.team.eventsDesc": "该团队负责的是各个平台上面的活动，一条龙从策划开始，一直到执行，下管专业委员会，给大家带来更多更好的活动和体验，让大家能够真正的学到知识。适合有灵感、有创意并由能把这些全部落实的行动力加入。",
+  "page.official.team.alumniNote":
+    "以下成员曾为理科迷作出贡献，因各种原因现无法联系，不管如何理科迷的大门永远向你们打开。",
+  "page.official.team.eventsDesc":
+    "该团队负责的是各个平台上面的活动，一条龙从策划开始，一直到执行，下管专业委员会，给大家带来更多更好的活动和体验，让大家能够真正的学到知识。适合有灵感、有创意并由能把这些全部落实的行动力加入。",
   "page.official.team.eventsTitle": "七月团队 · 活动策划部",
   "page.official.team.founderSubtitle": "理科迷的起点，一切从这里开始",
   "page.official.team.founderTitle": "创始人",
-  "page.official.team.generalDesc": "该团队部门职责是统筹和规划相关事宜，引领团队能够互相协作，落实我们共同的宗旨和目标。总务部更适合有多线程处理能力以及执行能力的成员，会有跨部门的需要。",
+  "page.official.team.generalDesc":
+    "该团队部门职责是统筹和规划相关事宜，引领团队能够互相协作，落实我们共同的宗旨和目标。总务部更适合有多线程处理能力以及执行能力的成员，会有跨部门的需要。",
   "page.official.team.generalTitle": "七月团队 · 总务部",
   "page.official.team.metaTitle": "管理团队 —— 理科迷",
-  "page.official.team.newsDesc": "该团队部门职责是负责各平台宣传账号的持续运营，以及外交事宜，持续宣传输出并扩大影响能力，并为此向大众输出科普内容，促进传播知识。新闻办会下属一个科普项目组，以及翻译项目组，为科普事业繁荣昌盛，以及中外科技爱好者能有所知识共享，破除信息差和壁垒。",
+  "page.official.team.newsDesc":
+    "该团队部门职责是负责各平台宣传账号的持续运营，以及外交事宜，持续宣传输出并扩大影响能力，并为此向大众输出科普内容，促进传播知识。新闻办会下属一个科普项目组，以及翻译项目组，为科普事业繁荣昌盛，以及中外科技爱好者能有所知识共享，破除信息差和壁垒。",
   "page.official.team.newsTitle": "新闻办",
-  "page.official.team.professionalDesc": "该团队部门职责是负责活动、项目等诸多提供专业知识，充实各个专业实际内容。成员是已经确定了想要在这方面深耕的，未来会下管学术项目组，带来更好的学术交流等内容。",
+  "page.official.team.professionalDesc":
+    "该团队部门职责是负责活动、项目等诸多提供专业知识，充实各个专业实际内容。成员是已经确定了想要在这方面深耕的，未来会下管学术项目组，带来更好的学术交流等内容。",
   "page.official.team.professionalTitle": "专业委员会",
   "page.official.team.sidebarAdvisors": "顾问团",
   "page.official.team.sidebarAffairs": "群务部",
@@ -1906,13 +2121,15 @@ export const zhFlat = {
   "page.official.team.sidebarNews": "新闻办",
   "page.official.team.sidebarProfessional": "专业委员会",
   "page.official.team.sidebarTech": "技术委员会",
-  "page.official.team.techDesc": "该团队部门职责是负责各平台、各活动的相应技术上的技术开发与维护，未来将给大家带来更多实用性更强更好的开源项目。需要有编程知识，网站搭建等能。",
+  "page.official.team.techDesc":
+    "该团队部门职责是负责各平台、各活动的相应技术上的技术开发与维护，未来将给大家带来更多实用性更强更好的开源项目。需要有编程知识，网站搭建等能。",
   "page.official.team.techTitle": "技术委员会",
   "page.official.triggeredDischarge.back": "返回",
   "page.official.triggeredDischarge.bloom": "泛光",
   "page.official.triggeredDischarge.branchIndex": "η · 分支指数",
   "page.official.triggeredDischarge.branchNotePrefix": "生长概率 p ∝ E",
-  "page.official.triggeredDischarge.branchNoteSuffix": "能复现真实闪电的分支稀疏度（η = 1 会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为 c/3（MTLE 模型，λ = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。",
+  "page.official.triggeredDischarge.branchNoteSuffix":
+    "能复现真实闪电的分支稀疏度（η = 1 会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为 c/3（MTLE 模型，λ = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。",
   "page.official.triggeredDischarge.channelLength": "通道长度",
   "page.official.triggeredDischarge.charging": "充能中",
   "page.official.triggeredDischarge.clickHint": "点击任意位置触发闪电",
@@ -1920,7 +2137,8 @@ export const zhFlat = {
   "page.official.triggeredDischarge.exposure": "曝光",
   "page.official.triggeredDischarge.fieldResidual": "场残差",
   "page.official.triggeredDischarge.fractalDim": "分形维数",
-  "page.official.triggeredDischarge.metaDescription": "实时 GPU 闪电模拟：Laplace 场求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、体积渲染、泛光与程序化雷声。",
+  "page.official.triggeredDischarge.metaDescription":
+    "实时 GPU 闪电模拟：Laplace 场求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、体积渲染、泛光与程序化雷声。",
   "page.official.triggeredDischarge.metaTitle": "触发击穿 — 2D 介电击穿模拟",
   "page.official.triggeredDischarge.newLightning": "新闪电",
   "page.official.triggeredDischarge.normalMode": "正常模式",
@@ -1931,15 +2149,18 @@ export const zhFlat = {
   "page.official.triggeredDischarge.polarityNeg": "极性 −CG",
   "page.official.triggeredDischarge.realTime": "真实时间",
   "page.official.triggeredDischarge.saveScreenshot": "保存截图",
-  "page.official.triggeredDischarge.signature": "运行时模拟 — 真实物理，不走捷径",
+  "page.official.triggeredDischarge.signature":
+    "运行时模拟 — 真实物理，不走捷径",
   "page.official.triggeredDischarge.slowMotion": "慢动作",
   "page.official.triggeredDischarge.soundOff": "声音关",
   "page.official.triggeredDischarge.stroke": "回击",
   "page.official.triggeredDischarge.thunder": "雷声",
   "page.official.triggeredDischarge.timeScale": "时间倍率 · ×",
   "page.official.triggeredDischarge.tipSpeed": "尖端速度",
-  "page.official.triggeredDischarge.webgpuLine1": "本模拟在 GPU 上每帧求解二维 Laplace 场方程。",
-  "page.official.triggeredDischarge.webgpuLine2": "请使用 Chrome、Edge 或 Brave 113+（或 Safari 18+），并启用 WebGPU。",
+  "page.official.triggeredDischarge.webgpuLine1":
+    "本模拟在 GPU 上每帧求解二维 Laplace 场方程。",
+  "page.official.triggeredDischarge.webgpuLine2":
+    "请使用 Chrome、Edge 或 Brave 113+（或 Safari 18+），并启用 WebGPU。",
   "page.official.triggeredDischarge.webgpuUnavailable": "WEBGPU 不可用",
   "page.projects.background": "项目背景",
   "page.projects.goals": "目标",
@@ -2013,12 +2234,15 @@ export const zhFlat = {
   "page.resources.wikipedia": "维基百科（默认为英文维基）",
   "page.resources.zhiwu": "植物智",
   "page.resourcesHeading": "延伸资源网站",
-  "page.resourcesNote": "以下为站外公开学术 / 教育平台，内容由第三方提供，访问请自行甄别。",
+  "page.resourcesNote":
+    "以下为站外公开学术 / 教育平台，内容由第三方提供，访问请自行甄别。",
   "page.resourcesTitle": "资源",
   "page.submitLinkHint": "如有投稿请联系我",
-  "page.treehole.bottleDescription": "把心事装进瓶子，交给海流，等一个陌生的回应。",
+  "page.treehole.bottleDescription":
+    "把心事装进瓶子，交给海流，等一个陌生的回应。",
   "page.treehole.bottleTitle": "漂流瓶 — 拾光树洞",
-  "page.treehole.homeDescription": "一个治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。",
+  "page.treehole.homeDescription":
+    "一个治愈文艺的匿名倾诉空间。把心事交给风，把秘密留给树洞。",
   "page.treehole.homeTitle": "拾光树洞",
   "page.treehole.messagesDescription": "全程匿名，双方都不暴露真实身份。",
   "page.treehole.messagesTitle": "匿名回信 — 拾光树洞",
@@ -2035,7 +2259,8 @@ export const zhFlat = {
   "page.treehole.writeDescription": "写下你的心事、表白、吐槽或悄悄话。",
   "page.treehole.writeTitle": "写信 — 拾光树洞",
   "primitives.empty": "暂无内容",
-  "primitives.formStaticWarning": "此表单为静态展示，暂不支持在线提交。请通过其他方式联系我们。",
+  "primitives.formStaticWarning":
+    "此表单为静态展示，暂不支持在线提交。请通过其他方式联系我们。",
   "primitives.loading": "加载中...",
   "primitives.noImage": "暂无图片",
   "primitives.tableOfContents": "目录",
@@ -2072,41 +2297,62 @@ export const zhFlat = {
   "projectData.names.qiyueO": "七月O",
   "projectData.names.wang": "动画师小王",
   "projectData.names.zhang": "数据工程师小张",
-  "projectData.projects.proj1.background": "量子计算是未来计算的重要方向。我们计划开发一个基于 Web 的量子计算模拟平台，帮助学习者直观理解量子算法。",
-  "projectData.projects.proj1.goals": "开发一个可在浏览器中运行 8-qubit 量子电路模拟器，支持常用量子门操作和测量。",
+  "projectData.projects.proj1.background":
+    "量子计算是未来计算的重要方向。我们计划开发一个基于 Web 的量子计算模拟平台，帮助学习者直观理解量子算法。",
+  "projectData.projects.proj1.goals":
+    "开发一个可在浏览器中运行 8-qubit 量子电路模拟器，支持常用量子门操作和测量。",
   "projectData.projects.proj1.name": "量子计算模拟平台",
-  "projectData.projects.proj1.requirements": "需要前端开发（React/TypeScript）1-2 人、量子物理顾问 1 人、UI 设计师 1 人。",
-  "projectData.projects.proj1.teamIntro": "发起人七月O为中科院博士，量子物理方向。已有后端算法原型。",
-  "projectData.projects.proj2.background": "社区里有大量优质内容散落在各板块，希望通过知识图谱的方式组织起来，方便检索和学习。",
-  "projectData.projects.proj2.goals": "构建理科迷社区知识图谱，支持关键词检索、关联推荐、学习路径生成。",
+  "projectData.projects.proj1.requirements":
+    "需要前端开发（React/TypeScript）1-2 人、量子物理顾问 1 人、UI 设计师 1 人。",
+  "projectData.projects.proj1.teamIntro":
+    "发起人七月O为中科院博士，量子物理方向。已有后端算法原型。",
+  "projectData.projects.proj2.background":
+    "社区里有大量优质内容散落在各板块，希望通过知识图谱的方式组织起来，方便检索和学习。",
+  "projectData.projects.proj2.goals":
+    "构建理科迷社区知识图谱，支持关键词检索、关联推荐、学习路径生成。",
   "projectData.projects.proj2.name": "理科迷知识图谱",
-  "projectData.projects.proj2.requirements": "需要后端开发 1 人（Python/图数据库）、前端 1 人（可视化）、内容编辑若干。",
+  "projectData.projects.proj2.requirements":
+    "需要后端开发 1 人（Python/图数据库）、前端 1 人（可视化）、内容编辑若干。",
   "projectData.projects.proj2.teamIntro": "",
-  "projectData.projects.proj3.background": "制作面向中学生的科普系列视频，用生动有趣的动画和故事讲解科学原理。",
-  "projectData.projects.proj3.goals": "完成 12 集科普视频制作并在 B站和 YouTube 发布，目标覆盖 10 万播放。",
+  "projectData.projects.proj3.background":
+    "制作面向中学生的科普系列视频，用生动有趣的动画和故事讲解科学原理。",
+  "projectData.projects.proj3.goals":
+    "完成 12 集科普视频制作并在 B站和 YouTube 发布，目标覆盖 10 万播放。",
   "projectData.projects.proj3.name": "科普视频系列制作",
   "projectData.projects.proj3.requirements": "",
-  "projectData.projects.proj3.teamIntro": "跨学科团队，包括物理、化学、生物各专业成员。已发布 5 集。",
-  "projectData.projects.proj4.background": "利用公开天文数据，制作交互式天体数据可视化作品。",
-  "projectData.projects.proj4.goals": "实现 3 个交互式可视化作品：星表全景图、银河系 3D 模型、引力波事件时间线。",
+  "projectData.projects.proj3.teamIntro":
+    "跨学科团队，包括物理、化学、生物各专业成员。已发布 5 集。",
+  "projectData.projects.proj4.background":
+    "利用公开天文数据，制作交互式天体数据可视化作品。",
+  "projectData.projects.proj4.goals":
+    "实现 3 个交互式可视化作品：星表全景图、银河系 3D 模型、引力波事件时间线。",
   "projectData.projects.proj4.name": "天体观测数据可视化项目",
   "projectData.projects.proj4.requirements": "",
-  "projectData.projects.proj4.teamIntro": "由社区天文爱好者组成，使用 Python + Three.js 技术栈。",
-  "projectData.reports.proj1r0.content": "完成了量子电路模拟的技术调研，确定了技术栈和架构方案，后端算法原型已就绪。",
+  "projectData.projects.proj4.teamIntro":
+    "由社区天文爱好者组成，使用 Python + Three.js 技术栈。",
+  "projectData.reports.proj1r0.content":
+    "完成了量子电路模拟的技术调研，确定了技术栈和架构方案，后端算法原型已就绪。",
   "projectData.reports.proj1r0.title": "项目启动 & 需求分析完成",
-  "projectData.reports.proj1r1.content": "完成了前端基础框架搭建，实现了单 qubit 操作的可视化。正在招募前端开发协助完善多 qubit 模拟。",
+  "projectData.reports.proj1r1.content":
+    "完成了前端基础框架搭建，实现了单 qubit 操作的可视化。正在招募前端开发协助完善多 qubit 模拟。",
   "projectData.reports.proj1r1.title": "一改：基础 UI 框架搭建",
-  "projectData.reports.proj2r0.content": "确定了基于 Neo4j 的技术方案，初步梳理了数学板块的内容分类体系。",
+  "projectData.reports.proj2r0.content":
+    "确定了基于 Neo4j 的技术方案，初步梳理了数学板块的内容分类体系。",
   "projectData.reports.proj2r0.title": "项目启动",
-  "projectData.reports.proj3r0.content": "《光的奇妙旅程》《原子的秘密》《化学反应是什么》三集已上线B站，累计播放 3.5 万。",
+  "projectData.reports.proj3r0.content":
+    "《光的奇妙旅程》《原子的秘密》《化学反应是什么》三集已上线B站，累计播放 3.5 万。",
   "projectData.reports.proj3r0.title": "初版：前 3 集发布",
-  "projectData.reports.proj3r1.content": "第 4-5 集已发布，总播放量突破 8 万。收到观众积极反馈，开始优化文案和动画风格。",
+  "projectData.reports.proj3r1.content":
+    "第 4-5 集已发布，总播放量突破 8 万。收到观众积极反馈，开始优化文案和动画风格。",
   "projectData.reports.proj3r1.title": "一改：中期评估",
-  "projectData.reports.proj4r0.content": "确定使用 Three.js 进行 3D 渲染，选取 Gaia DR3 恒星数据。",
+  "projectData.reports.proj4r0.content":
+    "确定使用 Three.js 进行 3D 渲染，选取 Gaia DR3 恒星数据。",
   "projectData.reports.proj4r0.title": "初版：技术选型与数据采集",
-  "projectData.reports.proj4r1.content": "第一个作品上线，展示约 100 万颗恒星的分布。",
+  "projectData.reports.proj4r1.content":
+    "第一个作品上线，展示约 100 万颗恒星的分布。",
   "projectData.reports.proj4r1.title": "一改：星表全景图完成",
-  "projectData.reports.proj4r2.content": "第二个作品上线，用户可旋转/缩放查看银河系结构。目前正在做引力波时间线。",
+  "projectData.reports.proj4r2.content":
+    "第二个作品上线，用户可旋转/缩放查看银河系结构。目前正在做引力波时间线。",
   "projectData.reports.proj4r2.title": "二改：银河系 3D 模型完成",
   "projectData.roles.backend": "后端开发",
   "projectData.roles.contentEditor": "内容编辑",
@@ -2192,10 +2438,14 @@ export const zhFlat = {
   "projectHub.submitting": "提交中...",
   "projectHub.tabRecruiting": "招募",
   "projectHub.tabShowcase": "成果展示",
-  "qaData.answers.a1.content": "推荐 Griffiths 的《Introduction to Quantum Mechanics》，有中文译本。如果数学基础还不太够，可以先看《量子力学概论》（David J. Griffiths 著，贾瑜 译）。另外推荐配套看 Feynman 物理学讲义第三卷，物理图像非常清晰。",
-  "qaData.answers.a2.content": "如果只想初步了解，推荐《上帝掷骰子吗？量子物理史话》，非常通俗易懂的科普，读完会对量子力学的来龙去脉有很好的感觉。然后再看教材。",
-  "qaData.answers.a3.content": "广东省排 12000 是一个很不错的排名。物理和计算机都是好选择。建议从就业角度看，计算机就业面更广、起薪更高；但如果真心热爱物理研究，也可以选择物理专业后辅修计算机课程，这两个方向并不冲突。具体可以考虑华南理工或中山大学的计算机/物理相关专业。",
-  "qaData.answers.a4.content": "5GB CSV 建议换工具。如果坚持用 Python，可以试试：1) Dask DataFrame（和 Pandas API 几乎一样但是分布式的）2) Polars（比 Pandas 内存效率高很多）3) 如果是聚合操作，试试 SQLite（pandas 可以直接写 SQL）。分块读取 + 逐块聚合其实可行，但要注意聚合的复杂度。",
+  "qaData.answers.a1.content":
+    "推荐 Griffiths 的《Introduction to Quantum Mechanics》，有中文译本。如果数学基础还不太够，可以先看《量子力学概论》（David J. Griffiths 著，贾瑜 译）。另外推荐配套看 Feynman 物理学讲义第三卷，物理图像非常清晰。",
+  "qaData.answers.a2.content":
+    "如果只想初步了解，推荐《上帝掷骰子吗？量子物理史话》，非常通俗易懂的科普，读完会对量子力学的来龙去脉有很好的感觉。然后再看教材。",
+  "qaData.answers.a3.content":
+    "广东省排 12000 是一个很不错的排名。物理和计算机都是好选择。建议从就业角度看，计算机就业面更广、起薪更高；但如果真心热爱物理研究，也可以选择物理专业后辅修计算机课程，这两个方向并不冲突。具体可以考虑华南理工或中山大学的计算机/物理相关专业。",
+  "qaData.answers.a4.content":
+    "5GB CSV 建议换工具。如果坚持用 Python，可以试试：1) Dask DataFrame（和 Pandas API 几乎一样但是分布式的）2) Polars（比 Pandas 内存效率高很多）3) 如果是聚合操作，试试 SQLite（pandas 可以直接写 SQL）。分块读取 + 逐块聚合其实可行，但要注意聚合的复杂度。",
   "qaData.askers.chen": "高三学生小陈",
   "qaData.askers.dataNewbie": "数据分析新手",
   "qaData.askers.examPrepper": "考研党",
@@ -2205,15 +2455,20 @@ export const zhFlat = {
   "qaData.authors.qiyueHua": "七月花",
   "qaData.authors.qiyueO": "七月O",
   "qaData.authors.zhang": "数据工程师小张",
-  "qaData.questions.q1.content": "我是物理系大一新生，想提前了解一下量子力学。有没有适合初学者的入门教材推荐？最好有中文版的。",
+  "qaData.questions.q1.content":
+    "我是物理系大一新生，想提前了解一下量子力学。有没有适合初学者的入门教材推荐？最好有中文版的。",
   "qaData.questions.q1.title": "量子力学入门有什么推荐的书？",
-  "qaData.questions.q2.content": "准备 2027 年考研，目标是 985 院校。数学一需要买哪些参考书和习题集？时间线怎么安排比较合理？",
+  "qaData.questions.q2.content":
+    "准备 2027 年考研，目标是 985 院校。数学一需要买哪些参考书和习题集？时间线怎么安排比较合理？",
   "qaData.questions.q2.title": "考研数学一需要准备哪些资料？",
-  "qaData.questions.q3.content": "省份：广东\n分数/排名：640分 / 省排 12000\n选科：物理+化学+生物\n兴趣方向：物理学、计算机科学\n家庭情况：普通家庭，希望好就业",
+  "qaData.questions.q3.content":
+    "省份：广东\n分数/排名：640分 / 省排 12000\n选科：物理+化学+生物\n兴趣方向：物理学、计算机科学\n家庭情况：普通家庭，希望好就业",
   "qaData.questions.q3.title": "高考志愿推荐：物理 vs 计算机",
-  "qaData.questions.q4.content": "在用 Pandas 处理一个 5GB 的 CSV 文件时总是内存不足。已经用了分块读取，但后续的聚合操作还是会爆内存。有没有更好的方案？",
+  "qaData.questions.q4.content":
+    "在用 Pandas 处理一个 5GB 的 CSV 文件时总是内存不足。已经用了分块读取，但后续的聚合操作还是会爆内存。有没有更好的方案？",
   "qaData.questions.q4.title": "Python 数据分析：Pandas 内存不足怎么办？",
-  "qaData.questions.q5.content": "需要一份化学实验室安全规范的文档模板，用于给新来的研究生做安全培训。最好是高校通用的标准版本。",
+  "qaData.questions.q5.content":
+    "需要一份化学实验室安全规范的文档模板，用于给新来的研究生做安全培训。最好是高校通用的标准版本。",
   "qaData.questions.q5.title": "实验室安全规范文档求助",
   "qaData.tags.bigData": "大数据",
   "qaData.tags.chemistry": "化学",
@@ -2313,7 +2568,8 @@ export const zhFlat = {
   "settings.2fa.confirmDisable": "确认关闭",
   "settings.2fa.confirmEnable": "确认开启",
   "settings.2fa.disable": "关闭",
-  "settings.2fa.disableHint": "请输入当前 Authenticator 中的 6 位验证码以确认关闭",
+  "settings.2fa.disableHint":
+    "请输入当前 Authenticator 中的 6 位验证码以确认关闭",
   "settings.2fa.enable": "开启",
   "settings.2fa.enter6Digit": "请输入 6 位验证码",
   "settings.2fa.hideRecoveryCodes": "收下并隐藏",
@@ -2321,8 +2577,10 @@ export const zhFlat = {
   "settings.2fa.on": "已开启",
   "settings.2fa.qrAlt": "TOTP 二维码",
   "settings.2fa.recoveryCodes": "恢复码",
-  "settings.2fa.recoveryHint": "请妥善保存这些恢复码；丢失验证器时可凭其一登录并重新设置。",
-  "settings.2fa.scanHint": "请使用 Authenticator（如 Google Authenticator / 1Password）扫码，或手动输入下方密钥。",
+  "settings.2fa.recoveryHint":
+    "请妥善保存这些恢复码；丢失验证器时可凭其一登录并重新设置。",
+  "settings.2fa.scanHint":
+    "请使用 Authenticator（如 Google Authenticator / 1Password）扫码，或手动输入下方密钥。",
   "settings.2fa.title": "双因素认证 (2FA)",
   "settings.2fa.totp": "TOTP 动态验证码",
   "settings.accountTitle": "账户操作",
@@ -2346,7 +2604,8 @@ export const zhFlat = {
   "settings.bind.title": "登录方式管理",
   "settings.bind.unbind": "解绑",
   "settings.bind.unbindFail": "解绑失败，请重试",
-  "settings.contactHint": "可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。",
+  "settings.contactHint":
+    "可填写 QQ / 微信 / GitHub 等公开联系方式，将展示在你个人主页侧边栏。",
   "settings.contactTitle": "联系方式",
   "settings.contactsUpdated": "联系方式已更新",
   "settings.email": "邮箱",
@@ -2354,7 +2613,8 @@ export const zhFlat = {
   "settings.iconPlaceholder": "图标名（选填）",
   "settings.level": "等级",
   "settings.linkNamePlaceholder": "名称（如 QQ / GitHub）",
-  "settings.localUpgradeHint": "当前为本地账户，绑定邮箱或手机号可自动升级为普通账户，解锁全部功能。",
+  "settings.localUpgradeHint":
+    "当前为本地账户，绑定邮箱或手机号可自动升级为普通账户，解锁全部功能。",
   "settings.loginRequired": "请先登录",
   "settings.loginRequiredHint": "访问此页面需要登录",
   "settings.logoutMessage": "确定要退出当前账户吗？",
@@ -2425,7 +2685,8 @@ export const zhFlat = {
   "starhope.exam.summary": "共 {count} 道题目可选用于考试",
   "starhope.exam.title": "模拟考试",
   "starhope.loginRequired.goLogin": "前往登录",
-  "starhope.loginRequired.message": "StarHope 使用 LKM 网站统一账户，请先登录后再使用学习助手。",
+  "starhope.loginRequired.message":
+    "StarHope 使用 LKM 网站统一账户，请先登录后再使用学习助手。",
   "starhope.loginRequired.title": "需要登录",
   "starhope.logout": "退出登录",
   "starhope.nav.ai": "AI 助手",
@@ -2461,102 +2722,147 @@ export const zhFlat = {
   "starhopeData.ai.defaultAgentName": "通用助手",
   "starhopeData.ai.errorPrefix": "错误：{message}",
   "starhopeData.ai.loadFail": "加载 AI 助手失败",
-  "starhopeData.ai.mockResponse": "作为你的**{name}**，关于\"{question}\"这个问题：\n\n这是一个很好的学习问题。建议从基础概念入手，逐步深入理解。\n\n> 💡 你可以继续追问具体细节。",
+  "starhopeData.ai.mockResponse":
+    '作为你的**{name}**，关于"{question}"这个问题：\n\n这是一个很好的学习问题。建议从基础概念入手，逐步深入理解。\n\n> 💡 你可以继续追问具体细节。',
   "starhopeData.ai.unknownError": "未知错误",
   "team.channelId": "频道 ID：",
   "team.clickToCopy": "点击复制",
-  "team.communities.applied.agriculture.desc": "农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。包含农学、应用生物科学、食品科学、农业工程等专业和方向。对此感兴趣的欢迎入群！",
+  "team.communities.applied.agriculture.desc":
+    "农学聚焦作物生产与遗传育种，食品科学侧重食品加工与安全控制。包含农学、应用生物科学、食品科学、农业工程等专业和方向。对此感兴趣的欢迎入群！",
   "team.communities.applied.agriculture.name": "农学与食品科学总群",
-  "team.communities.applied.chip.desc": "集成电路与半导体是技术壁垒极高、专业属性极强的一个硬核圈子，单开一群。欢迎芯片设计、晶圆制造、封装与设计、半导体、集成电路感兴趣和专业相关的人进入！",
+  "team.communities.applied.chip.desc":
+    "集成电路与半导体是技术壁垒极高、专业属性极强的一个硬核圈子，单开一群。欢迎芯片设计、晶圆制造、封装与设计、半导体、集成电路感兴趣和专业相关的人进入！",
   "team.communities.applied.chip.name": "集成电路与半导体",
-  "team.communities.applied.clinical.desc": "这里是理科迷·学术专业·医学大类·临床医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
+  "team.communities.applied.clinical.desc":
+    "这里是理科迷·学术专业·医学大类·临床医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对临床医学、麻醉学、医学影像学、眼视光医学、精神医学、放射医学、儿科学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
   "team.communities.applied.clinical.name": "临床医学院",
-  "team.communities.applied.energy.desc": "环境科学与能源科学合二为一的总群。包含环境科学、能源工程、资源循环、新型交叉学科等相关内容。对此感兴趣或专业大类的都欢迎加入！",
+  "team.communities.applied.energy.desc":
+    "环境科学与能源科学合二为一的总群。包含环境科学、能源工程、资源循环、新型交叉学科等相关内容。对此感兴趣或专业大类的都欢迎加入！",
   "team.communities.applied.energy.name": "环境与能源科学总群",
-  "team.communities.applied.engineering.desc": "工程学核心是将数学、自然科学以及经济学、社会学等应用到工农业生产中，以设计、制造和优化有用的物体、系统或结构。包含土木、机械、交通运输、安全科学与工程等。未来人员变多后工程学总群下会细分更多工程类分群，敬请期待～",
+  "team.communities.applied.engineering.desc":
+    "工程学核心是将数学、自然科学以及经济学、社会学等应用到工农业生产中，以设计、制造和优化有用的物体、系统或结构。包含土木、机械、交通运输、安全科学与工程等。未来人员变多后工程学总群下会细分更多工程类分群，敬请期待～",
   "team.communities.applied.engineering.name": "工程学总群",
-  "team.communities.applied.geoscience.desc": "这里是理科迷·学术专业·应用科学·地学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对测绘、地质、矿业、安全，科学与工程等等，感兴趣和研究的本专业学生、医学老师、地学相关从业者、科研工作者、科普工作者、科技爱好者等人员。",
+  "team.communities.applied.geoscience.desc":
+    "这里是理科迷·学术专业·应用科学·地学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对测绘、地质、矿业、安全，科学与工程等等，感兴趣和研究的本专业学生、医学老师、地学相关从业者、科研工作者、科普工作者、科技爱好者等人员。",
   "team.communities.applied.geoscience.name": "地学工程总群",
-  "team.communities.applied.ieee.desc": "IEEE是电气电子工程师学会，全球最大的专业技术组织。本群欢迎电气工程、自动化、通信工程、电子科学与技术、光与光电子等专业相关人员加入交流和讨论！",
+  "team.communities.applied.ieee.desc":
+    "IEEE是电气电子工程师学会，全球最大的专业技术组织。本群欢迎电气工程、自动化、通信工程、电子科学与技术、光与光电子等专业相关人员加入交流和讨论！",
   "team.communities.applied.ieee.name": "IEEE总群",
-  "team.communities.applied.info.desc": "ACM总群，包含计算机、互联网、软件开发、算法研究、大模型、数据处理及网络安全等专业和内容。对此感兴趣的都欢迎加入！未来也会开发更多相关内容，如编程教学、落实项目等。",
+  "team.communities.applied.info.desc":
+    "ACM总群，包含计算机、互联网、软件开发、算法研究、大模型、数据处理及网络安全等专业和内容。对此感兴趣的都欢迎加入！未来也会开发更多相关内容，如编程教学、落实项目等。",
   "team.communities.applied.info.name": "信息科学与技术总群",
-  "team.communities.applied.intro": "应用学科尚在建设中，人还很少。如果想当学科负责人，把自己专业感兴趣的内容建设好并发扬光大，欢迎联系并加入理科迷团队！理科迷需要你！",
+  "team.communities.applied.intro":
+    "应用学科尚在建设中，人还很少。如果想当学科负责人，把自己专业感兴趣的内容建设好并发扬光大，欢迎联系并加入理科迷团队！理科迷需要你！",
   "team.communities.applied.label": "应用科学",
-  "team.communities.applied.lightIndustry.desc": "这里是理科迷·学术专业·应用科学·轻工业总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对纺织、轻工工程、包装工程、香料香精技术工程、化妆品技术工程、生物质能源与材料、生物质技术与工程等等，感兴趣和研究的学生、老师、轻工从业者、科研工作者、科普工作者、科技爱好者等人员。",
+  "team.communities.applied.lightIndustry.desc":
+    "这里是理科迷·学术专业·应用科学·轻工业总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对纺织、轻工工程、包装工程、香料香精技术工程、化妆品技术工程、生物质能源与材料、生物质技术与工程等等，感兴趣和研究的学生、老师、轻工从业者、科研工作者、科普工作者、科技爱好者等人员。",
   "team.communities.applied.lightIndustry.name": "轻工业总群",
-  "team.communities.applied.medicine.desc": "这里是理科迷·学术专业·医学大类·医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医学、临床医学、药学、护理系、口腔医学、影像学、麻醉学、法医学感兴趣和研究的医学生、教师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
+  "team.communities.applied.medicine.desc":
+    "这里是理科迷·学术专业·医学大类·医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医学、临床医学、药学、护理系、口腔医学、影像学、麻醉学、法医学感兴趣和研究的医学生、教师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
   "team.communities.applied.medicine.name": "医学总部",
-  "team.communities.applied.tcm.desc": "这里是理科迷·学术专业·医学大类·中医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医基础理论、中医诊断学、中医内科学、中医外科学、中医骨伤科学、中医妇科学、中医儿科学、中医五官科学、针灸推拿学、民族医学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
+  "team.communities.applied.tcm.desc":
+    "这里是理科迷·学术专业·医学大类·中医学总群内容讨论交流群，是【腾讯物理部落】官方群之一，欢迎各对中医基础理论、中医诊断学、中医内科学、中医外科学、中医骨伤科学、中医妇科学、中医儿科学、中医五官科学、针灸推拿学、民族医学等等，感兴趣和研究的医学生、医学老师、医疗从业者、科研工作者、科普工作者、科技爱好者等人员。",
   "team.communities.applied.tcm.name": "中医学院",
-  "team.communities.basic.biology.desc": "生命学科研究领域十分广泛，包括生物学、医学、农学、环境科学等多个分支。目前人员较少，但非常聚集，后续宣传到位后医学会进行单开。",
+  "team.communities.basic.biology.desc":
+    "生命学科研究领域十分广泛，包括生物学、医学、农学、环境科学等多个分支。目前人员较少，但非常聚集，后续宣传到位后医学会进行单开。",
   "team.communities.basic.biology.name": "生命学科",
-  "team.communities.basic.chemistry.desc": "对化学感兴趣或是专业相关人员，如化学、应用化学、化学生物学、分子科学与工程、能源科学、分子测量学与技术、资源化学等。化学爱好者们可以共同探讨，虽然人数较少，大多数水平较高的很忙，但基本上有求必应。",
+  "team.communities.basic.chemistry.desc":
+    "对化学感兴趣或是专业相关人员，如化学、应用化学、化学生物学、分子科学与工程、能源科学、分子测量学与技术、资源化学等。化学爱好者们可以共同探讨，虽然人数较少，大多数水平较高的很忙，但基本上有求必应。",
   "team.communities.basic.chemistry.name": "化学",
-  "team.communities.basic.earth.desc": "地球科学是综合性学科，涵盖多个基础学科和交叉领域。主要探讨地球系统（大气圈、水圈、岩石圈、生物圈和日地空间）的过程与变化及其相互作用。相关专业：地质学、地球物理学、地球化学、地理学、大气科学、海洋科学等。",
+  "team.communities.basic.earth.desc":
+    "地球科学是综合性学科，涵盖多个基础学科和交叉领域。主要探讨地球系统（大气圈、水圈、岩石圈、生物圈和日地空间）的过程与变化及其相互作用。相关专业：地质学、地球物理学、地球化学、地理学、大气科学、海洋科学等。",
   "team.communities.basic.earth.name": "地球科学总群",
-  "team.communities.basic.intro": "自然/基础学科是万物根本，应用学科从此生根发芽延伸到诸多领域。欢迎对基础学科感兴趣的\"理科迷\"们加入！",
+  "team.communities.basic.intro":
+    '自然/基础学科是万物根本，应用学科从此生根发芽延伸到诸多领域。欢迎对基础学科感兴趣的"理科迷"们加入！',
   "team.communities.basic.label": "自然/基础学科中心群",
-  "team.communities.basic.literature.desc": "刚成立的新群，主要是给群里面对于文学感兴趣的小伙伴们一个讨论的地方。可以在群里面讨论文学作品、赏析经典、构思文学创作。那些满心欢喜期待文学群的人已经有了着落，欢迎大家加入！",
+  "team.communities.basic.literature.desc":
+    "刚成立的新群，主要是给群里面对于文学感兴趣的小伙伴们一个讨论的地方。可以在群里面讨论文学作品、赏析经典、构思文学创作。那些满心欢喜期待文学群的人已经有了着落，欢迎大家加入！",
   "team.communities.basic.literature.name": "文学",
-  "team.communities.basic.math.desc": "对数学感兴趣或专业相关人员，在这里数学爱好者们可以共同探讨喜欢的数学知识和前沿相关内容。总体活跃，水平在线，欢迎大家加入学习、探讨和聊天！",
+  "team.communities.basic.math.desc":
+    "对数学感兴趣或专业相关人员，在这里数学爱好者们可以共同探讨喜欢的数学知识和前沿相关内容。总体活跃，水平在线，欢迎大家加入学习、探讨和聊天！",
   "team.communities.basic.math.name": "数学",
-  "team.communities.basic.physics.desc": "对物理学与天文学感兴趣或专业相关人员，如物理学、应用物理学、声学、系统科学与工程、量子科学、天体物理、天体测量与天体力学等。群水平极其在线，大家虽然都很忙显得冷清，但群里面的文件和知识储备相当充足，有问题一定有人回答。",
+  "team.communities.basic.physics.desc":
+    "对物理学与天文学感兴趣或专业相关人员，如物理学、应用物理学、声学、系统科学与工程、量子科学、天体物理、天体测量与天体力学等。群水平极其在线，大家虽然都很忙显得冷清，但群里面的文件和知识储备相当充足，有问题一定有人回答。",
   "team.communities.basic.physics.name": "物理学&天文学",
-  "team.communities.basic.social.desc": "主要有哲学、政治、历史、经济和法律等相关内容，意识形态主要集中为马列毛主义，鼓励学习和接触、理论和实践于现实。对此感兴趣的知识分子、工人、同志、老师、研究者或爱好者等群体均可加入。",
+  "team.communities.basic.social.desc":
+    "主要有哲学、政治、历史、经济和法律等相关内容，意识形态主要集中为马列毛主义，鼓励学习和接触、理论和实践于现实。对此感兴趣的知识分子、工人、同志、老师、研究者或爱好者等群体均可加入。",
   "team.communities.basic.social.name": "社会科学",
-  "team.communities.events.checkin.desc": "自律打卡和自习室也是我们常驻的活动，欢迎大家一起在这里保持自律、健康和良好的作息习惯，一起学习、交流和探讨。",
+  "team.communities.events.checkin.desc":
+    "自律打卡和自习室也是我们常驻的活动，欢迎大家一起在这里保持自律、健康和良好的作息习惯，一起学习、交流和探讨。",
   "team.communities.events.checkin.name": "自律打卡与自习室",
   "team.communities.events.label": "常驻活动板块分群",
-  "team.communities.events.summerCompetition.desc": "竞赛活动的筹备和通知群，每到假期时都会有不同竞赛在这个群里面公布。如果对竞赛活动感兴趣，可以加入等待通知。",
+  "team.communities.events.summerCompetition.desc":
+    "竞赛活动的筹备和通知群，每到假期时都会有不同竞赛在这个群里面公布。如果对竞赛活动感兴趣，可以加入等待通知。",
   "team.communities.events.summerCompetition.name": "夏日竞赛活动群",
-  "team.communities.general.intro": "不属于特定专业、不限工作种类、不限年级阶段、不限水平，所有人都可以加入的大家庭！日常吹水聊天，遇到问题时大家积极讨论，欢迎分享学习和生活～",
+  "team.communities.general.intro":
+    "不属于特定专业、不限工作种类、不限年级阶段、不限水平，所有人都可以加入的大家庭！日常吹水聊天，遇到问题时大家积极讨论，欢迎分享学习和生活～",
   "team.communities.general.label": "爱好者总群",
-  "team.communities.general.oneGroup.desc": "这是理科迷·中心群·交流群，【腾讯物理部落】官方群之一，是非常大的总群，欢迎各对理工科感兴趣和研究的学生、教师、工程师、各行各业的从业者、科普工作者、科研工作者等等。在这里交流学术专业、科普知识、学习生活、思想文化等相关话题，共同学习进步，一起成长～",
+  "team.communities.general.oneGroup.desc":
+    "这是理科迷·中心群·交流群，【腾讯物理部落】官方群之一，是非常大的总群，欢迎各对理工科感兴趣和研究的学生、教师、工程师、各行各业的从业者、科普工作者、科研工作者等等。在这里交流学术专业、科普知识、学习生活、思想文化等相关话题，共同学习进步，一起成长～",
   "team.communities.general.oneGroup.name": "一群",
-  "team.communities.general.qqChannel.desc": "QQ官方频道，用于缓解QQ社群庞大的压力，可以用来提问问题，以及分享自己每天生活的日常和打卡～～",
+  "team.communities.general.qqChannel.desc":
+    "QQ官方频道，用于缓解QQ社群庞大的压力，可以用来提问问题，以及分享自己每天生活的日常和打卡～～",
   "team.communities.general.qqChannel.name": "QQ频道",
   "team.communities.general.twoGroup.name": "二群",
-  "team.communities.grades.intro": "组织里有各个不同学习阶段的成员，为了大家能够具体聊得开来，分有初中和高中阶段，大学可按照自己所需加入专业群。",
-  "team.communities.grades.junior.desc": "初中群的孩子们相当活跃，很有意思、很好玩，是一群非常可爱的娃娃们，而且水平有一些能够远超高中生。如果和他们有所探讨，他们一定会很乐意回应。组织会为初中生群体做问题答疑解析、中考交流以及辅导工作，帮助学生面对人生中第一次分流考试。",
+  "team.communities.grades.intro":
+    "组织里有各个不同学习阶段的成员，为了大家能够具体聊得开来，分有初中和高中阶段，大学可按照自己所需加入专业群。",
+  "team.communities.grades.junior.desc":
+    "初中群的孩子们相当活跃，很有意思、很好玩，是一群非常可爱的娃娃们，而且水平有一些能够远超高中生。如果和他们有所探讨，他们一定会很乐意回应。组织会为初中生群体做问题答疑解析、中考交流以及辅导工作，帮助学生面对人生中第一次分流考试。",
   "team.communities.grades.junior.name": "初中",
-  "team.communities.grades.junior2.desc": "初中一群活跃度太高，再开上线会影响现有舒适程度，所以欢迎大家进入初中二群！群很新，但群里面的管理员相当尽责，欢迎各位小伙伴们进群玩。",
+  "team.communities.grades.junior2.desc":
+    "初中一群活跃度太高，再开上线会影响现有舒适程度，所以欢迎大家进入初中二群！群很新，但群里面的管理员相当尽责，欢迎各位小伙伴们进群玩。",
   "team.communities.grades.junior2.name": "初中二群",
   "team.communities.grades.label": "年级分段分群",
-  "team.communities.grades.senior.desc": "高中群里的孩子会有些严肃，更加专注于学业，讨论高中生活以及高考相关内容。组织会为高中群体做专业推荐、学业规划和高考真题解析。",
+  "team.communities.grades.senior.desc":
+    "高中群里的孩子会有些严肃，更加专注于学业，讨论高中生活以及高考相关内容。组织会为高中群体做专业推荐、学业规划和高考真题解析。",
   "team.communities.grades.senior.name": "高中（一群已满）",
-  "team.communities.grades.senior2.desc": "目前高中一群的文件夹已满，有分享文件需求可去二群。二群虽然人少，但基本上都是活跃人员，二群也在建设当中，欢迎大家共建共享！",
+  "team.communities.grades.senior2.desc":
+    "目前高中一群的文件夹已满，有分享文件需求可去二群。二群虽然人少，但基本上都是活跃人员，二群也在建设当中，欢迎大家共建共享！",
   "team.communities.grades.senior2.name": "高中二群",
-  "team.communities.grades.senior3.desc": "高中三群极具特色，成熟积极的管理团队经常在线，群里面也很活跃。对于想要陪伴考试、分享高中生活都极其合适，欢迎大家加入！",
+  "team.communities.grades.senior3.desc":
+    "高中三群极具特色，成熟积极的管理团队经常在线，群里面也很活跃。对于想要陪伴考试、分享高中生活都极其合适，欢迎大家加入！",
   "team.communities.grades.senior3.name": "高中三群",
-  "team.communities.groups.academic.desc": "欢迎有学术想法、想走上科研道路，或已走上科研道路的群体。设想未来开办学术讲座及同专业学术交流。但因该群现专业复杂，配套暂未完善，建议各位加入相应的专业分群。",
+  "team.communities.groups.academic.desc":
+    "欢迎有学术想法、想走上科研道路，或已走上科研道路的群体。设想未来开办学术讲座及同专业学术交流。但因该群现专业复杂，配套暂未完善，建议各位加入相应的专业分群。",
   "team.communities.groups.academic.name": "学术交流群",
-  "team.communities.groups.intro": "欢迎各路人员——科普工作者、科研工作者、教育工作者、各行各业的工程师、企业等以及各社会组织加入。未来立志于科研转化、项目促成以及孵化等。按照不同想法或行业分类，给大家更好的探讨空间。",
+  "team.communities.groups.intro":
+    "欢迎各路人员——科普工作者、科研工作者、教育工作者、各行各业的工程师、企业等以及各社会组织加入。未来立志于科研转化、项目促成以及孵化等。按照不同想法或行业分类，给大家更好的探讨空间。",
   "team.communities.groups.label": "群体分类分群",
-  "team.communities.groups.language.desc": "本群主要为语言类交流与学习，如英语、俄语、德语等文献阅读所需语言知识储备，群变大后会按语言精细分。欢迎国际生、留学生、外国友人、未来想做翻译及外交等群体，未来用于国内外科技交流。",
+  "team.communities.groups.language.desc":
+    "本群主要为语言类交流与学习，如英语、俄语、德语等文献阅读所需语言知识储备，群变大后会按语言精细分。欢迎国际生、留学生、外国友人、未来想做翻译及外交等群体，未来用于国内外科技交流。",
   "team.communities.groups.language.name": "国际科技交流语言学习社",
-  "team.communities.hobby.chess.desc": "讨论传统棋类、竞技棋类、休闲棋类和其他棋类，包括不限于象棋、围棋、五子棋、跳棋、飞行棋等。也欢迎讨论下棋技巧、学问等，为各位棋友提供切磋和讨论场地。同时关于牌类也有扑克牌类、中国传统纸牌类、现代集换式卡牌（TCG）与桌游卡牌、传统骨牌类等，感兴趣的棋友牌友欢迎加入！",
+  "team.communities.hobby.chess.desc":
+    "讨论传统棋类、竞技棋类、休闲棋类和其他棋类，包括不限于象棋、围棋、五子棋、跳棋、飞行棋等。也欢迎讨论下棋技巧、学问等，为各位棋友提供切磋和讨论场地。同时关于牌类也有扑克牌类、中国传统纸牌类、现代集换式卡牌（TCG）与桌游卡牌、传统骨牌类等，感兴趣的棋友牌友欢迎加入！",
   "team.communities.hobby.chess.name": "棋牌社",
-  "team.communities.hobby.cooking.desc": "料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。",
+  "team.communities.hobby.cooking.desc":
+    "料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。",
   "team.communities.hobby.cooking.name": "料理学社",
-  "team.communities.hobby.game.desc": "主要讨论游戏相关内容，如主机PS、Xbox、Switch；PC端Steam、Epic Games Store等，同时包括网络游戏如米哈游开放大世界等。主要是给大家一个讨论游戏话题的区域，结交游戏好友，游戏组局～",
+  "team.communities.hobby.game.desc":
+    "主要讨论游戏相关内容，如主机PS、Xbox、Switch；PC端Steam、Epic Games Store等，同时包括网络游戏如米哈游开放大世界等。主要是给大家一个讨论游戏话题的区域，结交游戏好友，游戏组局～",
   "team.communities.hobby.game.name": "游戏社",
-  "team.communities.hobby.intro": "群友各种兴趣爱好组成的社团。小伙伴们如果有所感兴趣欢迎加入一起玩，每逢寒暑假群里面都会有活动。",
+  "team.communities.hobby.intro":
+    "群友各种兴趣爱好组成的社团。小伙伴们如果有所感兴趣欢迎加入一起玩，每逢寒暑假群里面都会有活动。",
   "team.communities.hobby.label": "兴趣板块社团",
-  "team.communities.hobby.music.desc": "本群不限理科迷本体，同时欢迎其他人或专业音乐爱好者在此讨论乐理与声乐基础、乐器交流与教学、音乐创作以及音乐赏析等相关话题。同时本群将组织理科迷联欢晚会和各类活动筹备！给大家更多更好的展示舞台～～",
+  "team.communities.hobby.music.desc":
+    "本群不限理科迷本体，同时欢迎其他人或专业音乐爱好者在此讨论乐理与声乐基础、乐器交流与教学、音乐创作以及音乐赏析等相关话题。同时本群将组织理科迷联欢晚会和各类活动筹备！给大家更多更好的展示舞台～～",
   "team.communities.hobby.music.name": "土鳖音乐社",
-  "team.communities.hobby.rhythm.desc": "料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。",
+  "team.communities.hobby.rhythm.desc":
+    "料理学社最主要是探讨做饭和料理学相关化学反应，供大家交流厨艺和展示自己做的饭菜。未来还可以的话做些教做饭的直播和教程。",
   "team.communities.hobby.rhythm.name": "二次元的音游社",
-  "team.communities.hobby.scifi.desc": "对于科技的热爱与追求从未停止过，人们从未停止对科幻世界的想象——在科技极度发达的时代世界究竟是什么样子？欢迎在这讨论你的小巧思和科幻文学创作！加入科幻社吧，这是计划的一部分！",
+  "team.communities.hobby.scifi.desc":
+    "对于科技的热爱与追求从未停止过，人们从未停止对科幻世界的想象——在科技极度发达的时代世界究竟是什么样子？欢迎在这讨论你的小巧思和科幻文学创作！加入科幻社吧，这是计划的一部分！",
   "team.communities.hobby.scifi.name": "科幻文学社",
-  "team.communities.legacy.intro": "这个群目前换不了群主，也就是说无法更换新的管理团队，所以有点远古和落寞。但纪念意义很强，可以说2014年理科迷兴起就是靠着物理部落的宣传。",
+  "team.communities.legacy.intro":
+    "这个群目前换不了群主，也就是说无法更换新的管理团队，所以有点远古和落寞。但纪念意义很强，可以说2014年理科迷兴起就是靠着物理部落的宣传。",
   "team.communities.legacy.label": "原始老群",
   "team.communities.legacy.physicsTribe.name": "物理部落",
   "team.copied": "已复制！",
   "team.members.julyA.desc": "网站开发的主要牛马",
   "team.members.julyA.dream": "以后不要当牛马",
-  "team.members.julyAhong.desc": "待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～",
-  "team.members.julyAleng.desc": "某2数学专业本科生，数学爱好者，爱好方向是分析学和数论",
+  "team.members.julyAhong.desc":
+    "待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～",
+  "team.members.julyAleng.desc":
+    "某2数学专业本科生，数学爱好者，爱好方向是分析学和数论",
   "team.members.julyAleng.dream": "梦想：保研对面那个华一继续研究数学",
   "team.members.julyAleng.quote": "—— 万物皆数",
   "team.members.julyBadragon.desc": "关注理科迷谢谢喵",
@@ -2565,12 +2871,14 @@ export const zhFlat = {
   "team.members.julyCaotiling.desc": "一个不存在,但是希望祝福大家的人.",
   "team.members.julyCaotiling.dream": "梦想：让大家开心,到达知识的Sekai边缘.",
   "team.members.julyCaotiling.quote": "—— We must know,we will know.",
-  "team.members.julyChi.desc": "辽宁省某省重点高中毕业，26年报考目标东北地区985高校",
+  "team.members.julyChi.desc":
+    "辽宁省某省重点高中毕业，26年报考目标东北地区985高校",
   "team.members.julyChi.dream": "梦想：做一名大国工匠",
   "team.members.julyChi.quote": "—— 干惊天动地事，做隐姓埋名人",
   "team.members.julyDaxiong.desc": "什么都好奇一点",
   "team.members.julyDaxiong.dream": "梦想：理想很多",
-  "team.members.julyDili.desc": "可以叫杨向青，化学竞赛生，历史最高全区第七名，中学生作文大赛最高国排347，喜欢研究化学与文学",
+  "team.members.julyDili.desc":
+    "可以叫杨向青，化学竞赛生，历史最高全区第七名，中学生作文大赛最高国排347，喜欢研究化学与文学",
   "team.members.julyDili.dream": "梦想：成为一名优秀的教师",
   "team.members.julyDili.quote": "—— 真正的大师，永远都怀着一颗学徒的心",
   "team.members.julyEcho.desc": "解析数论爱好者",
@@ -2579,8 +2887,10 @@ export const zhFlat = {
   "team.members.julyHubingyang.desc": "男， 23 岁，本科学历……",
   "team.members.julyHubingyang.dream": "梦想：理想是成为一名数学家",
   "team.members.julyHubingyang.quote": "—— 书山有路勤为径，学海无涯苦作舟。",
-  "team.members.julyJimi.desc": "新西兰11年级在读留学生，主修理科，英语弱项。目前学的理科是物理生物数学，基本知识水平也就高中生水平吧，但是我会努力提升自己的！喜欢写点自己的东西，有问题感谢大家指正！喜欢自己总结笔记等等，希望能对大家有所帮助！喜欢发一些自己的日常或者搞抽象什么的，有的时候会携带一定量的负面情绪... 感谢大家！！！",
-  "team.members.julyJimi.dream": "梦想：今年把明年的课学完，明年得吃奖学金，争取考上奥大？",
+  "team.members.julyJimi.desc":
+    "新西兰11年级在读留学生，主修理科，英语弱项。目前学的理科是物理生物数学，基本知识水平也就高中生水平吧，但是我会努力提升自己的！喜欢写点自己的东西，有问题感谢大家指正！喜欢自己总结笔记等等，希望能对大家有所帮助！喜欢发一些自己的日常或者搞抽象什么的，有的时候会携带一定量的负面情绪... 感谢大家！！！",
+  "team.members.julyJimi.dream":
+    "梦想：今年把明年的课学完，明年得吃奖学金，争取考上奥大？",
   "team.members.julyJimi.quote": "—— 注意注意超大区来袭",
   "team.members.julyJoshua.desc": "一位数学爱好者，想让所有人都能轻松学上数学",
   "team.members.julyKefenshulie.desc": "平凡的ICPCer",
@@ -2588,23 +2898,29 @@ export const zhFlat = {
   "team.members.julyKomoyume.dream": "梦想：科技改变世界",
   "team.members.julyKomoyume.quote": "—— 致敬对这个世界满怀期待的你",
   "team.members.julyLichlet.desc": "大一数学系学生",
-  "team.members.julyLiunian.desc": "15岁。中考已过，衔接完毕。文理均衡，韧性较强。求友共进。",
-  "team.members.julyLiunian.dream": "梦想：目标国防科大，以己力助理科迷做大做强√",
+  "team.members.julyLiunian.desc":
+    "15岁。中考已过，衔接完毕。文理均衡，韧性较强。求友共进。",
+  "team.members.julyLiunian.dream":
+    "梦想：目标国防科大，以己力助理科迷做大做强√",
   "team.members.julyLiunian.quote": "—— 且行且忘且随风，且行且看且从容",
-  "team.members.julyMk.desc": "10后，叫我MK就行。正在学习日语，喜欢数学（不是大佬喵）。最喜欢的动漫角色是《魔女之旅》的伊蕾娜。B站UID:1929696645",
+  "team.members.julyMk.desc":
+    "10后，叫我MK就行。正在学习日语，喜欢数学（不是大佬喵）。最喜欢的动漫角色是《魔女之旅》的伊蕾娜。B站UID:1929696645",
   "team.members.julyMk.dream": "梦想：拥有百万粉丝的UP",
   "team.members.julyMk.quote": "—— 你应当……ネバー•ギブ•アップ！",
   "team.members.julyMoran.desc": "双非物理，目前正跑路中",
   "team.members.julyMoran.dream": "梦想：我必将大雪深埋",
   "team.members.julyMoran.quote": "—— 卧薪尝胆三千日，大雪深埋终成金",
-  "team.members.julyO.desc": "中国科学院国家天文台博士，研究方向：引力波理论、黑洞物理、广义相对论",
+  "team.members.julyO.desc":
+    "中国科学院国家天文台博士，研究方向：引力波理论、黑洞物理、广义相对论",
   "team.members.julyO.dream": "梦想：能做自己喜欢的研究",
   "team.members.julyO.quote": "—— 学习过去，享受现在，期待未来",
   "team.members.julyPlain.desc": "吃喝拉撒",
   "team.members.julyPlain.dream": "梦想：成为verity",
   "team.members.julyPlain.quote": "—— 哎呦我去",
-  "team.members.julyQianxun.desc": "19年初二时加入理科迷，现在我是一个待打工人，虽然在过去也是很饱含着梦想，但不是每个人都能当科学家的啦～˶>ᗜ<˶无论是过去的哥哥姐姐们，还是现在比我小的弟弟妹妹们，我都不希望我的遗憾能够出现在他们身上，也希望在未来更多的人能够喜欢理工科，不会像我一样轻易的放弃他们。",
-  "team.members.julyQianxun.dream": "梦想：未来的理想是让理科迷能够做大做强，能够实现它的最终目标，践行宗旨。但最眼前的还是要实行短期目标，建设一个成熟完整的线上管理团队。",
+  "team.members.julyQianxun.desc":
+    "19年初二时加入理科迷，现在我是一个待打工人，虽然在过去也是很饱含着梦想，但不是每个人都能当科学家的啦～˶>ᗜ<˶无论是过去的哥哥姐姐们，还是现在比我小的弟弟妹妹们，我都不希望我的遗憾能够出现在他们身上，也希望在未来更多的人能够喜欢理工科，不会像我一样轻易的放弃他们。",
+  "team.members.julyQianxun.dream":
+    "梦想：未来的理想是让理科迷能够做大做强，能够实现它的最终目标，践行宗旨。但最眼前的还是要实行短期目标，建设一个成熟完整的线上管理团队。",
   "team.members.julyQinghan.desc": "保密awa",
   "team.members.julyQinghan.dream": "梦想：无义务告知",
   "team.members.julyQinghan.quote": "—— WELCOME TO OUR KINGDOM ！",
@@ -2613,18 +2929,22 @@ export const zhFlat = {
   "team.members.julyQishui.desc": "慕尼黑大学流体力学专业大一在读学生",
   "team.members.julyQishui.dream": "梦想：为中国流体出一份力",
   "team.members.julyQishui.quote": "—— 努力总会有收获",
-  "team.members.julyRobin.desc": "待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～",
+  "team.members.julyRobin.desc":
+    "待填写，这位还是学生在沉淀当中（让我们期待他的成长吧～",
   "team.members.julySanchishui.desc": "化学，爱爱爱它！（化学的狂热热爱者）",
   "team.members.julySanqi.desc": "妄立誓则祸近",
   "team.members.julySanqi.dream": "梦想：养一只小猫",
   "team.members.julyShiyi.desc": "经济类相关本科毕业，兴趣爱好涉猎广泛。",
   "team.members.julySuibian.desc": "一个想学会所有感兴趣的东西的懒鬼。",
   "team.members.julySuibian.dream": "梦想：暂时保密",
-  "team.members.julySuibian.quote": "—— 前进吧，就算到不了尽头，前进本身就有意义",
-  "team.members.julySun.desc": "用好手中的技术，服务更多有需要的人。制作组小朋友一枚。",
+  "team.members.julySuibian.quote":
+    "—— 前进吧，就算到不了尽头，前进本身就有意义",
+  "team.members.julySun.desc":
+    "用好手中的技术，服务更多有需要的人。制作组小朋友一枚。",
   "team.members.julySun.dream": "梦想：多提升学历，多认识点人。",
   "team.members.julySun.quote": "—— 无人扶我青云志，我自踏雪至山巅。",
-  "team.members.julyTetro.desc": "有机化学方向研究生在读，前化学竞赛生。网名是河豚毒素，一个结构优雅的有机小分子，全合成史上的经典之作（虽然我本人其实是做方法学的）。私下大概算是不太重度的二次元，附庸风雅的艺术爱好者。",
+  "team.members.julyTetro.desc":
+    "有机化学方向研究生在读，前化学竞赛生。网名是河豚毒素，一个结构优雅的有机小分子，全合成史上的经典之作（虽然我本人其实是做方法学的）。私下大概算是不太重度的二次元，附庸风雅的艺术爱好者。",
   "team.members.julyUpogg.desc": "学生",
   "team.members.julyUpogg.quote": "—— 我以全部知识作为我的领域",
   "team.members.julyWen.desc": "打摆子的好选手",
@@ -2632,10 +2952,14 @@ export const zhFlat = {
   "team.members.julyXia.desc": "是一只小夏",
   "team.members.julyXia.dream": "梦想：成为一本百科全书",
   "team.members.julyXia.quote": "—— 敬不完美的明天",
-  "team.members.julyXinghe.desc": "高中OIer+物化政er，蒟蒻一枚（欢迎关注洛谷wang12345566），因出了一些初中毒瘤题而误闯天家",
-  "team.members.julyXinghe.dream": "梦想：为大家带来更多的tricks与灵感，同时膜拜更多大佬",
-  "team.members.julyXinghe.quote": "—— 没有站在光里的人，也有自己的闪光点——from hjh in luogu",
-  "team.members.julyXingran.desc": "公益科普产业共同体成员，曙星科普社社长。从事公益科普事业三年余。曾领导主办龙年科幻大赛、第一届地月奖科幻征文，曾参与协办第二、三、四、五届寻翊奖科普征文，与up非村科普墙联创地质锤等优秀科普视频。",
+  "team.members.julyXinghe.desc":
+    "高中OIer+物化政er，蒟蒻一枚（欢迎关注洛谷wang12345566），因出了一些初中毒瘤题而误闯天家",
+  "team.members.julyXinghe.dream":
+    "梦想：为大家带来更多的tricks与灵感，同时膜拜更多大佬",
+  "team.members.julyXinghe.quote":
+    "—— 没有站在光里的人，也有自己的闪光点——from hjh in luogu",
+  "team.members.julyXingran.desc":
+    "公益科普产业共同体成员，曙星科普社社长。从事公益科普事业三年余。曾领导主办龙年科幻大赛、第一届地月奖科幻征文，曾参与协办第二、三、四、五届寻翊奖科普征文，与up非村科普墙联创地质锤等优秀科普视频。",
   "team.members.julyXingran.dream": "梦想：传播科学文化",
   "team.members.julyXingran.quote": "—— 马克思说过，科学技术是生产力。",
   "team.members.julyYanzimo.desc": "汉语言文学专业出身",
@@ -2647,15 +2971,19 @@ export const zhFlat = {
   "team.members.julyYouzhi.quote": "—— 且停且忘且随风，且行且看且从容",
   "team.members.julyYouzhu.desc": "可能是人（未必？）",
   "team.members.julyYouzhu.quote": "—— 活着大于死了",
-  "team.members.julyYuli.desc": "像七月的风一样，带着几分热忱与温柔。作为群务组组长，我致力于为大家打理好群里的\"一草一木\"，让这里成为大家交流时最舒适的角落。",
+  "team.members.julyYuli.desc":
+    '像七月的风一样，带着几分热忱与温柔。作为群务组组长，我致力于为大家打理好群里的"一草一木"，让这里成为大家交流时最舒适的角落。',
   "team.members.julyYuli.quote": "—— 群务无小事，用心皆风景",
-  "team.members.julyYuye.desc": "高一在读，3年群管理经验，6岁开始接触中医学。中医世家",
+  "team.members.julyYuye.desc":
+    "高一在读，3年群管理经验，6岁开始接触中医学。中医世家",
   "team.members.julyYuye.dream": "梦想：有一份稳定工作",
   "team.members.julyYuye.quote": "—— 追风赶路莫停留，平芜尽处是春山。",
   "team.members.julyZhishui.desc": "努力学习中～",
-  "team.members.keke.desc": "2014年8月1日，可琪创立了最初群聊——〔理科迷宅基地〕。他是理科迷最初的创始者，群里现有很多现有事物和框架，都是在他所做的事情之上建立起来的。可琪创立了腾讯「物理部落」和微信公众号，吸引了大量科技爱好者；组建了最初的理科迷分群体系和七月团队管理架构。2018年因学业原因逐渐淡出，但理科迷的一切，都源于他的开创。",
+  "team.members.keke.desc":
+    "2014年8月1日，可琪创立了最初群聊——〔理科迷宅基地〕。他是理科迷最初的创始者，群里现有很多现有事物和框架，都是在他所做的事情之上建立起来的。可琪创立了腾讯「物理部落」和微信公众号，吸引了大量科技爱好者；组建了最初的理科迷分群体系和七月团队管理架构。2018年因学业原因逐渐淡出，但理科迷的一切，都源于他的开创。",
   "team.members.keke.dream": "梦想：让知识流入千家万户",
-  "team.members.keke.quote": "「可琪现在不在，但他确确实实是理科迷最初的创始者。」",
+  "team.members.keke.quote":
+    "「可琪现在不在，但他确确实实是理科迷最初的创始者。」",
   "team.roles.advisorMember": "顾问组成员",
   "team.roles.affairsGroupLeader": "群务组组长",
   "team.roles.affairsMember": "群务组成员",
@@ -2679,11 +3007,14 @@ export const zhFlat = {
   "team.subGroups.affairsLanguage.label": "国际科技交流语言学习社",
   "team.subGroups.affairsMusic.label": "兴趣-土鳖音乐社",
   "team.subGroups.affairsSocial.label": "社会科学",
-  "team.subGroups.newsProduction.desc": "负责各平台、各活动关于宣传相关的制作，如有UI设计，海报制作，可视化等等，对于美工会有一定的要求，适合有相应能力的人加入。",
+  "team.subGroups.newsProduction.desc":
+    "负责各平台、各活动关于宣传相关的制作，如有UI设计，海报制作，可视化等等，对于美工会有一定的要求，适合有相应能力的人加入。",
   "team.subGroups.newsProduction.label": "制作组",
-  "team.subGroups.newsPromotion.desc": "负责各平台的宣传以及持续的运营，外交打理，以及处理合作相关事宜，需要成员具备一定的专业知识，以及公关，并需要具备两种以上语言能力。",
+  "team.subGroups.newsPromotion.desc":
+    "负责各平台的宣传以及持续的运营，外交打理，以及处理合作相关事宜，需要成员具备一定的专业知识，以及公关，并需要具备两种以上语言能力。",
   "team.subGroups.newsPromotion.label": "宣传组",
-  "team.subGroups.newsScience.desc": "负责各平台的科普征集，科普传播，同时也需要成员具有一定的专业知识，且知道如何做出有趣的科普内容，并和专业委员会成员有所交流，而关于项目组的发展则交由科普组进行落实。",
+  "team.subGroups.newsScience.desc":
+    "负责各平台的科普征集，科普传播，同时也需要成员具有一定的专业知识，且知道如何做出有趣的科普内容，并和专业委员会成员有所交流，而关于项目组的发展则交由科普组进行落实。",
   "team.subGroups.newsScience.label": "科普组",
   "team.subGroups.profBiology.label": "生物组",
   "team.subGroups.profChemistry.label": "化学组",
@@ -2691,9 +3022,11 @@ export const zhFlat = {
   "team.subGroups.profMath.label": "数学组",
   "team.subGroups.profMedicine.label": "医学组-中医",
   "team.subGroups.profPhysics.label": "物理组",
-  "team.subGroups.projScience.desc": "负责各平台的科普征集与传播，将专业知识转化为通俗易懂的科普内容，促进科学知识普及。",
+  "team.subGroups.projScience.desc":
+    "负责各平台的科普征集与传播，将专业知识转化为通俗易懂的科普内容，促进科学知识普及。",
   "team.subGroups.projScience.label": "科普项目组",
-  "team.subGroups.projTextbooks.desc": "致力于编写高质量的理科教材，整合知识体系，为学习者提供系统化的学习资源。",
+  "team.subGroups.projTextbooks.desc":
+    "致力于编写高质量的理科教材，整合知识体系，为学习者提供系统化的学习资源。",
   "team.subGroups.projTextbooks.label": "教材项目组",
   "theme.color": "主题色",
   "theme.dark": "暗色",
@@ -2708,7 +3041,8 @@ export const zhFlat = {
   "treehole.audio.openTitle": "开启白噪音",
   "treehole.audio.rainLabel": "白噪音·雨声",
   "treehole.backToSite": "返回主站",
-  "treehole.backup.desc": "导出全部本地数据为 JSON 文件，可在本机或其他浏览器导入恢复。",
+  "treehole.backup.desc":
+    "导出全部本地数据为 JSON 文件，可在本机或其他浏览器导入恢复。",
   "treehole.backup.exportBtn": "⬇️ 导出备份",
   "treehole.backup.exported": "已导出备份文件 ✅",
   "treehole.backup.importBtn": "⬆️ 导入备份",
@@ -2766,7 +3100,8 @@ export const zhFlat = {
   "treehole.messages.blockedHint": "已屏蔽该陌生人，消息已停止。",
   "treehole.messages.blockedMsg": "已屏蔽该陌生人",
   "treehole.messages.clear": "清空",
-  "treehole.messages.confirmBlock": "确定屏蔽该陌生人？屏蔽后将无法收到新消息。",
+  "treehole.messages.confirmBlock":
+    "确定屏蔽该陌生人？屏蔽后将无法收到新消息。",
   "treehole.messages.confirmClear": "确定清空此对话的全部消息？",
   "treehole.messages.confirmDelete": "确定删除此对话？",
   "treehole.messages.conversations": "对话 ({count})",
@@ -2820,7 +3155,8 @@ export const zhFlat = {
   "treehole.mine.statusRejected": "已驳回",
   "treehole.mine.statusScheduled": "定时发布",
   "treehole.mine.statusSealed": "已封存",
-  "treehole.mine.subtitle": "这里展示你发布的所有信件、收藏与草稿，数据保存在本地浏览器。",
+  "treehole.mine.subtitle":
+    "这里展示你发布的所有信件、收藏与草稿，数据保存在本地浏览器。",
   "treehole.mine.tabDrafts": "本地草稿",
   "treehole.mine.tabFavs": "收藏夹",
   "treehole.mine.tabLetters": "我的信件",
@@ -2873,7 +3209,8 @@ export const zhFlat = {
   "treehole.random.poolHint": "共 {count} 封公开信件等待被看见",
   "treehole.random.poolHint2": "共有 {count} 封公开信件等待相遇",
   "treehole.random.replyLabel": "给 {name} 写匿名回信",
-  "treehole.random.replyNote": "🌿 双向匿名：你与对方都不会看到真实身份，回信将随机送达对方的本地收件箱。",
+  "treehole.random.replyNote":
+    "🌿 双向匿名：你与对方都不会看到真实身份，回信将随机送达对方的本地收件箱。",
   "treehole.random.replyPlaceholder": "你的回信同样匿名，不会暴露身份…",
   "treehole.random.replySent": "回信已匿名送达 💌",
   "treehole.random.sendReply": "📨 发送回信",
@@ -2906,8 +3243,10 @@ export const zhFlat = {
   "treehole.settings.fontSize": "🔤 字体大小",
   "treehole.settings.fontSizeDesc": "三档调节，全站生效",
   "treehole.settings.fontSmall": "小",
-  "treehole.settings.footNote": "数据保存在服务器（匿名 + 可选登录），投稿经审核后展示。",
-  "treehole.settings.footNoteLocal": "数据保存于本地浏览器（匿名），投稿发布至服务器数据库。",
+  "treehole.settings.footNote":
+    "数据保存在服务器（匿名 + 可选登录），投稿经审核后展示。",
+  "treehole.settings.footNoteLocal":
+    "数据保存于本地浏览器（匿名），投稿发布至服务器数据库。",
   "treehole.settings.highContrast": "👁️ 高对比度护眼模式",
   "treehole.settings.highContrastDesc": "加深文字对比，缓解眼疲劳",
   "treehole.settings.lowPerf": "🐢 低性能设备特效开关",
@@ -3007,7 +3346,8 @@ export const zhFlat = {
   "treehole.write.scheduledTip2": "信件已定时 {time} 发布",
   "treehole.write.seal": "🔒 限时封存",
   "treehole.write.sealUntilPlaceholder": "封存至",
-  "treehole.write.sensitiveHit": "⚠️ 检测到可能不适的内容：{words}，请修改后提交。",
+  "treehole.write.sensitiveHit":
+    "⚠️ 检测到可能不适的内容：{words}，请修改后提交。",
   "treehole.write.sensitiveWarning": "包含敏感词，请修改后提交",
   "treehole.write.shareBrand": "🌙 拾光树洞",
   "treehole.write.shareFilename": "拾光树洞_分享",
@@ -3018,11 +3358,13 @@ export const zhFlat = {
   "treehole.write.submitFail": "投稿失败，请重试",
   "treehole.write.submitHint": "请填写内容并完成验证码",
   "treehole.write.subtitle": "此刻的心情，值得被温柔收下。",
-  "treehole.write.subtitle2": "把你的心事、秘密、表白或悄悄话，装进信封，投递给树洞。",
+  "treehole.write.subtitle2":
+    "把你的心事、秘密、表白或悄悄话，装进信封，投递给树洞。",
   "treehole.write.successPrefix": "你的匿名信已",
   "treehole.write.successTitle": "投递成功",
   "treehole.write.tags": "内容标签（可多选，便于同频相遇）",
-  "treehole.write.tagsHint": "如科研人员 / 硕博生可勾选「📚 学术」，寻找同路人。",
+  "treehole.write.tagsHint":
+    "如科研人员 / 硕博生可勾选「📚 学术」，寻找同路人。",
   "treehole.write.title": "✍️ 写一封信",
   "treehole.write.updatedTip": "信件已更新",
   "treehole.write.updatedTip2": "信件已更新发布！",
