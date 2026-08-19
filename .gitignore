@@ -50,6 +50,7 @@ reports/
 !/scripts/
 /scripts/*
 !/scripts/generate-icons.mjs
+!/scripts/generate-i18n-flat.mjs
 !/scripts/lib/
 !/scripts/lib/start-preview.mjs
 !/scripts/precompress.mjs

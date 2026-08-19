@@ -314,6 +314,11 @@ export default defineConfig({
       noExternal: [],
     },
     build: {
+      // editor-tiptap/editor-codemirror 为编辑器专属懒加载 chunk（模块2 强分离产物，
+      // 仅编辑器页加载，不进公共池；minified 原始 ~507KiB 但 gz 传输 178/145KiB，
+      // 均在 check-bundle-budget 的 180KiB 门禁内）。调高默认 500 阈值消除纯字节噪音，
+      // 真实体积仍由 scripts/check-bundle-budget.mjs 把关。
+      chunkSizeWarningLimit: 600,
       rollupOptions: {
         output: {
           manualChunks(id) {
