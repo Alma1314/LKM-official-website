@@ -2893,46 +2893,6 @@ export const en = {
         sidebarLegacy: "Legacy Groups",
       },
 
-      triggeredDischarge: {
-        metaTitle: "Triggered Discharge — 2D Dielectric Breakdown Simulation",
-        metaDescription:
-          "Real-time GPU lightning simulation: Laplace field solving, dielectric breakdown growth, Heidler return-stroke waveform, MTLE current decay, volume rendering, bloom, and procedural thunder.",
-        webgpuUnavailable: "WEBGPU UNAVAILABLE",
-        webgpuLine1:
-          "This simulation solves the 2D Laplace field equation on the GPU every frame.",
-        webgpuLine2:
-          "Use Chrome, Edge, or Brave 113+ (or Safari 18+), with WebGPU enabled.",
-        panelTitle: "Triggered Discharge",
-        phase: "Phase",
-        charging: "Charging",
-        realTime: "Real Time",
-        slowMotion: "Slow-mo",
-        current: "Current",
-        stroke: "Stroke",
-        channelLength: "Channel Length",
-        fractalDim: "Fractal Dim.",
-        tipSpeed: "Tip Speed",
-        fieldResidual: "Field Residual",
-        thunder: "Thunder",
-        branchIndex: "η · Branching index",
-        branchNotePrefix: "Growth probability p ∝ E",
-        branchNoteSuffix:
-          "reproduces the branch sparsity of real lightning (η = 1 collapses into a compact fractal cluster). The return-stroke current travels up the channel with a Heidler waveform at c/3 (MTLE model, λ = 2 km); each stage runs on the physical clock, slowed by the multiplier above.",
-        peakCurrent: "Peak current · kA",
-        timeScale: "Time scale · ×",
-        exposure: "Exposure",
-        bloom: "Bloom",
-        newLightning: "New Lightning",
-        pause: "Pause",
-        soundOff: "Sound Off",
-        saveScreenshot: "Save Screenshot",
-        polarityNeg: "Polarity −CG",
-        normalMode: "Normal Mode",
-        clickHint: "Click anywhere to trigger lightning",
-        signature: "Real-time simulation — real physics, no shortcuts",
-        back: "Back",
-      },
-
       contribution: {
         metaTitle: "Contribution System — LKM",
       },
@@ -3031,11 +2991,6 @@ export const en = {
       title: "More Apps",
       description: "All application entries of the LKM community.",
       subtitle: "Entry points for all community apps and services.",
-      triggeredDischarge: {
-        name: "Triggered Discharge",
-        description:
-          "Real-time GPU lightning simulation. Laplace field solving, dielectric breakdown growth, Heidler return-stroke waveform, MTLE current decay, procedural thunder — a fully physics-driven visualization experiment.",
-      },
       starHope: {
         name: "StarHope Learning Assistant",
         description:

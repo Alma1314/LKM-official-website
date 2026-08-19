@@ -65,8 +65,7 @@ export const enFlat = {
   "adminData.files.chipTutorial": "Chip Design Intro Tutorial.pdf",
   "adminData.files.crackTutorial": "Cracked Software Tutorial.zip",
   "adminData.posts.titlePython": "Python Data Analysis in Practice",
-  "adminData.posts.titleQuantum":
-    "Quantum Mechanics Intro: From Wave Functions to the Schrödinger Equation",
+  "adminData.posts.titleQuantum": "Quantum Mechanics Intro: From Wave Functions to the Schrödinger Equation",
   "adminData.posts.titleSensitive": "Sensitive content title",
   "adminData.posts.titleSpam": "Add WeChat xxx, earn 1000 a day",
   "adminData.reasons.harassment": "Personal attack",
@@ -108,14 +107,11 @@ export const enFlat = {
   "auth.login.githubCancelled": "Authorization cancelled, please try again",
   "auth.login.githubComingSoon": "Coming soon",
   "auth.login.githubLogin": "Log in with GitHub",
-  "auth.login.githubUnavailable":
-    "This login method is being connected to the backend and is temporarily unavailable",
+  "auth.login.githubUnavailable": "This login method is being connected to the backend and is temporarily unavailable",
   "auth.login.linkExpired": "The link has expired, please request a new one",
-  "auth.login.linkUsed":
-    "The link is no longer valid (already used), please request a new one",
+  "auth.login.linkUsed": "The link is no longer valid (already used), please request a new one",
   "auth.login.magicLink": "Magic Link login",
-  "auth.login.magicNoEmail":
-    "Haven't received the email? Resend or use another method.",
+  "auth.login.magicNoEmail": "Haven't received the email? Resend or use another method.",
   "auth.login.magicSendTo": "We will send an email with a login link to",
   "auth.login.magicSent": "Magic Link sent, please check your inbox",
   "auth.login.magicSentSimulation": "A login link has been sent to",
@@ -123,11 +119,9 @@ export const enFlat = {
   "auth.login.noAccount": "Don't have an account?",
   "auth.login.otherMethods": "Other ways to log in",
   "auth.login.passkey": "Passkey",
-  "auth.login.passkeyHint":
-    "Authenticate with your device fingerprint, face or PIN",
+  "auth.login.passkeyHint": "Authenticate with your device fingerprint, face or PIN",
   "auth.login.passkeyTitle": "Log in with a passkey",
-  "auth.login.passkeyUnavailable":
-    "This login method is being connected to the backend and is temporarily unavailable",
+  "auth.login.passkeyUnavailable": "This login method is being connected to the backend and is temporarily unavailable",
   "auth.login.passkeyVerifying": "Verifying Passkey...",
   "auth.login.passwordLabel": "Password",
   "auth.login.passwordLogin": "Password",
@@ -147,8 +141,7 @@ export const enFlat = {
   "auth.login.subtitle": "Log in to LKM to access community resources and docs",
   "auth.login.success": "Logged in",
   "auth.login.title": "Log in",
-  "auth.login.tooManyAttempts":
-    "Too many failed attempts, please request a new code",
+  "auth.login.tooManyAttempts": "Too many failed attempts, please request a new code",
   "auth.login.twoFactor": "Two-factor authentication",
   "auth.login.user": "User",
   "auth.login.waitingDevice": "Waiting for device verification",
@@ -157,8 +150,7 @@ export const enFlat = {
   "auth.oauth.completing": "Completing third-party login...",
   "auth.oauth.failed": "Third-party login failed, please try again",
   "auth.register.backHome": "Back to home",
-  "auth.register.githubNotSupported":
-    "GitHub OAuth sign-up is not available yet",
+  "auth.register.githubNotSupported": "GitHub OAuth sign-up is not available yet",
   "auth.register.githubRegister": "Sign up with GitHub",
   "auth.register.haveAccount": "Already have an account?",
   "auth.register.localAccount": "Local Account",
@@ -187,17 +179,14 @@ export const enFlat = {
   "auth.twoFactor.recoveryCode": "Backup recovery code",
   "auth.twoFactor.recoveryCodeName": "Recovery code",
   "auth.twoFactor.recoveryCodePlaceholder": "Format: AAAA-BBBB-CCCC",
-  "auth.twoFactor.recoverySuccess":
-    "Recovery code verified, logged in. Please re-bind 2FA in settings.",
+  "auth.twoFactor.recoverySuccess": "Recovery code verified, logged in. Please re-bind 2FA in settings.",
   "auth.twoFactor.recoverySuccess2": "Recovery successful",
   "auth.twoFactor.recoveryTitle": "2FA Recovery",
   "auth.twoFactor.simulatedCode": "Simulated code: 000000",
-  "auth.twoFactor.testModeTempToken":
-    "Test mode is missing a temp_token, recovery code verification is unavailable.",
+  "auth.twoFactor.testModeTempToken": "Test mode is missing a temp_token, recovery code verification is unavailable.",
   "auth.twoFactor.title": "Two-factor authentication",
   "auth.twoFactor.totpHint": "Enter the 6-digit code from Google Authenticator",
-  "auth.twoFactor.useRecoveryCode":
-    "Can't verify / lost device? Use a backup recovery code",
+  "auth.twoFactor.useRecoveryCode": "Can't verify / lost device? Use a backup recovery code",
   "auth.twoFactor.verify": "Verify",
   "auth.twoFactor.verifyIdentity": "Verify your identity via email",
   "auth.twoFactor.verifyPassed": "Verification passed, logged in",
@@ -221,8 +210,7 @@ export const enFlat = {
   "blog.editArticleFull": "Edit this article",
   "blog.giscusConfigure": "Configure",
   "blog.giscusNeedsConfig": "Comments require Giscus configuration.",
-  "blog.homeSubtitle":
-    "Technical sharing and reflections from community members",
+  "blog.homeSubtitle": "Technical sharing and reflections from community members",
   "blog.license": "License",
   "blog.like": "Like",
   "blog.loginPromptPrefix": "Please ",
@@ -266,8 +254,7 @@ export const enFlat = {
   "blog.share.qrLoadFailed": "Failed to load QR code",
   "blog.share.share": "Share",
   "blog.share.wechat": "Share to WeChat",
-  "blog.share.wechatScanHint":
-    'Open WeChat "Scan" and scan the QR code to share this article',
+  "blog.share.wechatScanHint": "Open WeChat \"Scan\" and scan the QR code to share this article",
   "blog.share.wechatScanTitle": "Scan to share on WeChat",
   "blog.share.weibo": "Share to Weibo",
   "blog.starCount": "{count} favorites",
@@ -282,70 +269,50 @@ export const enFlat = {
   "blog.wordCount": "word",
   "blog.wordsCount": "words",
   "blog.wordsValue": "{count} words",
-  "columnData.articles.art1.excerpt":
-    "Since the first detection of GW150914 in 2015, gravitational-wave astronomy has become a brand-new window into the universe.",
+  "columnData.articles.art1.excerpt": "Since the first detection of GW150914 in 2015, gravitational-wave astronomy has become a brand-new window into the universe.",
   "columnData.articles.art1.tags.a": "Gravitational Waves",
   "columnData.articles.art1.tags.b": "Astrophysics",
   "columnData.articles.art1.tags.c": "LIGO",
-  "columnData.articles.art1.title":
-    'Gravitational-Wave Astronomy: Listening to the "Voice" of the Universe',
-  "columnData.articles.art2.excerpt":
-    "The discovery of Hawking radiation raised a profound question: where does the information that falls into a black hole go?",
+  "columnData.articles.art1.title": "Gravitational-Wave Astronomy: Listening to the \"Voice\" of the Universe",
+  "columnData.articles.art2.excerpt": "The discovery of Hawking radiation raised a profound question: where does the information that falls into a black hole go?",
   "columnData.articles.art2.tags.a": "Black Holes",
   "columnData.articles.art2.tags.b": "Hawking Radiation",
   "columnData.articles.art2.tags.c": "Quantum Gravity",
-  "columnData.articles.art2.title":
-    "The Black Hole Information Paradox: One of Physics' Greatest Mysteries",
-  "columnData.articles.art3.excerpt":
-    "Exploring the core principles of science course design based on cognitive science and teaching practice.",
+  "columnData.articles.art2.title": "The Black Hole Information Paradox: One of Physics' Greatest Mysteries",
+  "columnData.articles.art3.excerpt": "Exploring the core principles of science course design based on cognitive science and teaching practice.",
   "columnData.articles.art3.tags.a": "Science Education",
   "columnData.articles.art3.tags.b": "Course Design",
   "columnData.articles.art3.tags.c": "Popularization",
-  "columnData.articles.art3.title":
-    "How to Design a Captivating Science Course",
-  "columnData.articles.art4.excerpt":
-    'The abstract is the "advertisement" of a paper — a good abstract can decide a paper\'s citation rate and influence.',
+  "columnData.articles.art3.title": "How to Design a Captivating Science Course",
+  "columnData.articles.art4.excerpt": "The abstract is the \"advertisement\" of a paper — a good abstract can decide a paper's citation rate and influence.",
   "columnData.articles.art4.tags.a": "Academic Writing",
   "columnData.articles.art4.tags.b": "Papers",
   "columnData.articles.art4.tags.c": "Abstract",
-  "columnData.articles.art4.title":
-    "The Golden Rules of Writing a Paper Abstract",
-  "columnData.articles.art5.excerpt":
-    "Dynamic programming is not an algorithm, but a way of thinking about problems.",
+  "columnData.articles.art4.title": "The Golden Rules of Writing a Paper Abstract",
+  "columnData.articles.art5.excerpt": "Dynamic programming is not an algorithm, but a way of thinking about problems.",
   "columnData.articles.art5.tags.a": "Algorithms",
   "columnData.articles.art5.tags.b": "Dynamic Programming",
   "columnData.articles.art5.tags.c": "Python",
-  "columnData.articles.art5.title":
-    "Dynamic Programming: A Thinking Framework from Beginner to Advanced",
-  "columnData.columns.col1.authorBio":
-    "Focusing on gravitational waves and black hole physics, dedicated to astrophysics popularization",
+  "columnData.articles.art5.title": "Dynamic Programming: A Thinking Framework from Beginner to Advanced",
+  "columnData.columns.col1.authorBio": "Focusing on gravitational waves and black hole physics, dedicated to astrophysics popularization",
   "columnData.columns.col1.authorName": "July O",
-  "columnData.columns.col1.authorTitle":
-    "PhD, National Astronomical Observatories of China",
-  "columnData.columns.col1.description":
-    "Recording the frontiers of astrophysics research and sharing the marvelous journey of cosmic exploration. From gravitational waves to black holes, from dark matter to the large-scale structure of the universe.",
+  "columnData.columns.col1.authorTitle": "PhD, National Astronomical Observatories of China",
+  "columnData.columns.col1.description": "Recording the frontiers of astrophysics research and sharing the marvelous journey of cosmic exploration. From gravitational waves to black holes, from dark matter to the large-scale structure of the universe.",
   "columnData.columns.col1.title": "Cosmic Exploration Notes",
-  "columnData.columns.col2.authorBio":
-    "A PhD with ideals — dreaming that every child can access science",
+  "columnData.columns.col2.authorBio": "A PhD with ideals — dreaming that every child can access science",
   "columnData.columns.col2.authorName": "July Hua",
   "columnData.columns.col2.authorTitle": "PhD in Science Education",
-  "columnData.columns.col2.description":
-    "Theory and practice of science education — deep reflections on curriculum design, teaching methods and science writing.",
+  "columnData.columns.col2.description": "Theory and practice of science education — deep reflections on curriculum design, teaching methods and science writing.",
   "columnData.columns.col2.title": "The Educator's Laboratory",
-  "columnData.columns.col3.authorBio":
-    "Condensed matter physics research, academic writing mentoring",
+  "columnData.columns.col3.authorBio": "Condensed matter physics research, academic writing mentoring",
   "columnData.columns.col3.authorName": "Prof. Li",
-  "columnData.columns.col3.authorTitle":
-    "Professor of Physics, Fudan University",
-  "columnData.columns.col3.description":
-    "Sharing hardcore content on paper-writing skills, academic English expression and research methodology.",
+  "columnData.columns.col3.authorTitle": "Professor of Physics, Fudan University",
+  "columnData.columns.col3.description": "Sharing hardcore content on paper-writing skills, academic English expression and research methodology.",
   "columnData.columns.col3.title": "The Way of Academic Writing",
-  "columnData.columns.col4.authorBio":
-    "10 years of algorithm competition and engineering experience",
+  "columnData.columns.col4.authorBio": "10 years of algorithm competition and engineering experience",
   "columnData.columns.col4.authorName": "Old Wang the Coder",
   "columnData.columns.col4.authorTitle": "Senior Algorithm Engineer",
-  "columnData.columns.col4.description":
-    "Explaining algorithms and data structures in an accessible way — from LeetCode to ACM, from engineering practice to theoretical derivation.",
+  "columnData.columns.col4.description": "Explaining algorithms and data structures in an accessible way — from LeetCode to ACM, from engineering practice to theoretical derivation.",
   "columnData.columns.col4.title": "The Beauty of Algorithms",
   "common.back": "Back",
   "common.cancel": "Cancel",
@@ -382,8 +349,7 @@ export const enFlat = {
   "community.columns.otherInColumn": "More from this column",
   "community.columns.professional": "Professional certification",
   "community.columns.read": "reads",
-  "community.columns.subtitle":
-    "High-quality long-form articles by verified authors",
+  "community.columns.subtitle": "High-quality long-form articles by verified authors",
   "community.columns.title": "Columns",
   "community.columns.verified": "Verified",
   "community.competition.allDifficulties": "All difficulties",
@@ -397,8 +363,7 @@ export const enFlat = {
   "community.competition.ended": "Ended",
   "community.competition.endsAt": "Ends:",
   "community.competition.enterExam": "Start Exam",
-  "community.competition.examSubmitted":
-    "Exam submitted! Correct: {correct}/{total} ({percent}%)",
+  "community.competition.examSubmitted": "Exam submitted! Correct: {correct}/{total} ({percent}%)",
   "community.competition.explanation": "Explanation:",
   "community.competition.next": "Next",
   "community.competition.notFound": "Competition not found",
@@ -425,18 +390,15 @@ export const enFlat = {
   "community.fileLibrary.categoryLabel": "Category",
   "community.fileLibrary.clearSearch": "Clear search",
   "community.fileLibrary.descriptionLabel": "Description",
-  "community.fileLibrary.descriptionPlaceholder":
-    "Briefly describe the file...",
+  "community.fileLibrary.descriptionPlaceholder": "Briefly describe the file...",
   "community.fileLibrary.downloadCount": "{count} downloads",
   "community.fileLibrary.fileCount": "{count} files",
   "community.fileLibrary.listView": "List view",
   "community.fileLibrary.noMatchingFiles": "No files match your criteria",
-  "community.fileLibrary.noSubcategories":
-    "No subcategories under this category",
+  "community.fileLibrary.noSubcategories": "No subcategories under this category",
   "community.fileLibrary.otherType": "Other",
   "community.fileLibrary.searchPlaceholder": "Search files…",
-  "community.fileLibrary.searchResults":
-    'Searching for "{query}" — {count} files',
+  "community.fileLibrary.searchResults": "Searching for \"{query}\" — {count} files",
   "community.fileLibrary.selectCategory": "Select a category",
   "community.fileLibrary.sortMostDownloaded": "Most downloaded",
   "community.fileLibrary.sortNewest": "Newest",
@@ -447,8 +409,7 @@ export const enFlat = {
   "community.fileLibrary.title": "File Library",
   "community.fileLibrary.uploadDropHint": "Click or drag files here",
   "community.fileLibrary.uploadFormats": "PDF, ZIP and more, up to 500MB",
-  "community.fileLibrary.uploadSubmitted":
-    "Your file has been submitted and entered the manual review and plagiarism-check queue. You will be notified once approved.",
+  "community.fileLibrary.uploadSubmitted": "Your file has been submitted and entered the manual review and plagiarism-check queue. You will be notified once approved.",
   "community.fileLibrary.uploadTitle": "Upload File",
   "community.fileLibrary.view": "View",
   "community.fileLibrary.viewDetails": "View details →",
@@ -456,8 +417,7 @@ export const enFlat = {
   "community.files.approved": "Approved",
   "community.files.backToLibrary": "File Library",
   "community.files.category": "Category: {name}",
-  "community.files.disclaimer":
-    "All content is uploaded by users. If you believe your rights are infringed, please notify us via the report feature and we will process it promptly.",
+  "community.files.disclaimer": "All content is uploaded by users. If you believe your rights are infringed, please notify us via the report feature and we will process it promptly.",
   "community.files.disclaimerTitle": "Disclaimer:",
   "community.files.download": "Download ({points} points)",
   "community.files.downloads": "Downloads",
@@ -466,15 +426,13 @@ export const enFlat = {
   "community.files.reviewComment": "Review comment: {comment}",
   "community.files.size": "File size",
   "community.files.status": "Status:",
-  "community.files.subtitle":
-    "Structured resource center for academic materials, datasets and tutorials",
+  "community.files.subtitle": "Structured resource center for academic materials, datasets and tutorials",
   "community.files.times": "times",
   "community.files.title": "File Library",
   "community.files.uploadTime": "Upload time",
   "community.files.uploader": "Uploader",
   "community.forum.anonymous": "Anonymous user",
-  "community.forum.applyCollaboration":
-    "Apply for collaboration and open your own club board",
+  "community.forum.applyCollaboration": "Apply for collaboration and open your own club board",
   "community.forum.bodyLabel": "Content (Markdown supported)",
   "community.forum.bodyPlaceholder": "Markdown syntax is supported...",
   "community.forum.cancel": "Cancel",
@@ -505,8 +463,7 @@ export const enFlat = {
   "community.forum.posts": "posts",
   "community.forum.postsShort": "posts",
   "community.forum.publish": "Publish",
-  "community.forum.publishSuccess":
-    "Post published!\nTitle: {title}\nCategory: {category}\nTags: {tags}",
+  "community.forum.publishSuccess": "Post published!\nTitle: {title}\nCategory: {category}\nTags: {tags}",
   "community.forum.reply": "Reply",
   "community.forum.replyTo": "Reply @{name}",
   "community.forum.report": "Report",
@@ -515,8 +472,7 @@ export const enFlat = {
   "community.forum.reportMisinformation": "Misinformation",
   "community.forum.reportOther": "Other violations",
   "community.forum.reportSpam": "Spam / advertisement",
-  "community.forum.reportSubmitted":
-    "Report submitted: {reason}. We will handle it as soon as possible.",
+  "community.forum.reportSubmitted": "Report submitted: {reason}. We will handle it as soon as possible.",
   "community.forum.reportTitle": "Report Post",
   "community.forum.selectCategory": "Select a category",
   "community.forum.submitComment": "Post Comment",
@@ -530,8 +486,7 @@ export const enFlat = {
   "community.forum.todayPosts": "Today {count}",
   "community.forum.viewAll": "View all",
   "community.forum.yesterday": "Yesterday",
-  "community.subtitle":
-    "Welcome to the LKM community, where we share ideas and grow together.",
+  "community.subtitle": "Welcome to the LKM community, where we share ideas and grow together.",
   "community.title": "LKM Community",
   "competition.allDifficulties": "All difficulties",
   "competition.categoryAll": "All",
@@ -546,82 +501,63 @@ export const enFlat = {
   "competition.singleChoice": "Single choice",
   "competition.trueFalse": "True/False",
   "competitionData.competitions.comp1.category": "Physics",
-  "competitionData.competitions.comp1.description":
-    "Covers mechanics, electromagnetism, thermodynamics, optics, and modern physics. Suitable for senior high school students and above.",
+  "competitionData.competitions.comp1.description": "Covers mechanics, electromagnetism, thermodynamics, optics, and modern physics. Suitable for senior high school students and above.",
   "competitionData.competitions.comp1.title": "2026 Summer Physics Competition",
   "competitionData.competitions.comp2.category": "Mathematics",
-  "competitionData.competitions.comp2.description":
-    "Teams of three solve real-world problems and submit a paper.",
-  "competitionData.competitions.comp2.title":
-    "2026 Mathematical Modeling Challenge",
+  "competitionData.competitions.comp2.description": "Teams of three solve real-world problems and submit a paper.",
+  "competitionData.competitions.comp2.title": "2026 Mathematical Modeling Challenge",
   "competitionData.competitions.comp3.category": "Computer Science",
-  "competitionData.competitions.comp3.description":
-    "A 48-hour extreme coding challenge with no language or tool restrictions.",
+  "competitionData.competitions.comp3.description": "A 48-hour extreme coding challenge with no language or tool restrictions.",
   "competitionData.competitions.comp3.title": "2026 Coding Marathon",
   "competitionData.competitions.comp4.category": "Chemistry",
-  "competitionData.competitions.comp4.description":
-    "A timed challenge to balance chemical equations.",
-  "competitionData.competitions.comp4.title":
-    "2026 Chemical Equation Balancing Contest",
-  "competitionData.questions.q1.explanation":
-    "The speed of light is c = 299,792,458 m/s ≈ 3×10⁸ m/s",
+  "competitionData.competitions.comp4.description": "A timed challenge to balance chemical equations.",
+  "competitionData.competitions.comp4.title": "2026 Chemical Equation Balancing Contest",
+  "competitionData.questions.q1.explanation": "The speed of light is c = 299,792,458 m/s ≈ 3×10⁸ m/s",
   "competitionData.questions.q1.option0": "3×10⁶ m/s",
   "competitionData.questions.q1.option1": "3×10⁷ m/s",
   "competitionData.questions.q1.option2": "3×10⁸ m/s",
   "competitionData.questions.q1.option3": "3×10⁹ m/s",
-  "competitionData.questions.q1.stem":
-    "What is the approximate speed of light in a vacuum?",
-  "competitionData.questions.q2.explanation":
-    "Friction is a macroscopic manifestation of the electromagnetic force, not a fundamental force. The four fundamental forces are gravity, the electromagnetic force, the strong interaction, and the weak interaction.",
+  "competitionData.questions.q1.stem": "What is the approximate speed of light in a vacuum?",
+  "competitionData.questions.q2.explanation": "Friction is a macroscopic manifestation of the electromagnetic force, not a fundamental force. The four fundamental forces are gravity, the electromagnetic force, the strong interaction, and the weak interaction.",
   "competitionData.questions.q2.option0": "Gravity",
   "competitionData.questions.q2.option1": "Electromagnetic force",
   "competitionData.questions.q2.option2": "Friction",
   "competitionData.questions.q2.option3": "Strong nuclear force",
-  "competitionData.questions.q2.stem":
-    "Which of the following forces is not a fundamental force?",
-  "competitionData.questions.q3.explanation":
-    "F = ma, so a = F/m = 10/2 = 5 m/s²",
+  "competitionData.questions.q2.stem": "Which of the following forces is not a fundamental force?",
+  "competitionData.questions.q3.explanation": "F = ma, so a = F/m = 10/2 = 5 m/s²",
   "competitionData.questions.q3.option0": "2 m/s²",
   "competitionData.questions.q3.option1": "5 m/s²",
   "competitionData.questions.q3.option2": "10 m/s²",
   "competitionData.questions.q3.option3": "20 m/s²",
-  "competitionData.questions.q3.stem":
-    "A 2 kg object is acted on by a 10 N force. What is its acceleration?",
-  "competitionData.questions.q4.explanation":
-    "Sound is a mechanical wave and needs a medium to propagate, so it cannot travel in a vacuum.",
+  "competitionData.questions.q3.stem": "A 2 kg object is acted on by a 10 N force. What is its acceleration?",
+  "competitionData.questions.q4.explanation": "Sound is a mechanical wave and needs a medium to propagate, so it cannot travel in a vacuum.",
   "competitionData.questions.q4.option0": "True",
   "competitionData.questions.q4.option1": "False",
   "competitionData.questions.q4.stem": "Sound can travel in a vacuum.",
-  "competitionData.questions.q5.explanation":
-    "A vector has both magnitude and direction. Velocity has both, while mass and temperature only have magnitude.",
+  "competitionData.questions.q5.explanation": "A vector has both magnitude and direction. Velocity has both, while mass and temperature only have magnitude.",
   "competitionData.questions.q5.option0": "Mass",
   "competitionData.questions.q5.option1": "Temperature",
   "competitionData.questions.q5.option2": "Velocity",
   "competitionData.questions.q5.option3": "Time",
-  "competitionData.questions.q5.stem":
-    "Which of the following is a vector quantity?",
-  "competitionData.questions.q6.explanation":
-    "Ohm's law: I = U/R. When the voltage is constant, a larger resistance means a smaller current.",
+  "competitionData.questions.q5.stem": "Which of the following is a vector quantity?",
+  "competitionData.questions.q6.explanation": "Ohm's law: I = U/R. When the voltage is constant, a larger resistance means a smaller current.",
   "competitionData.questions.q6.option0": "Increase",
   "competitionData.questions.q6.option1": "Decrease",
   "competitionData.questions.q6.option2": "Stay the same",
   "competitionData.questions.q6.option3": "Increase first, then decrease",
-  "competitionData.questions.q6.stem":
-    "In a closed circuit, when the resistance increases, the current will:",
+  "competitionData.questions.q6.stem": "In a closed circuit, when the resistance increases, the current will:",
   "competitionData.questions.q7.explanation": "π ≈ 3.14159...",
   "competitionData.questions.q7.option0": "3.12",
   "competitionData.questions.q7.option1": "3.14",
   "competitionData.questions.q7.option2": "3.16",
   "competitionData.questions.q7.option3": "3.18",
   "competitionData.questions.q7.stem": "The value of π (pi) is closest to:",
-  "competitionData.questions.q8.explanation":
-    "O(log n) grows the slowest. Ordering: O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)",
+  "competitionData.questions.q8.explanation": "O(log n) grows the slowest. Ordering: O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)",
   "competitionData.questions.q8.option0": "O(n²)",
   "competitionData.questions.q8.option1": "O(n log n)",
   "competitionData.questions.q8.option2": "O(log n)",
   "competitionData.questions.q8.option3": "O(2ⁿ)",
-  "competitionData.questions.q8.stem":
-    "Which of the following algorithms has the lowest time complexity?",
+  "competitionData.questions.q8.stem": "Which of the following algorithms has the lowest time complexity?",
   "contribution.checkedIn": "Checked in today ✓",
   "contribution.checkinReward": "Check in +{points} points",
   "contribution.checkinStreak": "Check-in streak: {days} days",
@@ -630,8 +566,7 @@ export const enFlat = {
   "contribution.dailyCheckin": "Daily Check-in",
   "contribution.dailyTasks": "Today's Tasks",
   "contribution.exchange": "Exchange",
-  "contribution.exchangeSuccess":
-    'Exchange successful! You spent {points} points on "{name}"',
+  "contribution.exchangeSuccess": "Exchange successful! You spent {points} points on \"{name}\"",
   "contribution.lowStock": "Only {stock} left",
   "contribution.me": "Me",
   "contribution.periodDaily": "Daily",
@@ -649,11 +584,9 @@ export const enFlat = {
   "contribution.taskReward": "Reward {points} points",
   "contribution.title": "Contribution System",
   "contribution.virtual": "Virtual",
-  "contributionData.achievements.a1.description":
-    "Complete the onboarding tutorial",
+  "contributionData.achievements.a1.description": "Complete the onboarding tutorial",
   "contributionData.achievements.a1.name": "Newcomer",
-  "contributionData.achievements.a10.description":
-    "Check in for 30 consecutive days",
+  "contributionData.achievements.a10.description": "Check in for 30 consecutive days",
   "contributionData.achievements.a10.name": "30-Day Streak",
   "contributionData.achievements.a11.description": "Join 3 projects",
   "contributionData.achievements.a11.name": "Project Pioneer",
@@ -671,22 +604,17 @@ export const enFlat = {
   "contributionData.achievements.a6.name": "Helpful",
   "contributionData.achievements.a7.description": "Get 20 answers accepted",
   "contributionData.achievements.a7.name": "Hardcore Answerer",
-  "contributionData.achievements.a8.description":
-    "Get 10 uploaded files approved",
+  "contributionData.achievements.a8.description": "Get 10 uploaded files approved",
   "contributionData.achievements.a8.name": "File Expert",
-  "contributionData.achievements.a9.description":
-    "Check in for 7 consecutive days",
+  "contributionData.achievements.a9.description": "Check in for 7 consecutive days",
   "contributionData.achievements.a9.name": "7-Day Streak",
-  "contributionData.exchangeItems.e1.description":
-    "Exclusive badge shown on your profile page",
+  "contributionData.exchangeItems.e1.description": "Exclusive badge shown on your profile page",
   "contributionData.exchangeItems.e1.name": "LKM Custom Badge (Virtual)",
   "contributionData.exchangeItems.e2.description": "Unlock gold title display",
   "contributionData.exchangeItems.e2.name": "Exclusive Title Color",
-  "contributionData.exchangeItems.e3.description":
-    "Show your column article in the homepage recommendations for 7 days",
+  "contributionData.exchangeItems.e3.description": "Show your column article in the homepage recommendations for 7 days",
   "contributionData.exchangeItems.e3.name": "Column Article Promotion Slot",
-  "contributionData.exchangeItems.e4.description":
-    "Limited-edition LKM-themed notebook",
+  "contributionData.exchangeItems.e4.description": "Limited-edition LKM-themed notebook",
   "contributionData.exchangeItems.e4.name": "LKM Custom Notebook",
   "contributionData.exchangeItems.e5.description": "LKM metal badge",
   "contributionData.exchangeItems.e5.name": "LKM Physical Badge",
@@ -722,22 +650,18 @@ export const enFlat = {
   "contributionData.tasks.t3.title": "Answer 3 questions",
   "contributionData.tasks.t4.description": "Like quality content",
   "contributionData.tasks.t4.title": "Like 10 posts",
-  "contributionData.tasks.t5.description":
-    "Enrich the community resource library",
+  "contributionData.tasks.t5.description": "Enrich the community resource library",
   "contributionData.tasks.t5.title": "Upload 1 file",
   "editor.action": "Actions",
   "editor.addComment": "Add comment",
   "editor.ai.apiKey": "API Key",
   "editor.ai.apiUrl": "API URL",
-  "editor.ai.compatibilityNotice":
-    "Compatible with OpenAI / Ollama / LM Studio API formats",
+  "editor.ai.compatibilityNotice": "Compatible with OpenAI / Ollama / LM Studio API formats",
   "editor.ai.customPromptOptional": "Custom prompt (optional)",
   "editor.ai.customPromptPlaceholder": "Leave empty to use the default prompt",
   "editor.ai.insert": "Insert",
-  "editor.ai.keyMemoryNotice":
-    "The key is only kept in memory on this page and cleared when you refresh or close the page.",
-  "editor.ai.noSelectionOrPrompt":
-    "Please select text first or enter a custom prompt",
+  "editor.ai.keyMemoryNotice": "The key is only kept in memory on this page and cleared when you refresh or close the page.",
+  "editor.ai.noSelectionOrPrompt": "Please select text first or enter a custom prompt",
   "editor.ai.operation": "Operation",
   "editor.ai.operationContinue": "Continue",
   "editor.ai.operationFixGrammar": "Fix grammar",
@@ -745,16 +669,14 @@ export const enFlat = {
   "editor.ai.operationRewrite": "Rewrite",
   "editor.ai.operationSummarize": "Summarize",
   "editor.ai.operationTranslate": "Translate",
-  "editor.ai.productionProxyNotice":
-    "In production, it is recommended to call through a server-side proxy.",
+  "editor.ai.productionProxyNotice": "In production, it is recommended to call through a server-side proxy.",
   "editor.ai.replaceSelection": "Replace selection",
   "editor.ai.saveSettings": "Save settings",
   "editor.ai.selectedText": "Selected text:",
   "editor.ai.sendRequest": "Send request",
   "editor.ai.sending": "Sending...",
   "editor.ai.settings": "Settings",
-  "editor.ai.thirdPartyNotice":
-    "Note: your editor content will be sent to a third-party AI service provider for processing. Do not include personal sensitive information.",
+  "editor.ai.thirdPartyNotice": "Note: your editor content will be sent to a third-party AI service provider for processing. Do not include personal sensitive information.",
   "editor.ai.writingAssistant": "AI Writing Assistant",
   "editor.altText": "Alt text",
   "editor.archive": "Archive",
@@ -765,17 +687,14 @@ export const enFlat = {
   "editor.backup.exportAll": "Export all documents",
   "editor.backup.formatError": "Format error",
   "editor.backup.importDocs": "Import documents",
-  "editor.backup.importOverwrite":
-    "Import {importCount} documents? {existingCount} current documents will be overwritten. Continue?",
+  "editor.backup.importOverwrite": "Import {importCount} documents? {existingCount} current documents will be overwritten. Continue?",
   "editor.backup.importSuccess": "Successfully imported {count} documents",
-  "editor.backup.invalidJsonFormat":
-    "Invalid JSON format: a document array is required",
+  "editor.backup.invalidJsonFormat": "Invalid JSON format: a document array is required",
   "editor.backup.invalidJsonNoDocs": "No document data in the JSON file",
   "editor.backup.jsonParseFailed": "JSON parse failed: {message}",
   "editor.backup.noBackups": "No backups",
   "editor.backup.noDocsToExport": "No documents to export",
-  "editor.backup.restoreConfirm":
-    'Restore "{title}" from backup? Current data will be overwritten.',
+  "editor.backup.restoreConfirm": "Restore \"{title}\" from backup? Current data will be overwritten.",
   "editor.backup.restoreFromBackup": "Restore from backup",
   "editor.backup.title": "Backup management",
   "editor.blockMath": "Block formula",
@@ -800,12 +719,10 @@ export const enFlat = {
   "editor.comments": "Comments",
   "editor.component": "Components",
   "editor.confirm": "Confirm",
-  "editor.confirmArchiveMessage":
-    "Archive this document? It cannot be edited after archiving.",
+  "editor.confirmArchiveMessage": "Archive this document? It cannot be edited after archiving.",
   "editor.confirmDeleteComment": "Delete this comment?",
   "editor.confirmPublish": "Confirm publish",
-  "editor.confirmRestoreVersion":
-    "Restore to version {version}? Unsaved changes will be lost.",
+  "editor.confirmRestoreVersion": "Restore to version {version}? Unsaved changes will be lost.",
   "editor.confirmTitle": "Confirm action",
   "editor.delete": "Delete",
   "editor.documentTitlePlaceholder": "Document title",
@@ -874,27 +791,23 @@ export const enFlat = {
   "editor.linkUrl": "Link URL",
   "editor.loadErrorBrowserCache": "Browser cache conflicts",
   "editor.loadErrorCache": "Stale dev-server prebuild cache",
-  "editor.loadErrorDetail":
-    "Tried {count} times but the editor still failed to start. Possible causes:",
+  "editor.loadErrorDetail": "Tried {count} times but the editor still failed to start. Possible causes:",
   "editor.loadErrorNetwork": "Network connection issues",
   "editor.loadingEditor": "Loading editor...",
   "editor.math.blockFormula": "Block formula",
   "editor.math.confirmShortcut": "Ctrl+Enter to confirm",
   "editor.math.enterFormulaPreview": "Enter a formula to see the preview here",
   "editor.math.inlineFormula": "Inline formula",
-  "editor.math.latexExample":
-    "e.g. E=mc^2 or \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",
+  "editor.math.latexExample": "e.g. E=mc^2 or \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",
   "editor.math.latexFormula": "LaTeX formula",
   "editor.math.latexSyntaxError": "LaTeX syntax error",
-  "editor.mdxParseError":
-    "MDX parse failed. Please check the source format and try again.",
+  "editor.mdxParseError": "MDX parse failed. Please check the source format and try again.",
   "editor.me": "Me",
   "editor.modePreview": "Preview",
   "editor.modeRichtext": "Rich text",
   "editor.modeSource": "Source",
   "editor.needSaveFirst": "Please save to series before publishing",
-  "editor.noComments":
-    "No comments yet. Select text and click the comment button to add one.",
+  "editor.noComments": "No comments yet. Select text and click the comment button to add one.",
   "editor.noVersions": "No version history",
   "editor.orderedList": "Ordered list",
   "editor.permalink": "Permanent link",
@@ -930,23 +843,19 @@ export const enFlat = {
   "editor.propertyPanel.warning": "Warning",
   "editor.propertyPanel.width": "Width (px)",
   "editor.publish": "Publish",
-  "editor.publishArticleNotice":
-    "Publish the current series file as a blog article. The article will be publicly visible after confirmation.",
+  "editor.publishArticleNotice": "Publish the current series file as a blog article. The article will be publicly visible after confirmation.",
   "editor.publishArticleSuccess": "Published as article",
   "editor.publishArticleTitle": "Publish as article",
   "editor.publishAsArticle": "Publish as article",
   "editor.publishDialogTitle": "Publish document",
-  "editor.publishNotice":
-    "The document will be publicly visible after publishing.",
+  "editor.publishNotice": "The document will be publicly visible after publishing.",
   "editor.published": "Published",
   "editor.publishing": "Publishing…",
   "editor.rawMdx.copy": "Copy",
   "editor.rawMdx.hideSource": "Hide source",
   "editor.rawMdx.showSource": "Show source",
-  "editor.rawMdx.unsupportedBlock":
-    "This content does not support visual editing",
-  "editor.rawMdx.unsupportedInline":
-    "This inline content does not support visual editing",
+  "editor.rawMdx.unsupportedBlock": "This content does not support visual editing",
+  "editor.rawMdx.unsupportedInline": "This inline content does not support visual editing",
   "editor.redo": "Redo",
   "editor.redoShortcut": "Redo (Ctrl+Shift+Z)",
   "editor.refreshPage": "Refresh page",
@@ -1012,45 +921,31 @@ export const enFlat = {
   "editor.undo": "Undo",
   "editor.undoShortcut": "Undo (Ctrl+Z)",
   "editor.untitled": "Untitled document",
-  "editor.validation.disallowedProtocol":
-    "Disallowed URL protocol in {nodeType}: {url}",
-  "editor.validation.esmForbidden":
-    "MDX ESM imports/exports are not allowed for security reasons",
+  "editor.validation.disallowedProtocol": "Disallowed URL protocol in {nodeType}: {url}",
+  "editor.validation.esmForbidden": "MDX ESM imports/exports are not allowed for security reasons",
   "editor.version": "Version",
   "editor.versionHistory": "Version history",
-  "editorData.errApiKeyInvalid":
-    "The AI service returned an error. Please check whether the API Key is valid.",
-  "editorData.errApiUrlInvalid":
-    "Invalid API URL format, please enter a complete HTTPS address",
+  "editorData.errApiKeyInvalid": "The AI service returned an error. Please check whether the API Key is valid.",
+  "editorData.errApiUrlInvalid": "Invalid API URL format, please enter a complete HTTPS address",
   "editorData.errApiUrlRequired": "Please enter the API URL",
-  "editorData.errCheckKey":
-    ", please check whether the API Key and endpoint configuration are correct",
+  "editorData.errCheckKey": ", please check whether the API Key and endpoint configuration are correct",
   "editorData.errConfigInvalid": "Invalid AI endpoint configuration: {detail}",
-  "editorData.errCredentials":
-    "The API URL cannot contain a username or password. Please enter the API Key separately below.",
+  "editorData.errCredentials": "The API URL cannot contain a username or password. Please enter the API Key separately below.",
   "editorData.errEmptyReply": "The AI service returned an empty reply",
   "editorData.errHttpsOnly": "Only HTTPS addresses are supported",
   "editorData.errIncomplete": "The AI service returned incomplete data",
-  "editorData.errIncompleteReply":
-    "The AI service returned incomplete data (missing reply content)",
-  "editorData.errInvalidDataFormat":
-    "The AI service returned an invalid data format",
-  "editorData.errMissingMessage":
-    "The AI service returned incomplete data (missing message content)",
+  "editorData.errIncompleteReply": "The AI service returned incomplete data (missing reply content)",
+  "editorData.errInvalidDataFormat": "The AI service returned an invalid data format",
+  "editorData.errMissingMessage": "The AI service returned incomplete data (missing message content)",
   "editorData.errNetworkFailed": "Network request failed",
   "editorData.errNetworkFailedDetail": "Network request failed: {message}",
-  "editorData.errNotConfigured":
-    'Please configure the AI endpoint first. Click "Settings" to enter the API URL and Key.',
-  "editorData.errParseFailed":
-    "Failed to parse the data returned by the AI service",
+  "editorData.errNotConfigured": "Please configure the AI endpoint first. Click \"Settings\" to enter the API URL and Key.",
+  "editorData.errParseFailed": "Failed to parse the data returned by the AI service",
   "editorData.errServiceError": "AI service returned an error: {detail}",
-  "editorData.errServiceStatus":
-    "AI service returned an error (status code {status})",
+  "editorData.errServiceStatus": "AI service returned an error (status code {status})",
   "editorData.errStatusCodeSuffix": " (status code {status})",
-  "editorData.errTooLarge":
-    "The AI response is too large ({bytes} bytes), exceeding the {max}-byte limit",
-  "editorData.errUnexpectedContentType":
-    "The server returned an unexpected content type",
+  "editorData.errTooLarge": "The AI response is too large ({bytes} bytes), exceeding the {max}-byte limit",
+  "editorData.errUnexpectedContentType": "The server returned an unexpected content type",
   "editorData.errUnknown": "Unknown error",
   "editorData.errUnsupportedProtocol": "Unsupported protocol",
   "fileLibraryData.categories.appliedScience": "Applied Sciences",
@@ -1063,8 +958,7 @@ export const enFlat = {
   "fileLibraryData.categories.csPython": "Python Data Analysis",
   "fileLibraryData.categories.earthScience": "Earth Sciences",
   "fileLibraryData.categories.icDesign": "Chip Design",
-  "fileLibraryData.categories.icSemiconductor":
-    "Integrated Circuits & Semiconductors",
+  "fileLibraryData.categories.icSemiconductor": "Integrated Circuits & Semiconductors",
   "fileLibraryData.categories.langEn": "English",
   "fileLibraryData.categories.langEnWriting": "Academic Writing",
   "fileLibraryData.categories.language": "Language Learning",
@@ -1074,43 +968,35 @@ export const enFlat = {
   "fileLibraryData.categories.physics": "Physics",
   "fileLibraryData.categories.physicsAstrophysics": "Astrophysics",
   "fileLibraryData.categories.physicsQuantum": "Quantum Mechanics",
-  "fileLibraryData.files.file1.description":
-    "Curated public astrophysics datasets including SDSS, Gaia DR3 and LIGO event data, suitable for learning and research.",
+  "fileLibraryData.files.file1.description": "Curated public astrophysics datasets including SDSS, Gaia DR3 and LIGO event data, suitable for learning and research.",
   "fileLibraryData.files.file1.tags.a": "Astrophysics",
   "fileLibraryData.files.file1.tags.b": "Datasets",
   "fileLibraryData.files.file1.tags.c": "Astronomy",
-  "fileLibraryData.files.file2.description":
-    "Quantum mechanics course notes from the Chinese Academy of Sciences, covering everything from wave functions to perturbation theory.",
+  "fileLibraryData.files.file2.description": "Quantum mechanics course notes from the Chinese Academy of Sciences, covering everything from wave functions to perturbation theory.",
   "fileLibraryData.files.file2.tags.a": "Quantum Mechanics",
   "fileLibraryData.files.file2.tags.b": "Lecture Notes",
   "fileLibraryData.files.file2.tags.c": "Physics",
-  "fileLibraryData.files.file3.description":
-    "Classic linear algebra exercise sets with detailed solutions and problem-solving analysis, suitable for final review and graduate school preparation.",
+  "fileLibraryData.files.file3.description": "Classic linear algebra exercise sets with detailed solutions and problem-solving analysis, suitable for final review and graduate school preparation.",
   "fileLibraryData.files.file3.tags.a": "Linear Algebra",
   "fileLibraryData.files.file3.tags.b": "Exercises",
   "fileLibraryData.files.file3.tags.c": "Mathematics",
-  "fileLibraryData.files.file4.description":
-    "Illustrated mechanisms of common organic chemistry reactions, including nucleophilic substitution, elimination and addition reactions.",
+  "fileLibraryData.files.file4.description": "Illustrated mechanisms of common organic chemistry reactions, including nucleophilic substitution, elimination and addition reactions.",
   "fileLibraryData.files.file4.tags.a": "Organic Chemistry",
   "fileLibraryData.files.file4.tags.b": "Reaction Mechanisms",
   "fileLibraryData.files.file4.tags.c": "Illustrated",
-  "fileLibraryData.files.file5.description":
-    "Hands-on code and data files that accompany the Pandas/NumPy/Matplotlib tutorials.",
+  "fileLibraryData.files.file5.description": "Hands-on code and data files that accompany the Pandas/NumPy/Matplotlib tutorials.",
   "fileLibraryData.files.file5.tags.a": "Python",
   "fileLibraryData.files.file5.tags.b": "Data Analysis",
   "fileLibraryData.files.file5.tags.c": "Code",
-  "fileLibraryData.files.file6.description":
-    "A collection of excellent papers from the past three years of the National College Mathematical Contest in Modeling, with expert commentary.",
+  "fileLibraryData.files.file6.description": "A collection of excellent papers from the past three years of the National College Mathematical Contest in Modeling, with expert commentary.",
   "fileLibraryData.files.file6.tags.a": "Mathematical Modeling",
   "fileLibraryData.files.file6.tags.b": "Competition",
   "fileLibraryData.files.file6.tags.c": "Paper Collection",
-  "fileLibraryData.files.file7.description":
-    "A chip design tutorial from scratch, covering the full flow from Verilog basics, synthesis to placement and routing.",
+  "fileLibraryData.files.file7.description": "A chip design tutorial from scratch, covering the full flow from Verilog basics, synthesis to placement and routing.",
   "fileLibraryData.files.file7.tags.a": "Integrated Circuits",
   "fileLibraryData.files.file7.tags.b": "Chip Design",
   "fileLibraryData.files.file7.tags.c": "Verilog",
-  "fileLibraryData.files.file8.description":
-    "An academic writing guide for non-native English speakers, including common sentence patterns and sample essays.",
+  "fileLibraryData.files.file8.description": "An academic writing guide for non-native English speakers, including common sentence patterns and sample essays.",
   "fileLibraryData.files.file8.tags.a": "English",
   "fileLibraryData.files.file8.tags.b": "Academic Writing",
   "fileLibraryData.files.file8.tags.c": "Guide",
@@ -1127,141 +1013,95 @@ export const enFlat = {
   "footer.privacyPolicy": "Privacy Policy",
   "footer.supportUs": "Support Us",
   "footer.terms": "Terms of Service",
-  "forumData.categories.agriFood.description":
-    "Agriculture focuses on crop production and genetics & breeding; food science focuses on food processing and safety control.",
+  "forumData.categories.agriFood.description": "Agriculture focuses on crop production and genetics & breeding; food science focuses on food processing and safety control.",
   "forumData.categories.agriFood.name": "Agriculture & Food Science",
-  "forumData.categories.appliedScience.description":
-    "Applied fields such as computer science, electronics & electrical engineering, engineering and medicine — the bridge connecting theory to practice.",
+  "forumData.categories.appliedScience.description": "Applied fields such as computer science, electronics & electrical engineering, engineering and medicine — the bridge connecting theory to practice.",
   "forumData.categories.appliedScience.name": "Applied Sciences",
-  "forumData.categories.basicScience.description":
-    "Discussion area for foundational sciences such as mathematics, physics, chemistry, biology and astronomy. It is the root of all things — applied disciplines sprout from here and extend into many fields.",
+  "forumData.categories.basicScience.description": "Discussion area for foundational sciences such as mathematics, physics, chemistry, biology and astronomy. It is the root of all things — applied disciplines sprout from here and extend into many fields.",
   "forumData.categories.basicScience.name": "Basic Sciences",
-  "forumData.categories.biology.description":
-    "Multiple branches including biology, medicine, agriculture and environmental science; members are focused, and medicine will get its own board later.",
+  "forumData.categories.biology.description": "Multiple branches including biology, medicine, agriculture and environmental science; members are focused, and medicine will get its own board later.",
   "forumData.categories.biology.name": "Life Sciences",
-  "forumData.categories.chemistry.description":
-    "Chemistry, applied chemistry, chemical biology, molecular science and engineering. Few in number but high level, with requests basically always fulfilled.",
+  "forumData.categories.chemistry.description": "Chemistry, applied chemistry, chemical biology, molecular science and engineering. Few in number but high level, with requests basically always fulfilled.",
   "forumData.categories.chemistry.name": "Chemistry",
-  "forumData.categories.clinicalMedicine.description":
-    "Clinical medicine, anesthesiology, medical imaging, ophthalmology & optometry, psychiatry, radiation medicine and pediatrics.",
+  "forumData.categories.clinicalMedicine.description": "Clinical medicine, anesthesiology, medical imaging, ophthalmology & optometry, psychiatry, radiation medicine and pediatrics.",
   "forumData.categories.clinicalMedicine.name": "School of Clinical Medicine",
-  "forumData.categories.cosmosAstronomy.description":
-    "Astronomy is a natural science that studies celestial bodies in space and the structure and development of the universe.",
+  "forumData.categories.cosmosAstronomy.description": "Astronomy is a natural science that studies celestial bodies in space and the structure and development of the universe.",
   "forumData.categories.cosmosAstronomy.name": "Cosmology & Astronomy",
-  "forumData.categories.cs.description":
-    "ACM, computer science, internet, software development, algorithm research, large models and network security.",
+  "forumData.categories.cs.description": "ACM, computer science, internet, software development, algorithm research, large models and network security.",
   "forumData.categories.cs.name": "Computer Science & Technology",
-  "forumData.categories.earthScience.description":
-    "Comprehensive disciplines such as geology, geophysics, geography, atmospheric science and marine science.",
+  "forumData.categories.earthScience.description": "Comprehensive disciplines such as geology, geophysics, geography, atmospheric science and marine science.",
   "forumData.categories.earthScience.name": "Earth Sciences",
-  "forumData.categories.ee.description":
-    "IEEE, electrical engineering, automation, communication engineering, electronic science & technology and optoelectronics.",
+  "forumData.categories.ee.description": "IEEE, electrical engineering, automation, communication engineering, electronic science & technology and optoelectronics.",
   "forumData.categories.ee.name": "Electronics & Electrical Engineering",
-  "forumData.categories.engineering.description":
-    "Civil, mechanical, transportation, safety science and engineering, etc. More engineering sub-groups will come later.",
+  "forumData.categories.engineering.description": "Civil, mechanical, transportation, safety science and engineering, etc. More engineering sub-groups will come later.",
   "forumData.categories.engineering.name": "Engineering",
-  "forumData.categories.envEnergy.description":
-    "Environmental science, energy engineering, resource recycling and emerging interdisciplinary fields.",
+  "forumData.categories.envEnergy.description": "Environmental science, energy engineering, resource recycling and emerging interdisciplinary fields.",
   "forumData.categories.envEnergy.name": "Environment & Energy Sciences",
-  "forumData.categories.friendshipEnterprise.description":
-    "Boards for partner tech companies of LKM; apply for collaboration to open your dedicated area.",
+  "forumData.categories.friendshipEnterprise.description": "Boards for partner tech companies of LKM; apply for collaboration to open your dedicated area.",
   "forumData.categories.friendshipEnterprise.name": "Partner Enterprises",
-  "forumData.categories.friendshipOrganization.description":
-    "Boards for partner organizations of LKM; apply for collaboration to open your dedicated area.",
+  "forumData.categories.friendshipOrganization.description": "Boards for partner organizations of LKM; apply for collaboration to open your dedicated area.",
   "forumData.categories.friendshipOrganization.name": "Partner Organizations",
-  "forumData.categories.geoEngineering.description":
-    "Surveying, geology, mining, safety science and engineering.",
+  "forumData.categories.geoEngineering.description": "Surveying, geology, mining, safety science and engineering.",
   "forumData.categories.geoEngineering.name": "Geoscience Engineering",
-  "forumData.categories.group.description":
-    "Divided by member background and profession, giving members of different backgrounds a better space to discuss.",
+  "forumData.categories.group.description": "Divided by member background and profession, giving members of different backgrounds a better space to discuss.",
   "forumData.categories.group.name": "Community Groups",
-  "forumData.categories.groupInternational.description":
-    "Exchange area for international students, overseas students and foreign friends — used for domestic and international tech exchange.",
+  "forumData.categories.groupInternational.description": "Exchange area for international students, overseas students and foreign friends — used for domestic and international tech exchange.",
   "forumData.categories.groupInternational.name": "International",
-  "forumData.categories.groupJuniorHigh.description":
-    "Discussion of arts and sciences learning at junior high level, preparing for the high school entrance exam.",
+  "forumData.categories.groupJuniorHigh.description": "Discussion of arts and sciences learning at junior high level, preparing for the high school entrance exam.",
   "forumData.categories.groupJuniorHigh.name": "Junior High Students",
-  "forumData.categories.groupScientist.description":
-    "A dedicated exchange area for science popularization workers, sharing scientific knowledge and resources.",
+  "forumData.categories.groupScientist.description": "A dedicated exchange area for science popularization workers, sharing scientific knowledge and resources.",
   "forumData.categories.groupScientist.name": "Science Popularization Workers",
-  "forumData.categories.groupSeniorHighSchool.description":
-    "Discussion of arts and sciences learning at senior high level, preparing for the college entrance exam.",
+  "forumData.categories.groupSeniorHighSchool.description": "Discussion of arts and sciences learning at senior high level, preparing for the college entrance exam.",
   "forumData.categories.groupSeniorHighSchool.name": "Senior High Students",
-  "forumData.categories.groupTeacher.description":
-    "A dedicated exchange area for educators, sharing teaching experience and resources.",
+  "forumData.categories.groupTeacher.description": "A dedicated exchange area for educators, sharing teaching experience and resources.",
   "forumData.categories.groupTeacher.name": "Educators",
-  "forumData.categories.hobby.description":
-    "Clubs formed from members' various interests; every winter and summer break features exciting activities.",
+  "forumData.categories.hobby.description": "Clubs formed from members' various interests; every winter and summer break features exciting activities.",
   "forumData.categories.hobby.name": "Interest Clubs",
-  "forumData.categories.hobbyChess.description":
-    "Chinese chess, Go, Gomoku, checkers, Flying Chess and other traditional and competitive games, plus poker, TCG and tabletop cards.",
+  "forumData.categories.hobbyChess.description": "Chinese chess, Go, Gomoku, checkers, Flying Chess and other traditional and competitive games, plus poker, TCG and tabletop cards.",
   "forumData.categories.hobbyChess.name": "Chess & Cards Club",
-  "forumData.categories.hobbyCooking.description":
-    "Discuss cooking and the chemistry behind it, share culinary skills and showcase dishes. Teaching livestreams may come later.",
+  "forumData.categories.hobbyCooking.description": "Discuss cooking and the chemistry behind it, share culinary skills and showcase dishes. Teaching livestreams may come later.",
   "forumData.categories.hobbyCooking.name": "Culinary Club",
-  "forumData.categories.hobbyGame.description":
-    "Console (PS/Xbox/Switch), PC (Steam/Epic) and mobile games — game topics and squad forming.",
+  "forumData.categories.hobbyGame.description": "Console (PS/Xbox/Switch), PC (Steam/Epic) and mobile games — game topics and squad forming.",
   "forumData.categories.hobbyGame.name": "Gaming Club",
-  "forumData.categories.hobbyMusic.description":
-    "Music theory discussions, instrument learning and exchange, music creation and appreciation, and various music topics.",
+  "forumData.categories.hobbyMusic.description": "Music theory discussions, instrument learning and exchange, music creation and appreciation, and various music topics.",
   "forumData.categories.hobbyMusic.name": "Tubie Music Club",
-  "forumData.categories.hobbyMusicGame.description":
-    "Discuss rhythm games, share charts and techniques.",
+  "forumData.categories.hobbyMusicGame.description": "Discuss rhythm games, share charts and techniques.",
   "forumData.categories.hobbyMusicGame.name": "Anime Rhythm Game Club",
-  "forumData.categories.hobbySciFi.description":
-    "Imagining the sci-fi world and literary creation — this is part of the plan!",
+  "forumData.categories.hobbySciFi.description": "Imagining the sci-fi world and literary creation — this is part of the plan!",
   "forumData.categories.hobbySciFi.name": "Sci-Fi Literature Club",
-  "forumData.categories.icSemiconductor.description":
-    "Chip design, wafer fabrication, packaging and testing — a hardcore circle with extremely high technical barriers.",
-  "forumData.categories.icSemiconductor.name":
-    "Integrated Circuits & Semiconductors",
-  "forumData.categories.langDe.description":
-    "German engineering and technology literature.",
+  "forumData.categories.icSemiconductor.description": "Chip design, wafer fabrication, packaging and testing — a hardcore circle with extremely high technical barriers.",
+  "forumData.categories.icSemiconductor.name": "Integrated Circuits & Semiconductors",
+  "forumData.categories.langDe.description": "German engineering and technology literature.",
   "forumData.categories.langDe.name": "German",
-  "forumData.categories.langEn.description":
-    "The common language of international academic exchange.",
+  "forumData.categories.langEn.description": "The common language of international academic exchange.",
   "forumData.categories.langEn.name": "English",
-  "forumData.categories.langJa.description":
-    "Japanese scientific literature and cultural exchange.",
+  "forumData.categories.langJa.description": "Japanese scientific literature and cultural exchange.",
   "forumData.categories.langJa.name": "Japanese",
-  "forumData.categories.langKo.description":
-    "Korean science, technology and cultural exchange.",
+  "forumData.categories.langKo.description": "Korean science, technology and cultural exchange.",
   "forumData.categories.langKo.name": "Korean",
-  "forumData.categories.langRu.description":
-    "Reading Russian scientific literature.",
+  "forumData.categories.langRu.description": "Reading Russian scientific literature.",
   "forumData.categories.langRu.name": "Russian",
-  "forumData.categories.langZh.description":
-    "Chinese linguistics and Chinese culture.",
+  "forumData.categories.langZh.description": "Chinese linguistics and Chinese culture.",
   "forumData.categories.langZh.name": "Chinese",
-  "forumData.categories.language.description":
-    "Language study area needed for reading papers and international exchange, finely divided by language.",
+  "forumData.categories.language.description": "Language study area needed for reading papers and international exchange, finely divided by language.",
   "forumData.categories.language.name": "Language Learning",
-  "forumData.categories.lightIndustry.description":
-    "Textiles, light industry engineering, packaging engineering, flavors & fragrances and cosmetics technology.",
+  "forumData.categories.lightIndustry.description": "Textiles, light industry engineering, packaging engineering, flavors & fragrances and cosmetics technology.",
   "forumData.categories.lightIndustry.name": "Light Industry",
-  "forumData.categories.literature.description":
-    "Literary discussion, appreciation of classics and literary creation. All literature lovers are welcome.",
+  "forumData.categories.literature.description": "Literary discussion, appreciation of classics and literary creation. All literature lovers are welcome.",
   "forumData.categories.literature.name": "Literature",
-  "forumData.categories.math.description":
-    "A gathering place for those interested in or professionally involved in mathematics, where math lovers can discuss mathematical knowledge and frontier content.",
+  "forumData.categories.math.description": "A gathering place for those interested in or professionally involved in mathematics, where math lovers can discuss mathematical knowledge and frontier content.",
   "forumData.categories.math.name": "Mathematics",
-  "forumData.categories.medicine.description":
-    "Traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, imaging, anesthesiology and forensic medicine.",
+  "forumData.categories.medicine.description": "Traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, imaging, anesthesiology and forensic medicine.",
   "forumData.categories.medicine.name": "Medicine HQ",
-  "forumData.categories.physics.description":
-    "Debates on fundamental theory and its historical evolution, quantum mechanics and frontier physics, condensed matter and materials science.",
+  "forumData.categories.physics.description": "Debates on fundamental theory and its historical evolution, quantum mechanics and frontier physics, condensed matter and materials science.",
   "forumData.categories.physics.name": "Physics",
-  "forumData.categories.psychology.description":
-    "Exchange and discussion across all branches of psychology.",
+  "forumData.categories.psychology.description": "Exchange and discussion across all branches of psychology.",
   "forumData.categories.psychology.name": "Psychology",
-  "forumData.categories.schoolClub.description":
-    "Boards for partner school clubs of LKM; apply for collaboration to open your dedicated area.",
+  "forumData.categories.schoolClub.description": "Boards for partner school clubs of LKM; apply for collaboration to open your dedicated area.",
   "forumData.categories.schoolClub.name": "School Clubs",
-  "forumData.categories.socialScience.description":
-    "Philosophy, politics, history, economics and law — encouraging learning and exposure, combining theory with practice.",
+  "forumData.categories.socialScience.description": "Philosophy, politics, history, economics and law — encouraging learning and exposure, combining theory with practice.",
   "forumData.categories.socialScience.name": "Social Sciences",
-  "forumData.categories.tcm.description":
-    "The essence of traditional medicine — TCM basic theory, TCM internal medicine, acupuncture & tuina and ethnic medicine.",
+  "forumData.categories.tcm.description": "The essence of traditional medicine — TCM basic theory, TCM internal medicine, acupuncture & tuina and ethnic medicine.",
   "forumData.categories.tcm.name": "School of Traditional Chinese Medicine",
   "languageSwitcher.en": "English",
   "languageSwitcher.zh": "Chinese",
@@ -1279,17 +1119,13 @@ export const enFlat = {
   "messages.articles.categories.science": "Science",
   "messages.articles.categories.security": "Security",
   "messages.auth.codeSent": "Verification code sent, please check your inbox",
-  "messages.auth.githubAuthorizationFailed":
-    "Failed to start GitHub authorization",
+  "messages.auth.githubAuthorizationFailed": "Failed to start GitHub authorization",
   "messages.auth.loginSuccess": "Logged in",
   "messages.auth.magicLinkSent": "Magic Link sent, please check your inbox",
-  "messages.auth.missingTempToken":
-    "Missing temporary session token, please log in again",
-  "messages.auth.passkeyFirstTime2fa":
-    "This is your first login and 2FA setup is required. Please scan the QR code.",
+  "messages.auth.missingTempToken": "Missing temporary session token, please log in again",
+  "messages.auth.passkeyFirstTime2fa": "This is your first login and 2FA setup is required. Please scan the QR code.",
   "messages.auth.passkeyLoginFailed": "Passkey login failed",
-  "messages.auth.passkeyViaLoginPage":
-    'Please use the "Passkey" method on the login page to complete authentication',
+  "messages.auth.passkeyViaLoginPage": "Please use the \"Passkey\" method on the login page to complete authentication",
   "messages.auth.unsupportedLoginMethod": "Unsupported login method",
   "messages.auth.unsupportedRegisterType": "Unsupported registration type",
   "messages.auth.wrongCredentials": "Incorrect account or password",
@@ -1301,21 +1137,15 @@ export const enFlat = {
   "messages.networkError": "Network connection failed, please try again later",
   "messages.networkRequestFailed": "Network request failed: {error}",
   "messages.operationFailed": "Operation failed, please try again",
-  "messages.recovery.enterAccount":
-    "Enter the email or phone number you registered with",
+  "messages.recovery.enterAccount": "Enter the email or phone number you registered with",
   "messages.recovery.enterCode": "Please enter the verification code",
-  "messages.recovery.enterSixDigitTotp":
-    "Please enter the 6-digit one-time code",
-  "messages.recovery.missingSessionToken":
-    "Missing temporary session token, please start recovery again",
+  "messages.recovery.enterSixDigitTotp": "Please enter the 6-digit one-time code",
+  "messages.recovery.missingSessionToken": "Missing temporary session token, please start recovery again",
   "messages.recovery.passwordMismatch": "The two passwords do not match",
-  "messages.recovery.passwordTooShort":
-    "Password must be at least 6 characters",
+  "messages.recovery.passwordTooShort": "Password must be at least 6 characters",
   "messages.recovery.resetSuccess": "Password reset, please log in",
-  "messages.register.codeRequestFailed":
-    "Failed to get the verification code, please try again",
-  "messages.register.contactSpecialChars":
-    "Contact info cannot contain special characters",
+  "messages.register.codeRequestFailed": "Failed to get the verification code, please try again",
+  "messages.register.contactSpecialChars": "Contact info cannot contain special characters",
   "messages.register.enterEmail": "Please enter your email",
   "messages.register.enterPhone": "Please enter your phone number",
   "messages.register.invalidCodeFormat": "Incorrect verification code format",
@@ -1324,23 +1154,18 @@ export const enFlat = {
   "messages.register.invalidPhone": "Please enter a valid phone number",
   "messages.register.passwordMismatch": "The two passwords do not match",
   "messages.register.passwordTooLong": "Password cannot exceed 128 characters",
-  "messages.register.passwordTooShort":
-    "Password must be at least 6 characters",
-  "messages.register.sessionExpired":
-    "Registration session expired, please resubmit",
-  "messages.register.usernameSpecialChars":
-    "Username cannot contain special characters (such as < > /)",
+  "messages.register.passwordTooShort": "Password must be at least 6 characters",
+  "messages.register.sessionExpired": "Registration session expired, please resubmit",
+  "messages.register.usernameSpecialChars": "Username cannot contain special characters (such as < > /)",
   "messages.register.usernameTooLong": "Username cannot exceed 50 characters",
-  "messages.register.usernameTooShort":
-    "Username must be at least 3 characters",
+  "messages.register.usernameTooShort": "Username must be at least 3 characters",
   "messages.requestFailed": "Request failed ({status})",
   "messages.requestTimeout": "Request timed out",
   "messages.timeoutOrCancelled": "Request timed out or was cancelled",
   "messages.unknownError": "Unknown error",
   "messages.unknownNetworkError": "Unknown network error",
   "messages.webauthn.authenticateFailed": "Passkey authentication failed",
-  "messages.webauthn.browserOnly":
-    "WebAuthn is only available in a browser environment. Please use a supported browser with HTTPS or localhost.",
+  "messages.webauthn.browserOnly": "WebAuthn is only available in a browser environment. Please use a supported browser with HTTPS or localhost.",
   "messages.webauthn.createFailed": "Failed to create passkey",
   "nav.about": "About",
   "nav.aboutArticles": "About articles",
@@ -1399,16 +1224,12 @@ export const enFlat = {
   "notification.markAllRead": "Mark all as read",
   "notification.minutesAgo": "{count} minutes ago",
   "notification.title": "Notifications",
-  "notificationData.contents.n1":
-    'Zhang San replied to your post "Quantum Mechanics Introduction"',
+  "notificationData.contents.n1": "Zhang San replied to your post \"Quantum Mechanics Introduction\"",
   "notificationData.contents.n2": "Li Si liked your comment",
   "notificationData.contents.n3": "Wang Wu followed you",
-  "notificationData.contents.n4":
-    'Your uploaded file "Astrophysics Dataset.zip" has been approved',
-  "notificationData.contents.n5":
-    "The LKM 2026 summer competition is about to start — come join!",
-  "notificationData.contents.n6":
-    'Zhao Liu liked your post "Mathematical Modeling Experience"',
+  "notificationData.contents.n4": "Your uploaded file \"Astrophysics Dataset.zip\" has been approved",
+  "notificationData.contents.n5": "The LKM 2026 summer competition is about to start — come join!",
+  "notificationData.contents.n6": "Zhao Liu liked your post \"Mathematical Modeling Experience\"",
   "notificationData.titles.fileApproved": "File Approved",
   "notificationData.titles.follow": "New Follower",
   "notificationData.titles.like": "New Like",
@@ -1421,55 +1242,39 @@ export const enFlat = {
   "onboarding.follow.authorsTab": "Author recommendations",
   "onboarding.follow.categoriesTab": "Board recommendations",
   "onboarding.follow.followers": "followers",
-  "onboarding.follow.hint":
-    "Select at least {min} boards or authors (selected {selected}/{min})",
+  "onboarding.follow.hint": "Select at least {min} boards or authors (selected {selected}/{min})",
   "onboarding.follow.members": "members",
   "onboarding.follow.title": "Follow what interests you",
   "onboarding.followAll": "Follow all",
-  "onboarding.followData.appliedScience.description":
-    "Applied fields such as computer science, electronics & electrical engineering, engineering and medicine",
+  "onboarding.followData.appliedScience.description": "Applied fields such as computer science, electronics & electrical engineering, engineering and medicine",
   "onboarding.followData.appliedScience.name": "Applied Sciences",
-  "onboarding.followData.authorJulyHua.description":
-    "A PhD with ideals — dreaming that every child can access science",
+  "onboarding.followData.authorJulyHua.description": "A PhD with ideals — dreaming that every child can access science",
   "onboarding.followData.authorJulyHua.name": "July Hua",
-  "onboarding.followData.authorJulyMoran.description":
-    "Physics from a non-985/211 university — three thousand days of bitter persistence, gold refined from deep snow",
+  "onboarding.followData.authorJulyMoran.description": "Physics from a non-985/211 university — three thousand days of bitter persistence, gold refined from deep snow",
   "onboarding.followData.authorJulyMoran.name": "July Moran",
-  "onboarding.followData.authorJulyO.description":
-    "PhD from the National Astronomical Observatories of China, specializing in gravitational waves and black hole physics",
+  "onboarding.followData.authorJulyO.description": "PhD from the National Astronomical Observatories of China, specializing in gravitational waves and black hole physics",
   "onboarding.followData.authorJulyO.name": "July O",
-  "onboarding.followData.authorJulyYouzhi.description":
-    "Former member of the Event Planning Group — pause and forget with the wind",
+  "onboarding.followData.authorJulyYouzhi.description": "Former member of the Event Planning Group — pause and forget with the wind",
   "onboarding.followData.authorJulyYouzhi.name": "July Youzhi",
-  "onboarding.followData.authorJulyYuli.description":
-    "Head of the Community Affairs Group — no task is trivial, every effort paints a landscape",
+  "onboarding.followData.authorJulyYuli.description": "Head of the Community Affairs Group — no task is trivial, every effort paints a landscape",
   "onboarding.followData.authorJulyYuli.name": "July Yuli",
-  "onboarding.followData.basicScience.description":
-    "Discussion area for basic sciences such as mathematics, physics, chemistry, biology and astronomy",
+  "onboarding.followData.basicScience.description": "Discussion area for basic sciences such as mathematics, physics, chemistry, biology and astronomy",
   "onboarding.followData.basicScience.name": "Basic Sciences",
-  "onboarding.followData.hobbyChess.description":
-    "Exchange on Chinese chess, Go, Gomoku, bridge and other board/card games",
+  "onboarding.followData.hobbyChess.description": "Exchange on Chinese chess, Go, Gomoku, bridge and other board/card games",
   "onboarding.followData.hobbyChess.name": "Chess & Cards Club",
-  "onboarding.followData.hobbyCooking.description":
-    "Cooking exchange, food sharing and culinary lessons",
+  "onboarding.followData.hobbyCooking.description": "Cooking exchange, food sharing and culinary lessons",
   "onboarding.followData.hobbyCooking.name": "Culinary Club",
-  "onboarding.followData.hobbyGame.description":
-    "A gathering place for console, PC and mobile gamers",
+  "onboarding.followData.hobbyGame.description": "A gathering place for console, PC and mobile gamers",
   "onboarding.followData.hobbyGame.name": "Gaming Club",
-  "onboarding.followData.hobbyMusic.description":
-    "Music theory discussions, instrument exchange and party planning",
+  "onboarding.followData.hobbyMusic.description": "Music theory discussions, instrument exchange and party planning",
   "onboarding.followData.hobbyMusic.name": "Music Club",
-  "onboarding.followData.hobbySciFi.description":
-    "Sci-fi writing, classic appreciation and visions of the future",
+  "onboarding.followData.hobbySciFi.description": "Sci-fi writing, classic appreciation and visions of the future",
   "onboarding.followData.hobbySciFi.name": "Sci-Fi Literature Club",
-  "onboarding.followData.language.description":
-    "Exchange and learning of multiple languages such as English, Russian, German and Japanese",
+  "onboarding.followData.language.description": "Exchange and learning of multiple languages such as English, Russian, German and Japanese",
   "onboarding.followData.language.name": "Language Learning",
-  "onboarding.followData.math.description":
-    "A place for math enthusiasts and professionals to exchange ideas",
+  "onboarding.followData.math.description": "A place for math enthusiasts and professionals to exchange ideas",
   "onboarding.followData.math.name": "Mathematics",
-  "onboarding.followData.physics.description":
-    "Exploring the mysteries of the universe and discussing the frontiers of physics",
+  "onboarding.followData.physics.description": "Exploring the mysteries of the universe and discussing the frontiers of physics",
   "onboarding.followData.physics.name": "Physics & Astronomy",
   "onboarding.followTitle": "Follow recommendations",
   "onboarding.identityTitle": "Identity tags",
@@ -1484,11 +1289,9 @@ export const enFlat = {
   "onboarding.quiz.progress": "Question {current} / {total}",
   "onboarding.quiz.result": "Correct {correct} / {total} (rate {rate}%)",
   "onboarding.quiz.retry": "Retry quiz",
-  "onboarding.quiz.retryHint":
-    "Reach 60% to pass. You can retry or try again later.",
+  "onboarding.quiz.retryHint": "Reach 60% to pass. You can retry or try again later.",
   "onboarding.quiz.start": "Start quiz ({count} questions)",
-  "onboarding.quiz.subtitle":
-    "Pass the quiz to unlock column features and professional status (optional, you can do it later in settings)",
+  "onboarding.quiz.subtitle": "Pass the quiz to unlock column features and professional status (optional, you can do it later in settings)",
   "onboarding.quiz.title": "Professional knowledge quiz",
   "onboarding.quiz.unlocked": "Columns and professional status unlocked!",
   "onboarding.quizData.b1.options.0": "Deoxy nucleic acid",
@@ -1500,26 +1303,22 @@ export const enFlat = {
   "onboarding.quizData.b2.options.1": "Prophase",
   "onboarding.quizData.b2.options.2": "Metaphase",
   "onboarding.quizData.b2.options.3": "Anaphase",
-  "onboarding.quizData.b2.stem":
-    "During which stage of cell division does the chromosome number double?",
+  "onboarding.quizData.b2.stem": "During which stage of cell division does the chromosome number double?",
   "onboarding.quizData.b3.options.0": "Photosynthesis",
   "onboarding.quizData.b3.options.1": "Protein synthesis",
   "onboarding.quizData.b3.options.2": "Aerobic respiration",
   "onboarding.quizData.b3.options.3": "Cell movement",
-  "onboarding.quizData.b3.stem":
-    "Which of the following is a function of mitochondria?",
+  "onboarding.quizData.b3.stem": "Which of the following is a function of mitochondria?",
   "onboarding.quizData.b4.options.0": "1:1",
   "onboarding.quizData.b4.options.1": "3:1",
   "onboarding.quizData.b4.options.2": "9:3:3:1",
   "onboarding.quizData.b4.options.3": "1:2:1",
-  "onboarding.quizData.b4.stem":
-    "In Mendelian inheritance, what is the approximate F₂ phenotype ratio?",
+  "onboarding.quizData.b4.stem": "In Mendelian inheritance, what is the approximate F₂ phenotype ratio?",
   "onboarding.quizData.b5.options.0": "Double-stranded structure",
   "onboarding.quizData.b5.options.1": "Contains deoxyribose",
   "onboarding.quizData.b5.options.2": "Contains uracil",
   "onboarding.quizData.b5.options.3": "Contains thymine",
-  "onboarding.quizData.b5.stem":
-    "Which of the following is a feature of RNA that differs from DNA?",
+  "onboarding.quizData.b5.stem": "Which of the following is a feature of RNA that differs from DNA?",
   "onboarding.quizData.c1.options.0": "H₂O",
   "onboarding.quizData.c1.options.1": "CO₂",
   "onboarding.quizData.c1.options.2": "NaCl",
@@ -1539,8 +1338,7 @@ export const enFlat = {
   "onboarding.quizData.c4.options.1": "Lower activation energy",
   "onboarding.quizData.c4.options.2": "Change the equilibrium constant",
   "onboarding.quizData.c4.options.3": "Consume reactants",
-  "onboarding.quizData.c4.stem":
-    "What is the role of a catalyst in a chemical reaction?",
+  "onboarding.quizData.c4.stem": "What is the role of a catalyst in a chemical reaction?",
   "onboarding.quizData.c5.options.0": "Nitrogen",
   "onboarding.quizData.c5.options.1": "Carbon",
   "onboarding.quizData.c5.options.2": "Oxygen",
@@ -1550,20 +1348,17 @@ export const enFlat = {
   "onboarding.quizData.cs1.options.1": "O(n²)",
   "onboarding.quizData.cs1.options.2": "O(log n)",
   "onboarding.quizData.cs1.options.3": "O(n log n)",
-  "onboarding.quizData.cs1.stem":
-    "What is the time complexity of binary search?",
+  "onboarding.quizData.cs1.stem": "What is the time complexity of binary search?",
   "onboarding.quizData.cs2.options.0": "Application layer",
   "onboarding.quizData.cs2.options.1": "Network layer",
   "onboarding.quizData.cs2.options.2": "Transport layer",
   "onboarding.quizData.cs2.options.3": "Data link layer",
-  "onboarding.quizData.cs2.stem":
-    "Which layer of the OSI model does TCP belong to?",
+  "onboarding.quizData.cs2.stem": "Which layer of the OSI model does TCP belong to?",
   "onboarding.quizData.cs3.options.0": "Quicksort",
   "onboarding.quizData.cs3.options.1": "Heapsort",
   "onboarding.quizData.cs3.options.2": "Mergesort",
   "onboarding.quizData.cs3.options.3": "Selection sort",
-  "onboarding.quizData.cs3.stem":
-    "Which of the following sorting algorithms is stable?",
+  "onboarding.quizData.cs3.stem": "Which of the following sorting algorithms is stable?",
   "onboarding.quizData.cs4.options.0": "10000",
   "onboarding.quizData.cs4.options.1": "11000",
   "onboarding.quizData.cs4.options.2": "11110",
@@ -1573,8 +1368,7 @@ export const enFlat = {
   "onboarding.quizData.cs5.options.1": "POST",
   "onboarding.quizData.cs5.options.2": "PUT",
   "onboarding.quizData.cs5.options.3": "DELETE",
-  "onboarding.quizData.cs5.stem":
-    "In RESTful APIs, which HTTP method is used to update a resource?",
+  "onboarding.quizData.cs5.stem": "In RESTful APIs, which HTTP method is used to update a resource?",
   "onboarding.quizData.m1.options.0": "0",
   "onboarding.quizData.m1.options.1": "1",
   "onboarding.quizData.m1.options.2": "-1",
@@ -1594,8 +1388,7 @@ export const enFlat = {
   "onboarding.quizData.m4.options.1": "2",
   "onboarding.quizData.m4.options.2": "∞",
   "onboarding.quizData.m4.options.3": "e",
-  "onboarding.quizData.m4.stem":
-    "What is the sum of the series 1 + 1/2 + 1/4 + 1/8 + ...?",
+  "onboarding.quizData.m4.stem": "What is the sum of the series 1 + 1/2 + 1/4 + 1/8 + ...?",
   "onboarding.quizData.m5.options.0": "Euler",
   "onboarding.quizData.m5.options.1": "Gauss",
   "onboarding.quizData.m5.options.2": "Andrew Wiles",
@@ -1605,8 +1398,7 @@ export const enFlat = {
   "onboarding.quizData.p1.options.1": "3×10⁷ m/s",
   "onboarding.quizData.p1.options.2": "3×10⁸ m/s",
   "onboarding.quizData.p1.options.3": "3×10⁹ m/s",
-  "onboarding.quizData.p1.stem":
-    "Approximately what is the speed of light in a vacuum?",
+  "onboarding.quizData.p1.stem": "Approximately what is the speed of light in a vacuum?",
   "onboarding.quizData.p2.options.0": "F = mv",
   "onboarding.quizData.p2.options.1": "F = ma",
   "onboarding.quizData.p2.options.2": "F = m/v",
@@ -1616,20 +1408,17 @@ export const enFlat = {
   "onboarding.quizData.p3.options.1": "Neutron",
   "onboarding.quizData.p3.options.2": "Electron",
   "onboarding.quizData.p3.options.3": "Atom",
-  "onboarding.quizData.p3.stem":
-    "Which of the following is an elementary particle?",
+  "onboarding.quizData.p3.stem": "Which of the following is an elementary particle?",
   "onboarding.quizData.p4.options.0": "Newton",
   "onboarding.quizData.p4.options.1": "Einstein",
   "onboarding.quizData.p4.options.2": "Joule",
   "onboarding.quizData.p4.options.3": "von Helmholtz",
-  "onboarding.quizData.p4.stem":
-    "Who formulated the law of conservation of energy?",
+  "onboarding.quizData.p4.stem": "Who formulated the law of conservation of energy?",
   "onboarding.quizData.p5.options.0": "Rainbow",
   "onboarding.quizData.p5.options.1": "Colors on soap bubbles",
   "onboarding.quizData.p5.options.2": "Shadow",
   "onboarding.quizData.p5.options.3": "Lightning",
-  "onboarding.quizData.p5.stem":
-    "Which of the following phenomena is wave interference?",
+  "onboarding.quizData.p5.stem": "Which of the following phenomena is wave interference?",
   "onboarding.quizTitle": "Quiz upgrade",
   "onboarding.requiredNote": "This step is required",
   "onboarding.skipAll": "Skip all",
@@ -1666,8 +1455,7 @@ export const enFlat = {
   "onboarding.tags.sciFi": "Sci-fi",
   "onboarding.tags.seniorHigh": "Senior high",
   "onboarding.tags.socialScience": "Social sciences",
-  "onboarding.tags.subtitle":
-    "Help us recommend more relevant content (optional)",
+  "onboarding.tags.subtitle": "Help us recommend more relevant content (optional)",
   "onboarding.tags.teaching": "Teaching",
   "onboarding.tags.title": "Select your identity tags",
   "onboarding.tags.university": "University",
@@ -1680,9 +1468,8 @@ export const enFlat = {
   "onboarding.tasks.introPlaceholder": "Briefly introduce yourself...",
   "onboarding.tasks.motto": "Motto",
   "onboarding.tasks.mottoPlaceholder": "Describe yourself in one sentence",
-  "onboarding.tasks.rewardDetail": '+100 points · Unlock the "Newcomer" title',
-  "onboarding.tasks.rewardHint":
-    'Complete the info to earn {points} points + the "Newcomer" title',
+  "onboarding.tasks.rewardDetail": "+100 points · Unlock the \"Newcomer\" title",
+  "onboarding.tasks.rewardHint": "Complete the info to earn {points} points + the \"Newcomer\" title",
   "onboarding.tasks.rewardTitle": "Completion reward",
   "onboarding.tasksTitle": "Newbie tasks",
   "page.accountTitle": "Account Settings",
@@ -1696,12 +1483,11 @@ export const enFlat = {
   "page.admin.documents.all": "All",
   "page.admin.documents.archived": "Archived",
   "page.admin.documents.backToDocs": "Back to list",
-  "page.admin.documents.deleteConfirm":
-    'Delete document "{title}"? This action cannot be undone.',
+  "page.admin.documents.deleteConfirm": "Delete document \"{title}\"? This action cannot be undone.",
   "page.admin.documents.draft": "Draft",
   "page.admin.documents.editorMetaDescription": "LKM Admin — Document Editor",
   "page.admin.documents.editorMetaTitle": "Edit Document — LKM",
-  "page.admin.documents.emptyHint": 'Click "New Document" to start writing',
+  "page.admin.documents.emptyHint": "Click \"New Document\" to start writing",
   "page.admin.documents.loading": "Loading documents...",
   "page.admin.documents.loadingEditor": "Loading editor...",
   "page.admin.documents.metaDescription": "LKM Admin — Document List",
@@ -1728,17 +1514,12 @@ export const enFlat = {
   "page.admin.reports.type": "Type",
   "page.admin.users.title": "User Management",
   "page.apps.description": "All application entries of the LKM community.",
-  "page.apps.starHope.description":
-    "A local-first cross-platform learning tool. Question bank management, smart practice, AI chat, document reading, exam simulation — an all-in-one learning solution.",
+  "page.apps.starHope.description": "A local-first cross-platform learning tool. Question bank management, smart practice, AI chat, document reading, exam simulation — an all-in-one learning solution.",
   "page.apps.starHope.name": "StarHope Learning Assistant",
   "page.apps.subtitle": "Entry points for all community apps and services.",
   "page.apps.title": "More Apps",
-  "page.apps.treehole.description":
-    "A healing, literary anonymous confession space. Hand your worries to the wind and keep your secrets in the treehole. Letters, message bottles, a wish wall, and two-way anonymous replies.",
+  "page.apps.treehole.description": "A healing, literary anonymous confession space. Hand your worries to the wind and keep your secrets in the treehole. Letters, message bottles, a wish wall, and two-way anonymous replies.",
   "page.apps.treehole.name": "Treehole",
-  "page.apps.triggeredDischarge.description":
-    "Real-time GPU lightning simulation. Laplace field solving, dielectric breakdown growth, Heidler return-stroke waveform, MTLE current decay, procedural thunder — a fully physics-driven visualization experiment.",
-  "page.apps.triggeredDischarge.name": "Triggered Discharge",
   "page.articles.aboutSubtitle": "About the LKM official website and community",
   "page.articles.aboutTitle": "About",
   "page.articles.archiveSubtitle": "{count} articles, archived by time",
@@ -1746,34 +1527,26 @@ export const enFlat = {
   "page.articles.articleCount": "{count} articles",
   "page.articles.backToCategories": "Back to all categories",
   "page.articles.backToList": "Back to article list",
-  "page.articles.categoriesSubtitle":
-    "Browse all articles across {count} categories",
+  "page.articles.categoriesSubtitle": "Browse all articles across {count} categories",
   "page.articles.categoriesTitle": "All Categories",
   "page.articles.categoryEmpty": "No categories yet",
   "page.articles.categoryEmptyText": "No articles in this category",
   "page.articles.community": "Community",
-  "page.articles.communityP1":
-    "The LKM community embraces the concept of co-building and co-sharing: you can join the management team (General Affairs, Community Affairs, News Office, Event Planning, etc.), join a project team (textbook writing project group, popular-science output project group, etc.), submit works, participate in events, and help with promotion.",
-  "page.articles.communityP2":
-    "Daily community communication relies on QQ groups. All enthusiasts who love reason and science are welcome to join us in exploring the mysteries of how everything works.",
+  "page.articles.communityP1": "The LKM community embraces the concept of co-building and co-sharing: you can join the management team (General Affairs, Community Affairs, News Office, Event Planning, etc.), join a project team (textbook writing project group, popular-science output project group, etc.), submit works, participate in events, and help with promotion.",
+  "page.articles.communityP2": "Daily community communication relies on QQ groups. All enthusiasts who love reason and science are welcome to join us in exploring the mysteries of how everything works.",
   "page.articles.empty": "No articles yet",
   "page.articles.listColon": ":",
   "page.articles.loadFailed": "Failed to load: {error}",
   "page.articles.moduleAccount": "User Account",
-  "page.articles.moduleAccountDesc":
-    "Registration / login, personal profile, contribution system and settings",
+  "page.articles.moduleAccountDesc": "Registration / login, personal profile, contribution system and settings",
   "page.articles.moduleArticles": "Articles Center",
-  "page.articles.moduleArticlesDesc":
-    "Official announcements, technical sharing and popular-science content, with category browsing and archiving",
+  "page.articles.moduleArticlesDesc": "Official announcements, technical sharing and popular-science content, with category browsing and archiving",
   "page.articles.moduleCommunity": "Community Platform",
-  "page.articles.moduleCommunityDesc":
-    "Forum, columns, file library, Q&A, project hall, competition, funding system and more",
+  "page.articles.moduleCommunityDesc": "Forum, columns, file library, Q&A, project hall, competition, funding system and more",
   "page.articles.moduleTeam": "Team Introduction",
-  "page.articles.moduleTeamDesc":
-    "Management team and project team showcase, development timeline",
+  "page.articles.moduleTeamDesc": "Management team and project team showcase, development timeline",
   "page.articles.modules": "Website modules",
-  "page.articles.modulesIntro":
-    "The official website currently includes the following main modules:",
+  "page.articles.modulesIntro": "The official website currently includes the following main modules:",
   "page.articles.notExist": "Article does not exist",
   "page.articles.notFound": "Article not found",
   "page.articles.projectInfo": "Project information",
@@ -1782,28 +1555,20 @@ export const enFlat = {
   "page.articles.techIntroA": "This project is a ",
   "page.articles.techIntroB": " website:",
   "page.articles.techIntroStrong": "front-end/back-end separated",
-  "page.articles.techList1":
-    "The front end is an Astro SSR service responsible for page rendering and interactions",
-  "page.articles.techList2a":
-    "Data is provided by an independently deployed real back end, with the address specified by the ",
+  "page.articles.techList1": "The front end is an Astro SSR service responsible for page rendering and interactions",
+  "page.articles.techList2a": "Data is provided by an independently deployed real back end, with the address specified by the ",
   "page.articles.techList2b": " environment variable",
   "page.articles.techList3a": "The front end reverse-proxies ",
   "page.articles.techList3b": " and ",
-  "page.articles.techList3c":
-    " to the real back end through the Astro middleware",
-  "page.articles.techList4":
-    "Authentication uses real backend JWT authentication, no mock data is stored locally",
+  "page.articles.techList3c": " to the real back end through the Astro middleware",
+  "page.articles.techList4": "Authentication uses real backend JWT authentication, no mock data is stored locally",
   "page.articles.techStack": "Technology stack",
-  "page.articles.techStackValue":
-    "Astro v7 (SSR) + Vue 3 + Tailwind CSS v4 + TypeScript",
+  "page.articles.techStackValue": "Astro v7 (SSR) + Vue 3 + Tailwind CSS v4 + TypeScript",
   "page.articles.title": "Official Articles",
   "page.articles.whatIs": "What is this",
-  "page.articles.whatIsP1":
-    "LKM (Lǐkēmí) is a community for science enthusiasts and technology learners, founded in 2014 and composed of many science and technology enthusiasts, covering mathematics, physics, chemistry, biology, information technology and more — bringing science back to everyone.",
-  "page.articles.whatIsP2a":
-    "This website is the official site of LKM, built with ",
-  "page.articles.whatIsP2b":
-    ", using server-side rendering (SSR) with Vue 3 and Tailwind CSS v4, providing a unified online portal for community members.",
+  "page.articles.whatIsP1": "LKM (Lǐkēmí) is a community for science enthusiasts and technology learners, founded in 2014 and composed of many science and technology enthusiasts, covering mathematics, physics, chemistry, biology, information technology and more — bringing science back to everyone.",
+  "page.articles.whatIsP2a": "This website is the official site of LKM, built with ",
+  "page.articles.whatIsP2b": ", using server-side rendering (SSR) with Vue 3 and Tailwind CSS v4, providing a unified online portal for community members.",
   "page.backToHome": "← Back to Home",
   "page.communityDetail.articleCount": "{count} articles",
   "page.communityDetail.articlesCount": "{count} articles",
@@ -1826,11 +1591,9 @@ export const enFlat = {
   "page.communityDetail.emptyArticles": "No articles yet",
   "page.communityDetail.fansCount": "{count} fans",
   "page.communityDetail.files.category": "Category: {name}",
-  "page.communityDetail.files.disclaimer":
-    "All content is uploaded by users. If you believe your rights are infringed, please notify us via the report feature and we will process it promptly.",
+  "page.communityDetail.files.disclaimer": "All content is uploaded by users. If you believe your rights are infringed, please notify us via the report feature and we will process it promptly.",
   "page.communityDetail.files.disclaimerTitle": "Disclaimer:",
-  "page.communityDetail.files.download":
-    "Download file (contribution points +5)",
+  "page.communityDetail.files.download": "Download file (contribution points +5)",
   "page.communityDetail.files.downloads": "Downloads",
   "page.communityDetail.files.fileLibrary": "File Library",
   "page.communityDetail.files.fileSize": "File size",
@@ -1856,8 +1619,7 @@ export const enFlat = {
   "page.communityDetail.forum.forum": "Forum",
   "page.communityDetail.forum.hotPosts": "Hot discussions",
   "page.communityDetail.forum.introTitle": "About this board",
-  "page.communityDetail.forum.memberStats":
-    "{members} members · {posts} posts · Today {today}",
+  "page.communityDetail.forum.memberStats": "{members} members · {posts} posts · Today {today}",
   "page.communityDetail.forum.membersShort": "{count} people",
   "page.communityDetail.forum.membersTitle": "Members",
   "page.communityDetail.forum.pinned": "Pinned",
@@ -1871,65 +1633,47 @@ export const enFlat = {
   "page.communityDetail.likedCount": "{count} likes",
   "page.communityDetail.otherInColumn": "More from this column",
   "page.communityDetail.readCount": "{count} reads",
-  "page.communityDetail.stats":
-    "{views} reads · {likes} likes · {comments} comments",
+  "page.communityDetail.stats": "{views} reads · {likes} likes · {comments} comments",
   "page.communityDetail.subscribedCount": "{count} following",
   "page.communityDetail.verified": "Professional certification",
   "page.home.explore.appliedScience": "Applied Sciences",
   "page.home.explore.basicScience": "Basic Sciences",
   "page.home.explore.columns": "Columns",
-  "page.home.explore.columnsStats":
-    "In-depth long reads · Professional certification",
+  "page.home.explore.columnsStats": "In-depth long reads · Professional certification",
   "page.home.explore.hobbies": "Interest Boards",
   "page.home.explore.stats": "{members} members · {posts} posts today",
   "page.home.explore.subtitle": "Discover what interests you",
   "page.home.explore.title": "Explore",
-  "page.home.faq.activities.description":
-    "LKM regularly holds holiday events, subject seminars, popular-science content creation and more. The July Team's Event Planning Department coordinates these activities — follow our official promo accounts for the latest updates.",
+  "page.home.faq.activities.description": "LKM regularly holds holiday events, subject seminars, popular-science content creation and more. The July Team's Event Planning Department coordinates these activities — follow our official promo accounts for the latest updates.",
   "page.home.faq.activities.title": "What activities does LKM have?",
-  "page.home.faq.build.description":
-    "LKM is a community built and shared by everyone. You can join the management team (General Affairs, Community Affairs, News Office, etc.) or a project team (textbook writing project group, popular-science production project group, etc.). You can also submit works and articles, join events, and help with promotion.",
+  "page.home.faq.build.description": "LKM is a community built and shared by everyone. You can join the management team (General Affairs, Community Affairs, News Office, etc.) or a project team (textbook writing project group, popular-science production project group, etc.). You can also submit works and articles, join events, and help with promotion.",
   "page.home.faq.build.title": "How can I take part in building the community?",
-  "page.home.faq.contact.description":
-    "Feel free to submit your ideas or questions through the Contact Us page. You can also give feedback directly to the management team in the QQ groups — we take every suggestion seriously.",
-  "page.home.faq.contact.title":
-    "How do I get in touch with questions or suggestions?",
-  "page.home.faq.howToJoin.description":
-    "You can join us through the official LKM QQ groups. There are currently two sub-groups — a junior high group and a senior high group — plus complete basic and applied science groups, providing more tailored spaces for members of different stages and fields. For the specific group numbers, please see the Contact Us page.",
+  "page.home.faq.contact.description": "Feel free to submit your ideas or questions through the Contact Us page. You can also give feedback directly to the management team in the QQ groups — we take every suggestion seriously.",
+  "page.home.faq.contact.title": "How do I get in touch with questions or suggestions?",
+  "page.home.faq.howToJoin.description": "You can join us through the official LKM QQ groups. There are currently two sub-groups — a junior high group and a senior high group — plus complete basic and applied science groups, providing more tailored spaces for members of different stages and fields. For the specific group numbers, please see the Contact Us page.",
   "page.home.faq.howToJoin.title": "How do I join LKM?",
-  "page.home.faq.officialSite.description":
-    "Yes. LKM has an official website — in 2026 we rebuilt it on a more robust architecture to give you a better online experience.",
+  "page.home.faq.officialSite.description": "Yes. LKM has an official website — in 2026 we rebuilt it on a more robust architecture to give you a better online experience.",
   "page.home.faq.officialSite.title": "Does LKM have an official website?",
-  "page.home.faq.subtitle":
-    "Frequently asked questions about the LKM official website, to help you quickly understand the project and how to use it.",
+  "page.home.faq.subtitle": "Frequently asked questions about the LKM official website, to help you quickly understand the project and how to use it.",
   "page.home.faq.title": "FAQ",
-  "page.home.faq.whatIs.description":
-    "LKM is a community of science and technology enthusiasts, founded in 2014. We break down professional barriers, so everyone who loves reason and champions science can find like-minded partners here and explore together the mysteries of how everything works.",
+  "page.home.faq.whatIs.description": "LKM is a community of science and technology enthusiasts, founded in 2014. We break down professional barriers, so everyone who loves reason and champions science can find like-minded partners here and explore together the mysteries of how everything works.",
   "page.home.faq.whatIs.title": "What is LKM?",
-  "page.home.hero.badge":
-    "A community made up of science and technology enthusiasts",
+  "page.home.hero.badge": "A community made up of science and technology enthusiasts",
   "page.home.hero.communityIntro": "Community Intro",
-  "page.home.hero.long":
-    'Here, science and technology break free from the rigidity and distance of the academic ivory tower, becoming the curiosity of everyone to burst out and question the world. Within reach, free from utilitarian perspectives, letting more people burst with a thirst for knowledge and feel the beauty of science and engineering. We break down professional barriers, so every "enthusiast" who loves reason and champions science can find like-minded partners here and explore together the mysteries of how everything works.',
+  "page.home.hero.long": "Here, science and technology break free from the rigidity and distance of the academic ivory tower, becoming the curiosity of everyone to burst out and question the world. Within reach, free from utilitarian perspectives, letting more people burst with a thirst for knowledge and feel the beauty of science and engineering. We break down professional barriers, so every \"enthusiast\" who loves reason and champions science can find like-minded partners here and explore together the mysteries of how everything works.",
   "page.home.hero.seekHelp": "Get Help",
-  "page.home.hero.short":
-    "Breaking down professional barriers, so every science enthusiast can find like-minded partners here.",
+  "page.home.hero.short": "Breaking down professional barriers, so every science enthusiast can find like-minded partners here.",
   "page.home.hero.subtitle": "A Community for Science & Technology Enthusiasts",
   "page.home.hero.title": "LKM!",
-  "page.home.members.julyHua.desc":
-    "A PhD with ideals — dream: every child can access science",
+  "page.home.members.julyHua.desc": "A PhD with ideals — dream: every child can access science",
   "page.home.members.julyHua.name": "July Hua",
-  "page.home.members.julyMoran.desc":
-    "Physics from a non-985/211 university — three thousand days of bitter persistence, gold refined from deep snow",
+  "page.home.members.julyMoran.desc": "Physics from a non-985/211 university — three thousand days of bitter persistence, gold refined from deep snow",
   "page.home.members.julyMoran.name": "July Moran",
-  "page.home.members.julyO.desc":
-    "PhD from the National Astronomical Observatories of China, Chinese Academy of Sciences, specializing in gravitational waves and black hole physics",
+  "page.home.members.julyO.desc": "PhD from the National Astronomical Observatories of China, Chinese Academy of Sciences, specializing in gravitational waves and black hole physics",
   "page.home.members.julyO.name": "July O",
-  "page.home.members.julyYouzhi.desc":
-    "Former member of the Event Planning Group — pause and forget with the wind; walk on, look around, and stay composed",
+  "page.home.members.julyYouzhi.desc": "Former member of the Event Planning Group — pause and forget with the wind; walk on, look around, and stay composed",
   "page.home.members.julyYouzhi.name": "July Youzhi",
-  "page.home.members.julyYuli.desc":
-    "Head of the Community Affairs Group — no task is trivial, every effort paints a landscape",
+  "page.home.members.julyYuli.desc": "Head of the Community Affairs Group — no task is trivial, every effort paints a landscape",
   "page.home.members.julyYuli.name": "July Yuli",
   "page.home.members.more": "More Members",
   "page.home.members.moreHint": "Click to view the full management team",
@@ -1937,81 +1681,45 @@ export const enFlat = {
   "page.home.members.title": "Team Members",
   "page.home.members.viewAll": "View All →",
   "page.home.metaTitle": "LKM — For Science & Technology Enthusiasts",
-  "page.home.resources.desc":
-    "A collection of academic institutions, research tools and literature sites (currently being improved)",
+  "page.home.resources.desc": "A collection of academic institutions, research tools and literature sites (currently being improved)",
   "page.home.resources.goTo": "Go to Resources →",
   "page.home.resources.title": "External Resource Sites",
-  "page.home.timeline.items.databaseWipe.description":
-    "The website's database was accidentally wiped, losing all data. This incident made the team deeply realize the importance of backup mechanisms and operational discipline, and became a turning point for the rebuild that followed.",
-  "page.home.timeline.items.databaseWipe.title":
-    "Website database wiped, everything back to zero",
-  "page.home.timeline.items.eventPlanningDept.description":
-    "The 〔July Team · Event Planning Department〕 was formed, and planning for the first summer event began. LKM moved from online discussion to organized event operation, turning a new page.",
-  "page.home.timeline.items.eventPlanningDept.title":
-    "July Team · Event Planning Department founded",
-  "page.home.timeline.items.expansion.description":
-    "The LKM groups entered a rapid expansion phase, absorbing a large number of members from communities such as Baidu Tieba's Physics Bar, Math Bar and Chemistry Bar, with the closest ties to the Physics Bar. Members covered science students and competition participants, and the early admin team was formed by selecting from active members.",
-  "page.home.timeline.items.expansion.title":
-    "Group expansion, establishing ties with Baidu Tieba",
-  "page.home.timeline.items.firstSummerEvent.description":
-    "The first summer event took shape. Though organizational details still needed work and more hands were needed, it was a precious attempt that accumulated valuable experience for future events.",
-  "page.home.timeline.items.firstSummerEvent.title":
-    "First summer event comes to life",
-  "page.home.timeline.items.founderStepsBack.description":
-    "Ke Qi gradually stepped back due to his studies, and LKM fell into a slump. Hua Hua, the current team leader, took over the founder's responsibilities, personally funding LKM's SVIP and the daily operation of the Physics Tribe — at the time, the tribe required 20 admin actions per week, or the management team would be penalized. Later, Tencent discontinued the tribe feature, all posts disappeared overnight, and the official account was also retired.",
-  "page.home.timeline.items.founderStepsBack.title":
-    "The founder steps back; Hua Hua keeps the flame alive",
-  "page.home.timeline.items.founding.description":
-    "Ke Qi created the first group chat — 〔LKM Homestead〕, later renamed several times, such as 〔LKM Alpha Flagship〕. He is the original founder of LKM; most of the community's current framework and institutions are built on what he pioneered.",
+  "page.home.timeline.items.databaseWipe.description": "The website's database was accidentally wiped, losing all data. This incident made the team deeply realize the importance of backup mechanisms and operational discipline, and became a turning point for the rebuild that followed.",
+  "page.home.timeline.items.databaseWipe.title": "Website database wiped, everything back to zero",
+  "page.home.timeline.items.eventPlanningDept.description": "The 〔July Team · Event Planning Department〕 was formed, and planning for the first summer event began. LKM moved from online discussion to organized event operation, turning a new page.",
+  "page.home.timeline.items.eventPlanningDept.title": "July Team · Event Planning Department founded",
+  "page.home.timeline.items.expansion.description": "The LKM groups entered a rapid expansion phase, absorbing a large number of members from communities such as Baidu Tieba's Physics Bar, Math Bar and Chemistry Bar, with the closest ties to the Physics Bar. Members covered science students and competition participants, and the early admin team was formed by selecting from active members.",
+  "page.home.timeline.items.expansion.title": "Group expansion, establishing ties with Baidu Tieba",
+  "page.home.timeline.items.firstSummerEvent.description": "The first summer event took shape. Though organizational details still needed work and more hands were needed, it was a precious attempt that accumulated valuable experience for future events.",
+  "page.home.timeline.items.firstSummerEvent.title": "First summer event comes to life",
+  "page.home.timeline.items.founderStepsBack.description": "Ke Qi gradually stepped back due to his studies, and LKM fell into a slump. Hua Hua, the current team leader, took over the founder's responsibilities, personally funding LKM's SVIP and the daily operation of the Physics Tribe — at the time, the tribe required 20 admin actions per week, or the management team would be penalized. Later, Tencent discontinued the tribe feature, all posts disappeared overnight, and the official account was also retired.",
+  "page.home.timeline.items.founderStepsBack.title": "The founder steps back; Hua Hua keeps the flame alive",
+  "page.home.timeline.items.founding.description": "Ke Qi created the first group chat — 〔LKM Homestead〕, later renamed several times, such as 〔LKM Alpha Flagship〕. He is the original founder of LKM; most of the community's current framework and institutions are built on what he pioneered.",
   "page.home.timeline.items.founding.title": "Ke Qi founds LKM",
-  "page.home.timeline.items.interestGroups.description":
-    "Interest groups such as the Physics Tribe group (2016.4.2), Information Technology group (2016.2.5), Tech World group (2016.2.15) and Psychology group (2016.10.7) were established one after another, further enriching the community ecosystem.",
-  "page.home.timeline.items.interestGroups.title":
-    "Continued expansion of interest groups",
-  "page.home.timeline.items.julyTeamEarly.description":
-    "The July Team's Community Affairs Group (2018.2.19) and General Affairs Group (2018.2.21) were established in succession, along with interest groups for chess, culinary science, HIFI and more. The early management team assembled by Ke Qi laid the institutional foundation for the organization's future operation.",
-  "page.home.timeline.items.julyTeamEarly.title":
-    "Early structure of the July Team established",
-  "page.home.timeline.items.officialGroupsReorganized.description":
-    "Official LKM groups were reorganized, with two sub-groups — 〔LKM · Junior High〕 and 〔LKM · Senior High〕 — providing more tailored spaces for members at different stages.",
-  "page.home.timeline.items.officialGroupsReorganized.title":
-    "Official groups reorganized",
-  "page.home.timeline.items.promoAccount.description":
-    "The official LKM promo account went live, and its first video gained 7,800+ views. The community quickly regained its activity, and LKM was reborn.",
-  "page.home.timeline.items.promoAccount.title":
-    "Official promo account launched, first video goes viral",
-  "page.home.timeline.items.qianxunJoins.description":
-    "Qianxun joined the LKM group chat, and the long-silent group began to come back to life.",
-  "page.home.timeline.items.qianxunJoins.title":
-    "Qianxun joins the group, a brief revival",
-  "page.home.timeline.items.qianxunStepsBack.description":
-    "Being still young and needing to focus on preparing for the high school entrance exam, Qianxun gradually stepped back after 2020, and the group went quiet once more. Through all the ups and downs, the first group's member count dropped to just 800.",
-  "page.home.timeline.items.qianxunStepsBack.title":
-    "Quiet again: Qianxun prepares for the high school entrance exam",
-  "page.home.timeline.items.rebirth.description":
-    "Learning from the database wipe, the official site and file library were rebuilt on a more robust architecture. Planning for the second summer event began at the same time, and LKM set off again with a brand-new posture.",
-  "page.home.timeline.items.rebirth.title":
-    "Rebirth: official site rebuilt and second summer prep begins",
-  "page.home.timeline.items.rebuildDecided.description":
-    "Qianxun formally decided to rebuild and develop LKM, and began explaining the video promotion plan to former team members, laying the groundwork for the promotional push ahead.",
-  "page.home.timeline.items.rebuildDecided.title":
-    "Making up the mind, launching the rebuilding plan",
-  "page.home.timeline.items.rebuildSeed.description":
-    "Group admins reached out to Qianxun again, saying the group had fewer than 800 members and the community had been silent for long. Qianxun's heart began to waver, and the idea of rebuilding LKM quietly took root.",
-  "page.home.timeline.items.rebuildSeed.title":
-    "The call of the group admins, the seed of rebuilding takes root",
-  "page.home.timeline.items.subjectGroups.description":
-    "Subject-specific groups were gradually created: Mathematics (2015.12.22), Physics, Chemistry, Biology (2015.12.25), as well as High School Mathematics, Physics, Chemistry (2016.2.5) and Junior High Mathematics, Biology (2016.2.4). The early subject-group system began to take shape.",
-  "page.home.timeline.items.subjectGroups.title":
-    "Establishment of subject-specific group system",
-  "page.home.timeline.items.teamAndWebsite.description":
-    "Began recruiting and building a new team, rebuilding the official website and creating a practical knowledge platform for the community.",
-  "page.home.timeline.items.teamAndWebsite.title":
-    "Team building and official website development",
-  "page.home.timeline.items.websitePlanning.description":
-    "An online website was once planned and briefly trialed, but never officially built and operated. The News Office envisioned at the same time — for publishing tech news — also remained only on paper and never came to fruition.",
-  "page.home.timeline.items.websitePlanning.title":
-    "Website planning and the News Office vision",
+  "page.home.timeline.items.interestGroups.description": "Interest groups such as the Physics Tribe group (2016.4.2), Information Technology group (2016.2.5), Tech World group (2016.2.15) and Psychology group (2016.10.7) were established one after another, further enriching the community ecosystem.",
+  "page.home.timeline.items.interestGroups.title": "Continued expansion of interest groups",
+  "page.home.timeline.items.julyTeamEarly.description": "The July Team's Community Affairs Group (2018.2.19) and General Affairs Group (2018.2.21) were established in succession, along with interest groups for chess, culinary science, HIFI and more. The early management team assembled by Ke Qi laid the institutional foundation for the organization's future operation.",
+  "page.home.timeline.items.julyTeamEarly.title": "Early structure of the July Team established",
+  "page.home.timeline.items.officialGroupsReorganized.description": "Official LKM groups were reorganized, with two sub-groups — 〔LKM · Junior High〕 and 〔LKM · Senior High〕 — providing more tailored spaces for members at different stages.",
+  "page.home.timeline.items.officialGroupsReorganized.title": "Official groups reorganized",
+  "page.home.timeline.items.promoAccount.description": "The official LKM promo account went live, and its first video gained 7,800+ views. The community quickly regained its activity, and LKM was reborn.",
+  "page.home.timeline.items.promoAccount.title": "Official promo account launched, first video goes viral",
+  "page.home.timeline.items.qianxunJoins.description": "Qianxun joined the LKM group chat, and the long-silent group began to come back to life.",
+  "page.home.timeline.items.qianxunJoins.title": "Qianxun joins the group, a brief revival",
+  "page.home.timeline.items.qianxunStepsBack.description": "Being still young and needing to focus on preparing for the high school entrance exam, Qianxun gradually stepped back after 2020, and the group went quiet once more. Through all the ups and downs, the first group's member count dropped to just 800.",
+  "page.home.timeline.items.qianxunStepsBack.title": "Quiet again: Qianxun prepares for the high school entrance exam",
+  "page.home.timeline.items.rebirth.description": "Learning from the database wipe, the official site and file library were rebuilt on a more robust architecture. Planning for the second summer event began at the same time, and LKM set off again with a brand-new posture.",
+  "page.home.timeline.items.rebirth.title": "Rebirth: official site rebuilt and second summer prep begins",
+  "page.home.timeline.items.rebuildDecided.description": "Qianxun formally decided to rebuild and develop LKM, and began explaining the video promotion plan to former team members, laying the groundwork for the promotional push ahead.",
+  "page.home.timeline.items.rebuildDecided.title": "Making up the mind, launching the rebuilding plan",
+  "page.home.timeline.items.rebuildSeed.description": "Group admins reached out to Qianxun again, saying the group had fewer than 800 members and the community had been silent for long. Qianxun's heart began to waver, and the idea of rebuilding LKM quietly took root.",
+  "page.home.timeline.items.rebuildSeed.title": "The call of the group admins, the seed of rebuilding takes root",
+  "page.home.timeline.items.subjectGroups.description": "Subject-specific groups were gradually created: Mathematics (2015.12.22), Physics, Chemistry, Biology (2015.12.25), as well as High School Mathematics, Physics, Chemistry (2016.2.5) and Junior High Mathematics, Biology (2016.2.4). The early subject-group system began to take shape.",
+  "page.home.timeline.items.subjectGroups.title": "Establishment of subject-specific group system",
+  "page.home.timeline.items.teamAndWebsite.description": "Began recruiting and building a new team, rebuilding the official website and creating a practical knowledge platform for the community.",
+  "page.home.timeline.items.teamAndWebsite.title": "Team building and official website development",
+  "page.home.timeline.items.websitePlanning.description": "An online website was once planned and briefly trialed, but never officially built and operated. The News Office envisioned at the same time — for publishing tech news — also remained only on paper and never came to fruition.",
+  "page.home.timeline.items.websitePlanning.title": "Website planning and the News Office vision",
   "page.home.timeline.subtitle": "Time flows, seasons change",
   "page.home.timeline.title": "Our Journey",
   "page.home.update.loading": "Loading...",
@@ -2025,14 +1733,12 @@ export const enFlat = {
   "page.news.backToNews": "Back to news",
   "page.news.categoryEmptyText": "No articles in this category",
   "page.news.loadFailed": "Failed to load: {error}",
-  "page.news.subtitle":
-    "Official announcements, tech news and popular-science content",
+  "page.news.subtitle": "Official announcements, tech news and popular-science content",
   "page.news.title": "News",
   "page.news.viewCategory": "Click to view articles in this category",
   "page.notFound.backHome": "Back to Home",
   "page.notFound.error": "Error",
-  "page.notFound.hint":
-    "No worries — head back to the homepage to find more great content.",
+  "page.notFound.hint": "No worries — head back to the homepage to find more great content.",
   "page.notFound.notFound": "Sorry, this page could not be found.",
   "page.notFound.title": "Page Not Found",
   "page.official.anonymous": "Anonymous member",
@@ -2046,31 +1752,24 @@ export const enFlat = {
   "page.official.communities.sidebarHobby": "Interest Clubs",
   "page.official.communities.sidebarLegacy": "Legacy Groups",
   "page.official.contact.bilibili": "Bilibili",
-  "page.official.contact.bilibiliDesc":
-    "Follow our official Bilibili account for the latest popular-science videos.",
+  "page.official.contact.bilibiliDesc": "Follow our official Bilibili account for the latest popular-science videos.",
   "page.official.contact.cooperation": "Cooperation",
-  "page.official.contact.cooperationDesc":
-    "If you're interested in popular-science content collaboration, co-hosting events, or technical support, feel free to reach us through the message form.",
-  "page.official.contact.disclaimerLabel":
-    "By submitting this form, you agree that we may collect your personal information in order to reply to you.",
+  "page.official.contact.cooperationDesc": "If you're interested in popular-science content collaboration, co-hosting events, or technical support, feel free to reach us through the message form.",
+  "page.official.contact.disclaimerLabel": "By submitting this form, you agree that we may collect your personal information in order to reply to you.",
   "page.official.contact.email": "Email",
   "page.official.contact.emailLabel": "Email address",
   "page.official.contact.feedback": "Feedback",
-  "page.official.contact.feedbackDesc":
-    "Bug reports and feature suggestions for the website or community can be submitted through the message form. We take every piece of feedback seriously.",
-  "page.official.contact.formSubtitle":
-    "If you'd like to join LKM, offer suggestions, or discuss collaboration, please reach out via the form below. You can also check the FAQ first — the answer you need may already be there.",
+  "page.official.contact.feedbackDesc": "Bug reports and feature suggestions for the website or community can be submitted through the message form. We take every piece of feedback seriously.",
+  "page.official.contact.formSubtitle": "If you'd like to join LKM, offer suggestions, or discuss collaboration, please reach out via the form below. You can also check the FAQ first — the answer you need may already be there.",
   "page.official.contact.formTitle": "Leave Us a Message",
   "page.official.contact.github": "GitHub",
   "page.official.contact.heroTitle": "We'd love to hear from you!",
   "page.official.contact.joinCommunity": "Join the Community",
-  "page.official.contact.joinCommunityDesc":
-    "LKM has a well-established QQ community system, covering dozens of groups — grade-level groups, subject groups, and interest clubs.",
+  "page.official.contact.joinCommunityDesc": "LKM has a well-established QQ community system, covering dozens of groups — grade-level groups, subject groups, and interest clubs.",
   "page.official.contact.messageLabel": "Message",
   "page.official.contact.metaTitle": "Contact Us",
   "page.official.contact.nameLabel": "Your name",
-  "page.official.contact.replyNote":
-    "We usually reply to your message within 24 hours.",
+  "page.official.contact.replyNote": "We usually reply to your message within 24 hours.",
   "page.official.contact.supportTitle": "Contact Us",
   "page.official.contact.viewAllCommunities": "View all communities",
   "page.official.contribution.metaTitle": "Contribution System — LKM",
@@ -2078,181 +1777,123 @@ export const enFlat = {
   "page.official.funding.heading": "System Under Preparation",
   "page.official.funding.metaTitle": "Funding System — LKM",
   "page.official.funding.notOpen": "Coming Soon",
-  "page.official.funding.planLine":
-    "We plan to launch a formal funding system once the platform is running stably.",
-  "page.official.funding.selfFundedLine":
-    "Since the platform launched, the management team has covered servers, domains, and other operating costs out of pocket.",
+  "page.official.funding.planLine": "We plan to launch a formal funding system once the platform is running stably.",
+  "page.official.funding.selfFundedLine": "Since the platform launched, the management team has covered servers, domains, and other operating costs out of pocket.",
   "page.official.funding.serverDomain": "Server and domain costs",
   "page.official.funding.smsEmail": "SMS and email services",
   "page.official.funding.storageCdn": "File storage and CDN bandwidth",
-  "page.official.funding.sustainableLine":
-    "LKM is committed to sustainable development after balancing revenue and expenses.",
+  "page.official.funding.sustainableLine": "LKM is committed to sustainable development after balancing revenue and expenses.",
   "page.official.funding.thanksTitle": "Thank you to everyone who supports LKM",
-  "page.official.funding.transparencyNote":
-    "We promise that all funds are used transparently, with regular financial reports. If you are interested in sponsoring, feel free to contact us.",
+  "page.official.funding.transparencyNote": "We promise that all funds are used transparently, with regular financial reports. If you are interested in sponsoring, feel free to contact us.",
   "page.official.pricing.contactUs": "Contact Us",
-  "page.official.pricing.contributionRecord":
-    "How do I view my contribution records?",
-  "page.official.pricing.contributionRecordAnswer":
-    "Currently, contribution records are mainly shown through the community and the website. In the future, we plan to build a more complete contribution tracking and display system, so that every 'LKM member' feels a sense of belonging and organizational identity.",
+  "page.official.pricing.contributionRecord": "How do I view my contribution records?",
+  "page.official.pricing.contributionRecordAnswer": "Currently, contribution records are mainly shown through the community and the website. In the future, we plan to build a more complete contribution tracking and display system, so that every 'LKM member' feels a sense of belonging and organizational identity.",
   "page.official.pricing.cooperation": "Contact for Cooperation",
-  "page.official.pricing.cooperationDesc":
-    "If you have resources you're willing to share and would like win-win cooperation, feel free to contact the General Affairs Department. We can discuss collaboration details in depth and build a better community together.",
+  "page.official.pricing.cooperationDesc": "If you have resources you're willing to share and would like win-win cooperation, feel free to contact the General Affairs Department. We can discuss collaboration details in depth and build a better community together.",
   "page.official.pricing.createContent": "Create Content",
-  "page.official.pricing.createContentDesc":
-    "We have a long-term call for submissions — help articles, subject articles, popular-science articles, and trending topics, whether as text, video, or any other format, are the substantive content the organization needs most. Your creations let more people feel the charm of technology and benefit from the community's co-creation and sharing system, with the most sincere feedback. Everyone is welcome to contact the News Office to submit.",
-  "page.official.pricing.ctaSubtitle":
-    "Join our community and, together with like-minded partners, let science spread further.",
+  "page.official.pricing.createContentDesc": "We have a long-term call for submissions — help articles, subject articles, popular-science articles, and trending topics, whether as text, video, or any other format, are the substantive content the organization needs most. Your creations let more people feel the charm of technology and benefit from the community's co-creation and sharing system, with the most sincere feedback. Everyone is welcome to contact the News Office to submit.",
+  "page.official.pricing.ctaSubtitle": "Join our community and, together with like-minded partners, let science spread further.",
   "page.official.pricing.ctaTitle": "Ready to contribute to LKM?",
-  "page.official.pricing.faqSubtitle":
-    "Some common questions about ways to support the community — hopefully these answer yours.",
+  "page.official.pricing.faqSubtitle": "Some common questions about ways to support the community — hopefully these answer yours.",
   "page.official.pricing.faqTitle": "FAQ",
   "page.official.pricing.fundingSource": "Where does LKM's funding come from?",
-  "page.official.pricing.fundingSourceAnswer":
-    "Currently, it comes from team members' own pockets. That is not sustainable in the long run. In the future, we will try fundraisers and other approaches while continuing to run self-media channels, so we can enter a positive cycle and sustain our operations.",
-  "page.official.pricing.heroSubtitle":
-    "LKM is a non-profit community for science and technology enthusiasts. The support of every member is the driving force behind our continued progress.",
+  "page.official.pricing.fundingSourceAnswer": "Currently, it comes from team members' own pockets. That is not sustainable in the long run. In the future, we will try fundraisers and other approaches while continuing to run self-media channels, so we can enter a positive cycle and sustain our operations.",
+  "page.official.pricing.heroSubtitle": "LKM is a non-profit community for science and technology enthusiasts. The support of every member is the driving force behind our continued progress.",
   "page.official.pricing.heroTitle": "Let Science Spread Further",
   "page.official.pricing.joinCommunity": "Join the Community",
-  "page.official.pricing.joinCommunityDesc":
-    "The most direct way is to join LKM's official QQ groups, follow official accounts, join discussions, share knowledge, and upload files. Every active member is the community's most valuable asset.",
+  "page.official.pricing.joinCommunityDesc": "The most direct way is to join LKM's official QQ groups, follow official accounts, join discussions, share knowledge, and upload files. Every active member is the community's most valuable asset.",
   "page.official.pricing.metaTitle": "Sponsorship & Support",
   "page.official.pricing.multiDept": "Can I join multiple departments?",
-  "page.official.pricing.multiDeptAnswer":
-    "Of course. We encourage cross-department collaboration. As long as you have the time and energy, you are welcome to contribute in multiple fields. We also encourage members to improve themselves, master more skills, and take on better roles.",
-  "page.official.pricing.noExperience":
-    "Can I join without relevant experience?",
-  "page.official.pricing.noExperienceAnswer":
-    "Absolutely. LKM welcomes every partner who wants to learn, contribute, and build. To help everyone get up to speed quickly, we will write a work handbook. Our groups are formed according to members' current abilities, so contributors will never be asked to take on things they cannot yet do.",
+  "page.official.pricing.multiDeptAnswer": "Of course. We encourage cross-department collaboration. As long as you have the time and energy, you are welcome to contribute in multiple fields. We also encourage members to improve themselves, master more skills, and take on better roles.",
+  "page.official.pricing.noExperience": "Can I join without relevant experience?",
+  "page.official.pricing.noExperienceAnswer": "Absolutely. LKM welcomes every partner who wants to learn, contribute, and build. To help everyone get up to speed quickly, we will write a work handbook. Our groups are formed according to members' current abilities, so contributors will never be asked to take on things they cannot yet do.",
   "page.official.pricing.participateMgmt": "Participate in Management",
-  "page.official.pricing.participateMgmtDesc":
-    "Join the July management team (General Affairs, Community Affairs, Planning, etc.) to take part in daily community operations and event planning, helping the organization achieve its long-term goals, making the community more prosperous, and contributing your talents to LKM's development.",
+  "page.official.pricing.participateMgmtDesc": "Join the July management team (General Affairs, Community Affairs, Planning, etc.) to take part in daily community operations and event planning, helping the organization achieve its long-term goals, making the community more prosperous, and contributing your talents to LKM's development.",
   "page.official.pricing.participateProject": "Participate in Projects",
-  "page.official.pricing.participateProjectDesc":
-    "Join the July project teams (textbook writing group, popular-science production group) to deliver concrete output, spread knowledge, and break down barriers and information gaps, bringing knowledge to more children eager to learn.",
-  "page.official.pricing.payAnswer":
-    "No. LKM is a non-profit organization; all services and content are free for community members. However, as the community grows, expenses for group member limits, domains, servers, and events keep rising. In the future, we will explore more possible ways to cover operating costs.",
+  "page.official.pricing.participateProjectDesc": "Join the July project teams (textbook writing group, popular-science production group) to deliver concrete output, spread knowledge, and break down barriers and information gaps, bringing knowledge to more children eager to learn.",
+  "page.official.pricing.payAnswer": "No. LKM is a non-profit organization; all services and content are free for community members. However, as the community grows, expenses for group member limits, domains, servers, and events keep rising. In the future, we will explore more possible ways to cover operating costs.",
   "page.official.pricing.payQuestion": "Does LKM charge any fees?",
   "page.official.pricing.promotion": "Promotion",
-  "page.official.pricing.promotionDesc":
-    "Share LKM's official accounts, vision, events, and quality content with your friends and classmates, so more tech-loving peers know we exist. Every share is a form of dissemination.",
-  "page.official.pricing.proposeProject":
-    "Can I proactively propose a project?",
-  "page.official.pricing.proposeProjectAnswer":
-    "Absolutely. The LKM community belongs to the collective — everyone builds and shares, takes responsibility, and manages matters together. The July team will help set up project groups with management support. We also welcome more creative, leadership-driven, and execution-capable people to join, turn ideas into reality, and help more people!",
+  "page.official.pricing.promotionDesc": "Share LKM's official accounts, vision, events, and quality content with your friends and classmates, so more tech-loving peers know we exist. Every share is a form of dissemination.",
+  "page.official.pricing.proposeProject": "Can I proactively propose a project?",
+  "page.official.pricing.proposeProjectAnswer": "Absolutely. The LKM community belongs to the collective — everyone builds and shares, takes responsibility, and manages matters together. The July team will help set up project groups with management support. We also welcome more creative, leadership-driven, and execution-capable people to join, turn ideas into reality, and help more people!",
   "page.official.pricing.suggestions": "Make Suggestions",
-  "page.official.pricing.suggestionsDesc":
-    "Have any ideas or suggestions for LKM? We would love to hear them. Submit your feedback through the Contact Us page, and we will take every opinion seriously.",
-  "page.official.pricing.supportSubtitle":
-    "Every bit of effort helps make LKM better. Here are a few ways you can get involved in building the community.",
+  "page.official.pricing.suggestionsDesc": "Have any ideas or suggestions for LKM? We would love to hear them. Submit your feedback through the Contact Us page, and we will take every opinion seriously.",
+  "page.official.pricing.supportSubtitle": "Every bit of effort helps make LKM better. Here are a few ways you can get involved in building the community.",
   "page.official.pricing.supportTitle": "Ways to Support",
-  "page.official.pricing.system":
-    "Is there a complete structure within the July team?",
-  "page.official.pricing.systemAnswer":
-    "Yes. The July team has clearly defined departments and groups, along with management regulations and a member covenant that everyone must follow. Roles can be flexibly adjusted as members develop. As the organization grows, we will establish a clearer promotion system to help everyone grow better.",
+  "page.official.pricing.system": "Is there a complete structure within the July team?",
+  "page.official.pricing.systemAnswer": "Yes. The July team has clearly defined departments and groups, along with management regulations and a member covenant that everyone must follow. Roles can be flexibly adjusted as members develop. As the organization grows, we will establish a clearer promotion system to help everyone grow better.",
   "page.official.pricing.techSupport": "Technical Support",
-  "page.official.pricing.techSupportDesc":
-    "If you're skilled in web development, UI design, server operations, or other technical fields, join the Technical Committee and help LKM build a better online platform.",
-  "page.official.pricing.transparency":
-    "Are LKM's income and expenses transparent?",
-  "page.official.pricing.transparencyAnswer":
-    "Yes. All of LKM's funds belong to the collective, not to individuals. Every income and expense is publicized and subject to community oversight. When fundraisers begin, donating members will form a brand-new working group to handle the related matters.",
+  "page.official.pricing.techSupportDesc": "If you're skilled in web development, UI design, server operations, or other technical fields, join the Technical Committee and help LKM build a better online platform.",
+  "page.official.pricing.transparency": "Are LKM's income and expenses transparent?",
+  "page.official.pricing.transparencyAnswer": "Yes. All of LKM's funds belong to the collective, not to individuals. Every income and expense is publicized and subject to community oversight. When fundraisers begin, donating members will form a brand-new working group to handle the related matters.",
   "page.official.projectTeam.empty": "No members yet — join us!",
   "page.official.projectTeam.metaTitle": "Project Team — LKM",
   "page.official.projectTeam.sidebarScience": "Popular-Science Project Group",
   "page.official.projectTeam.sidebarTextbooks": "Textbook Project Group",
-  "page.official.services.blogDesc":
-    "Supports publishing articles in Markdown and MDX, with category and tag filtering, reading-time estimation, RSS subscription, and more.",
+  "page.official.services.blogDesc": "Supports publishing articles in Markdown and MDX, with category and tag filtering, reading-time estimation, RSS subscription, and more.",
   "page.official.services.blogTitle": "Blog System",
   "page.official.services.brandName": "LKM",
-  "page.official.services.chatDesc":
-    "We run groups for different grade levels and career fields, as well as subject-specific groups, providing precise and efficient spaces for members of different stages and types to communicate.",
+  "page.official.services.chatDesc": "We run groups for different grade levels and career fields, as well as subject-specific groups, providing precise and efficient spaces for members of different stages and types to communicate.",
   "page.official.services.chatTitle": "Community Communication",
-  "page.official.services.contentSubtitle":
-    "High-quality content co-created by team members and the community, covering multiple fields of study.",
+  "page.official.services.contentSubtitle": "High-quality content co-created by team members and the community, covering multiple fields of study.",
   "page.official.services.contentTitle": "Content Creation",
-  "page.official.services.ctaSubtitle":
-    "Whether you want to join the community, submit creative work, or propose a collaboration, we would be delighted.",
+  "page.official.services.ctaSubtitle": "Whether you want to join the community, submit creative work, or propose a collaboration, we would be delighted.",
   "page.official.services.ctaTitlePrefix": "Interested in ",
   "page.official.services.ctaTitleSuffix": "?",
-  "page.official.services.deepDiveDesc":
-    "Publish series of feature articles on trending science topics, breaking down the underlying principles in simple terms to cultivate critical thinking and scientific literacy.",
+  "page.official.services.deepDiveDesc": "Publish series of feature articles on trending science topics, breaking down the underlying principles in simple terms to cultivate critical thinking and scientific literacy.",
   "page.official.services.deepDiveTitle": "In-depth Features",
-  "page.official.services.eventsSubtitle":
-    "From online seminars to holiday activities, LKM offers community members a rich variety of interactive experiences.",
+  "page.official.services.eventsSubtitle": "From online seminars to holiday activities, LKM offers community members a rich variety of interactive experiences.",
   "page.official.services.eventsTitle": "Community Events",
-  "page.official.services.exchangeDesc":
-    "In the future, we will form a translation team to share and translate quality science papers, articles, explainers, and lecture videos from both China and abroad, achieving two-way input and output.",
+  "page.official.services.exchangeDesc": "In the future, we will form a translation team to share and translate quality science papers, articles, explainers, and lecture videos from both China and abroad, achieving two-way input and output.",
   "page.official.services.exchangeTitle": "Domestic & International Exchange",
-  "page.official.services.helpDesc":
-    "We offer substantive, up-to-date advice on learning, competitions, majors, exams, skills, and career directions — breaking through conventional references and opinions and closing information gaps.",
+  "page.official.services.helpDesc": "We offer substantive, up-to-date advice on learning, competitions, majors, exams, skills, and career directions — breaking through conventional references and opinions and closing information gaps.",
   "page.official.services.helpTitle": "Relevant Help",
-  "page.official.services.heroSubtitle":
-    "LKM spreads science and technology and serves the community in many ways — from academic discussions to popular-science content. We are committed to breaking down knowledge barriers and closing information gaps, so more people can feel the charm of technology and the beauty of reason.",
-  "page.official.services.heroTitle":
-    "Making Science and Technology Accessible to Everyone",
-  "page.official.services.holidayDesc":
-    "The annual winter and summer themed activities, coordinated by the July Team's Event Planning Department. Featuring online lectures, subject seminars, fun competitions, and more, they are the community's biggest event every year.",
+  "page.official.services.heroSubtitle": "LKM spreads science and technology and serves the community in many ways — from academic discussions to popular-science content. We are committed to breaking down knowledge barriers and closing information gaps, so more people can feel the charm of technology and the beauty of reason.",
+  "page.official.services.heroTitle": "Making Science and Technology Accessible to Everyone",
+  "page.official.services.holidayDesc": "The annual winter and summer themed activities, coordinated by the July Team's Event Planning Department. Featuring online lectures, subject seminars, fun competitions, and more, they are the community's biggest event every year.",
   "page.official.services.holidayTitle": "Holiday Activities",
   "page.official.services.joinUs": "Join Us",
-  "page.official.services.journalDesc":
-    "In the future, we will form a journal project group to present the substantive content and achievements produced by the community over the past year or half-year, such as excellent articles, popular-science pieces, and creative works.",
+  "page.official.services.journalDesc": "In the future, we will form a journal project group to present the substantive content and achievements produced by the community over the past year or half-year, such as excellent articles, popular-science pieces, and creative works.",
   "page.official.services.journalTitle": "Science Journal",
   "page.official.services.metaTitle": "Services",
-  "page.official.services.newsDesc":
-    "Track the latest global tech developments and explain new scientific discoveries and breakthroughs in plain language, so you always stay on the pulse of technology.",
+  "page.official.services.newsDesc": "Track the latest global tech developments and explain new scientific discoveries and breakthroughs in plain language, so you always stay on the pulse of technology.",
   "page.official.services.newsTitle": "Tech News",
-  "page.official.services.platformSubtitle":
-    "LKM is building a knowledge management platform for community members to support learning and collaboration.",
+  "page.official.services.platformSubtitle": "LKM is building a knowledge management platform for community members to support learning and collaboration.",
   "page.official.services.platformTitle": "Knowledge Platform",
-  "page.official.services.promoDesc":
-    "Continuously output content through official promotional accounts on platforms such as Bilibili to expand the community's influence and attract more tech-loving partners to join us.",
+  "page.official.services.promoDesc": "Continuously output content through official promotional accounts on platforms such as Bilibili to expand the community's influence and attract more tech-loving partners to join us.",
   "page.official.services.promoTitle": "Promotion",
-  "page.official.services.quizDesc":
-    "Hold regular online subject knowledge competitions that combine education with entertainment, sparking interest in learning and letting members test and consolidate what they have learned in a relaxed atmosphere.",
+  "page.official.services.quizDesc": "Hold regular online subject knowledge competitions that combine education with entertainment, sparking interest in learning and letting members test and consolidate what they have learned in a relaxed atmosphere.",
   "page.official.services.quizTitle": "Knowledge Competitions",
-  "page.official.services.resourcesDesc":
-    "Curate and share quality study materials, book recommendations, online courses, and other learning resources, helping community members find the learning path that suits them best.",
+  "page.official.services.resourcesDesc": "Curate and share quality study materials, book recommendations, online courses, and other learning resources, helping community members find the learning path that suits them best.",
   "page.official.services.resourcesTitle": "Resource Sharing",
-  "page.official.services.scienceDesc":
-    "Covers core subjects such as mathematics, physics, chemistry, biology, and information technology — from basic concepts to frontier theories, guiding you step by step into the world of science.",
+  "page.official.services.scienceDesc": "Covers core subjects such as mathematics, physics, chemistry, biology, and information technology — from basic concepts to frontier theories, guiding you step by step into the world of science.",
   "page.official.services.scienceTitle": "Subject Popularization",
-  "page.official.services.seminarDesc":
-    "Jointly attended by committee members and enthusiasts of various subjects, regular themed seminars dive into in-depth discussion and exchange on specific scientific topics.",
+  "page.official.services.seminarDesc": "Jointly attended by committee members and enthusiasts of various subjects, regular themed seminars dive into in-depth discussion and exchange on specific scientific topics.",
   "page.official.services.seminarTitle": "Subject Seminars",
   "page.official.services.sidebarContent": "Content Creation",
   "page.official.services.sidebarEvents": "Community Events",
   "page.official.services.sidebarPlatform": "Knowledge Platform",
-  "page.official.services.videoDesc":
-    "Publish teaching and popular-science videos, as well as hardcore quality content, on platforms like Bilibili, presenting scientific and technical knowledge vividly so abstract axioms and theories become something you can see with your own eyes.",
+  "page.official.services.videoDesc": "Publish teaching and popular-science videos, as well as hardcore quality content, on platforms like Bilibili, presenting scientific and technical knowledge vividly so abstract axioms and theories become something you can see with your own eyes.",
   "page.official.services.videoTitle": "Video Creation",
-  "page.official.services.websiteDesc":
-    "LKM's online portal, integrating community introduction, team showcase, blog articles, documentation, and resources — our first window to the public.",
+  "page.official.services.websiteDesc": "LKM's online portal, integrating community introduction, team showcase, blog articles, documentation, and resources — our first window to the public.",
   "page.official.services.websiteTitle": "Official Website",
-  "page.official.team.advisorsDesc":
-    "This department consists of external advisors to LKM, providing support to LKM's working groups and project teams, such as legal consultation and liaison with other social organizations.",
+  "page.official.team.advisorsDesc": "This department consists of external advisors to LKM, providing support to LKM's working groups and project teams, such as legal consultation and liaison with other social organizations.",
   "page.official.team.advisorsTitle": "Advisors",
-  "page.official.team.affairsDesc":
-    "This department maintains community order across platforms, steers the tone within groups, and ensures groups stay active with a continuous, effective atmosphere for learning and discussion — handling issues promptly when they arise. It suits members who regularly stay in a platform community and have some emergency-handling ability.",
+  "page.official.team.affairsDesc": "This department maintains community order across platforms, steers the tone within groups, and ensures groups stay active with a continuous, effective atmosphere for learning and discussion — handling issues promptly when they arise. It suits members who regularly stay in a platform community and have some emergency-handling ability.",
   "page.official.team.affairsTitle": "July Team · Community Affairs",
   "page.official.team.alumniHeading": "Alumni or Lost Members",
-  "page.official.team.alumniNote":
-    "The following members once contributed to LKM but are currently unreachable for various reasons. No matter what, the door of LKM is always open to you.",
-  "page.official.team.eventsDesc":
-    "This department is responsible for activities across platforms — full-service from planning to execution — and supervises the Professional Committee, bringing everyone more and better events and experiences so members can truly learn. It suits people with inspiration and creativity, along with the drive to turn it all into reality.",
+  "page.official.team.alumniNote": "The following members once contributed to LKM but are currently unreachable for various reasons. No matter what, the door of LKM is always open to you.",
+  "page.official.team.eventsDesc": "This department is responsible for activities across platforms — full-service from planning to execution — and supervises the Professional Committee, bringing everyone more and better events and experiences so members can truly learn. It suits people with inspiration and creativity, along with the drive to turn it all into reality.",
   "page.official.team.eventsTitle": "July Team · Event Planning",
-  "page.official.team.founderSubtitle":
-    "The starting point of LKM — it all begins here",
+  "page.official.team.founderSubtitle": "The starting point of LKM — it all begins here",
   "page.official.team.founderTitle": "Founders",
-  "page.official.team.generalDesc":
-    "This department coordinates and plans related matters, leading the team to collaborate and fulfill our shared mission and goals. The General Affairs Department suits members with strong multitasking and execution skills; cross-department needs may arise.",
+  "page.official.team.generalDesc": "This department coordinates and plans related matters, leading the team to collaborate and fulfill our shared mission and goals. The General Affairs Department suits members with strong multitasking and execution skills; cross-department needs may arise.",
   "page.official.team.generalTitle": "July Team · General Affairs",
   "page.official.team.metaTitle": "Management Team — LKM",
-  "page.official.team.newsDesc":
-    "This department keeps the promotional accounts on all platforms running, and handles external affairs — sustaining promotional output, expanding influence, and delivering popular-science content to the public. The News Office will oversee a popular-science project group and a translation project group, to advance the popular-science cause and enable knowledge sharing between domestic and international tech enthusiasts, breaking down information gaps and barriers.",
+  "page.official.team.newsDesc": "This department keeps the promotional accounts on all platforms running, and handles external affairs — sustaining promotional output, expanding influence, and delivering popular-science content to the public. The News Office will oversee a popular-science project group and a translation project group, to advance the popular-science cause and enable knowledge sharing between domestic and international tech enthusiasts, breaking down information gaps and barriers.",
   "page.official.team.newsTitle": "News Office",
-  "page.official.team.professionalDesc":
-    "This department provides professional knowledge for activities, projects, and more, enriching the practical content of each field. Its members have committed to deepening their expertise; in the future, it will supervise academic project groups, bringing better academic exchange and more.",
+  "page.official.team.professionalDesc": "This department provides professional knowledge for activities, projects, and more, enriching the practical content of each field. Its members have committed to deepening their expertise; in the future, it will supervise academic project groups, bringing better academic exchange and more.",
   "page.official.team.professionalTitle": "Professional Committee",
   "page.official.team.sidebarAdvisors": "Advisors",
   "page.official.team.sidebarAffairs": "Community Affairs",
@@ -2263,50 +1904,8 @@ export const enFlat = {
   "page.official.team.sidebarNews": "News Office",
   "page.official.team.sidebarProfessional": "Professional Committee",
   "page.official.team.sidebarTech": "Technical Committee",
-  "page.official.team.techDesc":
-    "This department is responsible for the development and maintenance of the technology behind each platform and activity. In the future, it will bring everyone more practical and better open-source projects. Programming knowledge and website-building skills are needed.",
+  "page.official.team.techDesc": "This department is responsible for the development and maintenance of the technology behind each platform and activity. In the future, it will bring everyone more practical and better open-source projects. Programming knowledge and website-building skills are needed.",
   "page.official.team.techTitle": "Technical Committee",
-  "page.official.triggeredDischarge.back": "Back",
-  "page.official.triggeredDischarge.bloom": "Bloom",
-  "page.official.triggeredDischarge.branchIndex": "η · Branching index",
-  "page.official.triggeredDischarge.branchNotePrefix":
-    "Growth probability p ∝ E",
-  "page.official.triggeredDischarge.branchNoteSuffix":
-    "reproduces the branch sparsity of real lightning (η = 1 collapses into a compact fractal cluster). The return-stroke current travels up the channel with a Heidler waveform at c/3 (MTLE model, λ = 2 km); each stage runs on the physical clock, slowed by the multiplier above.",
-  "page.official.triggeredDischarge.channelLength": "Channel Length",
-  "page.official.triggeredDischarge.charging": "Charging",
-  "page.official.triggeredDischarge.clickHint":
-    "Click anywhere to trigger lightning",
-  "page.official.triggeredDischarge.current": "Current",
-  "page.official.triggeredDischarge.exposure": "Exposure",
-  "page.official.triggeredDischarge.fieldResidual": "Field Residual",
-  "page.official.triggeredDischarge.fractalDim": "Fractal Dim.",
-  "page.official.triggeredDischarge.metaDescription":
-    "Real-time GPU lightning simulation: Laplace field solving, dielectric breakdown growth, Heidler return-stroke waveform, MTLE current decay, volume rendering, bloom, and procedural thunder.",
-  "page.official.triggeredDischarge.metaTitle":
-    "Triggered Discharge — 2D Dielectric Breakdown Simulation",
-  "page.official.triggeredDischarge.newLightning": "New Lightning",
-  "page.official.triggeredDischarge.normalMode": "Normal Mode",
-  "page.official.triggeredDischarge.panelTitle": "Triggered Discharge",
-  "page.official.triggeredDischarge.pause": "Pause",
-  "page.official.triggeredDischarge.peakCurrent": "Peak current · kA",
-  "page.official.triggeredDischarge.phase": "Phase",
-  "page.official.triggeredDischarge.polarityNeg": "Polarity −CG",
-  "page.official.triggeredDischarge.realTime": "Real Time",
-  "page.official.triggeredDischarge.saveScreenshot": "Save Screenshot",
-  "page.official.triggeredDischarge.signature":
-    "Real-time simulation — real physics, no shortcuts",
-  "page.official.triggeredDischarge.slowMotion": "Slow-mo",
-  "page.official.triggeredDischarge.soundOff": "Sound Off",
-  "page.official.triggeredDischarge.stroke": "Stroke",
-  "page.official.triggeredDischarge.thunder": "Thunder",
-  "page.official.triggeredDischarge.timeScale": "Time scale · ×",
-  "page.official.triggeredDischarge.tipSpeed": "Tip Speed",
-  "page.official.triggeredDischarge.webgpuLine1":
-    "This simulation solves the 2D Laplace field equation on the GPU every frame.",
-  "page.official.triggeredDischarge.webgpuLine2":
-    "Use Chrome, Edge, or Brave 113+ (or Safari 18+), with WebGPU enabled.",
-  "page.official.triggeredDischarge.webgpuUnavailable": "WEBGPU UNAVAILABLE",
   "page.projects.background": "Background",
   "page.projects.goals": "Goals",
   "page.projects.incubated": "Incubated by July Team",
@@ -2346,8 +1945,7 @@ export const enFlat = {
   "page.qa.exitConfirmAria": "Exit confirmation",
   "page.qa.exitConfirmExit": "Exit",
   "page.qa.exitConfirmKeep": "Keep editing",
-  "page.qa.exitConfirmMessage":
-    "Your draft will not be saved if you exit. Are you sure you want to leave?",
+  "page.qa.exitConfirmMessage": "Your draft will not be saved if you exit. Are you sure you want to leave?",
   "page.qa.imageAlt": "Question image",
   "page.qa.imageOnlyToast": "Only image files are supported",
   "page.qa.imageTooLargeToast": "Image size must be ≤ 20MB",
@@ -2360,8 +1958,7 @@ export const enFlat = {
   "page.qa.resolved": "Resolved",
   "page.qa.saveDraft": "Save draft",
   "page.qa.situationLabel": "About You",
-  "page.qa.situationPlaceholder":
-    "e.g. province / score / subject choices, grade, background",
+  "page.qa.situationPlaceholder": "e.g. province / score / subject choices, grade, background",
   "page.qa.situationRequired": "Please fill in your situation",
   "page.qa.subtitle": "Science helps LKMers, mutual aid and sharing!",
   "page.qa.tabHelp": "Help",
@@ -2381,39 +1978,29 @@ export const enFlat = {
   "page.resources.wikipedia": "Wikipedia (English by default)",
   "page.resources.zhiwu": "iPlant (Zhiwu Zhi)",
   "page.resourcesHeading": "External Learning Resources",
-  "page.resourcesNote":
-    "Below are external academic/education platforms. Content is provided by third parties; please verify before visiting.",
+  "page.resourcesNote": "Below are external academic/education platforms. Content is provided by third parties; please verify before visiting.",
   "page.resourcesTitle": "Resources",
   "page.submitLinkHint": "To submit a link, contact the maintainer",
-  "page.treehole.bottleDescription":
-    "Put your thoughts into a bottle, hand them to the current, and wait for a stranger's reply.",
+  "page.treehole.bottleDescription": "Put your thoughts into a bottle, hand them to the current, and wait for a stranger's reply.",
   "page.treehole.bottleTitle": "Message in a Bottle — Treehole",
-  "page.treehole.homeDescription":
-    "A healing, literary anonymous confession space. Hand your worries to the wind and keep your secrets in the treehole.",
+  "page.treehole.homeDescription": "A healing, literary anonymous confession space. Hand your worries to the wind and keep your secrets in the treehole.",
   "page.treehole.homeTitle": "Treehole",
-  "page.treehole.messagesDescription":
-    "Fully anonymous — neither side reveals their true identity.",
+  "page.treehole.messagesDescription": "Fully anonymous — neither side reveals their true identity.",
   "page.treehole.messagesTitle": "Anonymous Replies — Treehole",
-  "page.treehole.mineDescription":
-    "View all your published letters, favorites, and drafts.",
+  "page.treehole.mineDescription": "View all your published letters, favorites, and drafts.",
   "page.treehole.mineTitle": "My Treehole",
-  "page.treehole.randomDescription":
-    "Draw a stranger's letter, read it quietly, and reply gently.",
+  "page.treehole.randomDescription": "Draw a stranger's letter, read it quietly, and reply gently.",
   "page.treehole.randomTitle": "Random Treehole",
-  "page.treehole.rankDescription":
-    "The anonymous letters most gently treated at this moment.",
+  "page.treehole.rankDescription": "The anonymous letters most gently treated at this moment.",
   "page.treehole.rankTitle": "Popular Rankings — Treehole",
   "page.treehole.settingsDescription": "Personalize your treehole experience.",
   "page.treehole.settingsTitle": "Settings — Treehole",
-  "page.treehole.wishDescription":
-    "Hand your wishes to the starlight and be softly illuminated.",
+  "page.treehole.wishDescription": "Hand your wishes to the starlight and be softly illuminated.",
   "page.treehole.wishTitle": "Wish Wall — Treehole",
-  "page.treehole.writeDescription":
-    "Write down your worries, confessions, complaints, or whispers.",
+  "page.treehole.writeDescription": "Write down your worries, confessions, complaints, or whispers.",
   "page.treehole.writeTitle": "Write a Letter — Treehole",
   "primitives.empty": "Nothing here yet",
-  "primitives.formStaticWarning":
-    "This form is a static demo and cannot be submitted online. Please contact us through other channels.",
+  "primitives.formStaticWarning": "This form is a static demo and cannot be submitted online. Please contact us through other channels.",
   "primitives.loading": "Loading...",
   "primitives.noImage": "No image",
   "primitives.tableOfContents": "Table of Contents",
@@ -2450,70 +2037,42 @@ export const enFlat = {
   "projectData.names.qiyueO": "July O",
   "projectData.names.wang": "Animator Wang",
   "projectData.names.zhang": "Engineer Zhang",
-  "projectData.projects.proj1.background":
-    "Quantum computing is an important direction for future computing. We plan to build a web-based quantum computing simulation platform to help learners intuitively understand quantum algorithms.",
-  "projectData.projects.proj1.goals":
-    "Build an 8-qubit quantum circuit simulator that runs in the browser, supporting common quantum gates and measurement.",
+  "projectData.projects.proj1.background": "Quantum computing is an important direction for future computing. We plan to build a web-based quantum computing simulation platform to help learners intuitively understand quantum algorithms.",
+  "projectData.projects.proj1.goals": "Build an 8-qubit quantum circuit simulator that runs in the browser, supporting common quantum gates and measurement.",
   "projectData.projects.proj1.name": "Quantum Computing Simulation Platform",
-  "projectData.projects.proj1.requirements":
-    "Need 1-2 frontend developers (React/TypeScript), 1 quantum physics advisor, and 1 UI designer.",
-  "projectData.projects.proj1.teamIntro":
-    "The initiator July O is a PhD at the Chinese Academy of Sciences in quantum physics. A backend algorithm prototype already exists.",
-  "projectData.projects.proj2.background":
-    "A lot of high-quality content is scattered across various boards in the community. We want to organize it through a knowledge graph to make it easier to search and learn.",
-  "projectData.projects.proj2.goals":
-    "Build an LKM community knowledge graph supporting keyword search, related recommendations, and learning path generation.",
+  "projectData.projects.proj1.requirements": "Need 1-2 frontend developers (React/TypeScript), 1 quantum physics advisor, and 1 UI designer.",
+  "projectData.projects.proj1.teamIntro": "The initiator July O is a PhD at the Chinese Academy of Sciences in quantum physics. A backend algorithm prototype already exists.",
+  "projectData.projects.proj2.background": "A lot of high-quality content is scattered across various boards in the community. We want to organize it through a knowledge graph to make it easier to search and learn.",
+  "projectData.projects.proj2.goals": "Build an LKM community knowledge graph supporting keyword search, related recommendations, and learning path generation.",
   "projectData.projects.proj2.name": "LKM Knowledge Graph",
-  "projectData.projects.proj2.requirements":
-    "Need 1 backend developer (Python/graph database), 1 frontend developer (visualization), and several content editors.",
+  "projectData.projects.proj2.requirements": "Need 1 backend developer (Python/graph database), 1 frontend developer (visualization), and several content editors.",
   "projectData.projects.proj2.teamIntro": "",
-  "projectData.projects.proj3.background":
-    "Create a popular-science video series for middle school students, explaining scientific principles with vivid and interesting animation and stories.",
-  "projectData.projects.proj3.goals":
-    "Produce 12 episodes of popular-science videos and publish them on Bilibili and YouTube, aiming for 100k plays.",
+  "projectData.projects.proj3.background": "Create a popular-science video series for middle school students, explaining scientific principles with vivid and interesting animation and stories.",
+  "projectData.projects.proj3.goals": "Produce 12 episodes of popular-science videos and publish them on Bilibili and YouTube, aiming for 100k plays.",
   "projectData.projects.proj3.name": "Popular Science Video Series",
   "projectData.projects.proj3.requirements": "",
-  "projectData.projects.proj3.teamIntro":
-    "A cross-disciplinary team including members from physics, chemistry, and biology. 5 episodes have been published.",
-  "projectData.projects.proj4.background":
-    "Use public astronomical data to create interactive astronomical data visualization works.",
-  "projectData.projects.proj4.goals":
-    "Build 3 interactive visualization works: a full-sky star catalog, a 3D model of the Milky Way, and a gravitational wave event timeline.",
-  "projectData.projects.proj4.name":
-    "Astronomical Observation Data Visualization Project",
+  "projectData.projects.proj3.teamIntro": "A cross-disciplinary team including members from physics, chemistry, and biology. 5 episodes have been published.",
+  "projectData.projects.proj4.background": "Use public astronomical data to create interactive astronomical data visualization works.",
+  "projectData.projects.proj4.goals": "Build 3 interactive visualization works: a full-sky star catalog, a 3D model of the Milky Way, and a gravitational wave event timeline.",
+  "projectData.projects.proj4.name": "Astronomical Observation Data Visualization Project",
   "projectData.projects.proj4.requirements": "",
-  "projectData.projects.proj4.teamIntro":
-    "Composed of astronomy enthusiasts from the community, using a Python + Three.js tech stack.",
-  "projectData.reports.proj1r0.content":
-    "Completed the technical research on quantum circuit simulation, decided the tech stack and architecture, and the backend algorithm prototype is ready.",
-  "projectData.reports.proj1r0.title":
-    "Project kickoff & requirements analysis complete",
-  "projectData.reports.proj1r1.content":
-    "Completed the frontend base framework and implemented visualization of single-qubit operations. Recruiting frontend developers to help refine multi-qubit simulation.",
-  "projectData.reports.proj1r1.title":
-    "Revision 1: Basic UI framework in place",
-  "projectData.reports.proj2r0.content":
-    "Decided on the Neo4j-based technical solution and preliminarily organized the content taxonomy of the mathematics board.",
+  "projectData.projects.proj4.teamIntro": "Composed of astronomy enthusiasts from the community, using a Python + Three.js tech stack.",
+  "projectData.reports.proj1r0.content": "Completed the technical research on quantum circuit simulation, decided the tech stack and architecture, and the backend algorithm prototype is ready.",
+  "projectData.reports.proj1r0.title": "Project kickoff & requirements analysis complete",
+  "projectData.reports.proj1r1.content": "Completed the frontend base framework and implemented visualization of single-qubit operations. Recruiting frontend developers to help refine multi-qubit simulation.",
+  "projectData.reports.proj1r1.title": "Revision 1: Basic UI framework in place",
+  "projectData.reports.proj2r0.content": "Decided on the Neo4j-based technical solution and preliminarily organized the content taxonomy of the mathematics board.",
   "projectData.reports.proj2r0.title": "Project kickoff",
-  "projectData.reports.proj3r0.content":
-    '"The Wonderful Journey of Light", "Secrets of the Atom" and "What is a Chemical Reaction" are online on Bilibili, with a total of 35k plays.',
-  "projectData.reports.proj3r0.title":
-    "Initial version: first 3 episodes released",
-  "projectData.reports.proj3r1.content":
-    "Episodes 4-5 are released, and total plays exceed 80k. Received positive audience feedback; started optimizing the scripts and animation style.",
+  "projectData.reports.proj3r0.content": "\"The Wonderful Journey of Light\", \"Secrets of the Atom\" and \"What is a Chemical Reaction\" are online on Bilibili, with a total of 35k plays.",
+  "projectData.reports.proj3r0.title": "Initial version: first 3 episodes released",
+  "projectData.reports.proj3r1.content": "Episodes 4-5 are released, and total plays exceed 80k. Received positive audience feedback; started optimizing the scripts and animation style.",
   "projectData.reports.proj3r1.title": "Revision 1: Mid-term review",
-  "projectData.reports.proj4r0.content":
-    "Decided to use Three.js for 3D rendering and selected Gaia DR3 stellar data.",
-  "projectData.reports.proj4r0.title":
-    "Initial version: tech selection & data collection",
-  "projectData.reports.proj4r1.content":
-    "The first work is online, showing the distribution of about 1 million stars.",
-  "projectData.reports.proj4r1.title":
-    "Revision 1: Full-sky star catalog complete",
-  "projectData.reports.proj4r2.content":
-    "The second work is online — users can rotate/zoom to explore the structure of the Milky Way. Currently working on the gravitational wave timeline.",
-  "projectData.reports.proj4r2.title":
-    "Revision 2: 3D Milky Way model complete",
+  "projectData.reports.proj4r0.content": "Decided to use Three.js for 3D rendering and selected Gaia DR3 stellar data.",
+  "projectData.reports.proj4r0.title": "Initial version: tech selection & data collection",
+  "projectData.reports.proj4r1.content": "The first work is online, showing the distribution of about 1 million stars.",
+  "projectData.reports.proj4r1.title": "Revision 1: Full-sky star catalog complete",
+  "projectData.reports.proj4r2.content": "The second work is online — users can rotate/zoom to explore the structure of the Milky Way. Currently working on the gravitational wave timeline.",
+  "projectData.reports.proj4r2.title": "Revision 2: 3D Milky Way model complete",
   "projectData.roles.backend": "Backend Developer",
   "projectData.roles.contentEditor": "Content Editor",
   "projectData.roles.frontend": "Frontend Developer",
@@ -2549,8 +2108,7 @@ export const enFlat = {
   "projectHub.createSuccess": "Project created!",
   "projectHub.createTitle": "➕ Start a New Project",
   "projectHub.currentProgress": "Current project progress",
-  "projectHub.err400":
-    "The request parameters are invalid, please check your input.",
+  "projectHub.err400": "The request parameters are invalid, please check your input.",
   "projectHub.err401": "Your session has expired, please log in again.",
   "projectHub.err403": "You do not have permission to perform this action.",
   "projectHub.err500": "Server error, please try again later.",
@@ -2586,29 +2144,23 @@ export const enFlat = {
   "projectHub.progressTesting": "Testing",
   "projectHub.progressValue": "Progress {progress}%",
   "projectHub.projectDescription": "Project description",
-  "projectHub.projectDescriptionPlaceholder":
-    "Briefly describe the project background and goals",
+  "projectHub.projectDescriptionPlaceholder": "Briefly describe the project background and goals",
   "projectHub.projectName": "Project name",
   "projectHub.projectNamePlaceholder": "Enter the project name",
   "projectHub.recruiting": "Recruiting",
   "projectHub.recruitingRoles": "Roles to recruit",
   "projectHub.roleMissing": "Missing {role}",
-  "projectHub.rolesPlaceholder":
-    "e.g. Frontend developer, UI designer (comma separated)",
+  "projectHub.rolesPlaceholder": "e.g. Frontend developer, UI designer (comma separated)",
   "projectHub.selectPlaceholder": "Select...",
   "projectHub.showcase": "Showcase",
   "projectHub.submitApply": "Submit Application",
   "projectHub.submitting": "Submitting...",
   "projectHub.tabRecruiting": "Recruiting",
   "projectHub.tabShowcase": "Showcase",
-  "qaData.answers.a1.content":
-    'I recommend Griffiths\' "Introduction to Quantum Mechanics" — a Chinese translation is available. If your math foundation is not solid enough, you can start with the Chinese edition "Introduction to Quantum Mechanics" (by David J. Griffiths, translated by Jia Yu). I also recommend reading Volume III of Feynman\'s Lectures on Physics alongside — the physical picture is very clear.',
-  "qaData.answers.a2.content":
-    'If you just want a preliminary understanding, I recommend "Does God Play Dice? The History of Quantum Physics" — a very accessible popular-science book. After reading it, you will have a good feel for the ins and outs of quantum mechanics, and then you can move on to textbooks.',
-  "qaData.answers.a3.content":
-    "A provincial rank of 12000 in Guangdong is a very good ranking. Physics and computer science are both good choices. From a job-prospect perspective, computer science has a wider job market and a higher starting salary; but if you truly love physics research, you can also major in physics and take computer science courses on the side — the two directions do not conflict. You could consider computer science or physics programs at South China University of Technology or Sun Yat-sen University.",
-  "qaData.answers.a4.content":
-    "For a 5GB CSV, I suggest switching tools. If you insist on Python, you can try: 1) Dask DataFrame (almost the same API as Pandas, but distributed) 2) Polars (much more memory-efficient than Pandas) 3) For aggregation, try SQLite (Pandas can write SQL directly). Chunked reading plus chunk-wise aggregation can work, but watch out for the complexity of the aggregation.",
+  "qaData.answers.a1.content": "I recommend Griffiths' \"Introduction to Quantum Mechanics\" — a Chinese translation is available. If your math foundation is not solid enough, you can start with the Chinese edition \"Introduction to Quantum Mechanics\" (by David J. Griffiths, translated by Jia Yu). I also recommend reading Volume III of Feynman's Lectures on Physics alongside — the physical picture is very clear.",
+  "qaData.answers.a2.content": "If you just want a preliminary understanding, I recommend \"Does God Play Dice? The History of Quantum Physics\" — a very accessible popular-science book. After reading it, you will have a good feel for the ins and outs of quantum mechanics, and then you can move on to textbooks.",
+  "qaData.answers.a3.content": "A provincial rank of 12000 in Guangdong is a very good ranking. Physics and computer science are both good choices. From a job-prospect perspective, computer science has a wider job market and a higher starting salary; but if you truly love physics research, you can also major in physics and take computer science courses on the side — the two directions do not conflict. You could consider computer science or physics programs at South China University of Technology or Sun Yat-sen University.",
+  "qaData.answers.a4.content": "For a 5GB CSV, I suggest switching tools. If you insist on Python, you can try: 1) Dask DataFrame (almost the same API as Pandas, but distributed) 2) Polars (much more memory-efficient than Pandas) 3) For aggregation, try SQLite (Pandas can write SQL directly). Chunked reading plus chunk-wise aggregation can work, but watch out for the complexity of the aggregation.",
   "qaData.askers.chen": "Xiao Chen, Grade 12",
   "qaData.askers.dataNewbie": "Data Analysis Newbie",
   "qaData.askers.examPrepper": "Exam Prep Student",
@@ -2618,24 +2170,15 @@ export const enFlat = {
   "qaData.authors.qiyueHua": "July Hua",
   "qaData.authors.qiyueO": "July O",
   "qaData.authors.zhang": "Engineer Zhang",
-  "qaData.questions.q1.content":
-    "I am a freshman in the physics department and want to get a head start on quantum mechanics. Are there any beginner-friendly introductory textbooks to recommend? Ideally with a Chinese edition.",
-  "qaData.questions.q1.title":
-    "Recommended books for getting started with quantum mechanics?",
-  "qaData.questions.q2.content":
-    "Preparing for the 2027 graduate entrance exam, targeting a 985 university. Which reference books and problem sets do I need for Math I? How should I plan my timeline?",
-  "qaData.questions.q2.title":
-    "What materials do I need to prepare for the Graduate Entrance Exam Math I?",
-  "qaData.questions.q3.content":
-    "Province: Guangdong\nScore/Rank: 640 / Provincial rank 12000\nSubjects: Physics + Chemistry + Biology\nInterest: Physics, Computer Science\nFamily: Ordinary family, hoping for good job prospects",
-  "qaData.questions.q3.title":
-    "College application advice: Physics vs Computer Science",
-  "qaData.questions.q4.content":
-    "I always run out of memory when processing a 5GB CSV file with Pandas. I have already used chunked reading, but the subsequent aggregation operations still exhaust the memory. Is there a better approach?",
-  "qaData.questions.q4.title":
-    "Python Data Analysis: running out of memory with Pandas?",
-  "qaData.questions.q5.content":
-    "I need a template for chemistry laboratory safety regulations, for the safety training of new graduate students. Preferably a standard version commonly used by universities.",
+  "qaData.questions.q1.content": "I am a freshman in the physics department and want to get a head start on quantum mechanics. Are there any beginner-friendly introductory textbooks to recommend? Ideally with a Chinese edition.",
+  "qaData.questions.q1.title": "Recommended books for getting started with quantum mechanics?",
+  "qaData.questions.q2.content": "Preparing for the 2027 graduate entrance exam, targeting a 985 university. Which reference books and problem sets do I need for Math I? How should I plan my timeline?",
+  "qaData.questions.q2.title": "What materials do I need to prepare for the Graduate Entrance Exam Math I?",
+  "qaData.questions.q3.content": "Province: Guangdong\nScore/Rank: 640 / Provincial rank 12000\nSubjects: Physics + Chemistry + Biology\nInterest: Physics, Computer Science\nFamily: Ordinary family, hoping for good job prospects",
+  "qaData.questions.q3.title": "College application advice: Physics vs Computer Science",
+  "qaData.questions.q4.content": "I always run out of memory when processing a 5GB CSV file with Pandas. I have already used chunked reading, but the subsequent aggregation operations still exhaust the memory. Is there a better approach?",
+  "qaData.questions.q4.title": "Python Data Analysis: running out of memory with Pandas?",
+  "qaData.questions.q5.content": "I need a template for chemistry laboratory safety regulations, for the safety training of new graduate students. Preferably a standard version commonly used by universities.",
   "qaData.questions.q5.title": "Looking for a lab safety regulation document",
   "qaData.tags.bigData": "Big Data",
   "qaData.tags.chemistry": "Chemistry",
@@ -2652,8 +2195,7 @@ export const enFlat = {
   "qaData.tags.recommendation": "Recommendations",
   "qaData.tags.studyPlan": "Study Planning",
   "qaData.tags.volunteer": "College Application",
-  "recovery.accountHint":
-    "Enter the email or phone number you registered with to receive a verification code",
+  "recovery.accountHint": "Enter the email or phone number you registered with to receive a verification code",
   "recovery.code": "Verification code",
   "recovery.codePlaceholder": "Enter verification code",
   "recovery.confirmPassword": "Confirm new password",
@@ -2664,8 +2206,7 @@ export const enFlat = {
   "recovery.goLogin": "Go to log in",
   "recovery.loginWithNewPassword": "Log in with your new password",
   "recovery.newPassword": "New password",
-  "recovery.newPasswordPlaceholder":
-    "Enter a new password (at least 6 characters)",
+  "recovery.newPasswordPlaceholder": "Enter a new password (at least 6 characters)",
   "recovery.phone": "Phone number",
   "recovery.phonePlaceholder": "Enter your phone number",
   "recovery.resetPassword": "Reset password",
@@ -2675,47 +2216,38 @@ export const enFlat = {
   "recovery.title": "Password Recovery",
   "recovery.totp": "One-time code",
   "recovery.totpPlaceholder": "6-digit code",
-  "recovery.twoFactorHint":
-    "This account has two-step verification enabled. Enter the code.",
+  "recovery.twoFactorHint": "This account has two-step verification enabled. Enter the code.",
   "recovery.useEmail": "Use email",
   "recovery.usePhone": "Use phone number",
   "recovery.verifyCode": "Verify code",
   "register.local.confirm": "Confirm password",
-  "register.local.confirmPlaceholder":
-    "Re-enter password (at least 6 characters)",
-  "register.local.onlyUsername":
-    "Username + password only, no email/phone required",
+  "register.local.confirmPlaceholder": "Re-enter password (at least 6 characters)",
+  "register.local.onlyUsername": "Username + password only, no email/phone required",
   "register.local.password": "Password",
-  "register.local.passwordPlaceholder":
-    "Enter a password (at least 6 characters)",
+  "register.local.passwordPlaceholder": "Enter a password (at least 6 characters)",
   "register.local.submit": "Create local account",
   "register.local.username": "Username",
-  "register.local.usernamePlaceholder":
-    "Enter a username (at least 3 characters)",
+  "register.local.usernamePlaceholder": "Enter a username (at least 3 characters)",
   "register.normal.backToEdit": "Back to edit",
   "register.normal.code": "Verification code",
   "register.normal.codePlaceholder": "Enter verification code",
   "register.normal.codeSentEmail": "Verification code sent to your email",
   "register.normal.codeSentPhone": "Verification code sent to your phone",
   "register.normal.confirm": "Confirm password",
-  "register.normal.confirmPlaceholder":
-    "Re-enter password (at least 6 characters)",
+  "register.normal.confirmPlaceholder": "Re-enter password (at least 6 characters)",
   "register.normal.email": "Email",
   "register.normal.emailPlaceholder": "Enter email address",
   "register.normal.onlyEmail": "Username + email only, verify to register",
-  "register.normal.onlyPhone":
-    "Username + phone number only, verify to register",
+  "register.normal.onlyPhone": "Username + phone number only, verify to register",
   "register.normal.password": "Password",
-  "register.normal.passwordPlaceholder":
-    "Enter a password (at least 6 characters)",
+  "register.normal.passwordPlaceholder": "Enter a password (at least 6 characters)",
   "register.normal.phone": "Phone number",
   "register.normal.phonePlaceholder": "Enter phone number",
   "register.normal.sendCode": "Send verification code",
   "register.normal.useEmail": "Use email",
   "register.normal.usePhone": "Use phone number",
   "register.normal.username": "Username",
-  "register.normal.usernamePlaceholder":
-    "Enter a username (at least 3 characters)",
+  "register.normal.usernamePlaceholder": "Enter a username (at least 3 characters)",
   "register.normal.verifyAndFinish": "Verify and finish sign-up",
   "search.fileMeta": "Uploader: {author} · {size} MB · {downloads} downloads",
   "search.files": "Files",
@@ -2737,19 +2269,16 @@ export const enFlat = {
   "search.tagUser": "User",
   "search.userQiyueHuaDesc": "A PhD with ideals · Science education advocate",
   "search.userQiyueHuaName": "July Hua",
-  "search.userQiyueMoranDesc":
-    "Physics from a non-985/211 university — three thousand days of bitter persistence",
+  "search.userQiyueMoranDesc": "Physics from a non-985/211 university — three thousand days of bitter persistence",
   "search.userQiyueMoranName": "July Moran",
-  "search.userQiyueODesc":
-    "PhD from the National Astronomical Observatories of China · Gravitational waves & black hole physics",
+  "search.userQiyueODesc": "PhD from the National Astronomical Observatories of China · Gravitational waves & black hole physics",
   "search.userQiyueOName": "July O",
   "search.users": "Users",
   "settings.2fa.codePlaceholder": "Enter the 6-digit code shown after scanning",
   "settings.2fa.confirmDisable": "Confirm disable",
   "settings.2fa.confirmEnable": "Confirm enable",
   "settings.2fa.disable": "Disable",
-  "settings.2fa.disableHint":
-    "Enter the 6-digit code from your current authenticator to confirm disabling",
+  "settings.2fa.disableHint": "Enter the 6-digit code from your current authenticator to confirm disabling",
   "settings.2fa.enable": "Enable",
   "settings.2fa.enter6Digit": "Enter the 6-digit code",
   "settings.2fa.hideRecoveryCodes": "Save and hide",
@@ -2757,10 +2286,8 @@ export const enFlat = {
   "settings.2fa.on": "Enabled",
   "settings.2fa.qrAlt": "TOTP QR code",
   "settings.2fa.recoveryCodes": "Recovery codes",
-  "settings.2fa.recoveryHint":
-    "Keep these codes safe; use one to log in and re-set up 2FA if you lose your authenticator.",
-  "settings.2fa.scanHint":
-    "Scan the QR code with an authenticator app (e.g. Google Authenticator / 1Password), or enter the secret key below.",
+  "settings.2fa.recoveryHint": "Keep these codes safe; use one to log in and re-set up 2FA if you lose your authenticator.",
+  "settings.2fa.scanHint": "Scan the QR code with an authenticator app (e.g. Google Authenticator / 1Password), or enter the secret key below.",
   "settings.2fa.title": "Two-factor authentication (2FA)",
   "settings.2fa.totp": "TOTP codes",
   "settings.accountTitle": "Account",
@@ -2775,8 +2302,7 @@ export const enFlat = {
   "settings.bind.enterCode": "Enter verification code",
   "settings.bind.enterEmail": "Enter email address",
   "settings.bind.enterPhone": "Enter phone number",
-  "settings.bind.enterTOTP":
-    "Two-step verification is enabled, enter the one-time code",
+  "settings.bind.enterTOTP": "Two-step verification is enabled, enter the one-time code",
   "settings.bind.githubFail": "Failed to start GitHub authorization",
   "settings.bind.notBound": "Not bound",
   "settings.bind.phone": "Phone number",
@@ -2785,8 +2311,7 @@ export const enFlat = {
   "settings.bind.title": "Login methods",
   "settings.bind.unbind": "Unbind",
   "settings.bind.unbindFail": "Unbind failed, please try again",
-  "settings.contactHint":
-    "Public contact info such as QQ / WeChat / GitHub will be shown on your profile sidebar.",
+  "settings.contactHint": "Public contact info such as QQ / WeChat / GitHub will be shown on your profile sidebar.",
   "settings.contactTitle": "Contact Information",
   "settings.contactsUpdated": "Contact info updated",
   "settings.email": "Email",
@@ -2794,19 +2319,16 @@ export const enFlat = {
   "settings.iconPlaceholder": "Icon name (optional)",
   "settings.level": "Level",
   "settings.linkNamePlaceholder": "Name (e.g. QQ / GitHub)",
-  "settings.localUpgradeHint":
-    "You are using a local account. Binding an email or phone number will upgrade it to a normal account and unlock all features.",
+  "settings.localUpgradeHint": "You are using a local account. Binding an email or phone number will upgrade it to a normal account and unlock all features.",
   "settings.loginRequired": "Please log in first",
   "settings.loginRequiredHint": "You need to be logged in to access this page",
-  "settings.logoutMessage":
-    "Are you sure you want to log out of the current account?",
+  "settings.logoutMessage": "Are you sure you want to log out of the current account?",
   "settings.logoutTitle": "Log out",
   "settings.nickname": "Nickname",
   "settings.nicknamePlaceholder": "Set your nickname",
   "settings.notBound": "Not bound",
   "settings.passkey.createFail": "Failed to create passkey",
-  "settings.passkey.deleteMessage":
-    "Are you sure you want to delete this passkey? This action cannot be undone.",
+  "settings.passkey.deleteMessage": "Are you sure you want to delete this passkey? This action cannot be undone.",
   "settings.passkey.deleteTitle": "Delete passkey",
   "settings.passkey.empty": "No passkeys yet",
   "settings.passkey.namePlaceholder": "Name the new key (e.g. My phone)",
@@ -2833,8 +2355,7 @@ export const enFlat = {
   "shell.community": "Community",
   "shell.official": "Official Site",
   "starhope.ai.clearConversation": "Clear conversation",
-  "starhope.ai.inputPlaceholder":
-    "Type a message, Enter to send, Shift+Enter for a new line...",
+  "starhope.ai.inputPlaceholder": "Type a message, Enter to send, Shift+Enter for a new line...",
   "starhope.ai.newAgent": "New Assistant",
   "starhope.ai.selectHint": "Select an AI assistant to start the conversation",
   "starhope.ai.send": "Send",
@@ -2852,8 +2373,7 @@ export const enFlat = {
   "starhope.dashboard.shortcuts.exam.label": "Mock Exam",
   "starhope.dashboard.shortcuts.plugins.desc": "Extended features",
   "starhope.dashboard.shortcuts.plugins.label": "Plugin Center",
-  "starhope.dashboard.shortcuts.practice.desc":
-    "Practice with custom question sets",
+  "starhope.dashboard.shortcuts.practice.desc": "Practice with custom question sets",
   "starhope.dashboard.shortcuts.practice.label": "Start Practice",
   "starhope.dashboard.shortcuts.reader.desc": "PDF reading and annotation",
   "starhope.dashboard.shortcuts.reader.label": "Document Reader",
@@ -2866,13 +2386,11 @@ export const enFlat = {
   "starhope.dashboard.stats.folders": "Folders",
   "starhope.dashboard.stats.practiceRecords": "Practice records",
   "starhope.dashboard.stats.totalQuestions": "Total questions",
-  "starhope.dashboard.welcomeBack":
-    "Welcome back to StarHope Learning Assistant",
+  "starhope.dashboard.welcomeBack": "Welcome back to StarHope Learning Assistant",
   "starhope.exam.summary": "{count} questions available for exams",
   "starhope.exam.title": "Mock Exam",
   "starhope.loginRequired.goLogin": "Go to log in",
-  "starhope.loginRequired.message":
-    "StarHope uses the unified LKM website account. Please log in before using the learning assistant.",
+  "starhope.loginRequired.message": "StarHope uses the unified LKM website account. Please log in before using the learning assistant.",
   "starhope.loginRequired.title": "Login Required",
   "starhope.logout": "Log out",
   "starhope.nav.ai": "AI Assistant",
@@ -2908,308 +2426,201 @@ export const enFlat = {
   "starhopeData.ai.defaultAgentName": "General Assistant",
   "starhopeData.ai.errorPrefix": "Error: {message}",
   "starhopeData.ai.loadFail": "Failed to load AI assistants",
-  "starhopeData.ai.mockResponse":
-    'As your **{name}**, regarding "{question}":\n\nThis is a good learning question. Start from the basics and build up gradually.\n\n> 💡 You can keep asking about the details.',
+  "starhopeData.ai.mockResponse": "As your **{name}**, regarding \"{question}\":\n\nThis is a good learning question. Start from the basics and build up gradually.\n\n> 💡 You can keep asking about the details.",
   "starhopeData.ai.unknownError": "Unknown error",
   "team.channelId": "Channel ID: ",
   "team.clickToCopy": "Click to copy",
-  "team.communities.applied.agriculture.desc":
-    "Agronomy focuses on crop production and genetic breeding, while food science emphasizes food processing and safety control. It covers agronomy, applied bioscience, food science, agricultural engineering, and more. Anyone interested is welcome to join!",
-  "team.communities.applied.agriculture.name":
-    "Agronomy and Food Science General Group",
-  "team.communities.applied.chip.desc":
-    "Integrated circuits and semiconductors form a hardcore circle with extremely high technical barriers and strong professional specialization, so they have their own group. Chip design, wafer fabrication, packaging and design, semiconductor, and IC enthusiasts and professionals are all welcome!",
-  "team.communities.applied.chip.name":
-    "Integrated Circuits and Semiconductors",
-  "team.communities.applied.clinical.desc":
-    "This is the LKM · Academic · Medicine · Clinical Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study clinical medicine, anesthesiology, medical imaging, ophthalmology and optometry, psychiatry, radiation medicine, pediatrics, and more.",
+  "team.communities.applied.agriculture.desc": "Agronomy focuses on crop production and genetic breeding, while food science emphasizes food processing and safety control. It covers agronomy, applied bioscience, food science, agricultural engineering, and more. Anyone interested is welcome to join!",
+  "team.communities.applied.agriculture.name": "Agronomy and Food Science General Group",
+  "team.communities.applied.chip.desc": "Integrated circuits and semiconductors form a hardcore circle with extremely high technical barriers and strong professional specialization, so they have their own group. Chip design, wafer fabrication, packaging and design, semiconductor, and IC enthusiasts and professionals are all welcome!",
+  "team.communities.applied.chip.name": "Integrated Circuits and Semiconductors",
+  "team.communities.applied.clinical.desc": "This is the LKM · Academic · Medicine · Clinical Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study clinical medicine, anesthesiology, medical imaging, ophthalmology and optometry, psychiatry, radiation medicine, pediatrics, and more.",
   "team.communities.applied.clinical.name": "Clinical Medicine School",
-  "team.communities.applied.energy.desc":
-    "A general group combining environmental science and energy science. It covers environmental science, energy engineering, resource recycling, emerging interdisciplinary fields, and more. Both the interested and the professionally trained are welcome!",
-  "team.communities.applied.energy.name":
-    "Environmental and Energy Science General Group",
-  "team.communities.applied.engineering.desc":
-    "Engineering is fundamentally about applying mathematics, the natural sciences, economics, and sociology to industrial and agricultural production in order to design, build, and optimize useful objects, systems, or structures. It covers civil engineering, mechanical engineering, transportation, and safety science and engineering. As the group grows, more specialized engineering subgroups will be created under the general group. Stay tuned~",
+  "team.communities.applied.energy.desc": "A general group combining environmental science and energy science. It covers environmental science, energy engineering, resource recycling, emerging interdisciplinary fields, and more. Both the interested and the professionally trained are welcome!",
+  "team.communities.applied.energy.name": "Environmental and Energy Science General Group",
+  "team.communities.applied.engineering.desc": "Engineering is fundamentally about applying mathematics, the natural sciences, economics, and sociology to industrial and agricultural production in order to design, build, and optimize useful objects, systems, or structures. It covers civil engineering, mechanical engineering, transportation, and safety science and engineering. As the group grows, more specialized engineering subgroups will be created under the general group. Stay tuned~",
   "team.communities.applied.engineering.name": "Engineering General Group",
-  "team.communities.applied.geoscience.desc":
-    "This is the LKM · Academic · Applied Sciences · Geoscience General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes majors, teachers, geoscience professionals, researchers, science communicators, and technology enthusiasts who are interested in or study surveying and mapping, geology, mining, safety science and engineering, and more.",
-  "team.communities.applied.geoscience.name":
-    "Geoscience Engineering General Group",
-  "team.communities.applied.ieee.desc":
-    "IEEE is the Institute of Electrical and Electronics Engineers, the world's largest technical professional organization. This group welcomes professionals in electrical engineering, automation, communications engineering, electronic science and technology, optics and optoelectronics, and related fields to join the discussion!",
+  "team.communities.applied.geoscience.desc": "This is the LKM · Academic · Applied Sciences · Geoscience General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes majors, teachers, geoscience professionals, researchers, science communicators, and technology enthusiasts who are interested in or study surveying and mapping, geology, mining, safety science and engineering, and more.",
+  "team.communities.applied.geoscience.name": "Geoscience Engineering General Group",
+  "team.communities.applied.ieee.desc": "IEEE is the Institute of Electrical and Electronics Engineers, the world's largest technical professional organization. This group welcomes professionals in electrical engineering, automation, communications engineering, electronic science and technology, optics and optoelectronics, and related fields to join the discussion!",
   "team.communities.applied.ieee.name": "IEEE General Group",
-  "team.communities.applied.info.desc":
-    "The ACM general group, covering computer science, the internet, software development, algorithm research, large models, data processing, cybersecurity, and more. Anyone interested is welcome to join! In the future we will also develop more content, such as programming tutorials and hands-on projects.",
-  "team.communities.applied.info.name":
-    "Information Science and Technology General Group",
-  "team.communities.applied.intro":
-    "The applied sciences are still under construction with few members. If you want to lead a subject area and build up and promote the topics you are passionate about in your field, feel free to reach out and join the LKM team! LKM needs you!",
+  "team.communities.applied.info.desc": "The ACM general group, covering computer science, the internet, software development, algorithm research, large models, data processing, cybersecurity, and more. Anyone interested is welcome to join! In the future we will also develop more content, such as programming tutorials and hands-on projects.",
+  "team.communities.applied.info.name": "Information Science and Technology General Group",
+  "team.communities.applied.intro": "The applied sciences are still under construction with few members. If you want to lead a subject area and build up and promote the topics you are passionate about in your field, feel free to reach out and join the LKM team! LKM needs you!",
   "team.communities.applied.label": "Applied Sciences",
-  "team.communities.applied.lightIndustry.desc":
-    "This is the LKM · Academic · Applied Sciences · Light Industry General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes students, teachers, light industry professionals, researchers, science communicators, and technology enthusiasts who are interested in or study textiles, light industry engineering, packaging engineering, flavor and fragrance technology engineering, cosmetics technology engineering, biomass energy and materials, biomass technology and engineering, and more.",
+  "team.communities.applied.lightIndustry.desc": "This is the LKM · Academic · Applied Sciences · Light Industry General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes students, teachers, light industry professionals, researchers, science communicators, and technology enthusiasts who are interested in or study textiles, light industry engineering, packaging engineering, flavor and fragrance technology engineering, cosmetics technology engineering, biomass energy and materials, biomass technology and engineering, and more.",
   "team.communities.applied.lightIndustry.name": "Light Industry General Group",
-  "team.communities.applied.medicine.desc":
-    "This is the LKM · Academic · Medicine · Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, medical imaging, anesthesiology, and forensic medicine.",
+  "team.communities.applied.medicine.desc": "This is the LKM · Academic · Medicine · Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study traditional Chinese medicine, clinical medicine, pharmacy, nursing, stomatology, medical imaging, anesthesiology, and forensic medicine.",
   "team.communities.applied.medicine.name": "Medicine Headquarters",
-  "team.communities.applied.tcm.desc":
-    "This is the LKM · Academic · Medicine · Traditional Chinese Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study basic theory of TCM, diagnostics of TCM, internal medicine of TCM, surgery of TCM, osteology and traumatology of TCM, gynecology of TCM, pediatrics of TCM, otorhinolaryngology of TCM, acupuncture-moxibustion and tuina, and ethnic medicine.",
+  "team.communities.applied.tcm.desc": "This is the LKM · Academic · Medicine · Traditional Chinese Medicine General Group discussion group, one of the official groups of the Tencent Physics Tribe. It welcomes medical students, medical teachers, healthcare professionals, researchers, science communicators, and technology enthusiasts who are interested in or study basic theory of TCM, diagnostics of TCM, internal medicine of TCM, surgery of TCM, osteology and traumatology of TCM, gynecology of TCM, pediatrics of TCM, otorhinolaryngology of TCM, acupuncture-moxibustion and tuina, and ethnic medicine.",
   "team.communities.applied.tcm.name": "Traditional Chinese Medicine School",
-  "team.communities.basic.biology.desc":
-    "The life sciences cover a very broad range of fields, including biology, medicine, agriculture, environmental science, and more. Currently the group has few members, but they are very focused. Once publicity reaches the right audience, medicine will be split into its own group.",
+  "team.communities.basic.biology.desc": "The life sciences cover a very broad range of fields, including biology, medicine, agriculture, environmental science, and more. Currently the group has few members, but they are very focused. Once publicity reaches the right audience, medicine will be split into its own group.",
   "team.communities.basic.biology.name": "Life Sciences",
-  "team.communities.basic.chemistry.desc":
-    "For those interested in chemistry or working in the field — e.g., chemistry, applied chemistry, chemical biology, molecular science and engineering, energy science, molecular metrology and technology, and resource chemistry. Chemistry enthusiasts can discuss freely. Though the group is small and its most skilled members are busy, questions are almost always answered.",
+  "team.communities.basic.chemistry.desc": "For those interested in chemistry or working in the field — e.g., chemistry, applied chemistry, chemical biology, molecular science and engineering, energy science, molecular metrology and technology, and resource chemistry. Chemistry enthusiasts can discuss freely. Though the group is small and its most skilled members are busy, questions are almost always answered.",
   "team.communities.basic.chemistry.name": "Chemistry",
-  "team.communities.basic.earth.desc":
-    "Earth science is a comprehensive discipline covering many basic sciences and interdisciplinary fields. It focuses on the processes, changes, and interactions within the Earth system (atmosphere, hydrosphere, lithosphere, biosphere, and the Sun–Earth space). Related fields include geology, geophysics, geochemistry, geography, atmospheric science, and oceanography.",
+  "team.communities.basic.earth.desc": "Earth science is a comprehensive discipline covering many basic sciences and interdisciplinary fields. It focuses on the processes, changes, and interactions within the Earth system (atmosphere, hydrosphere, lithosphere, biosphere, and the Sun–Earth space). Related fields include geology, geophysics, geochemistry, geography, atmospheric science, and oceanography.",
   "team.communities.basic.earth.name": "Earth Sciences General Group",
-  "team.communities.basic.intro":
-    "The natural and basic sciences are the foundation of everything; applied sciences take root here and branch out into countless fields. Science enthusiasts interested in the basic sciences are welcome to join!",
+  "team.communities.basic.intro": "The natural and basic sciences are the foundation of everything; applied sciences take root here and branch out into countless fields. Science enthusiasts interested in the basic sciences are welcome to join!",
   "team.communities.basic.label": "Natural / Basic Sciences Central Group",
-  "team.communities.basic.literature.desc":
-    "A newly founded group, mainly giving literature-loving members a place to discuss. Here you can talk about literary works, appreciate the classics, and brainstorm your own writing. Those who have been eagerly waiting for a literature group finally have a home — welcome aboard!",
+  "team.communities.basic.literature.desc": "A newly founded group, mainly giving literature-loving members a place to discuss. Here you can talk about literary works, appreciate the classics, and brainstorm your own writing. Those who have been eagerly waiting for a literature group finally have a home — welcome aboard!",
   "team.communities.basic.literature.name": "Literature",
-  "team.communities.basic.math.desc":
-    "For those interested in mathematics or working in the field. Math enthusiasts can discuss their favorite mathematical topics and cutting-edge content here. The group is generally active with solid expertise. Everyone is welcome to join in learning, discussion, and chat!",
+  "team.communities.basic.math.desc": "For those interested in mathematics or working in the field. Math enthusiasts can discuss their favorite mathematical topics and cutting-edge content here. The group is generally active with solid expertise. Everyone is welcome to join in learning, discussion, and chat!",
   "team.communities.basic.math.name": "Mathematics",
-  "team.communities.basic.physics.desc":
-    "For those interested in physics and astronomy or working in the field — e.g., physics, applied physics, acoustics, systems science and engineering, quantum science, astrophysics, astrometry, and celestial mechanics. The group's expertise is top-notch. Members may be busy and the group can seem quiet, but the file and knowledge repositories are rich, and someone will always answer your questions.",
+  "team.communities.basic.physics.desc": "For those interested in physics and astronomy or working in the field — e.g., physics, applied physics, acoustics, systems science and engineering, quantum science, astrophysics, astrometry, and celestial mechanics. The group's expertise is top-notch. Members may be busy and the group can seem quiet, but the file and knowledge repositories are rich, and someone will always answer your questions.",
   "team.communities.basic.physics.name": "Physics & Astronomy",
-  "team.communities.basic.social.desc":
-    "Mainly covers philosophy, politics, history, economics, and law. The ideological leaning is largely Marxist-Leninist-Maoist, encouraging study and engagement — connecting theory with practice in reality. Intellectuals, workers, comrades, teachers, researchers, and enthusiasts interested in these topics are all welcome.",
+  "team.communities.basic.social.desc": "Mainly covers philosophy, politics, history, economics, and law. The ideological leaning is largely Marxist-Leninist-Maoist, encouraging study and engagement — connecting theory with practice in reality. Intellectuals, workers, comrades, teachers, researchers, and enthusiasts interested in these topics are all welcome.",
   "team.communities.basic.social.name": "Social Sciences",
-  "team.communities.events.checkin.desc":
-    "Self-discipline check-ins and study rooms are also recurring activities of ours. Everyone is welcome to keep up self-discipline, health, and good daily routines here, and to study, exchange ideas, and discuss together.",
-  "team.communities.events.checkin.name":
-    "Self-discipline Check-ins & Study Rooms",
+  "team.communities.events.checkin.desc": "Self-discipline check-ins and study rooms are also recurring activities of ours. Everyone is welcome to keep up self-discipline, health, and good daily routines here, and to study, exchange ideas, and discuss together.",
+  "team.communities.events.checkin.name": "Self-discipline Check-ins & Study Rooms",
   "team.communities.events.label": "Recurring Activity Groups",
-  "team.communities.events.summerCompetition.desc":
-    "A group for preparing and announcing competitions. Every holiday, different contests are announced here. If you are interested in competitions, join and wait for the announcements.",
-  "team.communities.events.summerCompetition.name":
-    "Summer Competition Activity Group",
-  "team.communities.general.intro":
-    "A big family that belongs to no specific major, with no restrictions on job type, grade level, or skill level — everyone is welcome to join! Chat about everyday life, actively discuss problems when they come up, and feel free to share your studies and life~",
+  "team.communities.events.summerCompetition.desc": "A group for preparing and announcing competitions. Every holiday, different contests are announced here. If you are interested in competitions, join and wait for the announcements.",
+  "team.communities.events.summerCompetition.name": "Summer Competition Activity Group",
+  "team.communities.general.intro": "A big family that belongs to no specific major, with no restrictions on job type, grade level, or skill level — everyone is welcome to join! Chat about everyday life, actively discuss problems when they come up, and feel free to share your studies and life~",
   "team.communities.general.label": "General Enthusiasts Group",
-  "team.communities.general.oneGroup.desc":
-    "This is the LKM main discussion group, one of the official groups of the Tencent Physics Tribe. It is a very large general group, welcoming students, teachers, engineers, professionals from all walks of life, science communicators, and researchers who are interested in science and engineering. Here you can discuss academic subjects, popular science, studies and life, thoughts and culture — let us learn and grow together~",
+  "team.communities.general.oneGroup.desc": "This is the LKM main discussion group, one of the official groups of the Tencent Physics Tribe. It is a very large general group, welcoming students, teachers, engineers, professionals from all walks of life, science communicators, and researchers who are interested in science and engineering. Here you can discuss academic subjects, popular science, studies and life, thoughts and culture — let us learn and grow together~",
   "team.communities.general.oneGroup.name": "Group 1",
-  "team.communities.general.qqChannel.desc":
-    "The official QQ Channel, created to ease the pressure on the large QQ community. Use it to ask questions and share your daily life and check-ins~~",
+  "team.communities.general.qqChannel.desc": "The official QQ Channel, created to ease the pressure on the large QQ community. Use it to ask questions and share your daily life and check-ins~~",
   "team.communities.general.qqChannel.name": "QQ Channel",
   "team.communities.general.twoGroup.name": "Group 2",
-  "team.communities.grades.intro":
-    "The organization has members at all different stages of learning. So that everyone can find people to talk to, we have separate junior high and senior high groups; university students can join the major-specific groups as needed.",
-  "team.communities.grades.junior.desc":
-    "The kids in the junior high group are quite active — interesting and fun, a bunch of very lovely kids, and some of them are even far ahead of high schoolers. If you strike up a conversation with them, they will be more than happy to respond. The organization provides problem-solving help, middle school exam guidance, and tutoring for junior high students, helping them face the first big selection exam of their lives.",
+  "team.communities.grades.intro": "The organization has members at all different stages of learning. So that everyone can find people to talk to, we have separate junior high and senior high groups; university students can join the major-specific groups as needed.",
+  "team.communities.grades.junior.desc": "The kids in the junior high group are quite active — interesting and fun, a bunch of very lovely kids, and some of them are even far ahead of high schoolers. If you strike up a conversation with them, they will be more than happy to respond. The organization provides problem-solving help, middle school exam guidance, and tutoring for junior high students, helping them face the first big selection exam of their lives.",
   "team.communities.grades.junior.name": "Junior High",
-  "team.communities.grades.junior2.desc":
-    "Group 1 was so active that letting more people in would hurt the current comfort level, so everyone is welcome to join Junior High Group 2! The group is new, but its admins are quite dedicated. Come on in and have fun!",
+  "team.communities.grades.junior2.desc": "Group 1 was so active that letting more people in would hurt the current comfort level, so everyone is welcome to join Junior High Group 2! The group is new, but its admins are quite dedicated. Come on in and have fun!",
   "team.communities.grades.junior2.name": "Junior High Group 2",
   "team.communities.grades.label": "Grade-based Groups",
-  "team.communities.grades.senior.desc":
-    "High schoolers in this group are a bit more serious and focused on their studies, discussing high school life and topics related to the college entrance exam. The organization offers major recommendations, academic planning, and analysis of past exam papers for senior high students.",
+  "team.communities.grades.senior.desc": "High schoolers in this group are a bit more serious and focused on their studies, discussing high school life and topics related to the college entrance exam. The organization offers major recommendations, academic planning, and analysis of past exam papers for senior high students.",
   "team.communities.grades.senior.name": "Senior High (Group 1 is full)",
-  "team.communities.grades.senior2.desc":
-    "The file folder in Group 1 is currently full, so if you need to share files, head over to Group 2. Group 2 may have fewer members, but most of them are active. Group 2 is still under construction — everyone is welcome to build and share together!",
+  "team.communities.grades.senior2.desc": "The file folder in Group 1 is currently full, so if you need to share files, head over to Group 2. Group 2 may have fewer members, but most of them are active. Group 2 is still under construction — everyone is welcome to build and share together!",
   "team.communities.grades.senior2.name": "Senior High Group 2",
-  "team.communities.grades.senior3.desc":
-    "Group 3 has its own distinctive character. A mature and proactive management team is frequently online, and the group is very active. It is perfect for those who want company through exams or to share their high school life. Welcome aboard!",
+  "team.communities.grades.senior3.desc": "Group 3 has its own distinctive character. A mature and proactive management team is frequently online, and the group is very active. It is perfect for those who want company through exams or to share their high school life. Welcome aboard!",
   "team.communities.grades.senior3.name": "Senior High Group 3",
-  "team.communities.groups.academic.desc":
-    "Welcome to those with academic ambitions who want to enter research, or who are already in research. We plan to host academic lectures and same-field exchanges in the future. However, since this group currently mixes many disciplines and its supporting structure is not yet complete, we suggest joining the corresponding major-specific groups instead.",
+  "team.communities.groups.academic.desc": "Welcome to those with academic ambitions who want to enter research, or who are already in research. We plan to host academic lectures and same-field exchanges in the future. However, since this group currently mixes many disciplines and its supporting structure is not yet complete, we suggest joining the corresponding major-specific groups instead.",
   "team.communities.groups.academic.name": "Academic Exchange Group",
-  "team.communities.groups.intro":
-    "All are welcome — science communicators, researchers, educators, engineers from every industry, companies, and social organizations. In the future we aim to drive research commercialization, project facilitation, and incubation. Groups are organized by ideas or industry to give everyone a better space to discuss.",
+  "team.communities.groups.intro": "All are welcome — science communicators, researchers, educators, engineers from every industry, companies, and social organizations. In the future we aim to drive research commercialization, project facilitation, and incubation. Groups are organized by ideas or industry to give everyone a better space to discuss.",
   "team.communities.groups.label": "Groups by Community Role",
-  "team.communities.groups.language.desc":
-    "This group is mainly for language exchange and learning, such as the English, Russian, and German skills needed for reading literature. As the group grows, it will be split further by language. International students, exchange students, foreign friends, and those aspiring to careers in translation or diplomacy are all welcome. In the future this will serve science and technology exchange at home and abroad.",
-  "team.communities.groups.language.name":
-    "Language Society for International Science Exchange",
-  "team.communities.hobby.chess.desc":
-    "Discuss traditional, competitive, casual, and other board games, including (but not limited to) Chinese chess, Go, Gomoku, checkers, and Ludo. Discussions of strategy and the finer points of the games are also welcome — this is a place for players to spar and talk. As for cards, there are poker, traditional Chinese playing cards, modern trading card games (TCG) and tabletop card games, traditional dominoes, and more. Chess and card players, welcome aboard!",
+  "team.communities.groups.language.desc": "This group is mainly for language exchange and learning, such as the English, Russian, and German skills needed for reading literature. As the group grows, it will be split further by language. International students, exchange students, foreign friends, and those aspiring to careers in translation or diplomacy are all welcome. In the future this will serve science and technology exchange at home and abroad.",
+  "team.communities.groups.language.name": "Language Society for International Science Exchange",
+  "team.communities.hobby.chess.desc": "Discuss traditional, competitive, casual, and other board games, including (but not limited to) Chinese chess, Go, Gomoku, checkers, and Ludo. Discussions of strategy and the finer points of the games are also welcome — this is a place for players to spar and talk. As for cards, there are poker, traditional Chinese playing cards, modern trading card games (TCG) and tabletop card games, traditional dominoes, and more. Chess and card players, welcome aboard!",
   "team.communities.hobby.chess.name": "Chess & Cards Club",
-  "team.communities.hobby.cooking.desc":
-    "The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.",
+  "team.communities.hobby.cooking.desc": "The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.",
   "team.communities.hobby.cooking.name": "Cooking Club",
-  "team.communities.hobby.game.desc":
-    "Mainly discusses gaming topics — consoles like PS, Xbox, and Switch; PC platforms like Steam and the Epic Games Store; and online games such as HoYoverse open-world titles. It is a space to talk games, make gaming friends, and team up for sessions~",
+  "team.communities.hobby.game.desc": "Mainly discusses gaming topics — consoles like PS, Xbox, and Switch; PC platforms like Steam and the Epic Games Store; and online games such as HoYoverse open-world titles. It is a space to talk games, make gaming friends, and team up for sessions~",
   "team.communities.hobby.game.name": "Game Club",
-  "team.communities.hobby.intro":
-    "Clubs formed around the various hobbies of our members. If any of these interest you, join in the fun! There are activities every winter and summer break.",
+  "team.communities.hobby.intro": "Clubs formed around the various hobbies of our members. If any of these interest you, join in the fun! There are activities every winter and summer break.",
   "team.communities.hobby.label": "Interest Group Clubs",
-  "team.communities.hobby.music.desc":
-    "This group is not limited to LKM members themselves — others and professional music lovers are also welcome to discuss music theory and vocal basics, instrument exchange and teaching, music creation, music appreciation, and related topics. The group also organizes LKM galas and various event preparations, giving everyone a bigger and better stage~~",
+  "team.communities.hobby.music.desc": "This group is not limited to LKM members themselves — others and professional music lovers are also welcome to discuss music theory and vocal basics, instrument exchange and teaching, music creation, music appreciation, and related topics. The group also organizes LKM galas and various event preparations, giving everyone a bigger and better stage~~",
   "team.communities.hobby.music.name": "Tubie Music Club",
-  "team.communities.hobby.rhythm.desc":
-    "The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.",
+  "team.communities.hobby.rhythm.desc": "The Cooking Club mainly explores the chemical reactions behind cooking, for sharing culinary skills and showing off your homemade dishes. In the future, if possible, we will also host live streams and tutorials on cooking.",
   "team.communities.hobby.rhythm.name": "Rhythm Game Club (Anime-style)",
-  "team.communities.hobby.scifi.desc":
-    "Our love for and pursuit of technology has never stopped, and neither has our imagination of the sci-fi world — what would the world really be like in an age of extreme technological advancement? Come discuss your ideas and sci-fi writing here! Join the Sci-Fi Club — it is all part of the plan!",
+  "team.communities.hobby.scifi.desc": "Our love for and pursuit of technology has never stopped, and neither has our imagination of the sci-fi world — what would the world really be like in an age of extreme technological advancement? Come discuss your ideas and sci-fi writing here! Join the Sci-Fi Club — it is all part of the plan!",
   "team.communities.hobby.scifi.name": "Science Fiction Literature Club",
-  "team.communities.legacy.intro":
-    "This group cannot change its owner right now, meaning the management team cannot be replaced, so it feels a bit ancient and deserted. But it holds great sentimental value — LKM's rise in 2014 was built on the promotion of the Physics Tribe.",
+  "team.communities.legacy.intro": "This group cannot change its owner right now, meaning the management team cannot be replaced, so it feels a bit ancient and deserted. But it holds great sentimental value — LKM's rise in 2014 was built on the promotion of the Physics Tribe.",
   "team.communities.legacy.label": "Legacy Groups",
   "team.communities.legacy.physicsTribe.name": "Physics Tribe",
   "team.copied": "Copied!",
   "team.members.julyA.desc": "The main workhorse of website development",
   "team.members.julyA.dream": "I do not want to be a workhorse in the future",
-  "team.members.julyAhong.desc":
-    "To be filled in — still a student settling in (let us look forward to their growth~",
-  "team.members.julyAleng.desc":
-    "An undergraduate math major at a Tier-2 school, math enthusiast whose favorite areas are analysis and number theory",
-  "team.members.julyAleng.dream":
-    "Dream: Get recommended for graduate study and keep researching math",
+  "team.members.julyAhong.desc": "To be filled in — still a student settling in (let us look forward to their growth~",
+  "team.members.julyAleng.desc": "An undergraduate math major at a Tier-2 school, math enthusiast whose favorite areas are analysis and number theory",
+  "team.members.julyAleng.dream": "Dream: Get recommended for graduate study and keep researching math",
   "team.members.julyAleng.quote": "— All is number",
   "team.members.julyBadragon.desc": "Follow LKM, thank you, meow",
   "team.members.julyBcent.desc": "A human being",
-  "team.members.julyBifang.desc":
-    "A master's student in analysis and numerical computation",
-  "team.members.julyCaotiling.desc":
-    "A person who doesn't exist, but wishes to bless everyone.",
-  "team.members.julyCaotiling.dream":
-    "Dream: Make everyone happy and reach the edge of knowledge's Sekai.",
+  "team.members.julyBifang.desc": "A master's student in analysis and numerical computation",
+  "team.members.julyCaotiling.desc": "A person who doesn't exist, but wishes to bless everyone.",
+  "team.members.julyCaotiling.dream": "Dream: Make everyone happy and reach the edge of knowledge's Sekai.",
   "team.members.julyCaotiling.quote": "— We must know, we will know.",
-  "team.members.julyChi.desc":
-    "Graduated from a provincial key high school in Liaoning; targeting a 985 university in Northeast China for the 2026 exam",
-  "team.members.julyChi.dream":
-    "Dream: Become a master craftsman of the nation",
-  "team.members.julyChi.quote":
-    "— Do earth-shaking deeds; remain a nameless hero",
+  "team.members.julyChi.desc": "Graduated from a provincial key high school in Liaoning; targeting a 985 university in Northeast China for the 2026 exam",
+  "team.members.julyChi.dream": "Dream: Become a master craftsman of the nation",
+  "team.members.julyChi.quote": "— Do earth-shaking deeds; remain a nameless hero",
   "team.members.julyDaxiong.desc": "Curious about a little bit of everything",
   "team.members.julyDaxiong.dream": "Dream: Too many ideals",
-  "team.members.julyDili.desc":
-    "You can call me Yang Xiangqing, a chemistry competition participant with a personal best of 7th in the district and 347th nationally in the middle school essay contest. I love studying chemistry and literature",
+  "team.members.julyDili.desc": "You can call me Yang Xiangqing, a chemistry competition participant with a personal best of 7th in the district and 347th nationally in the middle school essay contest. I love studying chemistry and literature",
   "team.members.julyDili.dream": "Dream: Become an excellent teacher",
-  "team.members.julyDili.quote":
-    "— A true master always keeps an apprentice's heart",
+  "team.members.julyDili.quote": "— A true master always keeps an apprentice's heart",
   "team.members.julyEcho.desc": "Analytic number theory enthusiast",
   "team.members.julyHua.desc": "A PhD with a vision",
   "team.members.julyHua.dream": "Dream: Every child can be exposed to science",
-  "team.members.julyHubingyang.desc":
-    "Male, 23 years old, bachelor's degree...",
-  "team.members.julyHubingyang.dream":
-    "Dream: The dream is to become a mathematician",
-  "team.members.julyHubingyang.quote":
-    "— Diligence is the path up the mountain of books; hard work is the boat across the boundless sea of learning.",
-  "team.members.julyJimi.desc":
-    "An 11th-grade international student in New Zealand, majoring in the sciences with English as a weak point. I am currently taking physics, biology, and math — basically at a high school level, but I will keep working to improve! I like writing my own things, and if there are any issues, thanks in advance for correcting me! I like summarizing my notes and hope they will be helpful to everyone! I also like sharing bits of my daily life or posting abstract stuff, sometimes with a fair amount of negativity... Thank you all!!!",
-  "team.members.julyJimi.dream":
-    "Dream: Finish next year's coursework this year, secure a scholarship next year, and hopefully get into the University of Auckland?",
-  "team.members.julyJimi.quote":
-    "— Attention, attention, a huge surge is coming",
-  "team.members.julyJoshua.desc":
-    "A math lover who wants everyone to learn math with ease",
+  "team.members.julyHubingyang.desc": "Male, 23 years old, bachelor's degree...",
+  "team.members.julyHubingyang.dream": "Dream: The dream is to become a mathematician",
+  "team.members.julyHubingyang.quote": "— Diligence is the path up the mountain of books; hard work is the boat across the boundless sea of learning.",
+  "team.members.julyJimi.desc": "An 11th-grade international student in New Zealand, majoring in the sciences with English as a weak point. I am currently taking physics, biology, and math — basically at a high school level, but I will keep working to improve! I like writing my own things, and if there are any issues, thanks in advance for correcting me! I like summarizing my notes and hope they will be helpful to everyone! I also like sharing bits of my daily life or posting abstract stuff, sometimes with a fair amount of negativity... Thank you all!!!",
+  "team.members.julyJimi.dream": "Dream: Finish next year's coursework this year, secure a scholarship next year, and hopefully get into the University of Auckland?",
+  "team.members.julyJimi.quote": "— Attention, attention, a huge surge is coming",
+  "team.members.julyJoshua.desc": "A math lover who wants everyone to learn math with ease",
   "team.members.julyKefenshulie.desc": "An ordinary ICPCer",
   "team.members.julyKomoyume.desc": "Roboticist",
   "team.members.julyKomoyume.dream": "Dream: Technology changes the world",
-  "team.members.julyKomoyume.quote":
-    "— A salute to you, who still holds such hope for this world",
+  "team.members.julyKomoyume.quote": "— A salute to you, who still holds such hope for this world",
   "team.members.julyLichlet.desc": "A freshman math student",
-  "team.members.julyLiunian.desc":
-    "15 years old. Passed the high school entrance exam and finished the transition. Balanced in arts and sciences, fairly resilient. Looking for friends to grow together.",
-  "team.members.julyLiunian.dream":
-    "Dream: Aiming for NUDT, and doing my part to make LKM bigger and stronger√",
-  "team.members.julyLiunian.quote":
-    "— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease",
-  "team.members.julyMk.desc":
-    'Born in the 2010s, just call me MK. Currently learning Japanese and love math (not a pro, meow). My favorite anime character is Elaina from "Wandering Witch: The Journey of Elaina". Bilibili UID: 1929696645',
+  "team.members.julyLiunian.desc": "15 years old. Passed the high school entrance exam and finished the transition. Balanced in arts and sciences, fairly resilient. Looking for friends to grow together.",
+  "team.members.julyLiunian.dream": "Dream: Aiming for NUDT, and doing my part to make LKM bigger and stronger√",
+  "team.members.julyLiunian.quote": "— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease",
+  "team.members.julyMk.desc": "Born in the 2010s, just call me MK. Currently learning Japanese and love math (not a pro, meow). My favorite anime character is Elaina from \"Wandering Witch: The Journey of Elaina\". Bilibili UID: 1929696645",
   "team.members.julyMk.dream": "Dream: An UP with a million followers",
   "team.members.julyMk.quote": "— You should... Never Give Up!",
-  "team.members.julyMoran.desc":
-    "Physics from a non-elite university, currently switching fields",
+  "team.members.julyMoran.desc": "Physics from a non-elite university, currently switching fields",
   "team.members.julyMoran.dream": "Dream: I will surely be buried deep in snow",
-  "team.members.julyMoran.quote":
-    "— For three thousand days of patience and resolve, buried deep in snow until turning to gold",
-  "team.members.julyO.desc":
-    "PhD at the National Astronomical Observatories of the Chinese Academy of Sciences. Research: gravitational wave theory, black hole physics, general relativity",
+  "team.members.julyMoran.quote": "— For three thousand days of patience and resolve, buried deep in snow until turning to gold",
+  "team.members.julyO.desc": "PhD at the National Astronomical Observatories of the Chinese Academy of Sciences. Research: gravitational wave theory, black hole physics, general relativity",
   "team.members.julyO.dream": "Dream: Do research I love",
-  "team.members.julyO.quote":
-    "— Learn from the past, enjoy the present, look forward to the future",
+  "team.members.julyO.quote": "— Learn from the past, enjoy the present, look forward to the future",
   "team.members.julyPlain.desc": "Eat, drink, and the basics of life",
   "team.members.julyPlain.dream": "Dream: Become verity",
   "team.members.julyPlain.quote": "— Oh my god",
-  "team.members.julyQianxun.desc":
-    "Joined LKM in 2019 while in the second year of junior high. Now I am a soon-to-be wage worker. Though I too was full of dreams back then, not everyone can become a scientist~˶>ᗜ<˶ Whether it is the seniors from back then or the juniors younger than me now, I do not want my regrets to fall on them. I also hope more people in the future will come to love science and engineering and will not give up on them as easily as I did.",
-  "team.members.julyQianxun.dream":
-    "Dream: The long-term vision is to make LKM bigger and stronger, achieve its ultimate goals, and live out its mission. But the immediate priority is the short-term goal — building a mature and complete online management team.",
+  "team.members.julyQianxun.desc": "Joined LKM in 2019 while in the second year of junior high. Now I am a soon-to-be wage worker. Though I too was full of dreams back then, not everyone can become a scientist~˶>ᗜ<˶ Whether it is the seniors from back then or the juniors younger than me now, I do not want my regrets to fall on them. I also hope more people in the future will come to love science and engineering and will not give up on them as easily as I did.",
+  "team.members.julyQianxun.dream": "Dream: The long-term vision is to make LKM bigger and stronger, achieve its ultimate goals, and live out its mission. But the immediate priority is the short-term goal — building a mature and complete online management team.",
   "team.members.julyQinghan.desc": "Classified awa",
   "team.members.julyQinghan.dream": "Dream: No obligation to disclose",
   "team.members.julyQinghan.quote": "— WELCOME TO OUR KINGDOM!",
-  "team.members.julyQingqian.desc":
-    "A bit of a lurker with not much knowledge in stock (",
+  "team.members.julyQingqian.desc": "A bit of a lurker with not much knowledge in stock (",
   "team.members.julyQingqian.dream": "Dream: Become a researcher",
   "team.members.julyQishui.desc": "A freshman in fluid mechanics at LMU Munich",
-  "team.members.julyQishui.dream":
-    "Dream: Contribute to China's fluid mechanics",
+  "team.members.julyQishui.dream": "Dream: Contribute to China's fluid mechanics",
   "team.members.julyQishui.quote": "— Effort always pays off",
-  "team.members.julyRobin.desc":
-    "To be filled in — still a student settling in (let us look forward to their growth~",
-  "team.members.julySanchishui.desc":
-    "Chemistry, love love love it! (A fervent chemistry fanatic)",
+  "team.members.julyRobin.desc": "To be filled in — still a student settling in (let us look forward to their growth~",
+  "team.members.julySanchishui.desc": "Chemistry, love love love it! (A fervent chemistry fanatic)",
   "team.members.julySanqi.desc": "A vow made rashly invites misfortune",
   "team.members.julySanqi.dream": "Dream: Keep a little cat",
-  "team.members.julyShiyi.desc":
-    "Bachelor's degree in a field related to economics, with wide-ranging interests.",
-  "team.members.julySuibian.desc":
-    "A lazy person who wants to learn everything they find interesting.",
+  "team.members.julyShiyi.desc": "Bachelor's degree in a field related to economics, with wide-ranging interests.",
+  "team.members.julySuibian.desc": "A lazy person who wants to learn everything they find interesting.",
   "team.members.julySuibian.dream": "Dream: Secret for now",
-  "team.members.julySuibian.quote":
-    "— Move forward; even if you never reach the end, moving forward itself has meaning",
-  "team.members.julySun.desc":
-    "Use the skills in my hands to serve more people in need. A kid from the Production Group.",
-  "team.members.julySun.dream":
-    "Dream: Raise my education level and meet more people.",
-  "team.members.julySun.quote":
-    "— No one holds up my lofty ambitions; I will tread through the snow to the mountain top myself.",
-  "team.members.julyTetro.desc":
-    "A graduate student in organic chemistry and former chemistry competition participant. My online handle is Tetrodotoxin, a structurally elegant organic small molecule and a classic in the history of total synthesis (though I actually do methodology). Privately, I am a not-too-heavy anime fan and a pseudo-intellectual art lover.",
+  "team.members.julySuibian.quote": "— Move forward; even if you never reach the end, moving forward itself has meaning",
+  "team.members.julySun.desc": "Use the skills in my hands to serve more people in need. A kid from the Production Group.",
+  "team.members.julySun.dream": "Dream: Raise my education level and meet more people.",
+  "team.members.julySun.quote": "— No one holds up my lofty ambitions; I will tread through the snow to the mountain top myself.",
+  "team.members.julyTetro.desc": "A graduate student in organic chemistry and former chemistry competition participant. My online handle is Tetrodotoxin, a structurally elegant organic small molecule and a classic in the history of total synthesis (though I actually do methodology). Privately, I am a not-too-heavy anime fan and a pseudo-intellectual art lover.",
   "team.members.julyUpogg.desc": "Student",
   "team.members.julyUpogg.quote": "— I take all knowledge as my domain",
   "team.members.julyWen.desc": "A great player at going limp",
-  "team.members.julyWen.dream":
-    "Dream: Do nothing whenever I want to do nothing",
+  "team.members.julyWen.dream": "Dream: Do nothing whenever I want to do nothing",
   "team.members.julyXia.desc": "I am a little Xia",
   "team.members.julyXia.dream": "Dream: Become an encyclopedia",
   "team.members.julyXia.quote": "— To the imperfect tomorrow",
-  "team.members.julyXinghe.desc":
-    "A high school OIer and physics/chemistry/politics student, a noob (feel free to follow wang12345566 on Luogu), who stumbled into this heavenly family by accident after making some vicious middle school problems",
-  "team.members.julyXinghe.dream":
-    "Dream: Bring everyone more tricks and inspiration, while admiring even more masters",
-  "team.members.julyXinghe.quote":
-    "— Even those not standing in the light have their own sparkle — from hjh on Luogu",
-  "team.members.julyXingran.desc":
-    'Member of the public-welfare science communication community and president of the Shuxing Science Club. Has worked in public-interest science communication for over three years. Led the Year of the Dragon Sci-Fi Contest and the first Earth-Moon Award sci-fi essay competition, co-organized the 2nd, 3rd, 4th, and 5th Xunyi Award science writing competitions, and co-created excellent science videos such as "Geological Hammer" with the UP Feicun Science Wall.',
+  "team.members.julyXinghe.desc": "A high school OIer and physics/chemistry/politics student, a noob (feel free to follow wang12345566 on Luogu), who stumbled into this heavenly family by accident after making some vicious middle school problems",
+  "team.members.julyXinghe.dream": "Dream: Bring everyone more tricks and inspiration, while admiring even more masters",
+  "team.members.julyXinghe.quote": "— Even those not standing in the light have their own sparkle — from hjh on Luogu",
+  "team.members.julyXingran.desc": "Member of the public-welfare science communication community and president of the Shuxing Science Club. Has worked in public-interest science communication for over three years. Led the Year of the Dragon Sci-Fi Contest and the first Earth-Moon Award sci-fi essay competition, co-organized the 2nd, 3rd, 4th, and 5th Xunyi Award science writing competitions, and co-created excellent science videos such as \"Geological Hammer\" with the UP Feicun Science Wall.",
   "team.members.julyXingran.dream": "Dream: Spread science culture",
-  "team.members.julyXingran.quote":
-    "— As Marx said, science and technology are productive forces.",
+  "team.members.julyXingran.quote": "— As Marx said, science and technology are productive forces.",
   "team.members.julyYanzimo.desc": "Trained in Chinese language and literature",
-  "team.members.julyYanzimo.dream":
-    "Dream: Become a philosopher and a mathematician",
+  "team.members.julyYanzimo.dream": "Dream: Become a philosopher and a mathematician",
   "team.members.julyYanzimo.quote": "— Drift with the wind to faraway places.",
   "team.members.julyYiqian.desc": "I am Yiqian from the Press Office",
-  "team.members.julyYouzhi.desc":
-    "A little black cat, former member of the Event Planning Group and executive of the junior high seminars",
-  "team.members.julyYouzhi.dream":
-    "Dream: Eat well, drink well, sleep well, and have fun",
-  "team.members.julyYouzhi.quote":
-    "— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease",
+  "team.members.julyYouzhi.desc": "A little black cat, former member of the Event Planning Group and executive of the junior high seminars",
+  "team.members.julyYouzhi.dream": "Dream: Eat well, drink well, sleep well, and have fun",
+  "team.members.julyYouzhi.quote": "— Pause, forget, and go with the wind; keep moving, keep observing, and stay at ease",
   "team.members.julyYouzhu.desc": "Possibly human (maybe not?)",
   "team.members.julyYouzhu.quote": "— Being alive beats being dead",
-  "team.members.julyYuli.desc":
-    "Like the breeze of July, carrying a touch of warmth and gentleness. As the leader of the Community Affairs Group, I am committed to tending every little detail of our groups so that this becomes the most comfortable corner for everyone to chat in.",
-  "team.members.julyYuli.quote":
-    "— Nothing about community affairs is trivial; with care, everything becomes a beautiful scene",
-  "team.members.julyYuye.desc":
-    "A 10th grader with 3 years of group management experience, exposed to traditional Chinese medicine since age 6. Comes from a TCM family",
+  "team.members.julyYuli.desc": "Like the breeze of July, carrying a touch of warmth and gentleness. As the leader of the Community Affairs Group, I am committed to tending every little detail of our groups so that this becomes the most comfortable corner for everyone to chat in.",
+  "team.members.julyYuli.quote": "— Nothing about community affairs is trivial; with care, everything becomes a beautiful scene",
+  "team.members.julyYuye.desc": "A 10th grader with 3 years of group management experience, exposed to traditional Chinese medicine since age 6. Comes from a TCM family",
   "team.members.julyYuye.dream": "Dream: Have a stable job",
-  "team.members.julyYuye.quote":
-    "— Chase the wind and the road without stopping; beyond the flat wilderness lie the spring hills.",
+  "team.members.julyYuye.quote": "— Chase the wind and the road without stopping; beyond the flat wilderness lie the spring hills.",
   "team.members.julyZhishui.desc": "Studying hard~",
-  "team.members.keke.desc":
-    "On August 1, 2014, Ke Qi founded the very first group chat — the LKM Homestead. He is the original founder of LKM; much of what the group has today — its systems and frameworks — was built on what he did. Ke Qi founded Tencent's Physics Tribe and the WeChat official account, attracting a large number of tech enthusiasts, and put together the first LKM subgroup system and the July Team management structure. In 2018 he gradually stepped back for academic reasons, but everything about LKM stems from what he started.",
+  "team.members.keke.desc": "On August 1, 2014, Ke Qi founded the very first group chat — the LKM Homestead. He is the original founder of LKM; much of what the group has today — its systems and frameworks — was built on what he did. Ke Qi founded Tencent's Physics Tribe and the WeChat official account, attracting a large number of tech enthusiasts, and put together the first LKM subgroup system and the July Team management structure. In 2018 he gradually stepped back for academic reasons, but everything about LKM stems from what he started.",
   "team.members.keke.dream": "Dream: Let knowledge flow into every household",
-  "team.members.keke.quote":
-    "「Ke Qi may not be here now, but he is without a doubt LKM's original founder.」",
+  "team.members.keke.quote": "「Ke Qi may not be here now, but he is without a doubt LKM's original founder.」",
   "team.roles.advisorMember": "Advisory Group Member",
   "team.roles.affairsGroupLeader": "Community Affairs Group Leader",
   "team.roles.affairsMember": "Community Affairs Group Member",
@@ -3230,18 +2641,14 @@ export const enFlat = {
   "team.subGroups.affairsHigh3.label": "Senior High Group 3",
   "team.subGroups.affairsJunior.label": "Junior High",
   "team.subGroups.affairsJunior2.label": "Junior High Group 2",
-  "team.subGroups.affairsLanguage.label":
-    "Language Society for International Science Exchange",
+  "team.subGroups.affairsLanguage.label": "Language Society for International Science Exchange",
   "team.subGroups.affairsMusic.label": "Interest - Tubie Music Club",
   "team.subGroups.affairsSocial.label": "Social Sciences",
-  "team.subGroups.newsProduction.desc":
-    "Responsible for promotional production across platforms and events, such as UI design, poster making, visualization, and more. Certain design skills are required, making it suitable for those with the relevant abilities.",
+  "team.subGroups.newsProduction.desc": "Responsible for promotional production across platforms and events, such as UI design, poster making, visualization, and more. Certain design skills are required, making it suitable for those with the relevant abilities.",
   "team.subGroups.newsProduction.label": "Production Group",
-  "team.subGroups.newsPromotion.desc":
-    "Responsible for promotion and continuous operations across platforms, external outreach, and handling cooperation matters. Members need solid professional knowledge, public relations skills, and proficiency in two or more languages.",
+  "team.subGroups.newsPromotion.desc": "Responsible for promotion and continuous operations across platforms, external outreach, and handling cooperation matters. Members need solid professional knowledge, public relations skills, and proficiency in two or more languages.",
   "team.subGroups.newsPromotion.label": "Promotion Group",
-  "team.subGroups.newsScience.desc":
-    "Responsible for science content collection and dissemination across platforms. Members need professional knowledge and know-how to create engaging science content, and stay in touch with the specialized committee. The development of project groups is also carried out by the Science Communication Group.",
+  "team.subGroups.newsScience.desc": "Responsible for science content collection and dissemination across platforms. Members need professional knowledge and know-how to create engaging science content, and stay in touch with the specialized committee. The development of project groups is also carried out by the Science Communication Group.",
   "team.subGroups.newsScience.label": "Science Communication Group",
   "team.subGroups.profBiology.label": "Biology Group",
   "team.subGroups.profChemistry.label": "Chemistry Group",
@@ -3249,11 +2656,9 @@ export const enFlat = {
   "team.subGroups.profMath.label": "Mathematics Group",
   "team.subGroups.profMedicine.label": "Medicine Group - TCM",
   "team.subGroups.profPhysics.label": "Physics Group",
-  "team.subGroups.projScience.desc":
-    "Responsible for science content collection and dissemination across platforms, turning professional knowledge into accessible science content and promoting the popularization of scientific knowledge.",
+  "team.subGroups.projScience.desc": "Responsible for science content collection and dissemination across platforms, turning professional knowledge into accessible science content and promoting the popularization of scientific knowledge.",
   "team.subGroups.projScience.label": "Science Communication Project Group",
-  "team.subGroups.projTextbooks.desc":
-    "Committed to writing high-quality science textbooks, integrating the body of knowledge, and providing learners with systematic learning resources.",
+  "team.subGroups.projTextbooks.desc": "Committed to writing high-quality science textbooks, integrating the body of knowledge, and providing learners with systematic learning resources.",
   "team.subGroups.projTextbooks.label": "Textbook Project Group",
   "theme.color": "Theme Color",
   "theme.dark": "Dark",
@@ -3268,46 +2673,38 @@ export const enFlat = {
   "treehole.audio.openTitle": "Turn on white noise",
   "treehole.audio.rainLabel": "White noise · rain",
   "treehole.backToSite": "Back to main site",
-  "treehole.backup.desc":
-    "Export all local data as a JSON file, which can be imported on this device or another browser to restore.",
+  "treehole.backup.desc": "Export all local data as a JSON file, which can be imported on this device or another browser to restore.",
   "treehole.backup.exportBtn": "⬇️ Export backup",
   "treehole.backup.exported": "Backup file exported ✅",
   "treehole.backup.importBtn": "⬆️ Import backup",
   "treehole.backup.importFail": "Import failed: incorrect file format ❌",
-  "treehole.backup.importSuccess":
-    "Import successful, effective after page refresh ✅",
+  "treehole.backup.importSuccess": "Import successful, effective after page refresh ✅",
   "treehole.backup.title": "💾 Data backup",
   "treehole.bottle.cancel": "Cancel",
   "treehole.bottle.from": "—— {name}",
   "treehole.bottle.pickBtn": "🫙 Fish out a bottle",
   "treehole.bottle.picking": "🌊 Fishing...",
-  "treehole.bottle.replyPlaceholder":
-    "Write your reply, then put it back into the sea...",
+  "treehole.bottle.replyPlaceholder": "Write your reply, then put it back into the sea...",
   "treehole.bottle.replySent": "Your reply has drifted away with the waves 🌊",
   "treehole.bottle.seaSub": "Every bottle holds a story",
   "treehole.bottle.seaText": "{count} bottles are drifting in the sea",
   "treehole.bottle.sendReply": "📨 Back to the sea",
   "treehole.bottle.stranger": "A stranger from across the sea",
-  "treehole.bottle.subtitle":
-    "Put your thoughts into a bottle, hand them to the current, and wait for a stranger's reply.",
+  "treehole.bottle.subtitle": "Put your thoughts into a bottle, hand them to the current, and wait for a stranger's reply.",
   "treehole.bottle.switchBottle": "← Another bottle",
   "treehole.bottle.throwBtn": "🍶 Throw a bottle",
   "treehole.bottle.throwBtn2": "🍶 Throw into the sea",
-  "treehole.bottle.throwDialogDesc":
-    "Write what you want to say and let the waves carry it away.",
+  "treehole.bottle.throwDialogDesc": "Write what you want to say and let the waves carry it away.",
   "treehole.bottle.throwDialogTitle": "🍶 Throw a bottle",
   "treehole.bottle.throwPlaceholder": "Say something to an unknown someone...",
   "treehole.bottle.title": "🍶 Message in a Bottle",
-  "treehole.emptyState.defaultSub":
-    "Write the first letter, or browse the treehole square~",
+  "treehole.emptyState.defaultSub": "Write the first letter, or browse the treehole square~",
   "treehole.emptyState.defaultTitle": "Nothing here yet",
   "treehole.home.all": "All",
   "treehole.home.category": "Category",
-  "treehole.home.emptySub":
-    "Try another category, or write the first anonymous letter~",
+  "treehole.home.emptySub": "Try another category, or write the first anonymous letter~",
   "treehole.home.emptyTitle": "No letters in this category yet",
-  "treehole.home.heroSubtitle":
-    "Hand your worries to the wind and keep your secrets in the treehole.",
+  "treehole.home.heroSubtitle": "Hand your worries to the wind and keep your secrets in the treehole.",
   "treehole.home.moodCloud": "🏷️ Mood Cloud Wall",
   "treehole.home.moodCloudHint": "Click a tag to filter letters by mood",
   "treehole.home.slogan": "In the Treehole, be your truest self",
@@ -3331,18 +2728,15 @@ export const enFlat = {
   "treehole.messages.allReadMsg": "All marked as read",
   "treehole.messages.block": "Block",
   "treehole.messages.blocked": "Blocked",
-  "treehole.messages.blockedHint":
-    "This stranger is blocked; messages have stopped.",
+  "treehole.messages.blockedHint": "This stranger is blocked; messages have stopped.",
   "treehole.messages.blockedMsg": "Stranger blocked",
   "treehole.messages.clear": "Clear",
-  "treehole.messages.confirmBlock":
-    "Block this stranger? You won't receive new messages after blocking.",
+  "treehole.messages.confirmBlock": "Block this stranger? You won't receive new messages after blocking.",
   "treehole.messages.confirmClear": "Clear all messages in this conversation?",
   "treehole.messages.confirmDelete": "Delete this conversation?",
   "treehole.messages.conversations": "Conversations ({count})",
   "treehole.messages.delete": "Delete",
-  "treehole.messages.emptyConvsSub":
-    "Go write a reply to a stranger in the random treehole",
+  "treehole.messages.emptyConvsSub": "Go write a reply to a stranger in the random treehole",
   "treehole.messages.emptyConvsTitle": "No conversations yet",
   "treehole.messages.emptyMsgsSub": "Write the first anonymous greeting~",
   "treehole.messages.emptyMsgsTitle": "No messages yet",
@@ -3354,16 +2748,13 @@ export const enFlat = {
   "treehole.messages.recalledMsg": "Recalled",
   "treehole.messages.recalledPrefix": "[Recalled] ",
   "treehole.messages.replyPlaceholder": "Anonymous reply…",
-  "treehole.messages.selectConvHint":
-    "Select a conversation on the left to start",
+  "treehole.messages.selectConvHint": "Select a conversation on the left to start",
   "treehole.messages.send": "Send",
-  "treehole.messages.subtitle":
-    "Fully anonymous — neither side reveals their true identity.",
+  "treehole.messages.subtitle": "Fully anonymous — neither side reveals their true identity.",
   "treehole.messages.title": "💬 Anonymous Replies",
   "treehole.mine.cancel": "Cancel",
   "treehole.mine.clear": "Clear",
-  "treehole.mine.clearAllDesc":
-    "Only deletes drafts saved on this device; cannot be undone.",
+  "treehole.mine.clearAllDesc": "Only deletes drafts saved on this device; cannot be undone.",
   "treehole.mine.clearAllTitle": "Clear all local drafts",
   "treehole.mine.clearDraftsBtn": "Clear drafts",
   "treehole.mine.confirmDelete": "Confirm deletion",
@@ -3371,8 +2762,7 @@ export const enFlat = {
   "treehole.mine.confirmDeleteLetter": "Delete this letter?",
   "treehole.mine.confirmReset": "Confirm reset",
   "treehole.mine.confirmResetDrafts": "Clear all local drafts?",
-  "treehole.mine.confirmResetDrafts2":
-    "Clear all local drafts? This cannot be undone.",
+  "treehole.mine.confirmResetDrafts2": "Clear all local drafts? This cannot be undone.",
   "treehole.mine.continueEdit": "Continue editing",
   "treehole.mine.dateTime": "{month}/{day} {time}",
   "treehole.mine.delete": "🗑️ Delete",
@@ -3384,8 +2774,7 @@ export const enFlat = {
   "treehole.mine.emptyDraftsTitle": "No local drafts",
   "treehole.mine.emptyFavsSub": "Star ⭐ letters you like in the square",
   "treehole.mine.emptyFavsTitle": "No favorite treeholes yet",
-  "treehole.mine.emptyLettersSub":
-    "Go to the write page and send your first anonymous letter~",
+  "treehole.mine.emptyLettersSub": "Go to the write page and send your first anonymous letter~",
   "treehole.mine.emptyLettersTitle": "No letters published yet",
   "treehole.mine.statDrafts": "Local drafts",
   "treehole.mine.statFavs": "Favorite treeholes",
@@ -3396,14 +2785,12 @@ export const enFlat = {
   "treehole.mine.statusRejected": "Rejected",
   "treehole.mine.statusScheduled": "Scheduled",
   "treehole.mine.statusSealed": "Sealed",
-  "treehole.mine.subtitle":
-    "All your published letters, favorites and drafts, stored in your local browser.",
+  "treehole.mine.subtitle": "All your published letters, favorites and drafts, stored in your local browser.",
   "treehole.mine.tabDrafts": "Local drafts",
   "treehole.mine.tabFavs": "Favorites",
   "treehole.mine.tabLetters": "My letters",
   "treehole.mine.title": "🌙 My Local Treehole",
-  "treehole.moodChart.emptySub":
-    "Pick a mood tag while writing to enable stats",
+  "treehole.moodChart.emptySub": "Pick a mood tag while writing to enable stats",
   "treehole.moodChart.emptyTitle": "No mood records this month",
   "treehole.moodChart.monthlyMood": "📊 Monthly Mood",
   "treehole.moodChart.recordMiddle": " mood entries; most common: ",
@@ -3426,21 +2813,18 @@ export const enFlat = {
   "treehole.privacy.accept": "I understand, enter the treehole",
   "treehole.privacy.li1Bold": "server database",
   "treehole.privacy.li1Prefix": "Your letters are stored in the ",
-  "treehole.privacy.li1Suffix":
-    ", with a randomly generated anonymous codename",
+  "treehole.privacy.li1Suffix": ", with a randomly generated anonymous codename",
   "treehole.privacy.li2Bold": "not collect any real personal information",
   "treehole.privacy.li2Prefix": "The system does ",
   "treehole.privacy.li2Suffix": "; login is optional",
   "treehole.privacy.li3Bold": "admin review",
-  "treehole.privacy.li3Prefix":
-    "All submissions are shown publicly only after ",
+  "treehole.privacy.li3Prefix": "All submissions are shown publicly only after ",
   "treehole.privacy.li3Suffix": "",
   "treehole.privacy.li4Bold": "mutually anonymous",
   "treehole.privacy.li4Prefix": "Random treehole and replies are ",
   "treehole.privacy.li4Suffix": ", no identity is exposed",
   "treehole.privacy.pureAnonymous": "fully anonymous, no sign-up",
-  "treehole.privacy.tip":
-    "Please pour out your heart rationally and help keep the treehole warm and healing.",
+  "treehole.privacy.tip": "Please pour out your heart rationally and help keep the treehole warm and healing.",
   "treehole.privacy.title": "Privacy Statement",
   "treehole.privacy.welcomeMiddle": ". This is a ",
   "treehole.privacy.welcomePrefix": "Welcome to ",
@@ -3454,22 +2838,17 @@ export const enFlat = {
   "treehole.random.poolHint": "{count} public letters are waiting to be read",
   "treehole.random.poolHint2": "{count} public letters are waiting to meet you",
   "treehole.random.replyLabel": "Write an anonymous reply to {name}",
-  "treehole.random.replyNote":
-    "🌿 Mutually anonymous: neither side sees the other's true identity; the reply arrives randomly in the other's local inbox.",
-  "treehole.random.replyPlaceholder":
-    "Your reply is also anonymous and won't reveal your identity…",
+  "treehole.random.replyNote": "🌿 Mutually anonymous: neither side sees the other's true identity; the reply arrives randomly in the other's local inbox.",
+  "treehole.random.replyPlaceholder": "Your reply is also anonymous and won't reveal your identity…",
   "treehole.random.replySent": "Your reply has been delivered anonymously 💌",
   "treehole.random.sendReply": "📨 Send reply",
-  "treehole.random.subtitle":
-    "Draw a stranger's letter, read it quietly, and reply gently.",
+  "treehole.random.subtitle": "Draw a stranger's letter, read it quietly, and reply gently.",
   "treehole.random.switchLetter": "🎲 Draw another",
   "treehole.random.title": "🎲 Random Treehole",
   "treehole.randomTreehole": "🎲 Random Treehole",
-  "treehole.rank.emptySub":
-    "Like and favorite more letters in the square and the ranking will heat up",
+  "treehole.rank.emptySub": "Like and favorite more letters in the square and the ranking will heat up",
   "treehole.rank.emptyTitle": "No ranking data yet",
-  "treehole.rank.subtitle":
-    "The anonymous letters most gently treated at this moment.",
+  "treehole.rank.subtitle": "The anonymous letters most gently treated at this moment.",
   "treehole.rank.title": "🏆 Popular Treehole Ranking",
   "treehole.rank.todayTab": "Today's hot list",
   "treehole.rank.weekTab": "This week's ranking",
@@ -3485,27 +2864,21 @@ export const enFlat = {
   "treehole.report.targetLabel": "Report target:",
   "treehole.report.title": "Report this letter",
   "treehole.settings.accentColor": "🎨 Custom accent color",
-  "treehole.settings.accentColorDesc":
-    "Click a swatch to change the accent color",
+  "treehole.settings.accentColorDesc": "Click a swatch to change the accent color",
   "treehole.settings.customAccent": "Custom accent",
   "treehole.settings.fontLarge": "Large",
   "treehole.settings.fontNormal": "Normal",
   "treehole.settings.fontSize": "🔤 Font size",
   "treehole.settings.fontSizeDesc": "Three levels, applied site-wide",
   "treehole.settings.fontSmall": "Small",
-  "treehole.settings.footNote":
-    "Data is stored on the server (anonymous + optional login); posts are shown after review.",
-  "treehole.settings.footNoteLocal":
-    "Data is stored in your local browser (anonymous); posts are published to the server database.",
+  "treehole.settings.footNote": "Data is stored on the server (anonymous + optional login); posts are shown after review.",
+  "treehole.settings.footNoteLocal": "Data is stored in your local browser (anonymous); posts are published to the server database.",
   "treehole.settings.highContrast": "👁️ High-contrast eye-care mode",
-  "treehole.settings.highContrastDesc":
-    "Deepen text contrast to relieve eye strain",
+  "treehole.settings.highContrastDesc": "Deepen text contrast to relieve eye strain",
   "treehole.settings.lowPerf": "🐢 Low-performance device effects",
-  "treehole.settings.lowPerfDesc":
-    "Disable heavy effects and particles for smoothness",
+  "treehole.settings.lowPerfDesc": "Disable heavy effects and particles for smoothness",
   "treehole.settings.mute": "🔕 Mute site-wide animations",
-  "treehole.settings.muteDesc":
-    "Pause floating particles and transition animations",
+  "treehole.settings.muteDesc": "Pause floating particles and transition animations",
   "treehole.settings.privacy": "🔒 Privacy statement",
   "treehole.settings.privacyDesc": "View how your data is stored locally",
   "treehole.settings.rateLimit": "🚦 Submission rate limit (custom)",
@@ -3513,8 +2886,7 @@ export const enFlat = {
   "treehole.settings.subtitle": "Personalize your treehole experience.",
   "treehole.settings.themeDay": "☀️ Day",
   "treehole.settings.themeMode": "🌗 Theme mode",
-  "treehole.settings.themeModeDesc":
-    "Gentle cream daytime / deep night-sky gradient",
+  "treehole.settings.themeModeDesc": "Gentle cream daytime / deep night-sky gradient",
   "treehole.settings.themeNight": "🌙 Night",
   "treehole.settings.title": "⚙️ Settings",
   "treehole.settings.view": "View",
@@ -3536,14 +2908,12 @@ export const enFlat = {
   "treehole.wish.lightSuccess": "Wish lit up 🌟",
   "treehole.wish.lightWishBtn": "🌟 Light up the wish",
   "treehole.wish.lightWishTitle": "Light up this wish",
-  "treehole.wish.makeDialogDesc":
-    "Write down your wish so the stars can hear it.",
+  "treehole.wish.makeDialogDesc": "Write down your wish so the stars can hear it.",
   "treehole.wish.makeDialogTitle": "🌟 Make a wish",
   "treehole.wish.makePlaceholder": "I wish...",
   "treehole.wish.makeWish": "+ Make a wish",
   "treehole.wish.save": "💾 Save",
-  "treehole.wish.subtitle":
-    "Hand your wishes to the starlight and be softly illuminated.",
+  "treehole.wish.subtitle": "Hand your wishes to the starlight and be softly illuminated.",
   "treehole.wish.title": "🌟 Wish Wall",
   "treehole.wish.updateSuccess": "Updated ✏️",
   "treehole.write.anonymous": "Anonymous",
@@ -3561,8 +2931,7 @@ export const enFlat = {
   "treehole.write.codename": "Anonymous codename",
   "treehole.write.codenamePlaceholder": "Leave empty for a random one",
   "treehole.write.codenamePlaceholder2": "Auto-generated…",
-  "treehole.write.contentPlaceholder":
-    "Write down your worries, confessions, complaints, or whispers…",
+  "treehole.write.contentPlaceholder": "Write down your worries, confessions, complaints, or whispers…",
   "treehole.write.disabled": "Off",
   "treehole.write.doodle": "Doodle stationery",
   "treehole.write.doodleSavedMsg": "Doodle saved to paper 🎨",
@@ -3589,28 +2958,22 @@ export const enFlat = {
   "treehole.write.privacyLevel": "Privacy level",
   "treehole.write.privateTip": "Letter saved, visible only to you",
   "treehole.write.publishedTip": "Letter published to the square",
-  "treehole.write.publishedTip2":
-    "Your letter has been delivered to the treehole, go see everyone's replies~",
+  "treehole.write.publishedTip2": "Your letter has been delivered to the treehole, go see everyone's replies~",
   "treehole.write.random": "🎲 Random",
-  "treehole.write.rateAlert":
-    "Submitting too frequently, please try again later~",
-  "treehole.write.rateLimitWarning":
-    "Submitting too frequently, please try again later",
+  "treehole.write.rateAlert": "Submitting too frequently, please try again later~",
+  "treehole.write.rateLimitWarning": "Submitting too frequently, please try again later",
   "treehole.write.saveDraft": "💾 Save draft",
   "treehole.write.saveImage": "💾 Save image",
   "treehole.write.saveToPaper": "Save to paper",
   "treehole.write.schedulePlaceholder": "Pick a publishing time",
   "treehole.write.scheduleSeal": "Schedule & seal",
   "treehole.write.scheduled": "⏰ Scheduled publishing",
-  "treehole.write.scheduledTip":
-    "Scheduled for publishing, will become public automatically",
+  "treehole.write.scheduledTip": "Scheduled for publishing, will become public automatically",
   "treehole.write.scheduledTip2": "Letter scheduled to publish at {time}",
   "treehole.write.seal": "🔒 Time-limited sealing",
   "treehole.write.sealUntilPlaceholder": "Seal until",
-  "treehole.write.sensitiveHit":
-    "⚠️ Detected possibly inappropriate content: {words}. Please revise before submitting.",
-  "treehole.write.sensitiveWarning":
-    "Contains sensitive words, please revise before submitting",
+  "treehole.write.sensitiveHit": "⚠️ Detected possibly inappropriate content: {words}. Please revise before submitting.",
+  "treehole.write.sensitiveWarning": "Contains sensitive words, please revise before submitting",
   "treehole.write.shareBrand": "🌙 Treehole",
   "treehole.write.shareFilename": "treehole_share",
   "treehole.write.shareImage": "🖼️ Generate share image",
@@ -3618,18 +2981,13 @@ export const enFlat = {
   "treehole.write.sticker": "Background sticker",
   "treehole.write.submit": "📮 Send letter",
   "treehole.write.submitFail": "Submission failed, please try again",
-  "treehole.write.submitHint":
-    "Please fill in content and complete the captcha",
-  "treehole.write.subtitle":
-    "This moment's feelings deserve to be received gently.",
-  "treehole.write.subtitle2":
-    "Put your worries, secrets, confessions, or whispers into an envelope and hand it to the treehole.",
+  "treehole.write.submitHint": "Please fill in content and complete the captcha",
+  "treehole.write.subtitle": "This moment's feelings deserve to be received gently.",
+  "treehole.write.subtitle2": "Put your worries, secrets, confessions, or whispers into an envelope and hand it to the treehole.",
   "treehole.write.successPrefix": "Your anonymous letter has been ",
   "treehole.write.successTitle": "Delivered successfully",
-  "treehole.write.tags":
-    "Content tags (multi-select, to meet like-minded people)",
-  "treehole.write.tagsHint":
-    "E.g. researchers or grad students can pick 「📚 Academic」 to find kindred spirits.",
+  "treehole.write.tags": "Content tags (multi-select, to meet like-minded people)",
+  "treehole.write.tagsHint": "E.g. researchers or grad students can pick 「📚 Academic」 to find kindred spirits.",
   "treehole.write.title": "✍️ Write a letter",
   "treehole.write.updatedTip": "Letter updated",
   "treehole.write.updatedTip2": "Letter updated and published!",
@@ -3647,8 +3005,7 @@ export const enFlat = {
   "treeholeData.categories.insight": "Reflections",
   "treeholeData.categories.roast": "Rant",
   "treeholeData.categories.work": "Work",
-  "treeholeData.messages.decryptFail":
-    "[Decryption failed: wrong password or not encrypted]",
+  "treeholeData.messages.decryptFail": "[Decryption failed: wrong password or not encrypted]",
   "treeholeData.messages.recalled": "The other person recalled a message",
   "treeholeData.moods.anxious": "Anxious",
   "treeholeData.moods.brave": "Brave",
@@ -3677,35 +3034,22 @@ export const enFlat = {
   "treeholeData.privacy.random.label": "Random anonymous delivery",
   "treeholeData.privacy.self.desc": "Kept only on this device",
   "treeholeData.privacy.self.label": "Visible to me only",
-  "treeholeData.quotes.q1":
-    "You don't need to be great to start, but you need to start to be great.",
+  "treeholeData.quotes.q1": "You don't need to be great to start, but you need to start to be great.",
   "treeholeData.quotes.q10": "Free means undefined.",
-  "treeholeData.quotes.q11":
-    "Trust that after winter, spring will surely come.",
+  "treeholeData.quotes.q11": "Trust that after winter, spring will surely come.",
   "treeholeData.quotes.q12": "Today's effort is the seed of tomorrow's luck.",
-  "treeholeData.quotes.q13":
-    "The moon has no light of its own; borrowing the sun, so can you.",
-  "treeholeData.quotes.q14":
-    "Don't rush for answers; time will reveal them for you.",
-  "treeholeData.quotes.q15":
-    "Life is bright, everything is lovely, and the world is worth it.",
-  "treeholeData.quotes.q2":
-    "Let today's unhappiness end here; tomorrow will shine as ever.",
-  "treeholeData.quotes.q3":
-    "Everything has cracks — that is where the light gets in.",
-  "treeholeData.quotes.q4":
-    "Take it slow; all good things happen in the fireworks of life, and in its quiet moments.",
-  "treeholeData.quotes.q5":
-    "You are one of a kind, like the quietest star in the night sky.",
-  "treeholeData.quotes.q6":
-    "Allowing yourself to wilt now and then is how you grow back stronger.",
+  "treeholeData.quotes.q13": "The moon has no light of its own; borrowing the sun, so can you.",
+  "treeholeData.quotes.q14": "Don't rush for answers; time will reveal them for you.",
+  "treeholeData.quotes.q15": "Life is bright, everything is lovely, and the world is worth it.",
+  "treeholeData.quotes.q2": "Let today's unhappiness end here; tomorrow will shine as ever.",
+  "treeholeData.quotes.q3": "Everything has cracks — that is where the light gets in.",
+  "treeholeData.quotes.q4": "Take it slow; all good things happen in the fireworks of life, and in its quiet moments.",
+  "treeholeData.quotes.q5": "You are one of a kind, like the quietest star in the night sky.",
+  "treeholeData.quotes.q6": "Allowing yourself to wilt now and then is how you grow back stronger.",
   "treeholeData.quotes.q7": "The world is loud, but your heart can stay still.",
-  "treeholeData.quotes.q8":
-    "Tell your worries to the wind — it will keep your secret.",
-  "treeholeData.quotes.q9":
-    "Gentle people will always be treated gently by the world.",
-  "treeholeData.tags.academic.desc":
-    "Research / grad students / grad school worries",
+  "treeholeData.quotes.q8": "Tell your worries to the wind — it will keep your secret.",
+  "treeholeData.quotes.q9": "Gentle people will always be treated gently by the world.",
+  "treeholeData.tags.academic.desc": "Research / grad students / grad school worries",
   "treeholeData.tags.academic.label": "Academic",
   "treeholeData.tags.campus.label": "Campus",
   "treeholeData.tags.family.label": "Family",

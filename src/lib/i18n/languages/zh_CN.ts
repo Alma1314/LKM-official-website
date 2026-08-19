@@ -2767,45 +2767,6 @@ export const zh_CN: DeepStringRecord<typeof en> = {
         sidebarLegacy: "原始老群",
       },
 
-      triggeredDischarge: {
-        metaTitle: "触发击穿 — 2D 介电击穿模拟",
-        metaDescription:
-          "实时 GPU 闪电模拟：Laplace 场求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、体积渲染、泛光与程序化雷声。",
-        webgpuUnavailable: "WEBGPU 不可用",
-        webgpuLine1: "本模拟在 GPU 上每帧求解二维 Laplace 场方程。",
-        webgpuLine2:
-          "请使用 Chrome、Edge 或 Brave 113+（或 Safari 18+），并启用 WebGPU。",
-        panelTitle: "触发击穿",
-        phase: "阶段",
-        charging: "充能中",
-        realTime: "真实时间",
-        slowMotion: "慢动作",
-        current: "电流",
-        stroke: "回击",
-        channelLength: "通道长度",
-        fractalDim: "分形维数",
-        tipSpeed: "尖端速度",
-        fieldResidual: "场残差",
-        thunder: "雷声",
-        branchIndex: "η · 分支指数",
-        branchNotePrefix: "生长概率 p ∝ E",
-        branchNoteSuffix:
-          "能复现真实闪电的分支稀疏度（η = 1 会坍缩为致密分形簇）。回击电流以 Heidler 波形沿通道上行，速度为 c/3（MTLE 模型，λ = 2 km）；每阶段均按物理时钟运行，按上方的倍率减速。",
-        peakCurrent: "峰值电流 · kA",
-        timeScale: "时间倍率 · ×",
-        exposure: "曝光",
-        bloom: "泛光",
-        newLightning: "新闪电",
-        pause: "暂停",
-        soundOff: "声音关",
-        saveScreenshot: "保存截图",
-        polarityNeg: "极性 −CG",
-        normalMode: "正常模式",
-        clickHint: "点击任意位置触发闪电",
-        signature: "运行时模拟 — 真实物理，不走捷径",
-        back: "返回",
-      },
-
       contribution: {
         metaTitle: "贡献系统 —— 理科迷",
       },
@@ -2896,11 +2857,6 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       title: "其他应用",
       description: "理科迷社区的全部应用入口。",
       subtitle: "社区的全部应用服务入口。",
-      triggeredDischarge: {
-        name: "触发击穿",
-        description:
-          "实时 GPU 闪电模拟。Laplace 场方程求解、介电击穿生长、Heidler 回击波形、MTLE 电流衰减、程序化雷声——全物理驱动的可视化实验。",
-      },
       starHope: {
         name: "StarHope 学习助手",
         description:
