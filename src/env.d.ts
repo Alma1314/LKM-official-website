@@ -3,7 +3,7 @@
 
 // Svelte Language Server 通过快照运行独立 tsc 实例，不总能跟随
 // <reference> 发现 global.d.ts；在此直接追加声明。
-interface Window {
+interface Window { 
   pagefind: {
     search: (query: string) => Promise<{
       results: Array<{
