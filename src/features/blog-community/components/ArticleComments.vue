@@ -109,7 +109,7 @@ const CommentNode = {
     // 作者昵称兜底：有 profile 用 nickname，否则回退到用户 ID
     const authorName = () =>
       props.comment.profile?.nickname ?? `用户-${props.comment.user_id}`;
-    // 头像 URL（复用 avatarUrl 工具把后端的 avatarKey 映射为 /static/avatars/*.webp）
+    // 头像 URL（复用 avatarUrl 工具把后端的 avatarKey 映射为 /api/v1/avatars/*.webp）
     const authorAvatar = () =>
       avatarUrl(props.comment.profile?.avatar ?? undefined);
     return () =>

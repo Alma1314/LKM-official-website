@@ -263,8 +263,7 @@ export default defineConfig({
               ws: true,
             },
             "/graphql": { target: process.env.API_URL, changeOrigin: true },
-            // 成员头像由后端静态服务提供（/static/avatars/*.webp）
-            "/static": { target: process.env.API_URL, changeOrigin: true },
+            // 成员头像经 /api/v1/avatars/* 走上面的 /api 代理，无需独立 /static 代理
           }
         : undefined,
     },
