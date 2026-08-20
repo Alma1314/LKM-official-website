@@ -332,6 +332,18 @@ export const authApi = {
   verify2FAEnable: (code: string) =>
     post<TOTPSetupCompleteData>("/api/v1/auth/2fa/setup/complete", { code }),
 
+  /** 管理员强制设置：用登录临时令牌开始 TOTP 设置（返回密钥与二维码 URI）。 */
+  start2FATemp: (tempToken: string) =>
+    post<TOTPSetupBeginData>("/api/v1/auth/2fa/setup/temp", undefined, {
+      params: { temp_token: tempToken },
+    }),
+
+  /** 管理员强制设置：提交当前 TOTP 码完成设置，返回恢复码与会话令牌。 */
+  verify2FAEnableTemp: (tempToken: string, code: string) =>
+    post<TOTPSetupCompleteTempData>("/api/v1/auth/2fa/setup/complete/temp", undefined, {
+      params: { temp_token: tempToken, code },
+    }),
+
   /** 确认已保存恢复码。 */
   confirm2FA: () => post<TOTPConfirmData>("/api/v1/auth/2fa/setup/confirm"),
 
