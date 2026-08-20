@@ -2,7 +2,7 @@
 # LKM nginx 入口:缺证书时生成自签占位证书,并后台定时 reload 拾取续期后的新证书
 set -e
 
-CERT_DIR="/etc/letsencrypt/live/lkm.s12mc.xyz"
+CERT_DIR="/etc/letsencrypt/live/124.220.55.235"
 CERT_FILE="$CERT_DIR/fullchain.pem"
 KEY_FILE="$CERT_DIR/privkey.pem"
 
@@ -13,7 +13,7 @@ if [ ! -f "$CERT_FILE" ] || [ ! -f "$KEY_FILE" ]; then
     openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
         -keyout "$KEY_FILE" \
         -out "$CERT_FILE" \
-        -subj "/CN=lkm.s12mc.xyz" >/dev/null 2>&1
+        -subj "/CN=124.220.55.235" >/dev/null 2>&1
 fi
 
 # 后台每 6h reload,拾取 certbot 续期后的新证书(证书文件原地更新)

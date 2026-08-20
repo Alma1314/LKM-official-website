@@ -252,7 +252,7 @@ export default defineConfig({
 
   vite: {
     server: {
-      allowedHosts: ["lkm.s12mc.xyz"],
+      allowedHosts: ["124.220.55.235"],
       proxy: process.env.API_URL
         ? {
             // 即转发 HTTP 也转发 WS upgrade：前端 WebSocket(/api/v1/ws/events)
