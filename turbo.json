@@ -1,8 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  // 单包仓库（pnpm-workspace 无 multi-package workspaces）的 Turbo 编排：
-  // 目的 = task 缓存 + 并行，减 check/build 链路时长。
-  // 约束：不改变任何产物（astro build 输出仍与预算脚本一致），只加速。
   "globalDependencies": [
     "package.json",
     "pnpm-workspace.yaml",
@@ -11,37 +8,31 @@
     "eslint.config.js"
   ],
   "tasks": {
-    // 类型检查（astro check）：task 名对齐 package.json 的 `check:astro` 脚本
     "check:astro": {
       "cache": true,
       "inputs": ["src/**", "astro.config.ts", "tsconfig.json"],
       "outputs": []
     },
-    // ESLint
     "check:eslint": {
       "cache": true,
       "inputs": ["src/**", "scripts/**", "packages/**", "eslint.config.js"],
       "outputs": []
     },
-    // Prettier 格式检查
     "check:prettier": {
       "cache": true,
       "inputs": ["src/**", "scripts/**", "packages/**", "*.{json,md}"],
       "outputs": []
     },
-    // jscpd 重复代码检测（模块 7）
     "check:jscpd": {
       "cache": true,
       "inputs": ["src/**", ".jscpdrc.json"],
       "outputs": []
     },
-    // Vitest 单测
     "test": {
       "cache": true,
       "inputs": ["src/**", "tests/**", "vitest.config.ts"],
       "outputs": []
     },
-    // 完整构建（generate-icons → astro build → precompress）
     "build": {
       "cache": true,
       "inputs": ["src/**", "public/**", "astro.config.ts", "scripts/**"],
