@@ -155,8 +155,10 @@ const links: NavBarLink[] = Astro.props.links;
   // 下拉/面板按钮「点击开了又关」失灵（需整页刷新才恢复）。因此绑定标记须持久化到元素
   // 自身属性（WeakSet 会在脚本重跑时重置，不可用），保证同一 DOM 节点只绑一次。
   // 标记用带前缀的私有属性，避免与外部 setAttribute/data-* 冲突。
-  var B = '__lkmBound__';
-  function mark(el) { el && (el[B] = true); }
+  const B = '__lkmBound__';
+  function mark(el) {
+    if (el) el[B] = true;
+  }
   function bound(el) { return !!el && el[B] === true; }
 
   function bindNavbarButtons() {
