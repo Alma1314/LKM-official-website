@@ -1,4 +1,7 @@
 import { get } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface Notification {
   id: string;
@@ -7,13 +10,6 @@ export interface Notification {
   isRead: boolean;
   link?: string;
   createdAt: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const notificationApi = {

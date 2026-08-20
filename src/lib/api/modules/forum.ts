@@ -4,6 +4,9 @@ import {
   PostListQuery,
   PostDetailQuery,
 } from "../../../features/forum/graphql";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface Post {
   id: number;
@@ -32,13 +35,6 @@ export interface Comment {
   parentId?: string;
   likeCount: number;
   createdAt: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const forumApi = {

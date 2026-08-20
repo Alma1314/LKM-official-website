@@ -4,6 +4,9 @@
 
 import { get, getHttpAccessToken } from "../../http/client";
 import { apiFetch } from "../fetch";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 /** 文件展示形状（camelCase，由后端 FileInfo 映射而来）。 */
 export interface FileEntry {
@@ -39,13 +42,6 @@ interface BackendFile {
   download_count: number;
   view_count: number;
   created_at: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 /** 上传初始化响应（camelCase，由后端 UploadInitResp 映射而来）。 */

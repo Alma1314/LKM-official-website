@@ -4,6 +4,9 @@
 // 映射为前端 UI 直接使用的 camelCase 展示形状（对应原 mock-columns 结构）。
 
 import { get } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 /** 专栏展示形状（camelCase，由后端 ColumnInfo 映射而来）。 */
 export interface Column {
@@ -75,13 +78,6 @@ interface BackendColumnPost {
   like_count: number;
   comment_count: number;
   published_at: string | null;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 function mapColumn(b: BackendColumn): Column {

@@ -1,4 +1,7 @@
 import { get, post } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface Competition {
   id: string;
@@ -10,13 +13,6 @@ export interface Competition {
   status: "upcoming" | "ongoing" | "ended";
   participantCount: number;
   category: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const competitionApi = {

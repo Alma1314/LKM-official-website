@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect, useCallback, memo } from "react";
-import type { ReactNode } from "react";
+import type { ReactNode, ReactElement } from "react";
 import type { Editor } from "@tiptap/core";
 import EditorToolbarButton from "./EditorToolbarButton";
 import MathEditor from "../nodes/MathEditor";
@@ -29,411 +29,194 @@ interface ToolbarItemDef {
   isActive: (editor: Editor) => boolean;
 }
 
+/**
+ * 与 lucide 同风格的 16px 线性图标包装。
+ * 收敛各图标重复的 `<svg>` 样板属性，图标只需提供 path/circle 等 children。
+ */
+function LineIcon({ children }: { children: ReactNode }): ReactElement {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {children}
+    </svg>
+  );
+}
+
 const B = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" />
-  </svg>
+  </LineIcon>
 );
 const I = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M19 4h-6a4 4 0 0 0-4 4v12" />
     <path d="M9 12h6" />
-  </svg>
+  </LineIcon>
 );
 const U = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M6 4v6a6 6 0 0 0 12 0V4" />
     <path d="M4 20h16" />
-  </svg>
+  </LineIcon>
 );
 const S = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M16 4H9a3 3 0 0 0-2.83 4" />
     <path d="M14 12a4 4 0 0 1 0 8H6" />
     <path d="M4 12h20" />
-  </svg>
+  </LineIcon>
 );
 const Code = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="m18 16 4-4-4-4" />
     <path d="m6 8-4 4 4 4" />
     <path d="m14.5 4-5 16" />
-  </svg>
+  </LineIcon>
 );
 const H1 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <path d="m17 12 3-2v8" />
-  </svg>
+  </LineIcon>
 );
 const H2 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <path d="M21 18h-4c0-4 4-3 4-6 0-1.5-2-2-3-2" />
-  </svg>
+  </LineIcon>
 );
 const H3 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <path d="M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2" />
     <path d="M17 17.5c2 1.5 4 .3 4-1.5a2 2 0 0 0-2-2" />
-  </svg>
+  </LineIcon>
 );
 const H4 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <path d="M17 10v3" />
     <path d="M17 13h4" />
     <path d="M21 10v8" />
-  </svg>
+  </LineIcon>
 );
 const H5 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <path d="M17 13v-3h4" />
     <path d="M17 17.7c.4.2.8.3 1.3.3 1.5 0 2.7-1.1 2.7-2.5S19.8 13 18.3 13H17" />
-  </svg>
+  </LineIcon>
 );
 const H6 = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h8" />
     <path d="M4 18V6" />
     <path d="M12 18V6" />
     <circle cx="19" cy="16" r="2" />
     <path d="M20 10c-2 2-3 3.5-3 6" />
-  </svg>
+  </LineIcon>
 );
 const Blockquote = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2M16 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3" />
-  </svg>
+  </LineIcon>
 );
 const Ul = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M8 6h13" />
     <path d="M8 12h13" />
     <path d="M8 18h13" />
     <path d="M3 6h.01" />
     <path d="M3 12h.01" />
     <path d="M3 18h.01" />
-  </svg>
+  </LineIcon>
 );
 const Ol = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M10 6h11" />
     <path d="M10 12h11" />
     <path d="M10 18h11" />
     <path d="M4 6h1v4" />
     <path d="M4 10h2" />
     <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
-  </svg>
+  </LineIcon>
 );
 const TaskList = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M10 6h11" />
     <path d="M10 12h11" />
     <path d="M10 18h11" />
     <path d="M4 6h1v1H4z" />
     <path d="M4 12h1v1H4z" />
     <path d="M4 18h1v1H4z" />
-  </svg>
+  </LineIcon>
 );
 const Hr = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M4 12h16" />
-  </svg>
+  </LineIcon>
 );
 const CodeBlock = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M3 4h18v4H3z" />
     <path d="M7 8v12h10V8" />
-  </svg>
+  </LineIcon>
 );
 const Link = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-  </svg>
+  </LineIcon>
 );
 const Undo = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M3 7v6h6" />
     <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-  </svg>
+  </LineIcon>
 );
 const Redo = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <LineIcon>
     <path d="M21 7v6h-6" />
     <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
-  </svg>
+  </LineIcon>
 );
+
+const H_ICONS = [H1, H2, H3, H4, H5, H6];
 
 function buildToolbarItems(): ToolbarItemDef[] {
   return [
-    {
-      key: "h1",
-      icon: H1,
-      label: "H1",
-      title: t("editor.heading1"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 1 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 1 }),
-    },
-    {
-      key: "h2",
-      icon: H2,
-      label: "H2",
-      title: t("editor.heading2"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 2 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 2 }),
-    },
-    {
-      key: "h3",
-      icon: H3,
-      label: "H3",
-      title: t("editor.heading3"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 3 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 3 }),
-    },
-    {
-      key: "h4",
-      icon: H4,
-      label: "H4",
-      title: t("editor.heading4"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 4 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 4 }),
-    },
-    {
-      key: "h5",
-      icon: H5,
-      label: "H5",
-      title: t("editor.heading5"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 5 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 5 }),
-    },
-    {
-      key: "h6",
-      icon: H6,
-      label: "H6",
-      title: t("editor.heading6"),
-      group: "heading",
-      action: (e) => e.chain().focus().toggleHeading({ level: 6 }).run(),
-      isActive: (e) => e.isActive("heading", { level: 6 }),
-    },
+    // H1–H6 结构同构，用 level 数据驱动生成，避免 6 段近乎相同的配置
+    ...Array.from({ length: 6 }, (_, i): ToolbarItemDef => {
+      const level = (i + 1) as 1 | 2 | 3 | 4 | 5 | 6;
+      return {
+        key: `h${level}`,
+        icon: H_ICONS[i],
+        label: `H${level}`,
+        title: t(`editor.heading${level}`),
+        group: "heading",
+        action: (e) => e.chain().focus().toggleHeading({ level }).run(),
+        isActive: (e) => e.isActive("heading", { level }),
+      };
+    }),
     {
       key: "bold",
       icon: B,
@@ -565,21 +348,11 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "image",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
           <circle cx="9" cy="9" r="2" />
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-        </svg>
+        </LineIcon>
       ),
       label: t("editor.image"),
       title: t("editor.insertImage"),
@@ -592,21 +365,11 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "inlineMath",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <path d="M9 4v16" />
           <path d="M4 7c0-1.7 1.3-3 3-3h13" />
           <path d="M18 20c-1.7 0-3-1.3-3-3V4" />
-        </svg>
+        </LineIcon>
       ),
       label: t("editor.inlineMath"),
       title: t("editor.insertInlineMath"),
@@ -619,19 +382,9 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "blockMath",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <path d="M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a2 2 0 0 1 0 2.4l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2" />
-        </svg>
+        </LineIcon>
       ),
       label: t("editor.blockMath"),
       title: t("editor.insertBlockMath"),
@@ -644,22 +397,12 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "table",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <rect width="18" height="18" x="3" y="3" rx="2" />
           <path d="M3 9h18" />
           <path d="M3 15h18" />
           <path d="M12 3v18" />
-        </svg>
+        </LineIcon>
       ),
       label: t("editor.table"),
       title: t("editor.insertTable3x3"),
@@ -675,21 +418,11 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "callout",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
           <line x1="12" y1="9" x2="12" y2="13" />
           <line x1="12" y1="17" x2="12.01" y2="17" />
-        </svg>
+        </LineIcon>
       ),
       label: "Callout",
       title: t("editor.insertCallout"),
@@ -705,21 +438,11 @@ function buildToolbarItems(): ToolbarItemDef[] {
     {
       key: "figure",
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <LineIcon>
           <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
           <circle cx="9" cy="9" r="2" />
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-        </svg>
+        </LineIcon>
       ),
       label: "Figure",
       title: t("editor.insertFigure"),
@@ -895,21 +618,11 @@ export default memo(function EditorToolbar({ editor }: EditorToolbarProps) {
             className={`rte-btn rte-btn--ghost rte-btn--sm gap-1 ${moreOpen ? "is-active" : ""}`}
             onClick={() => setMoreOpen(!moreOpen)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+            <LineIcon>
               <circle cx="12" cy="12" r="1" />
               <circle cx="19" cy="12" r="1" />
               <circle cx="5" cy="12" r="1" />
-            </svg>
+            </LineIcon>
           </button>
           {moreOpen && (
             <div className="absolute top-full right-0 mt-1 z-40 bg-page-bg border border-surface-3 rounded-lg shadow-lg p-2 min-w-[200px] rte-dropdown">

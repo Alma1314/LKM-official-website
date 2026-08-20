@@ -1,4 +1,7 @@
 import { get, post } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface TreeholeMessage {
   id: string;
@@ -7,13 +10,6 @@ export interface TreeholeMessage {
   isAnonymous: boolean;
   likeCount: number;
   createdAt: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const treeholeApi = {

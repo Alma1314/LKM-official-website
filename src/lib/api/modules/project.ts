@@ -1,4 +1,7 @@
 import { get } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface Project {
   id: string;
@@ -10,13 +13,6 @@ export interface Project {
   status: string;
   memberCount: number;
   createdAt: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const projectApi = {

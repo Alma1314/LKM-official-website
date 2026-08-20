@@ -1,4 +1,7 @@
 import { get, post } from "../../http/client";
+import type { PaginatedResponse } from "../types";
+
+export type { PaginatedResponse } from "../types";
 
 export interface Question {
   id: string;
@@ -21,13 +24,6 @@ export interface Answer {
   voteCount: number;
   isAccepted: boolean;
   createdAt: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
 }
 
 export const qaApi = {

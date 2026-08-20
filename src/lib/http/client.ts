@@ -95,6 +95,11 @@ const defaultAdapter: HttpAuthSessionAdapter = {
     } catch {
       /* ignore */
     }
+    // 通知运行中的认证 store 清理内存态（401 刷新失败等静默清会话路径）：
+    // localStorage 删除本身不会同步到 Pinia 内存，需广播事件让 store 复位。
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("lkm:auth-cleared"));
+    }
   },
 };
 
@@ -348,14 +353,6 @@ function refreshAccessToken(): Promise<string | null> {
     refreshing = null;
   });
   return refreshing;
-}
-
-/** 配置全局 http 客户端（兼容占位；超时默认已内置）。 */
-export function configure(_config: {
-  baseURL?: string;
-  timeout?: number;
-}): void {
-  // 无持久化实例，保留函数签名以兼容旧 barrel 导出
 }
 
 /** 通用请求 */
