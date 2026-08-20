@@ -14,7 +14,7 @@ import { t } from '~/lib/i18n';
 const res = await teamApi.getSubGroups('projectSubGroups');
 const groups: TeamSubGroup[] = res.isOk() ? (res.value?.items ?? []) : [];
 
-// 头像由后端 /static/avatars/*.webp 提供，avatarUrl 负责把 avatarKey 映射为站点相对 URL
+// 头像由后端 /api/v1/avatars/*.webp 提供，avatarUrl 负责把 avatarKey 映射为 API URL
 
 const metadata = {
   title: t('page.official.projectTeam.metaTitle'),
@@ -38,7 +38,7 @@ const sidebarLinks = [
   metadata={metadata}
   sidebarLinks={sidebarLinks}
   currentPath={getPermalink('/official/project-team')}
-  navItems={['nav.home', 'nav.news', 'nav.help', 'nav.team', 'nav.resources']}
+  navItems={['nav.home', 'nav.news', 'nav.team', 'nav.resources']}
 >
   <!-- 项目小组 -->
   {

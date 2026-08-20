@@ -8,4 +8,3 @@ export {
   type Result,
   type ResultAsync,
 } from "./result";
-export { default as ErrorBoundary } from "./ErrorBoundary.astro";

@@ -150,10 +150,22 @@ const links: NavBarLink[] = Astro.props.links;
 </div>
 <!-- Extracted reference: src/features/shell/scripts/navbar.ts (navbar scripts) -->
 <script is:inline>
+  // swup 导航（#navbar-wrapper 现在是动态容器）会重建或复用顶栏节点，且容器内 is:inline
+  // 脚本会被 reloadScripts 重跑。同一节点若被重复绑定 click，叠加偶数个 handler 会导致
+  // 下拉/面板按钮「点击开了又关」失灵（需整页刷新才恢复）。因此绑定标记须持久化到元素
+  // 自身属性（WeakSet 会在脚本重跑时重置，不可用），保证同一 DOM 节点只绑一次。
+  // 标记用带前缀的私有属性，避免与外部 setAttribute/data-* 冲突。
+  const B = '__lkmBound__';
+  function mark(el) {
+    if (el) el[B] = true;
+  }
+  function bound(el) { return !!el && el[B] === true; }
+
   function bindNavbarButtons() {
     // ── display-setting 面板 ──
     const settingBtn = document.getElementById('display-settings-switch');
-    if (settingBtn) {
+    if (settingBtn && !bound(settingBtn)) {
+      mark(settingBtn);
       settingBtn.addEventListener('click', function dsHandler(e) {
         e.stopPropagation();
         const panel = document.getElementById('display-setting');
@@ -173,7 +185,8 @@ const links: NavBarLink[] = Astro.props.links;
     // ── nav-menu 面板（移动端） ──
     const menuBtn = document.getElementById('nav-menu-switch');
     const menuIcon = menuBtn?.querySelector('[data-menu-icon]');
-    if (menuBtn?.id) {
+    if (menuBtn?.id && !bound(menuBtn)) {
+      mark(menuBtn);
       menuBtn.addEventListener('click', function nmHandler(e) {
         e.stopPropagation();
         document.getElementById('display-setting')?.classList.add('float-panel-closed');
@@ -189,6 +202,9 @@ const links: NavBarLink[] = Astro.props.links;
       const menu = dropdown.querySelector('[data-dropdown-menu]');
       const arrow = dropdown.querySelector('[data-dropdown-arrow]');
       if (!trigger || !menu) return;
+      // 同一 trigger 节点只绑一次（标记持久化在元素上，脚本重跑/节点复用也不重复绑定）
+      if (bound(trigger)) return;
+      mark(trigger);
 
       trigger.addEventListener('click', function ddHandler(e) {
         e.stopPropagation();
@@ -204,10 +220,11 @@ const links: NavBarLink[] = Astro.props.links;
       });
     });
 
-    // 监听面板状态切换图标
+    // 监听面板状态切换图标（同一面板节点只 observe 一次，防重复叠加触发）
     const panelRoot = document.getElementById('mobile-nav-fuwari');
     const panelEl = panelRoot?.querySelector('[data-nav-panel]');
-    if (panelEl && menuIcon) {
+    if (panelEl && menuIcon && !bound(panelEl)) {
+      mark(panelEl);
       const observer = new MutationObserver(() => {
         const isOpen = !panelEl.classList.contains('translate-x-full');
         if (isOpen) {
