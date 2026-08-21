@@ -1,5 +1,6 @@
 dist
 node_modules
+.pnpm-store
 .github
 pnpm-lock.yaml
 backend/.pytest_cache

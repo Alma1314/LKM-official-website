@@ -60,11 +60,12 @@ onMounted(() => {
     window.dispatchEvent(new CustomEvent("close-auth-modal"));
   };
 
-  // 有 token：立即同步用户并视为已登录
+  // 有 token：立即同步用户并视为已登录（登录态持久化，刷新页面保持）
   if (token) {
     store
       .fetchMe()
       .then(() => {
+        store.persistToStorage();
         finish();
         window.location.replace("/");
       })
