@@ -8,13 +8,7 @@ import { useVerificationCountdown } from "./useVerificationCountdown";
 import { authenticate } from "../lib/webauthn";
 
 export type LoginMode =
-  | "password"
-  | "code"
-  | "github"
-  | "magic"
-  | "passkey"
-  | "2fa"
-  | "2fa_setup";
+  "password" | "code" | "github" | "magic" | "passkey" | "2fa" | "2fa_setup";
 
 export interface LoginFlowOptions {
   redirect?: string | null;

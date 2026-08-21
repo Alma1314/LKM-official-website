@@ -280,11 +280,7 @@
 
         <!-- 强制 2FA 设置态（管理员等 setup_required 场景） -->
         <div v-else-if="flow.mode === '2fa_setup'" class="space-y-4">
-          <AuthStatus
-            v-if="flow.error"
-            type="error"
-            :message="flow.error"
-          />
+          <AuthStatus v-if="flow.error" type="error" :message="flow.error" />
           <!-- 完成设置：展示恢复码，用户确认保存后进入成功态 -->
           <template v-if="flow.setup_recovery_ready">
             <p class="text-sm text-text-muted text-center">

@@ -112,10 +112,16 @@
         v-if="activeTab === 'points'"
         class="bg-card-bg border border-surface-3 rounded-2xl overflow-hidden"
       >
-        <div v-if="isLoggedIn === false" class="p-5 text-center text-sm text-text-muted">
+        <div
+          v-if="isLoggedIn === false"
+          class="p-5 text-center text-sm text-text-muted"
+        >
           {{ t("settings.loginRequired") }}
         </div>
-        <div v-else-if="pointLogs.length === 0" class="p-5 text-center text-sm text-text-muted">
+        <div
+          v-else-if="pointLogs.length === 0"
+          class="p-5 text-center text-sm text-text-muted"
+        >
           {{ t("primitives.empty") }}
         </div>
         <div v-else class="divide-y divide-surface-3">
@@ -166,7 +172,10 @@
             {{ periodLabels[p] }}
           </button>
         </div>
-        <div v-if="leaderboardEntries.length === 0" class="p-5 text-center text-sm text-text-muted">
+        <div
+          v-if="leaderboardEntries.length === 0"
+          class="p-5 text-center text-sm text-text-muted"
+        >
           {{ t("primitives.empty") }}
         </div>
         <div v-else class="divide-y divide-surface-3">
@@ -206,9 +215,9 @@
               <div class="text-sm font-medium text-deep-text truncate">
                 {{ entry.display_name }}
               </div>
-              <div class="text-xs text-text-muted/60">{{
-                t(`contributionData.leaderboard.titles.${entry.title}`)
-              }}</div>
+              <div class="text-xs text-text-muted/60">
+                {{ t(`contributionData.leaderboard.titles.${entry.title}`) }}
+              </div>
             </div>
             <span class="text-sm font-semibold text-primary">{{
               t("contribution.pointsSuffix", {
@@ -446,7 +455,9 @@ const myUserId = ref<number | null>(null);
 const myTitle = ref<string>("");
 const achievements = ref<PointsAchievement[]>([]);
 const pointLogs = ref<PointsLedgerEntry[]>([]);
-const leaderboardMap = ref<Record<"daily" | "weekly" | "total", PointsLeaderboardEntry[]>>({
+const leaderboardMap = ref<
+  Record<"daily" | "weekly" | "total", PointsLeaderboardEntry[]>
+>({
   daily: [],
   weekly: [],
   total: [],
