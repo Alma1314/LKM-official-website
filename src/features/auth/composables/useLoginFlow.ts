@@ -293,6 +293,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
       if (data.access_token) {
         store.setTokens(data.access_token, data.refresh_token ?? "");
         await store.fetchMe();
+        store.persistToStorage();
         store.clearPending2FA();
       }
       // 2FA 设置流程（purpose=recovery / admin setup）可能不立即发会话 token，
@@ -310,6 +311,7 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     if (data.access_token) {
       store.setTokens(data.access_token, data.refresh_token ?? "");
       await store.fetchMe();
+      store.persistToStorage();
     }
   }
 

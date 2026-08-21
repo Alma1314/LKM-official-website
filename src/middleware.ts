@@ -15,14 +15,18 @@ import type { Locale } from "~/lib/i18n/types";
 
 const API_TARGET = process.env.API_URL ?? "";
 
-/** 从请求 Cookie 解析当前 locale（缺省 zh-CN 默认语）。 */
+/** 从请求 Cookie 解析当前 locale（缺省 zh-CN 默认语）。畸形编码回退默认语。 */
 function localeFromCookie(cookieHeader: string | null): Locale {
   if (cookieHeader) {
     const m = /(?:^|;\s*)lkm-locale=([^;]+)/.exec(cookieHeader);
     if (m) {
-      const parsed = decodeURIComponent(m[1]);
-      if ((SUPPORTED_LOCALES as string[]).includes(parsed))
-        return parsed as Locale;
+      try {
+        const parsed = decodeURIComponent(m[1]);
+        if ((SUPPORTED_LOCALES as string[]).includes(parsed))
+          return parsed as Locale;
+      } catch {
+        // 畸形 percent-encoding 回退默认语
+      }
     }
   }
   return "zh-CN";
