@@ -4027,12 +4027,15 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     },
     pointLogs: {
       checkin: "每日打卡",
-      post: "发帖：量子力学入门",
+      post: "发帖",
       comment: "评论回复",
       answerAccepted: "回答被采纳",
       fileApproved: "文件上传通过审核",
       competition: "竞赛获奖",
       dailyTask: "完成每日任务",
+      like: "点赞",
+      qaAccept: "回答被采纳",
+      transfer: "积分转移",
     },
     leaderboard: {
       names: {

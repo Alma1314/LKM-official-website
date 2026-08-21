@@ -29,6 +29,8 @@ export { treeholeApi } from "./modules/treehole";
 export { teamApi } from "./modules/team";
 export { authApi } from "./modules/auth";
 export { notificationApi } from "./modules/notification";
+export { pointsApi } from "./modules/points";
+export type * from "./modules/points";
 
 // GraphQL 客户端
 export { graphqlClient, graphql } from "./graphql";

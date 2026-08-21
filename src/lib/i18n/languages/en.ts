@@ -4218,12 +4218,15 @@ export const en = {
     },
     pointLogs: {
       checkin: "Daily check-in",
-      post: "Post: Quantum Mechanics Introduction",
+      post: "Post",
       comment: "Comment reply",
       answerAccepted: "Answer accepted",
       fileApproved: "File upload approved",
       competition: "Competition award",
       dailyTask: "Daily task completed",
+      like: "Like",
+      qaAccept: "Answer accepted",
+      transfer: "Points transferred",
     },
     leaderboard: {
       names: {
