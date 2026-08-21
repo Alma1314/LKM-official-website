@@ -13,7 +13,7 @@
 //  get/post/put/patch/del 与 request 均返回 Result<T, AppError>，
 //  token 读写(getHttpAccessToken 等)供 GraphQL exchange 等无请求方使用。
 
-import { AppError, ErrorCode } from "../errors/error-codes";
+import { AppError, ErrorCode, MFARequiredError } from "../errors/error-codes";
 import { ok, err } from "../errors/result";
 import { t } from "~/lib/i18n";
 import type { Result } from "../errors/result";
@@ -170,6 +170,20 @@ function isRefreshRequest(url: string): boolean {
   return url === "/api/v1/auth/refresh";
 }
 
+/** 后端危险操作 MFA_REQUIRED 的业务代码（CommonErr.MFA_REQUIRED）。 */
+const MFA_REQUIRED_CODE = 4;
+
+/** 判断 401 响应是否为「危险操作需 2FA step-up」（会话仍有效、仅缺信任），而非 token 过期。 */
+async function isMfaRequired(response: Response): Promise<boolean> {
+  try {
+    const body = (await response.clone().json()) as { code?: number } | null;
+    return body?.code === MFA_REQUIRED_CODE;
+  } catch {
+    // 非 JSON：视为普通 401（token 过期），走刷新逻辑
+    return false;
+  }
+}
+
 /**
  * 真正的请求执行。401 时触发「单飞」刷新（并发去重），成功后带新 token 重放一次。
  * 返回 ok(data)（解包 {code,msg,data}）或 err(AppError)。
@@ -233,7 +247,12 @@ async function rawRequest<T>(
   try {
     let response = await doFetch(token);
 
-    // 401 → 进入「单飞」刷新（刷新端点自身 401 说明刷新令牌失效，直接清会话）。其余情况刷新成功则带新 token 重放一次。
+    // 401 → 先判是否为「危险操作需 2FA step-up」：会话有效仅缺 2FA 信任时，
+    // 不刷新、不清会话，抛 MFARequiredError 由调用方弹 TOTP 验证后再重放。
+    if (response.status === 401 && token && (await isMfaRequired(response))) {
+      return err(new MFARequiredError());
+    }
+    // 否则进入「单飞」刷新（刷新端点自身 401 说明刷新令牌失效，直接清会话）。其余情况刷新成功则带新 token 重放一次。
     if (response.status === 401 && token) {
       if (isRefreshRequest(url)) {
         getAdapter().clear();

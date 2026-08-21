@@ -64,6 +64,12 @@
       @confirm="doDelete(confirmDelete!)"
       @cancel="confirmDelete = null"
     />
+
+    <StepUp2FADialog
+      :state="stepUp.dialog"
+      @submit="stepUp.onCode"
+      @cancel="stepUp.onCancel"
+    />
   </div>
 </template>
 
@@ -75,6 +81,8 @@ import type { PasskeyCredential } from "~/lib/api/modules/auth";
 import type { User } from "~/types/auth";
 import AuthStatus from "../shared/AuthStatus.vue";
 import ConfirmDialog from "./ConfirmDialog.vue";
+import StepUp2FADialog from "./StepUp2FADialog.vue";
+import { useStepUp2FA } from "~/lib/http/useStepUp2FA";
 import { registerNew } from "../../lib/webauthn";
 
 defineProps<{
@@ -88,6 +96,8 @@ const newName = ref("");
 const creating = ref(false);
 const confirmDelete = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
+// 危险删除 passkey 需 2FA step-up（弹窗承载于本组件）
+const stepUp = useStepUp2FA(t("settings.passkey.deleteStepUpHint"));
 
 async function load() {
   loadingList.value = true;
@@ -143,7 +153,8 @@ async function doDelete(id: number) {
   deletingId.value = id;
   error.value = "";
   try {
-    const r = await authApi.deletePasskey(id);
+    // 危险删除 passkey 需 2FA step-up：遇缺信任自动弹窗验证后重放
+    const r = await stepUp.run(() => authApi.deletePasskey(id));
     if (r.isErr()) {
       error.value = r.error.message;
       return;

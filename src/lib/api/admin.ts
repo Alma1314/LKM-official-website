@@ -29,6 +29,17 @@ export class AdminAuthError extends Error {
   }
 }
 
+/** 危险操作需 2FA（后端 CommonErr.MFA_REQUIRED 的 code）。 */
+export const ADMIN_MFA_REQUIRED_CODE = 4;
+
+/** 危险操作需要 2FA step-up：会话有效但无 1 小时内信任。调用方应弹 2FA 验证后重试。 */
+export class AdminMFARequiredError extends Error {
+  constructor() {
+    super(t("messages.admin.mfaRequired"));
+    this.name = "AdminMFARequiredError";
+  }
+}
+
 let redirecting = false;
 let redirectTarget = "/admin/login";
 
@@ -67,6 +78,18 @@ export async function adminFetch(
   }
   const res = result.value;
   if (res.status === 401 || res.status === 403) {
+    // 危险操作 step-up：401 且 body code == MFA_REQUIRED 时，会话仍有效但缺 2FA 信任，
+    // 不应跳登录，应抛 MFA 错误由调用方弹 TOTP 验证后重试。
+    let mfaRequired = false;
+    try {
+      const body = (await res.clone().json()) as { code?: number } | null;
+      mfaRequired = body?.code === ADMIN_MFA_REQUIRED_CODE;
+    } catch {
+      /* 非 JSON：视为会话过期 */
+    }
+    if (mfaRequired) {
+      throw new AdminMFARequiredError();
+    }
     toLogin();
     throw new AdminAuthError();
   }
@@ -116,6 +139,16 @@ export async function adminLogin(
   });
   const body = await readAdminResp(res);
   return { user: body.data as unknown as AdminUser };
+}
+
+/** 危险操作 step-up：提交当前 TOTP 码，通过后后端 Set-Cookie 更新为带 2FA 信任的会话。 */
+export async function adminVerify2FA(code: string): Promise<void> {
+  const res = await adminFetch("/api/v1/admin/auth/2fa", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
+  });
+  await readAdminResp(res);
 }
 
 /** 后台登出：撤销 refresh 会话并清 cookie。 */

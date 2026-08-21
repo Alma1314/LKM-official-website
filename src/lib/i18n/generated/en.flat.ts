@@ -217,6 +217,8 @@ export const enFlat = {
   "blog.comments": "Comments",
   "blog.commentsCount": "Comments ({count})",
   "blog.commentsLoading": "Loading comments...",
+  "blog.deleteCommentStepUpHint":
+    "Deleting this comment requires two-factor verification. Enter the 6-digit code from your authenticator app (no repeat within 1 hour).",
   "blog.editArticle": "Edit",
   "blog.editArticleFull": "Edit this article",
   "blog.giscusConfigure": "Configure",
@@ -1266,6 +1268,8 @@ export const enFlat = {
   "languageSwitcher.en": "English",
   "languageSwitcher.zh": "Chinese",
   "layout.navigation": "Navigation",
+  "messages.admin.mfaRequired":
+    "This action requires two-factor verification. Please complete it and try again.",
   "messages.admin.requestFailed": "Request failed",
   "messages.admin.requestFailedStatus": "Request failed ({status})",
   "messages.admin.sessionExpired": "Admin session expired",
@@ -1298,6 +1302,16 @@ export const enFlat = {
   "messages.errorBoundary.reload": "Refresh",
   "messages.errorBoundary.title": "Failed to load the page",
   "messages.httpError": "HTTP {status}",
+  "messages.mfa.codePlaceholder": "6-digit code",
+  "messages.mfa.invalidCode": "Invalid code, please try again",
+  "messages.mfa.recoveryPlaceholder": "Enter a backup recovery code",
+  "messages.mfa.stepUpDialogMessage":
+    "This action requires two-factor verification. Enter the 6-digit code from your authenticator app to continue (no repeat within 1 hour).",
+  "messages.mfa.stepUpDialogTitle": "Two-Factor Verification",
+  "messages.mfa.useRecovery":
+    "Can't verify / lost device? Use a backup recovery code",
+  "messages.mfa.useTotp": "Back to security code",
+  "messages.mfa.verifyButton": "Verify",
   "messages.networkError": "Network connection failed, please try again later",
   "messages.networkRequestFailed": "Network request failed: {error}",
   "messages.operationFailed": "Operation failed, please try again",
@@ -2763,6 +2777,8 @@ export const enFlat = {
   "settings.passkey.createFail": "Failed to create passkey",
   "settings.passkey.deleteMessage":
     "Are you sure you want to delete this passkey? This action cannot be undone.",
+  "settings.passkey.deleteStepUpHint":
+    "Deleting this passkey requires two-factor verification. Enter the 6-digit code from your authenticator app (no repeat within 1 hour).",
   "settings.passkey.deleteTitle": "Delete passkey",
   "settings.passkey.empty": "No passkeys yet",
   "settings.passkey.namePlaceholder": "Name the new key (e.g. My phone)",

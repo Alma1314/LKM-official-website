@@ -340,16 +340,22 @@ export const authApi = {
 
   /** 管理员强制设置：提交当前 TOTP 码完成设置，返回恢复码与会话令牌。 */
   verify2FAEnableTemp: (tempToken: string, code: string) =>
-    post<TOTPSetupCompleteTempData>("/api/v1/auth/2fa/setup/complete/temp", undefined, {
-      params: { temp_token: tempToken, code },
-    }),
+    post<TOTPSetupCompleteTempData>(
+      "/api/v1/auth/2fa/setup/complete/temp",
+      undefined,
+      {
+        params: { temp_token: tempToken, code },
+      },
+    ),
 
   /** 确认已保存恢复码。 */
   confirm2FA: () => post<TOTPConfirmData>("/api/v1/auth/2fa/setup/confirm"),
 
-  /** 关闭 2FA（需当前 TOTP 码）。 */
-  disable2FA: (code: string) =>
-    del<TOTPDisableData>("/api/v1/auth/2fa", { data: { code } }),
+  /** 关闭 2FA（需当前 TOTP 码或恢复码）。 */
+  disable2FA: (code: string, recoveryCode?: string) =>
+    del<TOTPDisableData>("/api/v1/auth/2fa", {
+      data: { code, recovery_code: recoveryCode },
+    }),
 
   /** 登录时验证 TOTP 或恢复码（purpose=2fa/recovery）。 */
   verify2FA: (
@@ -365,6 +371,13 @@ export const authApi = {
 
   /** 查询当前用户 2FA 是否已开启。 */
   get2FAStatus: () => get<TOTPStatusData>("/api/v1/auth/2fa/status"),
+
+  /** 前台危险操作 step-up：验证当前已登录用户 TOTP 或恢复码，通过后换发带 1h 信任的新 access token。 */
+  verifyStepUp2FA: (code: string | undefined, recoveryCode?: string) =>
+    post<TOTPVerifyData>("/api/v1/auth/2fa/step-up", {
+      code,
+      recovery_code: recoveryCode,
+    }),
 
   // ── Passkey / WebAuthn ──
 
@@ -477,9 +490,15 @@ export const authApi = {
   /** 查询当前绑定状态（邮箱 / 手机 / GitHub / 2FA）。 */
   getSettings: () => get<SettingsInfo>("/api/v1/auth/settings"),
 
-  /** 解绑（type: email | phone | github）；已开启 2FA 时需 code（TOTP 码）。 */
-  unbind: (type: "email" | "phone" | "github", code?: string) =>
-    del<MessageResponse>(`/api/v1/auth/settings/${type}`, { data: { code } }),
+  /** 解绑（type: email | phone | github）；已开启 2FA 时需 TOTP 码或恢复码。 */
+  unbind: (
+    type: "email" | "phone" | "github",
+    code?: string,
+    recoveryCode?: string,
+  ) =>
+    del<MessageResponse>(`/api/v1/auth/settings/${type}`, {
+      data: { code, recovery_code: recoveryCode },
+    }),
 
   // ── Onboarding ──
   getOnboarding: () => get<OnboardingState>("/api/auth/onboarding"),

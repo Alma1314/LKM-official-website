@@ -87,6 +87,17 @@ export const en = {
       createFailed: "Failed to create passkey",
       authenticateFailed: "Passkey authentication failed",
     },
+    mfa: {
+      stepUpDialogTitle: "Two-Factor Verification",
+      stepUpDialogMessage:
+        "This action requires two-factor verification. Enter the 6-digit code from your authenticator app to continue (no repeat within 1 hour).",
+      codePlaceholder: "6-digit code",
+      verifyButton: "Verify",
+      invalidCode: "Invalid code, please try again",
+      useRecovery: "Can't verify / lost device? Use a backup recovery code",
+      useTotp: "Back to security code",
+      recoveryPlaceholder: "Enter a backup recovery code",
+    },
     blog: {
       fetchSeriesFailed: "Failed to load blog series: {error}",
     },
@@ -105,6 +116,8 @@ export const en = {
     },
     admin: {
       sessionExpired: "Admin session expired",
+      mfaRequired:
+        "This action requires two-factor verification. Please complete it and try again.",
       requestFailed: "Request failed",
       requestFailedStatus: "Request failed ({status})",
     },
@@ -220,6 +233,8 @@ export const en = {
     commentPlaceholder: "Write your thoughts...",
     reply: "Reply",
     replyTo: "Reply to: {name}",
+    deleteCommentStepUpHint:
+      "Deleting this comment requires two-factor verification. Enter the 6-digit code from your authenticator app (no repeat within 1 hour).",
     sending: "Sending...",
     loginPromptPrefix: "Please ",
     loginPromptSuffix: " to comment",
@@ -1629,6 +1644,8 @@ export const en = {
       deleteTitle: "Delete passkey",
       deleteMessage:
         "Are you sure you want to delete this passkey? This action cannot be undone.",
+      deleteStepUpHint:
+        "Deleting this passkey requires two-factor verification. Enter the 6-digit code from your authenticator app (no repeat within 1 hour).",
       createFail: "Failed to create passkey",
     },
   },

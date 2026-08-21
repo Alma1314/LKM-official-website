@@ -23,6 +23,9 @@ export const ErrorCode = {
   AUTH_ERROR: "AUTH_ERROR",
   VALIDATION_ERROR: "VALIDATION_ERROR",
   UNKNOWN_ERROR: "UNKNOWN_ERROR",
+
+  // 安全
+  MFA_REQUIRED: "MFA_REQUIRED", // 危险操作需 step-up 2FA（后端 CommonErr.MFA_REQUIRED code=4）
 } as const;
 
 export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -35,5 +38,13 @@ export class AppError extends Error {
   ) {
     super(message);
     this.name = "AppError";
+  }
+}
+
+/** 危险操作需 2FA step-up：会话有效但缺 1 小时内信任。调用方应弹 TOTP 验证后重试。 */
+export class MFARequiredError extends AppError {
+  constructor() {
+    super(ErrorCode.MFA_REQUIRED, "2FA required");
+    this.name = "MFARequiredError";
   }
 }

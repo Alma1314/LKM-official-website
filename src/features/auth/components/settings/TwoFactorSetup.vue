@@ -118,21 +118,40 @@
       </ul>
     </div>
 
-    <!-- 关闭 2FA 需输入验证码 -->
+    <!-- 关闭 2FA 需输入 TOTP 或恢复码 -->
     <form v-if="disableDialogOpen" class="p-3 bg-page-bg rounded-lg space-y-2">
       <p class="text-xs text-text-muted">{{ t("settings.2fa.disableHint") }}</p>
       <input
+        v-if="!disableUsingRecovery"
         v-model.trim="disableCode"
         type="text"
         inputmode="numeric"
         class="input input-bordered input-sm w-full"
         placeholder="000000"
       />
+      <input
+        v-else
+        v-model.trim="disableRecoveryCode"
+        type="text"
+        class="input input-bordered input-sm w-full"
+        :placeholder="t('messages.mfa.recoveryPlaceholder')"
+      />
+      <button
+        type="button"
+        class="block text-xs text-primary hover:underline"
+        @click="toggleDisableMode"
+      >
+        {{
+          disableUsingRecovery
+            ? t("messages.mfa.useTotp")
+            : t("messages.mfa.useRecovery")
+        }}
+      </button>
       <div class="flex gap-2">
         <button
           type="button"
           class="btn btn-error btn-sm"
-          :disabled="disableCode.length < 6"
+          :disabled="!disableCodeValid"
           @click="doDisable"
         >
           <span
@@ -155,7 +174,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import QRCode from "qrcode";
 import { authApi } from "~/lib/api/modules/auth";
 import { t } from "~/lib/i18n";
@@ -180,7 +199,20 @@ const error = ref("");
 const recoveryCodes = ref<string[]>([]);
 const disableDialogOpen = ref(false);
 const disableCode = ref("");
+const disableRecoveryCode = ref("");
+const disableUsingRecovery = ref(false);
 const verifyingDisable = ref(false);
+const disableCodeValid = computed(() =>
+  disableUsingRecovery.value
+    ? /^[0-9a-zA-Z]{20}$/.test(disableRecoveryCode.value.trim())
+    : disableCode.value.length >= 6,
+);
+
+function toggleDisableMode() {
+  disableUsingRecovery.value = !disableUsingRecovery.value;
+  disableCode.value = "";
+  disableRecoveryCode.value = "";
+}
 
 // 是否已开启 2FA：走真实 GET /auth/2fa/status
 async function load() {
@@ -241,13 +273,16 @@ async function confirmEnable() {
 
 async function doDisable() {
   error.value = "";
-  if (disableCode.value.length < 6) {
+  if (!disableCodeValid.value) {
     error.value = t("settings.2fa.enter6Digit");
     return;
   }
   verifyingDisable.value = true;
   try {
-    const r = await authApi.disable2FA(disableCode.value);
+    const r = await authApi.disable2FA(
+      disableUsingRecovery.value ? "" : disableCode.value,
+      disableUsingRecovery.value ? disableRecoveryCode.value : undefined,
+    );
     if (r.isErr()) {
       error.value = r.error.message;
       return;
@@ -256,6 +291,8 @@ async function doDisable() {
     recoveryCodes.value = [];
     disableDialogOpen.value = false;
     disableCode.value = "";
+    disableRecoveryCode.value = "";
+    disableUsingRecovery.value = false;
     emit("update", {} as User);
   } finally {
     verifyingDisable.value = false;
