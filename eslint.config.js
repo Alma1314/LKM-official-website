@@ -144,7 +144,6 @@ export default [
       "src/layouts/OfficialBlogLayout.astro",
       "src/layouts/CommunityBlogLayout.astro",
       "scripts/mock-server.mjs",
-      "src/lib/icons/register.ts",
       "src/lib/icons/astro-include.ts",
     ],
   },

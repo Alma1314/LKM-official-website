@@ -48,35 +48,7 @@ export type {
   PaginatedData,
 } from "./blog-types";
 
-// ---- 原有 simple blog API ----
-
-export interface BlogPost {
-  slug: string;
-  title: string;
-  description: string;
-  tags: string[];
-  category: string;
-  lang: string;
-  published: string;
-  updated?: string;
-  draft?: boolean;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pages: number;
-}
-
-export const blogPostApi = {
-  getPosts: (page = 1, limit = 20) =>
-    get<PaginatedResponse<BlogPost>>("/api/blog/posts", { page, limit }),
-
-  getPostBySlug: (slug: string) => get<BlogPost>(`/api/blog/posts/${slug}`),
-};
-
-// ---- 合并后的完整 blogApi（从 feature-local blogApi 迁移） ----
+// ---- 完整 blogApi（从 feature-local blogApi 迁移） ----
 
 /** 博客 REST API — 纯函数对象，不包含 Vue 响应式状态 */
 export const blogApi = {

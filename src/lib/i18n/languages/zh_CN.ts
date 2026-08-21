@@ -85,6 +85,17 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       createFailed: "创建通行密钥失败",
       authenticateFailed: "通行密钥认证失败",
     },
+    mfa: {
+      stepUpDialogTitle: "二次验证",
+      stepUpDialogMessage:
+        "此操作需要二次验证。请输入身份验证器应用中的 6 位动态码完成验证（1 小时内无需重复验证）。",
+      codePlaceholder: "6 位动态码",
+      verifyButton: "验证",
+      invalidCode: "验证码无效，请重试",
+      useRecovery: "无法验证 / 丢失设备？使用备用恢复码",
+      useTotp: "返回动态码",
+      recoveryPlaceholder: "输入备用恢复码",
+    },
     blog: {
       fetchSeriesFailed: "获取博客系列失败：{error}",
     },
@@ -103,6 +114,7 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     },
     admin: {
       sessionExpired: "后台登录态失效",
+      mfaRequired: "该操作需要二次验证，请完成两步验证后再试",
       requestFailed: "请求失败",
       requestFailedStatus: "请求失败 ({status})",
     },
@@ -218,6 +230,8 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     commentPlaceholder: "写下你的想法...",
     reply: "回复",
     replyTo: "回复：{name}",
+    deleteCommentStepUpHint:
+      "删除评论需要二次验证。请输入身份验证器应用中的 6 位动态码（1 小时内无需重复验证）。",
     sending: "发送中...",
     loginPromptPrefix: "请",
     loginPromptSuffix: "后发表评论",
@@ -1559,6 +1573,8 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       empty: "暂无通行密钥",
       deleteTitle: "删除通行密钥",
       deleteMessage: "确定删除该通行密钥吗？此操作不可撤销。",
+      deleteStepUpHint:
+        "删除通行密钥需要二次验证。请输入身份验证器应用中的 6 位动态码（1 小时内无需重复验证）。",
       createFail: "创建通行密钥失败",
     },
   },
@@ -4011,12 +4027,15 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     },
     pointLogs: {
       checkin: "每日打卡",
-      post: "发帖：量子力学入门",
+      post: "发帖",
       comment: "评论回复",
       answerAccepted: "回答被采纳",
       fileApproved: "文件上传通过审核",
       competition: "竞赛获奖",
       dailyTask: "完成每日任务",
+      like: "点赞",
+      qaAccept: "回答被采纳",
+      transfer: "积分转移",
     },
     leaderboard: {
       names: {

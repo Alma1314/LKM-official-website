@@ -236,7 +236,7 @@
       </div>
     </div>
 
-    <!-- 解绑 2FA 验证码输入 -->
+    <!-- 解绑 2FA 校验输入：TOTP 或恢复码 -->
     <form
       v-if="unbinding"
       class="p-3 bg-page-bg rounded-lg flex gap-2 items-center"
@@ -244,30 +244,55 @@
     >
       <div class="flex-1">
         <input
+          v-if="!unbindUsingRecovery"
           v-model.trim="unbindCode"
           type="text"
           inputmode="numeric"
           class="input input-bordered input-sm w-full"
           :placeholder="t('settings.bind.enterTOTP')"
         />
+        <input
+          v-else
+          v-model.trim="unbindRecoveryCode"
+          type="text"
+          class="input input-bordered input-sm w-full"
+          :placeholder="t('messages.mfa.recoveryPlaceholder')"
+        />
       </div>
-      <button
-        type="submit"
-        class="btn btn-error btn-sm"
-        :disabled="has2FA && unbindCode.length < 6"
-      >
-        {{ t("settings.bind.confirmUnbind") }}
-      </button>
-      <button
-        type="button"
-        class="btn btn-ghost btn-xs"
-        @click="
-          unbinding = false;
-          unbindCode = '';
-        "
-      >
-        {{ t("common.cancel") }}
-      </button>
+      <div class="flex flex-col items-start gap-1">
+        <button
+          type="button"
+          class="text-xs text-primary hover:underline"
+          @click="toggleUnbindMode"
+        >
+          {{
+            unbindUsingRecovery
+              ? t("messages.mfa.useTotp")
+              : t("messages.mfa.useRecovery")
+          }}
+        </button>
+        <div class="flex gap-1">
+          <button
+            type="submit"
+            class="btn btn-error btn-sm"
+            :disabled="has2FA && !unbindCodeValid"
+          >
+            {{ t("settings.bind.confirmUnbind") }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-ghost btn-xs"
+            @click="
+              unbinding = false;
+              unbindCode = '';
+              unbindRecoveryCode = '';
+              unbindUsingRecovery = false;
+            "
+          >
+            {{ t("common.cancel") }}
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -296,9 +321,22 @@ const boundPhone = ref((props.user as { phone?: string | null }).phone ?? "");
 const boundGithub = ref(!!(props.user as { github?: boolean }).github);
 const has2FA = ref(false);
 
-// 解绑用的当前 TOTP 码输入（2FA 已开启时要求）
+// 解绑用的第二因素输入（2FA 已开启时要求）：TOTP 或恢复码
 const unbinding = ref<false | "email" | "phone" | "github">(false);
 const unbindCode = ref("");
+const unbindRecoveryCode = ref("");
+const unbindUsingRecovery = ref(false);
+const unbindCodeValid = computed(() =>
+  unbindUsingRecovery.value
+    ? /^[0-9a-zA-Z]{20}$/.test(unbindRecoveryCode.value.trim())
+    : unbindCode.value.length >= 6,
+);
+
+function toggleUnbindMode() {
+  unbindUsingRecovery.value = !unbindUsingRecovery.value;
+  unbindCode.value = "";
+  unbindRecoveryCode.value = "";
+}
 
 const pending = reactive<Record<BindType, StepState>>({
   email: "idle",
@@ -418,13 +456,20 @@ async function doUnbind() {
     type === "email" ? "email" : type === "phone" ? "phone" : "github";
   errors[key] = "";
   try {
-    if (has2FA.value && !unbindCode.value) {
+    if (has2FA.value && !unbindCodeValid.value) {
       errors[key] = t("settings.bind.enterTOTP");
       return;
     }
     const r = await authApi.unbind(
       type,
-      has2FA.value ? unbindCode.value : undefined,
+      has2FA.value
+        ? unbindUsingRecovery.value
+          ? undefined
+          : unbindCode.value
+        : undefined,
+      has2FA.value && unbindUsingRecovery.value
+        ? unbindRecoveryCode.value
+        : undefined,
     );
     if (r.isErr()) {
       errors[key] = r.error.message || t("settings.bind.unbindFail");
@@ -435,6 +480,8 @@ async function doUnbind() {
     else boundGithub.value = false;
     unbinding.value = false;
     unbindCode.value = "";
+    unbindRecoveryCode.value = "";
+    unbindUsingRecovery.value = false;
     emit("update", props.user);
   } catch {
     errors[key] = t("settings.bind.unbindFail");

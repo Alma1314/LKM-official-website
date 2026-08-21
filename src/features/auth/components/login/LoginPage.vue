@@ -278,6 +278,73 @@
           </button>
         </form>
 
+        <!-- 强制 2FA 设置态（管理员等 setup_required 场景） -->
+        <div v-else-if="flow.mode === '2fa_setup'" class="space-y-4">
+          <AuthStatus v-if="flow.error" type="error" :message="flow.error" />
+          <!-- 完成设置：展示恢复码，用户确认保存后进入成功态 -->
+          <template v-if="flow.setup_recovery_ready">
+            <p class="text-sm text-text-muted text-center">
+              {{ t("settings.2fa.recoveryHint") }}
+            </p>
+            <div class="bg-base-200 rounded-xl p-4 space-y-2">
+              <p
+                v-for="rc in flow.setup_recovery_codes"
+                :key="rc"
+                class="font-mono text-center text-sm"
+              >
+                {{ rc }}
+              </p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+              @click="flow.confirmSetupRecovery()"
+            >
+              {{ t("auth.twoFactor.done") }}
+            </button>
+          </template>
+          <!-- 二维码 + 验证码录入 -->
+          <form
+            v-else
+            @submit.prevent="flow.complete2FASetup(flow.code)"
+            class="space-y-4"
+          >
+            <div v-if="flow.setup_qr_url" class="flex justify-center">
+              <img
+                :src="flow.setup_qr_url"
+                :alt="t('settings.2fa.qrAlt')"
+                class="w-48 h-48 rounded-xl"
+              />
+            </div>
+            <p v-else class="text-sm text-text-muted text-center">
+              {{ t("settings.2fa.scanHint") }}
+            </p>
+            <VerificationCodeField
+              id="login-2fa-setup"
+              v-model="flow.code"
+              :error="flow.error ?? undefined"
+            />
+            <button
+              type="submit"
+              class="btn btn-primary w-full active:scale-[0.98] transition-transform"
+              :disabled="flow.loading"
+            >
+              <span
+                v-if="flow.loading"
+                class="loading loading-spinner loading-sm"
+              ></span>
+              <span v-else>{{ t("auth.twoFactor.verify") }}</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm w-full"
+              @click="flow.reset()"
+            >
+              {{ t("auth.login.backToLogin") }}
+            </button>
+          </form>
+        </div>
+
         <!-- 底部注册入口 -->
         <p class="mt-6 text-center text-[13px] text-text-muted">
           {{ t("auth.login.noAccount") }}

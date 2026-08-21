@@ -7,7 +7,20 @@ import type { Result } from "~/lib/errors/result";
 import type { UserInfo, MessageResponse } from "~/lib/api/modules/auth";
 import type { SessionStatus } from "~/types/auth";
 
+let _sessionClearedBound = false;
+
 export const useAuthStore = defineStore("auth", () => {
+  // 首次实例创建时注册「http 会话被清除」同步监听（http 层 401 刷新失败等
+  // 静默清空 localStorage 时会广播；此处让内存态复位，避免"假登录"漂移）。
+  if (_sessionClearedBound === false) {
+    _sessionClearedBound = true;
+    if (typeof window !== "undefined") {
+      window.addEventListener("lkm:auth-cleared", () => {
+        useAuthStore().resetState();
+      });
+    }
+  }
+
   // ── State（单一状态源：session 驱动） ──
   const user = ref<UserInfo | null>(null);
   const isLoggedIn = ref(false);

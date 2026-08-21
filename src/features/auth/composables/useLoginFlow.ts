@@ -1,4 +1,5 @@
 import { reactive, ref, toRef } from "vue";
+import QRCode from "qrcode";
 import { useAuthStore } from "~/stores/auth";
 import { authApi } from "~/lib/api/modules/auth";
 import { AppError, ErrorCode } from "~/lib/errors/error-codes";
@@ -7,7 +8,7 @@ import { useVerificationCountdown } from "./useVerificationCountdown";
 import { authenticate } from "../lib/webauthn";
 
 export type LoginMode =
-  "password" | "code" | "github" | "magic" | "passkey" | "2fa";
+  "password" | "code" | "github" | "magic" | "passkey" | "2fa" | "2fa_setup";
 
 export interface LoginFlowOptions {
   redirect?: string | null;
@@ -30,6 +31,11 @@ export interface LoginFlow {
   codeSent: boolean;
   countdown: number;
   countdownRunning: boolean;
+  // 强制 2FA 设置态（管理员等 setup_required 场景）
+  setup_qr_url: string;
+  setup_secret: string;
+  setup_recovery_codes: string[];
+  setup_recovery_ready: boolean;
   // methods
   submitPassword: () => Promise<void>;
   requestCode: () => Promise<void>;
@@ -39,6 +45,9 @@ export interface LoginFlow {
   continueMagic: () => Promise<void>;
   startPasskey: () => Promise<void>;
   submit2FA: (verifyCode: string, tempTokenArg?: string) => Promise<void>;
+  init2FASetup: () => Promise<void>;
+  complete2FASetup: (code: string) => Promise<void>;
+  confirmSetupRecovery: () => void;
   reset: () => void;
   errorMessageByCode: (err: AppError) => string;
 }
@@ -77,6 +86,10 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
   const codeSent = ref(false);
   const countdown = useVerificationCountdown(60);
   const countdownRunning = toRef(countdown, "running");
+  const setup_qr_url = ref("");
+  const setup_secret = ref("");
+  const setup_recovery_codes = ref<string[]>([]);
+  const setup_recovery_ready = ref(false);
 
   function errorMessageByCode(e: AppError): string {
     switch (e.code) {
@@ -114,11 +127,14 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       if (r.value.requires2FA || r.value.requires2FASetup) {
-        mode.value = "2fa";
         // store 已在进入 2FA 时暂存 temp_token，取回填入 flow
         tempToken.value = store.getPending2FA() ?? "";
         if (r.value.requires2FASetup) {
+          mode.value = "2fa_setup";
           successMessage.value = t("messages.auth.passkeyFirstTime2fa");
+          await init2FASetup();
+        } else {
+          mode.value = "2fa";
         }
         return;
       }
@@ -157,8 +173,13 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
         return;
       }
       if (r.value.requires2FA || r.value.requires2FASetup) {
-        mode.value = "2fa";
         tempToken.value = store.getPending2FA() ?? "";
+        if (r.value.requires2FASetup) {
+          mode.value = "2fa_setup";
+          await init2FASetup();
+        } else {
+          mode.value = "2fa";
+        }
         return;
       }
       succeed();
@@ -304,6 +325,67 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     }
   }
 
+  // ── 强制 2FA 设置（setup_required，管理员等场景）──
+
+  /** 拉取 otpauth 二维码与密钥（用登录临时令牌调 /2fa/setup/temp）。 */
+  async function init2FASetup(): Promise<void> {
+    setup_qr_url.value = "";
+    setup_recovery_codes.value = [];
+    setup_recovery_ready.value = false;
+    error.value = null;
+    loading.value = true;
+    try {
+      const r = await authApi.start2FATemp(tempToken.value);
+      if (r.isErr()) {
+        setError(r.error);
+        return;
+      }
+      setup_secret.value = r.value.secret;
+      try {
+        setup_qr_url.value = await QRCode.toDataURL(r.value.qr_code_uri);
+      } catch {
+        setup_qr_url.value = "";
+      }
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /** 提交 TOTP 码完成强制 2FA 设置，领取会话令牌并展示恢复码（/2fa/setup/complete/temp）。 */
+  async function complete2FASetup(code: string): Promise<void> {
+    error.value = null;
+    if (!/^\d{6}$/.test(code)) {
+      error.value = t("auth.twoFactor.enter6DigitError");
+      return;
+    }
+    loading.value = true;
+    try {
+      const r = await authApi.verify2FAEnableTemp(tempToken.value, code);
+      if (r.isErr()) {
+        setError(r.error);
+        return;
+      }
+      const data = r.value;
+      // 领取会话令牌并同步用户，完成登录
+      if (data.access_token) {
+        store.setTokens(data.access_token, data.refresh_token ?? "");
+        await store.fetchMe();
+        store.clearPending2FA();
+      }
+      setup_recovery_codes.value = data.recovery_codes ?? [];
+      setup_recovery_ready.value = true;
+      // 强制设置：先展示恢复码，用户确认保存后再完成登录（避免错过恢复码）
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /** 用户确认已保存恢复码：正式结束 2FA 设置流程，进入成功态。 */
+  function confirmSetupRecovery(): void {
+    successMessage.value = t("auth.twoFactor.verifyPassed");
+    succeed();
+  }
+
   async function applyTokenData(data: {
     access_token?: string | null;
     refresh_token?: string | null;
@@ -331,6 +413,10 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     countdown.stop();
     store.clearPending2FA();
     mode.value = "password";
+    setup_qr_url.value = "";
+    setup_secret.value = "";
+    setup_recovery_codes.value = [];
+    setup_recovery_ready.value = false;
   }
 
   return reactive({
@@ -356,6 +442,13 @@ export function useLoginFlow(options: LoginFlowOptions = {}): LoginFlow {
     continueMagic,
     startPasskey,
     submit2FA,
+    init2FASetup,
+    complete2FASetup,
+    confirmSetupRecovery,
+    setup_qr_url,
+    setup_secret,
+    setup_recovery_codes,
+    setup_recovery_ready,
     reset,
     errorMessageByCode,
   });
