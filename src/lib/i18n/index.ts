@@ -72,8 +72,12 @@ export function getLocale(): Locale {
   if (cookie) {
     const match = cookie.match(new RegExp(`(?:^|;\\s*)${COOKIE_KEY}=([^;]+)`));
     if (match) {
-      const parsed = normalizeLocale(decodeURIComponent(match[1]));
-      if (SUPPORTED_LOCALES.includes(parsed)) return parsed;
+      try {
+        const parsed = normalizeLocale(decodeURIComponent(match[1]));
+        if (SUPPORTED_LOCALES.includes(parsed)) return parsed;
+      } catch {
+        // 畸形 percent-encoding 回退默认语
+      }
     }
   }
   return localeFromConfig();

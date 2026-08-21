@@ -33,7 +33,7 @@ function select(next: "zh-CN" | "en") {
       @click="toggle"
       @mouseenter="isOpen = true"
     >
-      <Icon icon="material-symbols:language-rounded" class="text-[1.25rem]" />
+      <Icon icon="material-symbols:language" class="text-[1.25rem]" />
     </button>
     <div
       class="absolute right-0 top-11 pt-1.5 transition"
