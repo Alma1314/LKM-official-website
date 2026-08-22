@@ -118,7 +118,9 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
     <script is:inline define:vars={{ DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, configHue }}
     >
       // 从 localStorage 加载主题
-      const theme = localStorage.getItem('theme') || DEFAULT_THEME;
+      // 用 var 而非 const/let：Swup reloadScripts 会在每次过渡时重跑本 head 内联脚本，
+      // 顶层 const/let 重复声明会抛 "Identifier ... has already been declared" 中断脚本。
+      var theme = localStorage.getItem('theme') || DEFAULT_THEME;
       switch (theme) {
         case LIGHT_MODE:
           document.documentElement.classList.remove('dark');
@@ -135,11 +137,11 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || 'cente
       }
 
       // 从 localStorage 加载色相
-      const hue = localStorage.getItem('hue') || configHue;
+      var hue = localStorage.getItem('hue') || configHue;
       document.documentElement.style.setProperty('--hue', hue);
 
       // calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
-      let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
+      var offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
       offset = offset - (offset % 4);
       document.documentElement.style.setProperty('--banner-height-extend', `${offset}px`);
     </script>

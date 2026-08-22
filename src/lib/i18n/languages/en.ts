@@ -280,6 +280,12 @@ export const en = {
     prevPage: "Previous",
     nextPage: "Next",
     backToSite: "Back to Site",
+    console: {
+      overview: "Overview",
+      trend: "Trend",
+      activity: "Recent Activity",
+      shortcuts: "Quick Actions",
+    },
     sidebar: {
       dashboard: "Dashboard",
       users: "User Management",
@@ -304,6 +310,24 @@ export const en = {
       posts: "Total Posts",
       files: "Total Files",
       pendingFiles: "Files Pending Review",
+      pendingReports: "Pending Reports",
+    },
+    trend: {
+      users: "New Users",
+      posts: "New Posts",
+    },
+    shortcuts: {
+      reviewFiles: "Review Files",
+      reviewReports: "Review Reports",
+      manageUsers: "Manage Users",
+      managePosts: "Manage Posts",
+      backToSite: "Back to Site",
+    },
+    activity: {
+      latestUsers: "Newest Users",
+      latestPosts: "Newest Posts",
+      latestReports: "Newest Reports",
+      empty: "No data yet",
     },
     users: {
       searchPlaceholder: "Search by username",

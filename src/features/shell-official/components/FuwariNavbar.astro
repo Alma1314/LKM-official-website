@@ -155,7 +155,10 @@ const links: NavBarLink[] = Astro.props.links;
   // 下拉/面板按钮「点击开了又关」失灵（需整页刷新才恢复）。因此绑定标记须持久化到元素
   // 自身属性（WeakSet 会在脚本重跑时重置，不可用），保证同一 DOM 节点只绑一次。
   // 标记用带前缀的私有属性，避免与外部 setAttribute/data-* 冲突。
-  const B = '__lkmBound__';
+  // 用 var 而非 const：本内联脚本位于 Swup 容器内，会被 reloadScripts 在每次过渡时重新执行，
+  // 顶层 const 重复声明会抛 "Identifier 'B' has already been declared"，中断整个脚本及后续
+  // 绑定 → 页面切换/导航水合异常。var 重复声明合法（仅覆盖），保证重跑安全、可重绑新节点。
+  var B = '__lkmBound__';
   function mark(el) {
     if (el) el[B] = true;
   }

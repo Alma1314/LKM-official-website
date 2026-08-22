@@ -276,6 +276,12 @@ export const zh_CN: DeepStringRecord<typeof en> = {
     prevPage: "上一页",
     nextPage: "下一页",
     backToSite: "返回前台",
+    console: {
+      overview: "概览",
+      trend: "趋势",
+      activity: "最近动态",
+      shortcuts: "快捷操作",
+    },
     sidebar: {
       dashboard: "仪表盘",
       users: "用户管理",
@@ -300,6 +306,24 @@ export const zh_CN: DeepStringRecord<typeof en> = {
       posts: "帖子总数",
       files: "文件总数",
       pendingFiles: "待审核文件",
+      pendingReports: "待处理举报",
+    },
+    trend: {
+      users: "新增注册",
+      posts: "新增帖子",
+    },
+    shortcuts: {
+      reviewFiles: "去审核文件",
+      reviewReports: "去审核举报",
+      manageUsers: "用户管理",
+      managePosts: "帖子管理",
+      backToSite: "站点首页",
+    },
+    activity: {
+      latestUsers: "最新用户",
+      latestPosts: "最新帖子",
+      latestReports: "最新举报",
+      empty: "暂无数据",
     },
     users: {
       searchPlaceholder: "按用户名搜索",
